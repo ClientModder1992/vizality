@@ -1,0 +1,86 @@
+.powercord-quickcss {
+  .CodeMirror-dialog-top {
+    display: flex;
+    align-items: center;
+    font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+    background: var(--background-floating);
+    border: none;
+    padding: 10px 15px;
+    box-shadow: var(--elevation-medium);
+    order: 1;
+    position: relative;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    animation: coremirrorDialogueAppear .2s forwards;
+  }
+  // Find and replace (Ctrl + H) 'Yes' 'No' 'All' 'Stop' buttons
+  button {
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 2px 10px;
+    transition: background-color .17s ease,color .17s ease;
+    + button {
+      margin-left: 5px;
+    }
+    // No need for a 'No' button when there is already a 'Stop' ('Cancel') one
+    &:nth-of-type(2) {
+      display: none;
+    }
+    // Create a 'fake' button, because we don't like the word 'Stop'
+    &:nth-of-type(4) {
+      visibility: hidden;
+      position: absolute;
+      right: 30px;
+      margin: 0;
+      &::after {
+        content: 'Cancel';
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #f04747;
+        color: #fff;
+        border-radius: inherit;
+        padding: inherit;
+        visibility: visible;
+        transition: background-color .17s ease,color .17s ease;
+      }
+      &:hover {
+        &::after {
+          background: #d84040;
+        }
+      }
+    }
+  }
+  .CodeMirror-search-label {
+    margin-right: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 26px;
+    opacity: .5;
+  }
+  .CodeMirror-search-field {
+    flex: 1;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 26px;
+    color: #fff;
+  }
+  // '(Use /re/ syntax for regexp search)' help text
+  .CodeMirror-search-hint {
+    display: none;
+  }
+}
+
+@keyframes coremirrorDialogueAppear {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}

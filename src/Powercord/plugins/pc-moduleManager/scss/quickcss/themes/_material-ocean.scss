@@ -1,0 +1,65 @@
+.powercord-quickcss {
+  &.theme-material-ocean {
+    .CodeMirror {
+      .CodeMirror-cursor {
+        border-left: 1px solid #FFCC00;
+      }
+      .cm-keyword {
+        color: #C792EA;
+      }
+      .cm-operator {
+        color: #89DDFF;
+      }
+      .cm-variable-2 {
+        color: #EEFFFF;
+      }
+      .cm-variable-3,
+      .cm-type {
+        color: #f07178;
+      }
+      .cm-builtin {
+        color: #FFCB6B;
+      }
+      .cm-atom {
+        color: #F78C6C;
+      }
+      .cm-number {
+        color: #FF5370;
+      }
+      .cm-def {
+        color: #82AAFF;
+      }
+      .cm-string {
+        color: #C3E88D;
+      }
+      .cm-string-2 {
+        color: #f07178;
+      }
+      .cm-comment {
+        color: #464B5D;
+      }
+      .cm-variable {
+        color: #f07178;
+      }
+      .cm-tag {
+        color: #FF5370;
+      }
+      .cm-meta {
+        color: #FFCB6B;
+      }
+      .cm-attribute {
+        color: #C792EA;
+      }
+      .cm-property {
+        color: #C792EA;
+      }
+      .cm-qualifier {
+        color: #DECB6B;
+      }
+      .cm-variable-3,
+      .cm-type {
+        color: #DECB6B;
+      }
+    }
+  }
+}

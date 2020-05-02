@@ -1,0 +1,70 @@
+{
+  "id": "pluginManager-17-11-19",
+  "date": "2019-11-17",
+  "contents": [
+    {
+      "type": "HEADER",
+      "color": "GREEN",
+      "text": "It's back!!!1!1!",
+      "noMargin": true
+    },
+    {
+      "type": "CONTENTS",
+      "text": "Powercord Plugin Manager is **back**! You can now enable, disable and uninstall plugin from Powercord's UI.",
+      "list": [
+        "**Dependencies are (properly) handled**, so you shouldn't encounter much problems.",
+        "**No installer yet**, as this still under development. We're making progress though. Soon:tm:",
+        "**Theme manager is also coming soon!** With some very cool features, including letting themes have a settings panel, without a single line of JS. Can't wait tbh"
+      ]
+    },
+    {
+      "type": "HEADER",
+      "color": "GREEN",
+      "text": "No more Powercord unplugs"
+    },
+    {
+      "type": "CONTENTS",
+      "text": "We've implemented something that should completely prevent Powercord from no longer being injected after a Stable version change. We haven't fully tested it, but it should be working fine. Let us know if you encounter unexpected unplugs!"
+    },
+    {
+      "type": "HEADER",
+      "color": "RED",
+      "text": "Core cleanup"
+    },
+    {
+      "type": "CONTENTS",
+      "text": "We removed deprecated methods and features from Powercord's core, including old injection methods and normalized `.pc-` classes. We also got rid of some bugs, because we don't like them."
+    },
+    {
+      "type": "HEADER",
+      "color": "BLURPLE",
+      "text": "About listing websites"
+    },
+    {
+      "type": "CONTENTS",
+      "text": "Back in april, we've made an announcement about BetterDocs and other listing websites. Long story short, we want to avoid what happened in the past, with malicious plugins being listed and developers not being asked for authorization before listing. We're in the process of writing some guidelines for those websites, and we're implementing some features for them, including:",
+      "list": [
+        "**New RPC events**, to interact with Powercord, to open install window from their website for example. We'll provide documentation soon.",
+        "**An API endpoint** to fetch plugins that **explicitly mentionned** they agree with being listed externally. We'll also provide documentation soon."
+      ]
+    },
+    {
+      "type": "HEADER",
+      "color": "ORANGE",
+      "text": "Have more changes"
+    },
+    {
+      "type": "CONTENTS",
+      "list": [
+        "**Clyde's avatar and name** can now be **customized** in commands. If you want to keep Clyde, you can disable this in General Settings.",
+        "**Powercord's April Fools** can be disabled in General Settings, if you're against fun. :^)",
+        "**Fixed a security vulnerability** because that's not a good thing. Thanks to amy#0001 for bringing this to our attention <3",
+        "**.hastebin command** now uses a **self-hosted haste** at https://haste.powercord.dev. Thanks to AlexFlipnote#0001 for the sweet theme!",
+        "**Custom RPC events** will probably be part of the plugin API, stay tuned :eyes:",
+        "**Changed label colors** in console to blurple. Very important change!",
+        "Fixed a bug where emma wasn't cute enough."
+      ]
+    }
+  ],
+  "footer": "Btw have I told you I use arch?"
+}

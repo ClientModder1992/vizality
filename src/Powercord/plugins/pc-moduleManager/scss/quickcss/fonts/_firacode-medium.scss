@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'FiraCode Medium';
+  src: url('https://vizality.com/app/assets/fonts/firacode-medium/firacode-medium.woff2') format('woff2'),
+       url('https://vizality.com/app/assets/fonts/firacode-medium/firacode-medium.woff') format('woff');
+}
+
+.powercord-quickcss {
+  &[quickcss-editor-font-family*='FiraCode Medium'] {
+    .CodeMirror pre {
+      font-feature-settings: 'calt' 1;
+    }
+  }
+}

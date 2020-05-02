@@ -1,0 +1,8 @@
+{
+  "name": "Utility Classes and Attributes",
+  "version": "0.0.1",
+  "description": "Adds extra classes and data attributes for theme and extension developers.",
+  "author": "Baked",
+  "license": "MIT",
+  "appMode": "both"
+}

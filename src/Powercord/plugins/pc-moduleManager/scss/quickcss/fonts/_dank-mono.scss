@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Dank Mono';
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+0000-007F;
+  src: url('https://vizality.com/app/assets/fonts/dank-mono/dank-mono.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Dank Mono';
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+0080-1AFF;
+  src: url('https://vizality.com/app/assets/fonts/dank-mono/dank-mono-2.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Dank Mono';
+  font-weight: normal;
+  font-style: italic;
+  unicode-range: U+0000-007F;
+  src: url('https://vizality.com/app/assets/fonts/dank-mono/dank-mono-italic.woff') format('woff');
+}
+
+.powercord-quickcss {
+  &[quickcss-editor-font-family*='Dank Mono'] {
+    .CodeMirror pre {
+      font-feature-settings: 'calt' 1;
+    }
+    .cm-comment,
+    .cm-attribute {
+      font-style: italic;
+    }
+  }
+}

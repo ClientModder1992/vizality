@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Operator Mono';
+  src: url('https://vizality.com/app/assets/fonts/operator-mono/operator-mono.woff2') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Operator Mono';
+  src: url('https://vizality.com/app/assets/fonts/operator-mono/operator-mono-italic.woff2') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+.powercord-quickcss {
+  &[quickcss-editor-font-family*='Operator Mono'] {
+    .cm-comment,
+    .cm-attribute {
+      font-style: italic;
+    }
+  }
+}

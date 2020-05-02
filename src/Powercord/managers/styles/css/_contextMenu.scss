@@ -1,0 +1,21 @@
+div[class^='contextMenu-'] {
+  div[class*='item-'] {
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      margin-right: 2px;
+      text-overflow: ellipsis;
+    }
+  }
+
+  div[class*='itemSubMenu-'] {
+    .scroller {
+      overflow-y: scroll;
+      max-height: 300px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
