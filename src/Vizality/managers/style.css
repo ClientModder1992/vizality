@@ -1,0 +1,23 @@
+.vizality-text {
+  color: var(--text-normal);
+}
+
+.vz-hasNoGuildIcon {
+  background-image: url('https://i.imgur.com/Fa13xn9.png');
+}
+
+.vz-hasNoGameIcon {
+  background-image: url('https://i.imgur.com/Fa13xn9.png');
+}
+
+.vz-hasNoUserAvatar {
+
+}
+
+.vz-hasNoGroupIcon {
+
+}
+
+.vz-hasNoSplashImage {
+
+}

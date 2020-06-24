@@ -1,7 +1,7 @@
 ---
 name: Feature Request
-about: Create a feature request
-title: '[Feature Request]' 
+about: Create a feature request to help us improve
+title: 'Short description of the feature request' 
 labels: 'enhancement'
 assignees: ''
 

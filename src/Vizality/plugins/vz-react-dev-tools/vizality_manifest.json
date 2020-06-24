@@ -1,0 +1,8 @@
+{
+  "name": "React Developer Tools",
+  "version": "1.1.0",
+  "description": "Adds React Developer Tools to Chromium Developer Tools",
+  "author": "Vizality",
+  "license": "GPL-3.0",
+  "appMode": "both"
+}

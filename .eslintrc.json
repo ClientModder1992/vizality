@@ -1,6 +1,6 @@
 {
   "globals": {
-    "powercord": true,
+    "vizality": true,
     "webpackJsonp": true,
     "DiscordNative": false,
     "GLOBAL_ENV": true
@@ -58,7 +58,7 @@
     "array-callback-return": [ "error", {
       "allowImplicit": true
     }],
-    "curly": [ "error", "all" ],
+    "curly": [ "error", "multi-line" ],
     "dot-location": [ "error", "property" ],
     "dot-notation": [ "error" ],
     "eqeqeq": [ "error", "always" ],
@@ -152,9 +152,6 @@
     }],
     "multiline-comment-style": [ "error" ],
     "multiline-ternary": [ "error", "always-multiline" ],
-    "new-cap": [ "error", {
-      "newIsCap": true
-    }],
     "new-parens": [ "error" ],
     "no-array-constructor": [ "error" ],
     "no-mixed-operators": [ "error" ],

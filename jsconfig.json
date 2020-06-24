@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "powercord/*": [ "./fake_node_modules/powercord/*" ]
+      "vizality/*": [ "./fake_node_modules/vizality/*" ]
     }
   }
 }

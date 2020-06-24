@@ -1,8 +1,8 @@
 # Vizality
 
-Vizality is a @discordapp client modification based on [Powercord](https://github.com/powercord-org/powercord). It shares essentially the same, but slightly modifed, API and features. I have also tried to add additional features and UI improvements.
+Vizality is a @discord client modification based on Powercord. It shares essentially the same, but slightly modifed, API and features. We have also tried to add additional features and UI improvements.
 
-This version has been tailored to my ideals and what I think makes a better modding experience for the average user. The idea revolves around providing a built-in Style Editor for users who don't have much/any knowledge of CSS, or simply want to customize things easier and more quickly. This will be done by creating a Sass framework based around CSS custom properties.
+This version has been tailored to a slightly different set of ideals and what we think makes a better modding experience for the average user. The idea revolves around providing a built-in Style Editor for users who don't have much/any knowledge of CSS, or simply want to customize things easier and more quickly. This will be done by creating a sort of Sass framework based around CSS custom properties.
 
 # FAQ
 
@@ -22,7 +22,7 @@ You can reach out to us on our Discord support server [here](https://discord.gg/
 ## UI
 *to be announced*
 
-## Extensions & Themes
+## Plugins & Themes
 *to be announced*
 
 ## Misc

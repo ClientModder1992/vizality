@@ -7,14 +7,13 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-src/Powercord/plugins/*
-!src/Powercord/plugins/pc-*
+src/Vizality/plugins/*
+!src/Vizality/plugins/vz-*
 
-src/Powercord/plugins/pc-reactdevtools/rdt.crx
-src/Powercord/plugins/pc-reactdevtools/react-dev-tools/*
-src/Powercord/plugins/pc-styleManager/themes/*
-src/Powercord/themes/*
-!src/Powercord/themes/.exists
+src/Vizality/plugins/vz-react-dev-tools/rdt.crx
+src/Vizality/plugins/vz-react-dev-tools/react-dev-tools/*
+src/Vizality/themes/*
+!src/Vizality/themes/.exists
 
 settings/*.json
 

@@ -1,0 +1,77 @@
+@use '../../../../library' as vz;
+
+$color: #fff !default;
+
+@use 'announcement' as announcement with ($fill: $color);
+@use 'announcement-locked' as announcement-locked with ($fill: $color);
+@use 'arrow-down-alt-2' as arrow-down-alt-2 with ($fill: $color);
+@use 'arrow-left-alt' as arrow-left-alt with ($fill: $color);
+@use 'arrow-left-alt-2' as arrow-left-alt-2 with ($fill: $color);
+@use 'arrow-right-alt-2' as arrow-right-alt-2 with ($fill: $color);
+@use 'arrow-up' as arrow-up with ($fill: $color);
+@use 'arrow-up-alt' as arrow-up-alt with ($fill: $color);
+@use 'arrow-up-alt-2' as arrow-up-alt-2 with ($fill: $color);
+@use 'at-symbol' as at-symbol with ($fill: $color);
+@use 'attach-plus-play' as attach-plus-play with ($fill: $color);
+@use 'backpack' as backpack with ($fill: $color);
+@use 'block' as block with ($fill: $color);
+@use 'bold' as bold with ($fill: $color);
+@use 'boost' as boost with ($fill: $color);
+@use 'boost-alt' as boost-alt with ($fill: $color);
+@use 'boost-level-0' as boost-level-0 with ($fill: $color);
+@use 'boost-level-1' as boost-level-1 with ($fill: $color);
+@use 'boost-sheen' as boost-sheen with ($fill: $color);
+@use 'call-end' as call-end with ($fill: $color);
+@use 'call-ringing' as call-ringing with ($fill: $color);
+@use 'caret-down' as caret-down with ($fill: $color);
+@use 'caret-left' as caret-left with ($fill: $color);
+@use 'caret-right' as caret-right with ($fill: $color);
+@use 'trash' as trash with ($fill: $color);
+
+$module: (
+  vz-icon: (
+		'announcement': vz.svg-uri(announcement.$icon),
+		'announcement-locked': vz.svg-uri(announcement-locked.$icon),
+		'arrow-down-alt-2': vz.svg-uri(arrow-down-alt-2.$icon),
+		'arrow-left-alt': vz.svg-uri(arrow-left-alt.$icon),
+		'arrow-left-alt-2': vz.svg-uri(arrow-left-alt-2.$icon),
+		'arrow-right-alt-2': vz.svg-uri(arrow-right-alt-2.$icon),
+		'arrow-up': vz.svg-uri(arrow-up.$icon),
+		'arrow-up-alt': vz.svg-uri(arrow-up-alt.$icon),
+		'arrow-up-alt-2': vz.svg-uri(arrow-up-alt-2.$icon),
+		'at-symbol': vz.svg-uri(at-symbol.$icon),
+		'attach-plus-play': vz.svg-uri(attach-plus-play.$icon),
+    'backpack': vz.svg-uri(backpack.$icon),
+    'block': vz.svg-uri(block.$icon),
+		'bold': vz.svg-uri(bold.$icon),
+		'boost': vz.svg-uri(boost.$icon),
+		'boost-alt': vz.svg-uri(boost-alt.$icon),
+		'boost-level-0': vz.svg-uri(boost-level-0.$icon),
+		'boost-level-1': vz.svg-uri(boost-level-1.$icon),
+		'boost-sheen': vz.svg-uri(boost-sheen.$icon),
+		'call-end': vz.svg-uri(call-end.$icon),
+		'call-ringing': vz.svg-uri(call-ringing.$icon),
+		'caret-down': vz.svg-uri(caret-down.$icon),
+		'caret-left': vz.svg-uri(caret-left.$icon),
+		'caret-right': vz.svg-uri(caret-right.$icon),
+		'trash': vz.svg-uri(trash.$icon),
+  )
+);
+
+.vizality-icon {
+	@include vz.size(100%);
+	display: flex;
+	background-color: currentColor;
+}
+
+@each $i, $k in $module {
+  @each $key, $value in $k {
+    .vizality-icon {
+      &.#{$key} {
+        @include vz.mask(vz.icon($key));
+      }
+    }
+  }
+}
+
+:root { @include vz.generate-css-vars($module); }

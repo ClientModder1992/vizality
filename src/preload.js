@@ -3,14 +3,14 @@ require('../polyfills');
 const { remote } = require('electron');
 const { join } = require('path');
 const { existsSync, mkdirSync, open, write } = require('fs');
-const { LOGS_FOLDER } = require('./fake_node_modules/powercord/constants');
+const { LOGS_FOLDER } = require('./fake_node_modules/vizality/constants');
 
-// Add Powercord's modules
+// Add Vizality's modules
 require('module').Module.globalPaths.push(join(__dirname, 'fake_node_modules'));
 
-// Initialize Powercord
-const Powercord = require('./Powercord');
-global.powercord = new Powercord();
+// Initialize Vizality
+const Vizality = require('./Vizality');
+global.vizality = new Vizality();
 
 // https://github.com/electron/electron/issues/9047
 if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin')) {
@@ -23,7 +23,7 @@ require(remote.getGlobal('originalPreload'));
 // Debug logging
 let debugLogs;
 try {
-  const settings = require('../settings/pc-general.json');
+  const settings = require('../settings/vz-general.json');
   // eslint-disable-next-line prefer-destructuring
   debugLogs = settings.debugLogs;
 } finally {
@@ -34,7 +34,7 @@ try {
     const getDate = () => new Date().toISOString().replace('T', ' ').split('.')[0];
     const filename = `${window.__OVERLAY__ ? 'overlay' : 'discord'}-${new Date().toISOString().replace('T', '_').replace(/:/g, '-').split('.')[0]}.txt`;
     const path = join(LOGS_FOLDER, filename);
-    console.log('[Powercord] Debug logs enabled. Logs will be saved in', path);
+    console.log('[Vizality] Debug logs enabled. Logs will be saved in', path);
     open(path, 'w', (_, fd) => {
       // Patch console methods
       const levels = {
@@ -76,8 +76,8 @@ try {
 }
 
 // Overlay devtools
-powercord.once('loaded', () => {
-  if (window.__OVERLAY__ && powercord.api.settings.store.getSetting('pc-general', 'openOverlayDevTools', false)) {
+vizality.once('loaded', () => {
+  if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('vz-general', 'openOverlayDevTools', false)) {
     const overlayWindow = remote.getCurrentWindow();
     overlayWindow.openDevTools({ mode: 'detach' });
     let devToolsWindow = new remote.BrowserWindow({

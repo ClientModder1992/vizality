@@ -1,0 +1,7 @@
+{
+  "name": "RPC",
+  "version": "1.0.0",
+  "description": "Patches RPC to get Vizality-specific features",
+  "author": "Vizality",
+  "license": "GPL-3.0"
+}

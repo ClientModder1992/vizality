@@ -1,0 +1,19 @@
+@use '../../../../library' as vz;
+
+$color: #fff !default;
+
+@use 'discord' as discord with ( $fill: $color );
+@use 'spotify' as spotify with ( $fill: $color );
+@use 'twitter' as twitter with ( $fill: $color );
+@use 'xbox' as xbox with ( $fill: $color );
+
+$module: (
+  vz-logo: (
+    'discord': vz.svg-uri(discord.$logo),
+    'spotify': vz.svg-uri(spotify.$logo),
+    'twitter': vz.svg-uri(twitter.$logo),
+    'xbox': vz.svg-uri(xbox.$logo)
+  )
+);
+
+:root { @include vz.generate-css-vars($module); }

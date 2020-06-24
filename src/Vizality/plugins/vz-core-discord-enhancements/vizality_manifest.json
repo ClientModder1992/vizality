@@ -1,0 +1,7 @@
+{
+  "name": "Core Discord Enhancements",
+  "version": "0.0.1",
+  "description": "Provides additional functionality, and fixes some styling defects that Discord may have.",
+  "author": "Baked",
+  "license": "GPL-3.0"
+}

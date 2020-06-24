@@ -1,0 +1,17 @@
+{
+  "id": "updates-2020-6-24",
+  "date": "2020-6-24",
+  "contents": [
+    {
+      "type": "HEADER",
+      "color": "GREEN",
+      "text": "Vizality super private closed pre-alpha!",
+      "noMargin": true
+    },
+    {
+      "type": "CONTENTS",
+      "text": "Vizality is now entering its super private closed pre-alpha stage. Let's get this party started."
+    }
+  ],
+  "footer": "This is just a test."
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Documentation",
+  "version": "0.1",
+  "description": "Vizality's documentation UI",
+  "author": "Vizality",
+  "license": "GPL-3.0",
+  "dependencies": [ "vz-codeblocks" ]
+}

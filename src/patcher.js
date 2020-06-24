@@ -1,46 +1,42 @@
-/**
- * Powercord, a lightweight @discordapp client mod focused on simplicity and performance
- * Copyright (C) 2018-2020  aetheryx & Bowser65
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 /* global appSettings */
 const Module = require('module');
 const { join, dirname, resolve } = require('path');
+const { existsSync, unlinkSync, writeFileSync } = require('fs');
 const electron = require('electron');
 const { BrowserWindow, app, session } = electron;
 
 const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
 
+const _pkgFile = join(dirname(require.main.filename), 'package.json');
+const _pkg = require(_pkgFile);
+if (!_pkg.name) {
+  try {
+    writeFileSync(_pkgFile, JSON.stringify({
+      ..._pkg,
+      name: 'discord'
+    }));
+  } catch (e) {
+    // Most likely a perm issue. Let's fail silently on that one
+  }
+}
+
 let settings;
 try {
-  settings = require(resolve(__dirname, '..', 'settings', 'pc-general.json'));
+  settings = require(resolve(__dirname, '..', 'settings', 'vz-general.json'));
 } catch (err) {
   settings = {};
 }
-
 const { transparentWindow, experimentalWebPlatform } = settings;
 
 class PatchedBrowserWindow extends BrowserWindow {
   // noinspection JSAnnotator - Make JetBrains happy
   constructor (opts) {
     if (opts.webContents) {
-      // Go Live (general purpose?) popout. Might be interesting to investigate how it works as it has very low startup latency.
+      // General purpose popouts used by Discord
     } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
       // Splash Screen
+      opts.webPreferences.preload = join(__dirname, 'preloadSplash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       global.originalPreload = opts.webPreferences.preload;
@@ -63,47 +59,32 @@ class PatchedBrowserWindow extends BrowserWindow {
       }
     }
 
+    opts.webPreferences.enableRemoteModule = true;
     return new BrowserWindow(opts);
   }
 }
 
-Object.assign(PatchedBrowserWindow, electron.BrowserWindow);
+
+const electronExports = new Proxy(electron, {
+  get (target, prop) {
+    switch (prop) {
+      case 'BrowserWindow': return PatchedBrowserWindow;
+      default: return target[prop];
+    }
+  }
+});
 
 delete require.cache[electronPath].exports;
-require.cache[electronPath].exports = {
-  deprecate: electron.deprecate,
-  BrowserWindow: PatchedBrowserWindow
-};
+require.cache[electronPath].exports = electronExports;
 
-const failedExports = [];
-for (const prop in electron) {
-  if (prop === 'BrowserWindow') {
-    continue;
-  }
-
-  try {
-    // noinspection JSUnfilteredForInLoop
-    Object.defineProperty(require.cache[electronPath].exports, prop, {
-      get () {
-        // noinspection JSUnfilteredForInLoop
-        return electron[prop];
-      }
-    });
-  } catch (_) {
-    // noinspection JSUnfilteredForInLoop
-    failedExports.push(prop);
-  }
-}
 
 app.once('ready', () => {
-  require.cache[electronPath].exports.BrowserWindow = PatchedBrowserWindow;
-
   // headers must die
   session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     /*
      * To people worried about security: those protection headers removal do *not* cause security issues.
      *
-     * In a vanilla Discord it would actually lower the security level of the app, but with Powercord installed
+     * In a vanilla Discord it would actually lower the security level of the app, but with Vizality installed
      * this is another story. Node integration is available within the render process, meaning scrips can do requests
      * using native http module (bypassing content-security-policy), and could use BrowserViews to mimic the behaviour
      * of an iframe (bypassing the x-frame-options header). So we decided, for convenience, to drop them entirely.
@@ -120,19 +101,15 @@ app.once('ready', () => {
     if (details.url.endsWith('.js.map')) {
       // source maps must die
       done({ cancel: true });
-    } else if (details.url.startsWith('https://discordapp.com/_powercord')) {
-      appSettings.set('_POWERCORD_ROUTE', details.url.replace('https://discordapp.com', ''));
+    } else if (details.url.startsWith('https://discordapp.com/_vizality')) { // @todo: discord.com
+      appSettings.set('_VIZALITY_ROUTE', details.url.replace('https://discordapp.com', ''));
       appSettings.save();
-      // It should get restored to _powercord url later
+      // It should get restored to _vizality url later
       done({ redirectURL: 'https://discordapp.com/app' });
     } else {
       done({});
     }
   });
-
-  for (const prop of failedExports) {
-    require.cache[electronPath].exports[prop] = electron[prop];
-  }
 });
 
 (async () => {
@@ -150,7 +127,22 @@ app.once('ready', () => {
   const discordPackage = require(join(discordPath, 'package.json'));
 
   electron.app.setAppPath(discordPath);
-  electron.app.setName(discordPackage.name);
+  electron.app.name = discordPackage.name;
+
+  /**
+   * Fix DevTools extensions for wintards
+   * Keep in mind that this rather treats the symptom
+   * than fixing the root issue.
+   */
+  if (process.platform === 'win32') {
+    setImmediate(() => { // WTF: the app name doesn't get set instantly?
+      const devToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
+
+      if (existsSync(devToolsExtensions)) {
+        unlinkSync(devToolsExtensions);
+      }
+    });
+  }
 
   Module._load(
     join(discordPath, discordPackage.main),

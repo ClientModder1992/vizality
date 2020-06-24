@@ -1,0 +1,19 @@
+// An alternative way to use CSS custom properties (vars)
+// This is mainly used in an attempt to try
+// to increase readability. You simply use var('[name]')
+// or var([name]) instead of var(--[name]), but leaving the
+// option to still use var(--[name])
+// var('[name]') is preferred as
+@function var($propertyName, $fallback: null) {
+  @if str-index($propertyName, '--') {
+    @if ($fallback) {
+      @return unquote('var(#{$propertyName}, #{$fallback})');
+    }
+    @return unquote('var(#{$propertyName})');
+  } @else {
+    @if ($fallback) {
+      @return var(--#{$propertyName}, #{$fallback});
+    }
+    @return var(--#{$propertyName});
+  }
+}

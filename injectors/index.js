@@ -1,21 +1,3 @@
-/**
- * Powercord, a lightweight @discordapp client mod focused on simplicity and performance
- * Copyright (C) 2018-2020  aetheryx & Bowser65
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 // Perform checks
 require('./env_check')();
 
@@ -42,17 +24,17 @@ try {
       // To show up popup message
       await writeFile(
         resolve(__dirname, '..', 'src', '__injected.txt'),
-        'hey cutie'
+        'Vizality successfully injected'
       );
 
-      console.log('Successfully plugged Powercord!');
+      console.log('Successfully injected Vizality!');
     }
   } else if (process.argv[2] === 'uninject') {
     if (await main.uninject(platformModule)) {
-      console.log('Successfully unplugged Powercord!');
+      console.log('Successfully uninjected Vizality!');
     }
   } else {
     console.log(`Unsupported argument "${process.argv[2]}", exiting..`);
     process.exit(1);
   }
-})().catch(e => console.error('fucky wucky', e));
+})().catch(e => console.error('Hmm, something seems to have gone wrong...', e));

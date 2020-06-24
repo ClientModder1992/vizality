@@ -1,0 +1,10 @@
+@use '../../../functions' as *;
+
+$module: (
+  chat: (
+    name: 'username-1A8OIy',
+    role: 'roleColor-rz2vM0'
+  )
+);
+
+$name: '.#{map-get-path($module, 'chat.name')}';
