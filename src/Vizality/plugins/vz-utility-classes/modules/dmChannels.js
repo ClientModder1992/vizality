@@ -6,8 +6,6 @@ module.exports = async () => {
   const PrivateChannel = await getModuleByDisplayName('PrivateChannel');
 
   inject('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (originalArgs, returnValue) => {
-    if (!returnValue.props) return returnValue;
-
     const { props } = returnValue;
 
     props['vz-user-name'] = props.name;

@@ -35,7 +35,7 @@ class Base extends React.Component {
   renderButtons () {
     return (
       <div className='buttons'>
-        {vizality.api.labs.isExperimentEnabled('vz-module-manager-store')
+        {vizality.api.labs.isExperimentEnabled('vz-store')
           ? <Button onClick={() => this.goToStore()}>{Messages[`VIZALITY_${this.state.key}_EXPLORE`]}</Button>
           : <Tooltip text={Messages.COMING_SOON}>
             <Button disabled>{Messages[`VIZALITY_${this.state.key}_EXPLORE`]}</Button>

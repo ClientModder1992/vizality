@@ -1,0 +1,169 @@
+@use '../../library/index' as *;
+
+@font-face {
+  font-family: "Uni Sans Heavy";
+  src: url("//db.onlinewebfonts.com/t/4f6fb2fa3c231278167b36e966718cbb.woff2") format("woff2"),
+       url("//db.onlinewebfonts.com/t/4f6fb2fa3c231278167b36e966718cbb.woff") format("woff");
+}
+
+
+$caret-left: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="transform: rotate(90deg);"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 10L12 15 17 10"></path></svg>';
+
+$caret-right: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="transform: rotate(-90deg);"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 10L12 15 17 10"></path></svg>';
+
+$app-reload: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="currentColor" d="M4 8a4 4 0 0 0 6.828 2.828l1.415 1.415A6 6 0 1 1 12 3.528V2h2v5H9V5h1.646A4 4 0 0 0 4 8z" /></svg>';
+
+$app-minimize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><rect fill="currentColor" width="10" height="1" x="1" y="6"></rect></svg>';
+
+$app-maximize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><rect width="9" height="9" x="1.5" y="1.5" fill="none" stroke="currentColor"></rect></svg>';
+
+$app-close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><polygon fill="currentColor" fill-rule="evenodd" points="11 1.576 6.583 6 11 10.424 10.424 11 6 6.583 1.576 11 1 10.424 5.417 6 1 1.576 1.576 1 6 5.417 10.424 1"/></svg>';
+
+
+:root {
+  --titlebar-background: var(--background-tertiary);
+  --titlebar-height: 22px;
+
+  --titlebar-button-width: 28px;
+  --titlebar-button-small-width: 28px;
+  --titlebar-button-background: transparent;
+  --titlebar-button-hover-background: var(--background-modifier-hover);
+
+  --titlebar-button-back-size: 18px;
+  --titlebar-button-forward-size: 18px;
+  --titlebar-button-reload-size: 14px;
+  --titlebar-button-minimize-size: 12px;
+  --titlebar-button-maximize-size: 12px;
+  --titlebar-button-close-size: 12px;
+
+  --titlebar-button-icon-color: var(--interactive-normal);
+  --titlebar-button-hover-icon-color: var(--background-modifier-hover);
+
+  --titlebar-header-text-color: var(--text-muted);
+  --titlebar-header-font-size: 14px;
+  --titlebar-header-font: 'Uni Sans Heavy';
+
+  --titlebar-icon-back: #{svg-uri($caret-left)};
+  --titlebar-icon-forward: #{svg-uri($caret-right)};
+  --titlebar-icon-reload: #{svg-uri($app-reload)};
+  --titlebar-icon-minimize: #{svg-uri($app-minimize)};
+  --titlebar-icon-maximize: #{svg-uri($app-maximize)};
+  --titlebar-icon-close: #{svg-uri($app-close)};
+
+  // @todo: Fix up all these CSS and use global var(--icon 's instead
+}
+
+.bg-h5JY_x,
+.standardSidebarView-3F1I7i {
+  top: 0!important;
+}
+.layer-3QrUeG {
+  top: 0!important;
+  padding: 0!important;
+}
+
+.vizality-titlebar {
+  height: var(--titlebar-height);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  background: var(--titlebar-background);
+  z-index: 102;
+  &-section-left,
+  &-section-middle,
+  &-section-right {
+    z-index: 1001;
+  }
+  &-section-left,
+  &-section-right {
+    display: flex;
+    flex: 0 0 auto;
+  }
+  &-section-middle {
+    display: flex;
+    flex: 1;
+    margin: 4px 0 0 0;
+    -webkit-app-region: drag;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+  }
+  &-header-text {
+    text-transform: uppercase;
+    font-family: var(--titlebar-header-font);
+    font-size: var(--titlebar-header-font-size);
+    color: var(--titlebar-header-text-color);
+  }
+  &-button-container {
+    width: var(--titlebar-button-width);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    icon {
+      background-color: var(--titlebar-button-icon-color);
+    }
+    &.small {
+      width: var(--titlebar-button-small-width);
+    }
+    &.disabled {
+      pointer-events: none !important;
+      opacity: 0.3;
+    }
+    &:hover {
+      background-color: var(--titlebar-button-hover-background);
+    }
+    &.back {
+      icon.back {
+        @include size(var(--titlebar-button-back-size));
+        @include mask(var(--titlebar-icon-back));
+      }
+    }
+    &.forward {
+      icon.forward {
+        @include size(var(--titlebar-button-forward-size));
+        @include mask(var(--titlebar-icon-forward));
+      }
+    }
+    &.reload {
+      icon.reload {
+        @include size(var(--titlebar-button-reload-size));
+        @include mask(var(--titlebar-icon-reload));
+      }
+    }
+    &.minimize {
+      icon.minimize {
+        @include size(var(--titlebar-button-minimize-size));
+        @include mask(var(--titlebar-icon-minimize));
+      }
+    }
+    &.maximize {
+      icon.maximize {
+        @include size(var(--titlebar-button-maximize-size));
+        @include mask(var(--titlebar-icon-maximize));
+        @at-root [data-window-maximized] & {
+          @include mask(icon('app-restore'));
+        }
+      }
+    }
+    &.close {
+      &:hover {
+        background-color: #f04747;
+        icon.close {
+          background-color: #fff;
+        }
+      }
+      icon.close {
+        @include size(var(--titlebar-button-close-size));
+        @include mask(var(--titlebar-icon-close));
+      }
+    }
+  }
+  @at-root [vz-titlebar-type='none'] & {
+    display: none;
+  }
+}

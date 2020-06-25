@@ -18,7 +18,7 @@
   "VIZALITY_CUTIE_TIER_EASTER_DESC": "**Vizality Developers** will visit you wherever you live to **hug you**.",
   "VIZALITY_CUTIE_TIER_EASTER_PRICE": "**$1,337,420.69**",
   "VIZALITY_CUTIE_TITLE": "Support Vizality's Development",
-  "VIZALITY_GENERAL_SETTINGS": "General Settings",
+  "VIZALITY_GENERAL_SETTINGS": "Settings",
   "VIZALITY_I18N_CONTRIBUTE": "Psst! Want to help translate Vizality? Go to our [Weblate]({weblateUrl})!",
   "VIZALITY_I18N_TRANSLATED_OVERRIDES": "{overrides,number} overrides to Discord's translations",
   "VIZALITY_I18N_TRANSLATED_PERCENTAGE": "Vizality: {translated,number}% translated",

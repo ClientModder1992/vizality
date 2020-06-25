@@ -1,0 +1,7 @@
+{
+  "name": "Custom Banners",
+  "version": "0.0.1",
+  "description": "Adds Vizality's custom user profile banners and custom server banners to various parts of Discord.",
+  "author": "Baked",
+  "license": "GPL-3.0"
+}

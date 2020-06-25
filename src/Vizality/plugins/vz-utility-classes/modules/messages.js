@@ -37,7 +37,5 @@ module.exports = async () => {
     return returnValue;
   });
 
-  Message.default.displayName = 'Message';
-
   return async () => uninject('vz-utility-classes-messages');
 };

@@ -9,6 +9,9 @@
 .vz-hasNoGameIcon {
   background-image: url('https://i.imgur.com/Fa13xn9.png');
 }
+.vz-hasNoGameIcon * {
+  display: none;
+}
 
 .vz-hasNoUserAvatar {
 

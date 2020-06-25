@@ -43,17 +43,6 @@ class Themes extends Base {
   }
 
   renderBody () {
-    if (!vizality.api.labs.isExperimentEnabled('vz-module-manager-themes2')) {
-      return (
-        <div className='vizality-plugin-soon vizality-text'>
-          <div className='wumpus'>
-            <img src='/assets/8c998f8fb62016fcfb4901e424ff378b.svg' alt='wumpus'/>
-          </div>
-          <p>{Messages.VIZALITY_THEMES_WIP1}</p>
-          <p>{Messages.VIZALITY_THEMES_WIP2}</p>
-        </div>
-      );
-    }
     return super.renderBody();
   }
 

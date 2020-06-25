@@ -1,0 +1,7 @@
+{
+  "name": "Quick Delete",
+  "version": "0.0.1",
+  "description": "Adds a delete button to the message mini-popover.",
+  "author": "Baked",
+  "license": "GPL-3.0"
+}

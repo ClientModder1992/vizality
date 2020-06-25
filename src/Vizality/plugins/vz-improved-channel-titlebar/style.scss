@@ -1,0 +1,127 @@
+.title-3qD0b- {
+  padding: 0 10px;
+  height: 64px;
+  .vz-channel-sub-navigation {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    align-items: center;
+    flex-flow: row wrap;
+    .iconWrapper-2OrFZ1,
+    .icon-22AiRD,
+    .divider-3FBTu8,
+    .akaBadge-1M-1Gw,
+    .nicknames-1XK4Zt {
+      display: none;
+    }
+    .topic-TCb_qw {
+      margin: 0;
+      flex: 1 0 100%;
+    }
+    .status-1XNdyw {
+      margin: 0;
+    }
+    .title-29uC1r {
+      flex: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      @at-root [vz-route='guild'] & {
+        flex: 1 0;
+        opacity: .9;
+        font-size: 14px;
+        &::before {
+          content: '#';
+          margin-right: 1px;
+        }
+     }
+      @at-root [vz-route='dm'] & {
+        &::before {
+          content: none;
+        }
+      }
+    }
+    .spacer-3kEb8l {
+      display: none;
+    }
+    .header-2o-2hj {
+      height: auto;
+      padding: 0;
+      margin-right: 8px;
+      box-shadow: none;
+    }
+    .guildIconContainer-E1JUVt {
+      cursor: pointer;
+    }
+    .name-3YKhmS {
+      font-size: 16px;
+      line-height: 22px;
+    }
+    .button-1w5pas {
+      display: none;
+    }
+
+    .vz-channel-sub-navigation-user-activity {
+      flex: 1 0 100%;
+      font-size: 14px;
+      color: var(--interactive-normal);
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      > span {
+        + span {
+          margin-left: 4px;
+        }
+      }
+    }
+    .vz-channel-sub-navigation-user-activity-icon {
+      height: 16px;
+      width: 16px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      margin-right: 2px;
+      display: none;
+    }
+    .vz-channel-sub-navigation-user-activity-song,
+    .vz-channel-sub-navigation-user-activity-artist {
+      color: var(--interactive-hover);
+      font-weight: 700;
+    }
+    .vz-channel-sub-navigation-user-activity-pretext {
+      + .vz-channel-sub-navigation-user-activity-text {
+        font-weight: 700;
+      }
+    }
+  }
+  .vz-channel-sub-navigation-icon {
+    height: 46px;
+    width: 46px;
+    margin-right: 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  }
+}
+
+.container-2Rl01u {
+  .header-2o-2hj {
+    display: none;
+  }
+  &.hasBanner-14PPlG {
+    ~ .scrollerWrap-2lJEkd {
+      > .scroller-2FKFPG {
+        > div {
+          padding-top: 48px
+        }
+      }
+    }
+  }
+}

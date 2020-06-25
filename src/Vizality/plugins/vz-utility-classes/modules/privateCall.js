@@ -4,7 +4,6 @@ const { classNames } = require('vizality/util');
 
 module.exports = async () => {
   const CallTile = await getModule(m => m.default && m.default.displayName === 'CallTile');
-  const originalCallTile = CallTile.default;
 
   inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], returnValue) => {
     if (!props | !props.participant || !returnValue.props) return returnValue;
@@ -25,8 +24,6 @@ module.exports = async () => {
 
     return returnValue;
   });
-
-  Object.assign(CallTile.default, originalCallTile);
 
   return async () => uninject('vz-utility-classes-privateCall');
 };

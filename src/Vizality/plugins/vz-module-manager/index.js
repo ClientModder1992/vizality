@@ -24,19 +24,7 @@ module.exports = class ModuleManager extends Plugin {
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
 
     vizality.api.labs.registerExperiment({
-      id: 'vz-module-manager-themes2',
-      name: 'New themes features',
-      date: 1587857509321,
-      description: 'New Theme management UI & settings',
-      callback: () => {
-        // We're supposed to do it properly but reload > all
-        setImmediate(() => vizality.pluginManager.remount(this.entityID));
-        // And we wrap it in setImmediate to not break the labs UI
-      }
-    });
-
-    vizality.api.labs.registerExperiment({
-      id: 'vz-module-manager-store',
+      id: 'vz-store',
       name: 'Vizality Store',
       date: 1571961600000,
       description: 'Vizality Plugin and Theme store',
@@ -48,7 +36,7 @@ module.exports = class ModuleManager extends Plugin {
     });
 
     vizality.api.labs.registerExperiment({
-      id: 'vz-module-manager-deeplinks',
+      id: 'vz-deeplinks',
       name: 'Deeplinks',
       date: 1590242558077,
       description: 'Makes some vizality.com links trigger in-app navigation, as well as some potential embedding if applicable',
@@ -64,12 +52,12 @@ module.exports = class ModuleManager extends Plugin {
     this._loadQuickCSS();
     this._injectSnippets();
     this.loadStylesheet('scss/style.scss');
-    vizality.api.settings.registerSettings('vz-module-manager-plugins', {
+    vizality.api.settings.registerSettings('vz-plugins', {
       category: this.entityID,
       label: () => Messages.VIZALITY_PLUGINS,
       render: Plugins
     });
-    vizality.api.settings.registerSettings('vz-module-manager-themes', {
+    vizality.api.settings.registerSettings('vz-themes', {
       category: this.entityID,
       label: () => Messages.VIZALITY_THEMES,
       render: (props) => React.createElement(Themes, {
@@ -78,11 +66,11 @@ module.exports = class ModuleManager extends Plugin {
       })
     });
 
-    if (vizality.api.labs.isExperimentEnabled('vz-module-manager-deeplinks')) {
+    if (vizality.api.labs.isExperimentEnabled('vz-deeplinks')) {
       deeplinks();
     }
 
-    if (vizality.api.labs.isExperimentEnabled('vz-module-manager-store')) {
+    if (vizality.api.labs.isExperimentEnabled('vz-store')) {
       this._injectCommunityContent();
       vizality.api.router.registerRoute({
         path: '/store/plugins',
@@ -101,11 +89,10 @@ module.exports = class ModuleManager extends Plugin {
     document.querySelector('#vizality-quickcss').remove();
     vizality.api.router.unregisterRoute('/store/plugins');
     vizality.api.router.unregisterRoute('/store/themes');
-    vizality.api.settings.unregisterSettings('vz-module-manager-plugins');
-    vizality.api.settings.unregisterSettings('vz-module-manager-themes');
-    vizality.api.labs.unregisterExperiment('vz-module-manager-store');
-    vizality.api.labs.unregisterExperiment('vz-module-manager-themes2');
-    vizality.api.labs.unregisterExperiment('vz-module-manager-deeplinks');
+    vizality.api.settings.unregisterSettings('vz-plugins');
+    vizality.api.settings.unregisterSettings('vz-themes');
+    vizality.api.labs.unregisterExperiment('vz-store');
+    vizality.api.labs.unregisterExperiment('vz-deeplinks');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
     uninject('vz-module-manager-channelItem');
     uninject('vz-module-manager-channelProps');

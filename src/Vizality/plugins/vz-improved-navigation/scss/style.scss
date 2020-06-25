@@ -1,0 +1,313 @@
+@use '../../../library' as *;
+
+// @use 'examples';
+
+$module: (
+  'vz-main-nav': (
+    background: var('background-floating'),
+    width: 100%,
+    height: 50px,
+    box-shadow: var('elevation-medium'),
+    border-radius: 0,
+    border-color: transparent,
+    border-style: none,
+    border-width: 0,
+    'logo': (
+      icon: var('vz-logo-discord'),
+      color: #fff,
+      'hover': (
+        color: var('vz-main-nav-logo-icon-color'),
+        animation: 'vz-main-nav-logo-hover .2s forwards'
+      ),
+      'active': (
+        color: var('vz-main-nav-logo-icon-color'),
+        animation: 'vz-main-nav-logo-active .1s forwards'
+      )
+    ),
+    'icon': (
+      color: var('text-normal'),
+      'hover': (
+        color: var('vz-main-nav-link-hover-color')
+      )
+    ),
+    'link': (
+      color: var('text-normal'),
+      margin: 0,
+      padding: 0 15px,
+      font-size: 12px,
+      font-weight: 700,
+      text-transform: uppercase,
+      'hover': (
+        color: #fff,
+      ),
+      'active': (
+        color: var('vz-main-nav-link-hover-color'),
+      )
+    ),
+    'search': (
+      background: var('background-tertiary'),
+      color: var('text-normal'),
+      box-shadow: var('elevation-medium'),
+      border-radius: 4px,
+      border-color: transparent,
+      border-style: none,
+      border-width: 0,
+      'placeholder': (
+        color: var('text-muted')
+      ),
+      'focus': (
+        background: var('vz-main-nav-search-background'),
+        color: var('vz-main-nav-search-color'),
+        box-shadow: var('vz-main-nav-search-box-shadow'),
+        border-radius: var('vz-main-nav-search-border-radius'),
+        border-color: var('vz-main-nav-search-border-color'),
+        border-style: var('vz-main-nav-search-border-style'),
+        border-width: var('vz-main-nav-search-border-width'),
+      )
+    )
+  )
+);
+
+// Generating CSS variables from map . . .
+:root { @include generate-css-vars($module); }
+
+:root {
+  --vz-main-nav-user-avatar-border-radius: #{var('vz-user-border-radius')};
+}
+
+// Vizality main navigation bar
+.vizality-main-nav {
+  @include size(var('vz-main-nav-width'), var('vz-main-nav-height'));
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  // flex: 0 0 var'vz-main-nav-height');
+  background: var('vz-main-nav-background');
+  border-radius: var('vz-main-nav-border-radius');
+  border-width: var('vz-main-nav-border-width');
+  border-style: var('vz-main-nav-border-style');
+  border-color:var('vz-main-nav-border-color');
+  box-shadow:var('vz-main-nav-box-shadow');
+  z-index: 999;
+  &__section-left {
+    display: flex;
+    flex: 1 1;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  &__logo {
+    @include size(70px, var('vz-main-nav-height'));
+    @include mask(var('vz-main-nav-logo-icon'), var('vz-main-nav-logo-color'), $size: 50%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 99;
+    &:hover {
+      animation: var('vz-main-nav-logo-hover-animation');
+    }
+    &:active {
+      animation: var('vz-main-nav-logo-active-animation');
+    }
+  }
+  &__link {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 100%;
+    text-decoration: none;
+    cursor: pointer;
+    &.disabled {
+      opacity: .5;
+      pointer-events: none !important;
+    }
+    &.active {
+    
+    }
+    &:hover {
+
+    }
+    &-text {
+      margin: var('vz-main-nav-link-margin');
+      padding: var('vz-main-nav-link-padding');
+      font-size: var('vz-main-nav-link-font-size');
+      font-weight: var('vz-main-nav-link-font-weight');
+      color: var('vz-main-nav-link-color');
+      text-transform: var('vz-main-nav-link-text-transform');
+      line-height: 1.5;
+      white-space: nowrap;
+      transition: color .3s;
+    }
+    &-icon-wrapper {
+      @include size(37px, 50px);
+      display: none;
+      opacity: 0.5;
+    }
+  }
+  &__section-middle {
+    display: flex;
+    flex: 1 1;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  &__search {
+    position: relative;
+    display: flex;
+    flex-basis: 400px;
+    margin: 0 20px;
+    &-inner {
+      display: flex;
+      flex-basis: 100%;
+    }
+    &-input {
+      position: relative;
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      height: 24px;
+      padding: 5px 30px 5px 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-normal);
+      border: none;
+      background-color: var(--background-tertiary);
+      background-clip: padding-box;
+      border-radius: 4px;
+      outline: 0;
+      &::-webkit-input-placeholder {
+        color: var(--text-muted);
+      }
+    }
+    &-icon-wrapper {
+      @include size(24px);
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &__section-right {
+    display: flex;
+    flex: 1 1;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  &__inbox {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    min-width: 30px;
+    height: 100%;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  &__account-panel {
+    position: relative;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    cursor: pointer;
+    &-panel-inner {
+      position: relative;
+      display: flex;
+      flex: 1 1 0%;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes vz-main-nav-logo-hover {
+  0% {
+    transform: scale(-1, 1);
+    animation-timing-function: cubic-bezier(.34, 0, .2, 1);
+  }
+  50% {
+    transform: scale(-1.09, 1.09);
+    animation-timing-function: cubic-bezier(.67, 0, .71, 1);
+  }
+  100% {
+    transform: scale(-1.08, 1.08);
+  }
+}
+
+@keyframes vz-main-nav-logo-active {
+  0% {
+    transform: scale(1.08, 1.08);
+    animation-timing-function: cubic-bezier(.17, .11, .6, .83);
+  }
+
+  33% {
+    transform: scale(.87, .87);
+    animation-timing-function: cubic-bezier(.04, .25, .61, 1.01);
+  }
+  100% {
+    transform: scale(.85, .85);
+  }
+}
+
+// Guilds container
+.guilds-1SWlCJ {
+  // Guild create/join button
+  .tutorialContainer-SGrQ1h {
+    // Guild discovery button
+    + .listItem-2P_4kh {
+      display: none;
+    }
+  }
+  // Guild home button
+  .tutorialContainer-1v44GL {
+    display: none;
+  }
+  .listItem-2P_4kh {
+    // Guild separator
+    &.vz-isGuildSeparator {
+      display: none;
+      // Guild separator when unread DMs are present
+      @at-root div:not(.tutorialContainer-1v44GL) + & {
+        display: flex;
+      }
+    }
+  }
+  .scroller-2FKFPG {
+    padding-top: 8px;
+  }
+}
+
+.container-3baos1 {
+  @include size(100%);
+  margin: 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+  @at-root .sidebar-2K8pFh & {
+    display: none;
+  }
+}
+
+[vz-main-nav-position='top'] {
+  .sidebar-2K8pFh {
+    border-radius: 0!important;
+  }
+}

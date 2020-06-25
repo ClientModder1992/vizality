@@ -14,7 +14,11 @@ module.exports = async () => {
   inject('vz-utility-classes-tabBar', TabBar.prototype, 'render', function (originalArgs, returnValue) {
     if (!returnValue.props || !returnValue.props.children) return returnValue;
 
-    const selected = caseify('camel', this.props.selectedItem);
+    /*
+     * We check if the item starts with vz- particularly for settings sidebar items
+     * for core plugins.
+     */
+    const selected = caseify('camel', this.props.selectedItem.startsWith('vz-') ? this.props.selectedItem.replace('vz-', '') : this.props.selectedItem);
 
     returnValue.props['vz-item-selected'] = `vz-${selected}Item`;
 
@@ -23,7 +27,7 @@ module.exports = async () => {
     for (const item of tabBarItems) {
       if (!item || !item.props || !item.props.id) continue;
 
-      const itemFormatted = caseify('camel', item.props.id);
+      const itemFormatted = caseify('camel', item.props.id.startsWith('vz-') ? item.props.id.replace('vz-', '') : item.props.id);
 
       item.props.className = classNames(item.props.className, `vz-${itemFormatted}Item`);
     }

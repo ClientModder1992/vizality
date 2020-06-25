@@ -1,5 +1,5 @@
 // Shorthand for `color` CSS custom properties
-// @TODO: Needs improved to work with fallback values
+// @todo: Needs improved to work with fallback values
 
 @function color($propertyName, $alpha: null) {
   @if $alpha {
