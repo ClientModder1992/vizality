@@ -86,28 +86,9 @@ class BaseProduct extends React.PureComponent {
   }
 
   async goToDiscord (code) {
-    const inviteLocalStore = await getModule([ 'getInvite' ]);
-    const inviteRemoteStore = await getModule([ 'resolveInvite' ]);
-    const guildsStore = await getModule([ 'getGuilds' ]);
-    let invite = inviteLocalStore.getInvite(code);
-    if (!invite) {
-      // eslint-disable-next-line prefer-destructuring
-      invite = (await inviteRemoteStore.resolveInvite(code)).invite;
-    }
-
-    if (guildsStore.getGuilds()[invite.guild.id]) {
-      const channel = await getModule([ 'getLastSelectedChannelId' ]);
-      const router = await getModule([ 'transitionTo' ]);
-      // eslint-disable-next-line new-cap
-      router.transitionTo(Routes.CHANNEL(invite.guild.id, channel.getChannelId(invite.guild.id)));
-    } else {
-      const windowManager = await getModule([ 'flashFrame', 'minimize' ]);
-      const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ]);
-      const oldMinimize = windowManager.minimize;
-      windowManager.minimize = () => void 0;
-      popInvite({ args: { code } });
-      windowManager.minimize = oldMinimize;
-    }
+    const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ]);
+    inviteStore.acceptInviteAndTransitionToInviteChannel(code);
+    (await getModule([ 'popLayer' ])).popAllLayers();
   }
 }
 

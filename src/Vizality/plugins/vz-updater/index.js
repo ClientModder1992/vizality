@@ -110,7 +110,7 @@ module.exports = class Updater extends Plugin {
       if (this.settings.get('automatic', false)) {
         this.doUpdate();
       } else if (!document.querySelector('#vizality-updater, .vizality-updater')) {
-        this.sendToast('vizality-updater', {
+        vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
           icon: 'wrench',
@@ -159,7 +159,7 @@ module.exports = class Updater extends Plugin {
       this.settings.set('failed', true);
       this.settings.set('updates', failed);
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
-        this.sendToast('vizality-updater', {
+        vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
           type: 'danger',
           buttons: [ {

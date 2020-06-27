@@ -151,6 +151,7 @@ class Vizality extends Updatable {
       await sleep(1);
     }
 
+    await DiscordNative.nativeModules.ensureModule('discord_rpc');
     const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
     const { createServer } = discordRpc.RPCWebSocket.http;
     discordRpc.RPCWebSocket.http.createServer = function () {

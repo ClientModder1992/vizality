@@ -58,38 +58,22 @@ module.exports = class Notices extends Plugin {
   async _welcomeNewUser () {
     const store = await getModule([ 'getGuilds' ]);
 
-    let alreadyJoined = false;
-
-    if (store.getGuilds()[GUILD_ID]) {
-      alreadyJoined = true;
-    }
-
-    this.sendAnnouncement('vz-first-welcome', {
+    vizality.api.notices.sendAnnouncement('vz-first-welcome', {
       color: 'green',
       message: 'Welcome! Vizality has been successfully injected into your Discord client. Feel free to join our Discord server for announcements, support and more!',
       button: {
-        text: alreadyJoined ? 'Go to Server' : 'Join Server',
+        text: store.getGuilds(GUILD_ID) ? 'Go to Server' : 'Join Server',
         onClick: async () => {
-          if (alreadyJoined) {
-            const channel = await getModule([ 'getLastSelectedChannelId' ]);
-            const router = await getModule([ 'transitionTo' ]);
-            // eslint-disable-next-line new-cap
-            router.transitionTo(Routes.CHANNEL(GUILD_ID, channel.getChannelId(GUILD_ID)));
-          } else {
-            const windowManager = await getModule([ 'flashFrame', 'minimize' ]);
-            const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ]);
-            const oldMinimize = windowManager.minimize;
-            windowManager.minimize = () => void 0;
-            popInvite({ args: { code: DISCORD_INVITE } });
-            windowManager.minimize = oldMinimize;
-          }
+          const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ]);
+          inviteStore.acceptInviteAndTransitionToInviteChannel(DISCORD_INVITE);
+          (await getModule([ 'popLayer' ])).popAllLayers();
         }
       }
     });
   }
 
   _unsupportedBuild () {
-    this.sendAnnouncement('vz-unsupported-build', {
+    vizality.api.notices.sendAnnouncement('vz-unsupported-build', {
       color: 'orange',
       message: `Vizality does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Stable for best results.`
     });

@@ -27,13 +27,12 @@ class RouterAPI extends API {
    * Restores previous navigation if necessary
    */
   async restorePrevious () {
-    const oldRoute = DiscordNative.globals.appSettings.get('_VIZALITY_ROUTE');
+    const oldRoute = await DiscordNative.settings.get('_VIZALITY_ROUTE');
     if (oldRoute && this.routes.find(c => c.path === oldRoute.split('/_vizality')[1])) {
       const router = await getModule([ 'replaceWith' ]);
       router.replaceWith(oldRoute);
     }
-    DiscordNative.globals.appSettings.set('_VIZALITY_ROUTE', void 0);
-    DiscordNative.globals.appSettings.save();
+    return DiscordNative.settings.set('_VIZALITY_ROUTE', void 0);
   }
 
   /**

@@ -64,7 +64,7 @@ module.exports = class SDK extends Plugin {
                     type: 'button',
                     color: 'colorDanger',
                     name: 'Restart Discord',
-                    onClick: () => window.reloadElectronApp()
+                    onClick: () => DiscordNative.app.relaunch()
                   }
                 ] ]
               })

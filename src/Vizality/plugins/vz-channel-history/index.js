@@ -11,9 +11,7 @@ module.exports = class ChannelHistory extends Plugin {
   }
 
   async listener (ev, cmd) {
-    if (cmd !== 'browser-backward' && cmd !== 'browser-forward') {
-      return;
-    }
+    if (cmd !== 'browser-backward' && cmd !== 'browser-forward') return;
 
     if (cmd === 'browser-backward' && webContents.canGoBack()) {
       (await getModule([ 'history' ])).history.back();

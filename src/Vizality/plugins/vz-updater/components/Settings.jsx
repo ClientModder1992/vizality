@@ -11,7 +11,7 @@ const { readdirSync } = require('fs');
 const Icons = require('./Icons');
 const Update = require('./Update');
 
-module.exports = class UpdaterSettings extends React.Component {
+module.exports = class UpdaterSettings extends React.PureComponent {
   constructor () {
     super();
     this.plugin = vizality.pluginManager.get('vz-updater');
@@ -401,12 +401,13 @@ module.exports = class UpdaterSettings extends React.Component {
           <div className='row'>
             {createPathReveal('Vizality Path', vizality.basePath)}
             {createPathReveal('Discord Path', discordPath)}
-            <div className='full-column'>Experiments:&#10;{getExperimentOverrides() ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
+            <div className='full-column'>Experiments:&#10;{experimentOverrides ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
             <div className='full-column'>Labs:&#10;
               {enabledLabs.length ? enabledLabs.map(e => e.name).join(', ') : 'n/a'}
             </div>
             <div className='full-column'>
-              Plugins:&#10;{(plugins.length > 6 ? `${(this.state.pluginsRevealed ? plugins : plugins.slice(0, 6)).join(', ')};` : plugins) || 'n/a'}
+            Plugins:&#10;
+              {(plugins.length > 6 ? `${(this.state.pluginsRevealed ? plugins : plugins.slice(0, 6)).join(', ')}` : plugins.join(', ')) || 'n/a'}&nbsp;
               {plugins.length > 6 &&
               <Clickable tag='a' onClick={() => this.setState({ pluginsRevealed: !this.state.pluginsRevealed })}>
                 {this.state.pluginsRevealed ? 'Show less' : 'Show more'}

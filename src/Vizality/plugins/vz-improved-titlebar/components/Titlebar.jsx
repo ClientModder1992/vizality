@@ -1,8 +1,18 @@
 const webContents = require('electron').remote.getCurrentWebContents();
 const { React, getModule } = require('vizality/webpack');
-const { Icon} = require('vizality/components');
+const { Icon } = require('vizality/components');
+const store = require('../../../apis/settingsStore/store');
 
 module.exports = class Titlebar extends React.Component {
+  componentDidMount () {
+    this._onSettingsChange = () => this.forceUpdate();
+    store.addChangeListener(this._onSettingsChange);
+  }
+
+  componentWillMount () {
+    store.removeChangeListener(this._onSettingsChange);
+  }
+
   render () {
     const { type, headerText, showExtras } = this.props;
     return (
@@ -20,7 +30,7 @@ module.exports = class Titlebar extends React.Component {
               className={`vizality-titlebar__button-container back small ${!webContents.canGoBack() ? 'disabled' : ''}`}
               title='Back'
               onClick={() => {
-                getModule('history', false).history.back();
+                getModule([ 'history' ], false).history.back();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-left'></Icon>
@@ -30,7 +40,7 @@ module.exports = class Titlebar extends React.Component {
               className={`vizality-titlebar__button-container forward small ${!webContents.canGoForward() ? 'disabled' : ''}`}
               title='Forward'
               onClick={() => {
-                getModule('history', false).history.forward();
+                getModule([ 'history' ], false).history.forward();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-right'></Icon>

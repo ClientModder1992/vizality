@@ -1,6 +1,7 @@
 .idea
 .vscode
 /.cache
+/src/.cache/
 /.logs
 node_modules
 package-lock.json
@@ -13,6 +14,7 @@ src/Vizality/plugins/*
 src/Vizality/plugins/vz-react-dev-tools/rdt.crx
 src/Vizality/plugins/vz-react-dev-tools/react-dev-tools/*
 src/Vizality/themes/*
+# !src/Vizality/themes/twitchcord
 !src/Vizality/themes/.exists
 
 settings/*.json

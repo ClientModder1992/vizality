@@ -1,19 +1,15 @@
 {
   "name": "vizality",
-  "version": "1.0.0",
-  "description": "A lightweight @discord client mod focused on design and customizability",
+  "author": "vizality",
+  "version": "0.0.1",
+  "description": "A lightweight @discord client mod focused on design and user customizability",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext js --ext jsx src",
     "inject": "node injectors/index.js inject",
     "uninject": "node injectors/index.js uninject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vizality/vizality.git"
-  },
-  "keywords": [],
-  "author": "Baked",
+  "repository": "https://github.com/vizality/vizality.git",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/vizality/vizality/issues"

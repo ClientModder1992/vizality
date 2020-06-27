@@ -1,9 +1,11 @@
 require('../polyfills');
 
-const { remote } = require('electron');
+const { remote, ipcRenderer } = require('electron');
 const { join } = require('path');
 const { existsSync, mkdirSync, open, write } = require('fs');
 const { LOGS_FOLDER } = require('./fake_node_modules/vizality/constants');
+
+require('./ipc/renderer');
 
 // Add Vizality's modules
 require('module').Module.globalPaths.push(join(__dirname, 'fake_node_modules'));
@@ -18,7 +20,10 @@ if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin'
 }
 
 // Discord's preload
-require(remote.getGlobal('originalPreload'));
+const preload = ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
+if (preload) {
+  require(preload);
+}
 
 // Debug logging
 let debugLogs;
@@ -53,7 +58,7 @@ try {
             if (typeof part === 'string' && part.includes('%c')) { // Remove console formatting
               cleaned.push(part.replace(/%c/g, ''));
               i++;
-            } else if (part instanceof Error) { // Objects
+            } else if (part instanceof Error) { // Errors
               cleaned.push(part.message);
             } else if (typeof part === 'object') { // Objects
               cleaned.push(JSON.stringify(part));

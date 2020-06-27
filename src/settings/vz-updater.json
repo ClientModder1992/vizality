@@ -1,0 +1,14 @@
+{
+  "paused": false,
+  "failed": false,
+  "updating": false,
+  "awaiting_reload": false,
+  "disabled": false,
+  "checking": false,
+  "checking_progress": [
+    1,
+    1
+  ],
+  "updates": [],
+  "last_check": 1593294752045
+}
