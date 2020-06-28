@@ -3,7 +3,7 @@ const { writeFile, readFile } = require('fs').promises;
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { PopoutWindow, Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
-const { forceUpdateElement } = require('vizality/util');
+const { findInReactTree, forceUpdateElement } = require('vizality/util');
 const { Plugin } = require('vizality/entities');
 const { MAGIC_CHANNELS: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES } } = require('vizality/constants');
 const { join } = require('path');
@@ -144,37 +144,19 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _injectSnippets () {
-    const Message = await getModule(m => m.default && m.default.displayName === 'Message');
-    inject('vz-module-manager-snippets', Message, 'default', (args, res) => {
-      if (!res.props.children[2] || !res.props.children[2].props.children || res.props.children[2].props.children.type.__vizality_modm === 'owo') {
-        return res;
-      }
+    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover');
+    inject('vz-module-manager-snippets', MiniPopover, 'default', (originalArgs, returnValue) => {
+      const props = findInReactTree(returnValue, r => r && r.canReact && r.message);
 
-      res.props.children[2].props.children.type.__vizality_modm = 'owo';
-      const renderer = res.props.children[2].props.children.type.type;
-      res.props.children[2].props.children.type.type = (props) => {
-        const res = renderer(props);
-        const actions = res && res.props.children && res.props.children.props.children && res.props.children.props.children[1];
-        if (actions) {
-          const renderer = actions.type;
-          actions.type = (props) => {
-            const res = renderer(props);
-            if (props.channel.id === CSS_SNIPPETS && (/```(?:(?:s?css)|(?:styl(?:us)?)|less)/i).test(props.message.content)) {
-              res.props.children.unshift(
-                React.createElement(SnippetButton, {
-                  message: props.message,
-                  main: this
-                })
-              );
-            }
-            return res;
-          };
-        }
-        return res;
-      };
-      return res;
+      if (!props || props.channel.id !== CSS_SNIPPETS) return returnValue;
+
+      returnValue.props.children.unshift(
+        React.createElement(SnippetButton, {
+          message: props.message,
+          main: this
+        })
+      );
     });
-    Message.default.displayName = 'Message';
   }
 
   async _applySnippet (message) {

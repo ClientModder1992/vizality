@@ -1,9 +1,6 @@
 // Perform checks
 require('./env_check')();
 
-// And then do stuff
-require('../polyfills');
-
 const { writeFile } = require('fs').promises;
 const { resolve } = require('path');
 const main = require('./main.js');

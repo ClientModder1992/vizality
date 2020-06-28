@@ -1,10 +1,10 @@
-/* eslint-disable prefer-destructuring */
 const { Plugin } = require('vizality/entities');
-const { React, getModuleByDisplayName } = require('vizality/webpack');
 const { inject, uninject } = require('vizality/injector');
+const { React, getModuleByDisplayName } = require('vizality/webpack');
+const { classNames } = require('vizality/util');
 const { Tooltip } = require('vizality/components');
 
-module.exports = class ChannelMembersActivityIcons extends Plugin {
+module.exports = class MembersActivityIcons extends Plugin {
   startPlugin () {
     this.loadStylesheet('style.scss');
 
@@ -13,22 +13,14 @@ module.exports = class ChannelMembersActivityIcons extends Plugin {
 
   async _injectActivityIcons () {
     const MemberListItem = await getModuleByDisplayName('MemberListItem');
-    inject('channelMembersActivityIcons-members', MemberListItem.prototype, 'render', (_, res) => {
-      if (!res ||
-          !res.props ||
-          !res.props.subText ||
-          !res.props.subText.props ||
-          !res.props.subText.props.activities.length
-      ) {
-        return res;
-      }
+    inject('vz-members-activity-icons', MemberListItem.prototype, 'render', (originalArgs, returnValue) => {
+      const { activities } = returnValue.props.subText.props;
 
-      for (const activity of res.props.subText.props.activities) {
-        if (activity.application_id &&
-            activity.assets &&
-            activity.assets.small_image
-        ) {
-          res.props.children =
+      if (!activities) return returnValue;
+
+      for (const activity of activities) {
+        if (activity.application_id && activity.assets && activity.assets.small_image) {
+          returnValue.props.children =
             React.createElement(Tooltip, {
               text: activity.name,
               position: 'left'
@@ -39,13 +31,13 @@ module.exports = class ChannelMembersActivityIcons extends Plugin {
               }
             ));
 
-          res.props.className += ' vz-hasActivityIcon';
+          returnValue.props.className = classNames(returnValue.props.className, 'vz-hasActivityIcon');
 
-          return res;
+          return returnValue;
         }
 
         if (activity.type && activity.type === 2) {
-          res.props.children =
+          returnValue.props.children =
             React.createElement(Tooltip, {
               text: 'Spotify',
               position: 'left'
@@ -56,17 +48,17 @@ module.exports = class ChannelMembersActivityIcons extends Plugin {
               }
             ));
 
-          res.props.className += ' vz-hasActivityIcon';
+          returnValue.props.className = classNames(returnValue.props.className, 'vz-hasActivityIcon');
 
-          return res;
+          return returnValue;
         }
       }
 
-      return res;
+      return returnValue;
     });
   }
 
   pluginWillUnload () {
-    uninject('channelMembersActivityIcons-members');
+    uninject('vz-members-activity-icons');
   }
 };

@@ -1,5 +1,3 @@
-require('../polyfills');
-
 const { remote, ipcRenderer } = require('electron');
 const { join } = require('path');
 const { existsSync, mkdirSync, open, write } = require('fs');

@@ -13,14 +13,14 @@ $module: (
     border-style: none,
     border-width: 0,
     'logo': (
-      icon: var('vz-logo-discord'),
+      image: logo('discord'),
       color: #fff,
       'hover': (
-        color: var('vz-main-nav-logo-icon-color'),
+        color: var('vz-main-nav-logo-image-color'),
         animation: 'vz-main-nav-logo-hover .2s forwards'
       ),
       'active': (
-        color: var('vz-main-nav-logo-icon-color'),
+        color: var('vz-main-nav-logo-image-color'),
         animation: 'vz-main-nav-logo-active .1s forwards'
       )
     ),
@@ -100,7 +100,7 @@ $module: (
   }
   &__logo {
     @include size(70px, var('vz-main-nav-height'));
-    @include mask(var('vz-main-nav-logo-icon'), var('vz-main-nav-logo-color'), $size: 50%);
+    @include mask(var('vz-main-nav-logo-image'), var('vz-main-nav-logo-color'), $size: 50%);
     position: relative;
     display: flex;
     align-items: center;
