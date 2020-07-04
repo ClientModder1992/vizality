@@ -15,7 +15,7 @@ module.exports = class Settings extends Plugin {
   startPlugin () {
     this.loadStylesheet('scss/style.scss');
 
-    vizality.api.settings.registerSettings('vz-general', {
+    vizality.api.settings.registerSettings('Settings', {
       category: 'vz-general',
       label: () => Messages.VIZALITY_GENERAL_SETTINGS,
       render: GeneralSettings
@@ -31,7 +31,7 @@ module.exports = class Settings extends Plugin {
   }
 
   async pluginWillUnload () {
-    vizality.api.settings.unregisterSettings('vz-general');
+    vizality.api.settings.unregisterSettings('Settings');
     uninject('vz-settings-items');
     uninject('vz-settings-actions');
     uninject('vz-settings-errorHandler');

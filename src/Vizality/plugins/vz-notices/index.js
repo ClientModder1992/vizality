@@ -5,7 +5,7 @@ const { Plugin } = require('vizality/entities');
 const { React, getModule, getModuleByDisplayName, constants: { Routes } } = require('vizality/webpack');
 const { forceUpdateElement, getOwnerInstance, waitFor } = require('vizality/util');
 const { inject, uninject } = require('vizality/injector');
-const { GUILD_ID, DISCORD_INVITE } = require('vizality/constants');
+const { GUILD_ID, INVITE_CODE } = require('vizality/constants');
 
 const ToastContainer = require('./components/ToastContainer');
 const AnnouncementContainer = require('./components/AnnouncementContainer');
@@ -65,7 +65,7 @@ module.exports = class Notices extends Plugin {
         text: store.getGuilds(GUILD_ID) ? 'Go to Server' : 'Join Server',
         onClick: async () => {
           const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ]);
-          inviteStore.acceptInviteAndTransitionToInviteChannel(DISCORD_INVITE);
+          inviteStore.acceptInviteAndTransitionToInviteChannel(INVITE_CODE);
           (await getModule([ 'popLayer' ])).popAllLayers();
         }
       }

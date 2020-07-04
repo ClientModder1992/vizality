@@ -100,8 +100,6 @@
     "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Experimentala Webbplattform funktioner",
     "VIZALITY_SETTINGS_TRANSPARENT_DESC": "Gör alla fönster öppnat av Discord genomskinligt, användbart för att göra teman.\n****VARNING:**** Detta kommer att göra så att **fönsterknäppning** slutar fungera på Windows. **Maskinvaruacceleration** måste vara avstängt på Linux. Du kan stöta på problem och ha svart bakgrund i vissa fall, till exempel när fönstret är avklippt på toppen eller botten på grund av skärmupplösning eller när devtools är öppna och dockade. **Kräver omstart**.",
     "VIZALITY_SETTINGS_TRANSPARENT": "Genomskinligt Fönster",
-    "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Förhindrar Discord från att ta bort din token från localStorage, minska antalet oönskade utloggningar.",
-    "VIZALITY_SETTINGS_KEEP_TOKEN": "Förvara token",
     "VIZALITY_SETTINGS_ADVANCED_DESC": "Ändra ingenting här om du inte vet vad du gör. Oväntade saker kan hända med din katt.",
     "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Byter ut [Clyde]({discordiaURL}) i Vizality kommandon med ett blandat antal avatarer och användarnamn som valts av plugin-utvecklare. Kommer visa \"Vizality\" om inte innstält av plugin-utvecklaren.",
     "VIZALITY_SETTINGS_NO_CLYDE": "Utrota Clyde",

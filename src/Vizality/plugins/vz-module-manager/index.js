@@ -52,12 +52,12 @@ module.exports = class ModuleManager extends Plugin {
     this._loadQuickCSS();
     this._injectSnippets();
     this.loadStylesheet('scss/style.scss');
-    vizality.api.settings.registerSettings('vz-plugins', {
+    vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
       label: () => Messages.VIZALITY_PLUGINS,
       render: Plugins
     });
-    vizality.api.settings.registerSettings('vz-themes', {
+    vizality.api.settings.registerSettings('Themes', {
       category: this.entityID,
       label: () => Messages.VIZALITY_THEMES,
       render: (props) => React.createElement(Themes, {
@@ -89,8 +89,8 @@ module.exports = class ModuleManager extends Plugin {
     document.querySelector('#vizality-quickcss').remove();
     vizality.api.router.unregisterRoute('/store/plugins');
     vizality.api.router.unregisterRoute('/store/themes');
-    vizality.api.settings.unregisterSettings('vz-plugins');
-    vizality.api.settings.unregisterSettings('vz-themes');
+    vizality.api.settings.unregisterSettings('Plugins');
+    vizality.api.settings.unregisterSettings('Themes');
     vizality.api.labs.unregisterExperiment('vz-store');
     vizality.api.labs.unregisterExperiment('vz-deeplinks');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
@@ -101,17 +101,17 @@ module.exports = class ModuleManager extends Plugin {
 
   async _injectCommunityContent () {
     const permissionsModule = await getModule([ 'can' ]);
-    inject('vz-module-manager-channelItem', permissionsModule, 'can', (args, res) => {
-      const id = args[1].channelId || args[1].id;
+    inject('vz-module-manager-channelItem', permissionsModule, 'can', (originalArgs, returnValue) => {
+      const id = originalArgs[1].channelId || originalArgs[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
-        return args[0] === Permissions.VIEW_CHANNEL;
+        return originalArgs[0] === Permissions.VIEW_CHANNEL;
       }
-      return res;
+      return returnValue;
     });
 
     const { transitionTo } = await getModule([ 'transitionTo' ]);
     const ChannelItem = await getModuleByDisplayName('ChannelItem');
-    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (args, res) {
+    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (originalArgs, returnValue) {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,
@@ -126,17 +126,17 @@ module.exports = class ModuleManager extends Plugin {
       };
 
       if (this.props.channel.id === STORE_PLUGINS || this.props.channel.id === STORE_THEMES) {
-        res.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
-        res.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
-          className: res.props.children[1].props.children[0].props.className,
+        returnValue.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
+        returnValue.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
+          className: returnValue.props.children[1].props.children[0].props.className,
           width: 24,
           height: 24
         });
-        res.props.onClick = () => transitionTo(data[this.props.channel.id].route);
-        delete res.props.onMouseDown;
-        delete res.props.onContextMenu;
+        returnValue.props.onClick = () => transitionTo(data[this.props.channel.id].route);
+        delete returnValue.props.onMouseDown;
+        delete returnValue.props.onContextMenu;
       }
-      return res;
+      return returnValue;
     });
 
     const { containerDefault } = await getModule([ 'containerDefault' ]);
@@ -156,6 +156,8 @@ module.exports = class ModuleManager extends Plugin {
           main: this
         })
       );
+
+      return returnValue;
     });
   }
 

@@ -76,8 +76,6 @@
   "VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****VAROVÁNÍ:**** Povolení tohoto nastavení ti zpřístupní funkce, které mohou být detekovány Discordem a mohou vyústit ve ****zrušení účtu****. Vizality **nezodpovídá** za to, co s touto funkcí uděláš. Nech toto vyplé, pokud si nejsi jist. Tým Vizality **nebude** poskytovat jakoukoli pomoc s jakýmkoliv experimentem.",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Experimentální funkce webové platformy",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC": "Povolí experimentální funkce webové platformy v Chromiu, které jsou ve vývoji, např. CSS \"backdrop-filter\". Protože jsou funkce ve vývoji, můžeš se kdykoli setkat s problémy a změnami API. **Vyžaduje restart**.",
-  "VIZALITY_SETTINGS_KEEP_TOKEN": "Nechat token uložený",
-  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Zabrání Discordu odstranění tvého tokenu z localStorage, což snižuje počet nevyžádaných odhlášení.",
   "VIZALITY_SETTINGS_NO_CLYDE": "Vyměnit Clyde",
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Zamění [Clyde]({discordiaUrl}) v příkazech Vizality za bohatou nabídku avatarů a uživatelských jmen vybranou vývojáři plug-inů - ve výchozím nastavení \"Vizality\".",
   "VIZALITY_SETTINGS_OVERLAY": "Nástroje pro vývojáře v překrytí",

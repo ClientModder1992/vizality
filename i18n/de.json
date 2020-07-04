@@ -76,8 +76,6 @@
   "VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WARNUNG:**** Wenn du dies aktivierst erhältst du Zugriff zu Funktionen, die von Discord erkannt werden können. Dies kann dazu führen, dass dein ****Account gelöscht wird****. Vizality ist hierbei **nicht verantwortlich** für was du tust. Wenn du dir unsicher bist, lass diese Einstellung lieber deaktiviert. Das Vizality-Team stellt auch **keinen** Support für Probleme, die im Rahmen dieser Experimenten auftreten können.",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Experimentelle Web-Plattform-Funktionen",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC": "Aktiviert Chromiums experimentelle Web-Plattform-Erweiterungen, welche noch in der Entwicklung sind. Beispiel: CSS \"backdrop-filter\". Da diese Erweiterungen noch aktiv entwickelt werden kann es zu Problemen kommen und APIs können sich zu jeder Zeit verändern. **Neustart erforderlich**.",
-  "VIZALITY_SETTINGS_KEEP_TOKEN": "Speichere deinen Discord (Anmelde) Token",
-  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Hindert Discord daran, deinen (Anmelde) Token aus dem localStorage zu löschen. Dadurch wirst du selterner ungewollt abgemeldet.",
   "VIZALITY_SETTINGS_NO_CLYDE": "Clyde auslöschen",
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Ersetzt [Clyde]({discordiaUrl}) in Vizality Befehlen mit einer Variation an Avataren und Nutzernamen, welche von Plugin-Entwicklern angegeben werden können - fällt standardmäßig auf \"Vizality\" zurück.",
   "VIZALITY_SETTINGS_OVERLAY": "Overlay DevTools",

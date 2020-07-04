@@ -1,7 +1,6 @@
 const { join } = require('path');
 const { BrowserWindow } = require('electron');
 
-
 let settings = {};
 let transparency = false;
 let ewp = false;
@@ -19,16 +18,16 @@ class PatchedBrowserWindow extends BrowserWindow {
       // General purpose popouts used by Discord
     } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
       // Splash Screen
-      opts.webPreferences.preload = join(__dirname, '../preloadSplash.js');
+      opts.webPreferences.preload = join(__dirname, '../preload/splash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       originalPreload = opts.webPreferences.preload;
-      opts.webPreferences.preload = join(__dirname, '../preload.js');
+      opts.webPreferences.preload = join(__dirname, '../preload/main.js');
       opts.webPreferences.nodeIntegration = true;
     } else if (opts.webPreferences && opts.webPreferences.preload) {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
-      opts.webPreferences.preload = join(__dirname, '../preload.js');
+      opts.webPreferences.preload = join(__dirname, '../preload/main.js');
       opts.webPreferences.nodeIntegration = true;
 
       if (transparency) {

@@ -1,0 +1,19 @@
+{
+  "getModule_array": [
+    "alpha",
+    "omega",
+    "chat",
+    "apple"
+  ],
+  "getModule_function": [
+    "m => m && m.default && m.default === 'Message'",
+    "m => m && m.default && m.default === 'GameIcon'"
+  ],
+  "getAllModules_array": [
+    "app",
+    "modal"
+  ],
+  "getAllModules_function": [
+    "m => m && m.default && m.default === 'hmm'"
+  ]
+}

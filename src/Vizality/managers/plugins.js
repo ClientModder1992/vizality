@@ -8,48 +8,6 @@ module.exports = class PluginManager {
     this.plugins = new Map();
 
     this.manifestKeys = [ 'name', 'version', 'description', 'author', 'license' ];
-
-    this.baseBadgeStyle =
-      `color: #fff;
-      border-radius: 3px;
-      text-align: center;
-      display: inline-block;
-      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-      text-transform: uppercase;
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 14px;
-      margin-right: 3px;
-      padding: 1px 4px;
-      `;
-
-    this.mainBadgeStyle =
-      `background-image: url(https://i.imgur.com/QCw3u25.png);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      padding: 2px 16px 5px 0;
-      border-radius: 5px;
-      text-align: center;
-      margin: 0 2px 1px 0;
-      display: inline-block;
-      `;
-
-    this.descriptorBadgeStyle =
-      `background: #d021a1;
-      ${this.baseBadgeStyle}
-      `;
-
-    this.warnBadgeStyle =
-      `color: #000;
-       background: #fffc00;
-       ${this.baseBadgeStyle}
-      `;
-
-    this.errorBadgeStyle =
-      `background: #ff0000;
-       ${this.baseBadgeStyle}
-      `;
   }
 
   // Getters
@@ -262,34 +220,14 @@ module.exports = class PluginManager {
   }
 
   log (...data) {
-    console.log(
-      '%c %cPlugin%c',
-      this.mainBadgeStyle,
-      this.descriptorBadgeStyle,
-      '', // clear the styles of the `data`
-      ...data
-    );
+
   }
 
   warn (...data) {
-    console.warn(
-      '%cWarning %c %cPlugin%c',
-      this.warnBadgeStyle,
-      this.mainBadgeStyle,
-      this.descriptorBadgeStyle,
-      '', // clear the styles of the `data`
-      ...data
-    );
+
   }
 
   error (...data) {
-    console.error(
-      '%cError %c %cPlugin%c',
-      this.errorBadgeStyle,
-      this.mainBadgeStyle,
-      this.descriptorBadgeStyle,
-      '', // clear the styles of the `data`
-      ...data
-    );
+    
   }
 };

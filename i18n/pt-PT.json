@@ -30,8 +30,6 @@
     "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Recursos Experimentais da Web Platform",
     "VIZALITY_SETTINGS_TRANSPARENT_DESC": "Faz com que qualquer janela aberta pelo Discord fique transparente, útil para temas.\n****AVISO:**** Isto irá quebrar \"**window snapping**\" no Windows. A **aceleração do hardware** terá de ser **desligada** no Linux. Poderás encontrar problemas e ter um fundo preto em alguns casos, como quando a janela fica cortada de fora na parte superior, ou inferior devido à resolução do teu monitor ou quando as devtools estão abertas e preparadas. **Requer reinicialização**.",
     "VIZALITY_SETTINGS_TRANSPARENT": "Janela Transparente",
-    "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Impede o Discord de remover o teu token no localStorage, reduzindo o número de logouts indesejados.",
-    "VIZALITY_SETTINGS_KEEP_TOKEN": "Manter token armazenado",
     "VIZALITY_SETTINGS_OVERLAY": "DevTools no Overlay",
     "VIZALITY_SETTINGS_ADVANCED_DESC": "Não mexas em coisas aqui se não sabes o que estás a fazer. Coisas inesperadas podem acontecer ao teu gato.",
     "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Substitui [Clyde]({discordiaUrl}) em comandos de Vizality com uma variedade de avatares e nomes selecionados por desenvolvedores de plug-ins - \"Vizality\" por definição.",

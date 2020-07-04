@@ -76,8 +76,6 @@
   "VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****ПОПЕРЕДЖЕННЯ:**** Включаючи це ви отримуєте доступ до функцій, які можуть бути виявлені Discord і можуть привести до ****видалення облікового запису****. Vizality **не відповідає** за те що ви використовуєте цю фунцию. Залиште його відключеним, якщо ви не впевнені. Команда Vizality **НЕ буде** надавати будь-яку підтримку щодо будь-якого експерименту.",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Експериментальні можливості веб-платформи",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC": "Включає експериментальні функції Chromium Web Platform, які знаходяться в розробці, такі як CSS \"backdrop-filter\". Оскільки функції знаходяться в розробці, ви можете зіткнутися з проблемами, і API можуть змінитися в будь-який час. **Потрібне перезавантаження**.",
-  "VIZALITY_SETTINGS_KEEP_TOKEN": "Зберігати токен",
-  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Запобігає Discord від видалення вашого токена з localStorage, зменшуючи кількість небажаних виходів.",
   "VIZALITY_SETTINGS_NO_CLYDE": "Замінити Clyde",
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Замінює [Clyde] ({discordiaUrl}) в командах Vizality.",
   "VIZALITY_SETTINGS_OVERLAY": "Інструменти розробника для накладення",

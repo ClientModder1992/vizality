@@ -1,11 +1,11 @@
-@use '../../../../library' as vz;
+@use '../../../../sasslib' as vz;
 
 $color: #fff !default;
 
-@use 'discord' as discord with ( $fill: $color );
-@use 'spotify' as spotify with ( $fill: $color );
-@use 'twitter' as twitter with ( $fill: $color );
-@use 'xbox' as xbox with ( $fill: $color );
+@use 'discord' as discord with ($fill: $color);
+@use 'spotify' as spotify with ($fill: $color);
+@use 'twitter' as twitter with ($fill: $color);
+@use 'xbox' as xbox with ($fill: $color);
 
 $module: (
   vz-logo: (

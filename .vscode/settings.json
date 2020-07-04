@@ -1,0 +1,71 @@
+{
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "todo-tree.tree.showScanModeButton": false,
+    "todo-tree.regex.regex" : "((//|#|<!--|;|\\*)\\s*($TAGS)|^\\s*- \\[ \\])",
+    "todo-tree.general.tags": [
+        "@bug",
+        "@deprecated",
+        "@hack",
+        "@i18n",
+        "@note",
+        "@powercord",
+        "@todo",
+        "@warning"
+    ],
+    "todo-tree.highlights.defaultHighlight": {
+        "gutterIcon": true
+    },
+    "todo-tree.highlights.customHighlight": {
+        "@bug": {
+            "icon": "bug",
+            "foreground": "#daaa4e",
+            "background": "#daaa4e",
+            "opacity": 0
+        },
+        "@deprecated": {
+            "icon": "hubot",
+            "foreground": "#dad24e",
+            "background": "#dad24e",
+            "opacity": 0
+        },
+        "@hack": {
+            "icon": "beaker",
+            "foreground": "#4ea4da",
+            "background": "#4ea4da",
+            "opacity": 0
+        },
+        "@i18n": {
+            "icon": "globe",
+            "foreground": "#46d6af",
+            "background": "#46d6af",
+            "opacity": 0
+        },
+        "@note": {
+            "icon": "pencil",
+            "foreground": "#a868f7",
+            "background": "#a868f7",
+            "opacity": 0
+        },
+        "@powercord": {
+            "icon": "zap",
+            "foreground": "#ec0ddf",
+            "background": "#ec0ddf",
+            "opacity": 0
+        },
+        "@todo": {
+            "icon": "checklist",
+            "foreground": "#89da4e",
+            "background": "#89da4e",
+            "opacity": 0
+        },
+        "@warning": {
+            "icon": "alert",
+            "foreground": "#da4e4e",
+            "background": "#da4e4e",
+            "opacity": 0
+        }
+    }
+}

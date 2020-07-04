@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "vizality/*": [ "./fake_node_modules/vizality/*" ]
+      "vizality/*": [ "./Vizality/vizality_modules/*" ]
     }
   }
 }

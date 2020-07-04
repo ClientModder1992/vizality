@@ -6,7 +6,7 @@ module.exports = async () => {
   const Message  = await getModule(m => m.default && m.default.displayName === 'Message');
   const guildModule = await getModule([ 'getGuild' ]);
   const memberModule = await getModule([ 'getMember' ]);
-  const userId = (await getModule([ 'getId' ])).getId();
+  const currentUserId = (await getModule([ 'getId' ])).getId();
 
   inject('vz-utility-classes-messages', Message, 'default', (originalArgs, returnValue) => {
     const msg = findInReactTree(returnValue, n => n.message);
@@ -26,7 +26,7 @@ module.exports = async () => {
     returnValue.props.className = classNames(
       returnValue.props.className, {
         'vz-isBotUser': message.author.bot,
-        'vz-isCurrentUser': (message.author.id === userId && message.type === 0),
+        'vz-isCurrentUser': (message.author.id === currentUserId && message.type === 0),
         'vz-isGuildOwner': (channel && channel.guild_id && message.author.id === guildModule.getGuild(channel.guild_id) && message.type === 0),
         'vz-isGuildMember': (channel && channel.guild_id && memberModule.getMember(channel.guild_id, message.author.id) && message.type === 0),
         'vz-hasAttachments': message.attachments.length,

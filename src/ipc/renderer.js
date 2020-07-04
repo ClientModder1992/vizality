@@ -7,27 +7,49 @@ if (!ipcRenderer) {
 }
 
 global.VizalityNative = {
-  openBrowserWindow (opts) {
-    throw new Error('Not implemented');
-  },
-
-  installExtension () { // tbd
-    throw new Error('Not implemented');
-  },
-
   /**
    * Open DevTools for the current window
    * @param {object} opts Options to pass to Electron
    * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not.
    */
   openDevTools (opts, externalWindow) {
-    throw new Error('Not implemented');
+    return ipcRenderer.invoke('VIZALITY_OPEN_DEVTOOLS', opts, externalWindow);
   },
 
   /**
    * Closes DevTools for the current window
    */
   closeDevTools () {
+    return ipcRenderer.invoke('VIZALITY_CLOSE_DEVTOOLS');
+  },
+
+  /**
+   * Installs a chrome extension
+   * @param {string} extPath Path to the extension
+   * @returns {Promise<string>} Extension ID, to be used with uninstallExtension.
+   */
+  installExtension (extPath) { // tbd
+    return ipcRenderer.invoke('VIZALITY_INSTALL_EXTENSION', extPath);
+  },
+
+  /**
+   * Uninstalls an extension
+   * @param {string} extId Extension ID
+   * @returns {Promise<void>}
+   */
+  uninstallExtension (extId) { // tbd
+    return ipcRenderer.invoke('VIZALITY_UNINSTALL_EXTENSION', extId);
+  },
+
+  /**
+   * Clears Chromium's cache
+   * @returns {Promise<void>}
+   */
+  clearCache () {
+    return ipcRenderer.invoke('VIZALITY_CACHE_CLEAR');
+  },
+
+  openBrowserWindow (opts) {
     throw new Error('Not implemented');
   }
 };

@@ -1,6 +1,6 @@
-const { join } = require('path');
+const { join, dirname } = require('path');
 const { format: formatUrl } = require('url');
-const { remote: { BrowserWindow, app: remoteApp } } = require('electron');
+const { remote: { BrowserWindow } } = require('electron');
 const { React } = require('vizality/webpack');
 const { Flex, Button } = require('vizality/components');
 
@@ -82,7 +82,7 @@ class SplashScreen extends React.PureComponent {
   }
 
   openSplashScreen (keepState) {
-    const baseAsar = remoteApp.getAppPath();
+    const baseAsar = dirname(module.paths[0]);
     const splashIndex = formatUrl({
       protocol: 'file',
       slashes: true,
@@ -101,11 +101,12 @@ class SplashScreen extends React.PureComponent {
       center: true,
       show: true,
       webPreferences: {
-        preload: join(__dirname, '../../../../preloadSplash.js'),
+        preload: join(__dirname, '../../../../preload/splash.js'),
         nodeIntegration: true
       }
     };
 
+    // this._window = PowercordNative.openBrowserWindow(windowSettings);
     this._window = new BrowserWindow(windowSettings);
     this._window.loadURL(splashIndex);
     this._window.webContents.openDevTools({ mode: 'detach' });

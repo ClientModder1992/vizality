@@ -55,7 +55,7 @@ module.exports = class Translate extends Plugin {
     const _this = this;
 
     /*
-     * const HeaderIcon = require('./components/HeaderIcon.jsx');
+     * const HeaderIcon = require('./components/HeaderIcon');
      * const HeaderBarContainer = await getModuleByDisplayName('HeaderBarContainer');
      * inject('vz-translate-icon', HeaderBarContainer.prototype, 'renderLoggedIn', function (_, res) {
      *  if (this.props.toolbar && !this.props.toolbar.props) {
@@ -194,7 +194,7 @@ module.exports = class Translate extends Plugin {
 
         textAreaButtons.insertBefore(buttonContainer, textAreaButtons.firstChild);
 
-        const ResetButton = require('./components/ResetButton.jsx');
+        const ResetButton = require('./components/ResetButton');
         ReactDOM.render(React.createElement(ResetButton, {
           onClick: () => {
             (uploadModal !== null ? uploadModal : textArea).setState({

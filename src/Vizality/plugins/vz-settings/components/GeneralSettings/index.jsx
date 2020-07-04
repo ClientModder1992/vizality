@@ -1,4 +1,3 @@
-const { remote } = require('electron');
 const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
 const { Icons: { FontAwesome } } = require('vizality/components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
@@ -61,14 +60,6 @@ module.exports = class GeneralSettings extends React.Component {
             >
               {Messages.VIZALITY_SETTINGS_OVERLAY}
             </SwitchItem>}
-          {/* @todo: remove this and associated things like strings */}
-          {/* <SwitchItem
-            note={Messages.VIZALITY_SETTINGS_KEEP_TOKEN_DESC}
-            value={getSetting('hideToken', true)}
-            onChange={() => toggleSetting('hideToken', true)}
-          >
-            {Messages.VIZALITY_SETTINGS_KEEP_TOKEN}
-          </SwitchItem> */}
           <SwitchItem
             disabled={!!window.GlasscordApi}
             note={window.GlasscordApi
@@ -135,18 +126,20 @@ module.exports = class GeneralSettings extends React.Component {
 
   clearDiscordCache () {
     this.setState({ discordCleared: true });
-    remote.getCurrentWindow().webContents.session.clearCache(() => void 0);
-    setTimeout(() => {
-      this.setState({ discordCleared: false });
-    }, 2500);
+    VizalityNative.clearCache().then(() => {
+      setTimeout(() => {
+        this.setState({ discordCleared: false });
+      }, 2500);
+    });
   }
 
   clearVizalityCache () {
     this.setState({ vizalityCleared: true });
-    rmdirRf(CACHE_FOLDER);
-    setTimeout(() => {
-      this.setState({ vizalityCleared: false });
-    }, 2500);
+    rmdirRf(CACHE_FOLDER).then(() => {
+      setTimeout(() => {
+        this.setState({ vizalityCleared: false });
+      }, 2500);
+    });
   }
 
   askRestart () {

@@ -4,7 +4,7 @@ const { WEBSITE, REPO_URL } = require('vizality/constants');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('vizality/components');
 const { React, getModule, constants: { Routes } } = require('vizality/webpack');
-const { GUILD_ID, DISCORD_INVITE, I18N_WEBSITE } = require('vizality/constants');
+const { GUILD_ID, INVITE_CODE, I18N_WEBSITE } = require('vizality/constants');
 
 const DonateModal = require('./DonateModal');
 const Badge = require('./Badge');
@@ -26,7 +26,7 @@ const badges = {
       const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ]);
       const oldMinimize = windowManager.minimize;
       windowManager.minimize = () => void 0;
-      popInvite({ args: { code: DISCORD_INVITE } });
+      popInvite({ args: { code: INVITE_CODE } });
       windowManager.minimize = oldMinimize;
     }
   },

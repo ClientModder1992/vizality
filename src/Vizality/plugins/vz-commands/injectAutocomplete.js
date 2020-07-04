@@ -1,11 +1,9 @@
-const { webContents } = require('electron').remote.getCurrentWindow();
 const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('vizality/webpack');
 const { inject } = require('vizality/injector');
 
 const Title = require('./components/Title');
 const Command = require('./components/Command');
 
-let state;
 module.exports = async function injectAutocomplete () {
   const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete');
 
@@ -66,9 +64,7 @@ module.exports = async function injectAutocomplete () {
 
   inject('vz-commands-autocomplete', ChannelAutocomplete.prototype, 'render', function (_, res) {
     const { props: { textValue }, state: { autocompleteOptions } } = this;
-    const resultFilter = (value) => c => [ c.command, ...(c.aliases || []) ].some(commandName =>
-      commandName.includes(value)
-    );
+    const resultFilter = (value) => c => [ c.command, ...(c.aliases || []) ].some(commandName => commandName.includes(value));
 
     autocompleteOptions.VIZALITY_COMMANDS = {
       matches: (prefix, _, isAtStart) => isAtStart && prefix === vizality.api.commands.prefix,
@@ -108,10 +104,6 @@ module.exports = async function injectAutocomplete () {
         }
       },
       renderResults: (query, selected, onHover, onClick, autocompletes) => {
-        if (state) {
-          return [ null, [] ];
-        }
-
         if (autocompletes && autocompletes.commands) {
           const customHeader = Array.isArray(autocompletes.commands.__header) ? autocompletes.commands.__header : [ autocompletes.commands.__header ];
 
@@ -125,26 +117,8 @@ module.exports = async function injectAutocomplete () {
       },
       getPlainText: (index, { commands }) => {
         if (commands[index].wildcard) {
-          state = true;
-
-          setImmediate(() => {
-            webContents.sendInputEvent({
-              type: 'char',
-              keyCode: '\u000d'
-            });
-
-            state = false;
-          });
-
           return textValue.split(' ').pop();
         } else if (commands[index].instruction) {
-          setImmediate(() => {
-            webContents.sendInputEvent({
-              type: 'keyDown',
-              keyCode: 'Backspace'
-            });
-          });
-
           return '';
         }
 

@@ -71,7 +71,6 @@
     "no-empty-function": [ "warn" ],
     "no-empty-pattern": [ "warn" ],
     "no-eq-null": [ "warn" ],
-    "no-eval": [ "warn" ],
     "no-extend-native": [ "warn" ],
     "no-extra-bind": [ "warn" ],
     "no-extra-label": [ "warn" ],
@@ -119,7 +118,6 @@
     "no-shadow-restricted-names": [ "warn" ],
     "no-undef": [ "warn" ],
     "no-undef-init": [ "warn" ],
-    "no-undefined": [ "warn" ],
     "no-unused-vars": [ "warn" ],
     "no-use-before-define": [ "warn" ],
     "callback-return": [ "warn" ],
@@ -155,7 +153,6 @@
     "multiline-ternary": [ "warn", "always-multiline" ],
     "new-parens": [ "warn" ],
     "no-array-constructor": [ "warn" ],
-    "no-mixed-operators": [ "warn" ],
     "no-mixed-spaces-and-tabs": [ "warn" ],
     "no-multiple-empty-lines": [ "warn" ],
     "no-new-object": [ "warn" ],
@@ -175,7 +172,7 @@
     }],
     "padded-blocks": [ "warn", "never" ],
     "quote-props": [ "warn", "as-needed" ],
-    "quotes": [ "warn", "single" ],
+    "quotes": [ "warn", "single"/*, { "allowTemplateLiterals": true }*/ ],
     "semi": [ "warn", "always" ],
     "semi-spacing": [ "warn", {
       "before": false,
@@ -197,7 +194,6 @@
     }],
     "template-tag-spacing": [ "warn", "always" ],
     "wrap-regex": [ "warn" ],
-    "arrow-body-style": [ "warn", "as-needed" ],
     "arrow-spacing": [ "warn", {
       "before": true,
       "after": true

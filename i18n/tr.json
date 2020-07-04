@@ -76,8 +76,6 @@
   "VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****DİKKAT:**** Bunu etkinleştirdiğinizde Discord tarafından algılanabilen ve ****hesabının sonlandırılması**** ile sonuçlanabilecek özelliklere erişebilirsiniz. Vizality bu özelliklerle yaptıklarınızdan **sorumlu değildir**. Emin değilseniz devre dışı bırakın. Vizality Ekibi herhangi bir deneyle ilgili herhangi bir destek **vermeyecektir**.",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Deneysel Web Platformu özellikleri",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC": "Chromium'un geliştirilmekte olan deneysel Web Platformu özelliklerini aktif hale getirir, \"backdrop-filter\" gibi. Özellikler geliştirilmekte olduğundan, sorunlarla karşılaşabilirsiniz ve API'ler her zaman değişebilir. **Yeniden başlatma gerektirir**.",
-  "VIZALITY_SETTINGS_KEEP_TOKEN": "Token'i saklı tut",
-  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Discord'un token'inizi localStorage'dan kaldırmasını engeller, istenmeyen çıkışların sayısını azaltır.",
   "VIZALITY_SETTINGS_NO_CLYDE": "Clyde'i Ortadan Kaldır",
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "[Clyde'i]({discordiaUrl}) eklenti geliştiricilerinin şeçtiği avatar ve isimlerle değiştirir - varsayılan olarak \"Vizality\" seçeneğine geri döner.",
   "VIZALITY_SETTINGS_OVERLAY": "Overlay DevTools",

@@ -1,7 +1,8 @@
 const Webpack = require('vizality/webpack');
-const { sleep } = require('vizality/util');
+const { sleep, logger } = require('vizality/util');
 const { WEBSITE_IMAGES } = require('vizality/constants');
 const { Updatable } = require('vizality/entities');
+const { inject, uninject } = require('vizality/injector');
 
 const { join } = require('path');
 const { promisify } = require('util');
@@ -11,6 +12,7 @@ const exec = promisify(cp.exec);
 const PluginManager = require('./managers/plugins');
 const StyleManager = require('./managers/styles');
 const APIManager = require('./managers/apis');
+const coremods = require('./coremods');
 const modules = require('./modules');
 
 const currentWebContents = require('electron').remote.getCurrentWebContents();
@@ -85,13 +87,6 @@ class Vizality extends Updatable {
     await this.startup();
     this.gitInfos = await this.pluginManager.get('vz-updater').getGitInfos();
 
-    // Token manipulation stuff
-    if (this.settings.get('hideToken', true)) {
-      const tokenModule = await require('vizality/webpack').getModule([ 'hideToken' ]);
-      tokenModule.hideToken = () => void 0;
-      setImmediate(() => tokenModule.showToken()); // just to be sure
-    }
-
     this.emit('loaded');
   }
 
@@ -114,9 +109,32 @@ class Vizality extends Updatable {
     this.styleManager.loadThemes();
 
     // Plugins
+    await coremods.load();
     await this.pluginManager.startPlugins();
 
     this.initialized = true;
+
+    const Log = await Webpack.getModuleByPrototypes([ '_log' ]);
+
+    const insteadObj = {};
+    function _logInstead (module, orig, replace) {
+      insteadObj[orig] = insteadObj[orig] || module[orig];
+      module[orig] = replace;
+    }
+
+    _logInstead(Log.prototype, '_log', function (...originalArgs) {
+      if (originalArgs[0] === 'info' || originalArgs[0] === 'log') {
+        logger.log('Discord', this.name, null, originalArgs[1]);
+      }
+
+      if (originalArgs[0] === 'error' || originalArgs[0] === 'trace') {
+        logger.error('Discord', this.name, null, originalArgs[1]);
+      }
+
+      if (originalArgs[0] === 'warn') {
+        logger.warn('Discord', this.name, null, originalArgs[1]);
+      }
+    });
 
     const navigate = require('vizality/navigate');
 
@@ -133,8 +151,18 @@ class Vizality extends Updatable {
   // Vizality shutdown
   async shutdown () {
     this.initialized = false;
+
+    function _logInsteadUndo (module, orig) {
+      console.log('this.insteadObj', this.insteadObj);
+      module[orig] = this.insteadObj[orig];
+    }
+
+    console.log('Log.prototype', this.Log.prototype);
+    _logInsteadUndo(this.Log.prototype, '_log');
+
     // Plugins
     await this.pluginManager.shutdownPlugins();
+    await coremods.unload();
 
     // Style Manager
     this.styleManager.unloadThemes();

@@ -8,7 +8,7 @@ const { promisify } = require('util');
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 
-const Settings = require('./components/Settings.jsx');
+const Settings = require('./components/Settings');
 
 const changelog = require('../../../../changelogs.json');
 
@@ -26,7 +26,7 @@ module.exports = class Updater extends Plugin {
     this.settings.set('updating', false);
     this.settings.set('awaiting_reload', false);
     this.loadStylesheet('style.scss');
-    vizality.api.settings.registerSettings('vz-updater', {
+    vizality.api.settings.registerSettings('Updater', {
       category: this.entityID,
       label: 'Updater', // Note to self: add this string to i18n last :^)
       render: Settings
@@ -48,7 +48,7 @@ module.exports = class Updater extends Plugin {
   }
 
   pluginWillUnload () {
-    vizality.api.settings.unregisterSettings('vz-updater');
+    vizality.api.settings.unregisterSettings('Updater');
     clearInterval(this._interval);
   }
 

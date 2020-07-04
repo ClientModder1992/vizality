@@ -76,8 +76,6 @@
   "VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****UWAGA:**** Włączenie tego daje dostęp do funkcji wykrywanych przez Discorda i może skutkować ****usunięciem konta****. Vizality **nie ponosi odpowiedzialności** za to, co zrobisz z tą funkcją. Pozostaw to wyłączone, jeśli nie masz pewności że tego potrzebujesz. Zespół Vizalitya **nie** zapewni żadnego wsparcia dotyczącego jakiegokolwiek eksperymentu.",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM": "Eksperymentalne funkcje Chromium",
   "VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC": "Włącza eksperymentalne funkcje Chromium, które są w fazie rozwoju, takie jak \"backdrop-fliter\" w CSS. Ponieważ te funkcje są w fazie rozwoju, mogą występować problemy, a interfejsy API mogą ulec zmianie w dowolnym momencie. **Wymaga ponownego uruchomienia Discorda**.",
-  "VIZALITY_SETTINGS_KEEP_TOKEN": "Zatrzymaj token w pamięci",
-  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Zapobiega usuwaniu tokena przez Discorda z localStorage, zmniejszając liczbę niechcianych wylogowań.",
   "VIZALITY_SETTINGS_NO_CLYDE": "Zastąp Clyde",
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Zamienia [Clyde]({discordiaUrl}) w komendach Vizalitya z mieszanym zakresem awatarów i nazw użytkowników wybranych przez twórców pluginów - domyślnie jest to \"Vizality\".",
   "VIZALITY_SETTINGS_OVERLAY": "Narzędzia deweloperskie nakładki",

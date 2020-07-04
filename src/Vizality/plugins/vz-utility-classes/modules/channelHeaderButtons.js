@@ -1,10 +1,12 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule, i18n } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, forceUpdateElement, caseify, classNames } = require('vizality/util');
+const { getOwnerInstance, waitFor, forceUpdateElement, string, classNames } = require('vizality/util');
 
 module.exports = async () => {
   const channelHeaderButtonClasses = await getModule([ 'iconWrapper', 'toolbar' ]);
   const instance = getOwnerInstance(await waitFor(`.${channelHeaderButtonClasses.iconWrapper}`));
+
+  if (!instance) return;
 
   inject('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (originalArgs, returnValue) => {
     if (!returnValue.props.className) return returnValue;
@@ -13,7 +15,7 @@ module.exports = async () => {
     if (classes.includes(channelHeaderButtonClasses.iconWrapper)) {
       if (returnValue.props['aria-label']) {
         const key = Object.keys(i18n._proxyContext.messages).find(key => i18n._proxyContext.messages[key] === returnValue.props['aria-label']);
-        console.log(key);
+        // console.log(key);
         if (!key) return returnValue;
 
         if (key === 'PINNED_MESSAGES') {
@@ -35,7 +37,8 @@ module.exports = async () => {
          *   return returnValue;
          * }
          */
-        returnValue.props.className = classNames(returnValue.props.className, `vz-${caseify('camel', key)}Button`);
+        returnValue.props.className = classNames(returnValue.props.className, `vz-${string.camelCase(key)}Button`);
+        console.log(string.camelCase(key));
       }
     }
 
