@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { findInReactTree, classNames, forceUpdateElement } = require('vizality/util');
+const { findInReactTree, joinClassNames, forceUpdateElement } = require('vizality/util');
 
 module.exports = async () => {
   return () => void 0;
@@ -16,9 +16,11 @@ module.exports = async () => {
 
     // const keys = [ 'friends', 'library', 'nitro' ];
 
-    // if (keys.includes(test.key)) {
-    //   console.log('hmm');
-    // }
+    /*
+     * if (keys.includes(test.key)) {
+     *   console.log('hmm');
+     * }
+     */
 
     console.log(originalArgs);
     console.log(returnValue);
@@ -28,14 +30,20 @@ module.exports = async () => {
 
   setImmediate(() => forceUpdateElement('.scroller-2FKFPG'));
 
-  // return async () => uninject('vz-improved-navigation-dmChannels');
-  // const ConnectedPrivateChannelsList  = await getModule(m => m.default && m.default.displayName === 'ConnectedPrivateChannelsList');
+  /*
+   * return async () => uninject('vz-improved-navigation-dmChannels');
+   * const ConnectedPrivateChannelsList  = await getModule(m => m.default && m.default.displayName === 'ConnectedPrivateChannelsList');
+   */
 
-  // inject('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (originalArgs, returnValue) => {
-  //   console.log(returnValue);
+  /*
+   * inject('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (originalArgs, returnValue) => {
+   *   console.log(returnValue);
+   */
 
-  //   return returnValue;
-  // });
+  /*
+   *   return returnValue;
+   * });
+   */
 
   return async () => uninject('vz-improved-navigation-dmChannels');
 };

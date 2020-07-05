@@ -1,4 +1,4 @@
-module.exports = (name, props) => {
+const createElement = (name, props) => {
   const element = document.createElement(name);
 
   for (const prop in props) {
@@ -11,3 +11,5 @@ module.exports = (name, props) => {
 
   return element;
 };
+
+module.exports = createElement;

@@ -9,36 +9,51 @@ const color = require('../color');
  * @param {any|Array<any>} message - Messages to have logged.
  * @param {module:logger.logTypes} type - Type of log to use in console.
  */
-module.exports = (module, submodule, submoduleColor, message, logType = 'log') => {
+const _log = (module, submodule, submoduleColor, message, logType) => {
   logType = _parseType(logType);
   if (!Array.isArray(message)) message = [ message ];
 
   const BADGE_COLORS = {
     API: {
-      module: '#8a50cc',
-      submodule: '#15819c'
+      module: '#dc2167',
+      submodule: '#242a85'
     },
     HTTP: {
-      module: '#3636e0',
-      submodule: '#cf3e0b'
+      module: '#ff683b',
+      submodule: '#2e89c9'
+    },
+    StyleManager: {
+      module: '#591870',
+      submodule: '#ce03e5'
+    },
+    PluginManager: {
+      module: '#1e2963',
+      submodule: '#782049'
     },
     Plugin: {
-      module: '#d021a1',
-      submodule: '#158547'
+      module: '#057b81',
+      submodule: '#5b3c89'
     },
     Theme: {
-      module: '#90b900',
-      submodule: '#6b159c'
+      module: '#e23773',
+      submodule: '#568763'
     },
     Discord: {
       module: '#7289DA',
-      submodule: '#6e5a00'
+      submodule: '#d6409a'
     },
     Module: {
-      module: '#159c81',
-      submodule: '#f21956'
+      module: '#e56e60',
+      submodule: '#34426e'
+    },
+    Injector: {
+      module: '#a70338',
+      submodule: '#0195b5'
     }
   };
+
+  const randomModuleColor = color.getRandom();
+  const randomSubmoduleColor = color.getRandom();
 
   const baseBadgeStyles =
     `border-radius: 3px;
@@ -65,13 +80,13 @@ module.exports = (module, submodule, submoduleColor, message, logType = 'log') =
 
   const moduleStyles =
     `${baseBadgeStyles}
-    color: #fff;
-    background: ${BADGE_COLORS[module].module || '#000'};`;
+    color: ${BADGE_COLORS[module] && BADGE_COLORS[module].module ? color.getContrast(BADGE_COLORS[module].module) : color.getContrast(randomModuleColor)};
+    background: ${BADGE_COLORS[module] && BADGE_COLORS[module].module || randomModuleColor};`;
 
   const submoduleStyles =
     `${baseBadgeStyles};
-    color: ${submoduleColor ? color.contrast(submoduleColor) : '#fff'};
-    background: ${submoduleColor || BADGE_COLORS[module].submodule || '#000'};`;
+    color: ${submoduleColor ? color.getContrast(submoduleColor) : BADGE_COLORS[module] && BADGE_COLORS[module].submodule ? color.getContrast(BADGE_COLORS[module].submodule) : color.getContrast(randomSubmoduleColor)};
+    background: ${submoduleColor || BADGE_COLORS[module] && BADGE_COLORS[module].submodule || randomSubmoduleColor};`;
 
   return console[logType](
     `%c %c${module}%c${submodule}%c`,
@@ -82,3 +97,5 @@ module.exports = (module, submodule, submoduleColor, message, logType = 'log') =
     ...message
   );
 };
+
+module.exports = _log;

@@ -7,6 +7,8 @@ const logger = require('../logger');
  * @param {string} submodule - Name of the calling submodule.
  * @param {...any} message - Messages to have logged.
  */
-module.exports = (module, submodule, submoduleColor, ...message) => {
+const log = (module, submodule, submoduleColor, ...message) => {
   return logger._log(module, submodule, submoduleColor, message);
 };
+
+module.exports = log;

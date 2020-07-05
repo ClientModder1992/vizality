@@ -1,5 +1,4 @@
-const { existsSync } = require('fs');
-const { readdir, lstat, unlink, rmdir } = require('fs').promises;
+const { existsSync, promises: { readdir, lstat, unlink, rmdir } } = require('fs');
 
 const rmdirRf = async (path) => {
   if (existsSync(path)) {

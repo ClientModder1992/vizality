@@ -1,0 +1,28 @@
+const { logger: { log, warn } } = require('vizality/util');
+/* const currentWebContents = require('electron').remote.getCurrentWebContents(); */
+
+const _getRoutes = require('./_getRoutes');
+
+const getCurrentRoute = () => {
+  const MODULE = 'Module';
+  const SUBMODULE = 'Discord:routes:getCurrentRoute';
+
+  const routes = _getRoutes();
+  /* const historyRoute = currentWebContents.history[currentWebContents.history.length - 2]; */
+
+  for (const location in routes) {
+    if (window.location.href.includes(routes[location])) {
+      let locationStr = window.location.href.split('/');
+      locationStr = `/${locationStr[3]}/${locationStr[4]}/`;
+      /*
+       * if (location === 'guild' && historyRoute.includes(locationStr)) {
+       *   location = 'channel';
+       * }
+       */
+      return log(MODULE, SUBMODULE, null, `The current route is '${location}'.`);
+    }
+  }
+  return warn(MODULE, SUBMODULE, null, `The current route is unknown.`);
+};
+
+module.exports = getCurrentRoute;

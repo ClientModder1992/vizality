@@ -1,6 +1,6 @@
-const { sleep } = require('vizality/util');
+const sleep = require('./sleep');
 
-module.exports = async (querySelector) => {
+const waitFor = async (querySelector) => {
   let elem;
 
   while (!(elem = document.querySelector(querySelector))) {
@@ -9,3 +9,5 @@ module.exports = async (querySelector) => {
 
   return elem;
 };
+
+module.exports = waitFor;

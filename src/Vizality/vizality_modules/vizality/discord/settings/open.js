@@ -1,14 +1,17 @@
 const { getModule } = require('vizality/webpack');
 const { logger: { warn } } = require('vizality/util');
 
-const sections = require('./sections');
+const _getSections = require('./_getSections');
 
 module.exports = (section = 'My Account') => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:settings:open';
 
+  const sections = _getSections();
+
   if (!sections.includes(section)) {
-    return warn(MODULE, SUBMODULE, null, `Section '${section}' not found. Please check 'settings.section' for a list of available sections.`);
+    warn(MODULE, SUBMODULE, null, `Section '${section}' not found. List of available user settings sections:`);
+    return console.warn(sections);
   }
 
   return getModule([ 'open', 'updateAccount' ], false).open(

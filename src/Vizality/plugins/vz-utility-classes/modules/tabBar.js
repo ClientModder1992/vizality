@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName } = require('vizality/webpack');
-const { string, classNames } = require('vizality/util');
+const { string, joinClassNames } = require('vizality/util');
 
 /*
  * Modifies The TabBar component, which is used in various places throughout
@@ -18,7 +18,7 @@ module.exports = async () => {
      * We check if the item starts with vz- particularly for settings sidebar items
      * for core plugins.
      */
-    const selected = string.camelCase(this.props.selectedItem.startsWith('vz-') ? this.props.selectedItem.replace('vz-', '') : this.props.selectedItem);
+    const selected = string.toCamelCase(this.props.selectedItem.startsWith('vz-') ? this.props.selectedItem.replace('vz-', '') : this.props.selectedItem);
 
     returnValue.props['vz-item-selected'] = `vz-${selected}Item`;
 
@@ -27,9 +27,9 @@ module.exports = async () => {
     for (const item of tabBarItems) {
       if (!item || !item.props || !item.props.id) continue;
 
-      const itemFormatted = string.camelCase(item.props.id.startsWith('vz-') ? item.props.id.replace('vz-', '') : item.props.id);
+      const itemFormatted = string.toCamelCase(item.props.id.startsWith('vz-') ? item.props.id.replace('vz-', '') : item.props.id);
 
-      item.props.className = classNames(item.props.className, `vz-${itemFormatted}Item`);
+      item.props.className = joinClassNames(item.props.className, `vz-${itemFormatted}Item`);
     }
 
     return returnValue;

@@ -1,5 +1,5 @@
 const { Flux, React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icons } = require('vizality/components');
 const ForceUI = require('./ForceUI');
 const SplashScreen = require('./SplashScreen');
@@ -35,7 +35,7 @@ class SdkWindow extends React.PureComponent {
   renderHeaderBar () {
     const { title } = getModule([ 'title', 'chatContent' ], false);
     return (
-      <HeaderBar transparent={false} className={classNames(title, 'vizality-sdk-header')}>
+      <HeaderBar transparent={false} className={joinClassNames(title, 'vizality-sdk-header')}>
         {this.renderIcon('Force UI', 'Arch', 'force-ui', 'right')}
         {this.renderIcon('Discord Splash Screen', 'Arch', 'splash-screen')}
         {this.renderIcon('SDK Settings', 'Gear', 'sdk-settings')}
@@ -52,7 +52,7 @@ class SdkWindow extends React.PureComponent {
     return (
       <Tooltip text={tooltip} position={placement}>
         <Clickable
-          className={classNames(headerBarClasses.iconWrapper, headerBarClasses.clickable)}
+          className={joinClassNames(headerBarClasses.iconWrapper, headerBarClasses.clickable)}
           onClick={async () => {
             if (!id) {
               // Consider this is the always on top thing

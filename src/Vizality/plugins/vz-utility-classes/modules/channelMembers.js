@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { forceUpdateElement, classNames } = require('vizality/util');
+const { forceUpdateElement, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const MemberListItem = await getModuleByDisplayName('MemberListItem');
@@ -12,7 +12,7 @@ module.exports = async () => {
 
     if (user.id) returnValue.props['vz-user-id'] = user.id;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isCurrentUser': user.email,
         'vz-isBotUser': user.bot,

@@ -3,7 +3,7 @@
  * @powercord: This function/module is only here to provide
  * backwards-compatability with Powercord plugins that may utilize it.
  *
- * Plugins should be using `react.findInTree` instead.
+ * Plugins should be using `Util.react.findInTree` instead.
  */
 
 /**
@@ -12,7 +12,15 @@
  * <https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js#L3302-L3336>
  */
 
-module.exports = function findInTree (tree, filter, { walkable = null, ignore = [] } = {}) {
+const logger = require('./logger');
+
+const findInTree = function findInTree (tree, filter, { walkable = null, ignore = [] } = {}) {
+  const MODULE = 'Module';
+  const SUBMODULE = 'Util:findInTree';
+  const REPLACEMENT_SUBMODULE = 'Util:react:findInTree';
+
+  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+
   if (!tree || typeof tree !== 'object') {
     return null;
   }
@@ -61,3 +69,5 @@ module.exports = function findInTree (tree, filter, { walkable = null, ignore = 
 
   return returnValue;
 };
+
+module.exports = findInTree;

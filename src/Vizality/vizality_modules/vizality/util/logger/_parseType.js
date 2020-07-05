@@ -1,4 +1,4 @@
-module.exports = (logType) => {
+const _parseType = (logType) => {
   const LOG_TYPES = {
     error: 'error',
     log: 'log',
@@ -7,3 +7,5 @@ module.exports = (logType) => {
 
   return LOG_TYPES.hasOwnProperty(logType) ? LOG_TYPES[logType] : 'log';
 };
+
+module.exports = _parseType;

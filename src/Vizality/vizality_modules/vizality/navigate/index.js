@@ -1,8 +1,15 @@
+/* eslint-disable no-unused-vars */
+
 const { getModule } = require('vizality/webpack');
+const { logger } = require('vizality/util');
+
 const currentWebContents = require('electron').remote.getCurrentWebContents();
 
-module.exports = {
-  routes: {
+const navigate = () => {
+  const MODULE = 'Navigate';
+  const SUBMODULE = 'Route:goTo';
+
+  const ROUTES = {
     discover: getModule([ 'Routes' ], false).Routes.GUILD_DISCOVERY,
     // channel: '//channels/[0-9]+/.*/',
     dm: '/channels/@me/',
@@ -10,9 +17,9 @@ module.exports = {
     guild: '/channels/',
     library: getModule([ 'Routes' ], false).Routes.APPLICATION_LIBRARY,
     nitro: getModule([ 'Routes' ], false).Routes.APPLICATION_STORE
-  },
+  };
 
-  to: async (location) => {
+  async function goTo (location) {
     if (location === 'discover') return (await getModule([ 'transitionTo' ])).transitionTo((await getModule([ 'Routes' ])).Routes.GUILD_DISCOVERY);
     if (location === 'dm') {
       return (await getModule([ 'transitionTo' ])).transitionTo(
@@ -23,14 +30,13 @@ module.exports = {
     if (location === 'library') return (await getModule([ 'transitionTo' ])).transitionTo((await getModule([ 'Routes' ])).Routes.APPLICATION_LIBRARY);
     if (location === 'nitro') return (await getModule([ 'transitionTo' ])).transitionTo((await getModule([ 'Routes' ])).Routes.APPLICATION_STORE);
 
-    console.warn(`${location} not found.`);
-  },
+    return logger.warn(MODULE, SUBMODULE, null, `The route '${location}' was not found.`);
+  }
 
-  get currentRoute () {
-    const { routes } = this;
+  function currentRoute () {
     const historyRoute = currentWebContents.history[currentWebContents.history.length - 2];
-    for (let location in routes) {
-      if (window.location.href.includes(routes[location])) {
+    for (let location in ROUTES) {
+      if (window.location.href.includes(ROUTES[location])) {
         let locationStr = window.location.href.split('/');
         locationStr = `/${locationStr[3]}/${locationStr[4]}/`;
 
@@ -43,3 +49,5 @@ module.exports = {
     return 'unknown';
   }
 };
+
+module.exports = navigate;

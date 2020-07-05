@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 const { Icon } = require('vizality/components');
 
 module.exports = class UtilityClasses extends Plugin {
@@ -21,7 +21,7 @@ module.exports = class UtilityClasses extends Plugin {
 
       const { id } = returnValue.props;
 
-      returnValue.props.className = classNames(returnValue.props.className, 'vz-hasIcon');
+      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'textarea-context-languages' && 'atom',
@@ -74,7 +74,7 @@ module.exports = class UtilityClasses extends Plugin {
 
       const { id } = returnValue.props;
 
-      returnValue.props.className = classNames(returnValue.props.className, 'vz-hasIcon');
+      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'textarea-context-spellcheck' && 'atom',
@@ -104,7 +104,7 @@ module.exports = class UtilityClasses extends Plugin {
 
       const { id } = returnValue.props;
 
-      returnValue.props.className = classNames(returnValue.props.className, 'vz-hasIcon');
+      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'user-context-user-volume' && 'atom'

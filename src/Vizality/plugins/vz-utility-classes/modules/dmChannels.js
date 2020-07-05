@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const PrivateChannel = await getModuleByDisplayName('PrivateChannel');
@@ -16,7 +16,7 @@ module.exports = async () => {
      * vz-isUser
      */
 
-    props.className = classNames(
+    props.className = joinClassNames(
       props.className, {
         'vz-isMuted': props.muted,
         'vz-dmChannel': props.name,

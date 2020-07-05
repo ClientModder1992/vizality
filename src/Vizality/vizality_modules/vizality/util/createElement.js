@@ -3,11 +3,18 @@
  * @powercord: This function/module is only here to provide
  * backwards-compatability with Powercord plugins that may utilize it.
  *
- * Plugins should be using `dom.createElement` instead.
+ * Plugins should be using `Util.dom.createElement` instead.
  */
 
+const logger = require('./logger');
 
-module.exports = (name, props) => {
+const createElement = (name, props) => {
+  const MODULE = 'Module';
+  const SUBMODULE = 'Util:createElement';
+  const REPLACEMENT_SUBMODULE = 'Util:dom:createElement';
+
+  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+
   const element = document.createElement(name);
 
   for (const prop in props) {
@@ -23,3 +30,5 @@ module.exports = (name, props) => {
 
   return element;
 };
+
+module.exports = createElement;

@@ -3,7 +3,7 @@ const { Clickable, Button, FormNotice, FormTitle, Tooltip, Icons: { FontAwesome 
 const { SwitchItem, TextInput, Category, ButtonItem } = require('vizality/components/settings');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Confirm } = require('vizality/components/modal');
-const { classNames} = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 const { REPO_URL, CACHE_FOLDER } = require('vizality/constants');
 const { clipboard } = require('electron');
 const { readdirSync } = require('fs');
@@ -339,7 +339,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
 
     return <FormNotice
       type={FormNotice.Types.PRIMARY}
-      body={<div className={ classNames('vizality-debug-info', { copied: this.state.copied })}>
+      body={<div className={ joinClassNames('vizality-debug-info', { copied: this.state.copied })}>
         <code>
           <b>System / Discord</b>
           <div className='row'>

@@ -24,22 +24,6 @@ class Plugin extends Updatable {
     return this.entityID.startsWith('vz-');
   }
 
-  get colorContrast () {
-    if (this.manifest.color) {
-      const r = `0x${this.manifest.color[1]}${this.manifest.color[2]}`;
-      const g = `0x${this.manifest.color[3]}${this.manifest.color[4]}`;
-      const b = `0x${this.manifest.color[5]}${this.manifest.color[6]}`;
-
-      if ((r * 0.299) + (g * 0.587) + (b * 0.114) > 186) {
-        return '#000';
-      }
-
-      return '#fff';
-    }
-
-    return '#fff';
-  }
-
   get dependencies () {
     return this.manifest.dependencies;
   }

@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 
 /*
  * Adds server icons to the 'Invite to Server' context submenu.
@@ -18,11 +18,11 @@ module.exports = async () => {
 
     const guildIconUrl = GuildStore.getGuild(id).getIconURL();
 
-    returnValue.props.className = classNames(returnValue.props.className, { 'vz-hasNoGuildIcon': !guildIconUrl });
+    returnValue.props.className = joinClassNames(returnValue.props.className, { 'vz-hasNoGuildIcon': !guildIconUrl });
 
     console.log(guildIconUrl);
     const guildIcon = React.createElement('div', {
-      className: classNames('vizality-context-menu-icon-guild-icon', { 'vz-hasNoGuildIcon': !guildIconUrl }),
+      className: joinClassNames('vizality-context-menu-icon-guild-icon', { 'vz-hasNoGuildIcon': !guildIconUrl }),
       style: {
         backgroundImage: guildIconUrl ? `url(${guildIconUrl})` : null
       }

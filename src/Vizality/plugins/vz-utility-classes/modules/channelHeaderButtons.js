@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule, i18n } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, forceUpdateElement, string, classNames } = require('vizality/util');
+const { getOwnerInstance, waitFor, forceUpdateElement, string, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const channelHeaderButtonClasses = await getModule([ 'iconWrapper', 'toolbar' ]);
@@ -20,7 +20,7 @@ module.exports = async () => {
 
         if (key === 'PINNED_MESSAGES') {
           if (returnValue.props.children[1]) {
-            returnValue.props.className = classNames(returnValue.props.className, 'vz-isUnread');
+            returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-isUnread');
           }
         }
         /*
@@ -37,8 +37,8 @@ module.exports = async () => {
          *   return returnValue;
          * }
          */
-        returnValue.props.className = classNames(returnValue.props.className, `vz-${string.camelCase(key)}Button`);
-        console.log(string.camelCase(key));
+        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${string.toCamelCase(key)}Button`);
+        console.log(string.toCamelCase(key));
       }
     }
 

@@ -1,6 +1,9 @@
+const { logger } = require('vizality/util');
 const { randomBytes } = require('crypto');
 
 const injector = {
+  MODULE: 'Module',
+  SUBMODULE: 'Injector',
   injections: [],
 
   /**
@@ -13,11 +16,11 @@ const injector = {
    */
   inject: (injectionId, moduleToPatch, functionName, patch, pre = false) => {
     if (!moduleToPatch) {
-      return injector._error(`Tried to patch undefined (Injection ID "${injectionId}")`);
+      return injector._error(`Tried to patch undefined (Injection ID '${injectionId}').`);
     }
 
     if (injector.injections.find(i => i.id === injectionId)) {
-      return injector._error(`Injection ID "${injectionId}" is already used!`);
+      return injector._error(`Injection ID '${injectionId}' is already used!`);
     }
 
     if (!moduleToPatch.__vizalityInjectionId || !moduleToPatch.__vizalityInjectionId[functionName]) {
@@ -96,14 +99,14 @@ const injector = {
       try {
         finalReturn = i.method.call(_this, originalArgs, finalReturn);
       } catch (e) {
-        injector._error(`Failed to run injection "${i.id}"`, e);
+        injector._error(`Failed to run injection '${i.id}'.`, e);
       }
     });
     return finalReturn;
   },
 
   _error: (...args) => {
-    console.error('%c[Vizality:Injector]', 'color: #7289da', ...args);
+    logger.error(injector.MODULE, injector.SUBMODULE, null, ...args);
   }
 };
 

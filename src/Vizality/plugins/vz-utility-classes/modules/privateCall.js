@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const CallTile = await getModule(m => m.default && m.default.displayName === 'CallTile');
@@ -13,7 +13,7 @@ module.exports = async () => {
     returnValue.props['vz-user-id'] = participant.id;
     returnValue.props['vz-user-name'] = participant.user.username;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isSpeaking': participant.speaking,
         'vz-isRinging': participant.ringing,

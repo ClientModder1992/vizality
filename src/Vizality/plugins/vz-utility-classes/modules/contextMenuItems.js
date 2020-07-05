@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 
 /*
  * This module does nothing currently. It is just here for future reference in the event context

@@ -29,6 +29,9 @@ class HTTPError extends Error {
 
 class GenericRequest {
   constructor (method, uri) {
+    this.MODULE = 'HTTP';
+    this.SUBMODULE = this.constructor.name;
+
     this.opts = {
       method,
       uri,
@@ -94,7 +97,7 @@ class GenericRequest {
   execute () {
     return new Promise((resolve, reject) => {
       const opts = Object.assign({}, this.opts);
-      this.log('Performing request to', opts.uri);
+      this.log(`Performing request to ${opts.uri}.`);
       const { request } = opts.uri.startsWith('https')
         ? https
         : http;
@@ -180,15 +183,15 @@ class GenericRequest {
   }
 
   log (...data) {
-    logger.log('HTTP', this.constructor.name, null, ...data);
+    logger.log(this.MODULE, this.SUBMODULE, null, ...data);
   }
 
   error (...data) {
-    logger.log('HTTP', this.constructor.name, null, ...data);
+    logger.error(this.MODULE, this.SUBMODULE, null, ...data);
   }
 
   warn (...data) {
-    logger.log('HTTP', this.constructor.name, null, ...data);
+    logger.warn(this.MODULE, this.SUBMODULE, null, ...data);
   }
 }
 

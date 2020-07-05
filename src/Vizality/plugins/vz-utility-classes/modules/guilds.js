@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { forceUpdateElement, getOwnerInstance, waitFor, classNames } = require('vizality/util');
+const { forceUpdateElement, getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const guildClasses = await getModule([ 'blobContainer' ]);
@@ -10,7 +10,7 @@ module.exports = async () => {
   inject('vz-utility-classes-guild', instance.__proto__, 'render', function (originalArgs, returnValue) {
     const { audio, badge: mentions, selected, unread, video, screenshare } = this.props;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isUnread': unread,
         'vz-isSelected': selected,

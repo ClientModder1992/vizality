@@ -161,7 +161,6 @@
     "no-unneeded-ternary": [ "warn" ],
     "no-whitespace-before-property": [ "warn" ],
     "object-curly-spacing": [ "warn", "always" ],
-    "object-property-newline": [ "warn" ],
     "one-var-declaration-per-line": [ "warn", "initializations" ],
     "operator-assignment": [ "warn", "always" ],
     "operator-linebreak": [ "warn", "after", {
@@ -172,7 +171,7 @@
     }],
     "padded-blocks": [ "warn", "never" ],
     "quote-props": [ "warn", "as-needed" ],
-    "quotes": [ "warn", "single"/*, { "allowTemplateLiterals": true }*/ ],
+    "quotes": [ "warn", "single", { "allowTemplateLiterals": true } ],
     "semi": [ "warn", "always" ],
     "semi-spacing": [ "warn", {
       "before": false,

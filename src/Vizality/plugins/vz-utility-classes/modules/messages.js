@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { findInReactTree, classNames } = require('vizality/util');
+const { findInReactTree, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const Message  = await getModule(m => m.default && m.default.displayName === 'Message');
@@ -13,7 +13,7 @@ module.exports = async () => {
 
     if (!msg) {
       if (findInReactTree(returnValue, n => n.className && !n.className.startsWith('blockedSystemMessage'))) {
-        returnValue.props.className = classNames(returnValue.props.className, 'vz-isBlockedMessage');
+        returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-isBlockedMessage');
       }
       return returnValue;
     }
@@ -23,7 +23,7 @@ module.exports = async () => {
     returnValue.props['vz-message-type'] = message.type;
     returnValue.props['vz-author-id'] = message.author.id;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isBotUser': message.author.bot,
         'vz-isCurrentUser': (message.author.id === currentUserId && message.type === 0),

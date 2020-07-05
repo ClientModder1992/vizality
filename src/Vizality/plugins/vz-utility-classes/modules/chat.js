@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, classNames } = require('vizality/util');
+const { getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const { chat } = await getModule([ 'chat' ]);
@@ -12,7 +12,7 @@ module.exports = async () => {
 
     const { channel } = this.props;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isGuildChannel': [ 0, 2, 4, 5, 6 ].includes(channel.type),
         'vz-isPrivateChannel': [ 1, 3 ].includes(channel.type),

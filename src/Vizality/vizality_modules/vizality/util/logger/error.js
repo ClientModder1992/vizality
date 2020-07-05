@@ -6,6 +6,8 @@ const logger = require('../logger');
  * @param {string} module - Name of the calling module.
  * @param {string} message - Message or error to have logged.
  */
-module.exports = (module, submodule, submoduleColor, ...message) => {
+const error = (module, submodule, submoduleColor, ...message) => {
   return logger._log(module, submodule, submoduleColor, message, 'error');
 };
+
+module.exports = error;

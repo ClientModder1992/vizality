@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, classNames } = require('vizality/util');
+const { getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   const { role } = await getModule([ 'role', 'roleCircle', 'roleName', 'root' ]);
@@ -15,7 +15,7 @@ module.exports = async () => {
     returnValue.props['vz-role-name'] = role.name;
     returnValue.props['vz-role-color-string'] = role.colorString;
 
-    returnValue.props.className = classNames(
+    returnValue.props.className = joinClassNames(
       returnValue.props.className, {
         'vz-isHoisted': role.hoist,
         'vz-isMentionable': role.mentionable

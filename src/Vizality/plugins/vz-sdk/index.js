@@ -1,7 +1,7 @@
 const { React, getModule, getModuleByDisplayName, contextMenu } = require('vizality/webpack');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
-const { getOwnerInstance, waitFor, classNames } = require('vizality/util');
+const { getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
 const { Plugin } = require('vizality/entities');
 const SdkWindow = require('./components/SdkWindow');
 
@@ -38,7 +38,7 @@ module.exports = class SDK extends Plugin {
     inject('vz-sdk-icon', HeaderBarContainer.prototype, 'renderLoggedIn', (originalArgs, returnValue) => {
       if (vizality.api.labs.isExperimentEnabled('vz-sdk') && this.sdkEnabled) {
         const Switcher = React.createElement(Tooltip, {
-          className: classNames(classes.iconWrapper, classes.clickable),
+          className: joinClassNames(classes.iconWrapper, classes.clickable),
           text: 'Vizality SDK',
           position: 'bottom'
         }, React.createElement(CodeBraces, {

@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModuleByDisplayName } = require('vizality/webpack');
-const { classNames } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 const { Tooltip } = require('vizality/components');
 
 module.exports = class MembersActivityIcons extends Plugin {
@@ -31,7 +31,7 @@ module.exports = class MembersActivityIcons extends Plugin {
               }
             ));
 
-          returnValue.props.className = classNames(returnValue.props.className, 'vz-hasActivityIcon');
+          returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasActivityIcon');
 
           return returnValue;
         }
@@ -48,7 +48,7 @@ module.exports = class MembersActivityIcons extends Plugin {
               }
             ));
 
-          returnValue.props.className = classNames(returnValue.props.className, 'vz-hasActivityIcon');
+          returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasActivityIcon');
 
           return returnValue;
         }

@@ -3,13 +3,20 @@
  * @powercord: This function/module is only here to provide
  * backwards-compatability with Powercord plugins that may utilize it.
  *
- * Plugins should be using `string.camelCase` instead.
+ * Plugins should be using `Util.string.toCamelCase` instead.
  */
 
-const { string } = require('vizality/util');
+const string = require('./string');
+const logger = require('./logger');
 
-module.exports = (str) => {
-  string.camelCase(str);
-  console.warn('camelCaseify is depcrated in Vizality. We recommend you use `string.camelCase` instead.');
+const camelCaseify = (str) => {
+  const MODULE = 'Module';
+  const SUBMODULE = 'Util:camelCaseify';
+  const REPLACEMENT_SUBMODULE = 'Util:string:toCamelCase';
+
+  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+
+  return string.toCamelCase(str);
 };
 
+module.exports = camelCaseify;

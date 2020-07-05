@@ -1,6 +1,6 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { forceUpdateElement, getOwnerInstance, waitFor, classNames } = require('vizality/util');
+const { forceUpdateElement, getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
   /*
@@ -21,7 +21,7 @@ module.exports = async () => {
 
     const { props } = returnValue;
 
-    props.className = classNames(
+    props.className = joinClassNames(
       props.className, {
         'vz-isUnread': props.unread,
         'vz-isSelected': props.selected,
