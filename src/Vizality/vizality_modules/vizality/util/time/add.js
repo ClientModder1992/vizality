@@ -4,8 +4,8 @@
  * moment().add(Object);
  */
 
-const moment = require('./moment');
+const time = require('../time');
 
 module.exports = (...args) => {
-  return moment().add(...args);
+  return time().add(...args);
 };

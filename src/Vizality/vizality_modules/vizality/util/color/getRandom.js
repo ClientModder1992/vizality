@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const { warn } = require('../logger');
 
 const _int2hex = require('./_int2hex');
 const _rgb2hex = require('./_rgb2hex');
@@ -26,7 +26,7 @@ const getRandom = (type) => {
     case 'int':
       return _int2hex(color);
     default:
-      return logger.warn(MODULE, SUBMODULE, null, `Input type '${type}' is not a valid color type. Please choose 'hex', 'rgb', 'hsl', or 'int'.`);
+      return warn(MODULE, SUBMODULE, null, `Input type '${type}' is not a valid color type. Please choose 'hex', 'rgb', 'hsl', or 'int'.`);
   }
 };
 

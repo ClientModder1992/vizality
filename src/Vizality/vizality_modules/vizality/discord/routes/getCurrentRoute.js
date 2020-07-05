@@ -19,10 +19,13 @@ const getCurrentRoute = () => {
        *   location = 'channel';
        * }
        */
-      return log(MODULE, SUBMODULE, null, `The current route is '${location}'.`);
+      return location;
     }
   }
-  return warn(MODULE, SUBMODULE, null, `The current route is unknown.`);
+
+  warn(MODULE, SUBMODULE, null, `The current route is unknown.`);
+
+  return 'unknown';
 };
 
 module.exports = getCurrentRoute;

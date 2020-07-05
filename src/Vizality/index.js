@@ -1,8 +1,7 @@
-const Webpack = require('vizality/webpack');
-const { sleep, logger } = require('vizality/util');
+const { getModuleByPrototypes, _init } = require('vizality/webpack');
+const { sleep, logger: { log, warn, error } } = require('vizality/util');
 const { WEBSITE_IMAGES } = require('vizality/constants');
 const { Updatable } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
 
 const { join } = require('path');
 const { promisify } = require('util');
@@ -80,7 +79,7 @@ class Vizality extends Updatable {
     await sleep(1e3);
 
     // Webpack & Modules
-    await Webpack.init();
+    await _init();
     await Promise.all(modules.map(mdl => mdl()));
 
     // Start
@@ -93,13 +92,11 @@ class Vizality extends Updatable {
   // Vizality startup
   async startup () {
     console.clear();
-    console.log(
-      '%c ',
-      `background: url(${WEBSITE_IMAGES}/console-startup-banner.png) no-repeat center / contain;
-       padding: 63px 242px;
-       font-size: 1px;
-       margin: 10px 0;`
+    // Startup banner
+    console.log('%c ',
+      `background: url(${WEBSITE_IMAGES}/console-startup-banner.png) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`
     );
+
     // APIs
     await this.apiManager.startAPIs();
     this.settings = vizality.api.settings.buildCategoryObject('vz-general');
@@ -114,7 +111,15 @@ class Vizality extends Updatable {
 
     this.initialized = true;
 
-    const Log = await Webpack.getModuleByPrototypes([ '_log' ]);
+    const { routes: { getCurrentRoute } } = require('vizality/discord');
+
+    document.documentElement.setAttribute('vz-route', getCurrentRoute());
+
+    currentWebContents.on('did-navigate-in-page', () => {
+      document.documentElement.setAttribute('vz-route', getCurrentRoute());
+    });
+
+    const Log = await getModuleByPrototypes([ '_log' ]);
 
     const insteadObj = {};
     function _logInstead (module, orig, replace) {
@@ -122,29 +127,21 @@ class Vizality extends Updatable {
       module[orig] = replace;
     }
 
-    _logInstead(Log.prototype, '_log', function (...originalArgs) {
-      if (originalArgs[0] === 'info' || originalArgs[0] === 'log') {
-        logger.log('Discord', this.name, null, originalArgs[1]);
+    _logInstead(Log.prototype, '_log', function (firstArg, ...originalArgs) {
+      const MODULE = 'Discord';
+      const SUBMODULE = this.name;
+
+      if (firstArg === 'info' || firstArg === 'log') {
+        log(MODULE, SUBMODULE, null, ...originalArgs);
       }
 
-      if (originalArgs[0] === 'error' || originalArgs[0] === 'trace') {
-        logger.error('Discord', this.name, null, originalArgs[1]);
+      if (firstArg === 'error' || firstArg === 'trace') {
+        error(MODULE, SUBMODULE, null, ...originalArgs);
       }
 
-      if (originalArgs[0] === 'warn') {
-        logger.warn('Discord', this.name, null, originalArgs[1]);
+      if (firstArg === 'warn') {
+        warn(MODULE, SUBMODULE, null, ...originalArgs);
       }
-    });
-
-    const navigate = require('vizality/navigate');
-
-    // Necessarry to activate on Discord startup
-    currentWebContents.on('did-finish-load', () => {
-      document.documentElement.setAttribute('vz-route', navigate.currentRoute === 'channel' ? 'guild' : navigate.currentRoute);
-    });
-
-    currentWebContents.on('did-navigate-in-page', () => {
-      document.documentElement.setAttribute('vz-route', navigate.currentRoute === 'channel' ? 'guild' : navigate.currentRoute);
     });
   }
 
@@ -153,11 +150,9 @@ class Vizality extends Updatable {
     this.initialized = false;
 
     function _logInsteadUndo (module, orig) {
-      console.log('this.insteadObj', this.insteadObj);
       module[orig] = this.insteadObj[orig];
     }
 
-    console.log('Log.prototype', this.Log.prototype);
     _logInsteadUndo(this.Log.prototype, '_log');
 
     // Plugins

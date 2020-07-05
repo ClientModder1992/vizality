@@ -6,14 +6,14 @@
  * Plugins should be using `Util.react.getReactInstance` instead.
  */
 
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const getReactInstance = (node) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:getReactInstance';
   const REPLACEMENT_SUBMODULE = 'Util:react:getReactInstance';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   if (!node) return null;
   if (!Object.keys(node) || !Object.keys(node).length) return null;

@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const { warn } = require('../logger');
 
 const memoize = (object) => {
   const MODULE = 'Module';
@@ -15,7 +15,7 @@ const memoize = (object) => {
       return obj[mod];
     },
     set (obj, mod, value) {
-      if (obj.hasOwnProperty(mod)) return logger.warn(MODULE, SUBMODULE, null, 'Trying to overwrite existing property.');
+      if (obj.hasOwnProperty(mod)) return warn(MODULE, SUBMODULE, null, 'Trying to overwrite existing property.');
       obj[mod] = value;
       return obj[mod];
     }

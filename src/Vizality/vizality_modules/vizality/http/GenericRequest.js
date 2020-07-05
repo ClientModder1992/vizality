@@ -6,7 +6,7 @@ const querystring = require('querystring');
 const https = require('https');
 const http = require('http');
 const url = require('url');
-const { logger } = require('vizality/util');
+const { logger : { log } } = require('vizality/util');
 const { REPO_URL } = require('vizality/constants');
 
 /**
@@ -97,7 +97,7 @@ class GenericRequest {
   execute () {
     return new Promise((resolve, reject) => {
       const opts = Object.assign({}, this.opts);
-      this.log(`Performing request to ${opts.uri}.`);
+      log(this.MODULE, this.SUBMODULE, null, 'Performing request to ', opts.uri);
       const { request } = opts.uri.startsWith('https')
         ? https
         : http;
@@ -180,18 +180,6 @@ class GenericRequest {
    */
   catch (rejector) {
     return this.then(null, rejector);
-  }
-
-  log (...data) {
-    logger.log(this.MODULE, this.SUBMODULE, null, ...data);
-  }
-
-  error (...data) {
-    logger.error(this.MODULE, this.SUBMODULE, null, ...data);
-  }
-
-  warn (...data) {
-    logger.warn(this.MODULE, this.SUBMODULE, null, ...data);
   }
 }
 

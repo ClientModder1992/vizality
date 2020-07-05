@@ -10,6 +10,9 @@ class Theme extends Updatable {
     this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
+    this.MODULE = 'Theme';
+    this.SUBMODULE = this.manifest.name;
+    this.SUBMODULE_COLOR = this.manifest.color || null;
   }
 
   apply () {
@@ -43,15 +46,15 @@ class Theme extends Updatable {
   }
 
   log (...data) {
-    logger.log('Theme', this.manifest.name, this.manifest.color || null, ...data);
+    logger.log(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 
   error (...data) {
-    logger.error('Theme', this.manifest.name, this.manifest.color || null, ...data);
+    logger.error(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 
   warn (...data) {
-    logger.warn('Theme', this.manifest.name, this.manifest.color || null, ...data);
+    logger.warn(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 }
 

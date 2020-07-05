@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const _log = require('./_log');
 
 /**
  * Logs an error using a collapsed error group with stacktrace.
@@ -7,7 +7,7 @@ const logger = require('../logger');
  * @param {string} message - Message or error to have logged.
  */
 const error = (module, submodule, submoduleColor, ...message) => {
-  return logger._log(module, submodule, submoduleColor, message, 'error');
+  return _log(module, submodule, submoduleColor, message, 'error');
 };
 
 module.exports = error;

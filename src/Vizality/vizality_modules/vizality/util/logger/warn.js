@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const _log = require('./_log');
 
 /**
  * Logs a warning message.
@@ -7,7 +7,7 @@ const logger = require('../logger');
  * @param {...any} message - Messages to have logged.
  */
 const warn = (module, submodule, submoduleColor, ...message) => {
-  return logger._log(module, submodule, submoduleColor, message, 'warn');
+  return _log(module, submodule, submoduleColor, message, 'warn');
 };
 
 module.exports = warn;

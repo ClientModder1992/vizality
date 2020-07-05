@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const { warn } = require('../logger');
 
 const _hex2int = require('./_hex2int');
 const _rgb2int = require('./_rgb2int');
@@ -24,7 +24,7 @@ const toInt = (color) => {
     case 'hsl':
       return _hsl2int(color);
     default:
-      return logger.warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
+      return warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
   }
 };
 

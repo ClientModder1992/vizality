@@ -1,0 +1,39 @@
+const { sleep } = require('vizality/util');
+
+const Webpack = require('../webpack');
+const getModule = require('./getModule');
+const moduleFilters = require('./modules');
+
+/**
+ * Initializes the injection into Webpack
+ * @returns Promise<Void>
+ */
+const _init = async () => {
+  // Wait until webpack is ready
+  while (!window.webpackJsonp) {
+    await sleep(1);
+  }
+
+  // Extract values from webpack
+  const moduleID = Math.random.toString();
+  const instance = webpackJsonp.push([
+    [],
+    {
+      [moduleID]: (_, e, r) => {
+        e.cache = r.c;
+        e.require = r;
+      }
+    },
+    [ [ moduleID ] ]
+  ]);
+  delete instance.cache[moduleID];
+  Webpack.instance = instance;
+
+  // Load modules pre-fetched
+  for (const mdl in moduleFilters) {
+    // noinspection JSUnfilteredForInLoop
+    Webpack[mdl] = await getModule(moduleFilters[mdl]);
+  }
+};
+
+module.exports = _init;

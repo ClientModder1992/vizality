@@ -7,14 +7,14 @@
  */
 
 const getOwnerInstance = require('./getOwnerInstance');
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const forceUpdateElement = (query, all = false) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:forceUpdateElement';
   const REPLACEMENT_SUBMODULE = 'Util:react:forceUpdateElement';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   const elements = all ? [ ...document.querySelectorAll(query) ] : [ document.querySelector(query) ];
 

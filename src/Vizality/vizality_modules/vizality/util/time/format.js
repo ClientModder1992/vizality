@@ -6,10 +6,10 @@
  * moment('gibberish').format('YYYY MM DD');         // "Invalid date"
  */
 
-const moment = require('./moment');
+const time = require('../time');
 
 const format = (...args) => {
-  return moment().format(...args);
+  return time().format(...args);
 };
 
 module.exports = format;

@@ -1,7 +1,7 @@
 const { getModule } = require('vizality/webpack');
 
 module.exports = async () => {
-  const Flux = await getModule([ 'Store', 'PersistedStore' ]);
+  const Flux = await getModule([ 'Store', 'PersistedStore' ], true);
   Flux.connectStoresAsync = (stores, fn) => (Component) =>
     require('vizality/components').AsyncComponent.from((async () => {
       const awaitedStores = await Promise.all(stores);

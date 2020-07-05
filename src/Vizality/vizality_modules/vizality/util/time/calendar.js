@@ -5,10 +5,10 @@
  * moment().calendar(formats);  // from 2.25.0
  */
 
-const moment = require('./moment');
+const time = require('../time');
 
 const calendar = (...args) => {
-  return moment().calendar(...args);
+  return time().calendar(...args);
 };
 
 module.exports = calendar;

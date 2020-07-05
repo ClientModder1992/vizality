@@ -1,3 +1,13 @@
+let momentModule;
+
+const time = (...args) => {
+  if (!momentModule) momentModule = require('vizality/webpack').getModule([ 'createFromInputFallback' ], false);
+
+  return momentModule(...args);
+};
+
+module.exports = time;
+
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

@@ -7,14 +7,14 @@
  */
 
 const string = require('./string');
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const camelCaseify = (str) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:camelCaseify';
   const REPLACEMENT_SUBMODULE = 'Util:string:toCamelCase';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   return string.toCamelCase(str);
 };

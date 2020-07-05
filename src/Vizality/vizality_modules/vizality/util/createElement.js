@@ -6,14 +6,14 @@
  * Plugins should be using `Util.dom.createElement` instead.
  */
 
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const createElement = (name, props) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:createElement';
   const REPLACEMENT_SUBMODULE = 'Util:dom:createElement';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   const element = document.createElement(name);
 

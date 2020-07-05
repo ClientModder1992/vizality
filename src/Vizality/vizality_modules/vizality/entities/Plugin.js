@@ -17,6 +17,9 @@ class Plugin extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
     this.ready = false;
     this.styles = {};
+    this.MODULE = 'Plugin';
+    this.SUBMODULE = this.constructor.name;
+    this.SUBMODULE_COLOR = this.manifest.color || null;
   }
 
   // Getters
@@ -51,10 +54,6 @@ class Plugin extends Updatable {
     return [ ...new Set(dependents.map(d => d.entityID).concat(...dependents.map(d => d.dependents))) ];
   }
 
-  get color () {
-    return '#7289da';
-  }
-
   /**
    * Loads a plugin stylesheet. Will automatically get removed at plugin unload.
    * @param {String} path Stylesheet path. Either absolute or relative to the plugin root
@@ -66,7 +65,7 @@ class Plugin extends Updatable {
       resolvedPath = join(vizality.pluginManager.pluginDir, this.entityID, path);
 
       if (!existsSync(resolvedPath)) {
-        throw new Error(`Cannot find "${path}"! Make sure the file exists and try again.`);
+        throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
       }
     }
 
@@ -140,15 +139,15 @@ class Plugin extends Updatable {
   }
 
   log (...data) {
-    logger.log('Plugin', this.constructor.name, this.manifest.color || null, ...data);
+    logger.log(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 
   error (...data) {
-    logger.error('Plugin', this.constructor.name, this.manifest.color || null, ...data);
+    logger.error(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 
   warn (...data) {
-    logger.warn('Plugin', this.constructor.name, this.manifest.color || null, ...data);
+    logger.warn(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
   }
 }
 

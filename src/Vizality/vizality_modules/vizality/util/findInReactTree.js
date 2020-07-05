@@ -7,14 +7,14 @@
  */
 
 const findInTree = require('./findInTree');
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const findInReactTree = (tree, filter) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:findInReactTree';
   const REPLACEMENT_SUBMODULE = 'Util:react:findInReactTree';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   return findInTree(tree, filter, {
     walkable: [ 'props', 'children', 'child', 'sibiling' ]

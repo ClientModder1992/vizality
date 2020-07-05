@@ -1,0 +1,42 @@
+const { sleep, logger: { warn } } = require('vizality/util');
+
+const _getModules = require('./_getModules');
+
+/**
+ * Grabs a module from the Webpack store
+ * @param {Function|Array} filter Filter used to grab the module. Can be a function or an array of keys the object must have.
+ * @param {Boolean} retry Whether or not to retry fetching if the module is not found. Each try will be delayed by 100ms and max retries is 20.
+ * @param {Boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
+ * @returns {Promise<object>|object} The found module. A promise will always be returned, unless retry is false.
+ */
+const getModule = (filter, retry = true, forever = false, caller = 'getModule', filterArg = filter) => {
+  const MODULE = 'Module';
+  const SUBMODULE = `Webpack:${caller}`;
+
+  const originalFilter = filter;
+  let outputModule = caller === 'getModuleByDisplayName' ? `'${filterArg}'` : `${filterArg}`;
+
+  if (Array.isArray(originalFilter)) {
+    filter = m => originalFilter.every(key => m.hasOwnProperty(key) || (m.__proto__ && m.__proto__.hasOwnProperty(key)));
+    outputModule = `[ '${filterArg.join('\', \'')}' ]`;
+  }
+
+  if (!retry) {
+    return _getModules(filter) || warn(MODULE, SUBMODULE, null, `Module called but not found: ${caller}(${outputModule})`);
+  }
+
+  return new Promise(async (res) => {
+    let mdl;
+    for (let i = 0; i < (forever ? 666 : 21); i++) {
+      mdl = _getModules(filter);
+      if (mdl) {
+        return res(mdl);
+      }
+      await sleep(100);
+    }
+
+    res(mdl);
+  });
+};
+
+module.exports = getModule;

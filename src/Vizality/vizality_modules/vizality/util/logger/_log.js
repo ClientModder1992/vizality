@@ -89,11 +89,10 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
     background: ${submoduleColor || BADGE_COLORS[module] && BADGE_COLORS[module].submodule || randomSubmoduleColor};`;
 
   return console[logType](
-    `%c %c${module}%c${submodule}%c`,
+    `%c %c${module}%c${submodule}`,
     badgeStyles,
     moduleStyles,
     submoduleStyles,
-    '', // clear the styles of the 'message'
     ...message
   );
 };

@@ -12,14 +12,14 @@
  * <https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js#L3302-L3336>
  */
 
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const findInTree = function findInTree (tree, filter, { walkable = null, ignore = [] } = {}) {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:findInTree';
   const REPLACEMENT_SUBMODULE = 'Util:react:findInTree';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   if (!tree || typeof tree !== 'object') {
     return null;

@@ -1,9 +1,11 @@
 const Events = require('events');
-const { logger } = require('vizality/util');
+const { logger: { log, error } } = require('vizality/util');
 
 class API extends Events {
   constructor () {
     super();
+    this.MODULE = 'API';
+    this.SUBMODULE = this.constructor.name;
     this.ready = false;
   }
 
@@ -12,10 +14,10 @@ class API extends Events {
       if (typeof this.startAPI === 'function') {
         await this.startAPI();
       }
-      this.log('API loaded.');
+      log(this.MODULE, this.SUBMODULE, null, 'API loaded.');
       this.ready = true;
     } catch (e) {
-      this.error('An error occurred during initialization!', e);
+      error(this.MODULE, this.SUBMODULE, null, 'An error occurred during initialization!', e);
     }
   }
 
@@ -25,22 +27,12 @@ class API extends Events {
         await this.apiWillUnload();
       }
       this.ready = false;
-      this.log('Plugin unloaded.');
+      log(this.MODULE, this.SUBMODULE, null, 'Plugin unloaded.');
     } catch (e) {
-      this.error('An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e);
+      error(this.MODULE, this.SUBMODULE, null,
+        'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e
+      );
     }
-  }
-
-  log (...data) {
-    logger.log('API', this.constructor.name, null, ...data);
-  }
-
-  error (...data) {
-    logger.log('API', this.constructor.name, null, ...data);
-  }
-
-  warn (...data) {
-    logger.log('API', this.constructor.name, null, ...data);
   }
 }
 

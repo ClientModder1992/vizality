@@ -6,8 +6,12 @@ const getSections = () => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:settings:getSections';
 
+  const sections = _getSections();
+
   log(MODULE, SUBMODULE, null, 'List of available user settings sections:');
-  return _getSections();
+  console.log(sections);
+
+  return sections;
 };
 
 module.exports = getSections;

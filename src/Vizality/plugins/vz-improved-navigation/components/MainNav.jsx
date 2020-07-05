@@ -1,6 +1,6 @@
 const { React, getModuleByDisplayName, getModule } = require('vizality/webpack');
 const { forceUpdateElement } = require('vizality/util');
-const navigate = require('vizality/navigate');
+const { routes: { goTo } } = require('vizality/discord');
 const { AsyncComponent, Icon, Button, Tooltip, Clickable } = require('vizality/components');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected'));
@@ -11,19 +11,19 @@ module.exports = class MainNav extends React.Component {
       <nav className='vizality-main-nav'>
         <div className='vizality-main-nav__section-left'>
           <div className='vizality-main-nav__logo'></div>
-          <div className='vizality-main-nav__link' onClick={() => navigate.to('dm')}>
+          <div className='vizality-main-nav__link' onClick={() => goTo('dm')}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='mail'></Icon>
             <p className='vizality-main-nav__link-text'>Messages</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => navigate.to('discover')}>
+          <div className='vizality-main-nav__link' onClick={() => goTo('discover')}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='discover'></Icon>
             <p className='vizality-main-nav__link-text'>Discover</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => navigate.to('friends')}>
+          <div className='vizality-main-nav__link' onClick={() => goTo('friends')}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='users'></Icon>
             <p className='vizality-main-nav__link-text'>Friends</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => navigate.to('library')}>
+          <div className='vizality-main-nav__link' onClick={() => goTo('library')}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='backpack'></Icon>
             <p className='vizality-main-nav__link-text'>Library</p>
           </div>

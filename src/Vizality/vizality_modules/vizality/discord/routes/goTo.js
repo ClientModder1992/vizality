@@ -7,11 +7,10 @@ const goTo = (location) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:routes:goTo';
 
-  const routeList = Object.keys(_getRoutes().filter(r => r !== 'guild'));
+  const routeList = Object.keys(_getRoutes()).filter(r => r !== 'guild');
 
   if (!location) {
-    warn(MODULE, SUBMODULE, null, `You must enter a valid route string. List of available routes:`);
-    return console.warn(routeList);
+    return warn(MODULE, SUBMODULE, null, `You must enter a valid route string. List of available routes:`, routeList);
   }
 
   const DISCORD_ROUTES = getModule([ 'Routes' ], false).Routes;
@@ -40,8 +39,7 @@ const goTo = (location) => {
     case 'nitro':
       return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES.APPLICATION_STORE);
     default:
-      warn(MODULE, SUBMODULE, null, `The route '${location}' was not found. List of available routes:`);
-      return console.warn(routeList);
+      return warn(MODULE, SUBMODULE, null, `The route '${location}' was not found. List of available routes:`, routeList);
   }
 };
 

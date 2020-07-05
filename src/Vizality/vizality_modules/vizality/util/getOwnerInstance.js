@@ -7,14 +7,14 @@
  */
 
 const getReactInstance = require('./getReactInstance');
-const logger = require('./logger');
+const { deprecate } = require('./logger');
 
 const getOwnerInstance = (node) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:getOwnerInstance';
   const REPLACEMENT_SUBMODULE = 'Util:react:getOwnerInstance';
 
-  logger.deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
+  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
 
   for (let curr = getReactInstance(node); curr; curr = curr.return) {
     const owner = curr.stateNode;

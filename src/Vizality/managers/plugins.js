@@ -1,9 +1,11 @@
 const { resolve } = require('path');
 const { readdirSync } = require('fs');
-const { rmdirRf } = require('vizality/util');
+const { rmdirRf, logger } = require('vizality/util');
 
 module.exports = class PluginManager {
   constructor () {
+    this.MODULE = 'PluginManager';
+
     this.pluginDir = resolve(__dirname, '..', 'plugins');
     this.plugins = new Map();
 
@@ -29,19 +31,20 @@ module.exports = class PluginManager {
 
   // Mount/load/enable/install shit
   mount (pluginID) {
+    const plugin = this.get(pluginID);
     let manifest;
     try {
       manifest = Object.assign({
         appMode: 'app',
         dependencies: [],
         optionalDependencies: []
-      }, require(resolve(this.pluginDir, pluginID, 'vizality_manifest.json')));
+      }, require(resolve(this.pluginDir, pluginID, 'manifest.json')));
     } catch (e) {
-      return this.error(`Plugin ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(plugin, `Plugin does not have a valid manifest... Skipping.`);
     }
 
     if (!this.manifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`Plugin ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(plugin, `Plugin does not have a valid manifest... Skipping.`);
     }
 
     try {
@@ -50,20 +53,20 @@ module.exports = class PluginManager {
         entityID: {
           get: () => pluginID,
           set: () => {
-            throw new Error('Plugins cannot update their ID at runtime!');
+            throw new Error(`Attempted to update its ID at runtime.`);
           }
         },
         manifest: {
           get: () => manifest,
           set: () => {
-            throw new Error('Plugins cannot update manifest at runtime!');
+            throw new Error(`Attempted to update its ID at runtime.`);
           }
         }
       });
 
       this.plugins.set(pluginID, new PluginClass());
     } catch (e) {
-      this.error(`An error occurred while initializing "${pluginID}"!`, e);
+      this.error(plugin, `An error occurred while initializing.`, e);
     }
   }
 
@@ -80,7 +83,7 @@ module.exports = class PluginManager {
   async unmount (pluginID) {
     const plugin = this.get(pluginID);
     if (!plugin) {
-      throw new Error(`Tried to unmount a non installed plugin (${plugin})`);
+      throw new Error(`Attempted to unmount a non-installed plugin.`);
     }
     if (plugin.ready) {
       await plugin._unload();
@@ -101,7 +104,7 @@ module.exports = class PluginManager {
       throw new Error(`Tried to load a non-installed plugin: (${plugin})`);
     }
     if (plugin.ready) {
-      return this.error(`Tried to load an already-loaded plugin: (${pluginID})`);
+      return this.error(plugin, `Tried to load an already-loaded plugin: (${pluginID})`);
     }
 
     plugin._load();
@@ -110,10 +113,10 @@ module.exports = class PluginManager {
   unload (pluginID) {
     const plugin = this.get(pluginID);
     if (!plugin) {
-      throw new Error(`Tried to unload a non-installed plugin: (${plugin})`);
+      throw new Error(`Tried to unload a non-installed plugin: (${pluginID})`);
     }
     if (!plugin.ready) {
-      return this.error(`Tried to unload a non-loaded plugin: (${plugin})`);
+      return this.error(pluginID, `Tried to unload a non-loaded plugin: (${pluginID})`);
     }
 
     plugin._unload();
@@ -121,7 +124,8 @@ module.exports = class PluginManager {
 
   // Enable
   enable (pluginID) {
-    if (!this.get(pluginID)) {
+    const plugin = this.get(pluginID);
+    if (!plugin) {
       throw new Error(`Tried to enable a non-installed plugin: (${pluginID})`);
     }
 
@@ -219,15 +223,15 @@ module.exports = class PluginManager {
     }
   }
 
-  log (...data) {
-
+  log (submodule, submoduleColor, ...data) {
+    logger.log(this.MODULE, submodule, submoduleColor, ...data);
   }
 
-  warn (...data) {
-
+  error (submodule, submoduleColor, ...data) {
+    logger.error(this.MODULE, submodule, submoduleColor, ...data);
   }
 
-  error (...data) {
-    
+  warn (submodule, submoduleColor, ...data) {
+    logger.warn(this.MODULE, submodule, submoduleColor, ...data);
   }
 };

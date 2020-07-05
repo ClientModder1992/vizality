@@ -1,4 +1,4 @@
-const { logger } = require('vizality/util');
+const { logger : { error } } = require('vizality/util');
 const { randomBytes } = require('crypto');
 
 const injector = {
@@ -16,11 +16,11 @@ const injector = {
    */
   inject: (injectionId, moduleToPatch, functionName, patch, pre = false) => {
     if (!moduleToPatch) {
-      return injector._error(`Tried to patch undefined (Injection ID '${injectionId}').`);
+      return error(injector.MODULE, injector.SUBMODULE, null, `Tried to patch undefined (Injection ID '${injectionId}').`);
     }
 
     if (injector.injections.find(i => i.id === injectionId)) {
-      return injector._error(`Injection ID '${injectionId}' is already used!`);
+      return error(injector.MODULE, injector.SUBMODULE, null, `Injection ID '${injectionId}' is already used!`);
     }
 
     if (!moduleToPatch.__vizalityInjectionId || !moduleToPatch.__vizalityInjectionId[functionName]) {
@@ -82,7 +82,7 @@ const injector = {
     }
 
     if (!Array.isArray(args)) {
-      injector._error(`Pre-injection ${injection.id} returned something invalid. Injection will be ignored.`);
+      error(injector.MODULE, injector.SUBMODULE, null, `Pre-injection ${injection.id} returned something invalid. Injection will be ignored.`);
       args = originalArgs;
     }
 
@@ -99,14 +99,10 @@ const injector = {
       try {
         finalReturn = i.method.call(_this, originalArgs, finalReturn);
       } catch (e) {
-        injector._error(`Failed to run injection '${i.id}'.`, e);
+        error(injector.MODULE, injector.SUBMODULE, null, `Failed to run injection '${i.id}'.`, e);
       }
     });
     return finalReturn;
-  },
-
-  _error: (...args) => {
-    logger.error(injector.MODULE, injector.SUBMODULE, null, ...args);
   }
 };
 

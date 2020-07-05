@@ -38,7 +38,6 @@ module.exports = async () => {
          * }
          */
         returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${string.toCamelCase(key)}Button`);
-        console.log(string.toCamelCase(key));
       }
     }
 
