@@ -1,7 +1,7 @@
 const { getModule } = require('vizality/webpack');
 
 const _getRoutes = () => {
-  const DISCORD_ROUTES = getModule([ 'Routes' ], false).Routes;
+  const DISCORD_ROUTES = getModule([ 'Routes' ]).Routes;
   const ROUTES = {
     discover: DISCORD_ROUTES.GUILD_DISCOVERY,
     // channel: '//channels/[0-9]+/.*/',

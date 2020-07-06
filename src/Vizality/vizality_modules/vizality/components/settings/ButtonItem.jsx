@@ -1,9 +1,9 @@
 const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
 const AsyncComponent = require('../AsyncComponent');
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem'));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText'));
-const Tooltip = AsyncComponent.from(getModuleByDisplayName('Tooltip'));
+const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
+const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
+const Tooltip = AsyncComponent.from(getModuleByDisplayName('Tooltip', true));
 
 let classes = {
   initialized: false,
@@ -25,16 +25,16 @@ module.exports = class ButtonItem extends React.PureComponent {
   async componentDidMount () {
     if (classes.initialized) return;
 
-    const Flex = await getModuleByDisplayName('Flex');
+    const Flex = await getModuleByDisplayName('Flex', true);
     classes = {
       initialized: true,
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: await getModule([ 'marginTop20' ]),
-      classTitle: (await getModule([ 'titleDefault' ])).titleDefault,
-      classDivider: (await getModule(m => Object.keys(m).join('') === 'divider')).divider,
-      classDividerDef: (await getModule([ 'dividerDefault' ])).dividerDefault,
-      classDescription: (await getModule([ 'formText', 'description' ])).description
+      classMargins: await getModule([ 'marginTop20' ], true),
+      classTitle: (await getModule([ 'titleDefault' ], true)).titleDefault,
+      classDivider: (await getModule(m => Object.keys(m).join('') === 'divider', true)).divider,
+      classDividerDef: (await getModule([ 'dividerDefault' ], true)).dividerDefault,
+      classDescription: (await getModule([ 'formText', 'description' ], true)).description
     };
 
     this.setState({ classes });

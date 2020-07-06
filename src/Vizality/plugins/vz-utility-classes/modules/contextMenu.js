@@ -2,7 +2,7 @@ const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName } = require('vizality/webpack');
 
 module.exports = async () => {
-  const ContextMenu = await getModuleByDisplayName('FluxContainer(ContextMenus)');
+  const ContextMenu = await getModuleByDisplayName('FluxContainer(ContextMenus)', true);
 
   inject('vz-utility-classes-contextMenu', ContextMenu.prototype, 'render', (originalArgs, returnValue) => {
     if (!returnValue.props) return returnValue;

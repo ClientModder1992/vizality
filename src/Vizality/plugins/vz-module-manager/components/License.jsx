@@ -2,7 +2,7 @@ const { React, getModuleByDisplayName, i18n: { Messages } } = require('vizality/
 const { Card, AsyncComponent } = require('vizality/components');
 const { Modal } = require('vizality/components/modal');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
 
 module.exports = ({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
   const data = {

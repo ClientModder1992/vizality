@@ -86,9 +86,9 @@ class BaseProduct extends React.PureComponent {
   }
 
   async goToDiscord (code) {
-    const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ]);
+    const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ], true);
     inviteStore.acceptInviteAndTransitionToInviteChannel(code);
-    (await getModule([ 'popLayer' ])).popAllLayers();
+    (await getModule([ 'popLayer' ], true)).popAllLayers();
   }
 }
 

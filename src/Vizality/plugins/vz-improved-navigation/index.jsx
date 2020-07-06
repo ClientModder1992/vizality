@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { forceUpdateElement } = require('vizality/util');
+const { react: { forceUpdateElement } } = require('vizality/util');
 
 const Settings = require('./components/Settings');
 const MainNav = require('./components/MainNav');
@@ -27,9 +27,9 @@ module.exports = class MainNavigation extends Plugin {
     document.documentElement.setAttribute('vz-main-nav-position', this.settings.get('position', 'top'));
     document.documentElement.setAttribute('vz-main-nav-link-style', this.settings.get('link-style', 'text'));
 
-    const { app } = await getModule([ 'app', 'layers' ]);
+    const { app } = await getModule([ 'app', 'layers' ], true);
 
-    const Shakeable = await getModuleByDisplayName('Shakeable');
+    const Shakeable = await getModuleByDisplayName('Shakeable', true);
     const navBar = React.createElement(MainNav, { position, linkStyle });
 
     inject('vz-mainNav', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ navBar, returnValue ]);

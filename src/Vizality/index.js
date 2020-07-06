@@ -1,6 +1,7 @@
 const { getModuleByPrototypes, _init } = require('vizality/webpack');
+
 const { sleep, logger: { log, warn, error } } = require('vizality/util');
-const { WEBSITE_IMAGES } = require('vizality/constants');
+const { IMAGES } = require('vizality/constants');
 const { Updatable } = require('vizality/entities');
 
 const { join } = require('path');
@@ -92,15 +93,83 @@ class Vizality extends Updatable {
   // Vizality startup
   async startup () {
     console.clear();
+
     // Startup banner
     console.log('%c ',
-      `background: url(${WEBSITE_IMAGES}/console-startup-banner.png) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`
+      `background: url(${IMAGES}/console-startup-banner.png) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`
     );
 
     // APIs
     await this.apiManager.startAPIs();
     this.settings = vizality.api.settings.buildCategoryObject('vz-general');
     this.emit('settingsReady');
+
+    this.modules = {
+      webpack: {
+        modules: {}
+      },
+      classes: {},
+      constants: {},
+      discord: {}
+    };
+    /*
+     * Setting up the modules for the global vizality object
+     * =====================================================
+     *
+     * Webpack
+     * -------
+     */
+    const WEBPACK_MODULE = require('vizality/webpack');
+    Object.getOwnPropertyNames(WEBPACK_MODULE)
+      .filter(prop => prop.indexOf('_'))
+      .forEach(e => {
+        if (!e.indexOf('get') && e.includes('Module')) {
+          this.modules.webpack[e] = WEBPACK_MODULE[e];
+        } else {
+          this.modules.webpack.modules[e] = WEBPACK_MODULE[e];
+        }
+      });
+
+    /*
+     * Classes
+     * -------
+     */
+    const CLASSES_MODULE = require('vizality/classes');
+    Object.getOwnPropertyNames(CLASSES_MODULE)
+      .forEach(e => this.modules.classes[e] = CLASSES_MODULE[e]);
+
+    /*
+     * Constants
+     * ---------
+     */
+    const CONSTANTS_MODULE = require('vizality/constants');
+    Object.getOwnPropertyNames(CONSTANTS_MODULE)
+      .forEach(e => this.modules.constants[e] = CONSTANTS_MODULE[e]);
+
+    /*
+     * Discord
+     * -------
+     */
+    const DISCORD_MODULE = require('vizality/discord');
+    Object.getOwnPropertyNames(DISCORD_MODULE)
+      .filter(prop => prop.indexOf('_'))
+      .forEach(e => this.modules.discord[e] = DISCORD_MODULE[e]);
+    /*
+     * Discord:settings
+     * ----------------
+     */
+    const DISCORD_SETTINGS_MODULE = require('vizality/discord/settings');
+    Object.getOwnPropertyNames(DISCORD_SETTINGS_MODULE)
+      .filter(prop => prop.indexOf('_'))
+      .forEach(e => this.modules.discord.settings[e] = DISCORD_SETTINGS_MODULE[e]);
+
+    /**
+     * @warning: Turn this off by default on release.
+     * @todo: Make this a 'Developer Mode' settings toggle
+     */
+    for (const mdl in this.modules) {
+      global[mdl] = this.modules[mdl];
+    }
 
     // Style Manager
     this.styleManager.loadThemes();
@@ -119,7 +188,7 @@ class Vizality extends Updatable {
       document.documentElement.setAttribute('vz-route', getCurrentRoute());
     });
 
-    const Log = await getModuleByPrototypes([ '_log' ]);
+    const Log = getModuleByPrototypes([ '_log' ]);
 
     const insteadObj = {};
     function _logInstead (module, orig, replace) {

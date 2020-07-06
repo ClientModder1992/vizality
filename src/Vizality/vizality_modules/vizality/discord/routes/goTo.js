@@ -13,31 +13,31 @@ const goTo = (location) => {
     return warn(MODULE, SUBMODULE, null, `You must enter a valid route string. List of available routes:`, routeList);
   }
 
-  const DISCORD_ROUTES = getModule([ 'Routes' ], false).Routes;
+  const DISCORD_ROUTES = getModule([ 'Routes' ]).Routes;
 
   if (Object.keys(DISCORD_ROUTES).includes(location)) {
-    return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES[location]);
+    return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES[location]);
   }
 
   if (Object.values(DISCORD_ROUTES).includes(location)) {
-    return getModule([ 'transitionTo' ], false).transitionTo(location);
+    return getModule([ 'transitionTo' ]).transitionTo(location);
   }
 
   location = location.toLowerCase();
 
   switch (location) {
     case 'discover':
-      return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES.GUILD_DISCOVERY);
+      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.GUILD_DISCOVERY);
     case 'dm':
-      return getModule([ 'transitionTo' ], false).transitionTo(
-        DISCORD_ROUTES.CHANNEL('@me', getModule([ 'getPrivateChannelIds' ], false).getPrivateChannelIds()[0])
+      return getModule([ 'transitionTo' ]).transitionTo(
+        DISCORD_ROUTES.CHANNEL('@me', getModule([ 'getPrivateChannelIds' ]).getPrivateChannelIds()[0])
       );
     case 'friends':
-      return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES.FRIENDS);
+      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.FRIENDS);
     case 'library':
-      return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES.APPLICATION_LIBRARY);
+      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.APPLICATION_LIBRARY);
     case 'nitro':
-      return getModule([ 'transitionTo' ], false).transitionTo(DISCORD_ROUTES.APPLICATION_STORE);
+      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.APPLICATION_STORE);
     default:
       return warn(MODULE, SUBMODULE, null, `The route '${location}' was not found. List of available routes:`, routeList);
   }

@@ -2,7 +2,7 @@ const { logger: { log, warn } } = require('vizality/util');
 
 module.exports = function info (setting) {
   const MODULE = 'Module';
-  const SUBMODULE = 'Discord:settings:getInfo';
+  const SUBMODULE = 'Discord:settings:getSettingInfo';
 
   const SETTINGS_INFO = {
     afkTimeout: [
@@ -118,7 +118,7 @@ module.exports = function info (setting) {
   SETTINGS_INFO.showSpoilers = SETTINGS_INFO.renderSpoilers;
 
   if (!setting) {
-    log(MODULE, SUBMODULE, null, 'List of available settings:', Object.keys(SETTINGS_INFO));
+    log(MODULE, SUBMODULE, null, 'List of available settings:');
     return Object.keys(SETTINGS_INFO);
   }
 

@@ -32,8 +32,8 @@ module.exports = class Documentation extends Plugin {
   }
 
   async addDocsItems () {
-    const { pushLayer } = await getModule([ 'pushLayer' ]);
-    const SettingsView = await getModuleByDisplayName('SettingsView');
+    const { pushLayer } = await getModule([ 'pushLayer' ], true);
+    const SettingsView = await getModuleByDisplayName('SettingsView', true);
     inject('vz-docs-tab', SettingsView.prototype, 'getPredicateSections', (args, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
@@ -55,13 +55,13 @@ module.exports = class Documentation extends Plugin {
   }
 
   async _ensureHighlight () {
-    const module = await getModule([ 'highlight' ]);
+    const module = await getModule([ 'highlight' ], true);
     if (typeof module.highlight !== 'function') {
-      const currentChannel = (await getModule([ 'getChannelId' ])).getChannelId();
+      const currentChannel = (await getModule([ 'getChannelId' ], true)).getChannelId();
       if (!currentChannel) {
-        const router = await getModule([ 'replaceWith' ]);
-        const channels = await getModule([ 'getChannels' ]);
-        const permissions = await getModule([ 'can' ]);
+        const router = await getModule([ 'replaceWith' ], true);
+        const channels = await getModule([ 'getChannels' ], true);
+        const permissions = await getModule([ 'can' ], true);
         const currentLocation = window.location.pathname;
         const channel = channels.getChannels().find(c => c.type === 0 && permissions.can(discordConsts.Permissions.VIEW_CHANNEL, c));
         const route = discordConsts.Routes.CHANNEL(channel.guild_id, channel.id); // eslint-disable-line new-cap
@@ -76,7 +76,7 @@ module.exports = class Documentation extends Plugin {
   }
 
   async _loadModule (channel) {
-    const module = await getModule([ 'createBotMessage' ]);
+    const module = await getModule([ 'createBotMessage' ], true);
     const message = module.createBotMessage(channel, '```js\nconsole.log("yeet")\n```');
     messages.receiveMessage(channel, message);
     messages.deleteMessage(channel, message.id, true);

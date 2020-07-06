@@ -1,9 +1,9 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule, i18n } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, forceUpdateElement, string, joinClassNames } = require('vizality/util');
+const { waitFor, joinClassNames, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('vizality/util');
 
 module.exports = async () => {
-  const channelHeaderButtonClasses = await getModule([ 'iconWrapper', 'toolbar' ]);
+  const channelHeaderButtonClasses = await getModule([ 'iconWrapper', 'toolbar' ], true);
   const instance = getOwnerInstance(await waitFor(`.${channelHeaderButtonClasses.iconWrapper}`));
 
   if (!instance) return;
@@ -37,7 +37,7 @@ module.exports = async () => {
          *   return returnValue;
          * }
          */
-        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${string.toCamelCase(key)}Button`);
+        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${toCamelCase(key)}Button`);
       }
     }
 

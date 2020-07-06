@@ -12,9 +12,9 @@ module.exports = async () => {
   return () => void 0;
 
   /* eslint-disable no-unreachable */
-  const MenuItem = await getModule(m => m.default && m.default.displayName === 'MenuItem');
+  const MenuItem = await getModule(m => m.default && m.default.displayName === 'MenuItem', true);
   const originalMenuItem = MenuItem.default;
-  const GuildStore = await getModule([ 'getGuild' ]);
+  const GuildStore = await getModule([ 'getGuild' ], true);
 
   inject('vz-utility-classes-contextMenuItems', MenuItem, 'default', ([ props ], returnValue) => {
     return returnValue;

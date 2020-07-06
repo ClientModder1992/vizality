@@ -1,26 +1,10 @@
 /**
- * @deprecated:
- * @powercord: This function/module is only here to provide
- * backwards-compatability with Powercord plugins that may utilize it.
- *
- * Plugins should be using `Util.react.findInTree` instead.
- */
-
-/**
  * All credit goes to rauenzi (Zerebos#7790) for writing up this implementation.
  * You can find the original source here:
  * <https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js#L3302-L3336>
  */
 
-const { deprecate } = require('./logger');
-
 const findInTree = function findInTree (tree, filter, { walkable = null, ignore = [] } = {}) {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:findInTree';
-  const REPLACEMENT_SUBMODULE = 'Util:react:findInTree';
-
-  deprecate(MODULE, SUBMODULE, REPLACEMENT_SUBMODULE);
-
   if (!tree || typeof tree !== 'object') {
     return null;
   }

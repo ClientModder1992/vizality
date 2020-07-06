@@ -14,9 +14,9 @@ module.exports = class ChannelHistory extends Plugin {
     if (cmd !== 'browser-backward' && cmd !== 'browser-forward') return;
 
     if (cmd === 'browser-backward' && webContents.canGoBack()) {
-      (await getModule([ 'history' ])).history.back();
+      (await getModule([ 'history' ], true)).history.back();
     } else if (cmd === 'browser-forward' && webContents.canGoForward()) {
-      (await getModule([ 'history' ])).history.forward();
+      (await getModule([ 'history' ], true)).history.forward();
     }
   }
 

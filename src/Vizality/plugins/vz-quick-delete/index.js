@@ -1,17 +1,17 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule } = require('vizality/webpack');
-const { findInReactTree } = require('vizality/util');
+const { react : { findInReactTree } } = require('vizality/util');
 const { Tooltip, Icon } = require('vizality/components');
 
 module.exports = class QuickDelete extends Plugin {
   async startPlugin () {
-    const deleteMessage = await getModule([ 'deleteMessage', 'sendMessage' ]);
-    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover');
+    const deleteMessage = await getModule([ 'deleteMessage', 'sendMessage' ], true);
+    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover', true);
 
     const classes = {
-      ...getModule([ 'button', 'wrapper', 'disabled' ], false),
-      ...getModule([ 'icon', 'isHeader' ], false)
+      ...getModule([ 'button', 'wrapper', 'disabled' ]),
+      ...getModule([ 'icon', 'isHeader' ])
     };
 
     inject('quick-delete-button', MiniPopover, 'default', (originalArgs, returnValue) => {

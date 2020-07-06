@@ -4,15 +4,8 @@ const { existsSync, mkdirSync, open, write } = require('fs');
 
 require('../ipc/renderer');
 
-const mod = require('module');
-// Add Vizality's modules
-mod.Module.globalPaths.push(join(__dirname, '../Vizality/vizality_modules'));
-// Add Powercord proxy
-const originalModuleLoad = mod._load;
-mod._load = function (request, parent, isMain) {
-  if (!request.indexOf('powercord')) request = request.replace('powercord', 'vizality');
-  return originalModuleLoad(request, parent, isMain);
-};
+// Add Powercord's modules
+require('module').Module.globalPaths.push(join(__dirname, '../Vizality/vizality_modules'));
 
 const { LOGS_FOLDER } = require('vizality/constants');
 

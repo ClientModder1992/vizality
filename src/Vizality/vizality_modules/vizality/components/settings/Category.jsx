@@ -1,8 +1,8 @@
 const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
 const AsyncComponent = require('../AsyncComponent');
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem'));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText'));
+const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
+const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 
 let classes = {
   initialized: false,

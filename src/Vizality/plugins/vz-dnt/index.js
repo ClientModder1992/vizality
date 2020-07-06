@@ -3,11 +3,11 @@ const { getModule } = require('vizality/webpack');
 
 module.exports = class DoNotTrack extends Plugin {
   async startPlugin () {
-    const Analytics = await getModule([ 'getSuperPropertiesBase64' ]);
+    const Analytics = await getModule([ 'getSuperPropertiesBase64' ], true);
     Analytics.__oldTrack = Analytics.track;
     Analytics.track = () => void 0;
 
-    const Reporter = await getModule([ 'submitLiveCrashReport' ]);
+    const Reporter = await getModule([ 'submitLiveCrashReport' ], true);
     Reporter.__oldSubmitLiveCrashReport = Reporter.submitLiveCrashReport;
     Reporter.submitLiveCrashReport = () => void 0;
 
@@ -42,10 +42,10 @@ module.exports = class DoNotTrack extends Plugin {
   async pluginWillUnload () {
     EventTarget.prototype.removeEventListener = this.__rel;
 
-    const Analytics = getModule([ 'getSuperPropertiesBase64' ], false);
+    const Analytics = getModule([ 'getSuperPropertiesBase64' ]);
     Analytics.track = Analytics.__oldTrack;
 
-    const Reporter = getModule([ 'submitLiveCrashReport' ], false);
+    const Reporter = getModule([ 'submitLiveCrashReport' ]);
     Reporter.submitLiveCrashReport = Reporter.__oldSubmitLiveCrashReport;
 
     const Sentry = {

@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { React, getModule, hljs } = require('vizality/webpack');
 const { inject, uninject } = require('vizality/injector');
-const { findInReactTree } = require('vizality/util');
+const { react: { findInReactTree } } = require('vizality/util');
 const { clipboard } = require('electron');
 
 module.exports = class Codeblocks extends Plugin {
@@ -16,7 +16,7 @@ module.exports = class Codeblocks extends Plugin {
   }
 
   async patchCodeblocks () {
-    const parser = await getModule([ 'parse', 'parseTopic' ]);
+    const parser = await getModule([ 'parse', 'parseTopic' ], true);
     inject('vz-codeblocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
       this.injectCodeblock(args, res);
 

@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule, getAllModules, getModuleByDisplayName } = require('vizality/webpack');
-const { findInTree, findInReactTree, getOwnerInstance, waitFor } = require('vizality/util');
+const { react : { findInReactTree, findInTree, getOwnerInstance }, waitFor } = require('vizality/util');
 
 module.exports = class Router extends Plugin {
   async startPlugin () {
@@ -21,10 +21,10 @@ module.exports = class Router extends Plugin {
   }
 
   async _injectRouter () {
-    const FluxViewsWithMainInterface = await getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
+    const FluxViewsWithMainInterface = await getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)', true);
     const ViewsWithMainInterface = FluxViewsWithMainInterface
       .prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
-    const { container } = await getModule([ 'container', 'downloadProgressCircle' ]);
+    const { container } = await getModule([ 'container', 'downloadProgressCircle' ], true);
     const RouteRenderer = getOwnerInstance(await waitFor(`.${container.split(' ')[0]}`));
     inject('vz-router-route', RouteRenderer.__proto__, 'render', (args, res) => {
       const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);

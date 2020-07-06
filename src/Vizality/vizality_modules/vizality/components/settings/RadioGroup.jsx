@@ -2,7 +2,7 @@ const { getModule, getModuleByDisplayName, React } = require('vizality/webpack')
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const DRadioGroup = AsyncComponent.from(getModuleByDisplayName('RadioGroup'));
+const DRadioGroup = AsyncComponent.from(getModuleByDisplayName('RadioGroup', true));
 
 let margin = '';
 module.exports = class RadioGroup extends React.PureComponent {
@@ -16,7 +16,7 @@ module.exports = class RadioGroup extends React.PureComponent {
       return;
     }
 
-    margin = (await getModule([ 'marginTop20' ])).marginTop20;
+    margin = (await getModule([ 'marginTop20' ], true)).marginTop20;
     this.setState({ margin });
   }
 

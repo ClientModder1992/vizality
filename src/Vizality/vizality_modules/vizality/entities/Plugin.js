@@ -1,6 +1,6 @@
 const { existsSync } = require('fs');
 const { join } = require('path');
-const { sleep, createElement, logger } = require('vizality/util');
+const { sleep, dom: { createElement }, logger } = require('vizality/util');
 const { resolveCompiler } = require('vizality/compilers');
 const Updatable = require('./Updatable');
 

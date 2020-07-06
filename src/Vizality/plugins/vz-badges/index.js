@@ -5,7 +5,7 @@ const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule, getAllModules, getModuleByDisplayName } = require('vizality/webpack');
-const { forceUpdateElement, getOwnerInstance, waitFor } = require('vizality/util');
+const { waitFor, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');
@@ -18,9 +18,9 @@ module.exports = class Badges extends Plugin {
 
   async startPlugin () {
     this.classes = {
-      ...await getModule([ 'headerInfo', 'nameTag' ]),
+      ...await getModule([ 'headerInfo', 'nameTag' ], true),
       ...await getAllModules([ 'modal', 'inner' ])[1],
-      header: (await getModule([ 'iconBackgroundTierNone', 'container' ])).header
+      header: (await getModule([ 'iconBackgroundTierNone', 'container' ], true)).header
     };
 
     Object.keys(this.classes).forEach(
@@ -44,7 +44,7 @@ module.exports = class Badges extends Plugin {
 
   async _patchGuildTooltips () {
     const _this = this;
-    const GuildBadge = await getModuleByDisplayName('GuildBadge');
+    const GuildBadge = await getModuleByDisplayName('GuildBadge', true);
     inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, res) {
       const { guild } = this.props;
       // GuildBadges is used in different places, size prop seems GuildTooltip "exclusive"
@@ -58,7 +58,7 @@ module.exports = class Badges extends Plugin {
 
   async _patchGuildHeaders () {
     const _this = this;
-    const GuildHeader = await getModuleByDisplayName('GuildHeader');
+    const GuildHeader = await getModuleByDisplayName('GuildHeader', true);
     inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, res) {
       if (_this.guildBadges[this.props.guild.id]) {
         res.props.children.unshift(

@@ -6,7 +6,7 @@ const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');
 const TitleBar = require('./TitleBar');
 
-const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));
+const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller', true));
 
 class SdkWindow extends React.PureComponent {
   constructor (props) {
@@ -33,7 +33,7 @@ class SdkWindow extends React.PureComponent {
   }
 
   renderHeaderBar () {
-    const { title } = getModule([ 'title', 'chatContent' ], false);
+    const { title } = getModule([ 'title', 'chatContent' ]);
     return (
       <HeaderBar transparent={false} className={joinClassNames(title, 'vizality-sdk-header')}>
         {this.renderIcon('Force UI', 'Arch', 'force-ui', 'right')}
@@ -47,7 +47,7 @@ class SdkWindow extends React.PureComponent {
   }
 
   renderIcon (tooltip, icon, id, placement = 'bottom') {
-    const headerBarClasses = getModule([ 'iconWrapper', 'clickable' ], false);
+    const headerBarClasses = getModule([ 'iconWrapper', 'clickable' ]);
     const Icon = Icons[icon];
     return (
       <Tooltip text={tooltip} position={placement}>
@@ -56,7 +56,7 @@ class SdkWindow extends React.PureComponent {
           onClick={async () => {
             if (!id) {
               // Consider this is the always on top thing
-              const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
+              const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ], true);
               return popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_SANDBOX', !this.props.windowOnTop);
             }
             const el = this.props.guestWindow.document.getElementById(id);
@@ -71,7 +71,7 @@ class SdkWindow extends React.PureComponent {
 }
 
 module.exports = Flux.connectStoresAsync(
-  [ getModule([ 'theme', 'locale' ]), getModule([ 'getWindow' ]) ],
+  [ getModule([ 'theme', 'locale' ], true), getModule([ 'getWindow' ], true) ],
   ([ { theme }, windowStore ]) => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_SANDBOX'),
     windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_SANDBOX'),

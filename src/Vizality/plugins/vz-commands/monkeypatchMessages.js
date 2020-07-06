@@ -1,13 +1,13 @@
 const { getModule, messages, channels: { getChannelId } } = require('vizality/webpack');
-const { WEBSITE_IMAGES } = require('vizality/constants');
+const { IMAGES } = require('vizality/constants');
 const { receiveMessage } = messages;
 
 module.exports = async function monkeypatchMessages () {
-  const { BOT_AVATARS } = await getModule([ 'BOT_AVATARS' ]);
-  const { createBotMessage } = await getModule([ 'createBotMessage' ]);
+  const { BOT_AVATARS } = await getModule([ 'BOT_AVATARS' ], true);
+  const { createBotMessage } = await getModule([ 'createBotMessage' ], true);
 
-  // create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
-  BOT_AVATARS.vizality = `${WEBSITE_IMAGES}/logo.png`;
+  // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
+  BOT_AVATARS.vizality = `${IMAGES}/logo.png`;
 
   messages.sendMessage = (sendMessage => async (id, message, ...params) => {
     if (!message.content.startsWith(vizality.api.commands.prefix)) {
@@ -31,14 +31,11 @@ module.exports = async function monkeypatchMessages () {
       const receivedMessage = createBotMessage(getChannelId(), '');
 
       if (vizality.settings.get('replaceClyde', true)) {
-        // noinspection JSPrimitiveTypeWrapperUsage
         receivedMessage.author.username = result.username || 'Vizality';
-        // noinspection JSPrimitiveTypeWrapperUsage
         receivedMessage.author.avatar = 'vizality';
 
         if (result.avatar_url) {
           BOT_AVATARS[result.username] = result.avatar_url;
-          // noinspection JSPrimitiveTypeWrapperUsage
           receivedMessage.author.avatar = result.username;
         }
       }
@@ -49,7 +46,6 @@ module.exports = async function monkeypatchMessages () {
         receivedMessage.embeds.push(result.result);
       }
 
-      // noinspection CommaExpressionJS
       return (receiveMessage(receivedMessage.channel_id, receivedMessage), delete BOT_AVATARS[result.avatar_url]);
     }
 

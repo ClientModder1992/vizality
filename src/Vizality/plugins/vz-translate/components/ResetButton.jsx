@@ -1,7 +1,7 @@
 const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
 const { AsyncComponent } = require('vizality/components');
 
-const ChannelTextAreaButton = AsyncComponent.from(getModuleByDisplayName('ChannelTextAreaButton'));
+const ChannelTextAreaButton = AsyncComponent.from(getModuleByDisplayName('ChannelTextAreaButton', true));
 
 module.exports = class ResetButton extends React.PureComponent {
   constructor () {
@@ -13,7 +13,7 @@ module.exports = class ResetButton extends React.PureComponent {
   }
 
   async componentDidMount () {
-    const buttonClass = (await getModule([ 'channelTextArea', 'inner' ])).button;
+    const buttonClass = (await getModule([ 'channelTextArea', 'inner' ], true)).button;
     this.setState({ buttonClass });
   }
 

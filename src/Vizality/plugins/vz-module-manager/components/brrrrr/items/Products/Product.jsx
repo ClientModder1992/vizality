@@ -8,7 +8,7 @@ const Tags = require('./parts/Product/Tags');
 const Footer = require('./parts/Product/Footer');
 
 let classes = null;
-setImmediate(async () => classes = await getModule([ 'card', 'loaded' ]));
+setImmediate(async () => classes = await getModule([ 'card', 'loaded' ], true));
 
 module.exports = class Product extends React.Component {
   render () {

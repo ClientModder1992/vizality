@@ -1,6 +1,6 @@
 const { log, warn } = require('./logger');
 
-const checkPerformance = (...cases) => {
+const checkPerformance = async (...cases) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Util:checkPerformance';
 
@@ -16,7 +16,7 @@ const checkPerformance = (...cases) => {
     caseNumber++;
 
     const before = performance.now();
-    eval(testCase);
+    await eval(testCase);
     const after = performance.now();
 
     const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');

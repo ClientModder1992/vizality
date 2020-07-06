@@ -1,5 +1,4 @@
 const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { sleep, forceUpdateElement } = require('vizality/util');
 const { TextInput, SwitchItem, Category, RadioGroup, SelectInput, ColorPickerInput, CopyInput, TextArea, RegionSelector, SliderInput, PermissionOverrideItem } = require('vizality/components/settings');
 const { clipboard } = require('electron');
 
@@ -17,7 +16,7 @@ module.exports = class Settings extends React.Component {
     super(props);
     this.state = {
       copyInput: {
-        mode: getModule(m => m.default && m.default.Modes, false).default.Modes.DEFAULT,
+        mode: getModule(m => m.default && m.default.Modes).default.Modes.DEFAULT,
         text: 'Copy'
       },
       classes
@@ -30,7 +29,7 @@ module.exports = class Settings extends React.Component {
       return;
     }
 
-    const Flex = await getModuleByDisplayName('Flex');
+    const Flex = await getModuleByDisplayName('Flex', true);
     classes = {
       initialized: true,
 

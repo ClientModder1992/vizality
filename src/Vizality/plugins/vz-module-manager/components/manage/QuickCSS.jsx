@@ -49,7 +49,7 @@ class QuickCSS extends React.PureComponent {
                 >
                   <Clickable
                     onClick={async () => {
-                      const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
+                      const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ], true);
                       popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_QUICKCSS', !this.props.windowOnTop);
                     }}
                     className='button'
@@ -60,7 +60,7 @@ class QuickCSS extends React.PureComponent {
                 <Tooltip text={this.props.popout ? Messages.CLOSE_WINDOW : Messages.POPOUT_PLAYER} position='left'>
                   <Clickable
                     onClick={() => this.props.popout
-                      ? getModule([ 'setAlwaysOnTop', 'open' ], false).close('DISCORD_VIZALITY_QUICKCSS')
+                      ? getModule([ 'setAlwaysOnTop', 'open' ]).close('DISCORD_VIZALITY_QUICKCSS')
                       : this.props.openPopout()}
                     className='button'
                   >
@@ -217,7 +217,7 @@ class QuickCSS extends React.PureComponent {
 }
 
 module.exports = AsyncComponent.from((async () => {
-  const windowStore = await getModule([ 'getWindow' ]);
+  const windowStore = await getModule([ 'getWindow' ], true);
   return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_QUICKCSS'),
     windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_QUICKCSS'),

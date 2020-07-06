@@ -3,8 +3,8 @@ const { join } = require('path');
 module.exports = Object.freeze({
   // Vizality
   WEBSITE: 'https://vizality.com',
-  WEBSITE_ASSETS: 'https://vizality.com/app/assets',
-  WEBSITE_IMAGES: 'https://vizality.com/app/assets/images',
+  ASSETS: 'https://vizality.com/app/assets',
+  IMAGES: 'https://vizality.com/app/assets/images',
   REPO_URL: 'vizality/vizality',
 
   // Runtime

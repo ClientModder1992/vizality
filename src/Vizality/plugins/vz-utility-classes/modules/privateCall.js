@@ -3,7 +3,7 @@ const { getModule } = require('vizality/webpack');
 const { joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
-  const CallTile = await getModule(m => m.default && m.default.displayName === 'CallTile');
+  const CallTile = await getModule(m => m.default && m.default.displayName === 'CallTile', true);
 
   inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], returnValue) => {
     if (!props | !props.participant || !returnValue.props) return returnValue;

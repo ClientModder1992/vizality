@@ -3,7 +3,7 @@ const { writeFile, readFile } = require('fs').promises;
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { PopoutWindow, Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
-const { findInReactTree, forceUpdateElement } = require('vizality/util');
+const { react : { findInReactTree, forceUpdateElement } } = require('vizality/util');
 const { Plugin } = require('vizality/entities');
 const { MAGIC_CHANNELS: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES } } = require('vizality/constants');
 const { join } = require('path');
@@ -100,7 +100,7 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _injectCommunityContent () {
-    const permissionsModule = await getModule([ 'can' ]);
+    const permissionsModule = await getModule([ 'can' ], true);
     inject('vz-module-manager-channelItem', permissionsModule, 'can', (originalArgs, returnValue) => {
       const id = originalArgs[1].channelId || originalArgs[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
@@ -109,8 +109,8 @@ module.exports = class ModuleManager extends Plugin {
       return returnValue;
     });
 
-    const { transitionTo } = await getModule([ 'transitionTo' ]);
-    const ChannelItem = await getModuleByDisplayName('ChannelItem');
+    const { transitionTo } = await getModule([ 'transitionTo' ], true);
+    const ChannelItem = await getModuleByDisplayName('ChannelItem', true);
     inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (originalArgs, returnValue) {
       const data = {
         [STORE_PLUGINS]: {
@@ -139,12 +139,12 @@ module.exports = class ModuleManager extends Plugin {
       return returnValue;
     });
 
-    const { containerDefault } = await getModule([ 'containerDefault' ]);
+    const { containerDefault } = await getModule([ 'containerDefault' ], true);
     forceUpdateElement(`.${containerDefault}`, true);
   }
 
   async _injectSnippets () {
-    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover');
+    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover', true);
     inject('vz-module-manager-snippets', MiniPopover, 'default', (originalArgs, returnValue) => {
       const props = findInReactTree(returnValue, r => r && r.canReact && r.message);
 
@@ -244,7 +244,7 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _openQuickCSSPopout () {
-    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
+    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ], true);
     popoutModule.open('DISCORD_VIZALITY_QUICKCSS', (key) => (
       React.createElement(PopoutWindow, {
         windowKey: key,

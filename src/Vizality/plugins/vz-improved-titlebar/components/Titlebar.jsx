@@ -30,7 +30,7 @@ module.exports = class Titlebar extends React.Component {
               className={`vizality-titlebar__button-container back small ${!webContents.canGoBack() ? 'disabled' : ''}`}
               title='Back'
               onClick={() => {
-                getModule([ 'history' ], false).history.back();
+                getModule([ 'history' ]).history.back();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-left'></Icon>
@@ -40,7 +40,7 @@ module.exports = class Titlebar extends React.Component {
               className={`vizality-titlebar__button-container forward small ${!webContents.canGoForward() ? 'disabled' : ''}`}
               title='Forward'
               onClick={() => {
-                getModule([ 'history' ], false).history.forward();
+                getModule([ 'history' ]).history.forward();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-right'></Icon>

@@ -2,8 +2,8 @@ const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require
 const { AsyncComponent, Clickable, Tooltip, Icons: { ExternalLink, Pin, Unpin, Close } } = require('vizality/components');
 
 module.exports = AsyncComponent.from((async () => {
-  const StandardSidebarView = await getModuleByDisplayName('StandardSidebarView');
-  const SettingsView = await getModuleByDisplayName('SettingsView');
+  const StandardSidebarView = await getModuleByDisplayName('StandardSidebarView', true);
+  const SettingsView = await getModuleByDisplayName('SettingsView', true);
 
   class DocsSidebarView extends StandardSidebarView {
     render () {
@@ -50,7 +50,7 @@ module.exports = AsyncComponent.from((async () => {
                 position='left'
               >
                 <Clickable
-                  onClick={() => getModule([ 'setAlwaysOnTop', 'open' ], false)
+                  onClick={() => getModule([ 'setAlwaysOnTop', 'open' ])
                     .setAlwaysOnTop('DISCORD_VIZALITY_DOCUMENTATION', !this.props.windowOnTop)}
                   className='button'
                 >
@@ -60,7 +60,7 @@ module.exports = AsyncComponent.from((async () => {
               <Tooltip text={Messages.CLOSE_WINDOW} position='left'>
                 <Clickable
                   className='button'
-                  onClick={() => getModule([ 'setAlwaysOnTop', 'open' ], false).close('DISCORD_VIZALITY_DOCUMENTATION')}
+                  onClick={() => getModule([ 'setAlwaysOnTop', 'open' ]).close('DISCORD_VIZALITY_DOCUMENTATION')}
                 >
                   <Close/>
                 </Clickable>

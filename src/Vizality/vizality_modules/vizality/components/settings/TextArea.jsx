@@ -2,7 +2,7 @@ const { getModuleByDisplayName, React } = require('vizality/webpack');
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const Area = AsyncComponent.from(getModuleByDisplayName('TextArea'));
+const Area = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
 
 module.exports = class TextArea extends React.PureComponent {
   render () {

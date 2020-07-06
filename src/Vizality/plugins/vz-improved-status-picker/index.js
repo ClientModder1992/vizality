@@ -2,16 +2,16 @@ const { Plugin } = require('vizality/entities');
 const { getModule, React, i18n: { Messages } } = require('vizality/webpack');
 const { inject, uninject } = require('vizality/injector');
 
-const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'), false)('./PersonPlay').default;
+const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 
 module.exports = class GameActivityToggle extends Plugin {
   async startPlugin () {
-    const classes = await getModule([ 'status', 'description' ]);
-    const settings = await getModule([ 'updateRemoteSettings' ]);
+    const classes = await getModule([ 'status', 'description' ], true);
+    const settings = await getModule([ 'updateRemoteSettings' ], true);
 
     let { showCurrentGame } = await getModule([ 'showCurrentGame' ]);
 
-    const Menu = await getModule(m => m.default && m.default.displayName === 'Menu');
+    const Menu = await getModule(m => m.default && m.default.displayName === 'Menu', true);
     inject('game-activity-toggle', Menu, 'default', (originalArgs) => {
       if (originalArgs[0].navId !== 'status-picker') {
         return originalArgs;

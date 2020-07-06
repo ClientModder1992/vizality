@@ -1,15 +1,9 @@
-const { logger: { log } } = require('vizality/util');
-
-const _getSections = require('./_getSections');
+const { getModule } = require('vizality/webpack');
 
 const getSections = () => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:settings:getSections';
-
-  const sections = _getSections();
-
-  log(MODULE, SUBMODULE, null, 'List of available user settings sections:');
-  console.log(sections);
+  const discordSections = Object.values(getModule([ 'UserSettingsSections' ]).UserSettingsSections);
+  const vizalitySections = Object.keys(vizality.api.settings.tabs);
+  const sections = discordSections.concat(vizalitySections);
 
   return sections;
 };

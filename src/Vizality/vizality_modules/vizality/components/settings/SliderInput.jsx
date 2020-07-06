@@ -2,11 +2,11 @@ const { getModule, getModuleByDisplayName, React } = require('vizality/webpack')
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const Slider = AsyncComponent.from(getModuleByDisplayName('Slider'));
+const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
 module.exports = class SliderInput extends React.PureComponent {
   render () {
-    const { marginTop20 } = getModule([ 'marginTop20' ], false);
+    const { marginTop20 } = getModule([ 'marginTop20' ]);
     const { children: title, note, required } = this.props;
     delete this.props.children;
 

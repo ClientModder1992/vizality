@@ -19,8 +19,8 @@ require('fs')
   });
 
 Object.assign(exports, {
-  Confirm: AsyncComponent.from(getModuleByDisplayName('Confirm')),
-  Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal'))
+  Confirm: AsyncComponent.from(getModuleByDisplayName('Confirm', true)),
+  Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true))
 });
 
 // Re-export module properties

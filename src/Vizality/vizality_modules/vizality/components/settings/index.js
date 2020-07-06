@@ -11,7 +11,7 @@ require('fs')
 
 // Add some util components
 Object.assign(exports, {
-  SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem'))
+  SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))
 });
 
 // Re-export module properties

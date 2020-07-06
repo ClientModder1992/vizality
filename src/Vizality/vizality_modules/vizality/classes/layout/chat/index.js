@@ -3,9 +3,9 @@ const { attachments } = require('./attachments');
 
 module.exports = {
   chat: {
-    ...getModule([ 'pie' ], false),
-    ...getModule([ 'poop' ], false),
-    ...getModule([ 'chat' ], false),
+    ...getModule([ 'pie' ]),
+    ...getModule([ 'poop' ]),
+    ...getModule([ 'chat' ]),
     attachments
   }
 };

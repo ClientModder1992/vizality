@@ -1,9 +1,8 @@
 const { React, getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { forceUpdateElement } = require('vizality/util');
 const { routes: { goTo } } = require('vizality/discord');
-const { AsyncComponent, Icon, Button, Tooltip, Clickable } = require('vizality/components');
+const { AsyncComponent, Icon } = require('vizality/components');
 
-const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected'));
+const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 
 module.exports = class MainNav extends React.Component {
   render () {
@@ -37,7 +36,7 @@ module.exports = class MainNav extends React.Component {
           </div>
         </div>
         <div className='vizality-main-nav__section-right'>
-          <div className='vizality-main-nav__inbox' onClick={async () => (await getModule([ 'TOGGLE_INBOX' ])).TOGGLE_INBOX.action()}>
+          <div className='vizality-main-nav__inbox' onClick={async () => (await getModule([ 'TOGGLE_INBOX' ], true)).TOGGLE_INBOX.action()}>
             <Icon wrapperClassName='vizality-main-nav__inbox-icon-wrapper' type='notification-bell'></Icon>
           </div>
           <div className='vizality-main-nav__account-panel'>

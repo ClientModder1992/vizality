@@ -1,9 +1,9 @@
 const { React, getModuleByDisplayName } = require('vizality/webpack');
 const { AsyncComponent } = require('vizality/components');
 
-const Mask = AsyncComponent.from(getModuleByDisplayName('Mask'));
+const Mask = AsyncComponent.from(getModuleByDisplayName('Mask', true));
 const CarouselWithSlide = AsyncComponent.from((async () => {
-  const CarouselWithSlide = await getModuleByDisplayName('CarouselWithSlide');
+  const CarouselWithSlide = await getModuleByDisplayName('CarouselWithSlide', true);
   return class Carousel extends CarouselWithSlide {
     render () {
       const res = super.render();

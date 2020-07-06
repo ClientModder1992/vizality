@@ -89,7 +89,7 @@ module.exports = class GeneralSettings extends React.Component {
             onChange={async () => {
               toggleSetting('experiments');
               // Update modules
-              const experimentsModule = await getModule(r => r.isDeveloper !== void 0);
+              const experimentsModule = await getModule(r => r.isDeveloper !== void 0, true);
               experimentsModule._changeCallbacks.forEach(cb => cb());
             }}
           >

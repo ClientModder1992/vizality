@@ -1,7 +1,7 @@
 let momentModule;
 
 const time = (...args) => {
-  if (!momentModule) momentModule = require('vizality/webpack').getModule([ 'createFromInputFallback' ], false);
+  if (!momentModule) momentModule = require('vizality/webpack').getModule([ 'momentProperties' ]);
 
   return momentModule(...args);
 };

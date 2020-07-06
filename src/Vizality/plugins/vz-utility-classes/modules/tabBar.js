@@ -9,7 +9,7 @@ const { string, joinClassNames } = require('vizality/util');
  */
 
 module.exports = async () => {
-  const TabBar = await getModuleByDisplayName('TabBar');
+  const TabBar = await getModuleByDisplayName('TabBar', true);
 
   inject('vz-utility-classes-tabBar', TabBar.prototype, 'render', function (originalArgs, returnValue) {
     if (!returnValue.props || !returnValue.props.children) return returnValue;

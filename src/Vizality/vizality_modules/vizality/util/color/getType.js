@@ -1,4 +1,4 @@
-const { warn } = require('../logger');
+const logger = require('../logger');
 
 const getType = (color) => {
   const MODULE = 'Module';
@@ -22,7 +22,7 @@ const getType = (color) => {
     return 'int';
   }
 
-  return warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
+  return logger.warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
 };
 
 module.exports = getType;

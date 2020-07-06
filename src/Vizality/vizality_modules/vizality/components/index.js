@@ -11,22 +11,22 @@ require('fs')
 
 // Add some util components
 Object.assign(exports, {
-  Button: AsyncComponent.from(getModule(m => m.DropdownSizes)),
-  FormNotice: AsyncComponent.from(getModuleByDisplayName('FormNotice')),
-  Card: AsyncComponent.from(getModuleByDisplayName('Card')),
-  Clickable: AsyncComponent.from(getModuleByDisplayName('Clickable')),
-  Switch: AsyncComponent.from(getModuleByDisplayName('Switch')),
-  Spinner: AsyncComponent.from(getModuleByDisplayName('Spinner')),
-  FormTitle: AsyncComponent.from(getModuleByDisplayName('FormTitle')),
-  HeaderBar: AsyncComponent.from(getModuleByDisplayName('HeaderBar')),
-  TabBar: AsyncComponent.from(getModuleByDisplayName('TabBar')),
-  Text: AsyncComponent.from(getModuleByDisplayName('Text')),
-  Flex: AsyncComponent.from(getModuleByDisplayName('Flex')),
-  Tooltip: AsyncComponent.from((async () => (await getModule([ 'TooltipContainer' ])).TooltipContainer)()),
-  Helmet: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ])).Helmet)()),
-  HelmetProvider: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ])).HelmetProvider)()),
-  ConfirmationModal: AsyncComponent.from(getModuleByDisplayName('Confirm')),
-  Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal')),
+  Button: AsyncComponent.from(getModule(m => m.DropdownSizes, true)),
+  FormNotice: AsyncComponent.from(getModuleByDisplayName('FormNotice', true)),
+  Card: AsyncComponent.from(getModuleByDisplayName('Card', true)),
+  Clickable: AsyncComponent.from(getModuleByDisplayName('Clickable', true)),
+  Switch: AsyncComponent.from(getModuleByDisplayName('Switch', true)),
+  Spinner: AsyncComponent.from(getModuleByDisplayName('Spinner', true)),
+  FormTitle: AsyncComponent.from(getModuleByDisplayName('FormTitle', true)),
+  HeaderBar: AsyncComponent.from(getModuleByDisplayName('HeaderBar', true)),
+  TabBar: AsyncComponent.from(getModuleByDisplayName('TabBar', true)),
+  Text: AsyncComponent.from(getModuleByDisplayName('Text', true)),
+  Flex: AsyncComponent.from(getModuleByDisplayName('Flex', true)),
+  Tooltip: AsyncComponent.from((async () => (await getModule([ 'TooltipContainer' ], true)).TooltipContainer)()),
+  Helmet: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ], true)).Helmet)()),
+  HelmetProvider: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ], true)).HelmetProvider)()),
+  ConfirmationModal: AsyncComponent.from(getModuleByDisplayName('Confirm', true)),
+  Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true)),
   Menu: () => null
 });
 
@@ -52,7 +52,7 @@ getModuleByDisplayName('Text', true, true).then(Text => {
 getModuleByDisplayName('Flex', true, true).then(Flex => {
   [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => exports.Flex[prop] = Flex[prop]);
 });
-getModule([ 'MenuGroup' ]).then(Menu => {
+getModule([ 'MenuGroup' ], true, true).then(Menu => {
   [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
     .forEach(prop => exports.Menu[prop] = Menu[prop]);
   exports.Menu.Menu = Menu.default;

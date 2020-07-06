@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { forceUpdateElement } = require('vizality/util');
+const { react: { forceUpdateElement } } = require('vizality/util');
 
 const Settings = require('./components/Settings');
 const Titlebar = require('./components/Titlebar');
@@ -24,9 +24,9 @@ module.exports = class ImprovedTitlebar extends Plugin {
   }
 
   async _injectTitlebar (type, showHeader, headerText, showExtras) {
-    const { app } = getModule([ 'app', 'layers' ]);
+    const { app } = getModule([ 'app', 'layers' ], true);
     document.documentElement.setAttribute('titlebar-type', this.settings.get('type', 'windows'));
-    const Shakeable = await getModuleByDisplayName('Shakeable');
+    const Shakeable = await getModuleByDisplayName('Shakeable', true);
     const titlebar = React.createElement(Titlebar, { type, showHeader, headerText, showExtras });
     inject('advancedTitlebar-titlebar', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ titlebar, returnValue ]);
 

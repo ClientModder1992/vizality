@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { getOwnerInstance, waitFor, joinClassNames } = require('vizality/util');
+const { waitFor, joinClassNames, react: { getOwnerInstance } } = require('vizality/util');
 
 module.exports = async () => {
-  const { chat } = await getModule([ 'chat' ]);
+  const { chat } = await getModule([ 'chat' ], true);
   const instance = getOwnerInstance(await waitFor(`.${chat.split(' ')[0]}`));
 
   inject('vz-utility-classes-chat', instance.__proto__, 'render', function (originalArgs, returnValue) {

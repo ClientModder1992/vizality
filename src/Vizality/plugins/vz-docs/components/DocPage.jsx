@@ -4,7 +4,7 @@ const { Spinner, FormNotice, AsyncComponent } = require('vizality/components');
 const { WEBSITE } = require('vizality/constants');
 const { get } = require('vizality/http');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
 
 const documentCache = {};
 
@@ -151,9 +151,9 @@ module.exports = (props) => <AsyncComponent
   _provider={async () => {
     if (!modules) {
       modules = {
-        hljs: await getModule([ 'highlight' ]),
-        markdown: await getModule([ 'markdownToHtml' ]),
-        markup: (await getModule([ 'markup' ])).markup
+        hljs: await getModule([ 'highlight' ], true),
+        markdown: await getModule([ 'markdownToHtml' ], true),
+        markup: (await getModule([ 'markup' ], true)).markup
       };
     }
     return () => <DocPage modules={modules} {...props}/>;

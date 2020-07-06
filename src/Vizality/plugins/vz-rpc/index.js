@@ -5,7 +5,7 @@ const { inject, uninject } = require('vizality/injector');
 
 module.exports = class RPC extends Plugin {
   async startPlugin () {
-    this.handlers = await getModule([ 'INVITE_BROWSER' ]);
+    this.handlers = await getModule([ 'INVITE_BROWSER' ], true);
     this._patchHTTPServer();
     this._patchWebSocketServer();
 
@@ -55,7 +55,7 @@ module.exports = class RPC extends Plugin {
   }
 
   async _patchWebSocketServer () {
-    const websocketHandler = await getModule([ 'validateSocketClient' ]);
+    const websocketHandler = await getModule([ 'validateSocketClient' ], true);
 
     inject('vz-rpc-ws', websocketHandler, 'validateSocketClient', args => {
       if (args[2] === 'vizality') {

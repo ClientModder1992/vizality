@@ -1,9 +1,9 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { forceUpdateElement, joinClassNames } = require('vizality/util');
+const { react: { forceUpdateElement }, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
-  const MemberListItem = await getModuleByDisplayName('MemberListItem');
+  const MemberListItem = await getModuleByDisplayName('MemberListItem', true);
 
   inject('vz-utility-classes-members', MemberListItem.prototype, 'render', function (originalArgs, returnValue) {
     if (!this || !this.props || !this.props.user) return returnValue;
@@ -22,8 +22,8 @@ module.exports = async () => {
     return returnValue;
   });
 
-  const MembersGroup = await getModule(m => m.default && m.default.displayName === 'ListSectionItem');
-  const membersGroupClasses = (await getModule([ 'membersGroup' ])).membersGroup;
+  const MembersGroup = await getModule(m => m.default && m.default.displayName === 'ListSectionItem', true);
+  const membersGroupClasses = (await getModule([ 'membersGroup' ], true)).membersGroup;
 
   inject('vz-utility-classes-member-groups', MembersGroup, 'default', (originalArgs, returnValue) => {
     if (!returnValue.props ||

@@ -1,7 +1,7 @@
 const { React, getModuleByDisplayName } = require('vizality/webpack');
 const { Text } = require('vizality/components');
 
-const Autocomplete = getModuleByDisplayName('Autocomplete', false);
+const Autocomplete = getModuleByDisplayName('Autocomplete');
 
 module.exports = class Command extends Autocomplete.Command {
   renderContent () {

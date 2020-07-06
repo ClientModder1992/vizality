@@ -2,7 +2,7 @@ const { getModuleByDisplayName, React } = require('vizality/webpack');
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const Input = AsyncComponent.from(getModuleByDisplayName('TextInput'));
+const Input = AsyncComponent.from(getModuleByDisplayName('TextInput', true));
 
 module.exports = class TextInput extends React.PureComponent {
   render () {

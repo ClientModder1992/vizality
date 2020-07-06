@@ -2,7 +2,7 @@ const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName } = require('vizality/webpack');
 
 module.exports = async () => {
-  const Popout = await getModuleByDisplayName('Popout');
+  const Popout = await getModuleByDisplayName('Popout', true);
 
   inject('vz-utility-classes-popout', Popout.prototype, 'render', (originalArgs, returnValue) => {
     if (!returnValue.props) return returnValue;

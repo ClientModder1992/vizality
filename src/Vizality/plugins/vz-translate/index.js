@@ -1,7 +1,7 @@
 const { Plugin } = require('vizality/entities');
 const { inject, uninject } = require('vizality/injector');
 const { ReactDOM, React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { sleep, createElement, forceUpdateElement, getOwnerInstance, waitFor } = require('vizality/util');
+const { sleep, waitFor, dom: { createElement }, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
 const { ContextMenu: { Submenu } } = require('vizality/components');
 
 const Settings = require('./components/Settings');
@@ -17,8 +17,8 @@ module.exports = class Translate extends Plugin {
     this.state = {};
     this.translations = {};
     this.messageClasses = {
-      ...await getModule([ 'container', 'messageCompact' ]),
-      ...await getModule([ 'markup' ])
+      ...await getModule([ 'container', 'messageCompact' ], true),
+      ...await getModule([ 'markup' ], true)
     };
 
     Object.keys(this.messageClasses)
@@ -56,7 +56,7 @@ module.exports = class Translate extends Plugin {
 
     /*
      * const HeaderIcon = require('./components/HeaderIcon');
-     * const HeaderBarContainer = await getModuleByDisplayName('HeaderBarContainer');
+     * const HeaderBarContainer = await getModuleByDisplayName('HeaderBarContainer', true);
      * inject('vz-translate-icon', HeaderBarContainer.prototype, 'renderLoggedIn', function (_, res) {
      *  if (this.props.toolbar && !this.props.toolbar.props) {
      *   this.props.toolbar.unshift(
@@ -71,7 +71,7 @@ module.exports = class Translate extends Plugin {
      * });
      */
 
-    const MessageContent = await getModuleByDisplayName('MessageContent');
+    const MessageContent = await getModuleByDisplayName('MessageContent', true);
     inject('vz-translate-contentRemove', MessageContent.prototype, 'componentWillUnmount', function () {
       const { message, message: { embeds } } = this.props;
       const embed = embeds.length > 0 ? embeds[0] : null;
@@ -133,7 +133,7 @@ module.exports = class Translate extends Plugin {
       return args;
     }, true);
 
-    const ChannelEditorContainer = await getModuleByDisplayName('ChannelEditorContainer');
+    const ChannelEditorContainer = await getModuleByDisplayName('ChannelEditorContainer', true);
     inject('vz-translate-clearRestore', ChannelEditorContainer.prototype, 'componentDidUpdate', (args, res) => {
       if (args[0].textValue.length <= 1 || args[1].submitting) {
         this.removeResetButton();
@@ -142,7 +142,7 @@ module.exports = class Translate extends Plugin {
       return res;
     });
 
-    const SlateContextMenu = await getModule(m => m.default && m.default.displayName === 'SlateContextMenu');
+    const SlateContextMenu = await getModule(m => m.default && m.default.displayName === 'SlateContextMenu', true);
     inject('vz-translate-slateContext', SlateContextMenu, 'default', (args, res) => {
       const channelEditorContainer = args[0].editor._reactInternalFiber.return;
       const { memoizedProps: { textValue } } = channelEditorContainer;
@@ -151,12 +151,12 @@ module.exports = class Translate extends Plugin {
 
       const setText = async (opts) => {
         const classes = {
-          ...await getModule([ 'uploadModal' ]),
-          ...await getModule([ 'messagesWrapper' ]),
-          ...await getModule([ 'channelTextArea', 'inner' ])
+          ...await getModule([ 'uploadModal' ], true),
+          ...await getModule([ 'messagesWrapper' ], true),
+          ...await getModule([ 'channelTextArea', 'inner' ], true)
         };
 
-        const { deserialize } = await getModule([ 'deserialize' ]);
+        const { deserialize } = await getModule([ 'deserialize' ], true);
         const textArea = getOwnerInstance(await waitFor(`.${classes.messagesWrapper.split(' ')[0]} + form .${classes.channelTextArea.split(' ')[0]}`));
         const selectedText = args[0].editor.getSelectedText();
         const uploadModal = document.querySelector(`.${classes.uploadModal.split(' ')[0]}`)
@@ -212,7 +212,7 @@ module.exports = class Translate extends Plugin {
       return res;
     });
 
-    const MessageContextMenu = await getModuleByDisplayName('MessageContextMenu');
+    const MessageContextMenu = await getModuleByDisplayName('MessageContextMenu', true);
     inject('vz-translate-context', MessageContextMenu.prototype, 'render', function (_, res) {
       const { containerCozyBounded, timestampCozy, markup } = _this.messageClasses;
       const setText = async (opts) => {

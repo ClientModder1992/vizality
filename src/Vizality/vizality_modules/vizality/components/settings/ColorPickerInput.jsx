@@ -2,9 +2,9 @@ const { React, getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLO
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const ColorPicker = AsyncComponent.from(getModuleByDisplayName('ColorPicker'));
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
-const Slider = AsyncComponent.from(getModuleByDisplayName('Slider'));
+const ColorPicker = AsyncComponent.from(getModuleByDisplayName('ColorPicker', true));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
 class ColorPickerInput extends React.PureComponent {
   constructor (props) {
@@ -36,7 +36,7 @@ class ColorPickerInput extends React.PureComponent {
   }
 
   renderOpacity () {
-    const { marginTop8, marginTop20 } = getModule([ 'marginTop20' ], false);
+    const { marginTop8, marginTop20 } = getModule([ 'marginTop20' ]);
     return (
       <>
         <FormTitle className={marginTop8}>Opacity</FormTitle>

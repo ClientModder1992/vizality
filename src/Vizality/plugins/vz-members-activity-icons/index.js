@@ -12,7 +12,7 @@ module.exports = class MembersActivityIcons extends Plugin {
   }
 
   async _injectActivityIcons () {
-    const MemberListItem = await getModuleByDisplayName('MemberListItem');
+    const MemberListItem = await getModuleByDisplayName('MemberListItem', true);
     inject('vz-members-activity-icons', MemberListItem.prototype, 'render', (originalArgs, returnValue) => {
       const { activities } = returnValue.props.subText.props;
 

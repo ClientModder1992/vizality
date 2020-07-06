@@ -2,7 +2,7 @@
 const { Plugin } = require('vizality/entities');
 const { React, getModuleByDisplayName, getModule, i18n } = require('vizality/webpack');
 const { inject, uninject } = require('vizality/injector');
-const { findInReactTree } = require('vizality/util');
+const { react : { findInReactTree } } = require('vizality/util');
 
 module.exports = class ChannelTitlebar extends Plugin {
   constructor () {
@@ -23,7 +23,7 @@ module.exports = class ChannelTitlebar extends Plugin {
   }
 
   async _getGuildChannelHeader () {
-    const GuildHeader = await getModuleByDisplayName('GuildHeader');
+    const GuildHeader = await getModuleByDisplayName('GuildHeader', true);
 
     inject('pc-impChannelTitlebar-guildChannelHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
       this.guildHeader = res;
@@ -35,7 +35,7 @@ module.exports = class ChannelTitlebar extends Plugin {
   }
 
   async improvedChannelHeader () {
-    const ChannelHeader = await getModuleByDisplayName('HeaderBarContainer');
+    const ChannelHeader = await getModuleByDisplayName('HeaderBarContainer', true);
 
     inject('pc-impChannelTitlebar-channelHeader', ChannelHeader.prototype, 'render', (_, res) => {
       const found = findInReactTree(res, n => n.channel);
@@ -66,7 +66,7 @@ module.exports = class ChannelTitlebar extends Plugin {
         iconType = 'avatars';
         noIconURL = document.querySelector('.channel-2QD9_O.selected-aXhQR6 .avatar-VxgULZ') ? document.querySelector('.channel-2QD9_O.selected-aXhQR6 .avatar-VxgULZ').src : '';
 
-        activity = (getModule([ 'getPrimaryActivity' ], false)).getPrimaryActivity(iconId);
+        activity = (getModule([ 'getPrimaryActivity' ])).getPrimaryActivity(iconId);
 
         if (activity) {
           if (activity.type === 0) {

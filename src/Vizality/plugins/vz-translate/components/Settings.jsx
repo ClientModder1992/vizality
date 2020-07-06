@@ -2,10 +2,10 @@ const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require
 const { SwitchItem } = require('vizality/components/settings');
 const { AsyncComponent } = require('vizality/components');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText'));
-const Checkbox = AsyncComponent.from(getModuleByDisplayName('Checkbox'));
-const Clickable = AsyncComponent.from(getModuleByDisplayName('Clickable'));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
+const Checkbox = AsyncComponent.from(getModuleByDisplayName('Checkbox', true));
+const Clickable = AsyncComponent.from(getModuleByDisplayName('Clickable', true));
 
 const translate = require('google-translate-api');
 
@@ -23,9 +23,9 @@ module.exports = class Settings extends React.Component {
     this.setState({
       Flex: await getModuleByDisplayName('Flex'),
       classes: {
-        ...await getModule([ 'checkboxGroup' ]),
-        ...await getModule([ 'formText', 'description' ]),
-        ...await getModule([ 'marginBottom20' ])
+        ...await getModule([ 'checkboxGroup' ], true),
+        ...await getModule([ 'formText', 'description' ], true),
+        ...await getModule([ 'marginBottom20' ], true)
       }
     });
   }

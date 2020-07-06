@@ -5,7 +5,7 @@ const Title = require('./components/Title');
 const Command = require('./components/Command');
 
 module.exports = async function injectAutocomplete () {
-  const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete');
+  const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete', true);
 
   function renderCommandResults (query, selected, commands, onClick, onHover, formatCommand, formatHeader, customHeader) {
     const renderHeader = function (query, formatHeader) {

@@ -1,11 +1,11 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { findInReactTree, joinClassNames, forceUpdateElement } = require('vizality/util');
+const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('vizality/util');
 
 module.exports = async () => {
   return () => void 0;
 
-  const List  = await getModuleByDisplayName('List');
+  const List  = await getModuleByDisplayName('List', true);
 
   inject('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (originalArgs, returnValue) => {
     // const props = findInReactTree(returnValue, n => n.id);
@@ -32,7 +32,7 @@ module.exports = async () => {
 
   /*
    * return async () => uninject('vz-improved-navigation-dmChannels');
-   * const ConnectedPrivateChannelsList  = await getModule(m => m.default && m.default.displayName === 'ConnectedPrivateChannelsList');
+   * const ConnectedPrivateChannelsList  = await getModule(m => m.default && m.default.displayName === 'ConnectedPrivateChannelsList', true);
    */
 
   /*

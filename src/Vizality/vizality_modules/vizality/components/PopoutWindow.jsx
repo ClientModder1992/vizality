@@ -1,8 +1,15 @@
+/* eslint-disable no-unreachable */
+
 const { getModuleByDisplayName } = require('vizality/webpack');
 const AsyncComponent = require('./AsyncComponent');
 
 module.exports = AsyncComponent.from((async () => {
-  const DiscordPopoutWindow = await getModuleByDisplayName('FluxContainer(PopoutWindow)');
+  /**
+   * @todo: Needs fixing.
+   */
+  return void 0;
+
+  const DiscordPopoutWindow = await getModuleByDisplayName('FluxContainer(PopoutWindow)', true);
   class PopoutWindow extends DiscordPopoutWindow {
     constructor (props) {
       if (!props.withTitleBar) {

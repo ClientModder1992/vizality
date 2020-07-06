@@ -52,7 +52,7 @@ class Base extends React.Component {
         {this.renderSearch()}
         {items.length === 0
           ? <div className='empty'>
-            <div className={getModule([ 'emptyStateImage' ], false).emptyStateImage}/>
+            <div className={getModule([ 'emptyStateImage' ]).emptyStateImage}/>
             <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
             <p>{Messages.SEARCH_NO_RESULTS}</p>
           </div>
@@ -104,8 +104,8 @@ class Base extends React.Component {
   }
 
   async goToStore () {
-    const { popLayer } = await getModule([ 'popLayer' ]);
-    const { transitionTo } = await getModule([ 'transitionTo' ]);
+    const { popLayer } = await getModule([ 'popLayer' ], true);
+    const { transitionTo } = await getModule([ 'transitionTo' ], true);
     popLayer();
     transitionTo(`/_vizality/store/${this.constructor.name.toLowerCase()}`);
   }

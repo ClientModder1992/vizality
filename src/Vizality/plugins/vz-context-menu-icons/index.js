@@ -14,7 +14,7 @@ module.exports = class UtilityClasses extends Plugin {
   }
 
   async _injectContextMenuItems () {
-    const MenuItem = await getModule(m => m.default && m.default.displayName === 'MenuItem');
+    const MenuItem = await getModule(m => m.default && m.default.displayName === 'MenuItem', true);
 
     inject('vz-contextMenuIcons', MenuItem, 'default', (originalArgs, returnValue) => {
       if (!returnValue.props || !returnValue.props.id) return returnValue;
@@ -67,7 +67,7 @@ module.exports = class UtilityClasses extends Plugin {
   }
 
   async _injectContextMenuCheckboxItems () {
-    const MenuCheckboxItem = await getModule(m => m.default && m.default.displayName === 'MenuCheckboxItem');
+    const MenuCheckboxItem = await getModule(m => m.default && m.default.displayName === 'MenuCheckboxItem', true);
 
     inject('vz-contextMenuCheckboxIcons', MenuCheckboxItem, 'default', (originalArgs, returnValue) => {
       if (!returnValue.props || !returnValue.props.id) return returnValue;
@@ -97,7 +97,7 @@ module.exports = class UtilityClasses extends Plugin {
   }
 
   async _injectContextMenuControlItems () {
-    const MenuControlItem = await getModule(m => m.default && m.default.displayName === 'MenuControlItem');
+    const MenuControlItem = await getModule(m => m.default && m.default.displayName === 'MenuControlItem', true);
 
     inject('vz-contextMenuControlIcons', MenuControlItem, 'default', (originalArgs, returnValue) => {
       if (!returnValue.props || !returnValue.props.id || !returnValue.props.children || !returnValue.props.children[0].props) return returnValue;

@@ -18,7 +18,7 @@ class Themes extends Base {
       );
     }
 
-    const { topPill, item } = getModule([ 'topPill' ], false);
+    const { topPill, item } = getModule([ 'topPill' ]);
     return (
       <>
         <div className='vizality-entities-manage-tabs'>
