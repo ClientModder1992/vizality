@@ -5,8 +5,8 @@ const Product = require('../brrrrr/items/Products/Product');
 const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));
 const SearchBox = AsyncComponent.from((async () => {
   /*
-   * const { searchHelpTextVisible } = await getModule([ 'searchHelpTextVisible' ], true);
-   * const GuildDiscoverySearch = await getModuleByDisplayName('GuildDiscoverySearchWithResults', true);
+   * const { searchHelpTextVisible } = getModule('searchHelpTextVisible');
+   * const GuildDiscoverySearch = getModuleByDisplayName('GuildDiscoverySearchWithResults');
    * const instance = new GuildDiscoverySearch({});
    * return (props) => {
    *   const res = instance.renderSearch().props.children({});
@@ -25,11 +25,11 @@ const classes = null;
 setImmediate(async () => {
   /*
    * classes = {
-   *   background: (await getModule([ 'bg', 'body' ], true)).bg,
-   *   quickSelectArrow: (await getModule([ 'quickSelectArrow' ], true)).quickSelectArrow,
-   *   topic: (await getModule([ 'topic', 'expandable' ], true)).topic,
-   *   headerBar: await getModule([ 'iconWrapper', 'clickable' ], true),
-   *   store: await getModule([ 'storeHomeWidth', 'container' ], true)
+   *   background: getModule('bg', 'body').bg,
+   *   quickSelectArrow: getModule('quickSelectArrow').quickSelectArrow,
+   *   topic: getModule('topic', 'expandable').topic,
+   *   headerBar: getModule('iconWrapper', 'clickable'),
+   *   store: getModule('storeHomeWidth', 'container')
    * };
    */
 });
@@ -181,4 +181,4 @@ const images = {
   }
 };
 
-module.exports = Flux.connectStoresAsync([ getModule([ 'theme' ], true) ], ([ settingsStore ]) => ({ images: images[settingsStore.theme] }))(Store);
+module.exports = Flux.connectStoresAsync([ getModule('theme') ], ([ settingsStore ]) => ({ images: images[settingsStore.theme] }))(Store);

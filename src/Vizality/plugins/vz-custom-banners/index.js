@@ -1,8 +1,7 @@
 /* eslint-disable prefer-destructuring */
 const { Plugin } = require('vizality/entities');
-const { React, getModuleByDisplayName, getModule, i18n } = require('vizality/webpack');
+const { getModuleByDisplayName } = require('vizality/webpack');
 const { inject, uninject } = require('vizality/injector');
-const { react: { findInReactTree, forceUpdateElement } } = require('vizality/util');
 
 module.exports = class CustomBanners extends Plugin {
   startPlugin () {
@@ -12,7 +11,7 @@ module.exports = class CustomBanners extends Plugin {
   }
 
   async _patchPrivateChannelEmptyMessage () {
-    const PrivateChannelEmptyMessage = await getModuleByDisplayName('PrivateChannelEmptyMessage', true);
+    const PrivateChannelEmptyMessage = getModuleByDisplayName('PrivateChannelEmptyMessage');
 
     inject('pc-impChannelTitlebar-privateChannelsEmptyMessage', PrivateChannelEmptyMessage.prototype, 'render', (_, res) => {
       console.log(res);

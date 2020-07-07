@@ -2,8 +2,8 @@ const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
 const { joinClassNames } = require('vizality/util');
 
-module.exports = async () => {
-  const GameIcon = await getModule(m => m.default && m.default.displayName === 'GameIcon', true);
+module.exports = () => {
+  const GameIcon = getModule(m => m.default && m.default.displayName === 'GameIcon');
 
   inject('vz-utility-classes-gameIcon', GameIcon, 'default', ([ props ], returnValue) => {
     if (!props) return returnValue;
@@ -18,5 +18,5 @@ module.exports = async () => {
     return returnValue;
   });
 
-  return async () => uninject('vz-utility-classes-gameIcon');
+  return () => uninject('vz-utility-classes-gameIcon');
 };

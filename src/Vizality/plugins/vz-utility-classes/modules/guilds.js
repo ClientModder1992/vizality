@@ -1,9 +1,9 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { waitFor, joinClassNames, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
+const { joinClassNames, dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
 
 module.exports = async () => {
-  const guildClasses = await getModule([ 'blobContainer' ], true);
+  const guildClasses = getModule('blobContainer');
   const guildElement = (await waitFor(`.${guildClasses.blobContainer.split(' ')[0]}`)).parentElement;
   const instance = getOwnerInstance(guildElement);
 

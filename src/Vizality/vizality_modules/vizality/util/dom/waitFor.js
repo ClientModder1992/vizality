@@ -1,4 +1,4 @@
-const sleep = require('./sleep');
+const sleep = require('../sleep');
 
 const waitFor = async (querySelector) => {
   let elem;

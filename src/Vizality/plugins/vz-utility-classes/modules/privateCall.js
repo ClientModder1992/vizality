@@ -2,8 +2,8 @@ const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
 const { joinClassNames } = require('vizality/util');
 
-module.exports = async () => {
-  const CallTile = await getModule(m => m.default && m.default.displayName === 'CallTile', true);
+module.exports = () => {
+  const CallTile = getModule(m => m.default && m.default.displayName === 'CallTile');
 
   inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], returnValue) => {
     if (!props | !props.participant || !returnValue.props) return returnValue;
@@ -25,5 +25,5 @@ module.exports = async () => {
     return returnValue;
   });
 
-  return async () => uninject('vz-utility-classes-privateCall');
+  return () => uninject('vz-utility-classes-privateCall');
 };

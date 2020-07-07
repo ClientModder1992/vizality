@@ -1,44 +1,56 @@
 const { inject, uninject } = require('vizality/injector');
-const { getModule, i18n } = require('vizality/webpack');
-const { waitFor, joinClassNames, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('vizality/util');
+const { getModule, i18n: { Messages } } = require('vizality/webpack');
+const { joinClassNames, dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('vizality/util');
 
 module.exports = async () => {
-  const channelHeaderButtonClasses = await getModule([ 'iconWrapper', 'toolbar' ], true);
+  const channelHeaderButtonClasses = getModule('iconWrapper', 'toolbar');
   const instance = getOwnerInstance(await waitFor(`.${channelHeaderButtonClasses.iconWrapper}`));
 
   if (!instance) return;
 
   inject('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (originalArgs, returnValue) => {
-    if (!returnValue.props.className) return returnValue;
+    if (!returnValue.props.className ||
+        !returnValue.props.className.split(' ').includes(channelHeaderButtonClasses.iconWrapper) ||
+        !returnValue.props['aria-label']) {
+      return returnValue;
+    }
 
-    const classes = returnValue.props.className.split(' ');
-    if (classes.includes(channelHeaderButtonClasses.iconWrapper)) {
-      if (returnValue.props['aria-label']) {
-        const key = Object.keys(i18n._proxyContext.messages).find(key => i18n._proxyContext.messages[key] === returnValue.props['aria-label']);
-        // console.log(key);
-        if (!key) return returnValue;
+    const ariaLabel = returnValue.props['aria-label'];
 
-        if (key === 'PINNED_MESSAGES') {
-          if (returnValue.props.children[1]) {
-            returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-isUnread');
-          }
-        }
-        /*
-         * @todo: So far this only doesn't work with the mute/unmute channel button because Discord uses formatting for it,
-         * and I'm not sure how to fix that, but it still needs fixing. This is just a bandaid fix that works for now.
-         */
-        /*
-         * if (!addedClass) {
-         *   if (returnValue.props['aria-checked']) {
-         *     returnValue.props.className = [ returnValue.props.className, 'vz-unmuteChannelButton' ].filter(Boolean).join(' ');
-         *   } else {
-         *     returnValue.props.className = [ returnValue.props.className, 'vz-muteChannelButton' ].filter(Boolean).join(' ');
-         *   }
-         *   return returnValue;
-         * }
-         */
-        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${toCamelCase(key)}Button`);
+    let key = Object.keys(Messages).find(key => ariaLabel === Messages[key]);
+
+    if (!key) {
+      const SelectedChannelId = getModule('getChannelId').getChannelId();
+      const ChannelStore = getModule('getChannel').getChannel(SelectedChannelId);
+      if (ariaLabel === Messages.CHANNEL_MUTE_LABEL.format({ channelName: ChannelStore.name })) {
+        key = 'CHANNEL_MUTE';
       }
+    }
+
+    switch (key) {
+      case 'CREATE_DM':
+      case 'GROUP_DM_ADD_FRIENDS':
+      case 'HELP':
+      case 'INBOX':
+      case 'MEMBER_LIST':
+      case 'NEW_GROUP_DM':
+      case 'START_VIDEO_CALL':
+      case 'START_VOICE_CALL':
+        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${toCamelCase(key)}Button`);
+        break;
+      case 'CHANNEL_MUTE':
+        returnValue.props.className = joinClassNames(returnValue.props.className,
+          {
+            'vz-channelUnmuteButton': returnValue.props['aria-checked'],
+            'vz-channelMuteButton': !returnValue.props['aria-checked']
+          }
+        );
+        break;
+      case 'PINNED_MESSAGES':
+        returnValue.props.className = joinClassNames(
+          returnValue.props.className, `vz-${toCamelCase(key)}Button`, { 'vz-isUnread': returnValue.props.children[1] }
+        );
+        break;
     }
 
     return returnValue;

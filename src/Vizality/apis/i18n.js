@@ -12,8 +12,8 @@ module.exports = class I18nAPI extends API {
     this.loadAllStrings(overrides);
   }
 
-  startAPI () {
-    getModule([ 'locale', 'theme' ], true).then(module => {
+  async startAPI () {
+    await getModule('locale', 'theme', true).then(module => {
       this.locale = module.locale;
       module.addChangeListener(() => {
         if (module.locale !== this.locale) {

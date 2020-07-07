@@ -32,8 +32,8 @@ module.exports = class Documentation extends Plugin {
   }
 
   async addDocsItems () {
-    const { pushLayer } = await getModule([ 'pushLayer' ], true);
-    const SettingsView = await getModuleByDisplayName('SettingsView', true);
+    const { pushLayer } = getModule('pushLayer');
+    const SettingsView = getModuleByDisplayName('SettingsView');
     inject('vz-docs-tab', SettingsView.prototype, 'getPredicateSections', (args, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
@@ -55,13 +55,13 @@ module.exports = class Documentation extends Plugin {
   }
 
   async _ensureHighlight () {
-    const module = await getModule([ 'highlight' ], true);
+    const module = getModule('highlight');
     if (typeof module.highlight !== 'function') {
-      const currentChannel = (await getModule([ 'getChannelId' ], true)).getChannelId();
+      const currentChannel = getModule('getChannelId').getChannelId();
       if (!currentChannel) {
-        const router = await getModule([ 'replaceWith' ], true);
-        const channels = await getModule([ 'getChannels' ], true);
-        const permissions = await getModule([ 'can' ], true);
+        const router = getModule('replaceWith');
+        const channels = getModule('getChannels');
+        const permissions = getModule('can');
         const currentLocation = window.location.pathname;
         const channel = channels.getChannels().find(c => c.type === 0 && permissions.can(discordConsts.Permissions.VIEW_CHANNEL, c));
         const route = discordConsts.Routes.CHANNEL(channel.guild_id, channel.id); // eslint-disable-line new-cap
@@ -76,7 +76,7 @@ module.exports = class Documentation extends Plugin {
   }
 
   async _loadModule (channel) {
-    const module = await getModule([ 'createBotMessage' ], true);
+    const module = getModule('createBotMessage');
     const message = module.createBotMessage(channel, '```js\nconsole.log("yeet")\n```');
     messages.receiveMessage(channel, message);
     messages.deleteMessage(channel, message.id, true);

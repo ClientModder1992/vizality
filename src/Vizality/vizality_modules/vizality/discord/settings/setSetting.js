@@ -7,8 +7,11 @@ const setSetting = async (setting, value, sync = true) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:settings:setSetting';
 
-  const settings = getModule([ 'renderEmbeds', 'renderReactions', 'renderSpoilers' ]);
-  const moreSettings = getModule([ 'darkSidebar', 'fontScale', 'fontSize' ]);
+  const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
+  const moreSettings = getModule('darkSidebar', 'fontScale', 'fontSize');
+
+  const updateRemoteSettings = getModule('updateRemoteSettings');
+  const updateLocalSettings = getModule('updateLocalSettings');
 
   // Error handling
   if (!setting) return warn(MODULE, SUBMODULE, null, `You must enter a setting. Use 'Discord:settings:getSettingInfo()' to see appropriate options.`);
@@ -17,9 +20,9 @@ const setSetting = async (setting, value, sync = true) => {
     return warn(MODULE, SUBMODULE, null, `'${setting}' is not a valid setting. Use 'Discord:settings:getSettingInfo' to see appropriate options.`);
   }
 
-  if (sync === true) return getModule([ 'updateRemoteSettings' ]).updateRemoteSettings({ [setting]: value }) || console.log('cheese');
+  if (sync === true) return updateRemoteSettings.updateRemoteSettings({ [setting]: value }) || console.log('cheese');
 
-  return getModule([ 'updateLocalSettings' ]).updateLocalSettings({ [setting]: value }) || console.log('cheese');
+  return updateLocalSettings.updateLocalSettings({ [setting]: value }) || console.log('cheese');
 };
 
 module.exports = setSetting;

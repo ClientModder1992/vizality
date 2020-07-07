@@ -1,6 +1,8 @@
+/* eslint-disable no-unreachable */
+
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { waitFor, joinClassNames, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
+const { joinClassNames, dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
 
 module.exports = async () => {
   /*
@@ -10,10 +12,9 @@ module.exports = async () => {
    */
   return () => void 0;
 
-  /* eslint-disable no-unreachable */
-  const folderClasses = await getModule([ 'wrapper', 'folder' ], true);
+  const folderClasses = getModule('wrapper', 'folder');
   const instance = getOwnerInstance(await waitFor(`.${folderClasses.wrapper.split(' ')[0]}`));
-  await getModule([ 'wrapper', 'folder' ], true);
+  getModule('wrapper', 'folder');
 
   inject('vz-utility-classes-folders', instance.__proto__, 'render', (originalArgs, returnValue) => {
     if (!returnValue.props) return returnValue;

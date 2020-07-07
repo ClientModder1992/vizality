@@ -123,7 +123,7 @@ class Vizality extends Updatable {
     Object.getOwnPropertyNames(WEBPACK_MODULE)
       .filter(prop => prop.indexOf('_'))
       .forEach(e => {
-        if (!e.indexOf('get') && e.includes('Module')) {
+        if (!e.indexOf('get') && (e.includes('Module') || e.includes('Mdl'))) {
           this.modules.webpack[e] = WEBPACK_MODULE[e];
         } else {
           this.modules.webpack.modules[e] = WEBPACK_MODULE[e];

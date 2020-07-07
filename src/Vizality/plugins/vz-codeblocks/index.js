@@ -16,7 +16,7 @@ module.exports = class Codeblocks extends Plugin {
   }
 
   async patchCodeblocks () {
-    const parser = await getModule([ 'parse', 'parseTopic' ], true);
+    const parser = getModule('parse', 'parseTopic');
     inject('vz-codeblocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
       this.injectCodeblock(args, res);
 

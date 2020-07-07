@@ -151,9 +151,9 @@ module.exports = (props) => <AsyncComponent
   _provider={async () => {
     if (!modules) {
       modules = {
-        hljs: await getModule([ 'highlight' ], true),
-        markdown: await getModule([ 'markdownToHtml' ], true),
-        markup: (await getModule([ 'markup' ], true)).markup
+        hljs: getModule('highlight'),
+        markdown: getModule('markdownToHtml'),
+        markup: getModule('markup').markup
       };
     }
     return () => <DocPage modules={modules} {...props}/>;

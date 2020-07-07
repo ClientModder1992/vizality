@@ -14,7 +14,7 @@ module.exports = (section = 'My Account') => {
     return getSections();
   }
 
-  return getModule([ 'open', 'updateAccount' ]).open(
-    getModule([ 'setSection', 'open', 'updateAccount' ]).setSection(section)
+  return getModule('open', 'updateAccount').open(
+    getModule('setSection', 'open', 'updateAccount').setSection(section)
   );
 };

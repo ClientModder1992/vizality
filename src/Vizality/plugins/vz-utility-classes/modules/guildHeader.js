@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+
 const { inject, uninject } = require('vizality/injector');
 const { getModule, getModuleByDisplayName } = require('vizality/webpack');
 const { react: { forceUpdateElement } } = require('vizality/util');
@@ -7,16 +9,15 @@ const { react: { forceUpdateElement } } = require('vizality/util');
  * menu items need to be patched.
  */
 
-module.exports = async () => {
+module.exports = () => {
   return () => void 0;
 
-  /* eslint-disable no-unreachable */
-  const GuildHeader = await getModuleByDisplayName('GuildHeader', true);
+  const GuildHeader = getModuleByDisplayName('GuildHeader');
   inject('vz-utility-classes-guildHeader', GuildHeader.prototype, 'renderHeader', (originalArgs, returnValue) => {
     return returnValue;
   });
 
-  const className = (await getModule([ 'iconBackgroundTierNone', 'container' ], true)).header.split(' ')[0];
+  const className = getModule('iconBackgroundTierNone', 'container').header.split(' ')[0];
   setImmediate(() => forceUpdateElement(`.${className}`));
   return () => uninject('vz-utility-classes-guildHeader');
 };

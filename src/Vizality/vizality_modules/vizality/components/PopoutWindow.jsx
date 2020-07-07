@@ -9,7 +9,7 @@ module.exports = AsyncComponent.from((async () => {
    */
   return void 0;
 
-  const DiscordPopoutWindow = await getModuleByDisplayName('FluxContainer(PopoutWindow)', true);
+  const DiscordPopoutWindow = getModuleByDisplayName('FluxContainer(PopoutWindow)');
   class PopoutWindow extends DiscordPopoutWindow {
     constructor (props) {
       if (!props.withTitleBar) {

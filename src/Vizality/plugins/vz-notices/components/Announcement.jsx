@@ -16,7 +16,7 @@ class Announcement extends React.PureComponent {
 
   async componentDidMount () {
     if (!classesCache) {
-      const classes = await getModule([ 'noticeBrand' ], true);
+      const classes = getModule('noticeBrand');
       classesCache = {
         types: {
           blurple: classes.noticeBrand,

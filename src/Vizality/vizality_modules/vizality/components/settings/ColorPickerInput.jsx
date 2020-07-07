@@ -36,7 +36,7 @@ class ColorPickerInput extends React.PureComponent {
   }
 
   renderOpacity () {
-    const { marginTop8, marginTop20 } = getModule([ 'marginTop20' ]);
+    const { marginTop8, marginTop20 } = getModule('marginTop20');
     return (
       <>
         <FormTitle className={marginTop8}>Opacity</FormTitle>

@@ -100,7 +100,7 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _injectCommunityContent () {
-    const permissionsModule = await getModule([ 'can' ], true);
+    const permissionsModule = getModule('can');
     inject('vz-module-manager-channelItem', permissionsModule, 'can', (originalArgs, returnValue) => {
       const id = originalArgs[1].channelId || originalArgs[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
@@ -109,8 +109,8 @@ module.exports = class ModuleManager extends Plugin {
       return returnValue;
     });
 
-    const { transitionTo } = await getModule([ 'transitionTo' ], true);
-    const ChannelItem = await getModuleByDisplayName('ChannelItem', true);
+    const { transitionTo } = getModule('transitionTo');
+    const ChannelItem = getModuleByDisplayName('ChannelItem');
     inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (originalArgs, returnValue) {
       const data = {
         [STORE_PLUGINS]: {
@@ -139,12 +139,12 @@ module.exports = class ModuleManager extends Plugin {
       return returnValue;
     });
 
-    const { containerDefault } = await getModule([ 'containerDefault' ], true);
+    const { containerDefault } = getModule('containerDefault');
     forceUpdateElement(`.${containerDefault}`, true);
   }
 
   async _injectSnippets () {
-    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover', true);
+    const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
     inject('vz-module-manager-snippets', MiniPopover, 'default', (originalArgs, returnValue) => {
       const props = findInReactTree(returnValue, r => r && r.canReact && r.message);
 
@@ -244,7 +244,7 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _openQuickCSSPopout () {
-    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ], true);
+    const popoutModule = getModule('setAlwaysOnTop', 'open');
     popoutModule.open('DISCORD_VIZALITY_QUICKCSS', (key) => (
       React.createElement(PopoutWindow, {
         windowKey: key,

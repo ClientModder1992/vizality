@@ -3,7 +3,7 @@ const { AsyncComponent, Icons: { VizalityCutie } } = require('vizality/component
 const { close: closeModal } = require('vizality/modal');
 
 module.exports = AsyncComponent.from((async () => {
-  const PremiumGuildModalHeader = await getModuleByDisplayName('PremiumGuildModalHeader', true);
+  const PremiumGuildModalHeader = getModuleByDisplayName('PremiumGuildModalHeader');
   return () => {
     const res = React.createElement(PremiumGuildModalHeader, { onClose: closeModal });
 
@@ -15,6 +15,7 @@ module.exports = AsyncComponent.from((async () => {
           <VizalityCutie height={32}/>
         </div>;
 
+      console.log(res);
       return res;
     };
     return res;

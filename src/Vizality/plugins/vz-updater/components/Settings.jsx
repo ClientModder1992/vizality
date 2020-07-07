@@ -3,7 +3,7 @@ const { Clickable, Button, FormNotice, FormTitle, Tooltip, Icons: { FontAwesome 
 const { SwitchItem, TextInput, Category, ButtonItem } = require('vizality/components/settings');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Confirm } = require('vizality/components/modal');
-const { joinClassNames } = require('vizality/util');
+const { joinClassNames, time } = require('vizality/util');
 const { REPO_URL, CACHE_FOLDER } = require('vizality/constants');
 const { clipboard } = require('electron');
 const { readdirSync } = require('fs');
@@ -23,7 +23,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
 
   render () {
     const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable';
-    const moment = getModule([ 'momentProperties' ]);
     // @todo: Make this be in its own store
     const awaitingReload = this.props.getSetting('awaiting_reload', false);
     const updating = this.props.getSetting('updating', false);
@@ -35,7 +34,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     const updates = this.props.getSetting('updates', []);
     const disabledEntities = this.props.getSetting('entities_disabled', []);
     const checkingProgress = this.props.getSetting('checking_progress', [ 0, 0 ]);
-    const last = moment(this.props.getSetting('last_check', false)).calendar();
+    const last = time(this.props.getSetting('last_check', false)).calendar();
 
     let icon,
       title;
@@ -208,7 +207,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
           opened={this.state.debugInfoOpened}
           onChange={() => this.setState({ debugInfoOpened: !this.state.debugInfoOpened })}
         >
-          {this.renderDebugInfo(moment)}
+          {this.renderDebugInfo(time)}
         </Category>
       </>}
     </div>;
@@ -301,10 +300,10 @@ module.exports = class UpdaterSettings extends React.PureComponent {
   }
 
   // --- DEBUG STUFF (Intentionally left english-only)
-  renderDebugInfo (moment) {
-    const { getRegisteredExperiments, getExperimentOverrides } = getModule([ 'initialize', 'getExperimentOverrides' ]);
+  renderDebugInfo (time) {
+    const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
     const { apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
-    const superProperties = getModule([ 'getSuperPropertiesBase64' ]).getSuperProperties();
+    const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
     const plugins = vizality.pluginManager.getPlugins().filter(plugin =>
       !vizality.pluginManager.get(plugin).isInternal && vizality.pluginManager.isEnabled(plugin)
     );
@@ -418,7 +417,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
         <Button
           size={Button.Sizes.SMALL}
           color={this.state.copied ? Button.Colors.GREEN : Button.Colors.BRAND}
-          onClick={() => this.handleDebugInfoCopy(moment, plugins)}
+          onClick={() => this.handleDebugInfoCopy(time, plugins)}
         >
           <FontAwesome icon={this.state.copied ? 'clipboard-check' : 'clipboard'}/> {this.state.copied ? 'Copied!' : 'Copy'}
         </Button>
@@ -426,14 +425,14 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     />;
   }
 
-  handleDebugInfoCopy (moment, plugins) {
+  handleDebugInfoCopy (time, plugins) {
     const extract = document.querySelector('.vizality-debug-info > code')
       .innerText.replace(/([A-Z/ ]+) (?=\s(?!C:\\).*?:)/g, '\n[$1]').replace(/(.*?):\s(.*.+)/g, '$1="$2"').replace(/[ -](\w*(?=.*=))/g, '$1');
 
     this.setState({ copied: true });
     clipboard.writeText(
       `\`\`\`ini
-      # Debugging Information | Result created: ${moment().calendar()}
+      # Debugging Information | Result created: ${time().calendar()}
       ${extract.substring(0, extract.indexOf('\nPlugins', extract.indexOf('\nPlugins') + 1))}
       Plugins="${plugins.join(', ')}"
       \`\`\``.replace(/ {6}|n\/a/g, '').replace(/(?![0-9]{1,3}) \/ (?=[0-9]{1,3})/g, '/')

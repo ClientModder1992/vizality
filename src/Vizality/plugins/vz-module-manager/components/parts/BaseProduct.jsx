@@ -1,4 +1,4 @@
-const { React, getModule, constants: { Routes }, i18n: { Messages } } = require('vizality/webpack');
+const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
 const { Tooltip, Button, Clickable, Divider, Icons: { Discord, Gear }, Switch } = require('vizality/components');
 
 const Details = require('./Details');
@@ -85,10 +85,11 @@ class BaseProduct extends React.PureComponent {
     );
   }
 
-  async goToDiscord (code) {
-    const inviteStore = await getModule([ 'acceptInviteAndTransitionToInviteChannel' ], true);
+  // @todo: Consider making this a vizality/discord utility function
+  goToDiscord (code) {
+    const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
     inviteStore.acceptInviteAndTransitionToInviteChannel(code);
-    (await getModule([ 'popLayer' ], true)).popAllLayers();
+    getModule('popLayer').popAllLayers();
   }
 }
 

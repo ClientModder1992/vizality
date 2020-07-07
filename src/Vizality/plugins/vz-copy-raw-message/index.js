@@ -13,7 +13,7 @@ module.exports = class CopyRawMessage extends Plugin {
   }
 
   async _patchContextMenu () {
-    const MessageContextMenu = await getModule(m => m.default && m.default.displayName === 'MessageContextMenu', true);
+    const MessageContextMenu = getModule(m => m.default && m.default.displayName === 'MessageContextMenu');
 
     inject('copy-raw-message', MessageContextMenu, 'default', ([ props ], returnValue) => {
       const { message } = props;

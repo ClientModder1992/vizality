@@ -75,7 +75,7 @@ class DocsLayer extends React.PureComponent {
       windowOnTop={this.props.windowOnTop}
       popout={this.props.popout}
       onPopout={() => this.openPopout()}
-      onClose={() => getModule([ 'popLayer' ]).popLayer()}
+      onClose={() => getModule('popLayer').popLayer()}
       onSetSection={section => {
         if (section.startsWith('_part/')) {
           this.scrollTo(section.split('/').pop());
@@ -100,8 +100,8 @@ class DocsLayer extends React.PureComponent {
   }
 
   openPopout () {
-    getModule([ 'popLayer' ]).popLayer();
-    getModule([ 'setAlwaysOnTop', 'open' ]).open('DISCORD_VIZALITY_DOCUMENTATION', (key) => (
+    getModule('popLayer').popLayer();
+    getModule('setAlwaysOnTop', 'open').open('DISCORD_VIZALITY_DOCUMENTATION', (key) => (
       <PopoutWindow windowKey={key}>
         <ConnectedDocsLayer popout={true}/>
       </PopoutWindow>
@@ -110,7 +110,7 @@ class DocsLayer extends React.PureComponent {
 }
 
 const ConnectedDocsLayer = Flux.connectStoresAsync(
-  [ getModule([ 'theme' ], true), getModule([ 'darkSidebar' ], true), getModule([ 'getWindow' ], true) ],
+  [ getModule('theme'), getModule('darkSidebar'), getModule('getWindow') ],
   ([ themeStore, sidebarStore, windowStore ]) => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_DOCUMENTATION'),
     windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_DOCUMENTATION'),

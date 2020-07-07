@@ -2,8 +2,8 @@ const { inject, uninject } = require('vizality/injector');
 const { React, getModule } = require('vizality/webpack');
 const { react: { forceUpdateElement } } = require('vizality/util');
 
-module.exports = async () => {
-  const Avatar = await getModule([ 'AnimatedAvatar' ], true);
+module.exports = () => {
+  const Avatar = getModule('AnimatedAvatar');
 
   inject('vz-utility-classes-avatar', Avatar, 'default', (originalArgs, returnValue) => {
     const avatar = originalArgs[0].src || void 0;
@@ -20,7 +20,7 @@ module.exports = async () => {
 
   Avatar.default.Sizes = Avatar.Sizes;
 
-  const className = (await getModule([ 'wrapper', 'avatar' ], true)).wrapper.split(' ')[0];
+  const className = getModule('wrapper', 'avatar').wrapper.split(' ')[0];
   setImmediate(() => forceUpdateElement(`.${className}`));
   return () => {
     uninject('vz-utility-classes-avatar');

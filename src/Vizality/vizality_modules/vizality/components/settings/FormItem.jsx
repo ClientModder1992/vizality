@@ -8,8 +8,8 @@ const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 module.exports = class FormItem extends React.PureComponent {
   render () {
     const Flex = getModuleByDisplayName('Flex');
-    const margins = getModule([ 'marginTop20' ]);
-    const { description } = getModule([ 'formText', 'description' ]);
+    const margins = getModule('marginTop20');
+    const { description } = getModule('formText', 'description');
     return (
       <DFormItem
         title={this.props.title}

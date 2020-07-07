@@ -22,9 +22,9 @@ Object.assign(exports, {
   TabBar: AsyncComponent.from(getModuleByDisplayName('TabBar', true)),
   Text: AsyncComponent.from(getModuleByDisplayName('Text', true)),
   Flex: AsyncComponent.from(getModuleByDisplayName('Flex', true)),
-  Tooltip: AsyncComponent.from((async () => (await getModule([ 'TooltipContainer' ], true)).TooltipContainer)()),
-  Helmet: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ], true)).Helmet)()),
-  HelmetProvider: AsyncComponent.from((async () => (await getModule([ 'HelmetProvider' ], true)).HelmetProvider)()),
+  Tooltip: AsyncComponent.from((() => getModule('TooltipContainer').TooltipContainer)()),
+  Helmet: AsyncComponent.from((() => getModule('HelmetProvider').Helmet)()),
+  HelmetProvider: AsyncComponent.from((() => getModule('HelmetProvider').HelmetProvider)()),
   ConfirmationModal: AsyncComponent.from(getModuleByDisplayName('Confirm', true)),
   Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true)),
   Menu: () => null
@@ -52,7 +52,7 @@ getModuleByDisplayName('Text', true, true).then(Text => {
 getModuleByDisplayName('Flex', true, true).then(Flex => {
   [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => exports.Flex[prop] = Flex[prop]);
 });
-getModule([ 'MenuGroup' ], true, true).then(Menu => {
+getModule('MenuGroup', true, true).then(Menu => {
   [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
     .forEach(prop => exports.Menu[prop] = Menu[prop]);
   exports.Menu.Menu = Menu.default;

@@ -3,7 +3,7 @@ const { AsyncComponent } = require('vizality/components');
 
 const Mask = AsyncComponent.from(getModuleByDisplayName('Mask', true));
 const CarouselWithSlide = AsyncComponent.from((async () => {
-  const CarouselWithSlide = await getModuleByDisplayName('CarouselWithSlide', true);
+  const CarouselWithSlide = getModuleByDisplayName('CarouselWithSlide');
   return class Carousel extends CarouselWithSlide {
     render () {
       const res = super.render();

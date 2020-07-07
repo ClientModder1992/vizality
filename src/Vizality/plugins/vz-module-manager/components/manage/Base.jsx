@@ -1,8 +1,7 @@
 const { join } = require('path');
 const { shell } = require('electron');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('vizality/webpack');
-const { Button, Tooltip, ContextMenu, Divider, Icons: { Overflow } } = require('vizality/components');
-const { TextInput } = require('vizality/components/settings');
+const { settings: { TextInput }, Button, Tooltip, ContextMenu, Divider, Icons: { Overflow } } = require('vizality/components');
 
 class Base extends React.Component {
   constructor () {
@@ -52,7 +51,7 @@ class Base extends React.Component {
         {this.renderSearch()}
         {items.length === 0
           ? <div className='empty'>
-            <div className={getModule([ 'emptyStateImage' ]).emptyStateImage}/>
+            <div className={getModule('emptyStateImage').emptyStateImage}/>
             <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
             <p>{Messages.SEARCH_NO_RESULTS}</p>
           </div>
@@ -91,7 +90,10 @@ class Base extends React.Component {
           {
             type: 'button',
             name: Messages[`VIZALITY_${this.state.key}_OPEN_FOLDER`],
-            onClick: () => shell.openPath(join(__dirname, '..', '..', '..', '..', this.constructor.name.toLowerCase()))
+            onClick: () => {
+              shell.openItem(join(__dirname, '..', '..', '..', '..', this.constructor.name.toLowerCase()));
+              console.log(this.constructor.name.toLowerCase());
+            }
           },
           {
             type: 'button',
@@ -104,8 +106,8 @@ class Base extends React.Component {
   }
 
   async goToStore () {
-    const { popLayer } = await getModule([ 'popLayer' ], true);
-    const { transitionTo } = await getModule([ 'transitionTo' ], true);
+    const { popLayer } = getModule('popLayer');
+    const { transitionTo } = getModule('transitionTo');
     popLayer();
     transitionTo(`/_vizality/store/${this.constructor.name.toLowerCase()}`);
   }

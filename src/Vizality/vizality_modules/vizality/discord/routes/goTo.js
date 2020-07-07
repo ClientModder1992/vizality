@@ -1,4 +1,4 @@
-const { getModule } = require('vizality/webpack');
+const { Routes, getModule } = require('vizality/webpack');
 const { logger: { warn } } = require('vizality/util');
 
 const _getRoutes = require('./_getRoutes');
@@ -13,31 +13,29 @@ const goTo = (location) => {
     return warn(MODULE, SUBMODULE, null, `You must enter a valid route string. List of available routes:`, routeList);
   }
 
-  const DISCORD_ROUTES = getModule([ 'Routes' ]).Routes;
+  const router = getModule('transitionTo');
 
-  if (Object.keys(DISCORD_ROUTES).includes(location)) {
-    return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES[location]);
+  if (Object.keys(Routes).includes(location)) {
+    return router.transitionTo(Routes[location]);
   }
 
-  if (Object.values(DISCORD_ROUTES).includes(location)) {
-    return getModule([ 'transitionTo' ]).transitionTo(location);
+  if (Object.values(Routes).includes(location)) {
+    return router.transitionTo(location);
   }
 
   location = location.toLowerCase();
 
   switch (location) {
     case 'discover':
-      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.GUILD_DISCOVERY);
+      return router.transitionTo(Routes.GUILD_DISCOVERY);
     case 'dm':
-      return getModule([ 'transitionTo' ]).transitionTo(
-        DISCORD_ROUTES.CHANNEL('@me', getModule([ 'getPrivateChannelIds' ]).getPrivateChannelIds()[0])
-      );
+      return router.transitionTo(Routes.CHANNEL('@me', getModule('getPrivateChannelIds').getPrivateChannelIds()[0]));
     case 'friends':
-      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.FRIENDS);
+      return router.transitionTo(Routes.FRIENDS);
     case 'library':
-      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.APPLICATION_LIBRARY);
+      return router.transitionTo(Routes.APPLICATION_LIBRARY);
     case 'nitro':
-      return getModule([ 'transitionTo' ]).transitionTo(DISCORD_ROUTES.APPLICATION_STORE);
+      return router.transitionTo(Routes.APPLICATION_STORE);
     default:
       return warn(MODULE, SUBMODULE, null, `The route '${location}' was not found. List of available routes:`, routeList);
   }

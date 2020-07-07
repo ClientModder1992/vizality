@@ -25,16 +25,16 @@ module.exports = class Category extends React.PureComponent {
       return;
     }
 
-    const Flex = await getModuleByDisplayName('Flex');
+    const Flex = getModuleByDisplayName('Flex');
     classes = {
       initialized: true,
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: await getModule([ 'marginTop20' ]),
-      classTitle: (await getModule([ 'titleDefault' ])).titleDefault,
-      classDivider: (await getModule(m => Object.keys(m).join('') === 'divider')).divider,
-      classDividerDef: (await getModule([ 'dividerDefault' ])).dividerDefault,
-      classDescription: (await getModule([ 'formText', 'description' ])).description
+      classMargins: getModule('marginTop20'),
+      classTitle: getModule('titleDefault').titleDefault,
+      classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
+      classDividerDef: getModule('dividerDefault').dividerDefault,
+      classDescription: getModule('formText', 'description').description
     };
 
     this.setState({ classes });

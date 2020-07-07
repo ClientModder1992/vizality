@@ -8,8 +8,8 @@ module.exports = function get (setting) {
 
   if (!setting) return getSettingInfo();
 
-  const settings = getModule([ 'renderEmbeds', 'renderReactions', 'renderSpoilers' ]);
-  const moreSettings = getModule([ 'darkSidebar', 'fontScale', 'fontSize' ]);
+  const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
+  const moreSettings = getModule('darkSidebar', 'fontScale', 'fontSize');
 
   /**
    * @todo: Add `friendSourceFlags` and `restrictedGuilds`

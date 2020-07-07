@@ -13,17 +13,17 @@ const badgesStore = {};
 const badges = {
   developer: () => openExternal(`${WEBSITE}/contributors`),
   staff: async () => {
-    const store = await getModule([ 'getGuilds' ], true);
+    const store = getModule('getGuilds');
     if (store.getGuilds()[GUILD_ID]) {
-      const router = await getModule([ 'transitionTo' ], true);
-      const channel = await getModule([ 'getLastSelectedChannelId' ], true);
-      const userProfileModal = await getModule([ 'fetchProfile' ], true);
+      const router = getModule('transitionTo');
+      const channel = getModule('getLastSelectedChannelId');
+      const userProfileModal = getModule('fetchProfile');
       // eslint-disable-next-line new-cap
       router.transitionTo(Routes.CHANNEL(GUILD_ID, channel.getChannelId(GUILD_ID)));
       userProfileModal.close();
     } else {
-      const windowManager = await getModule([ 'flashFrame', 'minimize' ], true);
-      const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ], true);
+      const windowManager = getModule('flashFrame', 'minimize');
+      const { INVITE_BROWSER: { handler: popInvite } } = getModule('INVITE_BROWSER');
       const oldMinimize = windowManager.minimize;
       windowManager.minimize = () => void 0;
       popInvite({ args: { code: INVITE_CODE } });

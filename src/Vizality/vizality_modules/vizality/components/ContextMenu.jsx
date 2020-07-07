@@ -1,5 +1,5 @@
 const { React, getModule, contextMenu: { closeContextMenu } } = require('vizality/webpack');
-const { waitFor, react: { getOwnerInstance } } = require('vizality/util');
+const { dom: { waitFor }, react: { getOwnerInstance } } = require('vizality/util');
 
 class ContextMenu extends React.PureComponent {
   constructor (props) {
@@ -27,7 +27,7 @@ class ContextMenu extends React.PureComponent {
       });
     }
 
-    const { default: Menu, MenuGroup } = getModule([ 'MenuGroup' ]);
+    const { default: Menu, MenuGroup } = getModule('MenuGroup');
     return (
       <Menu
         navId={this.props.navId || `vz-${Math.random().toString(32).slice(2)}`}
@@ -69,7 +69,7 @@ class ContextMenu extends React.PureComponent {
   }
 
   renderButton (item, ctx) {
-    const { MenuItem } = getModule([ 'MenuGroup' ]);
+    const { MenuItem } = getModule('MenuGroup');
     return (
       <MenuItem
         id={item.id || `item-${ctx.group}-${ctx.depth}-${ctx.i}`}
@@ -90,7 +90,7 @@ class ContextMenu extends React.PureComponent {
   }
 
   renderCheckbox (item, ctx) {
-    const { MenuCheckboxItem } = getModule([ 'MenuGroup' ]);
+    const { MenuCheckboxItem } = getModule('MenuGroup');
     const elementKey = `active-${ctx.group}-${ctx.depth}-${ctx.i}`;
     const isStandalone = !!ctx.standalone;
     const active = this.state[elementKey] !== void 0
@@ -122,7 +122,7 @@ class ContextMenu extends React.PureComponent {
   }
 
   renderSlider (item, ctx) {
-    const { MenuControlItem } = getModule([ 'MenuGroup' ]);
+    const { MenuControlItem } = getModule('MenuGroup');
     const Slider = getModule(m => m.render && m.render.toString().includes('sliderContainer'));
     return (
       <MenuControlItem
@@ -144,7 +144,7 @@ class ContextMenu extends React.PureComponent {
   }
 
   renderSubMenu (item, ctx) {
-    const { MenuItem } = getModule([ 'MenuGroup' ]);
+    const { MenuItem } = getModule('MenuGroup');
     const elementKey = `items-${ctx.group}-${ctx.depth}-${ctx.i}`;
     let items = this.state[elementKey];
     if (items === void 0) {

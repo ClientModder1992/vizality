@@ -123,8 +123,8 @@ module.exports = class Updater extends Plugin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'blue',
             look: 'ghost',
-            onClick: async () => {
-              const settingsModule = await getModule([ 'open', 'saveAccountChanges' ], true);
+            onClick: () => {
+              const settingsModule = getModule('open', 'saveAccountChanges');
               settingsModule.open('vz-updater');
             }
           } ]
@@ -175,8 +175,8 @@ module.exports = class Updater extends Plugin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'blue',
             look: 'ghost',
-            onClick: async () => {
-              const settingsModule = await getModule([ 'open', 'saveAccountChanges' ], true);
+            onClick: () => {
+              const settingsModule = getModule('open', 'saveAccountChanges');
               settingsModule.open('vz-updater');
             }
           } ]
@@ -276,7 +276,7 @@ module.exports = class Updater extends Plugin {
   async _getChangeLogsComponent () {
     if (!this._ChangeLog) {
       const _this = this;
-      const { video } = await getModule([ 'video', 'added' ], true);
+      const { video } = getModule('video', 'added');
       const DiscordChangeLog = await this._getMainChangeLogComponent();
 
       class ChangeLog extends DiscordChangeLog {
@@ -350,7 +350,7 @@ module.exports = class Updater extends Plugin {
   }
 
   async _getMainChangeLogComponent () {
-    const mdl = await getModule([ 'changeLog', 'isOpen' ], true);
+    const mdl = getModule('changeLog', 'isOpen');
     const ogFunction = mdl.isOpen;
     mdl.isOpen = () => {
       mdl.isOpen = ogFunction;
@@ -364,7 +364,7 @@ module.exports = class Updater extends Plugin {
     owo.useRef = () => ({ current: null });
     owo.useState = () => [ null, () => void 0 ];
     owo.useLayoutEffect = () => void 0;
-    const Component = await getModule(m => m.type && m.type.displayName && m.type.displayName === 'ConnectedChangeLog', true);
+    const Component = getModule(m => m.type && m.type.displayName && m.type.displayName === 'ConnectedChangeLog');
     const ChangeLog = Component.type().type;
     owo.useRef = ogUseRef;
     owo.useState = ogUseState;

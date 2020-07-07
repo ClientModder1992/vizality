@@ -3,10 +3,10 @@ const { getModule } = require('vizality/webpack');
 const { react : { findInReactTree }, joinClassNames } = require('vizality/util');
 
 module.exports = async () => {
-  const Message  = await getModule(m => m.default && m.default.displayName === 'Message', true);
-  const guildModule = await getModule([ 'getGuild' ], true);
-  const memberModule = await getModule([ 'getMember' ], true);
-  const currentUserId = (await getModule([ 'getId' ], true)).getId();
+  const Message = getModule(m => m.default && m.default.displayName === 'Message');
+  const guildModule = getModule('getGuild');
+  const memberModule = getModule('getMember');
+  const currentUserId = getModule('getId').getId();
 
   inject('vz-utility-classes-messages', Message, 'default', (originalArgs, returnValue) => {
     const msg = findInReactTree(returnValue, n => n.message);

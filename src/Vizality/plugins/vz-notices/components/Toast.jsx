@@ -1,7 +1,7 @@
 const { React, getModuleByDisplayName } = require('vizality/webpack');
 const { AsyncComponent, Button, Tooltip, Clickable, Icons: { FontAwesome } } = require('vizality/components');
 
-const Progress = AsyncComponent.from(getModuleByDisplayName('Progress', true));
+const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
 
 class Toast extends React.PureComponent {
   constructor (props) {

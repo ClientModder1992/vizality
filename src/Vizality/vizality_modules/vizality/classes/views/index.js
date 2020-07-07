@@ -1,8 +1,8 @@
 const { getModule } = require('vizality/webpack');
 
-module.exports = {
-  views: {
-    ...getModule([ 'attachment' ]),
-    ...getModule([ 'members' ])
-  }
+const views = {
+  ...getModule('attachment'),
+  ...getModule('members')
 };
+
+module.exports = views;

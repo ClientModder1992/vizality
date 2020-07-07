@@ -27,9 +27,9 @@ module.exports = class MainNavigation extends Plugin {
     document.documentElement.setAttribute('vz-main-nav-position', this.settings.get('position', 'top'));
     document.documentElement.setAttribute('vz-main-nav-link-style', this.settings.get('link-style', 'text'));
 
-    const { app } = await getModule([ 'app', 'layers' ], true);
+    const { app } = getModule('app', 'layers');
 
-    const Shakeable = await getModuleByDisplayName('Shakeable', true);
+    const Shakeable = getModuleByDisplayName('Shakeable');
     const navBar = React.createElement(MainNav, { position, linkStyle });
 
     inject('vz-mainNav', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ navBar, returnValue ]);

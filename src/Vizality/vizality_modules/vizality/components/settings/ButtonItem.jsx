@@ -25,16 +25,16 @@ module.exports = class ButtonItem extends React.PureComponent {
   async componentDidMount () {
     if (classes.initialized) return;
 
-    const Flex = await getModuleByDisplayName('Flex', true);
+    const Flex = getModuleByDisplayName('Flex');
     classes = {
       initialized: true,
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: await getModule([ 'marginTop20' ], true),
-      classTitle: (await getModule([ 'titleDefault' ], true)).titleDefault,
-      classDivider: (await getModule(m => Object.keys(m).join('') === 'divider', true)).divider,
-      classDividerDef: (await getModule([ 'dividerDefault' ], true)).dividerDefault,
-      classDescription: (await getModule([ 'formText', 'description' ], true)).description
+      classMargins: getModule('marginTop20'),
+      classTitle: getModule('titleDefault').titleDefault,
+      classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
+      classDividerDef: getModule('dividerDefault').dividerDefault,
+      classDescription: getModule('formText', 'description').description
     };
 
     this.setState({ classes });

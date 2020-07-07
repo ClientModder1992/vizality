@@ -1,9 +1,9 @@
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { waitFor, joinClassNames, react: { getOwnerInstance } } = require('vizality/util');
+const { joinClassNames, dom: { waitFor }, react: { getOwnerInstance } } = require('vizality/util');
 
 module.exports = async () => {
-  const { role } = await getModule([ 'role', 'roleCircle', 'roleName', 'root' ], true);
+  const { role } = getModule('role', 'roleCircle', 'roleName', 'root');
   const instance = getOwnerInstance(await waitFor(`.${role.split(' ')[0]}`));
 
   inject('vz-utility-classes-roles', instance.__proto__, 'render', function (originalArgs, returnValue) {

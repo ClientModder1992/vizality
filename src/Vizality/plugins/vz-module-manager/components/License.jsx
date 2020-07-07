@@ -1,6 +1,5 @@
 const { React, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { Card, AsyncComponent } = require('vizality/components');
-const { Modal } = require('vizality/components/modal');
+const { Modal, Card, AsyncComponent } = require('vizality/components');
 
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
 

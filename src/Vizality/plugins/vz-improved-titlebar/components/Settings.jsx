@@ -29,7 +29,7 @@ module.exports = class Settings extends React.Component {
       return;
     }
 
-    const Flex = await getModuleByDisplayName('Flex', true);
+    const Flex = getModuleByDisplayName('Flex');
     classes = {
       initialized: true,
 

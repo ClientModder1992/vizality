@@ -7,9 +7,9 @@ const { joinClassNames } = require('vizality/util');
  */
 
 module.exports = async () => {
-  const MenuItem = await getModule(m => m.default && m.default.displayName === 'MenuItem', true);
+  const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
   const originalMenuItem = MenuItem.default;
-  const GuildStore = await getModule([ 'getGuild' ], true);
+  const GuildStore = getModule('getGuild');
 
   inject('vz-cde-contextServerInviteIcons', MenuItem, 'default', ([ props ], returnValue) => {
     if (!returnValue.props || !returnValue.props.id || returnValue.props.id.indexOf('user-context-invite-to-server--')) return returnValue;

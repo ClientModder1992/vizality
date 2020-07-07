@@ -24,9 +24,9 @@ module.exports = class ImprovedTitlebar extends Plugin {
   }
 
   async _injectTitlebar (type, showHeader, headerText, showExtras) {
-    const { app } = getModule([ 'app', 'layers' ], true);
+    const { app } = getModule('app', 'layers');
     document.documentElement.setAttribute('titlebar-type', this.settings.get('type', 'windows'));
-    const Shakeable = await getModuleByDisplayName('Shakeable', true);
+    const Shakeable = getModuleByDisplayName('Shakeable');
     const titlebar = React.createElement(Titlebar, { type, showHeader, headerText, showExtras });
     inject('advancedTitlebar-titlebar', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ titlebar, returnValue ]);
 

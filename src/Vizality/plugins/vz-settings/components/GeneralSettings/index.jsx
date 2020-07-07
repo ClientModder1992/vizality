@@ -1,5 +1,4 @@
 const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
-const { Icons: { FontAwesome } } = require('vizality/components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { TextInput, SwitchItem, ButtonItem, Category } = require('vizality/components/settings');
 const { Confirm } = require('vizality/components/modal');
@@ -86,23 +85,23 @@ module.exports = class GeneralSettings extends React.Component {
           <SwitchItem
             note={Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}
             value={getSetting('experiments', false)}
-            onChange={async () => {
+            onChange={() => {
               toggleSetting('experiments');
               // Update modules
-              const experimentsModule = await getModule(r => r.isDeveloper !== void 0, true);
+              const experimentsModule = getModule(r => r.isDeveloper !== void 0);
               experimentsModule._changeCallbacks.forEach(cb => cb());
             }}
           >
             {Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS}
           </SwitchItem>
           {/* @todo: remove this and associated things like strings */}
-          {/* <TextInput
+          <TextInput
             value={getSetting('backendURL', WEBSITE)}
             onChange={p => updateSetting('backendURL', !p ? WEBSITE : p)}
             note={Messages.VIZALITY_SETTINGS_BACKEND_DESC}
           >
             {Messages.VIZALITY_SETTINGS_BACKEND}
-          </TextInput> */}
+          </TextInput>
         </Category>
         <ButtonItem
           note={Messages.VIZALITY_SETTINGS_CACHE_VIZALITY_DESC}

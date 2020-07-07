@@ -6,12 +6,12 @@ const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./Pe
 
 module.exports = class GameActivityToggle extends Plugin {
   async startPlugin () {
-    const classes = await getModule([ 'status', 'description' ], true);
-    const settings = await getModule([ 'updateRemoteSettings' ], true);
+    const classes = getModule('status', 'description');
+    const settings = getModule('updateRemoteSettings');
 
-    let { showCurrentGame } = await getModule([ 'showCurrentGame' ]);
+    let { showCurrentGame } = getModule('showCurrentGame');
 
-    const Menu = await getModule(m => m.default && m.default.displayName === 'Menu', true);
+    const Menu = getModule(m => m.default && m.default.displayName === 'Menu');
     inject('game-activity-toggle', Menu, 'default', (originalArgs) => {
       if (originalArgs[0].navId !== 'status-picker') {
         return originalArgs;

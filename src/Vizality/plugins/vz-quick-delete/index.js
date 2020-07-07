@@ -5,13 +5,13 @@ const { react : { findInReactTree } } = require('vizality/util');
 const { Tooltip, Icon } = require('vizality/components');
 
 module.exports = class QuickDelete extends Plugin {
-  async startPlugin () {
-    const deleteMessage = await getModule([ 'deleteMessage', 'sendMessage' ], true);
-    const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover', true);
+  startPlugin () {
+    const deleteMessage = getModule('deleteMessage', 'sendMessage');
+    const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
 
     const classes = {
-      ...getModule([ 'button', 'wrapper', 'disabled' ]),
-      ...getModule([ 'icon', 'isHeader' ])
+      ...getModule('button', 'wrapper', 'disabled'),
+      ...getModule('icon', 'isHeader')
     };
 
     inject('quick-delete-button', MiniPopover, 'default', (originalArgs, returnValue) => {

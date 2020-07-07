@@ -24,8 +24,7 @@ class Plugins extends Base {
     return this._sortItems([ ...vizality.pluginManager.plugins.values() ]);
   }
 
-  fetchMissing () { // @todo: better impl + i18n
-    // noinspection JSIgnoredPromiseFromCall
+  fetchMissing () { // @todo: better impl + i18
     vizality.pluginManager.get('vz-module-manager')._fetchEntities('plugins');
   }
 

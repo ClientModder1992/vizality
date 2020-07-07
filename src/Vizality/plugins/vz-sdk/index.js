@@ -1,7 +1,7 @@
 const { React, getModule, getModuleByDisplayName, contextMenu } = require('vizality/webpack');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
-const { waitFor, joinClassNames, react: { getOwnerInstance } } = require('vizality/util');
+const { dom: { waitFor }, joinClassNames, react: { getOwnerInstance } } = require('vizality/util');
 const { Plugin } = require('vizality/entities');
 const SdkWindow = require('./components/SdkWindow');
 
@@ -33,8 +33,8 @@ module.exports = class SDK extends Plugin {
   }
 
   async _addPopoutIcon () {
-    const classes = await getModule([ 'iconWrapper', 'clickable' ], true);
-    const HeaderBarContainer = await getModuleByDisplayName('HeaderBarContainer', true);
+    const classes = getModule('iconWrapper', 'clickable');
+    const HeaderBarContainer = getModuleByDisplayName('HeaderBarContainer');
     inject('vz-sdk-icon', HeaderBarContainer.prototype, 'renderLoggedIn', (originalArgs, returnValue) => {
       if (vizality.api.labs.isExperimentEnabled('vz-sdk') && this.sdkEnabled) {
         const Switcher = React.createElement(Tooltip, {
@@ -80,12 +80,12 @@ module.exports = class SDK extends Plugin {
       return returnValue;
     });
 
-    const { title } = getModule([ 'title', 'chatContent' ]);
+    const { title } = getModule('title', 'chatContent');
     getOwnerInstance(await waitFor(`.${title}`)).forceUpdate();
   }
 
   async _openSdk () {
-    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ], true);
+    const popoutModule = getModule('setAlwaysOnTop', 'open');
     popoutModule.open('DISCORD_VIZALITY_SANDBOX', (key) =>
       React.createElement(PopoutWindow, {
         windowKey: key,
@@ -98,7 +98,7 @@ module.exports = class SDK extends Plugin {
   _storeListener () {
     if (this.sdkEnabled !== vizality.settings.get('sdkEnabled')) {
       this.sdkEnabled = vizality.settings.get('sdkEnabled');
-      const { title } = getModule([ 'title', 'chatContent' ]);
+      const { title } = getModule('title', 'chatContent');
       getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
     }
   }

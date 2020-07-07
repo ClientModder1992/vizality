@@ -36,7 +36,7 @@ module.exports = class MainNav extends React.Component {
           </div>
         </div>
         <div className='vizality-main-nav__section-right'>
-          <div className='vizality-main-nav__inbox' onClick={async () => (await getModule([ 'TOGGLE_INBOX' ], true)).TOGGLE_INBOX.action()}>
+          <div className='vizality-main-nav__inbox' onClick={() => getModule('TOGGLE_INBOX').TOGGLE_INBOX.action()}>
             <Icon wrapperClassName='vizality-main-nav__inbox-icon-wrapper' type='notification-bell'></Icon>
           </div>
           <div className='vizality-main-nav__account-panel'>

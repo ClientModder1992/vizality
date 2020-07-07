@@ -3,7 +3,7 @@ const { TabBar, Divider, Button, AsyncComponent } = require('vizality/components
 
 const InstalledProduct = require('../parts/InstalledProduct');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 
 class ThemeSettings extends React.PureComponent {
   constructor (props) {
@@ -48,7 +48,7 @@ class ThemeSettings extends React.PureComponent {
   }
 
   renderTopPills () {
-    const { topPill, item } = getModule([ 'topPill' ]);
+    const { topPill, item } = getModule('topPill');
     return (
       <div className='vizality-entities-manage-tabs'>
         <TabBar

@@ -3,8 +3,8 @@ const { IMAGES } = require('vizality/constants');
 const { receiveMessage } = messages;
 
 module.exports = async function monkeypatchMessages () {
-  const { BOT_AVATARS } = await getModule([ 'BOT_AVATARS' ], true);
-  const { createBotMessage } = await getModule([ 'createBotMessage' ], true);
+  const { BOT_AVATARS } = getModule('BOT_AVATARS');
+  const { createBotMessage } = getModule('createBotMessage');
 
   // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
   BOT_AVATARS.vizality = `${IMAGES}/logo.png`;

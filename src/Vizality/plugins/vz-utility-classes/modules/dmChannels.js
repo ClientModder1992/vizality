@@ -2,8 +2,8 @@ const { inject, uninject } = require('vizality/injector');
 const { getModuleByDisplayName } = require('vizality/webpack');
 const { joinClassNames } = require('vizality/util');
 
-module.exports = async () => {
-  const PrivateChannel = await getModuleByDisplayName('PrivateChannel', true);
+module.exports = () => {
+  const PrivateChannel = getModuleByDisplayName('PrivateChannel');
 
   inject('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (originalArgs, returnValue) => {
     const { props } = returnValue;

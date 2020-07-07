@@ -5,7 +5,7 @@ const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = requ
 module.exports = async () => {
   return () => void 0;
 
-  const List  = await getModuleByDisplayName('List', true);
+  const List  = getModuleByDisplayName('List');
 
   inject('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (originalArgs, returnValue) => {
     // const props = findInReactTree(returnValue, n => n.id);

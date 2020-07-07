@@ -11,11 +11,11 @@ const totalStrCount = Object.keys(strings['en-US']).length;
 
 module.exports = class I18n extends Plugin {
   async startPlugin () {
-    const FluxSettingsLocale = await getModuleByDisplayName('FluxContainer(UserSettingsLocale)', true);
+    const FluxSettingsLocale = getModuleByDisplayName('FluxContainer(UserSettingsLocale)');
     // noinspection JSPotentiallyInvalidConstructorUsage
     const SettingsLocale = React.createElement(FluxSettingsLocale)
       .type.prototype.render.call({ memoizedGetStateFromStores: () => ({}) });
-    const { codeRedemptionRedirect } = await getModule([ 'codeRedemptionRedirect' ], true);
+    const { codeRedemptionRedirect } = getModule('codeRedemptionRedirect');
     inject('vz-i18n-psst', SettingsLocale.type.prototype, 'render', (_, res) => {
       if (!Messages.VIZALITY_I18N_CONTRIBUTE) {
         return res;

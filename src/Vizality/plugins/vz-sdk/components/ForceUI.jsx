@@ -31,8 +31,8 @@ class ForceUI extends React.PureComponent {
 
   // Handlers
   forceMentionEveryone () {
-    const { applyChatRestrictions } = getModule([ 'applyChatRestrictions' ]);
-    const everyoneMdl = getModule([ 'extractEveryoneRole' ]);
+    const { applyChatRestrictions } = getModule('applyChatRestrictions');
+    const everyoneMdl = getModule('extractEveryoneRole');
     const ogExtractEveryoneRole = everyoneMdl.extractEveryoneRole;
     const ogShouldShowEveryoneGuard = everyoneMdl.shouldShowEveryoneGuard;
     const discordTextarea = document.querySelector('form > div > div');
