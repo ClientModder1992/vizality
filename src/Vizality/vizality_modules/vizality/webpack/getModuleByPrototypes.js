@@ -1,4 +1,4 @@
-const getModule = require('./getModule');
+const _getMdl = require('./_getMdl');
 
 /**
  * Grabs a module using properties on its prototype.
@@ -7,8 +7,14 @@ const getModule = require('./getModule');
  * @param {Boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
  * @returns {Promise<object>|object} The found module. A promise will always be returned, unless retry is false.
  */
-const getModuleByPrototypes = (filter, retry = true, forever = false) => {
-  return getModule(m => m.prototype && filter.every(prop => m.prototype[prop] !== undefined), retry, forever, 'getModuleByPrototypes');
+const getModuleByPrototypes = (filter, retry = false, forever = false) => {
+  return _getMdl(
+    m => m.prototype && filter.every(prop => m.prototype[prop] !== undefined),
+    retry,
+    forever,
+    'getModuleByPrototypes',
+    filter
+  );
 };
 
 module.exports = getModuleByPrototypes;

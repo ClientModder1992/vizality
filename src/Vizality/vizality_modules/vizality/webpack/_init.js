@@ -1,7 +1,7 @@
 const { sleep } = require('vizality/util');
 
 const Webpack = require('../webpack');
-const getModule = require('./getModule');
+const _getMdl = require('./_getMdl');
 const moduleFilters = require('./modules');
 
 /**
@@ -32,7 +32,7 @@ const _init = async () => {
   // Load modules pre-fetched
   for (const mdl in moduleFilters) {
     // noinspection JSUnfilteredForInLoop
-    Webpack[mdl] = await getModule(moduleFilters[mdl]);
+    Webpack[mdl] = await _getMdl(moduleFilters[mdl], true);
   }
 };
 
