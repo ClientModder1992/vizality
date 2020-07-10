@@ -1,4 +1,4 @@
-@use '../../../../sasslib' as vz;
+@use '../../../../libraries/sass' as *;
 
 $color: #fff !default;
 
@@ -9,11 +9,11 @@ $color: #fff !default;
 
 $module: (
   vz-logo: (
-    'discord': vz.svg-uri(discord.$logo),
-    'spotify': vz.svg-uri(spotify.$logo),
-    'twitter': vz.svg-uri(twitter.$logo),
-    'xbox': vz.svg-uri(xbox.$logo)
+    'discord': svg-uri(discord.$logo),
+    'spotify': svg-uri(spotify.$logo),
+    'twitter': svg-uri(twitter.$logo),
+    'xbox': svg-uri(xbox.$logo)
   )
 );
 
-:root { @include vz.generate-css-vars($module); }
+:root { @include generate-css-vars($module); }

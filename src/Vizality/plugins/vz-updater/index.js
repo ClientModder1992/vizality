@@ -1,4 +1,4 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Confirm } = require('vizality/components/modal');
 const { Plugin } = require('vizality/entities');
@@ -187,6 +187,8 @@ module.exports = class Updater extends Plugin {
 
   // MODALS
   askForce (callback) {
+    const { colorStandard } = getModule('colorStandard');
+
     openModal(() =>
       React.createElement(Confirm, {
         red: true,
@@ -201,7 +203,7 @@ module.exports = class Updater extends Plugin {
           this.doUpdate(true);
         },
         onCancel: closeModal
-      }, React.createElement('div', { className: 'vizality-text' }, Messages.VIZALITY_UPDATES_FORCE_MODAL))
+      }, React.createElement('div', { className: colorStandard }, Messages.VIZALITY_UPDATES_FORCE_MODAL))
     );
   }
 
@@ -277,11 +279,20 @@ module.exports = class Updater extends Plugin {
     if (!this._ChangeLog) {
       const _this = this;
       const { video } = getModule('video', 'added');
-      const DiscordChangeLog = await this._getMainChangeLogComponent();
+      const DiscordChangeLog = getModuleByDisplayName('ChangelogStandardTemplate');
 
       class ChangeLog extends DiscordChangeLog {
-        renderHeader () {
-          const header = super.renderHeader();
+        constructor (props) {
+          props.onScroll = () => void 0;
+          props.track = () => void 0;
+          super(props);
+
+          this.oldRenderHeader = this.renderHeader;
+          this.renderHeader = this.renderNewHeader.bind(this);
+        }
+
+        renderNewHeader () {
+          const header = this.oldRenderHeader();
           header.props.children[0].props.children = `Vizality - ${header.props.children[0].props.children}`;
           return header;
         }
@@ -309,7 +320,6 @@ module.exports = class Updater extends Plugin {
         }
 
         componentWillUnmount () {
-          super.componentWillUnmount();
           _this.settings.set('last_changelog', changelog.id);
         }
       }
@@ -347,28 +357,5 @@ module.exports = class Updater extends Plugin {
       revision: 1,
       body
     };
-  }
-
-  async _getMainChangeLogComponent () {
-    const mdl = getModule('changeLog', 'isOpen');
-    const ogFunction = mdl.isOpen;
-    mdl.isOpen = () => {
-      mdl.isOpen = ogFunction;
-      return true;
-    };
-    // Fire me harder daddy facebook
-    const owo = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
-    const ogUseRef = owo.useRef;
-    const ogUseState = owo.useState;
-    const ogUseLayoutEffect = owo.useLayoutEffect;
-    owo.useRef = () => ({ current: null });
-    owo.useState = () => [ null, () => void 0 ];
-    owo.useLayoutEffect = () => void 0;
-    const Component = getModule(m => m.type && m.type.displayName && m.type.displayName === 'ConnectedChangeLog');
-    const ChangeLog = Component.type().type;
-    owo.useRef = ogUseRef;
-    owo.useState = ogUseState;
-    owo.useLayoutEffect = ogUseLayoutEffect;
-    return ChangeLog;
   }
 };

@@ -7,7 +7,7 @@ const Permissions = require('./Permissions');
 class BaseProduct extends React.PureComponent {
   renderHeader () {
     return (
-      <div className='vizality-product-header'>
+      <div className='vizality-entity-header'>
         <h4>{this.props.product.name}</h4>
         <Tooltip text={this.props.isEnabled ? Messages.DISABLE : Messages.ENABLE} position='top'>
           <div>
@@ -36,9 +36,7 @@ class BaseProduct extends React.PureComponent {
   renderPermissions () {
     const hasPermissions = this.props.product.permissions && this.props.product.permissions.length > 0;
 
-    if (!hasPermissions) {
-      return null;
-    }
+    if (!hasPermissions) return null;
 
     return (
       <>
@@ -56,7 +54,7 @@ class BaseProduct extends React.PureComponent {
     return (
       <>
         <Divider/>
-        <div className='vizality-product-footer'>
+        <div className='vizality-entity-footer'>
           {this.props.product.discord && // @todo: i18n
           <Tooltip text='Go to their Discord support server'>
             <Clickable onClick={() => this.goToDiscord(this.props.product.discord)}>

@@ -1,7 +1,7 @@
 // Perform checks
 require('./env_check')();
 
-const { writeFile } = require('fs').promises;
+const { promises: { writeFile } } = require('fs');
 const { resolve } = require('path');
 const main = require('./main.js');
 

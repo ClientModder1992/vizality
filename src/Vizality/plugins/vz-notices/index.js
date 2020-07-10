@@ -1,6 +1,5 @@
 const { resolve } = require('path');
-const { existsSync } = require('fs');
-const { unlink } = require('fs').promises;
+const { promises: { unlink }, existsSync } = require('fs');
 const { Plugin } = require('vizality/entities');
 const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
 const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitFor } } = require('vizality/util');

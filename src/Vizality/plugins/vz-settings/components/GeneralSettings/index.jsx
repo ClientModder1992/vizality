@@ -142,6 +142,8 @@ module.exports = class GeneralSettings extends React.Component {
   }
 
   askRestart () {
+    const { colorStandard } = getModule('colorStandard');
+
     openModal(() => <Confirm
       red
       header={Messages.ERRORS_RESTART_APP}
@@ -150,7 +152,7 @@ module.exports = class GeneralSettings extends React.Component {
       onConfirm={() => DiscordNative.app.relaunch()}
       onCancel={closeModal}
     >
-      <div className='vizality-text'>
+      <div className={colorStandard}>
         {Messages.VIZALITY_SETTINGS_RESTART}
       </div>
     </Confirm>);

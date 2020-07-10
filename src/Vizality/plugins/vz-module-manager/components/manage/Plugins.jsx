@@ -6,6 +6,13 @@ const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');
 
 class Plugins extends Base {
+  constructor () {
+    super();
+    this.state = {
+      key: this.constructor.name.toLowerCase().slice(0, -1)
+    };
+  }
+
   renderItem (item) {
     return (
       <InstalledProduct
@@ -22,10 +29,6 @@ class Plugins extends Base {
 
   getItems () {
     return this._sortItems([ ...vizality.pluginManager.plugins.values() ]);
-  }
-
-  fetchMissing () { // @todo: better impl + i18
-    vizality.pluginManager.get('vz-module-manager')._fetchEntities('plugins');
   }
 
   _toggle (pluginID, enabled) {
@@ -50,11 +53,11 @@ class Plugins extends Base {
     }
 
     const title = enabled
-      ? Messages.VIZALITY_PLUGINS_ENABLE
-      : Messages.VIZALITY_PLUGINS_DISABLE;
+      ? Messages.VIZALITY_ENTITIES_ENABLE.format({ entityType: this.state.key })
+      : Messages.VIZALITY_ENTITIES_DISABLE.format({ entityType: this.state.key });
     const note = enabled
-      ? Messages.VIZALITY_PLUGINS_ENABLE_NOTE
-      : Messages.VIZALITY_PLUGINS_DISABLE_NOTE;
+      ? Messages.VIZALITY_ENTITIES_ENABLE_NOTE.format({ entityType: this.state.key })
+      : Messages.VIZALITY_ENTITIES_DISABLE_NOTE.format({ entityType: this.state.key });
     openModal(() => (
       <Confirm
         red={!enabled}
@@ -68,7 +71,7 @@ class Plugins extends Base {
         }}
         onCancel={closeModal}
       >
-        <div className='vizality-products-modal'>
+        <div className='vizality-entity-modal'>
           <span>{note}</span>
           <ul>
             {plugins.map(p => <li key={p.id}>{vizality.pluginManager.get(p).manifest.name}</li>)}
@@ -83,8 +86,8 @@ class Plugins extends Base {
     openModal(() => (
       <Confirm
         red
-        header={Messages.VIZALITY_PLUGINS_UNINSTALL.format({ pluginCount: plugins.length })}
-        confirmText={Messages.VIZALITY_PLUGINS_UNINSTALL.format({ pluginCount: plugins.length })}
+        header={Messages.VIZALITY_ENTITIES_UNINSTALL.format({ entityType: this.state.key, count: plugins.length })}
+        confirmText={Messages.VIZALITY_ENTITIES_UNINSTALL.format({ entityType: this.state.key, count: plugins.length })}
         cancelText={Messages.CANCEL}
         onCancel={closeModal}
         onConfirm={async () => {
@@ -95,8 +98,8 @@ class Plugins extends Base {
           closeModal();
         }}
       >
-        <div className='vizality-products-modal'>
-          <span>{Messages.VIZALITY_PLUGINS_UNINSTALL_SURE.format({ pluginCount: plugins.length })}</span>
+        <div className='vizality-entity-modal'>
+          <span>{Messages.VIZALITY_ENTITIES_UNINSTALL_SURE.format({ entityType: this.state.key, count: plugins.length })}</span>
           <ul>
             {plugins.map(p => <li key={p.id}>{vizality.pluginManager.get(p).manifest.name}</li>)}
           </ul>

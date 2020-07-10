@@ -1,30 +1,24 @@
-@use '../../../../sasslib/classes/layout/chat' as Chat;
-@use '../../../../sasslib/classes/layout/chat' as chat;
-@use '../../../../sasslib' as *;
-@use '../../../../sasslib/classes';
-@use '../../../../sasslib/classes' as class;
+@use '../../../../libraries/sass/classes/layout/chat' as Chat;
+@use '../../../../libraries/sass' as *;
+@use '../../../../libraries/sass/classes' as *;
+@use '../../../../libraries/sass/classes' as class;
 
-// @use '../../../../sasslib' as *;
+// @use '../../../../libraries/sass' as *;
 #{class('layout.chat.name')} {
   color: orange!important;
 }
 
-// @use '../../../../sasslib/classes/layout/chat' as Chat;
+// @use '../../../../libraries/sass/classes/layout/chat' as Chat;
 #{Chat.$name} {
   color: red!important;
 }
 
-// @use '../../../../sasslib/classes';
+// @use '../../../../libraries/sass/classes' as *;
 #{$layout-chat-name} {
   color: teal!important;
 }
 
-// @use '../../../../sasslib/classes' as classes;
-#{class.$layout-chat-name} {
+// @use '../../../../libraries/sass/classes' as classes;
+#{classes.$layout-chat-name} {
   color: white!important;
-}
-
-// @use '../../../../sasslib/classes/layout/chat' as chat;
-#{chat.$name} {
-  color: yellow!important;
 }

@@ -1,4 +1,4 @@
-const { Routes, getModule } = require('vizality/webpack');
+const { constants: { Routes }, getModule } = require('vizality/webpack');
 const { logger: { warn } } = require('vizality/util');
 
 const _getRoutes = require('./_getRoutes');

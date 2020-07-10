@@ -1,6 +1,6 @@
 const less = require('less');
 const Compiler = require('./compiler');
-const { readFile } = require('fs').promises;
+const { promises: { readFile } } = require('fs');
 const { dirname } = require('path');
 
 /**

@@ -1,0 +1,59 @@
+.vizality-entity {
+  padding: 20px;
+  margin-bottom: 20px;
+  .vizality-entity-header {
+    display: flex;
+    margin-bottom: 10px;
+    h4 {
+      font-size: 18px;
+      line-height: 24px;
+      flex: 1;
+    }
+  }
+  .vizality-entity-description,
+  .vizality-entity-metadata > div {
+    display: flex;
+    align-items: center;
+    > div {
+      display: inline;
+      margin-right: 10px;
+    }
+  }
+  .vizality-entity-version span + div {
+    margin-left: 5px;
+    color: #faa61a;
+  }
+  .vizality-entity-license span + div {
+    cursor: pointer;
+    margin-left: 5px;
+    width: 14px;
+    height: 14px;
+  }
+  .vizality-entity-permissions {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+  .vizality-entity-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 7px;
+    > svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 5px;
+    }
+  }
+  .vizality-entity-footer {
+    display: flex;
+  }
+  .vizality-entity-buttons {
+    margin-left: auto;
+  }
+  .vizality-entity-description,
+  .vizality-entity-metadata, 
+  .vizality-entity-permissions,
+  .vizality-entity-footer {
+    margin-top: 20px;
+  }
+}

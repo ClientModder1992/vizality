@@ -1,4 +1,4 @@
-const { React } = require('vizality/webpack');
+const { React, getModule } = require('vizality/webpack');
 const { FormNotice, Switch } = require('vizality/components');
 
 /*
@@ -31,9 +31,10 @@ class Labs extends React.Component {
   renderItem (experiment) {
     const enabled = vizality.api.labs.isExperimentEnabled(experiment.id);
     const date = new Date(experiment.date);
+    const { colorStandard } = getModule('colorStandard');
     // No i wont write proper css
     return (
-      <div key={experiment.id} className='vizality-text' style={{
+      <div key={experiment.id} className={colorStandard} style={{
         marginTop: 40,
         paddingBottom: 20,
         marginBottom: 20,

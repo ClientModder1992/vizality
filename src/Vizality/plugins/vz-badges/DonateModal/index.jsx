@@ -1,4 +1,4 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
+const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
 const { Button } = require('vizality/components');
 const { Modal } = require('vizality/components/modal');
 const { close: closeModal } = require('vizality/modal');
@@ -14,7 +14,9 @@ module.exports = class DonateModal extends React.PureComponent {
   }
 
   render () {
-    return <Modal className='vizality-text vizality-donate-modal'>
+    const { colorStandard } = getModule('colorStandard');
+
+    return <Modal className={`vizality-donate-modal ${colorStandard}`}>
       <Header/>
       <Modal.Content>
         <h3 className='vizality-donate-title'>{Messages.VIZALITY_CUTIE_TITLE}</h3>

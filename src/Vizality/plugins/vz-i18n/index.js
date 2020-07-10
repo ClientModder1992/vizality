@@ -34,6 +34,7 @@ module.exports = class I18n extends Plugin {
       const OgList = res.props.children.props.children[2].type;
       res.props.children.props.children[2].type = class List extends OgList {
         render () {
+          const { colorStandard } = getModule('colorStandard');
           const radioRenderer = this.renderRadio;
           this.renderRadio = (props) => {
             const percentage = Math.floor(Object.keys(strings[props.value] || {}).length / totalStrCount * 100);
@@ -51,7 +52,7 @@ module.exports = class I18n extends Plugin {
                 return React.createElement('div', { className }, res, React.createElement(
                   'div', {
                     onClick: res.props.onClick,
-                    className: 'vizality-text',
+                    className: colorStandard,
                     style: {
                       display: 'flex',
                       justifyContent: 'space-between',

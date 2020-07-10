@@ -2,7 +2,7 @@ const { parse } = require('url');
 const { format } = require('util');
 const { resolve } = require('path');
 const { get } = require('vizality/http');
-const { React } = require('vizality/webpack');
+const { React, getModule } = require('vizality/webpack');
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;
 
@@ -61,9 +61,11 @@ class ErrorBoundary extends React.PureComponent {
   }
 
   render () {
+    const { colorStandard } = getModule('colorStandard');
+
     return this.state.crashed
       ? (
-        <div className='vizality-text vizality-settings-error'>
+        <div className={`vizality-settings-error ${colorStandard}`}>
           <h2>Huh, that's odd</h2>
           <div>An error occurred while rendering settings panel.</div>
           <code>{this.state.errorStack}</code>

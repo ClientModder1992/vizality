@@ -1,7 +1,7 @@
-const { chat } = require('./chat');
+const chat = require('./chat');
 
-module.exports = {
-  layout: {
-    chat
-  }
+const layout = {
+  chat
 };
+
+module.exports = layout;

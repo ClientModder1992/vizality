@@ -76,8 +76,5 @@
   "hljs": [
     "initHighlighting",
     "highlight"
-  ],
-  "Routes": [ ],
-  "getPrivateChannelIds": [ ],
-  "transitionTo": [ ]
+  ]
 }

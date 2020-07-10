@@ -1,3 +1,11 @@
+require('fs')
+  .readdirSync(__dirname)
+  .filter(file => file !== 'index.js')
+  .forEach(filename => {
+    const moduleName = filename.split('.')[0];
+    exports[moduleName] = require(`${__dirname}/${filename}`);
+  });
+
 let moment;
 
 const time = (...args) => {
@@ -7,11 +15,3 @@ const time = (...args) => {
 };
 
 module.exports = time;
-
-require('fs')
-  .readdirSync(__dirname)
-  .filter(file => file !== 'index.js')
-  .forEach(filename => {
-    const moduleName = filename.split('.')[0];
-    exports[moduleName] = require(`${__dirname}/${filename}`);
-  });

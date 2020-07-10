@@ -6,7 +6,7 @@ const { Confirm } = require('vizality/components/modal');
 const { joinClassNames, time } = require('vizality/util');
 const { REPO_URL, CACHE_FOLDER } = require('vizality/constants');
 const { clipboard } = require('electron');
-const { readdirSync } = require('fs');
+const { readdirSync, existsSync } = require('fs');
 
 const Icons = require('./Icons');
 const Update = require('./Update');
@@ -61,7 +61,9 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       title = Messages.VIZALITY_UPDATES_UP_TO_DATE;
     }
 
-    return <div className='vizality-updater vizality-text'>
+    const { colorStandard } = getModule('colorStandard');
+
+    return <div className={`vizality-updater ${colorStandard}`}>
       {awaitingReload
         ? this.renderReload()
         : isUnsupported && this.renderUnsupported()}
@@ -287,6 +289,8 @@ module.exports = class UpdaterSettings extends React.PureComponent {
   }
 
   _ask (title, content, confirm, callback, red = true) {
+    const { colorStandard } = getModule('colorStandard');
+
     openModal(() => <Confirm
       red={red}
       header={title}
@@ -295,7 +299,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       onConfirm={callback}
       onCancel={closeModal}
     >
-      <div className='vizality-text'>{content}</div>
+      <div className={colorStandard}>{content}</div>
     </Confirm>);
   }
 
@@ -323,9 +327,9 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       return path;
     };
 
-    const cachedFiles = readdirSync(CACHE_FOLDER)
+    const cachedFiles = (existsSync(CACHE_FOLDER) && readdirSync(CACHE_FOLDER)
       .map(d => readdirSync(`${CACHE_FOLDER}/${d}`))
-      .flat().length;
+      .flat().length) || 'n/a';
 
     const createPathReveal = (title, path) =>
       <div className='full-column'>

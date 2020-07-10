@@ -15,11 +15,13 @@ class SdkWindow extends React.PureComponent {
   }
 
   render () {
+    const { colorStandard } = getModule('colorStandard');
+
     return (
       <>
         <TitleBar type='WINDOWS' windowKey={'DISCORD_VIZALITY_SANDBOX'} themeOverride={this.props.theme}/>
         {this.renderHeaderBar()}
-        <div className='vizality-text vizality-sdk'>
+        <div className={`vizality-sdk ${colorStandard}`}>
           <VerticalScroller _pass={{ ref: this.scrollerRef }}>
             <div className='vizality-sdk-container'>
               <ForceUI/>

@@ -1,4 +1,4 @@
-@use '../../../sasslib' as *;
+@use '../../../libraries/sass' as *;
 
 // @use 'examples';
 
@@ -87,8 +87,8 @@ $module: (
   border-radius: var('vz-main-nav-border-radius');
   border-width: var('vz-main-nav-border-width');
   border-style: var('vz-main-nav-border-style');
-  border-color:var('vz-main-nav-border-color');
-  box-shadow:var('vz-main-nav-box-shadow');
+  border-color: var('vz-main-nav-border-color');
+  box-shadow: var('vz-main-nav-box-shadow');
   z-index: 999;
   &__section-left {
     display: flex;

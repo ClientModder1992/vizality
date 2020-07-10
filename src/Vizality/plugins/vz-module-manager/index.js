@@ -1,5 +1,4 @@
-const { existsSync } = require('fs');
-const { writeFile, readFile } = require('fs').promises;
+const { promises: { writeFile, readFile }, existsSync } = require('fs');
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { PopoutWindow, Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
@@ -54,12 +53,12 @@ module.exports = class ModuleManager extends Plugin {
     this.loadStylesheet('scss/style.scss');
     vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
-      label: () => Messages.VIZALITY_PLUGINS,
+      label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
       render: Plugins
     });
     vizality.api.settings.registerSettings('Themes', {
       category: this.entityID,
-      label: () => Messages.VIZALITY_THEMES,
+      label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
       render: (props) => React.createElement(Themes, {
         openPopout: () => this._openQuickCSSPopout(),
         ...props
@@ -115,12 +114,12 @@ module.exports = class ModuleManager extends Plugin {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,
-          name: Messages.VIZALITY_PLUGINS,
+          name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
           route: '/_vizality/store/plugins'
         },
         [STORE_THEMES]: {
           icon: Theme,
-          name: Messages.VIZALITY_THEMES,
+          name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
           route: '/_vizality/store/themes'
         }
       };
@@ -146,7 +145,7 @@ module.exports = class ModuleManager extends Plugin {
   async _injectSnippets () {
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
     inject('vz-module-manager-snippets', MiniPopover, 'default', (originalArgs, returnValue) => {
-      const props = findInReactTree(returnValue, r => r && r.canReact && r.message);
+      const props = findInReactTree(returnValue, r => r && r.message && r.setPopout);
 
       if (!props || props.channel.id !== CSS_SNIPPETS) return returnValue;
 

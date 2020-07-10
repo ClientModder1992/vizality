@@ -1,5 +1,5 @@
-module.exports = {
-  vizality: {
-    pie: 'piee'
-  }
+const vizality = {
+  pie: 'piee'
 };
+
+module.exports = vizality;

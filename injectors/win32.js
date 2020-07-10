@@ -1,4 +1,4 @@
-const { readdir } = require('fs').promises;
+const { promises: { readdir } } = require('fs');
 const { join } = require('path');
 
 exports.getAppDir = async () => {

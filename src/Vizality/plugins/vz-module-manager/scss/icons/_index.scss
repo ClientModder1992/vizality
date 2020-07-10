@@ -1,4 +1,4 @@
-@use '../../../../sasslib' as vz;
+@use '../../../../libraries/sass' as *;
 
 $color: #fff !default;
 
@@ -30,36 +30,36 @@ $color: #fff !default;
 
 $module: (
   vz-icon: (
-		'announcement': vz.svg-uri(announcement.$icon),
-		'announcement-locked': vz.svg-uri(announcement-locked.$icon),
-		'arrow-down-alt-2': vz.svg-uri(arrow-down-alt-2.$icon),
-		'arrow-left-alt': vz.svg-uri(arrow-left-alt.$icon),
-		'arrow-left-alt-2': vz.svg-uri(arrow-left-alt-2.$icon),
-		'arrow-right-alt-2': vz.svg-uri(arrow-right-alt-2.$icon),
-		'arrow-up': vz.svg-uri(arrow-up.$icon),
-		'arrow-up-alt': vz.svg-uri(arrow-up-alt.$icon),
-		'arrow-up-alt-2': vz.svg-uri(arrow-up-alt-2.$icon),
-		'at-symbol': vz.svg-uri(at-symbol.$icon),
-		'attach-plus-play': vz.svg-uri(attach-plus-play.$icon),
-    'backpack': vz.svg-uri(backpack.$icon),
-    'block': vz.svg-uri(block.$icon),
-		'bold': vz.svg-uri(bold.$icon),
-		'boost': vz.svg-uri(boost.$icon),
-		'boost-alt': vz.svg-uri(boost-alt.$icon),
-		'boost-level-0': vz.svg-uri(boost-level-0.$icon),
-		'boost-level-1': vz.svg-uri(boost-level-1.$icon),
-		'boost-sheen': vz.svg-uri(boost-sheen.$icon),
-		'call-end': vz.svg-uri(call-end.$icon),
-		'call-ringing': vz.svg-uri(call-ringing.$icon),
-		'caret-down': vz.svg-uri(caret-down.$icon),
-		'caret-left': vz.svg-uri(caret-left.$icon),
-		'caret-right': vz.svg-uri(caret-right.$icon),
-		'trash': vz.svg-uri(trash.$icon),
+		'announcement': svg-uri(announcement.$icon),
+		'announcement-locked': svg-uri(announcement-locked.$icon),
+		'arrow-down-alt-2': svg-uri(arrow-down-alt-2.$icon),
+		'arrow-left-alt': svg-uri(arrow-left-alt.$icon),
+		'arrow-left-alt-2': svg-uri(arrow-left-alt-2.$icon),
+		'arrow-right-alt-2': svg-uri(arrow-right-alt-2.$icon),
+		'arrow-up': svg-uri(arrow-up.$icon),
+		'arrow-up-alt': svg-uri(arrow-up-alt.$icon),
+		'arrow-up-alt-2': svg-uri(arrow-up-alt-2.$icon),
+		'at-symbol': svg-uri(at-symbol.$icon),
+		'attach-plus-play': svg-uri(attach-plus-play.$icon),
+    'backpack': svg-uri(backpack.$icon),
+    'block': svg-uri(block.$icon),
+		'bold': svg-uri(bold.$icon),
+		'boost': svg-uri(boost.$icon),
+		'boost-alt': svg-uri(boost-alt.$icon),
+		'boost-level-0': svg-uri(boost-level-0.$icon),
+		'boost-level-1': svg-uri(boost-level-1.$icon),
+		'boost-sheen': svg-uri(boost-sheen.$icon),
+		'call-end': svg-uri(call-end.$icon),
+		'call-ringing': svg-uri(call-ringing.$icon),
+		'caret-down': svg-uri(caret-down.$icon),
+		'caret-left': svg-uri(caret-left.$icon),
+		'caret-right': svg-uri(caret-right.$icon),
+		'trash': svg-uri(trash.$icon),
   )
 );
 
 .vizality-icon {
-	@include vz.size(100%);
+	@include size(100%);
 	display: flex;
 	background-color: currentColor;
 }
@@ -68,10 +68,10 @@ $module: (
   @each $key, $value in $k {
     .vizality-icon {
       &.#{$key} {
-        @include vz.mask(vz.icon($key));
+        @include mask(icon($key));
       }
     }
   }
 }
 
-:root { @include vz.generate-css-vars($module); }
+:root { @include generate-css-vars($module); }

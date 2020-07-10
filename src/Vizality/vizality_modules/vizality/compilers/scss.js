@@ -1,7 +1,6 @@
 const sass = require('sass');
 const Compiler = require('./compiler');
-const { existsSync, statSync } = require('fs');
-const { readFile } = require('fs').promises;
+const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { join, dirname } = require('path');
 
 /**

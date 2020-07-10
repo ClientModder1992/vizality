@@ -1,4 +1,4 @@
-const { mkdir, writeFile, unlink, rmdir, access } = require('fs').promises;
+const { promises: { mkdir, writeFile, unlink, rmdir, access } } = require('fs');
 const { join, sep } = require('path');
 
 const exists = (path) =>

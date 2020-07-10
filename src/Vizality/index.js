@@ -61,8 +61,9 @@ class Vizality extends Updatable {
     this.styleManager = new StyleManager();
     this.pluginManager = new PluginManager();
     this.apiManager = new APIManager();
-    this.hookRPCServer();
-    this.patchWebSocket();
+    this.originalLogFunc = {};
+    this._hookRPCServer();
+    this._patchWebSocket();
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
@@ -104,72 +105,15 @@ class Vizality extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject('vz-general');
     this.emit('settingsReady');
 
-    this.modules = {
-      webpack: {
-        modules: {}
-      },
-      classes: {},
-      constants: {},
-      discord: {}
-    };
-    /*
-     * Setting up the modules for the global vizality object
-     * =====================================================
-     *
-     * Webpack
-     * -------
-     */
-    const WEBPACK_MODULE = require('vizality/webpack');
-    Object.getOwnPropertyNames(WEBPACK_MODULE)
-      .filter(prop => prop.indexOf('_'))
-      .forEach(e => {
-        if (!e.indexOf('get') && (e.includes('Module') || e.includes('Mdl'))) {
-          this.modules.webpack[e] = WEBPACK_MODULE[e];
-        } else {
-          this.modules.webpack.modules[e] = WEBPACK_MODULE[e];
-        }
-      });
+    // @todo: Make this and _removeDiscordLogs settings options
 
+    // Patch Discord's console logs
     /*
-     * Classes
-     * -------
+     * this._patchDiscordLogs();
      */
-    const CLASSES_MODULE = require('vizality/classes');
-    Object.getOwnPropertyNames(CLASSES_MODULE)
-      .forEach(e => this.modules.classes[e] = CLASSES_MODULE[e]);
 
-    /*
-     * Constants
-     * ---------
-     */
-    const CONSTANTS_MODULE = require('vizality/constants');
-    Object.getOwnPropertyNames(CONSTANTS_MODULE)
-      .forEach(e => this.modules.constants[e] = CONSTANTS_MODULE[e]);
-
-    /*
-     * Discord
-     * -------
-     */
-    const DISCORD_MODULE = require('vizality/discord');
-    Object.getOwnPropertyNames(DISCORD_MODULE)
-      .filter(prop => prop.indexOf('_'))
-      .forEach(e => this.modules.discord[e] = DISCORD_MODULE[e]);
-    /*
-     * Discord:settings
-     * ----------------
-     */
-    const DISCORD_SETTINGS_MODULE = require('vizality/discord/settings');
-    Object.getOwnPropertyNames(DISCORD_SETTINGS_MODULE)
-      .filter(prop => prop.indexOf('_'))
-      .forEach(e => this.modules.discord.settings[e] = DISCORD_SETTINGS_MODULE[e]);
-
-    /**
-     * @warning: Turn this off by default on release.
-     * @todo: Make this a 'Developer Mode' settings toggle
-     */
-    for (const mdl in this.modules) {
-      global[mdl] = this.modules[mdl];
-    }
+    // Remove Discord's console logs
+    this._removeDiscordLogs();
 
     // Style Manager
     this.styleManager.loadThemes();
@@ -187,16 +131,49 @@ class Vizality extends Updatable {
     currentWebContents.on('did-navigate-in-page', () => {
       document.documentElement.setAttribute('vz-route', getCurrentRoute());
     });
+  }
 
-    const Log = getModuleByPrototypes([ '_log' ]);
+  // Vizality shutdown
+  async shutdown () {
+    this.initialized = false;
 
-    const insteadObj = {};
-    function _logInstead (module, orig, replace) {
-      insteadObj[orig] = insteadObj[orig] || module[orig];
-      module[orig] = replace;
+    // Unpatch Discord's console logs
+    this._unpatchDiscordLogs();
+
+    // Plugins
+    await this.pluginManager.shutdownPlugins();
+    await coremods.unload();
+
+    // Style Manager
+    this.styleManager.unloadThemes();
+
+    // APIs
+    await this.apiManager.unload();
+  }
+
+  // Bad code
+  async _hookRPCServer () {
+    const _this = this;
+
+    while (!global.DiscordNative) {
+      await sleep(1);
     }
 
-    _logInstead(Log.prototype, '_log', function (firstArg, ...originalArgs) {
+    await DiscordNative.nativeModules.ensureModule('discord_rpc');
+    const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
+    const { createServer } = discordRpc.RPCWebSocket.http;
+    discordRpc.RPCWebSocket.http.createServer = function () {
+      _this.rpcServer = createServer();
+      return _this.rpcServer;
+    };
+  }
+
+  // Patch Discord's logs to follow Vizality's log style
+  _patchDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
+
+    this.originalLogFunc._log = this.originalLogFunc._log || Log.prototype._log;
+    Log.prototype._log = function (firstArg, ...originalArgs) {
       const MODULE = 'Discord';
       const SUBMODULE = this.name;
 
@@ -211,48 +188,25 @@ class Vizality extends Updatable {
       if (firstArg === 'warn') {
         warn(MODULE, SUBMODULE, null, ...originalArgs);
       }
-    });
-  }
-
-  // Vizality shutdown
-  async shutdown () {
-    this.initialized = false;
-
-    function _logInsteadUndo (module, orig) {
-      module[orig] = this.insteadObj[orig];
-    }
-
-    _logInsteadUndo(this.Log.prototype, '_log');
-
-    // Plugins
-    await this.pluginManager.shutdownPlugins();
-    await coremods.unload();
-
-    // Style Manager
-    this.styleManager.unloadThemes();
-
-    // APIs
-    await this.apiManager.unload();
-  }
-
-  // Bad code
-  async hookRPCServer () {
-    const _this = this;
-    // eslint-disable-next-line no-unmodified-loop-condition
-    while (!global.DiscordNative) {
-      await sleep(1);
-    }
-
-    await DiscordNative.nativeModules.ensureModule('discord_rpc');
-    const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
-    const { createServer } = discordRpc.RPCWebSocket.http;
-    discordRpc.RPCWebSocket.http.createServer = function () {
-      _this.rpcServer = createServer();
-      return _this.rpcServer;
     };
   }
 
-  patchWebSocket () {
+  // Remove Discord's logs entirely
+  _removeDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
+
+    this.originalLogFunc._log = this.originalLogFunc._log || Log.prototype._log;
+    // eslint-disable-next-line no-empty-function
+    Log.prototype._log = function () { };
+  }
+
+  // Unpatch Discord's logs back to the default style
+  _unpatchDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
+    Log.prototype._log = vizality.originalLogFunc._log;
+  }
+
+  _patchWebSocket () {
     const _this = this;
 
     window.WebSocket = class PatchedWebSocket extends window.WebSocket {

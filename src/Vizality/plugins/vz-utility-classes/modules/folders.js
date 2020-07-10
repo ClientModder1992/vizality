@@ -2,42 +2,32 @@
 
 const { inject, uninject } = require('vizality/injector');
 const { getModule } = require('vizality/webpack');
-const { joinClassNames, dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
+const { joinClassNames } = require('vizality/util');
 
-module.exports = async () => {
-  /*
-   * @todo: Fix this
-   * Apparently Discord changed the structure a while ago and nobody really noticed
-   * Injecting into this seems more painful than before but eh
-   */
-  return () => void 0;
+module.exports = () => {
+  const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));
 
-  const folderClasses = getModule('wrapper', 'folder');
-  const instance = getOwnerInstance(await waitFor(`.${folderClasses.wrapper.split(' ')[0]}`));
-  getModule('wrapper', 'folder');
+  inject('vz-utility-classes-folders', GuildFolder.default, 'type', (originalArgs, returnValue) => {
+    const { folderName, unread, selected, expanded, audio, video, screenshare, badge: mentions } = originalArgs[0];
 
-  inject('vz-utility-classes-folders', instance.__proto__, 'render', (originalArgs, returnValue) => {
-    if (!returnValue.props) return returnValue;
-    console.log(returnValue);
-
-    const { props } = returnValue;
-
-    props.className = joinClassNames(
-      props.className, {
-        'vz-isUnread': props.unread,
-        'vz-isSelected': props.selected,
-        'vz-isExpanded': props.expanded,
-        'vz-hasAudio': props.audio,
-        'vz-hasVideo': props.video,
-        'vz-hasScreenshare': props.screenshare,
-        'vz-isMentioned': props.badge > 0
+    returnValue.props.className = joinClassNames(
+      returnValue.props.className, {
+        'vz-isUnread': unread,
+        'vz-isSelected': selected,
+        'vz-isExpanded': expanded,
+        'vz-isCollapsed': !expanded,
+        'vz-hasAudio': audio,
+        'vz-hasVideo': video,
+        'vz-hasScreenshare': screenshare,
+        'vz-isMentioned': mentions > 0
       });
 
-    props['vz-folder-name'] = props.folderName;
+    if (folderName && folderName !== '') {
+      returnValue.props['vz-folder-name'] = folderName;
+    }
 
     return returnValue;
   });
 
-  setImmediate(() => forceUpdateElement(`.${folderClasses.wrapper.split(' ')[0]}`, true));
   return () => uninject('vz-utility-classes-folders');
 };

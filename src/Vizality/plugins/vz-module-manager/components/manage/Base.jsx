@@ -2,19 +2,21 @@ const { join } = require('path');
 const { shell } = require('electron');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('vizality/webpack');
 const { settings: { TextInput }, Button, Tooltip, ContextMenu, Divider, Icons: { Overflow } } = require('vizality/components');
+const { string: { toHeaderCase } } = require('vizality/util');
 
 class Base extends React.Component {
   constructor () {
     super();
     this.state = {
-      key: `${this.constructor.name.toUpperCase()}`,
+      key: this.constructor.name.toLowerCase().slice(0, -1),
       search: ''
     };
   }
 
   render () {
+    const { colorStandard } = getModule('colorStandard');
     return (
-      <div className='vizality-entities-manage vizality-text'>
+      <div className={`vizality-entities-manage ${colorStandard}`}>
         <div className='vizality-entities-manage-header'>
           {this.renderHeader()}
           {this.renderButtons()}
@@ -27,7 +29,7 @@ class Base extends React.Component {
 
   renderHeader () {
     return (
-      <span>{Messages[`VIZALITY_${this.state.key}_INSTALLED`]}</span>
+      <span>{Messages.VIZALITY_ENTITIES_INSTALLED.format({ entityType: toHeaderCase(this.state.key) })}</span>
     );
   }
 
@@ -35,9 +37,9 @@ class Base extends React.Component {
     return (
       <div className='buttons'>
         {vizality.api.labs.isExperimentEnabled('vz-store')
-          ? <Button onClick={() => this.goToStore()}>{Messages[`VIZALITY_${this.state.key}_EXPLORE`]}</Button>
+          ? <Button onClick={() => this.goToStore()}>{Messages.VIZALITY_ENTITIES_EXPLORE.format({ entityType: toHeaderCase(this.state.key) })}</Button>
           : <Tooltip text={Messages.COMING_SOON}>
-            <Button disabled>{Messages[`VIZALITY_${this.state.key}_EXPLORE`]}</Button>
+            <Button disabled>{Messages.VIZALITY_ENTITIES_EXPLORE.format({ entityType: toHeaderCase(this.state.key) })}</Button>
           </Tooltip>}
         <Overflow onClick={e => this.openOverflowMenu(e)} onContextMenu={e => this.openOverflowMenu(e)}/>
       </div>
@@ -50,7 +52,7 @@ class Base extends React.Component {
       <div className='vizality-entities-manage-items'>
         {this.renderSearch()}
         {items.length === 0
-          ? <div className='empty'>
+          ? <div className='vizality-entities-manage-items-empty'>
             <div className={getModule('emptyStateImage').emptyStateImage}/>
             <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
             <p>{Messages.SEARCH_NO_RESULTS}</p>
@@ -66,9 +68,9 @@ class Base extends React.Component {
         <TextInput
           value={this.state.search}
           onChange={search => this.setState({ search })}
-          placeholder={Messages.VIZALITY_PRODUCT_LOOKING}
+          placeholder={Messages.VIZALITY_ENTITIES_FILTER_PLACEHOLDER}
         >
-          {Messages[`VIZALITY_${this.state.key}_SEARCH`]}
+          {Messages.VIZALITY_ENTITIES_FILTER.format({ entityType: this.state.key })}
         </TextInput>
       </div>
     );
@@ -89,15 +91,14 @@ class Base extends React.Component {
         itemGroups: [ [
           {
             type: 'button',
-            name: Messages[`VIZALITY_${this.state.key}_OPEN_FOLDER`],
+            name: Messages.VIZALITY_ENTITIES_OPEN_FOLDER.format({ entityType: `${this.state.key}` }),
             onClick: () => {
-              shell.openItem(join(__dirname, '..', '..', '..', '..', this.constructor.name.toLowerCase()));
-              console.log(this.constructor.name.toLowerCase());
+              shell.openItem(join(__dirname, '..', '..', '..', '..', `${this.state.key}s`));
             }
           },
           {
             type: 'button',
-            name: Messages[`VIZALITY_${this.state.key}_LOAD_MISSING`],
+            name: Messages.VIZALITY_ENTITIES_LOAD_MISSING.format({ entityType: `${this.state.key}` }),
             onClick: () => this.fetchMissing()
           }
         ] ]
@@ -109,15 +110,15 @@ class Base extends React.Component {
     const { popLayer } = getModule('popLayer');
     const { transitionTo } = getModule('transitionTo');
     popLayer();
-    transitionTo(`/_vizality/store/${this.constructor.name.toLowerCase()}`);
+    transitionTo(`/_vizality/store/${this.state.key}`);
   }
 
   fetchMissing () {
-    throw new Error('Not implemented');
+    vizality.pluginManager.get('vz-module-manager')._fetchEntities(`${this.state.key}s`);
   }
 
   _sortItems (items) {
-    if (this.state.search !== '') {
+    if (this.state.search && this.state.search !== '') {
       const search = this.state.search.toLowerCase();
       items = items.filter(p =>
         p.manifest.name.toLowerCase().includes(search) ||

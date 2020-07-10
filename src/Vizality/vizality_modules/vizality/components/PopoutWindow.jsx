@@ -4,12 +4,7 @@ const { getModuleByDisplayName } = require('vizality/webpack');
 const AsyncComponent = require('./AsyncComponent');
 
 module.exports = AsyncComponent.from((async () => {
-  /**
-   * @todo: Needs fixing.
-   */
-  return void 0;
-
-  const DiscordPopoutWindow = getModuleByDisplayName('FluxContainer(PopoutWindow)');
+  const DiscordPopoutWindow = getModuleByDisplayName('DragDropContext(ForwardRef(FluxContainer(PopoutWindow)))');
   class PopoutWindow extends DiscordPopoutWindow {
     constructor (props) {
       if (!props.withTitleBar) {
@@ -20,9 +15,9 @@ module.exports = AsyncComponent.from((async () => {
     }
 
     componentDidMount () {
-      super.componentDidMount();
-      const store = this.listener.stores.find(s => s.getWindow);
-      const guestWindow = store.getWindow(this.props.windowKey);
+      const instance = this.getDecoratedComponentInstance();
+      const { guestWindow } = instance.props;
+
       document.querySelectorAll('style[vz-style]').forEach(style => {
         guestWindow.document.head.innerHTML += style.outerHTML;
       });

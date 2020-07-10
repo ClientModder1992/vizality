@@ -3,7 +3,7 @@ module.exports = {
   aliases: [ 'h' ],
   description: 'Gives you a list of commands or information on a specific command.',
   usage: '{c} [ commandName ]',
-  executor ([ commandName ]) {
+  async executor ([ commandName ]) {
     let result;
 
     if (!commandName) {

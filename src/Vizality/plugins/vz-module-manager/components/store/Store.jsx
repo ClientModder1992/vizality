@@ -1,38 +1,9 @@
 const { React, Flux, getModule, getModuleByDisplayName } = require('vizality/webpack');
 const { Tooltip, Clickable, HeaderBar, AsyncComponent, Icons: { Plugin: PluginIcon, Theme, CloudUpload, Certificate, Server } } = require('vizality/components');
 
-const Product = require('../brrrrr/items/Products/Product');
+// const Product = require('../brrrrr/items/Products/Product');
 const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));
-const SearchBox = AsyncComponent.from((async () => {
-  /*
-   * const { searchHelpTextVisible } = getModule('searchHelpTextVisible');
-   * const GuildDiscoverySearch = getModuleByDisplayName('GuildDiscoverySearchWithResults');
-   * const instance = new GuildDiscoverySearch({});
-   * return (props) => {
-   *   const res = instance.renderSearch().props.children({});
-   *   res.props.className += ' vizality-store-search';
-   *   [ res.props.children.props.children ] = res.props.children.props.children;
-   *   Object.assign(res.props.children.props.children.props.children[0].props, props);
-   *   if (props.focused && props.searchTerm.length > 0) {
-   *     res.props.children.props.children.props.children[1].props.className += ` ${searchHelpTextVisible}`;
-   *   }
-   *   return res;
-   * };
-   */
-})());
-
-const classes = null;
-setImmediate(async () => {
-  /*
-   * classes = {
-   *   background: getModule('bg', 'body').bg,
-   *   quickSelectArrow: getModule('quickSelectArrow').quickSelectArrow,
-   *   topic: getModule('topic', 'expandable').topic,
-   *   headerBar: getModule('iconWrapper', 'clickable'),
-   *   store: getModule('storeHomeWidth', 'container')
-   * };
-   */
-});
+const SearchBox = AsyncComponent.from(getModuleByDisplayName('GuildDiscoverySearchBar'));
 
 class Store extends React.Component {
   constructor (props) {
@@ -67,24 +38,15 @@ class Store extends React.Component {
   }
 
   render () {
-    // dont touch mah stuff :angery:
-    const ids = [ 'h6DNdop6pD8', 'd1YBv2mWll0', 'dQw4w9WgXcQ', 'A963X1RaRfk', 'q4OItmKWFKw', 'NHEaYbDWyQE' ];
-    return <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      height: '100%'
-    }}>
-      <iframe
-        width='100%' height='100%'
-        src={`https://www.youtube.com/embed/${ids[Math.floor(Math.random() * ids.length)]}`}
-        frameBorder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-        allowFullScreen/>
-    </div>;
+    return void 0;
+    const classes = {
+      background: getModule('bg', 'layer').bg,
+      quickSelectArrow: getModule('quickSelectArrow').quickSelectArrow,
+      topic: getModule('topic', 'expandable').topic,
+      headerBar: getModule('iconWrapper', 'clickable'),
+      store: getModule('storeHomeWidth', 'container')
+    };
 
-    /* eslint-disable no-unreachable */
-    // noinspection UnreachableCodeJS
     const { headerBar, store } = classes;
     return <div className='vizality-text vizality-store'>
       <HeaderBar transparent={false} toolbar={this.renderToolbar()}>
@@ -117,6 +79,14 @@ class Store extends React.Component {
   }
 
   renderToolbar () {
+    const classes = {
+      background: getModule('bg', 'layer').bg,
+      quickSelectArrow: getModule('quickSelectArrow').quickSelectArrow,
+      topic: getModule('topic', 'expandable').topic,
+      headerBar: getModule('iconWrapper', 'clickable'),
+      store: getModule('storeHomeWidth', 'container')
+    };
+
     const { topic, headerBar } = classes;
 
     return <>
@@ -140,6 +110,14 @@ class Store extends React.Component {
   }
 
   renderFilters () {
+    const classes = {
+      background: getModule('bg', 'layer').bg,
+      quickSelectArrow: getModule('quickSelectArrow').quickSelectArrow,
+      topic: getModule('topic', 'expandable').topic,
+      headerBar: getModule('iconWrapper', 'clickable'),
+      store: getModule('storeHomeWidth', 'container')
+    };
+
     return <>
       <div className='vizality-store-filters'>
         <div className='filter'>

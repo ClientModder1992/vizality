@@ -1,5 +1,5 @@
 const { join } = require('path');
-const { existsSync } = require('fs');
+const { existsSync, promises } = require('fs');
 const { execSync } = require('child_process');
 
 const rootPath = join(__dirname, '..');
@@ -23,8 +23,7 @@ module.exports = () => {
   }
 
   // Verify if we're on node 10.x
-  const fs = require('fs');
-  if (!fs.promises) {
+  if (!promises) {
     console.error('You\'re on an outdated Node.js version. Vizality requires you to run at least Node 10. You can download it here: https://nodejs.org');
     process.exit(1);
   }

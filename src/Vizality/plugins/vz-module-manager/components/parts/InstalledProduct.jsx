@@ -6,7 +6,7 @@ const BaseProduct = require('./BaseProduct');
 class InstalledProduct extends BaseProduct {
   render () {
     return (
-      <Card className='vizality-product'>
+      <Card className='vizality-entity'>
         {this.renderHeader()}
         {this.renderDetails()}
         {this.renderPermissions()}

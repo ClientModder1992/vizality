@@ -1,6 +1,5 @@
 const { join } = require('path');
-const { readdirSync, existsSync } = require('fs');
-const { readFile, lstat } = require('fs').promises;
+const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
 
 const { Theme } = require('vizality/entities');
 const { SETTINGS_FOLDER } = require('vizality/constants');

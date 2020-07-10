@@ -31,7 +31,6 @@ const _init = async () => {
 
   // Load modules pre-fetched
   for (const mdl in moduleFilters) {
-    // noinspection JSUnfilteredForInLoop
     Webpack[mdl] = await _getMdl(moduleFilters[mdl], true);
   }
 };
