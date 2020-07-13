@@ -45,27 +45,27 @@ module.exports = class Badges extends Plugin {
   async _patchGuildTooltips () {
     const _this = this;
     const GuildBadge = getModuleByDisplayName('GuildBadge');
-    inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, res) {
+    inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, retValue) {
       const { guild } = this.props;
       // GuildBadges is used in different places, size prop seems GuildTooltip "exclusive"
       if (this.props.size && _this.guildBadges[guild.id]) {
-        return [ _this._renderBadge(_this.guildBadges[guild.id]), res ];
+        return [ _this._renderBadge(_this.guildBadges[guild.id]), retValue ];
       }
 
-      return res;
+      return retValue;
     });
   }
 
   async _patchGuildHeaders () {
     const _this = this;
     const GuildHeader = getModuleByDisplayName('GuildHeader');
-    inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, res) {
+    inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, retValue) {
       if (_this.guildBadges[this.props.guild.id]) {
-        res.props.children.unshift(
+        retValue.props.children.unshift(
           _this._renderBadge(_this.guildBadges[this.props.guild.id])
         );
       }
-      return res;
+      return retValue;
     });
   }
 
@@ -76,26 +76,25 @@ module.exports = class Badges extends Plugin {
     ].join(' '))).parentElement);
 
     const UserProfileBody = instance._reactInternalFiber.return.type;
-    inject('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, res) {
+    inject('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, retValue) {
       const badges = React.createElement(BadgesComponent, {
         key: 'vizality',
         id: this.props.user.id
       });
 
-      if (!res) {
+      if (!retValue) {
         return React.createElement('div', { className: 'vizality-badges' }, badges);
       }
 
-      res.props.children.push(badges);
-      return res;
+      retValue.props.children.push(badges);
+      return retValue;
     });
     instance.forceUpdate();
   }
 
   async _fetchBadges () {
     try {
-      const baseUrl = vizality.settings.get('backendURL', WEBSITE);
-      this.guildBadges = await get(`${baseUrl}/api/v2/guilds/badges`).then(res => res.body);
+      this.guildBadges = await get(`${WEBSITE}/api/guilds/badges`).then(res => res.body);
 
       if (document.querySelector(this.classes.header)) {
         forceUpdateElement(this.classes.header);

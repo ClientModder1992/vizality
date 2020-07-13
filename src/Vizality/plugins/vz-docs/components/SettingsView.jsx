@@ -1,5 +1,6 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { AsyncComponent, Clickable, Tooltip, Icons: { ExternalLink, Pin, Unpin, Close } } = require('vizality/components');
+const { joinClassNames } = require('vizality/util');
 
 module.exports = AsyncComponent.from((async () => {
   const StandardSidebarView = getModuleByDisplayName('StandardSidebarView');
@@ -8,7 +9,7 @@ module.exports = AsyncComponent.from((async () => {
   class DocsSidebarView extends StandardSidebarView {
     render () {
       const res = super.render();
-      res.props.className += ' vizality-documentation';
+      res.props.className = joinClassNames(res.props.className, 'vizality-documentation');
       return res;
     }
 
@@ -35,12 +36,15 @@ module.exports = AsyncComponent.from((async () => {
   class DocsSettingsView extends SettingsView {
     render () {
       const res = super.render();
+
       if (!res) {
         return null;
       }
+
       res.props.popout = this.props.popout;
       res.props.onPopout = this.props.onPopout;
       res.type = DocsSidebarView;
+
       if (this.props.popout) {
         return (
           <>

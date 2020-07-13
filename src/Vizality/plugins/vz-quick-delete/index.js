@@ -6,7 +6,7 @@ const { Tooltip, Icon } = require('vizality/components');
 
 module.exports = class QuickDelete extends Plugin {
   startPlugin () {
-    const deleteMessage = getModule('deleteMessage', 'sendMessage');
+    const { deleteMessage } = getModule('deleteMessage', 'sendMessage');
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
 
     const classes = {
@@ -14,14 +14,15 @@ module.exports = class QuickDelete extends Plugin {
       ...getModule('icon', 'isHeader')
     };
 
-    inject('quick-delete-button', MiniPopover, 'default', (originalArgs, returnValue) => {
-      const props = findInReactTree(returnValue, r => r && r.canDelete && r.message);
+    inject('quick-delete-button', MiniPopover, 'default', (_, retValue) => {
+      const props = findInReactTree(retValue, r => r && r.canDelete && r.message);
 
-      if (!props) return returnValue;
+      if (!props) return retValue;
 
-      const oType = returnValue.props.children[1].type;
-      returnValue.props.children[1].type = props => {
-        const ret = oType(props);
+      const originalType = retValue.props.children[1].type;
+
+      retValue.props.children[1].type = props => {
+        const ret = originalType(props);
         ret.props.children.splice(-1, 0,
           React.createElement(
             Tooltip,
@@ -33,17 +34,15 @@ module.exports = class QuickDelete extends Plugin {
             React.createElement(Icon, {
               wrapperClassName: classes.icon,
               type: 'trash',
-              onClick: () => deleteMessage.deleteMessage(props.channel.id, props.message.id)
+              onClick: () => deleteMessage(props.channel.id, props.message.id)
             })
           )
         );
         return ret;
       };
 
-      return returnValue;
+      return retValue;
     });
-
-    MiniPopover.default.displayName = 'MiniPopover';
   }
 
   pluginWillUnload () {

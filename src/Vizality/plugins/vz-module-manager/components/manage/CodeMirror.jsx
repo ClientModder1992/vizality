@@ -45,6 +45,7 @@ class CodeMirrorComponent extends React.PureComponent {
 
   componentDidMount () {
     const cm = new CodeMirror(this.cmRef.current, {
+      mode: 'text/x-scss',
       theme: 'porkord',
       styleActiveLine: true,
       lineNumbers: this.props.getSetting('cm-lineNumbers', true),

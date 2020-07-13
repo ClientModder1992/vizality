@@ -1,8 +1,8 @@
 const { React, Flux, getModule } = require('vizality/webpack');
 const { PopoutWindow, Spinner } = require('vizality/components');
-const { react: { getOwnerInstance } } = require('vizality/util');
 const { WEBSITE } = require('vizality/constants');
 const { get } = require('vizality/http');
+const { sleep, string: { toPascalCase, toCamelCase } } = require('vizality/util');
 const DocPage = require('./DocPage');
 const SettingsView = require('./SettingsView');
 
@@ -80,22 +80,47 @@ class DocsLayer extends React.PureComponent {
         if (section.startsWith('_part/')) {
           this.scrollTo(section.split('/').pop());
         } else if (this.state.section === section) {
-          this.scrollTo();
+          this.scrollTo(section);
         } else {
           this.setState({ section });
+          this.scrollTo(section);
         }
       }}
     />;
   }
 
-  scrollTo (part) {
-    const element = document.querySelector('.vizality-documentation div + div > div > div');
-    const scroller = getOwnerInstance(element);
-    if (part) {
+  async _setActive (part) {
+    const parts = document.querySelectorAll(`[class^='vz-part']`);
+    for (const p of parts) {
+      if (!p.classList.value.includes(toPascalCase(part))) {
+        p.classList.remove('active');
+      } else {
+        p.classList.add('active');
+      }
+    }
+  }
+
+  async scrollTo (part) {
+    const { contentRegionScroller } = getModule('contentRegionScroller');
+    const scroller = document.querySelector(`.vizality-documentation .${contentRegionScroller}`);
+    if (part && document.getElementById(part)) {
+      this._setActive(part);
       const partElement = document.getElementById(part);
-      scroller.scrollIntoView(partElement);
+      partElement.scrollIntoView({ behavior: 'smooth' });
     } else {
-      scroller.scrollTo(0);
+      const section = document.querySelector(`.vz-${toCamelCase(part)}Item`);
+      await sleep(20);
+      if (section && section.nextSibling.classList.value.includes('vz-part')) {
+        const parts = document.querySelectorAll(`[class^='vz-part']`);
+        for (const p of parts) {
+          if (p !== section.nextSibling) {
+            p.classList.remove('active');
+          } else {
+            p.classList.add('active');
+          }
+        }
+      }
+      scroller.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
   }
 

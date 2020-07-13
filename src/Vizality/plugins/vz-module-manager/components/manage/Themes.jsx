@@ -1,4 +1,4 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { TabBar } = require('vizality/components');
 const QuickCSS = require('./QuickCSS');
 const Base = require('./Base');
@@ -13,14 +13,15 @@ class Themes extends Base {
   }
 
   render () {
-    const { topPill, item } = getModule('topPill');
+    const { item } = getModule('item', 'topPill');
+    const { Types } = getModuleByDisplayName('TabBar');
     return (
       <>
         <div className='vizality-entities-manage-tabs'>
           <TabBar
             selectedItem={this.state.tab}
             onItemSelect={tab => this.setState({ tab })}
-            type={topPill}
+            type={Types.TOP}
           >
             <TabBar.Item className={item} selectedItem={this.state.tab} id='INSTALLED'>
               {Messages.VIZALITY_INSTALLED}

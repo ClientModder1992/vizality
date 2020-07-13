@@ -1,4 +1,4 @@
-const { array: { lastItem } } = require('vizality/util');
+const { array: { getLastElement } } = require('vizality/util');
 
 const _getMdl = require('./_getMdl');
 
@@ -6,11 +6,11 @@ const getModule = (...filter) => {
   let retry = false;
   let forever = false;
 
-  if (typeof lastItem(filter) === 'boolean') {
-    forever = lastItem(filter);
+  if (typeof getLastElement(filter) === 'boolean') {
+    forever = getLastElement(filter);
     filter.pop();
-    if (typeof lastItem(filter) === 'boolean') {
-      retry = lastItem(filter);
+    if (typeof getLastElement(filter) === 'boolean') {
+      retry = getLastElement(filter);
       filter.pop();
     } else {
       retry = forever;

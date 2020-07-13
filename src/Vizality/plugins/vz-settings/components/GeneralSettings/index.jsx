@@ -94,14 +94,6 @@ module.exports = class GeneralSettings extends React.Component {
           >
             {Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS}
           </SwitchItem>
-          {/* @todo: remove this and associated things like strings */}
-          <TextInput
-            value={getSetting('backendURL', WEBSITE)}
-            onChange={p => updateSetting('backendURL', !p ? WEBSITE : p)}
-            note={Messages.VIZALITY_SETTINGS_BACKEND_DESC}
-          >
-            {Messages.VIZALITY_SETTINGS_BACKEND}
-          </TextInput>
         </Category>
         <ButtonItem
           note={Messages.VIZALITY_SETTINGS_CACHE_VIZALITY_DESC}

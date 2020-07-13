@@ -15,7 +15,6 @@ module.exports = AsyncComponent.from((async () => {
           <VizalityCutie height={32}/>
         </div>;
 
-      console.log(res);
       return res;
     };
     return res;

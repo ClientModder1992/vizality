@@ -1,6 +1,6 @@
 const { logger: { log, warn } } = require('vizality/util');
 
-module.exports = function info (setting) {
+const getSettingInfo = (setting) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:settings:getSettingInfo';
 
@@ -130,3 +130,5 @@ module.exports = function info (setting) {
 
   return warn(MODULE, SUBMODULE, null, `Info on '${setting}' is not available.`);
 };
+
+module.exports = getSettingInfo;

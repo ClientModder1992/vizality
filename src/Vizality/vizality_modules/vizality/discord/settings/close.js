@@ -1,9 +1,9 @@
 const { getModule } = require('vizality/webpack');
 
 const close = () => {
-  const popLayer = getModule('popLayer');
+  const { popLayer } = getModule('popLayer');
 
-  return popLayer.popAllLayers();
+  return popLayer();
 };
 
 module.exports = close;

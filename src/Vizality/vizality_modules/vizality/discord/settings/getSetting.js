@@ -2,7 +2,7 @@ const { getModule } = require('vizality/webpack');
 const { logger: { warn } } = require('vizality/util');
 const getSettingInfo = require('./getSettingInfo');
 
-module.exports = function get (setting) {
+const getSetting = (setting) => {
   const MODULE = 'Module';
   const SUBMODULE = 'Discord:settings:getSetting';
 
@@ -66,3 +66,5 @@ module.exports = function get (setting) {
       return settings[setting] || moreSettings[setting] || warn(MODULE, SUBMODULE, null, `'${setting}' is not an available setting.`);
   }
 };
+
+module.exports = getSetting;

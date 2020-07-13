@@ -35,12 +35,7 @@ class Base extends React.Component {
 
   renderButtons () {
     return (
-      <div className='buttons'>
-        {vizality.api.labs.isExperimentEnabled('vz-store')
-          ? <Button onClick={() => this.goToStore()}>{Messages.VIZALITY_ENTITIES_EXPLORE.format({ entityType: toHeaderCase(this.state.key) })}</Button>
-          : <Tooltip text={Messages.COMING_SOON}>
-            <Button disabled>{Messages.VIZALITY_ENTITIES_EXPLORE.format({ entityType: toHeaderCase(this.state.key) })}</Button>
-          </Tooltip>}
+      <div className='vizality-entities-manage-buttons'>
         <Overflow onClick={e => this.openOverflowMenu(e)} onContextMenu={e => this.openOverflowMenu(e)}/>
       </div>
     );
@@ -91,14 +86,14 @@ class Base extends React.Component {
         itemGroups: [ [
           {
             type: 'button',
-            name: Messages.VIZALITY_ENTITIES_OPEN_FOLDER.format({ entityType: `${this.state.key}` }),
+            name: Messages.VIZALITY_ENTITIES_OPEN_FOLDER.format({ entityType: toHeaderCase(this.state.key) }),
             onClick: () => {
               shell.openItem(join(__dirname, '..', '..', '..', '..', `${this.state.key}s`));
             }
           },
           {
             type: 'button',
-            name: Messages.VIZALITY_ENTITIES_LOAD_MISSING.format({ entityType: `${this.state.key}` }),
+            name: Messages.VIZALITY_ENTITIES_LOAD_MISSING.format({ entityType: toHeaderCase(this.state.key) }),
             onClick: () => this.fetchMissing()
           }
         ] ]

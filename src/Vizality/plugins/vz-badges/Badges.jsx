@@ -46,8 +46,7 @@ module.exports = class Badges extends React.PureComponent {
   async componentDidMount () {
     // Fetch even if the store is populated, to update cached stuff
     try {
-      const baseUrl = vizality.settings.get('backendURL', WEBSITE);
-      const { badges } = await get(`${baseUrl}/api/v2/users/${this.props.id}`).then(res => res.body);
+      const { badges } = await get(`${WEBSITE}/api/badges/users/${this.props.id}.json`).then(res => res.body);
       this.setState(badges);
       badgesStore[this.props.id] = badges;
     } catch (e) {
@@ -66,7 +65,7 @@ module.exports = class Badges extends React.PureComponent {
         }}/>
       </Tooltip>,
       Object.keys(badges).map(badge => this.state[badge] && <Badge
-        badge={badge} key={badge} onClick={badges[badge]}
+        badge={badge} key={badge} location={'profile'} onClick={badges[badge]}
         color={this.state.custom && this.state.custom.color ? this.state.custom.color : '7289DA'}
       />)
     ];

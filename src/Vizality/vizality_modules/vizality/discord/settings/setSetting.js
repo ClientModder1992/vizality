@@ -10,19 +10,30 @@ const setSetting = async (setting, value, sync = true) => {
   const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
   const moreSettings = getModule('darkSidebar', 'fontScale', 'fontSize');
 
+  /*
+   * `updateRemoteSettings` has to be written this way instead of using destructuring
+   * because in the `updateRemoteSettings` function, Discord uses `this` to reference
+   * itself and call the `updateLocalSettings` function
+   */
   const updateRemoteSettings = getModule('updateRemoteSettings');
-  const updateLocalSettings = getModule('updateLocalSettings');
+  const { updateLocalSettings } = getModule('updateLocalSettings');
 
   // Error handling
-  if (!setting) return warn(MODULE, SUBMODULE, null, `You must enter a setting. Use 'Discord:settings:getSettingInfo()' to see appropriate options.`);
-  if (!value) return warn(MODULE, SUBMODULE, null, `You must enter a value for '${setting}'. Use 'Discord:settings:getSettingInfo' to see appropriate options.`);
-  if (!settings[setting] && !moreSettings[setting]) {
-    return warn(MODULE, SUBMODULE, null, `'${setting}' is not a valid setting. Use 'Discord:settings:getSettingInfo' to see appropriate options.`);
+  const fix = `Use 'Discord:settings:getSettingInfo()' to see appropriate options.`;
+
+  if (!setting || typeof setting !== 'string' || (!settings[setting] && !moreSettings[setting])) {
+    return warn(MODULE, SUBMODULE, null, `You must enter a valid setting name of type string. ${fix}`);
   }
 
-  if (sync === true) return updateRemoteSettings.updateRemoteSettings({ [setting]: value }) || console.log('cheese');
+  if (!value) {
+    return warn(MODULE, SUBMODULE, null, `You must enter a valid value for '${setting}'. ${fix}`);
+  }
 
-  return updateLocalSettings.updateLocalSettings({ [setting]: value }) || console.log('cheese');
+  if (sync === true) {
+    return updateRemoteSettings.updateRemoteSettings({ [setting]: value });
+  }
+
+  return updateLocalSettings({ [setting]: value });
 };
 
 module.exports = setSetting;

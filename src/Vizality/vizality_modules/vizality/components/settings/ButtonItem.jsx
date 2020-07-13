@@ -22,7 +22,7 @@ module.exports = class ButtonItem extends React.PureComponent {
     this.state = { classes };
   }
 
-  async componentDidMount () {
+  async componentWillMount () {
     if (classes.initialized) return;
 
     const Flex = getModuleByDisplayName('Flex');

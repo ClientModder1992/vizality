@@ -31,6 +31,7 @@ module.exports = async () => {
         'vz-isGuildMember': (channel && channel.guild_id && memberModule.getMember(channel.guild_id, message.author.id) && message.type === 0),
         'vz-hasAttachments': message.attachments.length,
         'vz-hasEmbeds': message.embeds.length,
+        'vz-isMentioned': message.mentioned,
         'vz-isSystemMessage': (message.type && message.type === 6)
       });
 

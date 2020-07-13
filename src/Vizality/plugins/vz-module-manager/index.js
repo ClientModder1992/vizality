@@ -47,9 +47,10 @@ module.exports = class ModuleManager extends Plugin {
     });
 
     this._quickCSS = '';
-    this._quickCSSFile = join(__dirname, 'quickcss.css');
+    this._quickCSSFile = join(__dirname, 'quickcss', 'style.scss');
     this._loadQuickCSS();
     this._injectSnippets();
+    this.loadStylesheet('quickcss/style.scss');
     this.loadStylesheet('scss/style.scss');
     vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
@@ -100,17 +101,17 @@ module.exports = class ModuleManager extends Plugin {
 
   async _injectCommunityContent () {
     const permissionsModule = getModule('can');
-    inject('vz-module-manager-channelItem', permissionsModule, 'can', (originalArgs, returnValue) => {
-      const id = originalArgs[1].channelId || originalArgs[1].id;
+    inject('vz-module-manager-channelItem', permissionsModule, 'can', (args, retValue) => {
+      const id = args[1].channelId || args[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
-        return originalArgs[0] === Permissions.VIEW_CHANNEL;
+        return args[0] === Permissions.VIEW_CHANNEL;
       }
-      return returnValue;
+      return retValue;
     });
 
     const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
-    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (originalArgs, returnValue) {
+    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, retValue) {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,
@@ -125,17 +126,17 @@ module.exports = class ModuleManager extends Plugin {
       };
 
       if (this.props.channel.id === STORE_PLUGINS || this.props.channel.id === STORE_THEMES) {
-        returnValue.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
-        returnValue.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
-          className: returnValue.props.children[1].props.children[0].props.className,
+        retValue.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
+        retValue.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
+          className: retValue.props.children[1].props.children[0].props.className,
           width: 24,
           height: 24
         });
-        returnValue.props.onClick = () => transitionTo(data[this.props.channel.id].route);
-        delete returnValue.props.onMouseDown;
-        delete returnValue.props.onContextMenu;
+        retValue.props.onClick = () => transitionTo(data[this.props.channel.id].route);
+        delete retValue.props.onMouseDown;
+        delete retValue.props.onContextMenu;
       }
-      return returnValue;
+      return retValue;
     });
 
     const { containerDefault } = getModule('containerDefault');
@@ -144,19 +145,19 @@ module.exports = class ModuleManager extends Plugin {
 
   async _injectSnippets () {
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
-    inject('vz-module-manager-snippets', MiniPopover, 'default', (originalArgs, returnValue) => {
-      const props = findInReactTree(returnValue, r => r && r.message && r.setPopout);
+    inject('vz-module-manager-snippets', MiniPopover, 'default', (_, retValue) => {
+      const props = findInReactTree(retValue, r => r && r.message && r.setPopout);
 
-      if (!props || props.channel.id !== CSS_SNIPPETS) return returnValue;
+      if (!props || props.channel.id !== CSS_SNIPPETS) return retValue;
 
-      returnValue.props.children.unshift(
+      retValue.props.children.unshift(
         React.createElement(SnippetButton, {
           message: props.message,
           main: this
         })
       );
 
-      return returnValue;
+      return retValue;
     });
   }
 
@@ -227,18 +228,13 @@ module.exports = class ModuleManager extends Plugin {
   }
 
   async _loadQuickCSS () {
-    this._quickCSSElement = document.createElement('style');
-    this._quickCSSElement.id = 'vizality-quickcss';
-    document.head.appendChild(this._quickCSSElement);
     if (existsSync(this._quickCSSFile)) {
       this._quickCSS = await readFile(this._quickCSSFile, 'utf8');
-      this._quickCSSElement.innerHTML = this._quickCSS;
     }
   }
 
   async _saveQuickCSS (css) {
     this._quickCSS = css.trim();
-    this._quickCSSElement.innerHTML = this._quickCSS;
     await writeFile(this._quickCSSFile, this._quickCSS);
   }
 
