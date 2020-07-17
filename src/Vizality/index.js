@@ -1,7 +1,9 @@
 const { Updatable } = require('@entities');
-const { getModuleByPrototypes, _init } = require('@webpack');
+const { getModule, getModuleByPrototypes, _init } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@util');
 const { IMAGES } = require('@constants');
+
+const JsxCompiler = require('vizality/compilers/jsx');
 
 const { join } = require('path');
 const { promisify } = require('util');
@@ -11,7 +13,26 @@ const exec = promisify(cp.exec);
 const PluginManager = require('./managers/pluginManager');
 const StyleManager = require('./managers/styleManager');
 const APIManager = require('./managers/apiManager');
-const modules = require('./modules');
+
+const FluxModule = async () => {
+  const Flux = getModule('Store', 'PersistedStore');
+  Flux.connectStoresAsync = (stores, fn) => (Component) =>
+    require('@components').AsyncComponent.from((async () => {
+      const awaitedStores = await Promise.all(stores);
+      console.log('Remember to add these to settings (darkSiderbar, etc.)', awaitedStores);
+      return Flux.connectStores(awaitedStores, (props) => fn(awaitedStores, props))(Component);
+    })());
+};
+
+const JsxCompilerModule = async () => {
+  require.extensions['.jsx'] = (module, filename) => {
+    const compiler = new JsxCompiler(filename);
+    const compiled = compiler.compile();
+    module._compile(compiled, filename);
+  };
+};
+
+const modules = [ FluxModule, JsxCompilerModule ];
 
 const currentWebContents = require('electron').remote.getCurrentWebContents();
 

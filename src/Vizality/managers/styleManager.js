@@ -1,3 +1,5 @@
+/* @todo: Use logger. */
+
 const { Theme } = require('@entities');
 const { SETTINGS_FOLDER } = require('@constants');
 
