@@ -1,4 +1,4 @@
-const { API } = require('vizality/entities');
+const { API } = require('@entities');
 
 /**
  * @typedef VizalityChatCommand
@@ -60,6 +60,7 @@ class CommandsAPI extends API {
       return;
     }
     if (this.commands[command.command]) {
+      /* @todo: Use logger. */
       throw new Error(`Command ${command.command} is already registered!`);
     }
 

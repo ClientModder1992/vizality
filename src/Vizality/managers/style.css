@@ -20,3 +20,11 @@
 .vz-hasNoSplashImage {
 
 }
+
+/*
+ * This is needed to hide initial toasts from view until the
+ * the styles can be loaded from the 'vz-notices' plugin.
+ */
+.vizality-toast {
+  display: none;
+}

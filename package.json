@@ -3,6 +3,7 @@
   "author": "vizality",
   "version": "0.0.1",
   "description": "A lightweight @discord client mod focused on design and user customizability",
+  "homepage": "https://vizality.com",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext js --ext jsx src",
@@ -14,11 +15,24 @@
   "bugs": {
     "url": "https://github.com/vizality/vizality/issues"
   },
-  "homepage": "https://vizality.com",
+  "_moduleAliases": {
+    "vizality": "src/Vizality/vizality_modules/vizality",
+    "@root": ".",
+    "@classes": "src/Vizality/vizality_modules/vizality/classes",
+    "@components": "src/Vizality/vizality_modules/vizality/components",
+    "@constants": "src/Vizality/vizality_modules/vizality/constants",
+    "@discord": "src/Vizality/vizality_modules/vizality/discord",
+    "@entities": "src/Vizality/vizality_modules/vizality/entities",
+    "@http": "src/Vizality/vizality_modules/vizality/http",
+    "@injector": "src/Vizality/vizality_modules/vizality/injector",
+    "@util": "src/Vizality/vizality_modules/vizality/util",
+    "@webpack": "src/Vizality/vizality_modules/vizality/webpack"
+  },
   "dependencies": {
     "codemirror": "^5.54.0",
     "js-convert-case": "^4.0.1",
     "less": "^3.11.1",
+    "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",
     "sass": "^1.26.7",
     "stylus": "^0.54.7",

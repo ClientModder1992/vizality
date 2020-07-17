@@ -3,7 +3,7 @@ const { open: openModal, close: closeModal } = require('vizality/modal');
 const { TextInput, SwitchItem, ButtonItem, Category } = require('vizality/components/settings');
 const { Confirm } = require('vizality/components/modal');
 const { WEBSITE, CACHE_FOLDER } = require('vizality/constants');
-const { rmdirRf } = require('vizality/util');
+const { file: { rmdirRf } } = require('@util');
 
 module.exports = class GeneralSettings extends React.Component {
   constructor (props) {
@@ -44,21 +44,20 @@ module.exports = class GeneralSettings extends React.Component {
           >
             {Messages.VIZALITY_SETTINGS_DEBUG_LOGS}
           </SwitchItem>
-          {vizality.api.labs.isExperimentEnabled('vz-sdk')
-            ? <SwitchItem
-              note={'Vizality\'s SDK is a toolkit made to make plugin and theme developer\'s life easier. Once enabled, you can access it through the icon at the top right hand corner of Discord.'}
-              value={getSetting('sdkEnabled', false)}
-              onChange={() => toggleSetting('sdkEnabled')}
-            >
-              Enable Vizality SDK
-            </SwitchItem>
-            : <SwitchItem
-              note={Messages.VIZALITY_SETTINGS_OVERLAY_DESC}
-              value={getSetting('openOverlayDevTools', false)}
-              onChange={() => toggleSetting('openOverlayDevTools')}
-            >
-              {Messages.VIZALITY_SETTINGS_OVERLAY}
-            </SwitchItem>}
+          <SwitchItem
+            note={'Vizality\'s Software Development Kit (SDK) is a toolkit created to help make plugin developers\'s and theme developers\' lives easier. Once enabled, you can access it through an icon at the top right hand corner of the channel headerbar.'}
+            value={getSetting('sdkEnabled', false)}
+            onChange={() => toggleSetting('sdkEnabled')}
+          >
+            Enable Software Development Kit
+          </SwitchItem>
+          <SwitchItem
+            note={Messages.VIZALITY_SETTINGS_OVERLAY_DESC}
+            value={getSetting('openOverlayDevTools', false)}
+            onChange={() => toggleSetting('openOverlayDevTools')}
+          >
+            {Messages.VIZALITY_SETTINGS_OVERLAY}
+          </SwitchItem>
           <SwitchItem
             disabled={!!window.GlasscordApi}
             note={window.GlasscordApi

@@ -1,4 +1,5 @@
-const { FluxDispatcher } = require('vizality/webpack');
+const { FluxDispatcher } = require('@webpack');
+
 const ActionTypes = require('./constants');
 
 module.exports = {

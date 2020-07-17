@@ -1,11 +1,14 @@
+const { API } = require('@entities');
+const { get, put } = require('@http');
+const { Flux } = require('@webpack');
+const { WEBSITE } = require('@constants');
+
 const { randomBytes, scryptSync, createCipheriv, createDecipheriv } = require('crypto');
-const { Flux } = require('vizality/webpack');
-const { WEBSITE } = require('vizality/constants');
-const { get, put } = require('vizality/http');
-const { API } = require('vizality/entities');
 
 const store = require('./settingsStore/store');
 const actions = require('./settingsStore/actions');
+
+/* @todo: Use logger. */
 
 /**
  * @typedef SettingsCategory

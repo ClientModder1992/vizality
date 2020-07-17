@@ -1,0 +1,5 @@
+{
+  "VIZALITY_MISSING_ENTITIES_FOUND": "{count, plural, =0 {No} other {{count}}} missing {count, plural, =1 {{entity} was} other {{entity}s were}} found",
+  "VIZALITY_MISSING_ENTITIES_RETRIEVED": "The following {count, plural, one {{entity} was} other {{entity}s were}} retrieved:",
+  "VIZALITY_MISSING_ENTITIES_NONE": "Everything seems to check out at the moment."
+}

@@ -99,7 +99,7 @@ class Plugins extends Base {
         }}
       >
         <div className='vizality-entity-modal'>
-          <span>{Messages.VIZALITY_ENTITIES_UNINSTALL_SURE.format({ entityType: this.state.key, count: plugins.length })}</span>
+          <span>{Messages.VIZALITY_ENTITIES_UNINSTALL_SURE.format({ entity: this.state.key, count: plugins.length })}</span>
           <ul>
             {plugins.map(p => <li key={p.id}>{vizality.pluginManager.get(p).manifest.name}</li>)}
           </ul>

@@ -1,6 +1,5 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
 const { TabBar } = require('vizality/components');
-const QuickCSS = require('./QuickCSS');
 const Base = require('./Base');
 
 class Themes extends Base {
@@ -29,16 +28,13 @@ class Themes extends Base {
             <TabBar.Item className={item} selectedItem={this.state.tab} id='DISCOVER'>
               {Messages.DISCOVER}
             </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={this.state.tab} color={'#43b581'} id='QUICK_CSS'>
-              {Messages.VIZALITY_QUICKCSS}
-            </TabBar.Item>
           </TabBar>
         </div>
         {this.state.tab === 'INSTALLED'
           ? super.render()
           : this.state.tab === 'DISCOVER'
             ? console.log('cheese man')
-            : <QuickCSS openPopout={this.props.openPopout}/>}
+            : null}
       </>
     );
   }

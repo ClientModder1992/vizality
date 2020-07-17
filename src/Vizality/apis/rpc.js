@@ -1,4 +1,6 @@
-const { API } = require('vizality/entities');
+const { API } = require('@entities');
+
+/* @todo: Use logger. */
 
 /**
  * @typedef DiscordRpcEvent

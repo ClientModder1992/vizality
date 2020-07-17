@@ -1,5 +1,10 @@
 const _getMdl = require('./_getMdl');
 
+/*
+ * @todo: Make this work like getModule, where it accepts the argument as strings... i.e.
+ * getModuleByPrototypes('_log') instead of getModuleByPrototypes([ '_log' ])
+ */
+
 /**
  * Grabs a module using properties on its prototype.
  * @param {String} filter Properties to use to filter modules

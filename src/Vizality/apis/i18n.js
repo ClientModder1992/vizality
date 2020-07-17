@@ -1,7 +1,7 @@
-const { getModule, i18n } = require('vizality/webpack');
-const { API } = require('vizality/entities');
-const strings = require('../../../i18n');
-const overrides = require('../../../i18n/overrides');
+const { API } = require('@entities');
+const { getModule, i18n } = require('@webpack');
+
+const strings = require('@root/i18n');
 
 module.exports = class I18nAPI extends API {
   constructor () {
@@ -9,7 +9,6 @@ module.exports = class I18nAPI extends API {
     this.messages = {};
     this.locale = null;
     this.loadAllStrings(strings);
-    this.loadAllStrings(overrides);
   }
 
   async startAPI () {
@@ -18,18 +17,16 @@ module.exports = class I18nAPI extends API {
       module.addChangeListener(() => {
         if (module.locale !== this.locale) {
           this.locale = module.locale;
-          i18n.loadPromise.then(() => this.addVizalityStrings());
+          i18n.loadPromise.then(() => this._addVizalityStrings());
         }
       });
-      this.addVizalityStrings();
+      this._addVizalityStrings();
     });
   }
 
-  addVizalityStrings () {
+  _addVizalityStrings () {
     Object.assign(i18n._proxyContext.messages, this.messages[this.locale]);
     Object.assign(i18n._proxyContext.defaultMessages, this.messages['en-US']);
-    delete i18n._proxyContext.messages.SELF_XSS_HEADER;
-    delete i18n._proxyContext.defaultMessages.SELF_XSS_HEADER;
   }
 
   loadAllStrings (strings) {
@@ -45,6 +42,6 @@ module.exports = class I18nAPI extends API {
         ...strings
       };
     }
-    this.addVizalityStrings();
+    this._addVizalityStrings();
   }
 };

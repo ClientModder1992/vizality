@@ -1,4 +1,4 @@
-const { API } = require('vizality/entities');
+const { API } = require('@entities');
 
 module.exports = class ConnectionsAPI extends API {
   constructor () {
@@ -17,6 +17,7 @@ module.exports = class ConnectionsAPI extends API {
 
   registerConnection (connection) {
     if (this.get(connection.type)) {
+      /* @todo: Use logger. */
       throw new Error('This type of connection already exists!');
     }
     this.connections.push(connection);

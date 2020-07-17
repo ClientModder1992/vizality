@@ -1,18 +1,16 @@
-const { getModuleByPrototypes, _init } = require('vizality/webpack');
-
-const { sleep, logger: { log, warn, error } } = require('vizality/util');
-const { IMAGES } = require('vizality/constants');
-const { Updatable } = require('vizality/entities');
+const { Updatable } = require('@entities');
+const { getModuleByPrototypes, _init } = require('@webpack');
+const { sleep, logger: { log, warn, error } } = require('@util');
+const { IMAGES } = require('@constants');
 
 const { join } = require('path');
 const { promisify } = require('util');
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 
-const PluginManager = require('./managers/plugins');
-const StyleManager = require('./managers/styles');
-const APIManager = require('./managers/apis');
-const coremods = require('./coremods');
+const PluginManager = require('./managers/pluginManager');
+const StyleManager = require('./managers/styleManager');
+const APIManager = require('./managers/apiManager');
 const modules = require('./modules');
 
 const currentWebContents = require('electron').remote.getCurrentWebContents();
@@ -27,7 +25,6 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  * @property {ConnectionsAPI} connections
  * @property {I18nAPI} i18n
  * @property {RPCAPI} rpc
- * @property {LabsAPI} labs
  */
 
 /**
@@ -119,12 +116,12 @@ class Vizality extends Updatable {
     this.styleManager.loadThemes();
 
     // Plugins
-    await coremods.load();
     await this.pluginManager.startPlugins();
 
     this.initialized = true;
 
-    const { routes: { getCurrentRoute } } = require('vizality/discord');
+    // This needs to be here, after the Webpack modules have been initialized
+    const { routes: { getCurrentRoute } } = require('@discord');
 
     document.documentElement.setAttribute('vz-route', getCurrentRoute());
 
@@ -142,7 +139,6 @@ class Vizality extends Updatable {
 
     // Plugins
     await this.pluginManager.shutdownPlugins();
-    await coremods.unload();
 
     // Style Manager
     this.styleManager.unloadThemes();

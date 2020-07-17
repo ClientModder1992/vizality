@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+
 const { Plugin } = require('vizality/entities');
 const { getModule } = require('vizality/webpack');
 const { WEBSITE } = require('vizality/constants');
@@ -29,7 +31,9 @@ module.exports = class RPC extends Plugin {
     vizality.api.rpc.off('eventRemoved', this._boundRemoveEvent);
   }
 
+  /* @todo: Fix this. */
   _patchHTTPServer () {
+    return void 0;
     [ this._originalHandler ] = vizality.rpcServer.listeners('request');
     vizality.rpcServer.removeAllListeners('request');
     vizality.rpcServer.on('request', (req, res) => {

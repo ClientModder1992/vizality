@@ -22,14 +22,18 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
       module: '#ff683b',
       submodule: '#2e89c9'
     },
-    StyleManager: {
-      module: '#591870',
-      submodule: '#ce03e5'
-    },
-    PluginManager: {
+    Manager: {
       module: '#1e2963',
       submodule: '#782049'
     },
+    // StyleManager: {
+    //   module: '#591870',
+    //   submodule: '#ce03e5'
+    // },
+    // PluginManager: {
+    //   module: '#1e2963',
+    //   submodule: '#782049'
+    // },
     Plugin: {
       module: '#057b81',
       submodule: '#5b3c89'

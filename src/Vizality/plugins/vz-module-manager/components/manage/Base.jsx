@@ -109,7 +109,7 @@ class Base extends React.Component {
   }
 
   fetchMissing () {
-    vizality.pluginManager.get('vz-module-manager')._fetchEntities(`${this.state.key}s`);
+    vizality.pluginManager.get('vz-module-manager')._fetchEntities(this.state.key);
   }
 
   _sortItems (items) {

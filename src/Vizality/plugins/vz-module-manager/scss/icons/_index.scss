@@ -2,6 +2,7 @@
 
 $color: #fff !default;
 
+@use 'add-circle' as add-circle with ($fill: $color);
 @use 'announcement' as announcement with ($fill: $color);
 @use 'announcement-locked' as announcement-locked with ($fill: $color);
 @use 'arrow-down-alt-2' as arrow-down-alt-2 with ($fill: $color);
@@ -26,10 +27,16 @@ $color: #fff !default;
 @use 'caret-down' as caret-down with ($fill: $color);
 @use 'caret-left' as caret-left with ($fill: $color);
 @use 'caret-right' as caret-right with ($fill: $color);
+@use 'close-circle' as close-circle with ($fill: $color);
+@use 'document-add' as document-add with ($fill: $color);
+@use 'plugin' as plugin with ($fill: $color);
+@use 'remove-circle' as remove-circle with ($fill: $color);
+@use 'theme' as theme with ($fill: $color);
 @use 'trash' as trash with ($fill: $color);
 
 $module: (
   vz-icon: (
+		'add-circle': svg-uri(add-circle.$icon),
 		'announcement': svg-uri(announcement.$icon),
 		'announcement-locked': svg-uri(announcement-locked.$icon),
 		'arrow-down-alt-2': svg-uri(arrow-down-alt-2.$icon),
@@ -54,6 +61,11 @@ $module: (
 		'caret-down': svg-uri(caret-down.$icon),
 		'caret-left': svg-uri(caret-left.$icon),
 		'caret-right': svg-uri(caret-right.$icon),
+		'close-circle': svg-uri(close-circle.$icon),
+		'document-add': svg-uri(document-add.$icon),
+		'plugin': svg-uri(plugin.$icon),
+		'remove-circle': svg-uri(remove-circle.$icon),
+		'theme': svg-uri(theme.$icon),
 		'trash': svg-uri(trash.$icon),
   )
 );

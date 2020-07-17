@@ -1,13 +1,12 @@
+require('module-alias/register');
+
+const { LOGS_FOLDER } = require('@constants');
+
 const { ipcRenderer } = require('electron');
 const { join } = require('path');
 const { existsSync, mkdirSync, open, write } = require('fs');
 
 require('../ipc/renderer');
-
-// Add Powercord's modules
-require('module').Module.globalPaths.push(join(__dirname, '../Vizality/vizality_modules'));
-
-const { LOGS_FOLDER } = require('vizality/constants');
 
 // Initialize Vizality
 const Vizality = require('../Vizality');
@@ -24,10 +23,12 @@ if (preload) {
   require(preload);
 }
 
+/* @todo: Redo debug logging section below. */
+
 // Debug logging
 let debugLogs;
 try {
-  const settings = require('../../settings/vz-general.json');
+  const settings = require('@root/settings/vz-general.json');
   // eslint-disable-next-line prefer-destructuring
   debugLogs = settings.debugLogs;
 } finally {

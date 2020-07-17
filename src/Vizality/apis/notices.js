@@ -1,4 +1,4 @@
-const { API } = require('vizality/entities');
+const { API } = require('@entities');
 
 /**
  * @typedef VizalityToast
@@ -88,7 +88,7 @@ module.exports = class NoticesAPI extends API {
   /**
    * Closes a toast
    * @param {String} id Toast ID
-   * @emits NoticesAPI#toastLeaving
+   * @emits NoticesAPI#toastClosing
    */
   closeToast (id) {
     const toast = this.toasts[id];
@@ -100,7 +100,7 @@ module.exports = class NoticesAPI extends API {
       toast.callback();
     }
 
-    this.emit('toastLeaving', id);
+    this.emit('toastClosing', id);
     setTimeout(() => delete this.toasts[id], 500);
   }
 };

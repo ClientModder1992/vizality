@@ -1,5 +1,6 @@
+const { logger: { log, error } } = require('@util');
+
 const Events = require('events');
-const { logger: { log, error } } = require('vizality/util');
 
 class API extends Events {
   constructor () {

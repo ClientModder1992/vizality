@@ -161,7 +161,7 @@ module.exports = class Updater extends Plugin {
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
         vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
-          type: 'danger',
+          type: 'error',
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_FORCE,
             color: 'red',

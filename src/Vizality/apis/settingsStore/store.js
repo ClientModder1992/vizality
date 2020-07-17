@@ -1,7 +1,9 @@
+const { Flux, FluxDispatcher } = require('@webpack');
+const { SETTINGS_FOLDER } = require('@constants');
+
 const { join } = require('path');
 const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
-const { SETTINGS_FOLDER } = require('vizality/constants');
-const { Flux, FluxDispatcher } = require('vizality/webpack');
+
 const ActionTypes = require('./constants');
 
 if (!existsSync(SETTINGS_FOLDER)) {

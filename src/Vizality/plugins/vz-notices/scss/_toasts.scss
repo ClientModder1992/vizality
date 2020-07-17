@@ -1,0 +1,120 @@
+@use '../../../libraries/sass' as *;
+
+.vizality-toast {
+  box-shadow: var(--elevation-high);
+  background: var(--background-floating);
+  border-radius: 4px;
+  color: var(--text-normal);
+  display: flex;
+  position: absolute;
+  animation: blurFadeIn 0.5s ease both;
+  max-width: 540px;
+  min-width: 300px;
+  z-index: 999;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  flex-flow: column wrap;
+  &.vz-isTopRight {
+    top: 25px;
+    right: 25px;
+  }
+  &.vz-isTopLeft {
+    top: 25px;
+    left: 25px;
+  }
+  &.vz-isBottomRight {
+    bottom: 25px;
+    right: 25px;
+  }
+  &.vz-isBottomLeft {
+    bottom: 25px;
+    left: 25px;
+  }
+  &.vz-isClosing {
+    animation: blurFadeOut 0.5s ease both;
+  }
+  &-container {
+    &,
+    * {
+      box-sizing: border-box;
+    }
+  }
+  &-contents {
+    display: flex;
+    border-radius: 0 0 5px 5px;
+    text-align: left;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+  }
+  &-header {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--header-primary);
+  }
+  &-message {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  &-pro-tip {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  &-buttons {
+    display: flex;
+    padding: 0 0 0 20px;
+    > button {
+      flex: 0 1 auto;
+      white-space: nowrap;
+      // @todo: Don't use obfuscated class.
+      &.lookGhost-2Fn_0- {
+        transition: transform .17s ease, background-color .17s ease, color .17s ease, opacity .17s ease;
+        opacity: .8;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      + button {
+        margin-left: 10px;
+      }
+    }
+  }
+  // @todo: Don't use obfuscated class.
+  .progress-2XXRYo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 0;
+    height: 2px;
+  }
+  // @todo: Don't use obfuscated class.
+  .progressBar-3u8FBM {
+    border-radius: 0;
+  }
+  &-extra {
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-right: 7px;
+    opacity: 0.7;
+  }
+  &-icon-wrapper {
+    @include size(20px);
+  }
+  &-footer {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

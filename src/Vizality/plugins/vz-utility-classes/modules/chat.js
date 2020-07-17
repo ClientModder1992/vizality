@@ -7,13 +7,13 @@ module.exports = async () => {
   const { chat } = getModule('chat');
   const instance = getOwnerInstance(await waitFor(`.${chat.split(' ')[0]}`));
 
-  inject('vz-utility-classes-chat', instance.__proto__, 'render', function (originalArgs, returnValue) {
-    if (!this || !this.props || !this.props.channel) return returnValue;
+  inject('vz-utility-classes-chat', instance.__proto__, 'render', function (_, retValue) {
+    if (!this || !this.props || !this.props.channel) return retValue;
 
     const { channel } = this.props;
 
-    returnValue.props.className = joinClassNames(
-      returnValue.props.className, {
+    retValue.props.className = joinClassNames(
+      retValue.props.className, {
         'vz-isGuildChannel': [ 0, 2, 4, 5, 6 ].includes(channel.type),
         'vz-isPrivateChannel': [ 1, 3 ].includes(channel.type),
         'vz-isGroupChannel': [ 3 ].includes(channel.type),
@@ -46,7 +46,7 @@ module.exports = async () => {
       ? document.documentElement.setAttribute('vz-guild-id', this.props.guildId)
       : document.documentElement.removeAttribute('vz-guild-id');
 
-    return returnValue;
+    return retValue;
   });
 
   setImmediate(() => instance.forceUpdate());

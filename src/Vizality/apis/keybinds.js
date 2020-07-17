@@ -1,6 +1,10 @@
+const { API } = require('@entities');
+
 const { remote: { globalShortcut } } = require('electron');
-const localShortcut = require('keybindutils/localShortcut');
-const { API } = require('vizality/entities');
+
+const localShortcut = require('../vizality_modules/keybindutils/localShortcut');
+
+/* @todo: Convert errors to logger. */
 
 /**
  * @typedef VizalityKeybind

@@ -12,14 +12,6 @@ module.exports = class SDK extends Plugin {
   }
 
   async startPlugin () {
-    vizality.api.labs.registerExperiment({
-      id: 'vz-sdk',
-      name: 'Sandbox Development Kit',
-      date: 1591011180411,
-      description: 'Vizality\'s sandbox development kit for plugin and theme developers',
-      callback: () => void 0
-    });
-
     this.loadStylesheet('scss/style.scss');
     this.sdkEnabled = vizality.settings.get('sdkEnabled');
     vizality.api.settings.store.addChangeListener(this._storeListener);
@@ -29,14 +21,13 @@ module.exports = class SDK extends Plugin {
   pluginWillUnload () {
     uninject('vz-sdk-icon');
     vizality.api.settings.store.removeChangeListener(this._storeListener);
-    vizality.api.labs.unregisterExperiment('vz-sdk');
   }
 
   async _addPopoutIcon () {
     const classes = getModule('iconWrapper', 'clickable');
     const HeaderBarContainer = getModuleByDisplayName('HeaderBarContainer');
     inject('vz-sdk-icon', HeaderBarContainer.prototype, 'renderLoggedIn', (originalArgs, returnValue) => {
-      if (vizality.api.labs.isExperimentEnabled('vz-sdk') && this.sdkEnabled) {
+      if (this.sdkEnabled) {
         const Switcher = React.createElement(Tooltip, {
           className: joinClassNames(classes.iconWrapper, classes.clickable),
           text: 'Vizality SDK',

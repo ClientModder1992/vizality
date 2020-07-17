@@ -6,7 +6,6 @@ const { Plugin } = require('vizality/entities');
 
 const ErrorBoundary = require('./components/ErrorBoundary');
 const GeneralSettings = require('./components/GeneralSettings');
-const Labs = require('./components/Labs');
 
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
@@ -24,10 +23,7 @@ module.exports = class Settings extends Plugin {
     this.patchSettingsComponent();
     this.patchExperiments();
 
-    if (this.settings.get('__experimental_2019-12-16', false)) {
-      this.log('Experimental Settings enabled.');
-      this.patchSettingsContextMenu();
-    }
+    this.patchSettingsContextMenu();
   }
 
   async pluginWillUnload () {
@@ -56,17 +52,6 @@ module.exports = class Settings extends Plugin {
     inject('vz-settings-items', SettingsView.prototype, 'getPredicateSections', (args, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
-        if (vizality.settings.get('experiments', false)) {
-          sections.splice(
-            sections.indexOf(changelog) + 1, 0,
-            {
-              section: 'vz-labs',
-              label: 'Vizality Labs',
-              element: () => this._renderWrapper('Vizality Labs', Labs)
-            }
-          );
-        }
-
         const settingsSections = Object.keys(vizality.api.settings.tabs).map(s => this._makeSection(s));
         sections.splice(
           sections.indexOf(changelog), 0,
@@ -77,24 +62,6 @@ module.exports = class Settings extends Plugin {
           ...settingsSections,
           { section: 'DIVIDER' }
         );
-      }
-
-      if (sections.find(c => c.section === 'CUSTOM')) {
-        sections.find(c => c.section === 'CUSTOM').element = ((_element) => function () {
-          const res = _element();
-          if (res.props.children && res.props.children.length === 3) {
-            res.props.children.unshift(
-              Object.assign({}, res.props.children[0], {
-                props: Object.assign({}, res.props.children[0].props, {
-                  href: WEBSITE,
-                  title: 'Vizality',
-                  className: `${res.props.children[0].props.className} vizality-vz-icon`
-                })
-              })
-            );
-          }
-          return res;
-        })(sections.find(c => c.section === 'CUSTOM').element);
       }
 
       const latestCommitHash = vizality.gitInfos.revision.substring(0, 7);
@@ -170,18 +137,5 @@ module.exports = class Settings extends Plugin {
 
       return res;
     });
-  }
-
-  __toggleExperimental () {
-    const current = this.settings.get('__experimental_2019-12-16', false);
-    if (!current) {
-      this.warn('WARNING: This will enable the new and experimental settings context menu, that is NOT functional yet.');
-      this.warn('WARNING: Vizality staff won\'t accept bug reports from this experimental version, nor provide support!');
-      this.warn('WARNING: Use it at your own risk! It\'s labeled experimental for a reason.');
-    } else {
-      this.log('Experimental Settings disabled.');
-    }
-    this.settings.set('__experimental_2019-12-16', !current);
-    vizality.pluginManager.remount(this.entityID);
   }
 };

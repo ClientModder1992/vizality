@@ -5,29 +5,29 @@ class ToastContainer extends React.PureComponent {
   constructor (props) {
     super(props);
 
-    this.state = { leaving: null };
+    this.state = { closing: null };
     this._addedHandler = () => this.forceUpdate();
-    this._leavingHandler = (id) => {
-      this.setState({ leaving: id });
-      setTimeout(() => this.setState({ leaving: null }), 510);
+    this._closingHandler = (id) => {
+      this.setState({ closing: id });
+      setTimeout(() => this.setState({ closing: null }), 510);
     };
   }
 
   componentDidMount () {
     vizality.api.notices.on('toastAdded', this._addedHandler);
-    vizality.api.notices.on('toastLeaving', this._leavingHandler);
+    vizality.api.notices.on('toastClosing', this._closingHandler);
   }
 
   componentWillUnmount () {
     vizality.api.notices.off('toastAdded', this._addedHandler);
-    vizality.api.notices.off('toastLeaving', this._leavingHandler);
+    vizality.api.notices.off('toastClosing', this._closingHandler);
   }
 
   render () {
     const toast = Object.keys(vizality.api.notices.toasts).pop();
     return <div className='vizality-toast-container'>
       {toast && <Toast
-        leaving={this.state.leaving === toast} id={toast}
+        closing={this.state.closing === toast} id={toast}
         {...vizality.api.notices.toasts[toast]}
       />}
     </div>;

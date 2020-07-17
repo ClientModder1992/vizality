@@ -96,8 +96,13 @@ class GenericRequest {
    */
   execute () {
     return new Promise((resolve, reject) => {
-      // Sketch temporary change by me to get rid of an error
-      const opts = Object.assign(this.opts, resolve);
+      /**
+       * Sketchy temporary change by me to get rid of some errors
+       * from React Dev Tools
+       */
+      /* */ const opts = Object.assign(this.opts, resolve);
+      /* */ if (!opts.uri) return;
+
       log(this.MODULE, this.SUBMODULE, null, 'Performing request to', opts.uri);
       const { request } = opts.uri.startsWith('https')
         ? https

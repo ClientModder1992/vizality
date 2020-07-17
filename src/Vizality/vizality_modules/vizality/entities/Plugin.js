@@ -107,7 +107,18 @@ class Plugin extends Updatable {
       }
 
       if (typeof this.startPlugin === 'function') {
+        /**
+         * @todo: Possibly add the next commented items as some sort of 'Debug Mode' settings option
+         */
+        // const before = performance.now();
+
         await this.startPlugin();
+
+        // const after = performance.now();
+
+        // const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');
+
+        // this.log(`Plug initialization took ${time} ms.`);
       }
 
       this.log('Plugin loaded.');

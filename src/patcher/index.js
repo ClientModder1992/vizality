@@ -32,11 +32,11 @@ electron.app.once('ready', () => {
   });
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
-    if (details.url.startsWith('https://discordapp.com/_vizality')) { // @todo: discord.com
-      appSettings.set('_VIZALITY_ROUTE', details.url.replace('https://discordapp.com', ''));
+    if (details.url.startsWith('https://discord.com/_vizality')) {
+      appSettings.set('_VIZALITY_ROUTE', details.url.replace('https://discord.com', ''));
       appSettings.save();
       // It should get restored to _vizality url later
-      done({ redirectURL: 'https://discordapp.com/app' });
+      done({ redirectURL: 'https://discord.com' });
     } else {
       done({});
     }

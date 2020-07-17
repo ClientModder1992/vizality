@@ -1,5 +1,7 @@
-const { API } = require('vizality/entities');
-const { getModule } = require('vizality/webpack');
+const { API } = require('@entities');
+const { getModule } = require('@webpack');
+
+/* @todo: Use logger. */
 
 /**
  * @typedef VizalityRoute

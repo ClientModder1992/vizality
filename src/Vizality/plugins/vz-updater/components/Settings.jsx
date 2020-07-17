@@ -312,7 +312,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       !vizality.pluginManager.get(plugin).isInternal && vizality.pluginManager.isEnabled(plugin)
     );
 
-    const enabledLabs = vizality.api.labs.experiments.filter(e => vizality.api.labs.isExperimentEnabled(e.id));
     const experimentOverrides = Object.keys(getExperimentOverrides()).length;
     const availableExperiments = Object.keys(getRegisteredExperiments()).length;
 
@@ -377,8 +376,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
             <div className='column'>Themes:&#10;{vizality.styleManager.getThemes()
               .filter(theme => vizality.styleManager.isEnabled(theme)).length} / {vizality.styleManager.themes.size}
             </div>
-            <div className='column'>Labs:&#10;{enabledLabs.length} / {vizality.api.labs.experiments.length}
-            </div>
             <div className='column'>{`Settings Sync:\n${vizality.settings.get('settingsSync', false)}`}</div>
             <div className='column'>Cached Files:&#10;{cachedFiles}</div>
             <div className='column'>{`Account:\n${!!vizality.account}`}</div>
@@ -405,9 +402,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
             {createPathReveal('Vizality Path', vizality.basePath)}
             {createPathReveal('Discord Path', discordPath)}
             <div className='full-column'>Experiments:&#10;{experimentOverrides ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
-            <div className='full-column'>Labs:&#10;
-              {enabledLabs.length ? enabledLabs.map(e => e.name).join(', ') : 'n/a'}
-            </div>
             <div className='full-column'>
             Plugins:&#10;
               {(plugins.length > 6 ? `${(this.state.pluginsRevealed ? plugins : plugins.slice(0, 6)).join(', ')}` : plugins.join(', ')) || 'n/a'}&nbsp;

@@ -1,56 +1,27 @@
-const { promises: { writeFile, readFile }, existsSync } = require('fs');
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { PopoutWindow, Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
+const { Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
 const { inject, uninject } = require('vizality/injector');
-const { react : { findInReactTree, forceUpdateElement } } = require('vizality/util');
+const { react : { forceUpdateElement } } = require('vizality/util');
 const { Plugin } = require('vizality/entities');
-const { MAGIC_CHANNELS: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES } } = require('vizality/constants');
-const { join } = require('path');
+const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('vizality/constants');
 
 const commands = require('./commands');
 const deeplinks = require('./deeplinks');
-const i18n = require('./licenses/index');
+
+const i18nStrings = require('./i18n');
+const i18nLicenses = require('./licenses');
 
 const Store = require('./components/store/Store');
 const Plugins = require('./components/manage/Plugins');
 const Themes = require('./components/manage/Themes');
-const QuickCSS = require('./components/manage/QuickCSS');
-const SnippetButton = require('./components/SnippetButton');
 
 module.exports = class ModuleManager extends Plugin {
   async startPlugin () {
-    vizality.api.i18n.loadAllStrings(i18n);
+    vizality.api.i18n.loadAllStrings(i18nStrings);
+    vizality.api.i18n.loadAllStrings(i18nLicenses);
+
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
 
-    vizality.api.labs.registerExperiment({
-      id: 'vz-store',
-      name: 'Vizality Store',
-      date: 1571961600000,
-      description: 'Vizality Plugin and Theme store',
-      callback: () => {
-        // We're supposed to do it properly but reload > all
-        setImmediate(() => vizality.pluginManager.remount(this.entityID));
-        // And we wrap it in setImmediate to not break the labs UI
-      }
-    });
-
-    vizality.api.labs.registerExperiment({
-      id: 'vz-deeplinks',
-      name: 'Deeplinks',
-      date: 1590242558077,
-      description: 'Makes some vizality.com links trigger in-app navigation, as well as some potential embedding if applicable',
-      callback: () => {
-        // We're supposed to do it properly but reload > all
-        setImmediate(() => vizality.pluginManager.remount(this.entityID));
-        // And we wrap it in setImmediate to not break the labs UI
-      }
-    });
-
-    this._quickCSS = '';
-    this._quickCSSFile = join(__dirname, 'quickcss', 'style.scss');
-    this._loadQuickCSS();
-    this._injectSnippets();
-    this.loadStylesheet('quickcss/style.scss');
     this.loadStylesheet('scss/style.scss');
     vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
@@ -60,43 +31,32 @@ module.exports = class ModuleManager extends Plugin {
     vizality.api.settings.registerSettings('Themes', {
       category: this.entityID,
       label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
-      render: (props) => React.createElement(Themes, {
-        openPopout: () => this._openQuickCSSPopout(),
-        ...props
-      })
+      render: Themes
     });
 
-    if (vizality.api.labs.isExperimentEnabled('vz-deeplinks')) {
-      deeplinks();
-    }
+    deeplinks();
 
-    if (vizality.api.labs.isExperimentEnabled('vz-store')) {
-      this._injectCommunityContent();
-      vizality.api.router.registerRoute({
-        path: '/store/plugins',
-        render: Store,
-        noSidebar: true
-      });
-      vizality.api.router.registerRoute({
-        path: '/store/themes',
-        render: Store,
-        noSidebar: true
-      });
-    }
+    this._injectCommunityContent();
+    vizality.api.router.registerRoute({
+      path: '/store/plugins',
+      render: Store,
+      noSidebar: true
+    });
+    vizality.api.router.registerRoute({
+      path: '/store/themes',
+      render: Store,
+      noSidebar: true
+    });
   }
 
   pluginWillUnload () {
-    document.querySelector('#vizality-quickcss').remove();
     vizality.api.router.unregisterRoute('/store/plugins');
     vizality.api.router.unregisterRoute('/store/themes');
     vizality.api.settings.unregisterSettings('Plugins');
     vizality.api.settings.unregisterSettings('Themes');
-    vizality.api.labs.unregisterExperiment('vz-store');
-    vizality.api.labs.unregisterExperiment('vz-deeplinks');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
     uninject('vz-module-manager-channelItem');
     uninject('vz-module-manager-channelProps');
-    uninject('vz-module-manager-snippets');
   }
 
   async _injectCommunityContent () {
@@ -143,108 +103,32 @@ module.exports = class ModuleManager extends Plugin {
     forceUpdateElement(`.${containerDefault}`, true);
   }
 
-  async _injectSnippets () {
-    const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
-    inject('vz-module-manager-snippets', MiniPopover, 'default', (_, retValue) => {
-      const props = findInReactTree(retValue, r => r && r.message && r.setPopout);
-
-      if (!props || props.channel.id !== CSS_SNIPPETS) return retValue;
-
-      retValue.props.children.unshift(
-        React.createElement(SnippetButton, {
-          message: props.message,
-          main: this
-        })
-      );
-
-      return retValue;
-    });
-  }
-
-  async _applySnippet (message) {
-    let css = '\n\n/**\n';
-    const line1 = Messages.VIZALITY_SNIPPET_LINE1.format({ date: new Date() });
-    const line2 = Messages.VIZALITY_SNIPPET_LINE2.format({
-      authorTag: message.author.tag,
-      authorId: message.author.id
-    });
-    css += ` * ${line1}\n`;
-    css += ` * ${line2}\n`;
-    css += ` * Snippet ID: ${message.id}\n`;
-    css += ' */\n';
-    for (const m of message.content.matchAll(/```((?:s?css)|(?:styl(?:us)?)|less)\n?([\s\S]*)`{3}/ig)) {
-      let snippet = m[2].trim();
-      switch (m[1].toLowerCase()) {
-        case 'scss':
-          snippet = '/* lol can\'t do scss for now */';
-          break;
-        case 'styl':
-        case 'stylus':
-          snippet = '/* lol can\'t do stylus for now */';
-          break;
-        case 'less':
-          snippet = '/* lol can\'t do less for now */';
-          break;
-      }
-      css += `${snippet}\n`;
-    }
-    this._saveQuickCSS(this._quickCSS + css);
-  }
-
   async _fetchEntities (type) {
-    vizality.api.notices.closeToast('missing-entities-notify');
+    vizality.api.notices.closeToast('vz-module-manager-fetch-entities');
 
-    const entityManager = vizality[type === 'plugins' ? 'pluginManager' : 'styleManager'];
-    const missingEntities = await type === 'plugins' ? entityManager.startPlugins(true) : entityManager.loadThemes(true);
-    const entity = missingEntities.length === 1 ? type.slice(0, -1) : type;
-    const subjectiveEntity = `${entity} ${entity === type ? 'were' : 'was'}`;
+    const entityManager = vizality[type === 'plugin' ? 'pluginManager' : 'styleManager'];
+    const missingEntities = type === 'plugin' ? await entityManager.startPlugins(true) : await entityManager.loadThemes(true);
+    const missingEntitiesList = missingEntities.length
+      ? React.createElement('div', null,
+        Messages.VIZALITY_MISSING_ENTITIES_RETRIEVED.format({ entity: type, count: missingEntities.length }),
+        React.createElement('ul', null, missingEntities.map(entity =>
+          React.createElement('li', null, `– ${entity}`))
+        )
+      )
+      : Messages.VIZALITY_MISSING_ENTITIES_NONE;
 
-    let props;
-    if (missingEntities.length > 0) {
-      props = {
-        header: `Found ${missingEntities.length} missing ${entity}!`,
-        content: React.createElement('div', null,
-          `The following ${subjectiveEntity} retrieved:`,
-          React.createElement('ul', null, missingEntities.map(entity =>
-            React.createElement('li', null, `– ${entity}`))
-          )
-        ),
-        buttons: [ {
-          text: 'OK',
-          color: 'green',
-          look: 'outlined'
-        } ],
-        type: 'success'
-      };
-    } else {
-      props = {
-        header: `No missing ${type} were found - try again later!`,
-        type: 'danger',
-        timeout: 10e3
-      };
-    }
-
-    vizality.api.notices.sendToast('missing-entities-notify', props);
-  }
-
-  async _loadQuickCSS () {
-    if (existsSync(this._quickCSSFile)) {
-      this._quickCSS = await readFile(this._quickCSSFile, 'utf8');
-    }
-  }
-
-  async _saveQuickCSS (css) {
-    this._quickCSS = css.trim();
-    await writeFile(this._quickCSSFile, this._quickCSS);
-  }
-
-  async _openQuickCSSPopout () {
-    const popoutModule = getModule('setAlwaysOnTop', 'open');
-    popoutModule.open('DISCORD_VIZALITY_QUICKCSS', (key) => (
-      React.createElement(PopoutWindow, {
-        windowKey: key,
-        title: 'QuickCSS'
-      }, React.createElement(QuickCSS, { popout: true }))
-    ));
+    vizality.api.notices.sendToast('vz-module-manager-fetch-entities', {
+      header: Messages.VIZALITY_MISSING_ENTITIES_FOUND.format({ entity: type, count: missingEntities.length }),
+      content: missingEntitiesList,
+      type: missingEntities.length > 0 && 'success',
+      icon: type,
+      timeout: 5e3,
+      buttons: [
+        {
+          text: 'Got it',
+          look: 'ghost'
+        }
+      ]
+    });
   }
 };

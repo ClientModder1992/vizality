@@ -1,4 +1,4 @@
-const { sleep, logger: { warn } } = require('vizality/util');
+const { sleep, logger: { warn } } = require('@util');
 
 const _getModules = require('./_getModules');
 
