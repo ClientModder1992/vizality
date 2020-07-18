@@ -27,6 +27,13 @@ module.exports = class I18nAPI extends API {
   _addVizalityStrings () {
     Object.assign(i18n._proxyContext.messages, this.messages[this.locale]);
     Object.assign(i18n._proxyContext.defaultMessages, this.messages['en-US']);
+    /*
+     * @todo: This removes the 'Hold up!' string, which is also used in the
+     * mention everyone popout... Look for a fix, possibly patching into a
+     * function call by DiscordNative that is fired when dev tools are opened.
+     */
+    delete i18n._proxyContext.messages.SELF_XSS_HEADER;
+    delete i18n._proxyContext.defaultMessages.SELF_XSS_HEADER;
   }
 
   loadAllStrings (strings) {
