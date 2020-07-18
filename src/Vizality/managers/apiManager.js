@@ -3,7 +3,7 @@ const { logger: { error } } = require('@util');
 const { join } = require('path');
 const { readdirSync, statSync } = require('fs');
 
-module.exports = class APIManager {
+class APIManager {
   constructor () {
     this.apiDir = join(__dirname, '..', 'apis');
     this.apis = [];
@@ -40,4 +40,6 @@ module.exports = class APIManager {
       .forEach(filename => this.mount(filename));
     await this.load();
   }
-};
+}
+
+module.exports = APIManager;

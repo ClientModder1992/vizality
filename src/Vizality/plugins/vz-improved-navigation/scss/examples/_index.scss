@@ -1,24 +1,5 @@
 @use '../../../../libraries/sass/classes/layout/chat' as Chat;
-@use '../../../../libraries/sass' as *;
-@use '../../../../libraries/sass/classes' as *;
-@use '../../../../libraries/sass/classes' as class;
 
-// @use '../../../../libraries/sass' as *;
-#{class('layout.chat.name')} {
-  color: orange!important;
-}
-
-// @use '../../../../libraries/sass/classes/layout/chat' as Chat;
-#{Chat.$name} {
+#{Chat.$markup} {
   color: red!important;
-}
-
-// @use '../../../../libraries/sass/classes' as *;
-#{$layout-chat-name} {
-  color: teal!important;
-}
-
-// @use '../../../../libraries/sass/classes' as classes;
-#{classes.$layout-chat-name} {
-  color: white!important;
 }
