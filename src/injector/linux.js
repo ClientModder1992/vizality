@@ -10,7 +10,7 @@ exports.getAppDir = async () => {
     .find(p => p[4] && (/discord$/i).test(p[4]) && p.includes('--type=renderer'));
 
   if (!discordProcess) {
-    console.log('Cannot find Discord process, falling back to legacy path detection.');
+    console.log('\x1b[1m\x1b[33mWARNING: \x1b[0mCannot find Discord process, falling back to legacy path detection.');
     const paths = [
       '/usr/share/discord',
       '/usr/lib64/discord',

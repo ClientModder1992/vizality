@@ -9,7 +9,7 @@ const exists = (path) =>
 exports.inject = async ({ getAppDir }) => {
   const appDir = await getAppDir();
   if (await exists(appDir)) {
-    console.log('Looks like you already have an injector in place. Try uninjecting (`npm run uninject`) and try again.');
+    console.log('\x1b[1m\x1b[31mERROR: \x1b[0mLooks like you already have an injector in place. Try uninjecting (`npm run uninject`) and try again.');
     return false;
   }
 
@@ -18,7 +18,7 @@ exports.inject = async ({ getAppDir }) => {
   await Promise.all([
     writeFile(
       join(appDir, 'index.js'),
-      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../src/patcher\`)`
+      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../patcher\`)`
     ),
     writeFile(
       join(appDir, 'package.json'),
@@ -36,7 +36,7 @@ exports.uninject = async ({ getAppDir }) => {
   const appDir = await getAppDir();
 
   if (!(await exists(appDir))) {
-    console.log('There is nothing to uninject.');
+    console.log('\x1b[1m\x1b[33mWARNING: \x1b[0mThere is nothing to uninject.');
     return false;
   }
 

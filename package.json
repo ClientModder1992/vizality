@@ -7,8 +7,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext js --ext jsx src",
-    "inject": "node injectors/index.js inject",
-    "uninject": "node injectors/index.js uninject"
+    "inject": "node src/injector/index.js inject",
+    "uninject": "node src/injector/index.js uninject"
   },
   "repository": "https://github.com/vizality/vizality.git",
   "license": "GPL-3.0",

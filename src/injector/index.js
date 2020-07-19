@@ -10,7 +10,7 @@ try {
   platformModule = require(`./${process.platform}.js`);
 } catch (err) {
   if (err.code === 'MODULE_NOT_FOUND') {
-    console.log(`Unsupported platform "${process.platform}"`);
+    console.log(`\x1b[1m\x1b[31mERROR: \x1b[0mUnsupported platform '${process.platform}'`);
     process.exit(1);
   }
 }
@@ -18,20 +18,20 @@ try {
 (async () => {
   if (process.argv[2] === 'inject') {
     if (await main.inject(platformModule)) {
-      // To show up popup message
+      // To show the announcement message
       await writeFile(
-        resolve(__dirname, '..', 'src', '__injected.txt'),
+        resolve(__dirname, '..', '__injected.txt'),
         'Vizality successfully injected'
       );
 
-      console.log('Successfully injected Vizality!');
+      console.log('\x1b[32mSUCCESS: \x1b[0mVizality has been injected!');
     }
   } else if (process.argv[2] === 'uninject') {
     if (await main.uninject(platformModule)) {
-      console.log('Successfully uninjected Vizality!');
+      console.log('\x1b[32mSUCCESS: \x1b[0mVizality has been uninjected.');
     }
   } else {
-    console.log(`Unsupported argument "${process.argv[2]}", exiting..`);
+    console.log(`\x1b[1m\x1b[31mERROR: \x1b[0mUnsupported argument '${process.argv[2]}'`);
     process.exit(1);
   }
-})().catch(e => console.error('Hmm, something seems to have gone wrong...', e));
+})().catch(e => console.error('\x1b[1m\x1b[31mERROR: \x1b[0mHmm, something seems to have gone wrong...', e));
