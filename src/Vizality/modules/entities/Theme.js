@@ -1,5 +1,5 @@
-const { resolveCompiler } = require('vizality/compilers');
-const { dom: { createElement }, logger } = require('vizality/util');
+const { resolveCompiler } = require('../compilers');
+const { dom: { createElement }, logger } = require('@util');
 
 const Updatable = require('./Updatable');
 
@@ -10,6 +10,7 @@ class Theme extends Updatable {
     this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
+
     this.MODULE = 'Theme';
     this.SUBMODULE = this.manifest.name;
     this.SUBMODULE_COLOR = this.manifest.color || null;

@@ -8,6 +8,9 @@ module.exports = async () => {
   const instance = getOwnerInstance(guildElement);
 
   inject('vz-utility-classes-guild', instance.__proto__, 'render', function (originalArgs, returnValue) {
+    // Guilds with outages
+    if (!this || !this.props) return;
+
     const { audio, badge: mentions, selected, unread, video, screenshare } = this.props;
 
     returnValue.props.className = joinClassNames(

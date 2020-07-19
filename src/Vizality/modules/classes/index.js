@@ -12,6 +12,7 @@ const { LIBRARIES_FOLDER } = require('@constants');
 const { join } = require('path');
 const { existsSync } = require('fs');
 
+const _checkForUndefined = require('./_checkForUndefined');
 const _generateSassClasses = require('./_generateSassClasses');
 
 const components = require('./components');
@@ -29,6 +30,8 @@ const classes = {
 };
 
 exports = classes;
+
+_checkForUndefined();
 
 const MODULE = 'Module';
 const SUBMODULE = 'Classes';

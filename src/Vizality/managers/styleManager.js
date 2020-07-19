@@ -20,7 +20,7 @@ class StyleManager {
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
-      readFile(join(__dirname, 'style.css'), 'utf8').then(css => {
+      readFile(join(__dirname, '..', 'styles', 'main.css'), 'utf8').then(css => {
         const appendStyle = () => {
           const style = document.createElement('style');
           style.id = 'vizality-main-css';

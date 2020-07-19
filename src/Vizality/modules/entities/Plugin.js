@@ -17,6 +17,7 @@ class Plugin extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
     this.ready = false;
     this.styles = {};
+
     this.MODULE = 'Plugin';
     this.SUBMODULE = this.constructor.name;
     this.SUBMODULE_COLOR = this.manifest.color || null;

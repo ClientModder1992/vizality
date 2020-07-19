@@ -60,6 +60,7 @@ class Base extends React.Component {
   renderSearch () {
     return (
       <div className='vizality-entities-manage-search'>
+        {/* @todo: Figure out how to use SearchBar component instead */}
         <TextInput
           value={this.state.search}
           onChange={search => this.setState({ search })}
