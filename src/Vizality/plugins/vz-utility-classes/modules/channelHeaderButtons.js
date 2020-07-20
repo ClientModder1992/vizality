@@ -1,14 +1,14 @@
 const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@util');
 const { getModule, i18n: { Messages } } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 module.exports = async () => {
-  const channelHeaderButtonClasses = getModule('iconWrapper', 'toolbar');
+  const channelHeaderButtonClasses = await getModule('iconWrapper', 'toolbar', true);
   const instance = getOwnerInstance(await waitForElement(`.${channelHeaderButtonClasses.iconWrapper}`));
 
   if (!instance) return;
 
-  inject('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (_, res) => {
+  patch('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (_, res) => {
     if (!res.props.className ||
         !res.props.className.split(' ').includes(channelHeaderButtonClasses.iconWrapper) ||
         !res.props['aria-label']) {
@@ -58,5 +58,5 @@ module.exports = async () => {
 
   setImmediate(() => forceUpdateElement(`.${channelHeaderButtonClasses.iconWrapper}`, true));
 
-  return () => uninject('vz-utility-classes-channelHeaderButtons');
+  return () => unpatch('vz-utility-classes-channelHeaderButtons');
 };

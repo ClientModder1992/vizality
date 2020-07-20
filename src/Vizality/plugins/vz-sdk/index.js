@@ -1,7 +1,7 @@
 const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('@components');
 const { React, getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const SdkWindow = require('./components/SdkWindow');
@@ -21,14 +21,14 @@ class SDK extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-sdk-icon');
+    unpatch('vz-sdk-icon');
     vizality.api.settings.store.removeChangeListener(this._storeListener);
   }
 
   async _addPopoutIcon () {
     const classes = getModule('iconWrapper', 'clickable');
     const HeaderBarContainer = getModuleByDisplayName('HeaderBarContainer');
-    inject('vz-sdk-icon', HeaderBarContainer.prototype, 'renderLoggedIn', (originalArgs, returnValue) => {
+    patch('vz-sdk-icon', HeaderBarContainer.prototype, 'renderLoggedIn', (_, res) => {
       if (this.sdkEnabled) {
         const Switcher = React.createElement(Tooltip, {
           className: joinClassNames(classes.iconWrapper, classes.clickable),
@@ -65,12 +65,12 @@ class SDK extends Plugin {
           }
         }));
 
-        if (!returnValue.props.toolbar) {
-          returnValue.props.toolbar = React.createElement(React.Fragment, { children: [] });
+        if (!res.props.toolbar) {
+          res.props.toolbar = React.createElement(React.Fragment, { children: [] });
         }
-        returnValue.props.toolbar.props.children.push(Switcher);
+        res.props.toolbar.props.children.push(Switcher);
       }
-      return returnValue;
+      return res;
     });
 
     const { title } = getModule('title', 'chatContent');

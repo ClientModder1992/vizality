@@ -1,8 +1,8 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { MAGIC_CHANNELS: { CSS_SNIPPETS } } = require('@constants');
 const { react : { findInReactTree } } = require('@util');
-const { inject, uninject } = require('@injector');
 const { PopoutWindow } = require('@components');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
@@ -37,7 +37,7 @@ class CustomCSSPlugin extends Plugin {
 
   pluginWillUnload () {
     vizality.api.settings.unregisterSettings('Custom CSS');
-    uninject('vz-custom-css-snippets');
+    unpatch('vz-custom-css-snippets');
   }
 
   async _readSnippets () {
@@ -59,7 +59,7 @@ class CustomCSSPlugin extends Plugin {
 
   async _injectSnippetsButton () {
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
-    inject('vz-custom-css-snippets', MiniPopover, 'default', (_, res) => {
+    patch('vz-custom-css-snippets', MiniPopover, 'default', (_, res) => {
       const props = findInReactTree(res, r => r && r.message && r.setPopout);
 
       if (!props || props.channel.id !== CSS_SNIPPETS) return res;

@@ -1,10 +1,10 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 module.exports = () => {
   const ContextMenu = getModuleByDisplayName('FluxContainer(ContextMenus)');
 
-  inject('vz-utility-classes-contextMenu', ContextMenu.prototype, 'render', (_, res) => {
+  patch('vz-utility-classes-contextMenu', ContextMenu.prototype, 'render', (_, res) => {
     if (!res.props) return res;
 
     res.props.isOpen
@@ -14,5 +14,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-contextMenu');
+  return () => unpatch('vz-utility-classes-contextMenu');
 };

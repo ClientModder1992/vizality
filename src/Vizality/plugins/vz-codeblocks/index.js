@@ -1,5 +1,5 @@
 const { Plugin } = require('@entities');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { React, getModule, hljs } = require('@webpack');
 const { react: { findInReactTree } } = require('@util');
 
@@ -12,19 +12,19 @@ class Codeblocks extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-codeblocks-inline');
-    uninject('vz-codeblocks-embed');
+    unpatch('vz-codeblocks-inline');
+    unpatch('vz-codeblocks-embed');
   }
 
   async patchCodeblocks () {
     const parser = getModule('parse', 'parseTopic');
-    inject('vz-codeblocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
+    patch('vz-codeblocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
       this.injectCodeblock(args, res);
 
       return res;
     });
 
-    inject('vz-codeblocks-embed', parser, 'parseAllowLinks', (_, res) => {
+    patch('vz-codeblocks-embed', parser, 'parseAllowLinks', (_, res) => {
       for (const children of res) {
         const codeblock = findInReactTree(children, n => n.type && n.type.name === '');
         if (codeblock) {

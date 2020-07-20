@@ -1,12 +1,12 @@
 const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 
 module.exports = async () => {
   const { chat } = getModule('chat');
   const instance = getOwnerInstance(await waitForElement(`.${chat.split(' ')[0]}`));
 
-  inject('vz-utility-classes-chat', instance.__proto__, 'render', function (_, res) {
+  patch('vz-utility-classes-chat', instance.__proto__, 'render', function (_, res) {
     if (!this || !this.props || !this.props.channel) return res;
 
     const { channel } = this.props;
@@ -52,7 +52,7 @@ module.exports = async () => {
 
   setImmediate(() => instance.forceUpdate());
 
-  return () => uninject('vz-utility-classes-chat');
+  return () => unpatch('vz-utility-classes-chat');
 };
 
 // @testing: Set this.props.isUnavailable to true to test an unavailable channel

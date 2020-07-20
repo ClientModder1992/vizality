@@ -1,30 +1,37 @@
 const { react: { forceUpdateElement } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { React, getModule } = require('@webpack');
 
-module.exports = () => {
-  const Avatar = getModule('AnimatedAvatar');
-
-  inject('vz-utility-classes-avatar', Avatar, 'default', (originalArgs, returnValue) => {
-    const avatar = originalArgs[0].src || void 0;
+module.exports = async () => {
+  const Avatar = await getModule('AnimatedAvatar', true);
+  patch('vz-utility-classes-avatar', Avatar, 'default', (args, res) => {
+    console.log(args);
+    console.log(res);
+    const avatar = args[0].src || void 0;
     if (avatar && avatar.includes('/avatars')) {
-      [ , returnValue.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
+      [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
     }
 
-    return returnValue;
+    return res;
   });
 
   // Re-render using patched component
-  inject('vz-utility-classes-animated-avatar', Avatar.AnimatedAvatar, 'type', (originalArgs, returnValue) =>
-    React.createElement(Avatar.default, { ...returnValue.props }));
+  patch('vz-utility-classes-animated-avatar', Avatar.AnimatedAvatar, 'type', (_, res) =>
+    React.createElement(Avatar.default, { ...res.props }));
 
   Avatar.default.Sizes = Avatar.Sizes;
 
-  const className = getModule('wrapper', 'avatar').wrapper.split(' ')[0];
-  setImmediate(() => forceUpdateElement(`.${className}`));
+  const classes = {
+    className: getModule('wrapper', 'avatar').wrapper.split(' ')[0],
+    className2: getModule('avatar', 'timestamp', 'messageContent').avatar.split(' ')[0]
+  };
+
+  for (const cl in classes) {
+    setImmediate(() => forceUpdateElement(`.${cl}`));
+  }
 
   return () => {
-    uninject('vz-utility-classes-avatar');
-    uninject('vz-utility-classes-animated-avatar');
+    unpatch('vz-utility-classes-avatar');
+    unpatch('vz-utility-classes-animated-avatar');
   };
 };

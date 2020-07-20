@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-const { inject, uninject } = require('@injector');
 const { React, getModule } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 
 /*
@@ -14,9 +14,9 @@ module.exports = () => {
   /* eslint-disable no-unreachable */
   const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
 
-  inject('vz-utility-classes-contextMenuItems', MenuItem, 'default', ([ props ], returnValue) => {
-    return returnValue;
+  patch('vz-utility-classes-contextMenuItems', MenuItem, 'default', ([ props ], res) => {
+    return res;
   });
 
-  return () => uninject('vz-utility-classes-contextMenuItems');
+  return () => unpatch('vz-utility-classes-contextMenuItems');
 };

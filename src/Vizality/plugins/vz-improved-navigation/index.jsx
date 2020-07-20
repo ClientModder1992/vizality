@@ -1,6 +1,6 @@
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { react: { forceUpdateElement } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const Settings = require('./components/Settings');
@@ -32,7 +32,7 @@ class MainNavigation extends Plugin {
     const Shakeable = getModuleByDisplayName('Shakeable');
     const navBar = React.createElement(MainNav, { position, linkStyle });
 
-    inject('vz-mainNav', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ navBar, returnValue ]);
+    patch('vz-mainNav', Shakeable.prototype, 'render', (_, res) => [ navBar, res ]);
 
     setImmediate(() => forceUpdateElement(`.${app}`));
   }
@@ -44,7 +44,7 @@ class MainNavigation extends Plugin {
       el.remove();
     }
 
-    uninject('vz-mainNav');
+    unpatch('vz-mainNav');
   }
 }
 

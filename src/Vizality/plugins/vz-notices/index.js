@@ -1,14 +1,14 @@
-const { Plugin } = require('@entities');
-const { inject, uninject } = require('@injector');
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@util');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { GUILD_ID, INVITE_CODE, ROOT_FOLDER } = require('@constants');
+const { patch, unpatch } = require('@patcher');
+const { Plugin } = require('@entities');
 
-const { resolve } = require('path');
 const { promises: { unlink }, existsSync } = require('fs');
+const { resolve } = require('path');
 
-const ToastContainer = require('./components/ToastContainer');
 const AnnouncementContainer = require('./components/AnnouncementContainer');
+const ToastContainer = require('./components/ToastContainer');
 
 class Notices extends Plugin {
   startPlugin () {
@@ -29,14 +29,14 @@ class Notices extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-notices-announcements');
-    uninject('vz-notices-toast');
+    unpatch('vz-notices-announcements');
+    unpatch('vz-notices-toast');
   }
 
   async _patchAnnouncements () {
     const { base } = getModule('base', 'container');
     const instance = getOwnerInstance(await waitForElement(`.${base.split(' ')[0]}`));
-    inject('vz-notices-announcements', instance.__proto__, 'render', (_, res) => {
+    patch('vz-notices-announcements', instance.__proto__, 'render', (_, res) => {
       res.props.children[1].props.children.unshift(React.createElement(AnnouncementContainer));
       return res;
     });
@@ -47,7 +47,7 @@ class Notices extends Plugin {
   async _patchToasts () {
     const { app } = getModule('app', 'layers');
     const Shakeable = getModuleByDisplayName('Shakeable');
-    inject('vz-notices-toast', Shakeable.prototype, 'render', (_, res) => {
+    patch('vz-notices-toast', Shakeable.prototype, 'render', (_, res) => {
       if (!res.props.children.find(child => child.type && child.type.name === 'ToastContainer')) {
         res.props.children.push(React.createElement(ToastContainer));
       }

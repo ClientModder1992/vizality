@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
 
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 const { WEBSITE } = require('@constants');
 const { Plugin } = require('@entities');
@@ -20,8 +20,8 @@ class RPC extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-rpc-ws');
-    uninject('vz-rpc-ws-promise');
+    unpatch('vz-rpc-ws');
+    unpatch('vz-rpc-ws-promise');
 
     vizality.rpcServer.removeAllListeners('request');
     vizality.rpcServer.on('request', this._originalHandler);
@@ -61,7 +61,7 @@ class RPC extends Plugin {
   async _patchWebSocketServer () {
     const websocketHandler = getModule('validateSocketClient');
 
-    inject('vz-rpc-ws', websocketHandler, 'validateSocketClient', args => {
+    patch('vz-rpc-ws', websocketHandler, 'validateSocketClient', args => {
       if (args[2] === 'vizality') {
         args[2] = void 0;
         args[3] = 'vizality';
@@ -69,7 +69,7 @@ class RPC extends Plugin {
       return args;
     }, true);
 
-    inject('vz-rpc-ws-promise', websocketHandler, 'validateSocketClient', (args, res) => {
+    patch('vz-rpc-ws-promise', websocketHandler, 'validateSocketClient', (args, res) => {
       if (args[3] === 'vizality') {
         res.catch(() => void 0); // Shut
         args[0].authorization.scopes = [

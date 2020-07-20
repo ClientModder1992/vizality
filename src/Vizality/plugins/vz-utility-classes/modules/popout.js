@@ -1,5 +1,5 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 module.exports = async () => {
   return void 0;
@@ -7,7 +7,7 @@ module.exports = async () => {
 
   const Popout = getModuleByDisplayName('Popout');
 
-  inject('vz-utility-classes-popout', Popout.prototype, 'render', (_, res) => {
+  patch('vz-utility-classes-popout', Popout.prototype, 'render', (_, res) => {
     if (!res.props) return res;
 
     if (res.props.shouldShow) document.documentElement.setAttribute('vz-popout-active', '');
@@ -23,5 +23,5 @@ module.exports = async () => {
     return res;
   });
 
-  return async () => uninject('vz-utility-classes-popout');
+  return async () => unpatch('vz-utility-classes-popout');
 };

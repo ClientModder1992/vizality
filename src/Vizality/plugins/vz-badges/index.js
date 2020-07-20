@@ -3,7 +3,7 @@ const { Plugin } = require('@entities');
 const { WEBSITE } = require('@constants');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { React, getModule, getAllModules, getModuleByDisplayName } = require('@webpack');
 const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
 
@@ -35,9 +35,9 @@ class Badges extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-badges-users');
-    uninject('vz-badges-guilds-header');
-    uninject('vz-badges-guilds-tooltip');
+    unpatch('vz-badges-users');
+    unpatch('vz-badges-guilds-header');
+    unpatch('vz-badges-guilds-tooltip');
 
     forceUpdateElement(this.classes.header);
   }
@@ -45,7 +45,7 @@ class Badges extends Plugin {
   async _patchGuildTooltips () {
     const _this = this;
     const GuildBadge = getModuleByDisplayName('GuildBadge');
-    inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, res) {
+    patch('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, res) {
       const { guild } = this.props;
       // GuildBadges is used in different places, size prop seems GuildTooltip "exclusive"
       if (this.props.size && _this.guildBadges[guild.id]) {
@@ -59,7 +59,7 @@ class Badges extends Plugin {
   async _patchGuildHeaders () {
     const _this = this;
     const GuildHeader = getModuleByDisplayName('GuildHeader');
-    inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, res) {
+    patch('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, res) {
       if (_this.guildBadges[this.props.guild.id]) {
         res.props.children.unshift(
           _this._renderBadge(_this.guildBadges[this.props.guild.id])
@@ -76,7 +76,7 @@ class Badges extends Plugin {
     ].join(' '))).parentElement);
 
     const UserProfileBody = instance._reactInternalFiber.return.type;
-    inject('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, res) {
+    patch('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, res) {
       const badges = React.createElement(BadgesComponent, {
         key: 'vizality',
         id: this.props.user.id

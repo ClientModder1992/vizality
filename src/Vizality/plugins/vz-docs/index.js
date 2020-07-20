@@ -1,5 +1,5 @@
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const DocsLayer = require('./components/DocsLayer');
@@ -20,7 +20,7 @@ class Documentation extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-docs-tab');
+    unpatch('vz-docs-tab');
     delete vizality.api.documentation;
   }
 
@@ -38,7 +38,7 @@ class Documentation extends Plugin {
 
   _addDocsItem () {
     const SettingsView = getModuleByDisplayName('SettingsView');
-    inject('vz-docs-tab', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
+    patch('vz-docs-tab', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
         sections.splice(

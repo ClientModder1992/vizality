@@ -1,6 +1,6 @@
 require('module-alias/register');
 
-require('./ipc/renderer');
+require('../ipc/renderer');
 
 window.__SPLASH__ = true;
 

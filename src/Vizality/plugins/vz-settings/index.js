@@ -1,14 +1,13 @@
-const { Plugin } = require('@entities');
-const { WEBSITE } = require('@constants');
-const { inject, uninject } = require('@injector');
-const { AsyncComponent } = require('@components');
 const { React, getModuleByDisplayName, getModule, i18n: { Messages } } = require('@webpack');
+const { AsyncComponent } = require('@components');
+const { patch, unpatch } = require('@patcher');
+const { Plugin } = require('@entities');
 
-const ErrorBoundary = require('./components/ErrorBoundary');
 const GeneralSettings = require('./components/GeneralSettings');
+const ErrorBoundary = require('./components/ErrorBoundary');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 
 module.exports = class Settings extends Plugin {
   startPlugin () {
@@ -28,9 +27,9 @@ module.exports = class Settings extends Plugin {
 
   async pluginWillUnload () {
     vizality.api.settings.unregisterSettings('Settings');
-    uninject('vz-settings-items');
-    uninject('vz-settings-actions');
-    uninject('vz-settings-errorHandler');
+    unpatch('vz-settings-items');
+    unpatch('vz-settings-actions');
+    unpatch('vz-settings-errorHandler');
   }
 
   patchExperiments () {
@@ -49,7 +48,7 @@ module.exports = class Settings extends Plugin {
 
   patchSettingsComponent () {
     const SettingsView = getModuleByDisplayName('SettingsView');
-    inject('vz-settings-items', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
+    patch('vz-settings-items', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
         const settingsSections = Object.keys(vizality.api.settings.tabs).map(s => this._makeSection(s));
@@ -112,7 +111,7 @@ module.exports = class Settings extends Plugin {
     const SubMenuItem = getModuleByDisplayName('FluxContainer(SubMenuItem)');
     const ImageMenuItem = getModuleByDisplayName('ImageMenuItem');
     const SettingsContextMenu = getModuleByDisplayName('UserSettingsCogContextMenu');
-    inject('vz-settings-actions', SettingsContextMenu.prototype, 'render', (_, res) => {
+    patch('vz-settings-actions', SettingsContextMenu.prototype, 'render', (_, res) => {
       const parent = React.createElement(SubMenuItem, {
         label: 'Vizality',
         render: () => vizality.api.settings.tabs.map(tab => React.createElement(ImageMenuItem, {

@@ -1,8 +1,6 @@
-/* eslint-disable prefer-destructuring */
-
 const { React, getModuleByDisplayName, getModule, i18n } = require('@webpack');
 const { react : { findInReactTree } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 class ChannelTitlebar extends Plugin {
@@ -18,27 +16,29 @@ class ChannelTitlebar extends Plugin {
 
   startPlugin () {
     this.loadStylesheet('style.scss');
-
     this._getGuildChannelHeader();
-    this.improvedChannelHeader();
+    this._injectImprovedChannelHeader();
   }
 
-  async _getGuildChannelHeader () {
+  pluginWillUnload () {
+    unpatch('pc-impChannelTitlebar-guildChannelHeader');
+    unpatch('pc-impChannelTitlebar-channelHeader');
+  }
+
+  _getGuildChannelHeader () {
     const GuildHeader = getModuleByDisplayName('GuildHeader');
 
-    inject('pc-impChannelTitlebar-guildChannelHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
+    patch('pc-impChannelTitlebar-guildChannelHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
       this.guildHeader = res;
 
       return res;
     });
-
-    return async () => uninject('pc-impChannelTitlebar-guildChannelHeader');
   }
 
-  async improvedChannelHeader () {
+  async _injectImprovedChannelHeader () {
     const ChannelHeader = getModuleByDisplayName('HeaderBarContainer');
 
-    inject('pc-impChannelTitlebar-channelHeader', ChannelHeader.prototype, 'render', (_, res) => {
+    patch('pc-impChannelTitlebar-channelHeader', ChannelHeader.prototype, 'render', (_, res) => {
       const found = findInReactTree(res, n => n.channel);
 
       if (!found) {
@@ -57,7 +57,7 @@ class ChannelTitlebar extends Plugin {
       // Guild channel
       if (found.channel.type === 0) {
         iconId = found.guild.id;
-        icon = found.guild.icon;
+        ({ icon } = found.guild);
         iconType = 'icons';
         noIconURL = 'https://i.imgur.com/Fa13xn9.png';
       // User DM channel
@@ -98,7 +98,7 @@ class ChannelTitlebar extends Plugin {
       // Group DM channel
       } else if (found.channel.type === 3) {
         iconId = found.channel.id;
-        icon = found.channel.icon;
+        ({ icon } = found.channel);
         iconType = 'channel-icons';
         noIconURL = document.querySelector('.channel-2QD9_O.selected-aXhQR6 .avatar-VxgULZ') ? document.querySelector('.channel-2QD9_O.selected-aXhQR6 .avatar-VxgULZ').src : '';
       }
@@ -204,8 +204,6 @@ class ChannelTitlebar extends Plugin {
 
       return res;
     });
-
-    return async () => uninject('pc-impChannelTitlebar-channelHeader');
   }
 }
 

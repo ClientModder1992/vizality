@@ -1,11 +1,11 @@
 const { react: { forceUpdateElement }, joinClassNames } = require('@util');
 const { getModuleByDisplayName, getModule } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 module.exports = () => {
   const MemberListItem = getModuleByDisplayName('MemberListItem');
 
-  inject('vz-utility-classes-members', MemberListItem.prototype, 'render', function (_, res) {
+  patch('vz-utility-classes-members', MemberListItem.prototype, 'render', function (_, res) {
     if (!this || !this.props || !this.props.user) return res;
 
     const { user } = this.props;
@@ -25,7 +25,7 @@ module.exports = () => {
   const MembersGroup = getModule(m => m.default && m.default.displayName === 'ListSectionItem');
   const membersGroupClasses = getModule('membersGroup').membersGroup;
 
-  inject('vz-utility-classes-member-groups', MembersGroup, 'default', (_, res) => {
+  patch('vz-utility-classes-member-groups', MembersGroup, 'default', (_, res) => {
     if (!res.props ||
         !res.props.className ||
         !res.props.children ||
@@ -44,7 +44,7 @@ module.exports = () => {
   setImmediate(() => forceUpdateElement(`.${membersGroupClasses}`));
 
   return async () => {
-    uninject('vz-utility-classes-members');
-    uninject('vz-utility-classes-member-groups');
+    unpatch('vz-utility-classes-members');
+    unpatch('vz-utility-classes-member-groups');
   };
 };

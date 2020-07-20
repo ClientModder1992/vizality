@@ -1,5 +1,5 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { I18N_WEBSITE } = require('@constants');
 const { Card } = require('@components');
 const { Plugin } = require('@entities');
@@ -14,7 +14,7 @@ class I18n extends Plugin {
     const SettingsLocale = React.createElement(FluxSettingsLocale)
       .type.prototype.render.call({ memoizedGetStateFromStores: () => ({}) });
     const { codeRedemptionRedirect } = getModule('codeRedemptionRedirect');
-    inject('vz-i18n-psst', SettingsLocale.type.prototype, 'render', (_, res) => {
+    patch('vz-i18n-psst', SettingsLocale.type.prototype, 'render', (_, res) => {
       if (!Messages.VIZALITY_I18N_CONTRIBUTE) {
         return res;
       }
@@ -72,7 +72,7 @@ class I18n extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('vz-i18n-psst');
+    unpatch('vz-i18n-psst');
   }
 }
 

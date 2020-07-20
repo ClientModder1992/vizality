@@ -1,5 +1,5 @@
 const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 
 module.exports = async () => {
@@ -7,7 +7,7 @@ module.exports = async () => {
   const guildElement = (await waitForElement(`.${guildClasses.blobContainer.split(' ')[0]}`)).parentElement;
   const instance = getOwnerInstance(guildElement);
 
-  inject('vz-utility-classes-guild', instance.__proto__, 'render', function (_, res) {
+  patch('vz-utility-classes-guild', instance.__proto__, 'render', function (_, res) {
     // Guilds with outages
     if (!this || !this.props) return;
 
@@ -30,5 +30,5 @@ module.exports = async () => {
   });
 
   setImmediate(() => forceUpdateElement(`.${guildElement.className.split(' ')[0]}`, true));
-  return () => uninject('vz-utility-classes-guild');
+  return () => unpatch('vz-utility-classes-guild');
 };

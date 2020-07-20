@@ -1,5 +1,5 @@
 const { React, getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 const { Tooltip } = require('@components');
 const { Plugin } = require('@entities');
@@ -7,20 +7,23 @@ const { Plugin } = require('@entities');
 class MembersActivityIcons extends Plugin {
   startPlugin () {
     this.loadStylesheet('style.scss');
-
     this._injectActivityIcons();
+  }
+
+  pluginWillUnload () {
+    unpatch('vz-members-activity-icons');
   }
 
   async _injectActivityIcons () {
     const MemberListItem = getModuleByDisplayName('MemberListItem');
-    inject('vz-members-activity-icons', MemberListItem.prototype, 'render', (originalArgs, returnValue) => {
-      const { activities } = returnValue.props.subText.props;
+    patch('vz-members-activity-icons', MemberListItem.prototype, 'render', (_, res) => {
+      const { activities } = res.props.subText.props;
 
-      if (!activities) return returnValue;
+      if (!activities) return res;
 
       for (const activity of activities) {
         if (activity.application_id && activity.assets && activity.assets.small_image) {
-          returnValue.props.children =
+          res.props.children =
             React.createElement(Tooltip, {
               text: activity.name,
               position: 'left'
@@ -31,13 +34,13 @@ class MembersActivityIcons extends Plugin {
               }
             ));
 
-          returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasActivityIcon');
+          res.props.className = joinClassNames(res.props.className, 'vz-hasActivityIcon');
 
-          return returnValue;
+          return res;
         }
 
         if (activity.type && activity.type === 2) {
-          returnValue.props.children =
+          res.props.children =
             React.createElement(Tooltip, {
               text: 'Spotify',
               position: 'left'
@@ -48,18 +51,14 @@ class MembersActivityIcons extends Plugin {
               }
             ));
 
-          returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasActivityIcon');
+          res.props.className = joinClassNames(res.props.className, 'vz-hasActivityIcon');
 
-          return returnValue;
+          return res;
         }
       }
 
-      return returnValue;
+      return res;
     });
-  }
-
-  pluginWillUnload () {
-    uninject('vz-members-activity-icons');
   }
 }
 

@@ -1,6 +1,6 @@
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { react: { forceUpdateElement } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const Settings = require('./components/Settings');
@@ -13,6 +13,7 @@ class ImprovedTitlebar extends Plugin {
       label: 'improved-titlebar',
       render: Settings
     });
+
     this.loadStylesheet('style.scss');
 
     this._injectTitlebar(
@@ -23,24 +24,24 @@ class ImprovedTitlebar extends Plugin {
     );
   }
 
+  pluginWillUnload () {
+    const el = document.querySelector('.vizality-titlebar');
+    if (el) el.remove();
+
+    unpatch('advancedTitlebar-titlebar');
+    /*
+     * @todo: impl; re-render normal titlebar (so none if linux)
+     */
+  }
+
   async _injectTitlebar (type, showHeader, headerText, showExtras) {
     const { app } = getModule('app', 'layers');
     document.documentElement.setAttribute('titlebar-type', this.settings.get('type', 'windows'));
     const Shakeable = getModuleByDisplayName('Shakeable');
     const titlebar = React.createElement(Titlebar, { type, showHeader, headerText, showExtras });
-    inject('advancedTitlebar-titlebar', Shakeable.prototype, 'render', (originalArgs, returnValue) => [ titlebar, returnValue ]);
+    patch('advancedTitlebar-titlebar', Shakeable.prototype, 'render', (_, res) => [ titlebar, res ]);
 
     setImmediate(() => forceUpdateElement(`.${app}`));
-  }
-
-  pluginWillUnload () {
-    const el = document.querySelector('.vizality-titlebar');
-    if (el) el.remove();
-
-    uninject('advancedTitlebar-titlebar');
-    /*
-     * @todo: impl; re-render normal titlebar (so none if linux)
-     */
   }
 }
 

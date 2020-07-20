@@ -2,7 +2,7 @@ const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i1
 const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('@constants');
 const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
 const { react : { forceUpdateElement } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const deeplinks = require('./deeplinks');
@@ -55,13 +55,13 @@ class ModuleManager extends Plugin {
     vizality.api.settings.unregisterSettings('Plugins');
     vizality.api.settings.unregisterSettings('Themes');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
-    uninject('vz-module-manager-channelItem');
-    uninject('vz-module-manager-channelProps');
+    unpatch('vz-module-manager-channelItem');
+    unpatch('vz-module-manager-channelProps');
   }
 
   async _injectCommunityContent () {
     const permissionsModule = getModule('can');
-    inject('vz-module-manager-channelItem', permissionsModule, 'can', (args, res) => {
+    patch('vz-module-manager-channelItem', permissionsModule, 'can', (args, res) => {
       const id = args[1].channelId || args[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
         return args[0] === Permissions.VIEW_CHANNEL;
@@ -71,7 +71,7 @@ class ModuleManager extends Plugin {
 
     const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
-    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
+    patch('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,

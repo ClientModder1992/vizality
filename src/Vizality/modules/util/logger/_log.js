@@ -47,7 +47,7 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
       module: '#e56e60',
       submodule: '#34426e'
     },
-    Injector: {
+    Patcher: {
       module: '#a70338',
       submodule: '#0195b5'
     }

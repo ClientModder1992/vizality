@@ -1,5 +1,5 @@
-const { inject, uninject } = require('@injector');
 const { React, getModule } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 const { Plugin } = require('@entities');
 const { Icon } = require('@components');
@@ -16,12 +16,12 @@ class ContextMenuIcons extends Plugin {
   async _injectContextMenuItems () {
     const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
 
-    inject('vz-contextMenuIcons', MenuItem, 'default', (originalArgs, returnValue) => {
-      if (!returnValue.props || !returnValue.props.id) return returnValue;
+    patch('vz-contextMenuIcons', MenuItem, 'default', (_, res) => {
+      if (!res.props || !res.props.id) return res;
 
-      const { id } = returnValue.props;
+      const { id } = res.props;
 
-      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
+      res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'textarea-context-languages' && 'atom',
@@ -55,26 +55,26 @@ class ContextMenuIcons extends Plugin {
 
       if (!type) {
         console.log('Context item not specified yet: ', id);
-        return returnValue;
+        return res;
       }
 
-      const icon = React.createElement(Icon, { type,
-        className: 'vizality-contextMenuIcon' });
-      returnValue.props.children.unshift(icon);
+      const icon = React.createElement(Icon, { type, className: 'vizality-contextMenuIcon' });
 
-      return returnValue;
+      res.props.children.unshift(icon);
+
+      return res;
     });
   }
 
   async _injectContextMenuCheckboxItems () {
     const MenuCheckboxItem = getModule(m => m.default && m.default.displayName === 'MenuCheckboxItem');
 
-    inject('vz-contextMenuCheckboxIcons', MenuCheckboxItem, 'default', (originalArgs, returnValue) => {
-      if (!returnValue.props || !returnValue.props.id) return returnValue;
+    patch('vz-contextMenuCheckboxIcons', MenuCheckboxItem, 'default', (_, res) => {
+      if (!res.props || !res.props.id) return res;
 
-      const { id } = returnValue.props;
+      const { id } = res.props;
 
-      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
+      res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'textarea-context-spellcheck' && 'atom',
@@ -85,26 +85,26 @@ class ContextMenuIcons extends Plugin {
 
       if (!type) {
         console.log('Context checkbox item not specified yet: ', id);
-        return returnValue;
+        return res;
       }
 
-      const icon = React.createElement(Icon, { type,
-        className: 'vizality-contextMenuIcon' });
-      returnValue.props.children.unshift(icon);
+      const icon = React.createElement(Icon, { type, className: 'vizality-contextMenuIcon' });
 
-      return returnValue;
+      res.props.children.unshift(icon);
+
+      return res;
     });
   }
 
   async _injectContextMenuControlItems () {
     const MenuControlItem = getModule(m => m.default && m.default.displayName === 'MenuControlItem');
 
-    inject('vz-contextMenuControlIcons', MenuControlItem, 'default', (originalArgs, returnValue) => {
-      if (!returnValue.props || !returnValue.props.id || !returnValue.props.children || !returnValue.props.children[0].props) return returnValue;
+    patch('vz-contextMenuControlIcons', MenuControlItem, 'default', (_, res) => {
+      if (!res.props || !res.props.id || !res.props.children || !res.props.children[0].props) return res;
 
-      const { id } = returnValue.props;
+      const { id } = res.props;
 
-      returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-hasIcon');
+      res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
         id === 'user-context-user-volume' && 'atom'
@@ -112,21 +112,21 @@ class ContextMenuIcons extends Plugin {
 
       if (!type) {
         console.log('Context checkbox item not specified yet: ', id);
-        return returnValue;
+        return res;
       }
 
-      const icon = React.createElement(Icon, { type,
-        className: 'vizality-contextMenuIcon' });
-      returnValue.props.children.unshift(icon);
+      const icon = React.createElement(Icon, { type, className: 'vizality-contextMenuIcon' });
 
-      return returnValue;
+      res.props.children.unshift(icon);
+
+      return res;
     });
   }
 
   pluginWillUnload () {
-    uninject('vz-contextMenuIcons');
-    uninject('vz-contextMenuCheckboxIcons');
-    uninject('vz-contextMenuControlIcons');
+    unpatch('vz-contextMenuIcons');
+    unpatch('vz-contextMenuCheckboxIcons');
+    unpatch('vz-contextMenuControlIcons');
   }
 }
 

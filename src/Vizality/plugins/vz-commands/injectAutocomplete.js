@@ -1,4 +1,4 @@
-const { inject } = require('@injector');
+const { patch } = require('@patcher');
 const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('@webpack');
 
 const Title = require('./components/Title');
@@ -30,7 +30,7 @@ async function injectAutocomplete () {
     return [ renderHeader(query, formatHeader), results ];
   }
 
-  inject('vz-commands-autocomplete-prefix', ChannelAutocomplete.prototype, 'getAutocompletePrefix', function (_, res) {
+  patch('vz-commands-autocomplete-prefix', ChannelAutocomplete.prototype, 'getAutocompletePrefix', function (_, res) {
     const { props: { textValue }, state: { autocompleteOptions } } = this;
     const { prefix } = vizality.api.commands;
 
@@ -62,7 +62,7 @@ async function injectAutocomplete () {
     };
   });
 
-  inject('vz-commands-autocomplete', ChannelAutocomplete.prototype, 'render', function (_, res) {
+  patch('vz-commands-autocomplete', ChannelAutocomplete.prototype, 'render', function (_, res) {
     const { props: { textValue }, state: { autocompleteOptions } } = this;
     const resultFilter = (value) => c => [ c.command, ...(c.aliases || []) ].some(commandName => commandName.includes(value));
 

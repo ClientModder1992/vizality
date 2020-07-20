@@ -2,7 +2,7 @@
 
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { react: { forceUpdateElement } } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 /*
  * This module does nothing currently. It is just here for future reference in the event the
@@ -13,11 +13,11 @@ module.exports = () => {
   return () => void 0;
 
   const GuildHeader = getModuleByDisplayName('GuildHeader');
-  inject('vz-utility-classes-guildHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
+  patch('vz-utility-classes-guildHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
     return res;
   });
 
   const className = getModule('iconBackgroundTierNone', 'container').header.split(' ')[0];
   setImmediate(() => forceUpdateElement(`.${className}`));
-  return () => uninject('vz-utility-classes-guildHeader');
+  return () => unpatch('vz-utility-classes-guildHeader');
 };

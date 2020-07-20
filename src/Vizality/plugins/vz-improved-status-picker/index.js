@@ -1,18 +1,26 @@
 const { getModule, React, i18n: { Messages } } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 
 class GameActivityToggle extends Plugin {
   async startPlugin () {
+    this._injectGameActivityToggle();
+  }
+
+  pluginWillUnload () {
+    unpatch('game-activity-toggle');
+  }
+
+  _injectGameActivityToggle () {
     const classes = getModule('status', 'description');
     const settings = getModule('updateRemoteSettings');
 
     let { showCurrentGame } = getModule('showCurrentGame');
 
     const Menu = getModule(m => m.default && m.default.displayName === 'Menu');
-    inject('game-activity-toggle', Menu, 'default', (originalArgs) => {
+    patch('game-activity-toggle', Menu, 'default', (originalArgs) => {
       if (originalArgs[0].navId !== 'status-picker') {
         return originalArgs;
       }
@@ -49,10 +57,6 @@ class GameActivityToggle extends Plugin {
 
       return originalArgs;
     }, true);
-  }
-
-  pluginWillUnload () {
-    uninject('game-activity-toggle');
   }
 }
 

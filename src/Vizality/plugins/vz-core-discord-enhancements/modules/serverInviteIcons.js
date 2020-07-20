@@ -1,5 +1,5 @@
-const { inject, uninject } = require('@injector');
 const { React, getModule } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 
 /*
@@ -10,7 +10,7 @@ const contextServerInviteIcons = () => {
   const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
   const GuildStore = getModule('getGuild');
 
-  inject('vz-cde-contextMenu-serverInviteIcons', MenuItem, 'default', ([ props ], res) => {
+  patch('vz-cde-contextMenu-serverInviteIcons', MenuItem, 'default', ([ props ], res) => {
     if (!res.props || !res.props.id || res.props.id.indexOf('user-context-invite-to-server--')) return res;
 
     const { id } = props;
@@ -31,7 +31,7 @@ const contextServerInviteIcons = () => {
     return res;
   });
 
-  return async () => uninject('vz-cde-contextMenu-serverInviteIcons');
+  return async () => unpatch('vz-cde-contextMenu-serverInviteIcons');
 };
 
 module.exports = contextServerInviteIcons;

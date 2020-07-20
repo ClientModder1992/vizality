@@ -1,5 +1,5 @@
 const { react : { findInReactTree }, joinClassNames } = require('@util');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 
 module.exports = async () => {
@@ -8,7 +8,7 @@ module.exports = async () => {
   const memberModule = getModule('getMember');
   const guildModule = getModule('getGuild');
 
-  inject('vz-utility-classes-messages', Message, 'default', (_, res) => {
+  patch('vz-utility-classes-messages', Message, 'default', (_, res) => {
     const msg = findInReactTree(res, n => n.message);
 
     if (!msg) {
@@ -38,5 +38,5 @@ module.exports = async () => {
     return res;
   });
 
-  return async () => uninject('vz-utility-classes-messages');
+  return async () => unpatch('vz-utility-classes-messages');
 };

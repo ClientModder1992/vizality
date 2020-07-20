@@ -1,6 +1,6 @@
 const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('@util');
 const { getModuleByDisplayName, getModule } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 /*
  * Modifies The TransitionGroup component. We are checking for and modifying
@@ -11,7 +11,7 @@ module.exports = async () => {
   const TransitionGroup = getModuleByDisplayName('TransitionGroup');
   const { contentRegion } = getModule('contentRegion');
 
-  inject('vz-utility-classes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
+  patch('vz-utility-classes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
     if (!res.props || res.props.className !== contentRegion || !res.props.className.includes(contentRegion)) {
       return res;
     }
@@ -23,5 +23,5 @@ module.exports = async () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-transitionGroup');
+  return () => unpatch('vz-utility-classes-transitionGroup');
 };

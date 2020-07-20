@@ -1,5 +1,5 @@
-const { inject, uninject } = require('@injector');
 const { React, getModule } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 const { Menu } = require('@components');
 
@@ -9,13 +9,13 @@ class CopyRawMessage extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('copy-raw-message');
+    unpatch('copy-raw-message');
   }
 
   async _patchContextMenu () {
     const MessageContextMenu = getModule(m => m.default && m.default.displayName === 'MessageContextMenu');
 
-    inject('copy-raw-message', MessageContextMenu, 'default', ([ props ], res) => {
+    patch('copy-raw-message', MessageContextMenu, 'default', ([ props ], res) => {
       const { message } = props;
 
       if (!message || !message.content) return res;

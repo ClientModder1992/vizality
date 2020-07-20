@@ -2,9 +2,9 @@ require('module-alias/register');
 
 const { LOGS_FOLDER } = require('@constants');
 
+const { existsSync, mkdirSync, open, write } = require('fs');
 const { ipcRenderer } = require('electron');
 const { join } = require('path');
-const { existsSync, mkdirSync, open, write } = require('fs');
 
 require('../ipc/renderer');
 

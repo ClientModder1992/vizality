@@ -1,14 +1,14 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 
-module.exports = () => {
-  const PrivateChannel = getModuleByDisplayName('PrivateChannel');
+module.exports = async () => {
+  const PrivateChannel = await getModuleByDisplayName('PrivateChannel', true);
 
-  inject('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (_, res) => {
+  patch('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (_, res) => {
     const { props } = res;
 
-    props['vz-user-name'] = props.name;
+    props['vz-user-name'] = props.name.props.children;
     /*
      * @todo: Figure out how to:
      * vz-user-id
@@ -27,5 +27,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-dmChannels');
+  return () => unpatch('vz-utility-classes-dmChannels');
 };

@@ -1,9 +1,10 @@
 const { Flex, Button } = require('@components');
+const { ROOT_FOLDER } = require('@constants');
+const { React } = require('@webpack');
 
 const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
 const { join, dirname } = require('path');
-const { React } = require('@webpack');
 
 const SplashStages = Object.freeze({
   CHECKING_FOR_UPDATES: 'CHECKING_FOR_UPDATES',
@@ -83,7 +84,8 @@ class SplashScreen extends React.PureComponent {
   }
 
   openSplashScreen (keepState) {
-    const baseAsar = dirname(module.paths[0]);
+    // @todo: Fix this.
+    const baseAsar = dirname(module.path[0]);
     const splashIndex = formatUrl({
       protocol: 'file',
       slashes: true,
@@ -102,7 +104,7 @@ class SplashScreen extends React.PureComponent {
       center: true,
       show: true,
       webPreferences: {
-        preload: join(__dirname, '../../../../preload/splash.js'),
+        preload: join(ROOT_FOLDER, 'src', 'preload', 'splash.js'),
         nodeIntegration: true
       }
     };
@@ -110,7 +112,7 @@ class SplashScreen extends React.PureComponent {
     // this._window = PowercordNative.openBrowserWindow(windowSettings);
     this._window = new BrowserWindow(windowSettings);
     this._window.loadURL(splashIndex);
-    this._window.webContents.openDeveloperTools({ mode: 'detach' });
+    this._window.webContents.openDevTools({ mode: 'detach' });
     this._window.on('close', () => {
       if (!this._closeScheduled) {
         this.setState({ opened: false });

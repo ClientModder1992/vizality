@@ -1,6 +1,4 @@
-/** @module vizality/injector */
-
-this.injections = [];
+this.patches = [];
 
 require('fs')
   .readdirSync(__dirname)

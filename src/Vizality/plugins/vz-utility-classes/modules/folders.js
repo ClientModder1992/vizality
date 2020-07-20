@@ -1,11 +1,11 @@
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
 module.exports = () => {
   const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));
 
-  inject('vz-utility-classes-folders', GuildFolder.default, 'type', (args, res) => {
+  patch('vz-utility-classes-folders', GuildFolder.default, 'type', (args, res) => {
     const { folderName, unread, selected, expanded, audio, video, screenshare, badge: mentions } = args[0];
 
     res.props.className = joinClassNames(
@@ -27,5 +27,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-folders');
+  return () => unpatch('vz-utility-classes-folders');
 };

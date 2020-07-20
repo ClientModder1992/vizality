@@ -26,6 +26,7 @@
     "@entities": "src/Vizality/modules/entities",
     "@http": "src/Vizality/modules/http",
     "@injector": "src/Vizality/modules/injector",
+    "@patcher": "src/Vizality/modules/patcher",
     "@util": "src/Vizality/modules/util",
     "@webpack": "src/Vizality/modules/webpack"
   },

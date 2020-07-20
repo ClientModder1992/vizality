@@ -1,11 +1,11 @@
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
 module.exports = () => {
   const CallTile = getModule(m => m.default && m.default.displayName === 'CallTile');
 
-  inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], res) => {
+  patch('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], res) => {
     if (!props | !props.participant || !res.props) return res;
 
     const { participant } = props;
@@ -25,5 +25,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-privateCall');
+  return () => unpatch('vz-utility-classes-privateCall');
 };

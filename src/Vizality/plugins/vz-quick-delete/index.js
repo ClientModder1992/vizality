@@ -1,7 +1,7 @@
 const { react : { findInReactTree } } = require('@util');
-const { inject, uninject } = require('@injector');
 const { React, getModule } = require('@webpack');
 const { Tooltip, Icon } = require('@components');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 class QuickDelete extends Plugin {
@@ -14,7 +14,7 @@ class QuickDelete extends Plugin {
       ...getModule('icon', 'isHeader')
     };
 
-    inject('quick-delete-button', MiniPopover, 'default', (_, res) => {
+    patch('quick-delete-button', MiniPopover, 'default', (_, res) => {
       const props = findInReactTree(res, r => r && r.canDelete && r.message);
 
       if (!props) return res;
@@ -47,7 +47,7 @@ class QuickDelete extends Plugin {
   }
 
   pluginWillUnload () {
-    uninject('quick-delete-button');
+    unpatch('quick-delete-button');
   }
 }
 

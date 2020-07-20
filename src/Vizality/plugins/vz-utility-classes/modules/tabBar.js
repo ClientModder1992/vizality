@@ -1,6 +1,6 @@
 const { joinClassNames, string: { toCamelCase } } = require('@util');
 const { getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 /*
  * Modifies The TabBar component, which is used in various places throughout
@@ -11,7 +11,7 @@ const { inject, uninject } = require('@injector');
 module.exports = async () => {
   const TabBar = getModuleByDisplayName('TabBar');
 
-  inject('vz-utility-classes-tabBar', TabBar.prototype, 'render', function (_, res) {
+  patch('vz-utility-classes-tabBar', TabBar.prototype, 'render', function (_, res) {
     if (!res.props || !res.props.children) return res;
 
     /*
@@ -35,5 +35,5 @@ module.exports = async () => {
     return res;
   });
 
-  return () => uninject('vz-utility-classes-tabBar');
+  return () => unpatch('vz-utility-classes-tabBar');
 };

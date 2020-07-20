@@ -1,6 +1,6 @@
 const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@util');
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { inject, uninject } = require('@injector');
+const { patch, unpatch } = require('@patcher');
 
 /*
  * Attempt at patching lazy loading...
@@ -11,7 +11,7 @@ module.exports = async () => {
 
   const List  = getModuleByDisplayName('List');
 
-  inject('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (args, res) => {
+  patch('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (args, res) => {
     // const props = findInReactTree(res, n => n.id);
 
     // if (!props.id || props.id !== 'private-channels') return res;
@@ -35,12 +35,12 @@ module.exports = async () => {
   setImmediate(() => forceUpdateElement('.scroller-2FKFPG'));
 
   /*
-   * return async () => uninject('vz-improved-navigation-dmChannels');
+   * return async () => unpatch('vz-improved-navigation-dmChannels');
    * const ConnectedPrivateChannelsList  = await getModule(m => m.default && m.default.displayName === 'ConnectedPrivateChannelsList', true);
    */
 
   /*
-   * inject('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (args, res) => {
+   * patch('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (args, res) => {
    *   console.log(res);
    */
 
@@ -49,5 +49,5 @@ module.exports = async () => {
    * });
    */
 
-  return async () => uninject('vz-improved-navigation-dmChannels');
+  return async () => unpatch('vz-improved-navigation-dmChannels');
 };
