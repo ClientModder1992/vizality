@@ -1,12 +1,17 @@
-const { logger: { log, error } } = require('@util');
-const Util = require('../../util');
+const { log, error } = require('../logger');
+const { toPlural } = require('../string');
+const _traverse = require('./_traverse');
 
-const _traverseKeys = require('./_traverseKeys');
-const _traverseValues = require('./_traverseValues');
-
-const _findBy = (object, targetValue, exact = false, type) => {
+const _find = (object, targetValue, exact = false, type) => {
   const MODULE = 'Module';
-  const SUBMODULE = `Util:object:${type === 'key' ? 'findByKeys' : type === 'value' ? 'findByValues' : '_findBy'}`;
+  const SUBMODULE = `Util:object:${
+    type === 'key'
+      ? 'findEntriesByKey'
+      : type === 'value'
+        ? 'findEntriesByValue'
+        : type === 'all'
+          ? 'findEntries'
+          : '_find'}`;
 
   if (typeof targetValue !== 'string' || targetValue.trim() === '') {
     return error(MODULE, SUBMODULE, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
@@ -14,12 +19,10 @@ const _findBy = (object, targetValue, exact = false, type) => {
 
   let results;
 
-  if (type === 'key') {
-    results = [ ..._traverseKeys(object, targetValue, exact) ];
-  } else if (type === 'value') {
-    results = [ ..._traverseValues(object, targetValue, exact) ];
+  if (type === 'key' || type === 'value' || type === 'all') {
+    results = [ ..._traverse(object, targetValue, exact, type) ];
   } else {
-    return log(MODULE, SUBMODULE, null, `Argument 'type' must be a string value of 'findByKey' or 'findByValue'`);
+    return error(MODULE, SUBMODULE, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
   }
 
   const tempResults = [ ...results ];
@@ -33,7 +36,7 @@ const _findBy = (object, targetValue, exact = false, type) => {
    * }
    */
 
-  log(MODULE, SUBMODULE, null, `${results.length} ${resultsText} found for ${Util.string.toPlural(type)} ${choiceWord} '${targetValue}':`);
+  log(MODULE, SUBMODULE, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
   if (exact) {
     results = results.map(result => result).join('\n');
@@ -46,10 +49,8 @@ const _findBy = (object, targetValue, exact = false, type) => {
         outputResult = outputResult[result];
       }
 
-      if (type === 'key') {
-        if (typeof outputResult === 'object') {
-          return `${result.padEnd(longestResult.length, ' ')}`;
-        }
+      if (typeof outputResult === 'object') {
+        return `${result.padEnd(longestResult.length, ' ')}`;
       }
 
       /*
@@ -60,7 +61,9 @@ const _findBy = (object, targetValue, exact = false, type) => {
     }).join('\n');
   }
 
-  return console.log(results);
+  if (results.length > 0) {
+    return console.log(results);
+  }
 };
 
-module.exports = _findBy;
+module.exports = _find;

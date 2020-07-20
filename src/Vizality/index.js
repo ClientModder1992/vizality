@@ -1,9 +1,8 @@
 const { Updatable } = require('@entities');
+const { jsx: JsxCompiler } = require('@compilers');
 const { getModule, getModuleByPrototypes, _init } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@util');
 const { IMAGES } = require('@constants');
-
-const JsxCompiler = require('vizality/compilers/jsx');
 
 const { join } = require('path');
 const { promisify } = require('util');
@@ -111,7 +110,8 @@ class Vizality extends Updatable {
 
   // Vizality startup
   async startup () {
-    console.clear();
+    // To achieve that pure console look ( ͡° ͜ʖ ͡°)
+    // console.clear();
 
     // Startup banner
     console.log('%c ',
@@ -242,10 +242,11 @@ class Vizality extends Updatable {
     if (success) {
       await exec('npm install --only=prod', { cwd: this.entityPath });
       const updater = this.pluginManager.get('vz-updater');
+      // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
         vizality.api.notices.sendToast('vizality-updater', {
           header: 'Update complete!',
-          content: 'Please click "Reload" to complete the final stages of this Vizality update.',
+          content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
           type: 'success',
           buttons: [ {
             text: 'Reload',
