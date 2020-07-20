@@ -1,4 +1,4 @@
-const warn = require('../logger/warn');
+const { warn } = require('../logger');
 
 const _hex2int = require('./_hex2int');
 const _rgb2int = require('./_rgb2int');

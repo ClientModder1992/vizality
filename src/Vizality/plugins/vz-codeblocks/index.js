@@ -1,10 +1,11 @@
-const { Plugin } = require('vizality/entities');
-const { React, getModule, hljs } = require('vizality/webpack');
-const { inject, uninject } = require('vizality/injector');
-const { react: { findInReactTree } } = require('vizality/util');
+const { Plugin } = require('@entities');
+const { inject, uninject } = require('@injector');
+const { React, getModule, hljs } = require('@webpack');
+const { react: { findInReactTree } } = require('@util');
+
 const { clipboard } = require('electron');
 
-module.exports = class Codeblocks extends Plugin {
+class Codeblocks extends Plugin {
   async startPlugin () {
     this.loadStylesheet('style.scss');
     this.patchCodeblocks();
@@ -107,4 +108,6 @@ module.exports = class Codeblocks extends Plugin {
 
     selection.removeAllRanges();
   }
-};
+}
+
+module.exports = Codeblocks;

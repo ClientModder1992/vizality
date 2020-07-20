@@ -1,4 +1,4 @@
-const { getModule } = require('vizality/webpack');
+const { getModule } = require('@webpack');
 
 const getSections = () => {
   const { UserSettingsSections } = getModule('UserSettingsSections');

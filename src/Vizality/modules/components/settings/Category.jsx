@@ -1,4 +1,5 @@
-const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 
 const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
@@ -14,7 +15,7 @@ let classes = {
   classDescription: ''
 };
 
-module.exports = class Category extends React.PureComponent {
+class Category extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = { classes };
@@ -67,4 +68,6 @@ module.exports = class Category extends React.PureComponent {
       </DFormItem>
     );
   }
-};
+}
+
+module.exports = Category;

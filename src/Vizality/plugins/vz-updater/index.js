@@ -1,7 +1,7 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Confirm } = require('vizality/components/modal');
-const { Plugin } = require('vizality/entities');
+const { Confirm } = require('@components/modal');
+const { Plugin } = require('@entities');
 
 const { join } = require('path');
 const { promisify } = require('util');

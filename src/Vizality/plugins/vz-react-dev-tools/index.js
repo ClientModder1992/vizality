@@ -1,13 +1,12 @@
-const { join } = require('path');
-const { remote } = require('electron');
+const { Plugin } = require('@entities');
+const { get } = require('@http');
+
 const { createWriteStream, existsSync, readFileSync } = require('fs');
-const { Plugin } = require('vizality/entities');
-const { get } = require('vizality/http');
-
+const { remote } = require('electron');
 const unzip = require('unzip-crx');
+const { join } = require('path');
 
-// @todo: Throw this plugin away and use a better loading method
-module.exports = class ReactDevtools extends Plugin {
+class ReactDevtools extends Plugin {
   get path () {
     return join(__dirname, 'rdt.crx');
   }
@@ -47,7 +46,7 @@ module.exports = class ReactDevtools extends Plugin {
     if (this.isInstalledLocally) {
       if (remote.BrowserWindow.addDevToolsExtension(this.folderPath)) {
         this.log('Successfully installed React DevTools.');
-        this.log('If React DevTools is missing or empty, close Developer Tools and re-open it.');
+        this.log('If React DevTools is missing or empty, close Chrome DevTools and re-open it.');
       } else {
         this.error('Couldn\'t find React DevTools in Chrome extensions!');
       }
@@ -77,8 +76,10 @@ module.exports = class ReactDevtools extends Plugin {
 
       unzip(this.path, this.folderPath).then(() => {
         this.listener();
-        this.log('If you are still unable to find tabs for React DevTools in Developer Tools, reload your client (Ctrl + R).');
+        this.log('If you are still unable to find tabs for React DevTools in Chrome DevTools, reload your client (Ctrl + R).');
       });
     }, err => this.error(err)), err => this.error(err));
   }
-};
+}
+
+module.exports = ReactDevtools;

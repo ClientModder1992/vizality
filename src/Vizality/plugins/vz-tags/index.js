@@ -1,9 +1,9 @@
-const { Plugin } = require('vizality/entities');
+const { Plugin } = require('@entities');
 const commands = require('./commands');
 
 const TAG_ARGUMENT_REGEX = /\$\$(@|\d+)/g;
 
-module.exports = class Tags extends Plugin {
+class Tags extends Plugin {
   startPlugin () {
     this.registerMain();
     this.registerTags();
@@ -86,4 +86,6 @@ module.exports = class Tags extends Plugin {
     this.unregisterTag(name);
     this.registerTag(name);
   }
-};
+}
+
+module.exports = Tags;

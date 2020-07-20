@@ -19,6 +19,7 @@
     "vizality": "src/Vizality/modules",
     "@root": ".",
     "@classes": "src/Vizality/modules/classes",
+    "@compilers": "src/Vizality/modules/compilers",
     "@components": "src/Vizality/modules/components",
     "@constants": "src/Vizality/modules/constants",
     "@discord": "src/Vizality/modules/discord",

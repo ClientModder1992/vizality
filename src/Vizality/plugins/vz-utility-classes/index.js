@@ -1,10 +1,13 @@
+const { Plugin } = require('@entities');
+
 const { remote } = require('electron');
-const { Plugin } = require('vizality/entities');
+
 const modules = require('./modules');
 
-module.exports = class UtilityClasses extends Plugin {
+class UtilityClasses extends Plugin {
   startPlugin () {
     this.callbacks = [];
+
     Object.values(modules).forEach(async mod => {
       const callback = await mod();
       if (typeof callback === 'function') {
@@ -13,14 +16,17 @@ module.exports = class UtilityClasses extends Plugin {
     });
 
     document.documentElement.setAttribute('vizality', '');
+
     if (window.__OVERLAY__) {
       document.documentElement.setAttribute('vz-overlay', '');
     }
 
     const webPrefs = remote.getCurrentWebContents().getWebPreferences();
+
     if (webPrefs.transparent) {
       document.documentElement.setAttribute('vz-transparent', '');
     }
+
     if (webPrefs.experimentalFeatures) {
       document.documentElement.setAttribute('vz-experimental-web-features', '');
     }
@@ -30,8 +36,11 @@ module.exports = class UtilityClasses extends Plugin {
       document.documentElement.setAttribute('vz-april-fools', '');
     }
 
-    if (remote.getCurrentWindow().isMaximized()) document.documentElement.setAttribute('vz-window', 'maximized');
-    else document.documentElement.setAttribute('vz-window', 'restored');
+    if (remote.getCurrentWindow().isMaximized()) {
+      document.documentElement.setAttribute('vz-window', 'maximized');
+    } else {
+      document.documentElement.setAttribute('vz-window', 'restored');
+    }
 
     remote.getCurrentWindow().on('maximize', () => document.documentElement.setAttribute('vz-window', 'maximized'));
     remote.getCurrentWindow().on('unmaximize', () => document.documentElement.setAttribute('vz-window', 'restored'));
@@ -40,4 +49,7 @@ module.exports = class UtilityClasses extends Plugin {
   pluginWillUnload () {
     this.callbacks.forEach(cb => cb());
   }
-};
+}
+
+module.exports = UtilityClasses;
+

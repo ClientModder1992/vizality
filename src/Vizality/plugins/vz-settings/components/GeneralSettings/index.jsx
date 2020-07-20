@@ -1,11 +1,11 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
+const { settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@components');
+const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { TextInput, SwitchItem, ButtonItem, Category } = require('vizality/components/settings');
-const { Confirm } = require('vizality/components/modal');
-const { WEBSITE, CACHE_FOLDER } = require('vizality/constants');
+const { WEBSITE, CACHE_FOLDER } = require('@constants');
+const { Confirm } = require('@components/modal');
 const { file: { rmdirRf } } = require('@util');
 
-module.exports = class GeneralSettings extends React.Component {
+class GeneralSettings extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -148,4 +148,6 @@ module.exports = class GeneralSettings extends React.Component {
       </div>
     </Confirm>);
   }
-};
+}
+
+module.exports = GeneralSettings;

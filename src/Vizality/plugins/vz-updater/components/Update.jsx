@@ -1,9 +1,9 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
-const { Button } = require('vizality/components');
+const { React, i18n: { Messages } } = require('@webpack');
+const { Button } = require('@components');
 
 const Icons = require('./Icons');
 
-module.exports = class Update extends React.PureComponent {
+class Update extends React.PureComponent {
   constructor () {
     super();
     this.plugin = vizality.pluginManager.get('vz-updater');
@@ -42,4 +42,6 @@ module.exports = class Update extends React.PureComponent {
       </div>
     </div>;
   }
-};
+}
+
+module.exports = Update;

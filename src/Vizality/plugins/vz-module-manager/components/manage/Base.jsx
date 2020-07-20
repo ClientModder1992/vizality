@@ -1,10 +1,11 @@
-const { join } = require('path');
-const { shell } = require('electron');
-const { React, getModule, contextMenu, i18n: { Messages } } = require('vizality/webpack');
-const { settings: { TextInput }, Button, Tooltip, ContextMenu, Divider, Icons: { Overflow } } = require('vizality/components');
-const { string: { toHeaderCase } } = require('vizality/util');
+const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
+const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
+const { string: { toHeaderCase } } = require('@util');
 
-class Base extends React.Component {
+const { shell } = require('electron');
+const { join } = require('path');
+
+class Base extends React.PureComponent {
   constructor () {
     super();
     this.state = {
@@ -95,7 +96,7 @@ class Base extends React.Component {
           {
             type: 'button',
             name: Messages.VIZALITY_ENTITIES_LOAD_MISSING.format({ entityType: toHeaderCase(this.state.key) }),
-            onClick: () => this.fetchMissing()
+            onClick: () => this.fetchMissing(this.state.key)
           }
         ] ]
       })
@@ -109,8 +110,33 @@ class Base extends React.Component {
     transitionTo(`/_vizality/store/${this.state.key}`);
   }
 
-  fetchMissing () {
-    vizality.pluginManager.get('vz-module-manager')._fetchEntities(this.state.key);
+  async fetchMissing (type) {
+    vizality.api.notices.closeToast('vz-module-manager-fetch-entities');
+
+    const entityManager = vizality[type === 'plugin' ? 'pluginManager' : 'styleManager'];
+    const missingEntities = type === 'plugin' ? await entityManager.startPlugins(true) : await entityManager.loadThemes(true);
+    const missingEntitiesList = missingEntities.length
+      ? React.createElement('div', null,
+        Messages.VIZALITY_MISSING_ENTITIES_RETRIEVED.format({ entity: type, count: missingEntities.length }),
+        React.createElement('ul', null, missingEntities.map(entity =>
+          React.createElement('li', null, `– ${entity}`))
+        )
+      )
+      : Messages.VIZALITY_MISSING_ENTITIES_NONE;
+
+    vizality.api.notices.sendToast('vz-module-manager-fetch-entities', {
+      header: Messages.VIZALITY_MISSING_ENTITIES_FOUND.format({ entity: type, count: missingEntities.length }),
+      content: missingEntitiesList,
+      type: missingEntities.length > 0 && 'success',
+      icon: type,
+      timeout: 5e3,
+      buttons: [
+        {
+          text: 'Got it',
+          look: 'ghost'
+        }
+      ]
+    });
   }
 
   _sortItems (items) {

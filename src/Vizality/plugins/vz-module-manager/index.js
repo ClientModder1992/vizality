@@ -1,21 +1,21 @@
-const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { Icons: { Plugin: PluginIcon, Theme } } = require('vizality/components');
-const { inject, uninject } = require('vizality/injector');
-const { react : { forceUpdateElement } } = require('vizality/util');
-const { Plugin } = require('vizality/entities');
-const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('vizality/constants');
+const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('@constants');
+const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
+const { react : { forceUpdateElement } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
-const commands = require('./commands');
 const deeplinks = require('./deeplinks');
+const commands = require('./commands');
 
-const i18nStrings = require('./i18n');
 const i18nLicenses = require('./licenses');
+const i18nStrings = require('./i18n');
 
-const Store = require('./components/store/Store');
 const Plugins = require('./components/manage/Plugins');
 const Themes = require('./components/manage/Themes');
+const Store = require('./components/store/Store');
 
-module.exports = class ModuleManager extends Plugin {
+class ModuleManager extends Plugin {
   async startPlugin () {
     vizality.api.i18n.loadAllStrings(i18nStrings);
     vizality.api.i18n.loadAllStrings(i18nLicenses);
@@ -61,17 +61,17 @@ module.exports = class ModuleManager extends Plugin {
 
   async _injectCommunityContent () {
     const permissionsModule = getModule('can');
-    inject('vz-module-manager-channelItem', permissionsModule, 'can', (args, retValue) => {
+    inject('vz-module-manager-channelItem', permissionsModule, 'can', (args, res) => {
       const id = args[1].channelId || args[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
         return args[0] === Permissions.VIEW_CHANNEL;
       }
-      return retValue;
+      return res;
     });
 
     const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
-    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, retValue) {
+    inject('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,
@@ -86,49 +86,22 @@ module.exports = class ModuleManager extends Plugin {
       };
 
       if (this.props.channel.id === STORE_PLUGINS || this.props.channel.id === STORE_THEMES) {
-        retValue.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
-        retValue.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
-          className: retValue.props.children[1].props.children[0].props.className,
+        res.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
+        res.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
+          className: res.props.children[1].props.children[0].props.className,
           width: 24,
           height: 24
         });
-        retValue.props.onClick = () => transitionTo(data[this.props.channel.id].route);
-        delete retValue.props.onMouseDown;
-        delete retValue.props.onContextMenu;
+        res.props.onClick = () => transitionTo(data[this.props.channel.id].route);
+        delete res.props.onMouseDown;
+        delete res.props.onContextMenu;
       }
-      return retValue;
+      return res;
     });
 
     const { containerDefault } = getModule('containerDefault');
     forceUpdateElement(`.${containerDefault}`, true);
   }
+}
 
-  async _fetchEntities (type) {
-    vizality.api.notices.closeToast('vz-module-manager-fetch-entities');
-
-    const entityManager = vizality[type === 'plugin' ? 'pluginManager' : 'styleManager'];
-    const missingEntities = type === 'plugin' ? await entityManager.startPlugins(true) : await entityManager.loadThemes(true);
-    const missingEntitiesList = missingEntities.length
-      ? React.createElement('div', null,
-        Messages.VIZALITY_MISSING_ENTITIES_RETRIEVED.format({ entity: type, count: missingEntities.length }),
-        React.createElement('ul', null, missingEntities.map(entity =>
-          React.createElement('li', null, `– ${entity}`))
-        )
-      )
-      : Messages.VIZALITY_MISSING_ENTITIES_NONE;
-
-    vizality.api.notices.sendToast('vz-module-manager-fetch-entities', {
-      header: Messages.VIZALITY_MISSING_ENTITIES_FOUND.format({ entity: type, count: missingEntities.length }),
-      content: missingEntitiesList,
-      type: missingEntities.length > 0 && 'success',
-      icon: type,
-      timeout: 5e3,
-      buttons: [
-        {
-          text: 'Got it',
-          look: 'ghost'
-        }
-      ]
-    });
-  }
-};
+module.exports = ModuleManager;

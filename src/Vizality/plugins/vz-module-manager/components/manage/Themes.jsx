@@ -1,5 +1,6 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { TabBar } = require('vizality/components');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { TabBar } = require('@components');
+
 const Base = require('./Base');
 
 class Themes extends Base {

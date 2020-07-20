@@ -1,4 +1,5 @@
-const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 
 const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
@@ -15,7 +16,7 @@ let classes = {
   classDescription: ''
 };
 
-module.exports = class ButtonItem extends React.PureComponent {
+class ButtonItem extends React.PureComponent {
   constructor () {
     super();
 
@@ -73,4 +74,6 @@ module.exports = class ButtonItem extends React.PureComponent {
       <div className={`${classes.classDivider} ${classes.classDividerDef}`} />
     </DFormItem>;
   }
-};
+}
+
+module.exports = ButtonItem;

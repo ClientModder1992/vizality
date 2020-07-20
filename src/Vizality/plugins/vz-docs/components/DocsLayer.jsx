@@ -1,10 +1,11 @@
-const { React, Flux, getModule } = require('vizality/webpack');
-const { PopoutWindow, Spinner } = require('vizality/components');
-const { WEBSITE } = require('vizality/constants');
-const { get } = require('vizality/http');
-const { sleep, string: { toPascalCase, toCamelCase } } = require('vizality/util');
-const DocPage = require('./DocPage');
+const { sleep, string: { toPascalCase, toCamelCase } } = require('@util');
+const { PopoutWindow, Spinner } = require('@components');
+const { React, Flux, getModule } = require('@webpack');
+const { WEBSITE } = require('@constants');
+const { get } = require('@http');
+
 const SettingsView = require('./SettingsView');
+const DocPage = require('./DocPage');
 
 let sectionsCache = [
   {

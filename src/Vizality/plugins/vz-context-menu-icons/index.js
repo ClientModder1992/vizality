@@ -1,10 +1,10 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
-const { Icon } = require('vizality/components');
+const { inject, uninject } = require('@injector');
+const { React, getModule } = require('@webpack');
+const { joinClassNames } = require('@util');
+const { Plugin } = require('@entities');
+const { Icon } = require('@components');
 
-module.exports = class UtilityClasses extends Plugin {
+class ContextMenuIcons extends Plugin {
   startPlugin () {
     this.loadStylesheet('style.scss');
 
@@ -128,4 +128,6 @@ module.exports = class UtilityClasses extends Plugin {
     uninject('vz-contextMenuCheckboxIcons');
     uninject('vz-contextMenuControlIcons');
   }
-};
+}
+
+module.exports = ContextMenuIcons;

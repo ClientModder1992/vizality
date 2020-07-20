@@ -1,11 +1,12 @@
-const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');
 
 const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
 const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 
-module.exports = class FormItem extends React.PureComponent {
+class FormItem extends React.PureComponent {
   render () {
     const Flex = getModuleByDisplayName('Flex');
     const margins = getModule('marginTop20');
@@ -26,4 +27,6 @@ module.exports = class FormItem extends React.PureComponent {
       </DFormItem>
     );
   }
-};
+}
+
+module.exports = FormItem;

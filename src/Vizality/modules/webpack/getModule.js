@@ -1,4 +1,4 @@
-const { array: { getLastElement } } = require('vizality/util');
+const { array: { getLastElement } } = require('@util');
 
 const _getMdl = require('./_getMdl');
 

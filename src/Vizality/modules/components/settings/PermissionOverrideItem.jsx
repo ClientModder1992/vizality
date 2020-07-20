@@ -1,13 +1,14 @@
 /**
  * @todo: Fix this
  *
- * const { getModuleByDisplayName, React } = require('vizality/webpack');
+ * const { getModuleByDisplayName, React } = require('@webpack');
+ *
  * const AsyncComponent = require('../AsyncComponent');
  * const FormItem = require('./FormItem');
  *
- * const PermissionOverride = AsyncComponent.from(getModuleByDisplayName('PermissionOverrideItem'));
+ * const DPermissionOverride = AsyncComponent.from(getModuleByDisplayName('PermissionOverrideItem'));
  *
- * module.exports = class TextInput extends React.Component {
+ * class PermissionOverride extends React.Component {
  * render () {
  * const { children: title, note, required } = this.props;
  * delete this.props.children;
@@ -18,7 +19,9 @@
  * </FormItem>
  * );
  * }
- * };
+ * }
+ *
+ * module.exports = PermissionOverride;
  *
  * /**
  * AVAILABLE PROPS

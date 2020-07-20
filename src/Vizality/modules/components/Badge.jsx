@@ -1,6 +1,8 @@
-const { React } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
+const { React } = require('@webpack');
+const { joinClassNames } = require('@util');
 
-module.exports = React.memo(({ type, className, ...props }) =>
+const Badge = React.memo(({ type, className, ...props }) =>
   <div className={joinClassNames('vizality-badge', type, className)} {...props}></div>
 );
+
+module.exports = Badge;

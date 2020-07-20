@@ -1,15 +1,13 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { Card } = require('vizality/components');
-const { inject, uninject } = require('vizality/injector');
-const { Plugin } = require('vizality/entities');
-const { I18N_WEBSITE } = require('vizality/constants');
-
-const strings = require('../../../../i18n');
-const strOverrides = require('../../../../i18n/overrides');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { I18N_WEBSITE } = require('@constants');
+const { Card } = require('@components');
+const { Plugin } = require('@entities');
+const strings = require('@root/i18n');
 
 const totalStrCount = Object.keys(strings['en-US']).length;
 
-module.exports = class I18n extends Plugin {
+class I18n extends Plugin {
   async startPlugin () {
     const FluxSettingsLocale = getModuleByDisplayName('FluxContainer(UserSettingsLocale)');
     // noinspection JSPotentiallyInvalidConstructorUsage
@@ -38,7 +36,6 @@ module.exports = class I18n extends Plugin {
           const radioRenderer = this.renderRadio;
           this.renderRadio = (props) => {
             const percentage = Math.floor(Object.keys(strings[props.value] || {}).length / totalStrCount * 100);
-            const overrides = Object.keys(strOverrides[props.value] || {}).length;
             const res = radioRenderer(props);
             const OgItem = res.type;
             res.type = class Item extends OgItem {
@@ -61,8 +58,7 @@ module.exports = class I18n extends Plugin {
                       fontSize: 14
                     }
                   },
-                  React.createElement('span', null, Messages.VIZALITY_I18N_TRANSLATED_PERCENTAGE.format({ translated: percentage })),
-                  React.createElement('span', null, overrides > 0 && Messages.VIZALITY_I18N_TRANSLATED_OVERRIDES.format({ overrides })))
+                  React.createElement('span', null, Messages.VIZALITY_I18N_TRANSLATED_PERCENTAGE.format({ translated: percentage })))
                 );
               }
             };
@@ -78,4 +74,6 @@ module.exports = class I18n extends Plugin {
   pluginWillUnload () {
     uninject('vz-i18n-psst');
   }
-};
+}
+
+module.exports = I18n;

@@ -1,10 +1,11 @@
-const { getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Copy = AsyncComponent.from(getModuleByDisplayName('CopyInput', true));
 
-module.exports = class CopyInput extends React.PureComponent {
+class CopyInput extends React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;
@@ -16,7 +17,9 @@ module.exports = class CopyInput extends React.PureComponent {
       </FormItem>
     );
   }
-};
+}
+
+module.exports = CopyInput;
 
 /**
  * AVAILABLE PROPS

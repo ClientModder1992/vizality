@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('vizality/util');
+const { logger: { warn } } = require('@util');
 
 const _getModules = require('./_getModules');
 

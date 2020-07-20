@@ -1,4 +1,4 @@
-const { React, modal } = require('vizality/webpack');
+const { React, modal } = require('@webpack');
 
 module.exports = {
   /**

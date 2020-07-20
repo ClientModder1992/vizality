@@ -1,4 +1,4 @@
-const { sleep } = require('vizality/util');
+const { sleep } = require('@util');
 
 const Webpack = require('../webpack');
 const _getMdl = require('./_getMdl');

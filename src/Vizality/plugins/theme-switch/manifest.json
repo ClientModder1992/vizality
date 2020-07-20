@@ -1,0 +1,7 @@
+{
+  "name": "Theme Switch",
+  "version": "1.0.0",
+  "description": "Switch to light theme on load, locally only.",
+  "author": "Baked",
+  "license": "GPL-3.0"
+}

@@ -1,8 +1,10 @@
-const { React } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
+const { React } = require('@webpack');
+const { joinClassNames } = require('@util');
 
-module.exports = React.memo(({ type, wrapperClassName, className, ...props }) =>
+const Icon = React.memo(({ type, wrapperClassName, className, ...props }) =>
   <div className={joinClassNames('vizality-icon-wrapper', wrapperClassName)}>
     <icon className={joinClassNames('vizality-icon', type, className)} {...props}></icon>
   </div>
 );
+
+module.exports = Icon;

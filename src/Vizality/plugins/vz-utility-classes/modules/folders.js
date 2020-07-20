@@ -1,17 +1,15 @@
-/* eslint-disable no-unreachable */
-
-const { inject, uninject } = require('vizality/injector');
-const { getModule } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
+const { inject, uninject } = require('@injector');
+const { joinClassNames } = require('@util');
+const { getModule } = require('@webpack');
 
 module.exports = () => {
   const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));
 
-  inject('vz-utility-classes-folders', GuildFolder.default, 'type', (originalArgs, returnValue) => {
-    const { folderName, unread, selected, expanded, audio, video, screenshare, badge: mentions } = originalArgs[0];
+  inject('vz-utility-classes-folders', GuildFolder.default, 'type', (args, res) => {
+    const { folderName, unread, selected, expanded, audio, video, screenshare, badge: mentions } = args[0];
 
-    returnValue.props.className = joinClassNames(
-      returnValue.props.className, {
+    res.props.className = joinClassNames(
+      res.props.className, {
         'vz-isUnread': unread,
         'vz-isSelected': selected,
         'vz-isExpanded': expanded,
@@ -23,10 +21,10 @@ module.exports = () => {
       });
 
     if (folderName && folderName !== '') {
-      returnValue.props['vz-folder-name'] = folderName;
+      res.props['vz-folder-name'] = folderName;
     }
 
-    return returnValue;
+    return res;
   });
 
   return () => uninject('vz-utility-classes-folders');

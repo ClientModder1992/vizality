@@ -1,4 +1,4 @@
-const { logger : { error } } = require('vizality/util');
+const { logger : { error } } = require('@util');
 
 const Injector = require('../injector');
 

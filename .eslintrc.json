@@ -100,7 +100,7 @@
     "no-self-compare": [ "warn" ],
     "no-sequences": [ "warn" ],
     "no-unmodified-loop-condition": [ "warn" ],
-    "no-unused-expressions": [ "warn" ],
+    "no-unused-expressions": [ "warn", { "allowTernary": true } ],
     "no-unused-labels": [ "warn" ],
     "no-useless-call": [ "warn" ],
     "no-useless-concat": [ "warn" ],

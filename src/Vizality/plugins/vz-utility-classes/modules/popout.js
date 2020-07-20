@@ -1,5 +1,5 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModuleByDisplayName } = require('vizality/webpack');
+const { getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
 
 module.exports = async () => {
   return void 0;
@@ -7,20 +7,20 @@ module.exports = async () => {
 
   const Popout = getModuleByDisplayName('Popout');
 
-  inject('vz-utility-classes-popout', Popout.prototype, 'render', (_, returnValue) => {
-    if (!returnValue.props) return returnValue;
+  inject('vz-utility-classes-popout', Popout.prototype, 'render', (_, res) => {
+    if (!res.props) return res;
 
-    if (returnValue.props.shouldShow) document.documentElement.setAttribute('vz-popout-active', '');
+    if (res.props.shouldShow) document.documentElement.setAttribute('vz-popout-active', '');
 
-    const res = returnValue.props.onRequestClose;
+    const result = res.props.onRequestClose;
 
-    returnValue.props.onRequestClose = (e) => {
+    res.props.onRequestClose = (e) => {
       document.documentElement.removeAttribute('vz-popout-active');
 
-      return res(e);
+      return result(e);
     };
 
-    return returnValue;
+    return res;
   });
 
   return async () => uninject('vz-utility-classes-popout');

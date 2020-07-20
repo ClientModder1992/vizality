@@ -1,10 +1,10 @@
-const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('vizality/webpack');
-const { inject } = require('vizality/injector');
+const { inject } = require('@injector');
+const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('@webpack');
 
 const Title = require('./components/Title');
 const Command = require('./components/Command');
 
-module.exports = async function injectAutocomplete () {
+async function injectAutocomplete () {
   const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete', true);
 
   function renderCommandResults (query, selected, commands, onClick, onHover, formatCommand, formatHeader, customHeader) {
@@ -131,4 +131,6 @@ module.exports = async function injectAutocomplete () {
 
     return res;
   });
-};
+}
+
+module.exports = injectAutocomplete;

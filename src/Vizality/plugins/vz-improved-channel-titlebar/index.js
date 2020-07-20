@@ -1,10 +1,11 @@
 /* eslint-disable prefer-destructuring */
-const { Plugin } = require('vizality/entities');
-const { React, getModuleByDisplayName, getModule, i18n } = require('vizality/webpack');
-const { inject, uninject } = require('vizality/injector');
-const { react : { findInReactTree } } = require('vizality/util');
 
-module.exports = class ChannelTitlebar extends Plugin {
+const { React, getModuleByDisplayName, getModule, i18n } = require('@webpack');
+const { react : { findInReactTree } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
+
+class ChannelTitlebar extends Plugin {
   constructor () {
     super();
 
@@ -51,7 +52,7 @@ module.exports = class ChannelTitlebar extends Plugin {
         activity,
         userActivity;
 
-      // @TODO: Fix this to check for status updates every 7 seconds or something
+      // @todo: Fix this to check for status updates every 10 seconds or something
 
       // Guild channel
       if (found.channel.type === 0) {
@@ -206,4 +207,6 @@ module.exports = class ChannelTitlebar extends Plugin {
 
     return async () => uninject('pc-impChannelTitlebar-channelHeader');
   }
-};
+}
+
+module.exports = ChannelTitlebar;

@@ -1,8 +1,9 @@
-const { join, dirname } = require('path');
-const { format: formatUrl } = require('url');
+const { Flex, Button } = require('@components');
+
 const { remote: { BrowserWindow } } = require('electron');
-const { React } = require('vizality/webpack');
-const { Flex, Button } = require('vizality/components');
+const { format: formatUrl } = require('url');
+const { join, dirname } = require('path');
+const { React } = require('@webpack');
 
 const SplashStages = Object.freeze({
   CHECKING_FOR_UPDATES: 'CHECKING_FOR_UPDATES',

@@ -1,10 +1,10 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { getModule, getModuleByDisplayName } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
 const DocsLayer = require('./components/DocsLayer');
 
-module.exports = class Documentation extends Plugin {
+class Documentation extends Plugin {
   startPlugin () {
     this.loadStylesheet('scss/style.scss');
     this._addDocsItem();
@@ -54,4 +54,6 @@ module.exports = class Documentation extends Plugin {
       return sections;
     });
   }
-};
+}
+
+module.exports = Documentation;

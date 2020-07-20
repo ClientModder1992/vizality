@@ -1,4 +1,4 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
 
 // Btw have I told you I use Arch?
 module.exports = React.memo(

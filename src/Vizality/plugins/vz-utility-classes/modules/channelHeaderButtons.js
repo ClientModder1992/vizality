@@ -1,21 +1,21 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModule, i18n: { Messages } } = require('vizality/webpack');
-const { joinClassNames, dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('vizality/util');
+const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@util');
+const { getModule, i18n: { Messages } } = require('@webpack');
+const { inject, uninject } = require('@injector');
 
 module.exports = async () => {
   const channelHeaderButtonClasses = getModule('iconWrapper', 'toolbar');
-  const instance = getOwnerInstance(await waitFor(`.${channelHeaderButtonClasses.iconWrapper}`));
+  const instance = getOwnerInstance(await waitForElement(`.${channelHeaderButtonClasses.iconWrapper}`));
 
   if (!instance) return;
 
-  inject('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (originalArgs, returnValue) => {
-    if (!returnValue.props.className ||
-        !returnValue.props.className.split(' ').includes(channelHeaderButtonClasses.iconWrapper) ||
-        !returnValue.props['aria-label']) {
-      return returnValue;
+  inject('vz-utility-classes-channelHeaderButtons', instance.__proto__, 'render', (_, res) => {
+    if (!res.props.className ||
+        !res.props.className.split(' ').includes(channelHeaderButtonClasses.iconWrapper) ||
+        !res.props['aria-label']) {
+      return res;
     }
 
-    const ariaLabel = returnValue.props['aria-label'];
+    const ariaLabel = res.props['aria-label'];
 
     let key = Object.keys(Messages).find(key => ariaLabel === Messages[key]);
 
@@ -36,24 +36,24 @@ module.exports = async () => {
       case 'NEW_GROUP_DM':
       case 'START_VIDEO_CALL':
       case 'START_VOICE_CALL':
-        returnValue.props.className = joinClassNames(returnValue.props.className, `vz-${toCamelCase(key)}Button`);
+        res.props.className = joinClassNames(res.props.className, `vz-${toCamelCase(key)}Button`);
         break;
       case 'CHANNEL_MUTE':
-        returnValue.props.className = joinClassNames(returnValue.props.className,
+        res.props.className = joinClassNames(res.props.className,
           {
-            'vz-channelUnmuteButton': returnValue.props['aria-checked'],
-            'vz-channelMuteButton': !returnValue.props['aria-checked']
+            'vz-channelUnmuteButton': res.props['aria-checked'],
+            'vz-channelMuteButton': !res.props['aria-checked']
           }
         );
         break;
       case 'PINNED_MESSAGES':
-        returnValue.props.className = joinClassNames(
-          returnValue.props.className, `vz-${toCamelCase(key)}Button`, { 'vz-isUnread': returnValue.props.children[1] }
+        res.props.className = joinClassNames(
+          res.props.className, `vz-${toCamelCase(key)}Button`, { 'vz-isUnread': res.props.children[1] }
         );
         break;
     }
 
-    return returnValue;
+    return res;
   });
 
   setImmediate(() => forceUpdateElement(`.${channelHeaderButtonClasses.iconWrapper}`, true));

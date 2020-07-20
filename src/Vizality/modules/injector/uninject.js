@@ -1,4 +1,4 @@
-const Injector = require('../injector');
+const Injector = require('@injector');
 
 /**
  * Removes an injection

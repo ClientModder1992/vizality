@@ -1,10 +1,10 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule } = require('vizality/webpack');
-const { react : { findInReactTree } } = require('vizality/util');
-const { Tooltip, Icon } = require('vizality/components');
+const { react : { findInReactTree } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { React, getModule } = require('@webpack');
+const { Tooltip, Icon } = require('@components');
+const { Plugin } = require('@entities');
 
-module.exports = class QuickDelete extends Plugin {
+class QuickDelete extends Plugin {
   startPlugin () {
     const { deleteMessage } = getModule('deleteMessage', 'sendMessage');
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
@@ -14,16 +14,17 @@ module.exports = class QuickDelete extends Plugin {
       ...getModule('icon', 'isHeader')
     };
 
-    inject('quick-delete-button', MiniPopover, 'default', (_, retValue) => {
-      const props = findInReactTree(retValue, r => r && r.canDelete && r.message);
+    inject('quick-delete-button', MiniPopover, 'default', (_, res) => {
+      const props = findInReactTree(res, r => r && r.canDelete && r.message);
 
-      if (!props) return retValue;
+      if (!props) return res;
 
-      const originalType = retValue.props.children[1].type;
+      const originalType = res.props.children[1].type;
 
-      retValue.props.children[1].type = props => {
-        const ret = originalType(props);
-        ret.props.children.splice(-1, 0,
+      res.props.children[1].type = props => {
+        const res = originalType(props);
+
+        res.props.children.splice(-1, 0,
           React.createElement(
             Tooltip,
             {
@@ -38,14 +39,16 @@ module.exports = class QuickDelete extends Plugin {
             })
           )
         );
-        return ret;
+        return res;
       };
 
-      return retValue;
+      return res;
     });
   }
 
   pluginWillUnload () {
     uninject('quick-delete-button');
   }
-};
+}
+
+module.exports = QuickDelete;

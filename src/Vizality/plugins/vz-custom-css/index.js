@@ -1,17 +1,17 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
-const { PopoutWindow } = require('vizality/components');
-const { react : { findInReactTree } } = require('vizality/util');
-const { MAGIC_CHANNELS: { CSS_SNIPPETS } } = require('vizality/constants');
+const { React, getModule, i18n: { Messages } } = require('@webpack');
+const { MAGIC_CHANNELS: { CSS_SNIPPETS } } = require('@constants');
+const { react : { findInReactTree } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { PopoutWindow } = require('@components');
+const { Plugin } = require('@entities');
 
 const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
 const { join } = require('path');
 
-const CustomCSS = require('./components/CustomCSS');
 const SnippetButton = require('./components/SnippetButton');
+const CustomCSS = require('./components/CustomCSS');
 
-module.exports = class CustomCSSPlugin extends Plugin {
+class CustomCSSPlugin extends Plugin {
   async startPlugin () {
     vizality.api.settings.registerSettings('Custom CSS', {
       category: 'vz-custom-css',
@@ -59,19 +59,19 @@ module.exports = class CustomCSSPlugin extends Plugin {
 
   async _injectSnippetsButton () {
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
-    inject('vz-custom-css-snippets', MiniPopover, 'default', (_, retValue) => {
-      const props = findInReactTree(retValue, r => r && r.message && r.setPopout);
+    inject('vz-custom-css-snippets', MiniPopover, 'default', (_, res) => {
+      const props = findInReactTree(res, r => r && r.message && r.setPopout);
 
-      if (!props || props.channel.id !== CSS_SNIPPETS) return retValue;
+      if (!props || props.channel.id !== CSS_SNIPPETS) return res;
 
-      retValue.props.children.unshift(
+      res.props.children.unshift(
         React.createElement(SnippetButton, {
           message: props.message,
           main: this
         })
       );
 
-      return retValue;
+      return res;
     });
   }
 
@@ -154,4 +154,6 @@ module.exports = class CustomCSSPlugin extends Plugin {
       }, React.createElement(CustomCSS, { popout: true }))
     ));
   }
-};
+}
+
+module.exports = CustomCSSPlugin;

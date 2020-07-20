@@ -1,20 +1,20 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModule } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
+const { inject, uninject } = require('@injector');
+const { joinClassNames } = require('@util');
+const { getModule } = require('@webpack');
 
 module.exports = () => {
   const CallTile = getModule(m => m.default && m.default.displayName === 'CallTile');
 
-  inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], returnValue) => {
-    if (!props | !props.participant || !returnValue.props) return returnValue;
+  inject('vz-utility-classes-privateCall', CallTile, 'default', ([ props ], res) => {
+    if (!props | !props.participant || !res.props) return res;
 
     const { participant } = props;
 
-    returnValue.props['vz-user-id'] = participant.id;
-    returnValue.props['vz-user-name'] = participant.user.username;
+    res.props['vz-user-id'] = participant.id;
+    res.props['vz-user-name'] = participant.user.username;
 
-    returnValue.props.className = joinClassNames(
-      returnValue.props.className, {
+    res.props.className = joinClassNames(
+      res.props.className, {
         'vz-isSpeaking': participant.speaking,
         'vz-isRinging': participant.ringing,
         'vz-hasVideo': participant.voiceState.selfVideo,
@@ -22,7 +22,7 @@ module.exports = () => {
         'vz-isSelfDeaf': participant.voiceState.selfDeaf
       });
 
-    return returnValue;
+    return res;
   });
 
   return () => uninject('vz-utility-classes-privateCall');

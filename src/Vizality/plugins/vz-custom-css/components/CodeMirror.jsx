@@ -1,20 +1,27 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
+
 const CodeMirror = require('codemirror');
-require('codemirror/mode/css/css');
+
 require('codemirror/addon/search/searchcursor');
-require('codemirror/addon/search/search');
 require('codemirror/addon/search/jump-to-line');
+require('codemirror/addon/search/search');
+
 require('codemirror/addon/edit/matchbrackets');
 require('codemirror/addon/edit/closebrackets');
-require('codemirror/addon/fold/foldcode');
+
+require('codemirror/addon/fold/comment-fold');
 require('codemirror/addon/fold/foldgutter');
 require('codemirror/addon/fold/brace-fold');
-require('codemirror/addon/fold/comment-fold');
+require('codemirror/addon/fold/foldcode');
+
 require('codemirror/addon/hint/show-hint');
 require('codemirror/addon/hint/css-hint');
-require('codemirror/addon/lint/lint');
+
 require('codemirror/addon/lint/css-lint');
+require('codemirror/addon/lint/lint');
+
 require('codemirror/addon/selection/active-line');
+require('codemirror/mode/css/css');
 
 class CodeMirrorComponent extends React.PureComponent {
   constructor () {

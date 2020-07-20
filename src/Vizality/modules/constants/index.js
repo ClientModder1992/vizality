@@ -1,6 +1,6 @@
 const { join } = require('path');
 
-module.exports = Object.freeze({
+const constants = Object.freeze({
   // Vizality
   WEBSITE: 'https://vizality.com',
   ASSETS: 'https://vizality.com/app/assets',
@@ -21,6 +21,7 @@ module.exports = Object.freeze({
   GUILD_ID: '689933814864150552',
   MAGIC_CHANNELS: {
     CSS_SNIPPETS: '705262981214371902',
+    JS_SNIPPETS: '705262981214371902',
     STORE_PLUGINS: '700461738004578334',
     STORE_THEMES: '700461710972157954',
     STAFF_LOUNGE: '690452551233175602',
@@ -31,3 +32,5 @@ module.exports = Object.freeze({
     }
   }
 });
+
+module.exports = constants;

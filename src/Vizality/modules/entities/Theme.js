@@ -1,4 +1,4 @@
-const { resolveCompiler } = require('../compilers');
+const { resolveCompiler } = require('@compilers');
 const { dom: { createElement }, logger } = require('@util');
 
 const Updatable = require('./Updatable');

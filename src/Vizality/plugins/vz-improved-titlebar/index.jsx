@@ -1,12 +1,12 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { react: { forceUpdateElement } } = require('vizality/util');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const { react: { forceUpdateElement } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
 const Settings = require('./components/Settings');
 const Titlebar = require('./components/Titlebar');
 
-module.exports = class ImprovedTitlebar extends Plugin {
+class ImprovedTitlebar extends Plugin {
   startPlugin () {
     vizality.api.settings.registerSettings('improved-titlebar', {
       category: 'improved-titlebar',
@@ -42,4 +42,6 @@ module.exports = class ImprovedTitlebar extends Plugin {
      * @todo: impl; re-render normal titlebar (so none if linux)
      */
   }
-};
+}
+
+module.exports = ImprovedTitlebar;

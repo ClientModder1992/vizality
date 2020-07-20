@@ -4,10 +4,10 @@
  * has been changed to ConfirmationModal and both have
  * been added to index.
  *
- * Prefer to use const { Modal, ConfirmationModal } = require('vizality/components');
+ * Prefer to use const { Modal, ConfirmationModal } = require('@components');
  */
 
-const { getModuleByDisplayName } = require('vizality/webpack');
+const { getModuleByDisplayName, modal } = require('@webpack');
 const AsyncComponent = require('./AsyncComponent');
 
 require('fs')
@@ -19,14 +19,21 @@ require('fs')
   });
 
 Object.assign(exports, {
-  Confirm: AsyncComponent.from(getModuleByDisplayName('Confirm', true)),
+  Confirm: AsyncComponent.from(getModuleByDisplayName('ConfirmModal', true)),
   Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true))
 });
 
 // Re-export module properties
 (async () => {
   const Modal = await getModuleByDisplayName('DeprecatedModal', true, true);
-  const Confirm = await getModuleByDisplayName('Confirm', true, true);
-  [ 'Header', 'Footer', 'Content', 'LazyContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]);
-  [ 'Sizes' ].forEach(prop => exports.Confirm[prop] = Confirm[prop]);
+  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]);
+  /*
+   * ???
+   * const Confirm = await getModuleByDisplayName('ConfirmModal', true, true);
+   * [ 'transitionState', 'onClose' ].forEach(prop => exports.Confirm.defaultProps[prop] = Confirm.defaultProps[prop]);
+   */
+  exports.Confirm.defaultProps = {
+    transitionState: 1,
+    onClose: modal.pop
+  };
 })();

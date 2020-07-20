@@ -1,5 +1,5 @@
-const { React, getModule } = require('vizality/webpack');
-const { ButtonItem } = require('vizality/components/settings');
+const { settings: { ButtonItem } } = require('@components');
+const { React, getModule } = require('@webpack');
 
 class ForceUI extends React.PureComponent {
   render () {

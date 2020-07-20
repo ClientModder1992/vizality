@@ -1,5 +1,6 @@
+const { getRandom, getContrasted } = require('../color');
+
 const _parseType = require('./_parseType');
-const color = require('../color');
 
 /**
  * Logs strings using different console levels, includes a badge, module label,
@@ -13,6 +14,10 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
   logType = _parseType(logType);
   if (!Array.isArray(message)) message = [ message ];
 
+  /*
+   * module: '#591870',
+   * submodule: '#ce03e5'
+   */
   const BADGE_COLORS = {
     API: {
       module: '#dc2167',
@@ -26,14 +31,6 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
       module: '#1e2963',
       submodule: '#782049'
     },
-    // StyleManager: {
-    //   module: '#591870',
-    //   submodule: '#ce03e5'
-    // },
-    // PluginManager: {
-    //   module: '#1e2963',
-    //   submodule: '#782049'
-    // },
     Plugin: {
       module: '#057b81',
       submodule: '#5b3c89'
@@ -56,8 +53,8 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
     }
   };
 
-  const randomModuleColor = color.getRandom();
-  const randomSubmoduleColor = color.getRandom();
+  const randomModuleColor = getRandom();
+  const randomSubmoduleColor = getRandom();
 
   const baseBadgeStyles =
     `border-radius: 3px;
@@ -84,12 +81,12 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
 
   const moduleStyles =
     `${baseBadgeStyles}
-    color: ${BADGE_COLORS[module] && BADGE_COLORS[module].module ? color.getContrast(BADGE_COLORS[module].module) : color.getContrast(randomModuleColor)};
+    color: ${BADGE_COLORS[module] && BADGE_COLORS[module].module ? getContrasted(BADGE_COLORS[module].module) : getContrasted(randomModuleColor)};
     background: ${BADGE_COLORS[module] && BADGE_COLORS[module].module || randomModuleColor};`;
 
   const submoduleStyles =
     `${baseBadgeStyles};
-    color: ${submoduleColor ? color.getContrast(submoduleColor) : BADGE_COLORS[module] && BADGE_COLORS[module].submodule ? color.getContrast(BADGE_COLORS[module].submodule) : color.getContrast(randomSubmoduleColor)};
+    color: ${submoduleColor ? getContrasted(submoduleColor) : BADGE_COLORS[module] && BADGE_COLORS[module].submodule ? getContrasted(BADGE_COLORS[module].submodule) : getContrasted(randomSubmoduleColor)};
     background: ${submoduleColor || BADGE_COLORS[module] && BADGE_COLORS[module].submodule || randomSubmoduleColor};`;
 
   return console[logType](

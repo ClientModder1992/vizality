@@ -1,6 +1,6 @@
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule } = require('vizality/webpack');
-const { react: { forceUpdateElement } } = require('vizality/util');
+const { react: { forceUpdateElement } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { React, getModule } = require('@webpack');
 
 module.exports = () => {
   const Avatar = getModule('AnimatedAvatar');
@@ -22,6 +22,7 @@ module.exports = () => {
 
   const className = getModule('wrapper', 'avatar').wrapper.split(' ')[0];
   setImmediate(() => forceUpdateElement(`.${className}`));
+
   return () => {
     uninject('vz-utility-classes-avatar');
     uninject('vz-utility-classes-animated-avatar');

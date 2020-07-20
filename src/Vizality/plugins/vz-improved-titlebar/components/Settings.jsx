@@ -1,6 +1,5 @@
-const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { TextInput, SwitchItem, Category, RadioGroup, SelectInput, ColorPickerInput, CopyInput, TextArea, RegionSelector, SliderInput, PermissionOverrideItem } = require('vizality/components/settings');
-const { clipboard } = require('electron');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const { settings: { TextInput, SwitchItem, Category, RadioGroup } } = require('@components');
 
 let classes = {
   initialized: false,
@@ -15,10 +14,6 @@ module.exports = class Settings extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      copyInput: {
-        mode: getModule(m => m.default && m.default.Modes).default.Modes.DEFAULT,
-        text: 'Copy'
-      },
       classes
     };
   }

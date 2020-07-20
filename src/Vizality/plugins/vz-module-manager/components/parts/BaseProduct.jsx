@@ -1,8 +1,8 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
-const { Tooltip, Button, Clickable, Divider, Icons: { Discord, Gear }, Switch } = require('vizality/components');
+const { Tooltip, Button, Clickable, Divider, Icons: { Discord, Gear }, Switch } = require('@components');
+const { React, getModule, i18n: { Messages } } = require('@webpack');
 
-const Details = require('./Details');
 const Permissions = require('./Permissions');
+const Details = require('./Details');
 
 class BaseProduct extends React.PureComponent {
   renderHeader () {
@@ -83,7 +83,7 @@ class BaseProduct extends React.PureComponent {
     );
   }
 
-  // @todo: Consider making this a vizality/discord utility function
+  // @todo: Consider making this an @discord utility function
   goToDiscord (code) {
     const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
     inviteStore.acceptInviteAndTransitionToInviteChannel(code);

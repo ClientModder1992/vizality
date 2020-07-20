@@ -1,9 +1,11 @@
-const webContents = require('electron').remote.getCurrentWebContents();
-const { React, getModule } = require('vizality/webpack');
-const { Icon } = require('vizality/components');
+const { React, getModule } = require('@webpack');
+const { Icon } = require('@components');
+
+const { remote: { getCurrentWebContents } } = require('electron');
+
 const store = require('../../../apis/settingsStore/store');
 
-module.exports = class Titlebar extends React.Component {
+class Titlebar extends React.PureComponent {
   componentDidMount () {
     this._onSettingsChange = () => this.forceUpdate();
     store.addChangeListener(this._onSettingsChange);
@@ -15,6 +17,8 @@ module.exports = class Titlebar extends React.Component {
 
   render () {
     const { type, headerText, showExtras } = this.props;
+    const { history } = getModule('history');
+
     return (
       <>
         {type !== 'none' && <titlebar className={`vizality-titlebar ${type}`}>
@@ -27,20 +31,20 @@ module.exports = class Titlebar extends React.Component {
             </div>}
 
             {showExtras && <div
-              className={`vizality-titlebar__button-container back small ${!webContents.canGoBack() ? 'disabled' : ''}`}
+              className={`vizality-titlebar__button-container back small ${!getCurrentWebContents().canGoBack() ? 'disabled' : ''}`}
               title='Back'
               onClick={() => {
-                getModule('history').history.back();
+                history.back();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-left'></Icon>
             </div>}
 
             {showExtras && <div
-              className={`vizality-titlebar__button-container forward small ${!webContents.canGoForward() ? 'disabled' : ''}`}
+              className={`vizality-titlebar__button-container forward small ${!getCurrentWebContents().canGoForward() ? 'disabled' : ''}`}
               title='Forward'
               onClick={() => {
-                getModule('history').history.forward();
+                history.forward();
               }}
             >
               <Icon wrapperClassName='vizality-titlebar__icon-wrapper' type='caret-right'></Icon>
@@ -88,4 +92,6 @@ module.exports = class Titlebar extends React.Component {
       </>
     );
   }
-};
+}
+
+module.exports = Titlebar;

@@ -1,9 +1,9 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule, getAllModules, getModuleByDisplayName } = require('vizality/webpack');
-const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitFor } } = require('vizality/util');
+const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@util');
+const { React, getModule, getAllModules, getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
-module.exports = class Router extends Plugin {
+class Router extends Plugin {
   async startPlugin () {
     await this._injectRouter();
     this._listener = this._rerender.bind(this);
@@ -25,8 +25,8 @@ module.exports = class Router extends Plugin {
     const ViewsWithMainInterface = FluxViewsWithMainInterface
       .prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
     const { container } = getModule('container', 'downloadProgressCircle');
-    const RouteRenderer = getOwnerInstance(await waitFor(`.${container.split(' ')[0]}`));
-    inject('vz-router-route', RouteRenderer.__proto__, 'render', (args, res) => {
+    const RouteRenderer = getOwnerInstance(await waitForElement(`.${container.split(' ')[0]}`));
+    inject('vz-router-route', RouteRenderer.__proto__, 'render', (_, res) => {
       const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
       routes.push(
         ...vizality.api.router.routes.map(route => ({
@@ -53,7 +53,7 @@ module.exports = class Router extends Plugin {
       return args;
     }, true);
 
-    inject('vz-router-router', ViewsWithMainInterface.prototype, 'render', (args, res) => {
+    inject('vz-router-router', ViewsWithMainInterface.prototype, 'render', (_, res) => {
       const routes = findInTree(res, n => (
         Array.isArray(n) && n[0] &&
         n[0].key &&
@@ -72,7 +72,9 @@ module.exports = class Router extends Plugin {
 
   async _rerender () {
     const { app } = getAllModules([ 'app' ]).find(m => Object.keys(m).length === 1);
-    const instance = getOwnerInstance(await waitFor(`.${app.split(' ')[0]}`));
+    const instance = getOwnerInstance(await waitForElement(`.${app.split(' ')[0]}`));
     findInTree(instance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
   }
-};
+}
+
+module.exports = Router;

@@ -1,9 +1,9 @@
-const { React, getModuleByDisplayName } = require('vizality/webpack');
-const { Text } = require('vizality/components');
+const { React, getModuleByDisplayName } = require('@webpack');
+const { Text } = require('@components');
 
 const Autocomplete = getModuleByDisplayName('Autocomplete');
 
-module.exports = class Command extends Autocomplete.Command {
+class Command extends Autocomplete.Command {
   renderContent () {
     const res = super.renderContent();
     res.props.children[0] = React.createElement(Text, {
@@ -13,4 +13,6 @@ module.exports = class Command extends Autocomplete.Command {
 
     return res;
   }
-};
+}
+
+module.exports = Command;

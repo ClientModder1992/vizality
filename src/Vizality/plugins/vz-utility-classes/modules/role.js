@@ -1,10 +1,10 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModule } = require('vizality/webpack');
-const { joinClassNames, dom: { waitFor }, react: { getOwnerInstance } } = require('vizality/util');
+const { inject, uninject } = require('@injector');
+const { getModule } = require('@webpack');
+const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
 
 module.exports = async () => {
   const { role } = getModule('role', 'roleCircle', 'roleName', 'root');
-  const instance = getOwnerInstance(await waitFor(`.${role.split(' ')[0]}`));
+  const instance = getOwnerInstance(await waitForElement(`.${role.split(' ')[0]}`));
 
   inject('vz-utility-classes-roles', instance.__proto__, 'render', function (originalArgs, returnValue) {
     if (!this || !this.props || !this.props.role) return returnValue;
@@ -23,7 +23,6 @@ module.exports = async () => {
 
     /*
      * @todo: Add this as a settings option
-     *
      * res.props.style.color = role.colorString;
      */
 

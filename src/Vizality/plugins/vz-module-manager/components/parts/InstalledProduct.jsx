@@ -1,5 +1,5 @@
-const { React } = require('vizality/webpack');
-const { Card } = require('vizality/components');
+const { Card } = require('@components');
+const { React } = require('@webpack');
 
 const BaseProduct = require('./BaseProduct');
 

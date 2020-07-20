@@ -1,5 +1,5 @@
-const { React, Flux, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { Tooltip, Clickable, HeaderBar, AsyncComponent, Icons: { Plugin: PluginIcon, Theme, CloudUpload, Certificate, Server } } = require('vizality/components');
+const { Tooltip, Clickable, HeaderBar, AsyncComponent, Icons: { Plugin: PluginIcon, Theme, CloudUpload, Certificate, Server } } = require('@components');
+const { React, Flux, getModule, getModuleByDisplayName } = require('@webpack');
 
 // const Product = require('../brrrrr/items/Products/Product');
 const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));

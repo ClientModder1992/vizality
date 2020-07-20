@@ -1,17 +1,17 @@
-const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('vizality/webpack');
-const { Clickable, Button, FormNotice, FormTitle, Tooltip, Icons: { FontAwesome } } = require('vizality/components');
-const { SwitchItem, TextInput, Category, ButtonItem } = require('vizality/components/settings');
+const { settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
+const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Confirm } = require('vizality/components/modal');
-const { joinClassNames, time } = require('vizality/util');
-const { REPO_URL, CACHE_FOLDER } = require('vizality/constants');
-const { clipboard } = require('electron');
+const { REPO_URL, CACHE_FOLDER } = require('@constants');
+const { joinClassNames, time } = require('@util');
+const { Confirm } = require('@components/modal');
+
 const { readdirSync, existsSync } = require('fs');
+const { clipboard } = require('electron');
 
-const Icons = require('./Icons');
 const Update = require('./Update');
+const Icons = require('./Icons');
 
-module.exports = class UpdaterSettings extends React.PureComponent {
+class UpdaterSettings extends React.PureComponent {
   constructor () {
     super();
     this.plugin = vizality.pluginManager.get('vz-updater');
@@ -187,15 +187,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
         >
           {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}
         </TextInput>
-        {/* @todo: remove this and associated things like strings */}
-        {/* <TextInput
-          note={Messages.VIZALITY_UPDATES_OPTS_CONCURRENCY_DESC}
-          onChange={val => this.props.updateSetting('concurrency', (Number(val) && Number(val) >= 1) ? Math.ceil(Number(val)) : 1, 2)}
-          defaultValue={this.props.getSetting('concurrency', 2)}
-          required={true}
-        >
-          {Messages.VIZALITY_UPDATES_OPTS_CONCURRENCY}
-        </TextInput> */}
         <ButtonItem
           note={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS_DESC}
           button={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS}
@@ -437,4 +428,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     );
     setTimeout(() => this.setState({ copied: false }), 2500);
   }
-};
+}
+
+module.exports = UpdaterSettings;

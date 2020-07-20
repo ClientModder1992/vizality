@@ -1,15 +1,16 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModuleByDisplayName } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
+const { getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { joinClassNames } = require('@util');
 
 module.exports = () => {
   const PrivateChannel = getModuleByDisplayName('PrivateChannel');
 
-  inject('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (originalArgs, returnValue) => {
-    const { props } = returnValue;
+  inject('vz-utility-classes-dmChannels', PrivateChannel.prototype, 'render', (_, res) => {
+    const { props } = res;
 
     props['vz-user-name'] = props.name;
     /*
+     * @todo: Figure out how to:
      * vz-user-id
      * vz-isBotUser
      * vz-isGroupDm
@@ -23,7 +24,7 @@ module.exports = () => {
         'vz-hasActivity': props.subText && props.subText.props && props.subText.props.activities && props.subText.props.activities.length
       });
 
-    return returnValue;
+    return res;
   });
 
   return () => uninject('vz-utility-classes-dmChannels');

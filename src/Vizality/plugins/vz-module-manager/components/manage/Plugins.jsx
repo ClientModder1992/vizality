@@ -1,6 +1,6 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
+const { React, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Confirm } = require('vizality/components/modal');
+const { Confirm } = require('@components/modal');
 
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');

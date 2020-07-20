@@ -1,13 +1,15 @@
-const { React, getModule, getModuleByDisplayName, contextMenu } = require('vizality/webpack');
-const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('vizality/components');
-const { inject, uninject } = require('vizality/injector');
-const { dom: { waitFor }, joinClassNames, react: { getOwnerInstance } } = require('vizality/util');
-const { Plugin } = require('vizality/entities');
+const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
+const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('@components');
+const { React, getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
+
 const SdkWindow = require('./components/SdkWindow');
 
-module.exports = class SDK extends Plugin {
+class SDK extends Plugin {
   constructor () {
     super();
+    // @todo: Figure out how to use this for plugins like Titlebar and Main Navigation.
     this._storeListener = this._storeListener.bind(this);
   }
 
@@ -72,7 +74,7 @@ module.exports = class SDK extends Plugin {
     });
 
     const { title } = getModule('title', 'chatContent');
-    getOwnerInstance(await waitFor(`.${title}`)).forceUpdate();
+    getOwnerInstance(await waitForElement(`.${title}`)).forceUpdate();
   }
 
   async _openSdk () {
@@ -93,4 +95,6 @@ module.exports = class SDK extends Plugin {
       getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
     }
   }
-};
+}
+
+module.exports = SDK;

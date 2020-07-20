@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
-
-const { inject, uninject } = require('vizality/injector');
-const { getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('vizality/util');
+const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('@util');
+const { getModuleByDisplayName, getModule } = require('@webpack');
+const { inject, uninject } = require('@injector');
 
 /*
  * Modifies The TransitionGroup component. We are checking for and modifying
@@ -13,18 +11,16 @@ module.exports = async () => {
   const TransitionGroup = getModuleByDisplayName('TransitionGroup');
   const { contentRegion } = getModule('contentRegion');
 
-  inject('vz-utility-classes-transitionGroup', TransitionGroup.prototype, 'render', (_, retValue) => {
-    if (!retValue.props ||
-        retValue.props.className !== contentRegion ||
-        !retValue.props.className.includes(contentRegion)) {
-      return retValue;
+  inject('vz-utility-classes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
+    if (!res.props || res.props.className !== contentRegion || !res.props.className.includes(contentRegion)) {
+      return res;
     }
 
-    const { section } = findInReactTree(retValue, c => c.section);
+    const { section } = findInReactTree(res, c => c.section);
 
-    retValue.props.className = joinClassNames(retValue.props.className, { [`vz-${toCamelCase(section)}Section`]: section });
+    res.props.className = joinClassNames(res.props.className, { [`vz-${toCamelCase(section)}Section`]: section });
 
-    return retValue;
+    return res;
   });
 
   return () => uninject('vz-utility-classes-transitionGroup');

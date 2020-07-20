@@ -1,4 +1,5 @@
-const { getModule, getModuleByDisplayName } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+
 const AsyncComponent = require('./AsyncComponent');
 
 require('fs')

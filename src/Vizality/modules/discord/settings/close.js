@@ -1,4 +1,4 @@
-const { getModule } = require('vizality/webpack');
+const { getModule } = require('@webpack');
 
 const close = () => {
   const { popLayer } = getModule('popLayer');

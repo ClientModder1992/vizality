@@ -1,10 +1,10 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModuleByDisplayName } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
-const { Tooltip } = require('vizality/components');
+const { React, getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { joinClassNames } = require('@util');
+const { Tooltip } = require('@components');
+const { Plugin } = require('@entities');
 
-module.exports = class MembersActivityIcons extends Plugin {
+class MembersActivityIcons extends Plugin {
   startPlugin () {
     this.loadStylesheet('style.scss');
 
@@ -61,4 +61,6 @@ module.exports = class MembersActivityIcons extends Plugin {
   pluginWillUnload () {
     uninject('vz-members-activity-icons');
   }
-};
+}
+
+module.exports = MembersActivityIcons;

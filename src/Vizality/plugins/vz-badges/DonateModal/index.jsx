@@ -1,11 +1,11 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
-const { Button } = require('vizality/components');
-const { Modal } = require('vizality/components/modal');
+const { React, getModule, i18n: { Messages } } = require('@webpack');
+const { Button } = require('@components');
+const { Modal } = require('@components/modal');
 const { close: closeModal } = require('vizality/modal');
 
 const Header = require('./Header');
 
-module.exports = class DonateModal extends React.PureComponent {
+class DonateModal extends React.PureComponent {
   constructor () {
     super();
     this.state = {
@@ -63,4 +63,6 @@ module.exports = class DonateModal extends React.PureComponent {
       </Modal.Footer>
     </Modal>;
   }
-};
+}
+
+module.exports = DonateModal;

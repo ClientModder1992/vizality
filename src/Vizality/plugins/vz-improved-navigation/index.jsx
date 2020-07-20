@@ -1,12 +1,12 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { react: { forceUpdateElement } } = require('vizality/util');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const { react: { forceUpdateElement } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
 const Settings = require('./components/Settings');
 const MainNav = require('./components/MainNav');
 
-module.exports = class MainNavigation extends Plugin {
+class MainNavigation extends Plugin {
   startPlugin () {
     vizality.api.settings.registerSettings('improved-navigation', {
       category: 'improved-navigation',
@@ -46,4 +46,6 @@ module.exports = class MainNavigation extends Plugin {
 
     uninject('vz-mainNav');
   }
-};
+}
+
+module.exports = MainNavigation;

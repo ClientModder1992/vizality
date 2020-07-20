@@ -1,16 +1,17 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModuleByDisplayName } = require('vizality/webpack');
+const { getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
 
 module.exports = () => {
   const ContextMenu = getModuleByDisplayName('FluxContainer(ContextMenus)');
 
-  inject('vz-utility-classes-contextMenu', ContextMenu.prototype, 'render', (originalArgs, returnValue) => {
-    if (!returnValue.props) return returnValue;
+  inject('vz-utility-classes-contextMenu', ContextMenu.prototype, 'render', (_, res) => {
+    if (!res.props) return res;
 
-    if (returnValue.props.isOpen) document.documentElement.setAttribute('vz-context-menu-active', '');
-    else document.documentElement.removeAttribute('vz-context-menu-active');
+    res.props.isOpen
+      ? document.documentElement.setAttribute('vz-context-menu-active', '')
+      : document.documentElement.removeAttribute('vz-context-menu-active');
 
-    return returnValue;
+    return res;
   });
 
   return () => uninject('vz-utility-classes-contextMenu');

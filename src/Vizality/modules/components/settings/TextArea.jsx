@@ -1,10 +1,11 @@
-const { getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Area = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
 
-module.exports = class TextArea extends React.PureComponent {
+class TextArea extends React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;
@@ -15,7 +16,9 @@ module.exports = class TextArea extends React.PureComponent {
       </FormItem>
     );
   }
-};
+}
+
+module.exports = TextArea;
 
 /**
  * AVAILABLE PROPS

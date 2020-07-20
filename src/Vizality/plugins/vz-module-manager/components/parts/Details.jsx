@@ -1,11 +1,11 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
+const { Clickable, Tooltip, Icons: { Receipt, Person, Tag, Chemistry, Scale, Info } } = require('@components');
+const { React, i18n: { Messages } } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
-const { Clickable, Tooltip, Icons: { Receipt, Person, Tag, Chemistry, Scale, Info } } = require('vizality/components');
 
 const LicenseModal = require('../modals/License');
 const licenses = require('../../licenses');
 
-module.exports = React.memo(
+const Details = React.memo(
   ({ author, version, description, license, svgSize }) => (
     <div className='vizality-entity-details'>
       <div className='vizality-entity-description'>
@@ -47,3 +47,5 @@ module.exports = React.memo(
     </div>
   )
 );
+
+module.exports = Details;

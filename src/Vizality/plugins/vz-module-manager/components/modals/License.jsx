@@ -1,9 +1,7 @@
-const { React, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { Modal, Card, AsyncComponent } = require('vizality/components');
+const { React, i18n: { Messages } } = require('@webpack');
+const { Modal, Card, FormTitle } = require('@components');
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
-
-module.exports = ({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
+const License = ({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
   const data = {
     permissions,
     conditions,
@@ -36,4 +34,6 @@ module.exports = ({ spdx, license: { name, url, permissions, conditions, limitat
       </Modal.Content>
     </Modal>
   );
-};
+}
+
+module.exports = License;

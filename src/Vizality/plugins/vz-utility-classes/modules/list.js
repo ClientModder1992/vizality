@@ -1,16 +1,20 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('vizality/util');
+const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@util');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+
+/*
+ * Attempt at patching lazy loading...
+ */
 
 module.exports = async () => {
   return () => void 0;
 
   const List  = getModuleByDisplayName('List');
 
-  inject('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (originalArgs, returnValue) => {
-    // const props = findInReactTree(returnValue, n => n.id);
+  inject('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (args, res) => {
+    // const props = findInReactTree(res, n => n.id);
 
-    // if (!props.id || props.id !== 'private-channels') return returnValue;
+    // if (!props.id || props.id !== 'private-channels') return res;
 
     // const test = findInReactTree(props, n => n.key);
 
@@ -22,10 +26,10 @@ module.exports = async () => {
      * }
      */
 
-    console.log(originalArgs);
-    console.log(returnValue);
+    console.log(args);
+    console.log(res);
 
-    return returnValue;
+    return res;
   });
 
   setImmediate(() => forceUpdateElement('.scroller-2FKFPG'));
@@ -36,12 +40,12 @@ module.exports = async () => {
    */
 
   /*
-   * inject('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (originalArgs, returnValue) => {
-   *   console.log(returnValue);
+   * inject('vz-improved-navigation-dmChannels', ConnectedPrivateChannelsList, 'default', (args, res) => {
+   *   console.log(res);
    */
 
   /*
-   *   return returnValue;
+   *   return res;
    * });
    */
 

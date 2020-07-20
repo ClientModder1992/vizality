@@ -1,4 +1,5 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
+
 const Toast = require('./Toast');
 
 class ToastContainer extends React.PureComponent {

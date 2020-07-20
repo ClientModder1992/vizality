@@ -1,9 +1,9 @@
-const { Plugin } = require('vizality/entities');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule } = require('vizality/webpack');
-const { Menu } = require('vizality/components');
+const { inject, uninject } = require('@injector');
+const { React, getModule } = require('@webpack');
+const { Plugin } = require('@entities');
+const { Menu } = require('@components');
 
-module.exports = class CopyRawMessage extends Plugin {
+class CopyRawMessage extends Plugin {
   startPlugin () {
     this._patchContextMenu();
   }
@@ -15,12 +15,12 @@ module.exports = class CopyRawMessage extends Plugin {
   async _patchContextMenu () {
     const MessageContextMenu = getModule(m => m.default && m.default.displayName === 'MessageContextMenu');
 
-    inject('copy-raw-message', MessageContextMenu, 'default', ([ props ], returnValue) => {
+    inject('copy-raw-message', MessageContextMenu, 'default', ([ props ], res) => {
       const { message } = props;
 
-      if (!message || !message.content) return returnValue;
+      if (!message || !message.content) return res;
 
-      returnValue.props.children.push(
+      res.props.children.push(
         React.createElement(Menu.MenuItem, {
           label: 'Copy Raw Message',
           id: 'copy-raw-message',
@@ -28,7 +28,9 @@ module.exports = class CopyRawMessage extends Plugin {
         })
       );
 
-      return returnValue;
+      return res;
     });
   }
-};
+}
+
+module.exports = CopyRawMessage;

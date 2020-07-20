@@ -1,7 +1,8 @@
 /**
  * @todo: Fix this
  *
- * const { React, getModuleByDisplayName } = require('vizality/webpack');
+ * const { React, getModuleByDisplayName } = require('@webpack');
+ *
  * const AsyncComponent = require('../AsyncComponent');
  * const FormItem = require('./FormItem');
  */
@@ -9,7 +10,7 @@
 // const Box = AsyncComponent.from(getModuleByDisplayName('Checkbox'));
 
 /*
- * module.exports = class Checkbox extends React.Component {
+ * class Checkbox extends React.Component {
  *   render () {
  *     const { children: title, note, required, text } = this.props;
  *     const Text = this.props.children;
@@ -21,7 +22,9 @@
  *       </FormItem>
  *     );
  *   }
- * };
+ * }
+ *
+ * module.exports = Checkbox;
  */
 
 /**

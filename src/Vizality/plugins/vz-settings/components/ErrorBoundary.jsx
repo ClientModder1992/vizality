@@ -1,8 +1,9 @@
-const { parse } = require('url');
+const { React, getModule } = require('@webpack');
+const { get } = require('@http');
+
 const { format } = require('util');
 const { resolve } = require('path');
-const { get } = require('vizality/http');
-const { React, getModule } = require('vizality/webpack');
+const { parse } = require('url');
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;
 

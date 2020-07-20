@@ -1,10 +1,10 @@
-const { React, getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { routes: { goTo } } = require('vizality/discord');
-const { AsyncComponent, Icon } = require('vizality/components');
+const { React, getModuleByDisplayName, getModule } = require('@webpack');
+const { AsyncComponent, Icon } = require('@components');
+const { routes: { goTo } } = require('@discord');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 
-module.exports = class MainNav extends React.Component {
+class MainNav extends React.Component {
   render () {
     return (
       <nav className='vizality-main-nav'>
@@ -65,4 +65,6 @@ module.exports = class MainNav extends React.Component {
       </nav>
     );
   }
-};
+}
+
+module.exports = MainNav;

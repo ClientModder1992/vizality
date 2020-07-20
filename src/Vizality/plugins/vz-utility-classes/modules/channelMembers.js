@@ -1,44 +1,44 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModuleByDisplayName, getModule } = require('vizality/webpack');
-const { react: { forceUpdateElement }, joinClassNames } = require('vizality/util');
+const { react: { forceUpdateElement }, joinClassNames } = require('@util');
+const { getModuleByDisplayName, getModule } = require('@webpack');
+const { inject, uninject } = require('@injector');
 
-module.exports = async () => {
+module.exports = () => {
   const MemberListItem = getModuleByDisplayName('MemberListItem');
 
-  inject('vz-utility-classes-members', MemberListItem.prototype, 'render', function (_, retValue) {
-    if (!this || !this.props || !this.props.user) return retValue;
+  inject('vz-utility-classes-members', MemberListItem.prototype, 'render', function (_, res) {
+    if (!this || !this.props || !this.props.user) return res;
 
     const { user } = this.props;
 
-    if (user.id) retValue.props['vz-user-id'] = user.id;
+    if (user.id) res.props['vz-user-id'] = user.id;
 
-    retValue.props.className = joinClassNames(
-      retValue.props.className, {
+    res.props.className = joinClassNames(
+      res.props.className, {
         'vz-isCurrentUser': user.email,
         'vz-isBotUser': user.bot,
         'vz-isGuildOwner': this.props.isOwner
       });
 
-    return retValue;
+    return res;
   });
 
   const MembersGroup = getModule(m => m.default && m.default.displayName === 'ListSectionItem');
   const membersGroupClasses = getModule('membersGroup').membersGroup;
 
-  inject('vz-utility-classes-member-groups', MembersGroup, 'default', (_, retValue) => {
-    if (!retValue.props ||
-        !retValue.props.className ||
-        !retValue.props.children ||
-        !retValue.props.children.props ||
-        !retValue.props.children.props.children ||
-        !retValue.props.className.includes(membersGroupClasses)) {
-      return retValue;
+  inject('vz-utility-classes-member-groups', MembersGroup, 'default', (_, res) => {
+    if (!res.props ||
+        !res.props.className ||
+        !res.props.children ||
+        !res.props.children.props ||
+        !res.props.children.props.children ||
+        !res.props.className.includes(membersGroupClasses)) {
+      return res;
     }
 
-    [ retValue.props['vz-role-name'] ] = retValue.props.children.props.children;
-    [ , , retValue.props['vz-online-count'] ] = retValue.props.children.props.children;
+    [ res.props['vz-role-name'] ] = res.props.children.props.children;
+    [ , , res.props['vz-online-count'] ] = res.props.children.props.children;
 
-    return retValue;
+    return res;
   });
 
   setImmediate(() => forceUpdateElement(`.${membersGroupClasses}`));

@@ -1,4 +1,5 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
+
 const Announcement = require('./Announcement');
 
 class AnnouncementContainer extends React.PureComponent {
@@ -19,9 +20,9 @@ class AnnouncementContainer extends React.PureComponent {
   }
 
   render () {
-    const aId = Object.keys(vizality.api.notices.announcements).pop();
-    return aId
-      ? <Announcement id={aId} {...vizality.api.notices.announcements[aId]}/>
+    const announcementId = Object.keys(vizality.api.notices.announcements).pop();
+    return announcementId
+      ? <Announcement id={announcementId} {...vizality.api.notices.announcements[announcementId]}/>
       : null;
   }
 }

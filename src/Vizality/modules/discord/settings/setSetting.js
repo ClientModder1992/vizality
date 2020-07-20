@@ -1,7 +1,5 @@
-/* eslint-disable prefer-const */
-
-const { getModule } = require('vizality/webpack');
-const { logger: { warn } } = require('vizality/util');
+const { getModule } = require('@webpack');
+const { logger: { warn } } = require('@util');
 
 const setSetting = async (setting, value, sync = true) => {
   const MODULE = 'Module';

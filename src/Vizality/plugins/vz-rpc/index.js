@@ -1,11 +1,11 @@
 /* eslint-disable no-unreachable */
 
-const { Plugin } = require('vizality/entities');
-const { getModule } = require('vizality/webpack');
-const { WEBSITE } = require('vizality/constants');
-const { inject, uninject } = require('vizality/injector');
+const { inject, uninject } = require('@injector');
+const { getModule } = require('@webpack');
+const { WEBSITE } = require('@constants');
+const { Plugin } = require('@entities');
 
-module.exports = class RPC extends Plugin {
+class RPC extends Plugin {
   async startPlugin () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
@@ -89,4 +89,6 @@ module.exports = class RPC extends Plugin {
   _removeEvent (event) {
     delete this.handlers[event];
   }
-};
+}
+
+module.exports = RPC;

@@ -1,5 +1,5 @@
-const { React, getModule, contextMenu: { closeContextMenu } } = require('vizality/webpack');
-const { dom: { waitFor }, react: { getOwnerInstance } } = require('vizality/util');
+const { React, getModule, contextMenu: { closeContextMenu } } = require('@webpack');
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
 
 class ContextMenu extends React.PureComponent {
   constructor (props) {
@@ -80,7 +80,7 @@ class ContextMenu extends React.PureComponent {
         subtext={item.subtext}
         action={() => {
           if (item.disabled) {
-            waitFor('#app-mount > div[class] > div').then(app => getOwnerInstance(app).shake(600, 5));
+            waitForElement('#app-mount > div[class] > div').then(app => getOwnerInstance(app).shake(600, 5));
           } else if (item.onClick) {
             item.onClick();
           }

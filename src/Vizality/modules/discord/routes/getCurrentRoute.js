@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('vizality/util');
+const { logger: { warn } } = require('@util');
 /* const currentWebContents = require('electron').remote.getCurrentWebContents(); */
 
 const _getRoutes = require('./_getRoutes');

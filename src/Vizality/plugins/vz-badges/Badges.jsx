@@ -1,10 +1,10 @@
-const { shell: { openExternal } } = require('electron');
-const { get } = require('vizality/http');
-const { WEBSITE, REPO_URL } = require('vizality/constants');
+const { get } = require('@http');
+const { React, getModule, constants: { Routes } } = require('@webpack');
+const { Clickable, Tooltip } = require('@components');
 const { open: openModal } = require('vizality/modal');
-const { Clickable, Tooltip } = require('vizality/components');
-const { React, getModule, constants: { Routes } } = require('vizality/webpack');
-const { GUILD_ID, INVITE_CODE, I18N_WEBSITE } = require('vizality/constants');
+const { GUILD_ID, INVITE_CODE, I18N_WEBSITE, WEBSITE, REPO_URL } = require('@constants');
+
+const { shell: { openExternal } } = require('electron');
 
 const DonateModal = require('./DonateModal');
 const Badge = require('./Badge');
@@ -36,7 +36,7 @@ const badges = {
   early: () => void 0
 };
 
-module.exports = class Badges extends React.PureComponent {
+class Badges extends React.PureComponent {
   constructor (props) {
     super(props);
 
@@ -70,4 +70,6 @@ module.exports = class Badges extends React.PureComponent {
       />)
     ];
   }
-};
+}
+
+module.exports = Badges;

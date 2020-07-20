@@ -9,7 +9,7 @@ require('fs')
 let moment;
 
 const time = (...args) => {
-  if (!moment) moment = require('vizality/webpack').getModule('momentProperties');
+  if (!moment) moment = require('@webpack').getModule('momentProperties');
 
   return moment(...args);
 };

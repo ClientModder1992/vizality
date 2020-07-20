@@ -1,10 +1,11 @@
-const { getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Input = AsyncComponent.from(getModuleByDisplayName('TextInput', true));
 
-module.exports = class TextInput extends React.PureComponent {
+class TextInput extends React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;
@@ -15,4 +16,6 @@ module.exports = class TextInput extends React.PureComponent {
       </FormItem>
     );
   }
-};
+}
+
+module.exports = TextInput;

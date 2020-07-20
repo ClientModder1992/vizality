@@ -1,4 +1,5 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
+
 const FormItem = require('./FormItem');
 
 const renameKeys = Object.freeze({
@@ -14,7 +15,7 @@ const renameKeys = Object.freeze({
   AudioVolumeMute: 'VolumeMute'
 });
 
-module.exports = class TextInput extends React.PureComponent {
+class KeybindRecorder extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -133,4 +134,6 @@ module.exports = class TextInput extends React.PureComponent {
       });
     }
   }
-};
+}
+
+module.exports = KeybindRecorder;

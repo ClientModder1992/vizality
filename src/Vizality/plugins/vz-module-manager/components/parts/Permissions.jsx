@@ -1,5 +1,5 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
-const { FormTitle, Icons: { Keyboard, PersonShield, Copy, ImportExport } } = require('vizality/components');
+const { FormTitle, Icons: { Keyboard, PersonShield, Copy, ImportExport } } = require('@components');
+const { React, i18n: { Messages } } = require('@webpack');
 
 const perms = {
   keypresses: {

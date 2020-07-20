@@ -1,6 +1,6 @@
-const { React, Flux, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { SwitchItem, SliderInput } = require('vizality/components/settings');
-const { AsyncComponent, Clickable, FormTitle, Tooltip, Icons: { Pin, Unpin, Gear, Close, ExternalLink } } = require('vizality/components');
+const { React, Flux, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { settings: { SwitchItem, SliderInput }, Icons: { Pin, Unpin, Gear, Close, ExternalLink }, AsyncComponent, Clickable, FormTitle, Tooltip } = require('@components');
+
 const CodeMirror = require('./CodeMirror');
 
 const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));

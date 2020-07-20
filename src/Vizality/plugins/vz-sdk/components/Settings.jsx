@@ -1,5 +1,5 @@
-const { React, i18n: { Messages } } = require('vizality/webpack');
-const { SwitchItem } = require('vizality/components/settings');
+const { settings: { SwitchItem } } = require('@components');
+const { React, i18n: { Messages } } = require('@webpack');
 
 class Settings extends React.PureComponent {
   render () {
@@ -35,15 +35,6 @@ class Settings extends React.PureComponent {
           onChange={() => this.props.toggleSetting('openOverlayDevTools')}
         >
           Enable React DevTools
-        </SwitchItem>
-        <SwitchItem
-          note={<>
-            Loads required code to hook into the standalone React DevTools. <b>Requires restart</b>.
-          </>}
-          value={this.props.getSetting('openOverlayDevTools', false)}
-          onChange={() => this.props.toggleSetting('openOverlayDevTools')}
-        >
-          Listen for Standalone React Devtools
         </SwitchItem>
       </div>
     );

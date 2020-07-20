@@ -1,4 +1,4 @@
-const { React } = require('vizality/webpack');
+const { React } = require('@webpack');
 
 module.exports = React.memo(
   (props) => {

@@ -1,16 +1,16 @@
-const { get } = require('vizality/http');
-const { Plugin } = require('vizality/entities');
-const { WEBSITE } = require('vizality/constants');
+const { get } = require('@http');
+const { Plugin } = require('@entities');
+const { WEBSITE } = require('@constants');
 const { open: openModal } = require('vizality/modal');
-const { Clickable, Tooltip } = require('vizality/components');
-const { inject, uninject } = require('vizality/injector');
-const { React, getModule, getAllModules, getModuleByDisplayName } = require('vizality/webpack');
-const { dom: { waitFor }, react: { forceUpdateElement, getOwnerInstance } } = require('vizality/util');
+const { Clickable, Tooltip } = require('@components');
+const { inject, uninject } = require('@injector');
+const { React, getModule, getAllModules, getModuleByDisplayName } = require('@webpack');
+const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');
 
-module.exports = class Badges extends Plugin {
+class Badges extends Plugin {
   constructor () {
     super();
     this.guildBadges = {};
@@ -45,49 +45,49 @@ module.exports = class Badges extends Plugin {
   async _patchGuildTooltips () {
     const _this = this;
     const GuildBadge = getModuleByDisplayName('GuildBadge');
-    inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, retValue) {
+    inject('vz-badges-guilds-tooltip', GuildBadge.prototype, 'render', function (_, res) {
       const { guild } = this.props;
       // GuildBadges is used in different places, size prop seems GuildTooltip "exclusive"
       if (this.props.size && _this.guildBadges[guild.id]) {
-        return [ _this._renderBadge(_this.guildBadges[guild.id]), retValue ];
+        return [ _this._renderBadge(_this.guildBadges[guild.id]), res ];
       }
 
-      return retValue;
+      return res;
     });
   }
 
   async _patchGuildHeaders () {
     const _this = this;
     const GuildHeader = getModuleByDisplayName('GuildHeader');
-    inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, retValue) {
+    inject('vz-badges-guilds-header', GuildHeader.prototype, 'renderHeader', function (_, res) {
       if (_this.guildBadges[this.props.guild.id]) {
-        retValue.props.children.unshift(
+        res.props.children.unshift(
           _this._renderBadge(_this.guildBadges[this.props.guild.id])
         );
       }
-      return retValue;
+      return res;
     });
   }
 
   async _patchUserComponent () {
     const { classes } = this;
-    const instance = getOwnerInstance((await waitFor([
+    const instance = getOwnerInstance((await waitForElement([
       classes.modal, classes.headerInfo, classes.nameTag
     ].join(' '))).parentElement);
 
     const UserProfileBody = instance._reactInternalFiber.return.type;
-    inject('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, retValue) {
+    inject('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, res) {
       const badges = React.createElement(BadgesComponent, {
         key: 'vizality',
         id: this.props.user.id
       });
 
-      if (!retValue) {
+      if (!res) {
         return React.createElement('div', { className: 'vizality-badges' }, badges);
       }
 
-      retValue.props.children.push(badges);
-      return retValue;
+      res.props.children.push(badges);
+      return res;
     });
     instance.forceUpdate();
   }
@@ -116,4 +116,6 @@ module.exports = class Badges extends Plugin {
       alt: ''
     })));
   }
-};
+}
+
+module.exports = Badges;

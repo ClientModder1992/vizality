@@ -1,7 +1,7 @@
-const { Plugin } = require('vizality/entities');
-const { getModule } = require('vizality/webpack');
+const { getModule } = require('@webpack');
+const { Plugin } = require('@entities');
 
-module.exports = class DoNotTrack extends Plugin {
+class DoNotTrack extends Plugin {
   async startPlugin () {
     const Analytics = getModule('getSuperPropertiesBase64');
     Analytics.__oldTrack = Analytics.track;
@@ -61,4 +61,6 @@ module.exports = class DoNotTrack extends Plugin {
     Sentry.client._prepareEvent = Sentry.client.__old_prepareEvent;
     window.console = window.__oldConsole;
   }
-};
+}
+
+module.exports = DoNotTrack;

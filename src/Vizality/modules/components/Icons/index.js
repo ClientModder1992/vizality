@@ -1,4 +1,5 @@
 /**
+ * @powercord:
  * This directory is only here to allow Powercord
  * plugins to continue to work that use them. Rather than
  * insert SVGs as React elements, which makes sense from a
@@ -8,7 +9,7 @@
  * by inserting the icons as divs and styling them with CSS
  * custom properties with encoded SVG values and masking.
  *
- * Prefer to use const { Icon } = require('vizality/components');
+ * Prefer to use const { Icon } = require('@components');
  */
 
 require('fs')

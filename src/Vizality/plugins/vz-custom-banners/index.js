@@ -1,24 +1,27 @@
 /* eslint-disable prefer-destructuring */
-const { Plugin } = require('vizality/entities');
-const { getModuleByDisplayName } = require('vizality/webpack');
-const { inject, uninject } = require('vizality/injector');
+const { getModuleByDisplayName } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
-module.exports = class CustomBanners extends Plugin {
+class CustomBanners extends Plugin {
   startPlugin () {
     this.loadStylesheet('style.scss');
 
     this._patchPrivateChannelEmptyMessage();
   }
 
-  async _patchPrivateChannelEmptyMessage () {
+  _patchPrivateChannelEmptyMessage () {
     const PrivateChannelEmptyMessage = getModuleByDisplayName('PrivateChannelEmptyMessage');
 
-    inject('pc-impChannelTitlebar-privateChannelsEmptyMessage', PrivateChannelEmptyMessage.prototype, 'render', (_, res) => {
+    inject('vz-custom-banners-privateChannelsEmptyMessage', PrivateChannelEmptyMessage.prototype, 'render', (_, res) => {
+      // @todo: Do this.
       console.log(res);
 
       return res;
     });
 
-    return async () => uninject('pc-impChannelTitlebar-privateChannelsEmptyMessage');
+    return () => uninject('vz-custom-banners-privateChannelsEmptyMessage');
   }
-};
+}
+
+module.exports = CustomBanners;

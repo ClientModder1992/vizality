@@ -1,10 +1,11 @@
-const { Flux, React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('vizality/webpack');
-const { joinClassNames } = require('vizality/util');
-const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icons } = require('vizality/components');
-const ForceUI = require('./ForceUI');
+const { Flux, React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icons } = require('@components');
+const { joinClassNames } = require('@util');
+
 const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');
 const TitleBar = require('./TitleBar');
+const ForceUI = require('./ForceUI');
 
 const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));
 

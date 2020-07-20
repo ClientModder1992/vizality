@@ -1,11 +1,12 @@
-const { getModule, getModuleByDisplayName, React } = require('vizality/webpack');
+const { getModule, getModuleByDisplayName, React } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const DRadioGroup = AsyncComponent.from(getModuleByDisplayName('RadioGroup', true));
 
 let margin = '';
-module.exports = class RadioGroup extends React.PureComponent {
+class RadioGroup extends React.PureComponent {
   constructor () {
     super();
     this.state = { margin };
@@ -28,4 +29,6 @@ module.exports = class RadioGroup extends React.PureComponent {
       </FormItem>
     );
   }
-};
+}
+
+module.exports = RadioGroup;

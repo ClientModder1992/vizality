@@ -1,19 +1,18 @@
-/* eslint-disable no-unused-expressions */
-const { inject, uninject } = require('vizality/injector');
-const { getModule } = require('vizality/webpack');
-const { joinClassNames, dom: { waitFor }, react: { getOwnerInstance } } = require('vizality/util');
+const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
+const { inject, uninject } = require('@injector');
+const { getModule } = require('@webpack');
 
 module.exports = async () => {
   const { chat } = getModule('chat');
-  const instance = getOwnerInstance(await waitFor(`.${chat.split(' ')[0]}`));
+  const instance = getOwnerInstance(await waitForElement(`.${chat.split(' ')[0]}`));
 
-  inject('vz-utility-classes-chat', instance.__proto__, 'render', function (_, retValue) {
-    if (!this || !this.props || !this.props.channel) return retValue;
+  inject('vz-utility-classes-chat', instance.__proto__, 'render', function (_, res) {
+    if (!this || !this.props || !this.props.channel) return res;
 
     const { channel } = this.props;
 
-    retValue.props.className = joinClassNames(
-      retValue.props.className, {
+    res.props.className = joinClassNames(
+      res.props.className, {
         'vz-isGuildChannel': [ 0, 2, 4, 5, 6 ].includes(channel.type),
         'vz-isPrivateChannel': [ 1, 3 ].includes(channel.type),
         'vz-isGroupChannel': [ 3 ].includes(channel.type),
@@ -32,21 +31,23 @@ module.exports = async () => {
       'vz-modal-active': this.props.hasModalOpen
     };
 
+    const root = document.documentElement;
+
     const addAttributes = Object.keys(attributes).filter(m => attributes[m]);
     const removeAttributes = Object.keys(attributes).filter(m => !attributes[m]);
 
-    addAttributes.forEach(attr => document.documentElement.setAttribute(attr, ''));
-    removeAttributes.forEach(attr => document.documentElement.removeAttribute(attr));
+    addAttributes.forEach(attr => root.setAttribute(attr, ''));
+    removeAttributes.forEach(attr => root.removeAttribute(attr));
 
     this.props.channelId
-      ? document.documentElement.setAttribute('vz-channel-id', this.props.channelId)
-      : document.documentElement.removeAttribute('vz-channel-id');
+      ? root.setAttribute('vz-channel-id', this.props.channelId)
+      : root.removeAttribute('vz-channel-id');
 
     this.props.guildId
-      ? document.documentElement.setAttribute('vz-guild-id', this.props.guildId)
-      : document.documentElement.removeAttribute('vz-guild-id');
+      ? root.setAttribute('vz-guild-id', this.props.guildId)
+      : root.removeAttribute('vz-guild-id');
 
-    return retValue;
+    return res;
   });
 
   setImmediate(() => instance.forceUpdate());

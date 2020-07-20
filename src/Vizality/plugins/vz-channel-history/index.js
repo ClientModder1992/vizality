@@ -1,16 +1,17 @@
-const { Plugin } = require('vizality/entities');
-const { getModule } = require('vizality/webpack');
+const { Plugin } = require('@entities');
+const { getModule } = require('@webpack');
 
-const electron = require('electron').remote;
-const webContents = electron.getCurrentWebContents();
-const currentWindow = electron.getCurrentWindow();
+const { remote: { getCurrentWebContents, getCurrentWindow } } = require('electron');
 
-module.exports = class ChannelHistory extends Plugin {
+const webContents = getCurrentWebContents();
+const currentWindow = getCurrentWindow();
+
+class ChannelHistory extends Plugin {
   startPlugin () {
     currentWindow.on('app-command', this.listener);
   }
 
-  async listener (ev, cmd) {
+  async listener (_, cmd) {
     if (cmd !== 'browser-backward' && cmd !== 'browser-forward') return;
 
     if (cmd === 'browser-backward' && webContents.canGoBack()) {
@@ -23,4 +24,6 @@ module.exports = class ChannelHistory extends Plugin {
   pluginWillUnload () {
     currentWindow.off('app-command', this.listener);
   }
-};
+}
+
+module.exports = ChannelHistory;

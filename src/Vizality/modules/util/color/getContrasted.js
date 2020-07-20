@@ -1,6 +1,6 @@
 const toHex = require('./toHex');
 
-const getContrast = (color) => {
+const getContrasted = (color) => {
   let r, g, b;
 
   function _hex (arg) {
@@ -23,4 +23,4 @@ const getContrast = (color) => {
   return '#fff';
 };
 
-module.exports = getContrast;
+module.exports = getContrasted;

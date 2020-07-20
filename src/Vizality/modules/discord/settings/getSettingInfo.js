@@ -1,4 +1,4 @@
-const { logger: { log, warn } } = require('vizality/util');
+const { logger: { log, warn } } = require('@util');
 
 const getSettingInfo = (setting) => {
   const MODULE = 'Module';

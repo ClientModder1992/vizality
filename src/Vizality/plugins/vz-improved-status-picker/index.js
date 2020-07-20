@@ -1,10 +1,10 @@
-const { Plugin } = require('vizality/entities');
-const { getModule, React, i18n: { Messages } } = require('vizality/webpack');
-const { inject, uninject } = require('vizality/injector');
+const { getModule, React, i18n: { Messages } } = require('@webpack');
+const { inject, uninject } = require('@injector');
+const { Plugin } = require('@entities');
 
 const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 
-module.exports = class GameActivityToggle extends Plugin {
+class GameActivityToggle extends Plugin {
   async startPlugin () {
     const classes = getModule('status', 'description');
     const settings = getModule('updateRemoteSettings');
@@ -54,4 +54,6 @@ module.exports = class GameActivityToggle extends Plugin {
   pluginWillUnload () {
     uninject('game-activity-toggle');
   }
-};
+}
+
+module.exports = GameActivityToggle;

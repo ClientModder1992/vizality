@@ -1,9 +1,12 @@
-const { React, getModuleByDisplayName } = require('vizality/webpack');
+const { React, getModuleByDisplayName } = require('@webpack');
+
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const DRegionSelector = AsyncComponent.from(getModuleByDisplayName('RegionSelector', true));
+const DRegionSelect = AsyncComponent.from(getModuleByDisplayName('RegionSelector', true));
 
-module.exports = class RegionSelector extends React.PureComponent {
+class RegionSelect extends React.PureComponent {
 
-};
+}
+
+module.exports = RegionSelect;

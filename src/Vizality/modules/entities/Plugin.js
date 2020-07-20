@@ -1,7 +1,9 @@
+const { resolveCompiler } = require('@compilers');
+const { sleep, dom: { createElement }, logger } = require('@util');
+
 const { existsSync } = require('fs');
 const { join } = require('path');
-const { sleep, dom: { createElement }, logger } = require('vizality/util');
-const { resolveCompiler } = require('vizality/compilers');
+
 const Updatable = require('./Updatable');
 
 /**

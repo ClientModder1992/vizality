@@ -1,10 +1,7 @@
-/* eslint-disable no-case-declarations */
-const { React, getModule, getModuleByDisplayName } = require('vizality/webpack');
-const { Spinner, FormNotice, AsyncComponent } = require('vizality/components');
-const { WEBSITE } = require('vizality/constants');
-const { get } = require('vizality/http');
-
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+const { Spinner, FormNotice, AsyncComponent, FormTitle } = require('@components');
+const { React, getModule } = require('@webpack');
+const { WEBSITE } = require('@constants');
+const { get } = require('@http');
 
 const documentCache = {};
 
@@ -38,18 +35,21 @@ class DocPage extends React.PureComponent {
     const render = [];
     document.contents.forEach(element => {
       switch (element.type) {
-        case 'TITLE':
+        case 'TITLE': {
           render.push(React.createElement(`h${element.depth}`, {
             id: element.content.replace(/[^\w]+/ig, '-').replace(/^-+|-+$/g, '').toLowerCase()
           }, element.content));
           break;
-        case 'TEXT':
+        }
+        case 'TEXT': {
           render.push(React.createElement('p', null, this._mdToReact(element.content)));
           break;
-        case 'LIST':
+        }
+        case 'LIST': {
           render.push(React.createElement(element.ordered ? 'ol' : 'ul', null, element.items.map(this._renderList.bind(this, element.ordered))));
           break;
-        case 'NOTE':
+        }
+        case 'NOTE': {
           render.push(
             <FormNotice
               type={FormNotice.Types[element.color === 'INFO' ? 'PRIMARY' : element.color]}
@@ -57,9 +57,10 @@ class DocPage extends React.PureComponent {
             />
           );
           break;
-        case 'CODEBLOCK':
-          let className,
-            Code;
+        }
+        case 'CODEBLOCK': {
+          let className;
+          let Code;
           if (element.lang) {
             className = `hljs ${element.lang}`;
             Code = () => React.createElement('div', {
@@ -80,7 +81,8 @@ class DocPage extends React.PureComponent {
             </code>
           </pre>);
           break;
-        case 'TABLE':
+        }
+        case 'TABLE': {
           render.push(<table cellSpacing='0'>
             <tr>
               {element.thead.map((th, i) =>
@@ -93,6 +95,7 @@ class DocPage extends React.PureComponent {
               </td>)}
             </tr>)}
           </table>);
+        }
       }
     });
 

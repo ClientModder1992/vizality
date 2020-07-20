@@ -1,14 +1,10 @@
-.idea
 /.cache
 /.logs
 node_modules
 package-lock.json
-yarn.lock
-pnpm-lock.yaml
 
-src/Vizality/plugins/*
+# src/Vizality/plugins/*
 !src/Vizality/plugins/vz-*
-
 src/Vizality/plugins/vz-react-dev-tools/rdt.crx
 src/Vizality/plugins/vz-react-dev-tools/react-dev-tools/*
 
@@ -18,6 +14,5 @@ src/Vizality/themes/*
 
 settings/*.json
 
-config.json
 *injected.txt
 *.nogit.*

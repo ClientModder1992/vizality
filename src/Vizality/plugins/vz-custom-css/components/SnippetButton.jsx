@@ -1,6 +1,6 @@
-const { React, getModule, i18n: { Messages } } = require('vizality/webpack');
-const { joinClassNames} = require('vizality/util');
-const { Icon, Tooltip } = require('vizality/components');
+const { React, getModule, i18n: { Messages } } = require('@webpack');
+const { Icon, Tooltip } = require('@components');
+const { joinClassNames} = require('@util');
 
 // @todo: Figure out a way to re-enable the button if the snippet gets removed. Requires reload for now.
 class SnippetButton extends React.Component {

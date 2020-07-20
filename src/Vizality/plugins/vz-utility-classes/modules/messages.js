@@ -1,30 +1,30 @@
-const { inject, uninject } = require('vizality/injector');
-const { getModule } = require('vizality/webpack');
-const { react : { findInReactTree }, joinClassNames } = require('vizality/util');
+const { react : { findInReactTree }, joinClassNames } = require('@util');
+const { inject, uninject } = require('@injector');
+const { getModule } = require('@webpack');
 
 module.exports = async () => {
   const Message = getModule(m => m.default && m.default.displayName === 'Message');
-  const guildModule = getModule('getGuild');
-  const memberModule = getModule('getMember');
   const currentUserId = getModule('getId').getId();
+  const memberModule = getModule('getMember');
+  const guildModule = getModule('getGuild');
 
-  inject('vz-utility-classes-messages', Message, 'default', (originalArgs, returnValue) => {
-    const msg = findInReactTree(returnValue, n => n.message);
+  inject('vz-utility-classes-messages', Message, 'default', (_, res) => {
+    const msg = findInReactTree(res, n => n.message);
 
     if (!msg) {
-      if (findInReactTree(returnValue, n => n.className && !n.className.startsWith('blockedSystemMessage'))) {
-        returnValue.props.className = joinClassNames(returnValue.props.className, 'vz-isBlockedMessage');
+      if (findInReactTree(res, n => n.className && !n.className.startsWith('blockedSystemMessage'))) {
+        res.props.className = joinClassNames(res.props.className, 'vz-isBlockedMessage');
       }
-      return returnValue;
+      return res;
     }
 
     const { message, channel } = msg;
 
-    returnValue.props['vz-message-type'] = message.type;
-    returnValue.props['vz-author-id'] = message.author.id;
+    res.props['vz-message-type'] = message.type;
+    res.props['vz-author-id'] = message.author.id;
 
-    returnValue.props.className = joinClassNames(
-      returnValue.props.className, {
+    res.props.className = joinClassNames(
+      res.props.className, {
         'vz-isBotUser': message.author.bot,
         'vz-isCurrentUser': (message.author.id === currentUserId && message.type === 0),
         'vz-isGuildOwner': (channel && channel.guild_id && message.author.id === guildModule.getGuild(channel.guild_id) && message.type === 0),
@@ -35,7 +35,7 @@ module.exports = async () => {
         'vz-isSystemMessage': (message.type && message.type === 6)
       });
 
-    return returnValue;
+    return res;
   });
 
   return async () => uninject('vz-utility-classes-messages');

@@ -1,5 +1,5 @@
-const { React, getModuleByDisplayName } = require('vizality/webpack');
-const { AsyncComponent, Icons: { VizalityCutie } } = require('vizality/components');
+const { React, getModuleByDisplayName } = require('@webpack');
+const { AsyncComponent, Icons: { VizalityCutie } } = require('@components');
 const { close: closeModal } = require('vizality/modal');
 
 module.exports = AsyncComponent.from((async () => {

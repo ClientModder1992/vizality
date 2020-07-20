@@ -1,7 +1,7 @@
-const { React, getModule } = require('vizality/webpack');
-const { Icons: { SdkWordmark }, AsyncComponent } = require('vizality/components');
+const { Icons: { SdkWordmark }, AsyncComponent } = require('@components');
+const { React, getModule } = require('@webpack');
 
-module.exports = AsyncComponent.from((async () => {
+const TitleBar = AsyncComponent.from((async () => {
   const titleBar = getModule(m => typeof m === 'function' && m.toString().includes('PlatformTypes.WINDOWS') && m.toString().includes('PlatformTypes.OSX'));
   const windows = titleBar({ type: 'WINDOWS' }).type;
   return (props) => {
@@ -11,3 +11,5 @@ module.exports = AsyncComponent.from((async () => {
     return res;
   };
 })());
+
+module.exports = TitleBar;

@@ -1,5 +1,6 @@
-const { getModule } = require('vizality/webpack');
-const { logger: { warn } } = require('vizality/util');
+const { getModule } = require('@webpack');
+const { logger: { warn } } = require('@util');
+
 const getSettingInfo = require('./getSettingInfo');
 
 const getSetting = (setting) => {
