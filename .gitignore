@@ -5,6 +5,7 @@ package-lock.json
 
 # src/Vizality/plugins/*
 !src/Vizality/plugins/vz-*
+src/Vizality/plugins/text-react/
 src/Vizality/plugins/vz-react-dev-tools/rdt.crx
 src/Vizality/plugins/vz-react-dev-tools/react-dev-tools/*
 
