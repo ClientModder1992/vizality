@@ -3,7 +3,19 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "vizality/*": [ "./.vizality/modules/*" ]
+      "@root/*": [ "./../*" ],
+      "@src/*": [ "./*" ],
+      "vizality/*": [ "./.vizality/modules/*"],
+      "@classes": [ "./.vizality/modules/classes" ],
+      "@compilers": [ "./.vizality/modules/compilers" ],
+      "@components": [ "./.vizality/modules/components" ],
+      "@constants": [ "./.vizality/modules/constants" ],
+      "@discord": [ "./.vizality/modules/discord" ],
+      "@entities": [ "./.vizality/modules/entities" ],
+      "@http": [ "./.vizality/modules/http" ],
+      "@patcher": [ "./.vizality/modules/patcher" ],
+      "@util": [ "./.vizality/modules/util" ],
+      "@webpack": [ "./.vizality/modules/webpack" ]
     }
   }
 }

@@ -18,6 +18,7 @@
   "_moduleAliases": {
     "vizality": "src/.vizality/modules",
     "@root": ".",
+    "@src": "src",
     "@classes": "src/.vizality/modules/classes",
     "@compilers": "src/.vizality/modules/compilers",
     "@components": "src/.vizality/modules/components",
