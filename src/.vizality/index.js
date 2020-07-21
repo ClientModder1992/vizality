@@ -2,7 +2,7 @@ const { Updatable } = require('@entities');
 const { jsx: JsxCompiler } = require('@compilers');
 const { getModule, getModuleByPrototypes, _init } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@util');
-const { IMAGES } = require('@constants');
+const { IMAGES, ROOT_FOLDER } = require('@constants');
 
 const { join } = require('path');
 const { promisify } = require('util');
@@ -66,7 +66,7 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  */
 class Vizality extends Updatable {
   constructor () {
-    super(join(__dirname, '..', '..'), '', 'vizality');
+    super(ROOT_FOLDER, '', 'vizality');
 
     this.api = {};
     this.git = {
@@ -113,7 +113,8 @@ class Vizality extends Updatable {
   // Vizality startup
   async startup () {
     // To achieve that pure console look ( ͡° ͜ʖ ͡°)
-    console.clear();
+    // console.clear();
+    console.log(ROOT_FOLDER, '', 'vizality');
 
     const startupBanner = `${IMAGES}/console-startup-banner.png`;
 

@@ -2,7 +2,7 @@ const { get } = require('@http');
 const { React, getModule, constants: { Routes } } = require('@webpack');
 const { Clickable, Tooltip } = require('@components');
 const { open: openModal } = require('vizality/modal');
-const { GUILD_ID, INVITE_CODE, I18N_WEBSITE, WEBSITE, REPO_URL } = require('@constants');
+const { GUILD_ID, INVITE_CODE, I18N_WEBSITE, WEBSITE, REPO } = require('@constants');
 
 const { shell: { openExternal } } = require('electron');
 
@@ -32,7 +32,7 @@ const badges = {
   },
   contributor: () => openExternal(`${WEBSITE}/contributors`),
   translator: () => openExternal(I18N_WEBSITE),
-  hunter: () => openExternal(`https://github.com/${REPO_URL}/issues?q=label:bug`),
+  hunter: () => openExternal(`https://github.com/${REPO}/issues?q=label:bug`),
   early: () => void 0
 };
 

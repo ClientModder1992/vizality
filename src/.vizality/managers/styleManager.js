@@ -1,7 +1,7 @@
 /* @todo: Use logger. */
 
 const { Theme } = require('@entities');
-const { SETTINGS_FOLDER } = require('@constants');
+const { ROOT_FOLDER, SETTINGS_FOLDER } = require('@constants');
 
 const { join } = require('path');
 const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
@@ -16,7 +16,7 @@ const ErrorTypes = Object.freeze({
 
 class StyleManager {
   constructor () {
-    this.themesDir = join(__dirname, '../themes');
+    this.themesDir = join(ROOT_FOLDER, 'addons', 'themes');
     this.themes = new Map();
 
     if (!window.__SPLASH__) {

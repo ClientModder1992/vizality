@@ -1,11 +1,12 @@
 const { file: { rmdirRf } } = require('@util');
+const { ROOT_FOLDER } = require('@constants');
 
 const { resolve } = require('path');
 const { readdirSync } = require('fs');
 
 class PluginManager {
   constructor () {
-    this.pluginDir = resolve(__dirname, '..', 'plugins');
+    this.pluginDir = resolve(ROOT_FOLDER, 'addons', 'plugins');
     this.plugins = new Map();
 
     this.manifestKeys = [ 'name', 'version', 'description', 'author', 'license' ];

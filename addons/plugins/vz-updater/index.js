@@ -1,26 +1,26 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
+const changelog = require('@root/changelogs.json');
 const { Confirm } = require('@components/modal');
+const { ROOT_FOLDER } = require('@constants');
 const { Plugin } = require('@entities');
 
-const { join } = require('path');
 const { promisify } = require('util');
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 
 const Settings = require('./components/Settings');
 
-const changelog = require('../../../../changelogs.json');
-
 module.exports = class Updater extends Plugin {
   constructor () {
     super();
 
     this.checking = false;
-    this.cwd = { cwd: join(__dirname, ...Array(4).fill('..')) };
+    this.cwd = { cwd: ROOT_FOLDER };
   }
 
   async startPlugin () {
+    console.log(this.cwd);
     this.settings.set('paused', false);
     this.settings.set('failed', false);
     this.settings.set('updating', false);

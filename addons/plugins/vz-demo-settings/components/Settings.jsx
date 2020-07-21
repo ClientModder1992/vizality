@@ -137,9 +137,19 @@ module.exports = class Settings extends React.Component {
 Font Family
         </SelectInput>
 
-        <ColorPickerInput
+        {/* <ColorPickerInput
           colors={[ 1752220, 3066993, 3447003, 10181046, 15277667, 15844367, 15105570, 15158332, 9807270, 6323595, 1146986, 2067276, 2123412, 7419530, 11342935, 12745742, 11027200, 10038562, 9936031, 5533306 ]}
           defaultColor={10070709}
+          value={getSetting('cake')}
+          onChange={res => {
+            updateSetting('cake', res);
+          }}
+        >
+Just a simple color picker.
+        </ColorPickerInput> */}
+        <ColorPickerInput
+          defaultColors={[ 1752220, 3066993, 3447003, 10181046, 15277667, 15844367, 15105570, 15158332, 9807270, 6323595, 1146986, 2067276, 2123412, 7419530, 11342935, 12745742, 11027200, 10038562, 9936031, 5533306 ]}
+          def={10070709}
           value={getSetting('cake')}
           onChange={res => {
             updateSetting('cake', res);
@@ -157,15 +167,12 @@ Just a simple color picker.
           }}>
         </div>
 
-        <CopyInput
+        {/* <CopyInput
           value={'Just some more pie'}
           mode={this.state.copyInput.mode}
           text={this.state.copyInput.text}
           onCopy={async val => {
-            /*
-             * for some reason, this selects the text in the input
-             * so let's clear the selection
-             */
+            // For some reason, this selects the text in the input so let's clear the selection
             window.getSelection().removeAllRanges();
 
             clipboard.writeText(val);
@@ -181,7 +188,7 @@ Just a simple color picker.
           }}
         >
 Just a simple copy input.
-        </CopyInput>
+        </CopyInput> */}
 
         <TextArea
           autofocus={false}
@@ -277,7 +284,7 @@ Just a simple textarea.
         >
 Font Size
         </SliderInput>
-        <Checkbox
+        {/* <Checkbox
           // eslint-disable-next-line multiline-comment-style
           // align={'alignCenter-MrlN6q'}
           // color={'#7289da'}
@@ -294,9 +301,9 @@ Font Size
           value={getSetting('checkbox-test')}
         >
 Just a simple checkbox.
-        </Checkbox>
+        </Checkbox> */}
 
-        <RegionSelector
+        {/* <RegionSelector
           disabled={false}
           error={false}
           onClick={ret => {
@@ -327,7 +334,7 @@ Just a simple region selector.
           value={'ALLOW'} // 'DENY', 'ALLOW', 'PASSTHROUGH'
         >
 Just a simple permission override item.
-        </PermissionOverrideItem>
+        </PermissionOverrideItem> */}
       </div>
     );
   }

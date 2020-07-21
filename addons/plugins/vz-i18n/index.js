@@ -1,9 +1,12 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
-const { I18N_WEBSITE } = require('@constants');
+const { I18N_WEBSITE, VIZALITY_FOLDER } = require('@constants');
 const { Card } = require('@components');
 const { Plugin } = require('@entities');
-const strings = require('@root/i18n');
+
+const { join } = require('path');
+
+const strings = require(join(VIZALITY_FOLDER, 'locales'));
 
 const totalStrCount = Object.keys(strings['en-US']).length;
 

@@ -1,5 +1,7 @@
 const { API } = require('@entities');
 
+// @todo: this.error is not a function yet
+
 /**
  * @typedef VizalityToast
  * @property {String} header

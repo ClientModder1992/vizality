@@ -1,7 +1,9 @@
-const sass = require('sass');
-const Compiler = require('./compiler');
+const { VIZALITY_FOLDER } = require('@constants');
+
 const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { join, dirname } = require('path');
+const Compiler = require('./compiler');
+const sass = require('sass');
 
 /**
  * SCSS compiler
@@ -50,19 +52,31 @@ class SCSS extends Compiler {
   async _resolveDeps (file, resolvedFiles = []) {
     const scss = await readFile(file, 'utf8');
     const basePath = dirname(file);
-
     /*
      * @import: deprecated; let's treat it as @use. Only dumb edge cases will break anyway
      * @use: https://sass-lang.com/documentation/at-rules/use
      * @forward: https://sass-lang.com/documentation/at-rules/forward
      */
     for (const match of scss.matchAll(/@(?:import|use|forward) ['"]([^'"]+)/ig)) {
+      // console.log('resolve');
       const filePath = this._resolveFile(join(basePath, match[1]).replace(/\\/g, '/'));
+      // if (!match[1].indexOf('@library')) {
+      //   match[1] = match[1].replace('@library', 'sass');
+      //   filePath = this._resolveFile(join(LIBRARIES_FOLDER, match[1]).replace(/\\/g, '/'));
+      // } else {
+      //   filePath = this._resolveFile(join(basePath, match[1]).replace(/\\/g, '/'));
+      // }
+      // console.log('match', match[1]);
+      // console.log('join', join(basePath, match[1]).replace(/\\/g, '/'));
+      // console.log('filePath', filePath);
       // Not all imports have to be resolved; https://sass-lang.com/documentation/at-rules/import#plain-css-imports
       if (filePath) {
+        // console.log('yes');
         if (!resolvedFiles.includes(filePath)) {
+          // console.log('2nd', filePath);
           resolvedFiles.push(filePath);
           await this._resolveDeps(filePath, resolvedFiles);
+          // console.log('resolvedFiles', resolvedFiles);
         }
       }
     }

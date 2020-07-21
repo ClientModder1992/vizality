@@ -1,7 +1,7 @@
 const { settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { REPO_URL, CACHE_FOLDER } = require('@constants');
+const { REPO, CACHE_FOLDER } = require('@constants');
 const { joinClassNames, time } = require('@util');
 const { Confirm } = require('@components/modal');
 
@@ -85,7 +85,7 @@ class UpdaterSettings extends React.PureComponent {
         <div className="about">
           <div>
             <span>{Messages.VIZALITY_UPDATES_UPSTREAM}</span>
-            <span>{vizality.git.upstream.replace(REPO_URL, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
+            <span>{vizality.git.upstream.replace(REPO, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
           </div>
           <div>
             <span>{Messages.VIZALITY_UPDATES_REVISION}</span>
@@ -297,7 +297,7 @@ class UpdaterSettings extends React.PureComponent {
   // --- DEBUG STUFF (Intentionally left english-only)
   renderDebugInfo (time) {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
-    const { apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
+    const { _apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
     const plugins = vizality.pluginManager.getPlugins().filter(plugin =>
       !vizality.pluginManager.get(plugin).isInternal && vizality.pluginManager.isEnabled(plugin)
@@ -375,7 +375,7 @@ class UpdaterSettings extends React.PureComponent {
 
           <b>Git</b>
           <div className='row'>
-            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(REPO_URL, 'Official')}</div>
+            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(REPO, 'Official')}</div>
             <div className='column'>Revision:&#10;
               <a
                 href={`https://github.com/${vizality.git.upstream}/commit/${vizality.git.revision}`}
