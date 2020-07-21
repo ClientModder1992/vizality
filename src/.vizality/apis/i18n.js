@@ -1,9 +1,11 @@
-const { API } = require('@entities');
+const { VIZALITY_FOLDER } = require('@constants');
 const { getModule, i18n } = require('@webpack');
+const { API } = require('@entities');
+const { join } = require('path');
 
-const strings = require('@root/i18n');
+const strings = require(join(VIZALITY_FOLDER, 'locales'));
 
-module.exports = class I18nAPI extends API {
+class I18nAPI extends API {
   constructor () {
     super();
     this.messages = {};
@@ -51,4 +53,6 @@ module.exports = class I18nAPI extends API {
     }
     this._addVizalityStrings();
   }
-};
+}
+
+module.exports = I18nAPI;
