@@ -85,11 +85,11 @@ class SplashScreen extends React.PureComponent {
 
   openSplashScreen (keepState) {
     // @todo: Fix this.
-    const baseAsar = dirname(module.path[0]);
+    const baseAsar = process.resourcesPath;
     const splashIndex = formatUrl({
       protocol: 'file',
       slashes: true,
-      pathname: join(baseAsar, 'app_bootstrap/splash/index.html')
+      pathname: join(baseAsar, 'app.asar', 'app_bootstrap/splash/index.html')
     });
     const windowSettings = {
       /*

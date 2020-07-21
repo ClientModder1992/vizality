@@ -85,15 +85,15 @@ class UpdaterSettings extends React.PureComponent {
         <div className="about">
           <div>
             <span>{Messages.VIZALITY_UPDATES_UPSTREAM}</span>
-            <span>{vizality.gitInfos.upstream.replace(REPO_URL, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
+            <span>{vizality.git.upstream.replace(REPO_URL, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
           </div>
           <div>
             <span>{Messages.VIZALITY_UPDATES_REVISION}</span>
-            <span>{vizality.gitInfos.revision.substring(0, 7)}</span>
+            <span>{vizality.git.revision.substring(0, 7)}</span>
           </div>
           <div>
             <span>{Messages.VIZALITY_UPDATES_BRANCH}</span>
-            <span>{vizality.gitInfos.branch}</span>
+            <span>{vizality.git.branch}</span>
           </div>
         </div>
       </div>
@@ -375,16 +375,16 @@ class UpdaterSettings extends React.PureComponent {
 
           <b>Git</b>
           <div className='row'>
-            <div className='column'>Upstream:&#10;{vizality.gitInfos.upstream.replace(REPO_URL, 'Official')}</div>
+            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(REPO_URL, 'Official')}</div>
             <div className='column'>Revision:&#10;
               <a
-                href={`https://github.com/${vizality.gitInfos.upstream}/commit/${vizality.gitInfos.revision}`}
+                href={`https://github.com/${vizality.git.upstream}/commit/${vizality.git.revision}`}
                 target='_blank'
               >
-                [{vizality.gitInfos.revision.substring(0, 7)}]
+                [{vizality.git.revision.substring(0, 7)}]
               </a>
             </div>
-            <div className='column'>Branch:&#10;{vizality.gitInfos.branch}</div>
+            <div className='column'>Branch:&#10;{vizality.git.branch}</div>
             <div className='column'>{`Latest:\n${!this.props.getSetting('updates', []).find(update => update.id === 'vizality')}`}</div>
           </div>
 

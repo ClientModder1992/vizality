@@ -40,5 +40,5 @@ const SassClassFolder = join(LIBRARIES_FOLDER, 'sass', 'classes');
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();
 } else {
-  log(MODULE, SUBMODULE, null, `Directory 'src\\Vizality\\libraries\\sass\\classes' already exists. Skipping Sass class generation...`);
+  log(MODULE, SUBMODULE, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping Sass class generation...`);
 }

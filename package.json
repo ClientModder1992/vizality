@@ -16,19 +16,18 @@
     "url": "https://github.com/vizality/vizality/issues"
   },
   "_moduleAliases": {
-    "vizality": "src/Vizality/modules",
+    "vizality": "src/.vizality/modules",
     "@root": ".",
-    "@classes": "src/Vizality/modules/classes",
-    "@compilers": "src/Vizality/modules/compilers",
-    "@components": "src/Vizality/modules/components",
-    "@constants": "src/Vizality/modules/constants",
-    "@discord": "src/Vizality/modules/discord",
-    "@entities": "src/Vizality/modules/entities",
-    "@http": "src/Vizality/modules/http",
-    "@injector": "src/Vizality/modules/injector",
-    "@patcher": "src/Vizality/modules/patcher",
-    "@util": "src/Vizality/modules/util",
-    "@webpack": "src/Vizality/modules/webpack"
+    "@classes": "src/.vizality/modules/classes",
+    "@compilers": "src/.vizality/modules/compilers",
+    "@components": "src/.vizality/modules/components",
+    "@constants": "src/.vizality/modules/constants",
+    "@discord": "src/.vizality/modules/discord",
+    "@entities": "src/.vizality/modules/entities",
+    "@http": "src/.vizality/modules/http",
+    "@patcher": "src/.vizality/modules/patcher",
+    "@util": "src/.vizality/modules/util",
+    "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {
     "codemirror": "^5.54.0",

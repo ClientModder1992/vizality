@@ -48,7 +48,7 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  */
 
 /**
- * @typedef GitInfos
+ * @typedef Git
  * @property {String} upstream
  * @property {String} branch
  * @property {String} revision
@@ -60,25 +60,27 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  * @property {VizalityAPI} api
  * @property {StyleManager} styleManager
  * @property {PluginManager} pluginManager
- * @property {APIManager} apiManager
- * @property {GitInfos} gitInfos
- * @property {Boolean} initialized
+ * @property {APIManager} _apiManager
+ * @property {Git} git
+ * @property {Boolean} _initialized
  */
 class Vizality extends Updatable {
   constructor () {
     super(join(__dirname, '..', '..'), '', 'vizality');
 
     this.api = {};
-    this.gitInfos = {
+    this.git = {
       upstream: '???',
       branch: '???',
       revision: '???'
     };
-    this.initialized = false;
+
     this.styleManager = new StyleManager();
     this.pluginManager = new PluginManager();
-    this.apiManager = new APIManager();
-    this.originalLogFunc = {};
+
+    this._initialized = false;
+    this._apiManager = new APIManager();
+    this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
 
@@ -103,7 +105,7 @@ class Vizality extends Updatable {
 
     // Start
     await this.startup();
-    this.gitInfos = await this.pluginManager.get('vz-updater').getGitInfos();
+    this.git = await this.pluginManager.get('vz-updater')._getGitInfo();
 
     this.emit('loaded');
   }
@@ -111,15 +113,15 @@ class Vizality extends Updatable {
   // Vizality startup
   async startup () {
     // To achieve that pure console look ( ͡° ͜ʖ ͡°)
-    // console.clear();
+    console.clear();
+
+    const startupBanner = `${IMAGES}/console-startup-banner.png`;
 
     // Startup banner
-    console.log('%c ',
-      `background: url(${IMAGES}/console-startup-banner.png) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`
-    );
+    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`);
 
     // APIs
-    await this.apiManager.startAPIs();
+    await this._apiManager.startAPIs();
     this.settings = vizality.api.settings.buildCategoryObject('vz-general');
     this.emit('settingsReady');
 
@@ -139,7 +141,7 @@ class Vizality extends Updatable {
     // Plugins
     await this.pluginManager.startPlugins();
 
-    this.initialized = true;
+    this._initialized = true;
 
     // This needs to be here, after the Webpack modules have been initialized
     const { routes: { getCurrentRoute } } = require('@discord');
@@ -153,7 +155,7 @@ class Vizality extends Updatable {
 
   // Vizality shutdown
   async shutdown () {
-    this.initialized = false;
+    this._initialized = false;
 
     // Unpatch Discord's console logs
     this._unpatchDiscordLogs();
@@ -165,7 +167,7 @@ class Vizality extends Updatable {
     this.styleManager.unloadThemes();
 
     // APIs
-    await this.apiManager.unload();
+    await this._apiManager.unload();
   }
 
   // Bad code
@@ -189,7 +191,7 @@ class Vizality extends Updatable {
   _patchDiscordLogs () {
     const Log = getModuleByPrototypes([ '_log' ]);
 
-    this.originalLogFunc._log = this.originalLogFunc._log || Log.prototype._log;
+    this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
     Log.prototype._log = function (firstArg, ...originalArgs) {
       const MODULE = 'Discord';
       const SUBMODULE = this.name;
@@ -212,7 +214,7 @@ class Vizality extends Updatable {
   _removeDiscordLogs () {
     const Log = getModuleByPrototypes([ '_log' ]);
 
-    this.originalLogFunc._log = this.originalLogFunc._log || Log.prototype._log;
+    this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
     // eslint-disable-next-line no-empty-function
     Log.prototype._log = function () { };
   }
@@ -220,7 +222,7 @@ class Vizality extends Updatable {
   // Unpatch Discord's logs back to the default style
   _unpatchDiscordLogs () {
     const Log = getModuleByPrototypes([ '_log' ]);
-    Log.prototype._log = vizality.originalLogFunc._log;
+    Log.prototype._log = vizality._originalLogFunc._log;
   }
 
   _patchWebSocket () {

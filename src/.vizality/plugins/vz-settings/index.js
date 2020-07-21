@@ -63,7 +63,7 @@ module.exports = class Settings extends Plugin {
         );
       }
 
-      const latestCommitHash = vizality.gitInfos.revision.substring(0, 7);
+      const latestCommitHash = vizality.git.revision.substring(0, 7);
       const debugInfo = sections[sections.findIndex(c => c.section === 'CUSTOM') + 1];
       if (debugInfo) {
         debugInfo.element = ((_element) => function () {
@@ -74,7 +74,7 @@ module.exports = class Settings extends Plugin {
                 props: Object.assign({}, res.props.children[0].props, {
                   children: [ 'Vizality', ' ', React.createElement('span', {
                     className: res.props.children[0].props.children[4].props.className,
-                    children: [ vizality.gitInfos.branch, ' (', latestCommitHash, ')' ]
+                    children: [ vizality.git.branch, ' (', latestCommitHash, ')' ]
                   }) ]
                 })
               })

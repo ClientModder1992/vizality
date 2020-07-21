@@ -5,8 +5,6 @@ const { React, getModule } = require('@webpack');
 module.exports = async () => {
   const Avatar = await getModule('AnimatedAvatar', true);
   patch('vz-utility-classes-avatar', Avatar, 'default', (args, res) => {
-    console.log(args);
-    console.log(res);
     const avatar = args[0].src || void 0;
     if (avatar && avatar.includes('/avatars')) {
       [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);

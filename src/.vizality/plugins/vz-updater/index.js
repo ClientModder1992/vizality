@@ -236,7 +236,7 @@ module.exports = class Updater extends Plugin {
     this.settings.set('updates', this.settings.get('updates', []).filter(u => u.id !== id));
   }
 
-  async getGitInfos () {
+  async _getGitInfo () {
     const branch = await exec('git branch', this.cwd)
       .then(({ stdout }) =>
         stdout

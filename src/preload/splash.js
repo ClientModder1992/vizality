@@ -7,7 +7,7 @@ window.__SPLASH__ = true;
 // CSS Injection
 function init () {
   document.documentElement.setAttribute('vizality', '');
-  const StyleManager = require('../Vizality/managers/styleManager');
+  const StyleManager = require('../.vizality/managers/styleManager');
   global.sm = new StyleManager();
   global.sm.loadThemes();
 }

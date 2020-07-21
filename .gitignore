@@ -3,15 +3,15 @@
 node_modules
 package-lock.json
 
-# src/Vizality/plugins/*
-!src/Vizality/plugins/vz-*
-src/Vizality/plugins/text-react/
-src/Vizality/plugins/vz-react-dev-tools/rdt.crx
-src/Vizality/plugins/vz-react-dev-tools/react-dev-tools/*
+# src/.vizality/plugins/*
+!src/.vizality/plugins/vz-*
+src/.vizality/plugins/text-react/
+src/.vizality/plugins/vz-react-dev-tools/rdt.crx
+src/.vizality/plugins/vz-react-dev-tools/react-dev-tools/*
 
-src/Vizality/themes/*
-# !src/Vizality/themes/twitchcord
-!src/Vizality/themes/.exists
+src/.vizality/themes/*
+# !src/.vizality/themes/twitchcord
+!src/.vizality/themes/.exists
 
 settings/*.json
 
