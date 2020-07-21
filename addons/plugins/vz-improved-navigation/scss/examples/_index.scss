@@ -1,4 +1,4 @@
-@use '../../../../libraries/sass/classes/layout/chat' as Chat;
+@use '../../../../../src/.vizality/libraries/sass/classes/layout/chat' as Chat;
 
 #{Chat.$markup} {
   color: red!important;
