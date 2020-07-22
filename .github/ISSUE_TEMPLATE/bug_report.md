@@ -2,26 +2,29 @@
 name: Bug Report
 about: Create a report to help us improve
 title: 'Short description of the bug'
-labels: 'bug'
+labels: 'bug', 'pending review'
 assignees: ''
 
 ---
 
-**Describe the bug**
+**Description**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
+**Steps to reproduce**
+A description or list of steps taken to reproduce the behavior.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows]
- - Vizality version: [You can find it in the Updater tab in your Discord settings]
+**Desktop:**
+ - Operating system: [e.g., Windows 10]
+ - Vizality revision: [You can find it in the Updater tab in your Discord settings]
 
 **Additional context**
- - [ ] I checked if Discord and/or Vizality are up to date
- - [ ] I made sure this is not related to an external plugin or a theme
- 
-Add any other context about the problem here.
+Add any other context, screenshots, or info about the bug here.
+
+----
+
+ - [ ] I have checked to make sure that Discord and Vizality are both up-to-date
+ - [ ] I have checked to make sure this bug is not related to an external plugin or theme
+ - [ ] I have checked to make sure this bug has not already been reported
