@@ -3,7 +3,7 @@ const { Icon } = require('@components');
 
 const { remote: { getCurrentWebContents } } = require('electron');
 
-const store = require('../../../apis/settingsStore/store');
+const store = require('../../../api/settingsStore/store');
 
 class Titlebar extends React.PureComponent {
   componentDidMount () {

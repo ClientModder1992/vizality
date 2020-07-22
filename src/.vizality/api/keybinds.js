@@ -1,8 +1,10 @@
+const { MODULES_FOLDER } = require('@constants');
 const { API } = require('@entities');
 
 const { remote: { globalShortcut } } = require('electron');
+const { join } = require('path');
 
-const localShortcut = require('../modules/keybindutils/localShortcut');
+const localShortcut = require(join(MODULES_FOLDER, '.keybindutils','localShortcut'));
 
 /* @todo: Convert errors to logger. */
 

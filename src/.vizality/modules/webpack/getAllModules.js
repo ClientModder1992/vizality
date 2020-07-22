@@ -8,8 +8,8 @@ const _getModules = require('./_getModules');
  * @returns {Array<object>} The found modules.
  */
 const getAllModules = (filter) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Webpack:getAllModules';
+  const module = 'Module';
+  const submodule = 'Webpack:getAllModules';
 
   const originalFilter = filter;
   let outputModule = `${filter}`;
@@ -19,7 +19,7 @@ const getAllModules = (filter) => {
     outputModule = `[ '${originalFilter.join('\', \'')}' ]`;
   }
 
-  return _getModules(filter, true) || warn(MODULE, SUBMODULE, null, `Module called but not found: getAllModules(${outputModule})`);
+  return _getModules(filter, true) || warn(module, submodule, null, `Module called but not found: getAllModules(${outputModule})`);
 };
 
 module.exports = getAllModules;

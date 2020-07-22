@@ -4,8 +4,8 @@ const { logger: { warn } } = require('@util');
 const _getRoutes = require('./_getRoutes');
 
 const getCurrentRoute = () => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:routes:getCurrentRoute';
+  const module = 'Module';
+  const submodule = 'Discord:routes:getCurrentRoute';
 
   const routes = _getRoutes();
   /* const historyRoute = currentWebContents.history[currentWebContents.history.length - 2]; */
@@ -23,7 +23,7 @@ const getCurrentRoute = () => {
     }
   }
 
-  warn(MODULE, SUBMODULE, null, `The current route is unknown.`);
+  warn(module, submodule, null, `The current route is unknown.`);
 
   return 'unknown';
 };

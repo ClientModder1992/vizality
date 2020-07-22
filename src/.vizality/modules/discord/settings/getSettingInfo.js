@@ -1,8 +1,8 @@
 const { logger: { log, warn } } = require('@util');
 
 const getSettingInfo = (setting) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:settings:getSettingInfo';
+  const module = 'Module';
+  const submodule = 'Discord:settings:getSettingInfo';
 
   const SETTINGS_INFO = {
     afkTimeout: [
@@ -118,17 +118,17 @@ const getSettingInfo = (setting) => {
   SETTINGS_INFO.showSpoilers = SETTINGS_INFO.renderSpoilers;
 
   if (!setting) {
-    log(MODULE, SUBMODULE, null, 'List of available settings:');
+    log(module, submodule, null, 'List of available settings:');
     return Object.keys(SETTINGS_INFO);
   }
 
   for (const info of Object.keys(SETTINGS_INFO)) {
     if (info === setting) {
-      return SETTINGS_INFO[info].forEach(descriptor => log(MODULE, SUBMODULE, null, descriptor));
+      return SETTINGS_INFO[info].forEach(descriptor => log(module, submodule, null, descriptor));
     }
   }
 
-  return warn(MODULE, SUBMODULE, null, `Info on '${setting}' is not available.`);
+  return warn(module, submodule, null, `Info on '${setting}' is not available.`);
 };
 
 module.exports = getSettingInfo;

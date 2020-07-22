@@ -13,15 +13,15 @@ const Patcher = require('../patcher');
  * @param {Boolean} pre Whether the injection should run before original code or not
  */
 const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Patcher:patch';
+  const module = 'Module';
+  const submodule = 'Patcher:patch';
 
   if (!moduleToPatch) {
-    return error(MODULE, SUBMODULE, null, `Tried to patch undefined (patch ID '${patchId}').`);
+    return error(module, submodule, null, `Tried to patch undefined (patch ID '${patchId}').`);
   }
 
   if (Patcher.patches.find(i => i.id === patchId)) {
-    return error(MODULE, SUBMODULE, null, `Patch ID '${patchId}' is already used!`);
+    return error(module, submodule, null, `Patch ID '${patchId}' is already used!`);
   }
 
   if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {

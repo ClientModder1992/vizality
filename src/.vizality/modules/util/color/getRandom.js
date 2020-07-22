@@ -5,8 +5,8 @@ const _hex2rgb = require('./_hex2rgb');
 const _hex2hsl = require('./_hex2hsl');
 
 const getRandom = (type) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:color:getRandom';
+  const module = 'Module';
+  const submodule = 'Util:color:getRandom';
 
   if (!type) type = 'hex';
 
@@ -26,7 +26,7 @@ const getRandom = (type) => {
     case 'int':
       return _hex2int(color);
     default:
-      return warn(MODULE, SUBMODULE, null, `Input type '${type}' is not a valid color type. Please choose 'hex', 'rgb', 'hsl', or 'int'.`);
+      return warn(module, submodule, null, `Input type '${type}' is not a valid color type. Please choose 'hex', 'rgb', 'hsl', or 'int'.`);
   }
 };
 

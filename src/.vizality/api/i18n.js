@@ -1,9 +1,8 @@
-const { VIZALITY_FOLDER } = require('@constants');
 const { getModule, i18n } = require('@webpack');
+const { I18N_FOLDER } = require('@constants');
 const { API } = require('@entities');
-const { join } = require('path');
 
-const strings = require(join(VIZALITY_FOLDER, 'locales'));
+const strings = require(I18N_FOLDER);
 
 class I18nAPI extends API {
   constructor () {

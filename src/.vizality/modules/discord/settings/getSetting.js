@@ -1,11 +1,11 @@
-const { getModule } = require('@webpack');
 const { logger: { warn } } = require('@util');
+const { getModule } = require('@webpack');
 
 const getSettingInfo = require('./getSettingInfo');
 
 const getSetting = (setting) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:settings:getSetting';
+  const module = 'Module';
+  const submodule = 'Discord:settings:getSetting';
 
   if (!setting) return getSettingInfo();
 
@@ -64,7 +64,7 @@ const getSetting = (setting) => {
     case 'showSpoilers':
       return settings.renderSpoilers;
     default:
-      return settings[setting] || moreSettings[setting] || warn(MODULE, SUBMODULE, null, `'${setting}' is not an available setting.`);
+      return settings[setting] || moreSettings[setting] || warn(module, submodule, null, `'${setting}' is not an available setting.`);
   }
 };
 

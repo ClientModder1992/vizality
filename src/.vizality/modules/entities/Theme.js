@@ -1,5 +1,5 @@
+const { dom: { createElement }, logger: { error, log, warn } } = require('@util');
 const { resolveCompiler } = require('@compilers');
-const { dom: { createElement }, logger } = require('@util');
 
 const Updatable = require('./Updatable');
 
@@ -11,9 +11,9 @@ class Theme extends Updatable {
     this.manifest = manifest;
     this.applied = false;
 
-    this.MODULE = 'Theme';
-    this.SUBMODULE = this.manifest.name;
-    this.SUBMODULE_COLOR = this.manifest.color || null;
+    this.module = 'Theme';
+    this.submodule = this.manifest.name;
+    this.submoduleColor = this.manifest.color || null;
   }
 
   apply () {
@@ -47,15 +47,15 @@ class Theme extends Updatable {
   }
 
   log (...data) {
-    logger.log(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    log(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   error (...data) {
-    logger.error(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    error(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   warn (...data) {
-    logger.warn(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    warn(this.module, this.submodule, this.submoduleColor, ...data);
   }
 }
 

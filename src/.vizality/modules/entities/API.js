@@ -5,8 +5,8 @@ const Events = require('events');
 class API extends Events {
   constructor () {
     super();
-    this.MODULE = 'API';
-    this.SUBMODULE = this.constructor.name;
+    this.module = 'API';
+    this.submodule = this.constructor.name;
     this.ready = false;
   }
 
@@ -15,10 +15,10 @@ class API extends Events {
       if (typeof this.startAPI === 'function') {
         await this.startAPI();
       }
-      log(this.MODULE, this.SUBMODULE, null, 'API loaded.');
+      log(this.module, this.submodule, null, 'API loaded.');
       this.ready = true;
     } catch (e) {
-      error(this.MODULE, this.SUBMODULE, null, 'An error occurred during initialization!', e);
+      error(this.module, this.submodule, null, 'An error occurred during initialization!', e);
     }
   }
 
@@ -28,9 +28,9 @@ class API extends Events {
         await this.apiWillUnload();
       }
       this.ready = false;
-      log(this.MODULE, this.SUBMODULE, null, 'Plugin unloaded.');
+      log(this.module, this.submodule, null, 'Plugin unloaded.');
     } catch (e) {
-      error(this.MODULE, this.SUBMODULE, null,
+      error(this.module, this.submodule, null,
         'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e
       );
     }

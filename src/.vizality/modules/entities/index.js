@@ -1,6 +1,8 @@
-module.exports = {
-  Updatable: require('./Updatable'),
-  API: require('./API'),
-  Plugin: require('./Plugin'),
-  Theme: require('./Theme')
-};
+require('fs')
+  .readdirSync(__dirname)
+  .filter(file => file !== 'index.js')
+  .forEach(filename => {
+    const moduleName = filename.split('.')[0];
+    exports[moduleName] = require(`${__dirname}/${filename}`);
+  });
+  

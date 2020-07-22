@@ -2,16 +2,16 @@ const { getModule } = require('@webpack');
 const { logger: { warn } } = require('@util');
 
 const setSetting = async (setting, value, sync = true) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:settings:setSetting';
+  const module = 'Module';
+  const submodule = 'Discord:settings:setSetting';
 
   const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
   const moreSettings = getModule('darkSidebar', 'fontScale', 'fontSize');
 
   /*
-   * `updateRemoteSettings` has to be written this way instead of using destructuring
+   * `updateRemoteSettings` must be written this way instead of using destructuring
    * because in the `updateRemoteSettings` function, Discord uses `this` to reference
-   * itself and call the `updateLocalSettings` function
+   * the function's self and call the `updateLocalSettings` function.
    */
   const updateRemoteSettings = getModule('updateRemoteSettings');
   const { updateLocalSettings } = getModule('updateLocalSettings');
@@ -20,11 +20,11 @@ const setSetting = async (setting, value, sync = true) => {
   const fix = `Use 'Discord:settings:getSettingInfo()' to see appropriate options.`;
 
   if (!setting || typeof setting !== 'string' || (!settings[setting] && !moreSettings[setting])) {
-    return warn(MODULE, SUBMODULE, null, `You must enter a valid setting name of type string. ${fix}`);
+    return warn(module, submodule, null, `You must enter a valid setting name of type string. ${fix}`);
   }
 
   if (!value) {
-    return warn(MODULE, SUBMODULE, null, `You must enter a valid value for '${setting}'. ${fix}`);
+    return warn(module, submodule, null, `You must enter a valid value for '${setting}'. ${fix}`);
   }
 
   if (sync === true) {

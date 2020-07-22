@@ -1,8 +1,8 @@
 const { warn } = require('../logger');
 
 const getType = (color) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:color:getType';
+  const module = 'Module';
+  const submodule = 'Util:color:getType';
 
   const ex = {
     hex: /^#([\da-f]{3}){1,2}$/i,
@@ -22,7 +22,7 @@ const getType = (color) => {
     return 'int';
   }
 
-  return warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
+  return warn(module, submodule, null, `Input color '${color}' is not a recognized color type.`);
 };
 
 module.exports = getType;

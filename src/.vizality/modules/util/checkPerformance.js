@@ -1,11 +1,11 @@
 const { log, warn } = require('./logger');
 
 const checkPerformance = async (...cases) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:checkPerformance';
+  const module = 'Module';
+  const submodule = 'Util:checkPerformance';
 
   if (cases.length < 1) {
-    return warn(MODULE, SUBMODULE, null, 'You must enter at least 1 code segment in the form of a string.');
+    return warn(module, submodule, null, 'You must enter at least 1 code segment in the form of a string.');
   }
 
   const outcome = {};
@@ -21,7 +21,7 @@ const checkPerformance = async (...cases) => {
 
     const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');
 
-    log(MODULE, SUBMODULE, null, `Case #${caseNumber} took ${time} ms.`);
+    log(module, submodule, null, `Case #${caseNumber} took ${time} ms.`);
 
     outcome[caseNumber] = time;
   }
@@ -38,7 +38,7 @@ const checkPerformance = async (...cases) => {
 
   const percentPerformanceGain = parseFloat(((timeDifference / winningTime) * 100).toFixed(2));
 
-  return log(MODULE, SUBMODULE, null, `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's ${percentPerformanceGain}% faster than second place!`);
+  return log(module, submodule, null, `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's ${percentPerformanceGain}% faster than second place!`);
 };
 
 module.exports = checkPerformance;

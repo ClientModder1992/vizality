@@ -9,8 +9,8 @@ const getType = require('./getType');
  * @todo: Make this work with 8-digit hex numbers, rgba, and hsla.
  */
 const toInt = (color) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:color:toInt';
+  const module = 'Module';
+  const submodule = 'Util:color:toInt';
 
   const colorType = getType(color);
 
@@ -24,7 +24,7 @@ const toInt = (color) => {
     case 'hsl':
       return _hsl2int(color);
     default:
-      return warn(MODULE, SUBMODULE, null, `Input color '${color}' is not a recognized color type.`);
+      return warn(module, submodule, null, `Input color '${color}' is not a recognized color type.`);
   }
 };
 

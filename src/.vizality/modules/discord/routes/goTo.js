@@ -4,13 +4,13 @@ const { logger: { warn } } = require('@util');
 const _getRoutes = require('./_getRoutes');
 
 const goTo = (location) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Discord:routes:goTo';
+  const module = 'Module';
+  const submodule = 'Discord:routes:goTo';
 
   const routeList = Object.keys(_getRoutes()).filter(r => r !== 'guild');
 
   if (!location) {
-    return warn(MODULE, SUBMODULE, null, `You must enter a valid route string. List of available routes:`, routeList);
+    return warn(module, submodule, null, `You must enter a valid route string. List of available routes:`, routeList);
   }
 
   const router = getModule('transitionTo');
@@ -37,7 +37,7 @@ const goTo = (location) => {
     case 'nitro':
       return router.transitionTo(Routes.APPLICATION_STORE);
     default:
-      return warn(MODULE, SUBMODULE, null, `The route '${location}' was not found. List of available routes:`, routeList);
+      return warn(module, submodule, null, `The route '${location}' was not found. List of available routes:`, routeList);
   }
 };
 

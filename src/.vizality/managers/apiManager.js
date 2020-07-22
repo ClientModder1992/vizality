@@ -1,3 +1,4 @@
+const { API_FOLDER } = require('@constants');
 const { logger: { error } } = require('@util');
 
 const { join } = require('path');
@@ -5,13 +6,13 @@ const { readdirSync, statSync } = require('fs');
 
 class APIManager {
   constructor () {
-    this.apiDir = join(__dirname, '..', 'apis');
+    this.dir = API_FOLDER;
     this.apis = [];
   }
 
   mount (api) {
     try {
-      const APIClass = require(join(this.apiDir, api));
+      const APIClass = require(join(this.dir, api));
       api = api.replace(/\.js$/, '');
       vizality.api[api] = new APIClass();
       this.apis.push(api);
@@ -35,8 +36,8 @@ class APIManager {
   // Start
   async startAPIs () {
     this.apis = [];
-    readdirSync(this.apiDir)
-      .filter(f => statSync(join(this.apiDir, f)).isFile())
+    readdirSync(this.dir)
+      .filter(f => statSync(join(this.dir, f)).isFile())
       .forEach(filename => this.mount(filename));
     await this.load();
   }

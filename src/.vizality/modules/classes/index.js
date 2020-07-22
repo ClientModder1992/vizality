@@ -33,12 +33,12 @@ exports = classes;
 
 _checkForUndefined();
 
-const MODULE = 'Module';
-const SUBMODULE = 'Classes';
+const _module = 'Module';
+const _submodule = 'Classes';
 const SassClassFolder = join(LIBRARIES_FOLDER, 'sass', 'classes');
 
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();
 } else {
-  log(MODULE, SUBMODULE, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping Sass class generation...`);
+  log(_module, _submodule, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping Sass class file generation...`);
 }

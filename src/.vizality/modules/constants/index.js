@@ -11,10 +11,24 @@ const constants = Object.freeze({
   SETTINGS_FOLDER: join(__dirname, '..', '..', '..', '..', 'settings'),
   CACHE_FOLDER: join(__dirname, '..', '..', '..', '..', '.cache'),
   LOGS_FOLDER: join(__dirname, '..', '..', '..', '..', '.logs'),
+
+  // Dirs
   ROOT_FOLDER: join(__dirname, '..', '..', '..', '..'),
-  VIZALITY_FOLDER: join(__dirname, '..', '..'),
-  LIBRARIES_FOLDER: join(__dirname, '..', '..', 'libraries'),
-  MODULES_FOLDER: join(__dirname, '..'),
+  PLUGINS_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins'),
+  THEMES_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'themes'),
+  // --
+    SRC_FOLDER: join(__dirname, '..', '..', '..'),
+    // --
+      VIZALITY_FOLDER: join(__dirname, '..', '..'),
+      // ---
+        API_FOLDER: join(__dirname, '..', '..', 'api'),
+        CORE_FOLDER: join(__dirname, '..', '..', 'core'),
+        I18N_FOLDER: join(__dirname, '..', '..', 'i18n'),
+        LIBRARIES_FOLDER: join(__dirname, '..', '..', 'libraries'),
+        MANAGERS_FOLDER: join(__dirname, '..', '..', 'managers'),
+        STYLES_FOLDER: join(__dirname, '..', '..', 'styles'),
+        MODULES_FOLDER: join(__dirname, '..'),
+
 
   // Discord Server
   INVITE_CODE: '42B8AC9',

@@ -3,8 +3,8 @@ const { toPlural } = require('../string');
 const _traverse = require('./_traverse');
 
 const _find = (object, targetValue, exact = false, type) => {
-  const MODULE = 'Module';
-  const SUBMODULE = `Util:object:${
+  const module = 'Module';
+  const submodule = `Util:object:${
     type === 'key'
       ? 'findEntriesByKey'
       : type === 'value'
@@ -14,7 +14,7 @@ const _find = (object, targetValue, exact = false, type) => {
           : '_find'}`;
 
   if (typeof targetValue !== 'string' || targetValue.trim() === '') {
-    return error(MODULE, SUBMODULE, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
+    return error(module, submodule, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
   }
 
   let results;
@@ -22,7 +22,7 @@ const _find = (object, targetValue, exact = false, type) => {
   if (type === 'key' || type === 'value' || type === 'all') {
     results = [ ..._traverse(object, targetValue, exact, type) ];
   } else {
-    return error(MODULE, SUBMODULE, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
+    return error(module, submodule, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
   }
 
   const tempResults = [ ...results ];
@@ -32,11 +32,11 @@ const _find = (object, targetValue, exact = false, type) => {
 
   /*
    * if (!results || !results.length) {
-   *   return log(MODULE, SUBMODULE, null, `${results.length} ${resultsText} found for values ${choiceWord} '${targetValue}':`);
+   *   return log(module, submodule, null, `${results.length} ${resultsText} found for values ${choiceWord} '${targetValue}':`);
    * }
    */
 
-  log(MODULE, SUBMODULE, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
+  log(module, submodule, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
   if (exact) {
     results = results.map(result => result).join('\n');

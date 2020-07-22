@@ -7,8 +7,8 @@ const { promises: { writeFile, mkdir }, existsSync } = require('fs');
 const classes = require('../classes');
 
 const _generateSassClasses = async (obj = classes, currentPath = '') => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Classes:_generateSassClasses';
+  const module = 'Module';
+  const submodule = 'Classes:_generateSassClasses';
 
   const SassClassFolder = join(LIBRARIES_FOLDER, 'sass', 'classes');
 
@@ -25,7 +25,7 @@ const _generateSassClasses = async (obj = classes, currentPath = '') => {
     } else if (typeof obj[key] === 'string') {
       generatedSass += `$${key}: '.${obj[key].split(' ')[0]}';\n`;
     } else if (typeof obj[key] === 'undefined') {
-      warn(MODULE, SUBMODULE, null, `No value found for '${currentPath}.${key}'`);
+      warn(module, submodule, null, `No value found for '${currentPath}.${key}'`);
     }
   }
 

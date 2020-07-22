@@ -114,7 +114,6 @@ class Vizality extends Updatable {
   async startup () {
     // To achieve that pure console look ( ͡° ͜ʖ ͡°)
     // console.clear();
-    console.log(ROOT_FOLDER, '', 'vizality');
 
     const startupBanner = `${IMAGES}/console-startup-banner.png`;
 
@@ -194,19 +193,19 @@ class Vizality extends Updatable {
 
     this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
     Log.prototype._log = function (firstArg, ...originalArgs) {
-      const MODULE = 'Discord';
-      const SUBMODULE = this.name;
+      const module = 'Discord';
+      const submodule = this.name;
 
       if (firstArg === 'info' || firstArg === 'log') {
-        log(MODULE, SUBMODULE, null, ...originalArgs);
+        log(module, submodule, null, ...originalArgs);
       }
 
       if (firstArg === 'error' || firstArg === 'trace') {
-        error(MODULE, SUBMODULE, null, ...originalArgs);
+        error(module, submodule, null, ...originalArgs);
       }
 
       if (firstArg === 'warn') {
-        warn(MODULE, SUBMODULE, null, ...originalArgs);
+        warn(module, submodule, null, ...originalArgs);
       }
     };
   }

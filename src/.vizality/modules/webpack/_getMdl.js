@@ -10,10 +10,10 @@ const _getModules = require('./_getModules');
  * @returns {Promise<object>|object} The found module. A promise will always be returned, unless retry is false.
  */
 const _getMdl = (filter, retry = false, forever = false, caller = '_getMdl', filterArg = filter) => {
-  const MODULE = 'Module';
-  const SUBMODULE = `Webpack:${caller}`;
+  const module = 'Module';
+  const submodule = `Webpack:${caller}`;
 
-  if (!filter) return warn(MODULE, SUBMODULE, null, 'You must provide at least 1 argument.');
+  if (!filter) return warn(module, submodule, null, 'You must provide at least 1 argument.');
 
   const originalFilter = filter;
   let outputModule = caller === 'getModuleByDisplayName' ? `'${filterArg}'` : `${filterArg}`;
@@ -24,7 +24,7 @@ const _getMdl = (filter, retry = false, forever = false, caller = '_getMdl', fil
   }
 
   if (!retry) {
-    return _getModules(filter) || warn(MODULE, SUBMODULE, null, `Module not found: ${caller}(${outputModule})`);
+    return _getModules(filter) || warn(module, submodule, null, `Module not found: ${caller}(${outputModule})`);
   }
 
   return new Promise(async (res) => {

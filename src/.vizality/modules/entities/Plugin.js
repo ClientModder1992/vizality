@@ -1,5 +1,5 @@
+const { dom: { createElement }, logger: { error, log, warn }, sleep } = require('@util');
 const { resolveCompiler } = require('@compilers');
-const { sleep, dom: { createElement }, logger } = require('@util');
 
 const { existsSync } = require('fs');
 const { join } = require('path');
@@ -20,9 +20,9 @@ class Plugin extends Updatable {
     this.ready = false;
     this.styles = {};
 
-    this.MODULE = 'Plugin';
-    this.SUBMODULE = this.constructor.name;
-    this.SUBMODULE_COLOR = this.manifest.color || null;
+    this.module = 'Plugin';
+    this.submodule = this.constructor.name;
+    this.submoduleColor = this.manifest.color || null;
   }
 
   // Getters
@@ -153,15 +153,15 @@ class Plugin extends Updatable {
   }
 
   log (...data) {
-    logger.log(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    log(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   error (...data) {
-    logger.error(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    error(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   warn (...data) {
-    logger.warn(this.MODULE, this.SUBMODULE, this.SUBMODULE_COLOR, ...data);
+    warn(this.module, this.submodule, this.submoduleColor, ...data);
   }
 }
 

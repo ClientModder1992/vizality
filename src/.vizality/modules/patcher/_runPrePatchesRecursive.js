@@ -3,8 +3,8 @@ const { logger : { error } } = require('@util');
 const Patcher = require('../patcher');
 
 const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Patcher';
+  const module = 'Module';
+  const submodule = 'Patcher';
 
   const patch = patches.pop();
   let args = patch.method.call(_this, originalArgs);
@@ -13,7 +13,7 @@ const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
   }
 
   if (!Array.isArray(args)) {
-    error(MODULE, SUBMODULE, null, `Pre-patch ${patch.id} returned something invalid. Patch will be ignored.`);
+    error(module, submodule, null, `Pre-patch ${patch.id} returned something invalid. Patch will be ignored.`);
     args = originalArgs;
   }
 

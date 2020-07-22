@@ -20,7 +20,6 @@ module.exports = class Updater extends Plugin {
   }
 
   async startPlugin () {
-    console.log(this.cwd);
     this.settings.set('paused', false);
     this.settings.set('failed', false);
     this.settings.set('updating', false);

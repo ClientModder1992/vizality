@@ -1,8 +1,8 @@
 const { warn } = require('../logger');
 
 const memoize = (object) => {
-  const MODULE = 'Module';
-  const SUBMODULE = 'Util:object:memoize';
+  const module = 'Module';
+  const submodule = 'Util:object:memoize';
 
   const proxy = new Proxy(object, {
     get (obj, mod) {
@@ -15,7 +15,7 @@ const memoize = (object) => {
       return obj[mod];
     },
     set (obj, mod, value) {
-      if (obj.hasOwnProperty(mod)) return warn(MODULE, SUBMODULE, null, 'Trying to overwrite existing property.');
+      if (obj.hasOwnProperty(mod)) return warn(module, submodule, null, 'Trying to overwrite existing property.');
       obj[mod] = value;
       return obj[mod];
     }
