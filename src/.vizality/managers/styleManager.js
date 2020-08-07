@@ -43,9 +43,11 @@ class StyleManager {
         this.__settings = {};
         try {
           this.__settings = require(join(SETTINGS_FOLDER, 'vz-general.json'));
-        } finally {
-          return this.__settings.disabledThemes || [];
+        } catch (err) {
+          // @todo: Handled this.
         }
+
+        return this.__settings.disabledThemes || [];
       }
     }
     return vizality.settings.get('disabledThemes', []);
@@ -74,7 +76,7 @@ class StyleManager {
     }
 
     vizality.settings.set('disabledThemes', this.disabledThemes.filter(p => p !== themeID));
-    this.themes.get(themeID).apply();
+    this.themes.get(themeID)._load();
   }
 
   disable (themeID) {
@@ -84,7 +86,7 @@ class StyleManager {
     }
 
     vizality.settings.set('disabledThemes', [ ...this.disabledThemes, themeID ]);
-    this.themes.get(themeID).remove();
+    this.themes.get(themeID)._unload();
   }
 
   async mount (themeID, filename) {
@@ -136,12 +138,12 @@ class StyleManager {
       throw new Error(`Tried to unmount a non installed theme (${themeID})`);
     }
 
-    theme.remove();
+    theme._unload();
     this.themes.delete(themeID);
   }
 
   // Start/Stop
-  async loadThemes (sync = false) {
+  async start (sync = false) {
     const missingThemes = [];
     const files = readdirSync(this.themesDir);
     for (const filename of files) {
@@ -166,7 +168,7 @@ class StyleManager {
           missingThemes.push(themeID);
         }
 
-        this.themes.get(themeID).apply();
+        this.themes.get(themeID)._load();
       }
     }
 
@@ -176,7 +178,7 @@ class StyleManager {
   }
 
   unloadThemes () {
-    [ ...this.themes.values() ].forEach(t => t.remove());
+    [ ...this.themes.values() ].forEach(t => t._unload());
   }
 
   _logError (errorType, args) {

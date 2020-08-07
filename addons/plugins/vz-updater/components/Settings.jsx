@@ -1,8 +1,8 @@
 const { settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
+const { joinClassNames, time } = require('@utilities');
 const { REPO, CACHE_FOLDER } = require('@constants');
-const { joinClassNames, time } = require('@util');
 const { Confirm } = require('@components/modal');
 
 const { readdirSync, existsSync } = require('fs');
@@ -299,8 +299,8 @@ class UpdaterSettings extends React.PureComponent {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
     const { _apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
-    const plugins = vizality.pluginManager.getPlugins().filter(plugin =>
-      !vizality.pluginManager.get(plugin).isInternal && vizality.pluginManager.isEnabled(plugin)
+    const plugins = vizality.manager.plugins.getAll().filter(plugin =>
+      !vizality.manager.plugins.isInternal(plugin) && vizality.manager.plugins.isEnabled(plugin)
     );
 
     const experimentOverrides = Object.keys(getExperimentOverrides()).length;
@@ -361,8 +361,8 @@ class UpdaterSettings extends React.PureComponent {
           <div className='row'>
             <div className='column'>Commands:&#10;{Object.keys(commands).length}</div>
             <div className='column'>Settings:&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
-            <div className='column'>Plugins:&#10;{vizality.pluginManager.getPlugins()
-              .filter(plugin => vizality.pluginManager.isEnabled(plugin)).length} / {vizality.pluginManager.plugins.size}
+            <div className='column'>Plugins:&#10;{vizality.manager.plugins.getAll()
+              .filter(plugin => vizality.manager.plugins.isEnabled(plugin)).length} / {vizality.manager.plugins.size}
             </div>
             <div className='column'>Themes:&#10;{vizality.styleManager.getThemes()
               .filter(theme => vizality.styleManager.isEnabled(theme)).length} / {vizality.styleManager.themes.size}

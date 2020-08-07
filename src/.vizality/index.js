@@ -1,17 +1,17 @@
-const { Updatable } = require('@entities');
-const { jsx: JsxCompiler } = require('@compilers');
 const { getModule, getModuleByPrototypes, _init } = require('@webpack');
-const { sleep, logger: { log, warn, error } } = require('@util');
+const { sleep, logger: { log, warn, error } } = require('@utilities');
 const { IMAGES, ROOT_FOLDER } = require('@constants');
+const { jsx: JsxCompiler } = require('@compilers');
+const { Updatable } = require('@entities');
 
-const { join } = require('path');
 const { promisify } = require('util');
 const cp = require('child_process');
+const { resolve } = require('path');
 const exec = promisify(cp.exec);
 
-const PluginManager = require('./managers/pluginManager');
+const AddonManager = require('./managers/addon');
 const StyleManager = require('./managers/styleManager');
-const APIManager = require('./managers/apiManager');
+const APIManager = require('./managers/api');
 
 const FluxModule = async () => {
   const Flux = getModule('Store', 'PersistedStore');
@@ -75,8 +75,11 @@ class Vizality extends Updatable {
       revision: '???'
     };
 
+    this.manager = {};
+
     this.styleManager = new StyleManager();
-    this.pluginManager = new PluginManager();
+    this.pluginManager = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
+    this.manager.plugins = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
 
     this._initialized = false;
     this._apiManager = new APIManager();
@@ -91,7 +94,7 @@ class Vizality extends Updatable {
     }
   }
 
-  // Vizality initialization
+  // Initialization
   async init () {
     const isOverlay = (/overlay/).test(location.pathname);
     if (isOverlay) { // eh
@@ -110,36 +113,34 @@ class Vizality extends Updatable {
     this.emit('loaded');
   }
 
-  // Vizality startup
+  // Startup
   async startup () {
-    // To achieve that pure console look ( ͡° ͜ʖ ͡°)
-    // console.clear();
+    // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
+    console.clear();
 
-    const startupBanner = `${IMAGES}/console-startup-banner.png`;
+    const startupBanner = `${IMAGES}/console-startup-banner.gif`;
 
     // Startup banner
-    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 63px 242px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
 
     // APIs
-    await this._apiManager.startAPIs();
+    await this._apiManager.start();
     this.settings = vizality.api.settings.buildCategoryObject('vz-general');
     this.emit('settingsReady');
 
     // @todo: Make this and _removeDiscordLogs settings options
 
     // Patch Discord's console logs
-    /*
-     * this._patchDiscordLogs();
-     */
+    // this._patchDiscordLogs();
 
     // Remove Discord's console logs
     this._removeDiscordLogs();
 
     // Style Manager
-    this.styleManager.loadThemes();
+    this.styleManager.start();
 
     // Plugins
-    await this.pluginManager.startPlugins();
+    await this.pluginManager.start();
 
     this._initialized = true;
 

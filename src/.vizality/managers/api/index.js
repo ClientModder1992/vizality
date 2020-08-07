@@ -1,8 +1,8 @@
+const { logger: { error } } = require('@utilities');
 const { API_FOLDER } = require('@constants');
-const { logger: { error } } = require('@util');
 
-const { join } = require('path');
 const { readdirSync, statSync } = require('fs');
+const { join } = require('path');
 
 class APIManager {
   constructor () {
@@ -17,7 +17,7 @@ class APIManager {
       vizality.api[api] = new APIClass();
       this.apis.push(api);
     } catch (e) {
-      error('Manager', 'API', null, `An error occurred while initializing "${api}"!`, e);
+      error('Manager', 'API', null, `An error occurred while initializing '${api}'!`, e);
     }
   }
 
@@ -34,7 +34,7 @@ class APIManager {
   }
 
   // Start
-  async startAPIs () {
+  async start () {
     this.apis = [];
     readdirSync(this.dir)
       .filter(f => statSync(join(this.dir, f)).isFile())
