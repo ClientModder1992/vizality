@@ -7,7 +7,7 @@
   color: var(--text-normal);
   display: flex;
   position: absolute;
-  animation: blurFadeIn 0.3s ease both;
+  animation: slideInFromBottom 0.5s ease both;
   max-width: 540px;
   min-width: 340px;
   z-index: 999;
@@ -33,7 +33,7 @@
     left: 25px;
   }
   &.vz-isClosing {
-    animation: blurFadeOut 0.3s ease both;
+    animation: fadeOut 0.2s ease both;
   }
   &-container {
     &,
