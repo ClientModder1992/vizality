@@ -5,35 +5,22 @@ const { Plugin } = require('@entities');
 const DocsLayer = require('./components/DocsLayer');
 
 class Documentation extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('scss/style.scss');
     this._addDocsItem();
 
-    vizality.api.documentation = {
-      open: () => this._openDocs(),
-      /*
-       * @todo:
-       * openAsPopup: () => this._openDocsAsPopup(),
-       */
-      close: () => this._closeDocs()
-    };
+    vizality.api.router.registerShortcut('documentation', this._openDocs);
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-docs-tab');
-    delete vizality.api.documentation;
+    vizality.api.router.unregisterShortcut('documentation');
   }
 
   _openDocs () {
     const { pushLayer } = getModule('pushLayer');
 
     return setImmediate(() => pushLayer(DocsLayer));
-  }
-
-  _closeDocs () {
-    const { popLayer } = getModule('popLayer');
-
-    return popLayer();
   }
 
   _addDocsItem () {

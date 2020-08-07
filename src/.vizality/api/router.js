@@ -1,17 +1,12 @@
-const { API } = require('@entities');
+const { logger: { error, warn } } = require('@utilities');
 const { getModule } = require('@webpack');
-
-/* @todo: Use logger. */
+const { API } = require('@entities');
 
 /**
  * @typedef VizalityRoute
  * @property {String} path Route path
  * @property {Boolean} noSidebar Whether the sidebar should be removed or not
  * @property {function(): React.ReactNode} render Route renderer
- */
-
-/**
- * @typedef VizalityDeeplink
  */
 
 /**
@@ -23,6 +18,7 @@ class RouterAPI extends API {
     super();
 
     this.routes = [];
+    this.shortcuts = {};
   }
 
   /**
@@ -44,8 +40,9 @@ class RouterAPI extends API {
    */
   registerRoute (route) {
     if (this.routes.find(r => r.path === route.path)) {
-      throw new Error(`Route ${route.path} is already registered!`);
+      return error(this._module, this._submodule, null, `Route '${route.path}' is already registered!`);
     }
+
     this.routes.push(route);
     this.emit('routeAdded', route);
   }
@@ -59,8 +56,56 @@ class RouterAPI extends API {
     if (this.routes.find(r => r.path === path)) {
       this.routes = this.routes.filter(r => r.path !== path);
       this.emit('routeRemoved', path);
+    } else {
+      return warn(this._module, this._submodule, null, `Route 'route.${path}' is not registered, so it cannot be unregistered!`);
     }
   }
+
+  /**
+   * Registers a "shotcut" action
+   * @param {String} name Name of the shortcut
+   * @param {Function} action Function to run
+   * @emits RouterAPI#shortcutAdded
+   */
+  registerShortcut (name, action) {
+    if (Object.keys(this.shortcuts).find(r => r === name)) {
+      return error(this._module, this._submodule, null, `Shortcut '${name}' is already registered!`);
+    }
+
+    if (typeof action !== 'function') {
+      return error(this._module, this._submodule, null, `Argument 'action' must be a function!`);
+    }
+
+    Object.keys(this.shortcuts).push(name);
+    this.shortcuts[name] = () => action();
+
+    this.emit('shortcutAdded', name);
+  }
+
+  /**
+   * Unregisters a "shotcut" action
+   * @param {String} name Name of the shortcut
+   * @emits RouterAPI#shortcutRemoved
+   */
+  unregisterShortcut (name) {
+    if (Object.keys(this.shortcuts).find(r => r === name)) {
+      this.shortcuts = Object.keys(this.shortcuts).filter(r => r !== name);
+
+      this.emit('shortcutRemoved', name);
+    } else {
+      return warn(this._module, this._submodule, null, `Shortcut '${name}' is not registered, so it cannot be unregistered!`);
+    }
+  }
+
+  /**
+   * Performs a "shortcut" action
+   * @param {String} name Name of the shortcut
+   */
+  open (name) {
+    this.shortcuts[name]();
+  }
+
+
 }
 
 module.exports = RouterAPI;
