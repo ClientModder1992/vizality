@@ -15,6 +15,9 @@ const constants = Object.freeze({
   // Dirs
   ROOT_FOLDER: join(__dirname, '..', '..', '..', '..'),
   PLUGINS_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins'),
+    // --
+      BUNDLED_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.bundled'),
+      CORE_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.core'),
   THEMES_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'themes'),
   // --
     SRC_FOLDER: join(__dirname, '..', '..', '..'),
@@ -22,7 +25,6 @@ const constants = Object.freeze({
       VIZALITY_FOLDER: join(__dirname, '..', '..'),
       // ---
         API_FOLDER: join(__dirname, '..', '..', 'api'),
-        CORE_FOLDER: join(__dirname, '..', '..', 'core'),
         I18N_FOLDER: join(__dirname, '..', '..', 'i18n'),
         LIBRARIES_FOLDER: join(__dirname, '..', '..', 'libraries'),
         MANAGERS_FOLDER: join(__dirname, '..', '..', 'managers'),
