@@ -6,6 +6,7 @@ const Base = require('./Base');
 class Themes extends Base {
   constructor () {
     super();
+
     this.state = {
       tab: 'INSTALLED',
       key: this.constructor.name.toLowerCase().slice(0, -1)
@@ -21,7 +22,7 @@ class Themes extends Base {
           <TabBar
             selectedItem={this.state.tab}
             onItemSelect={tab => this.setState({ tab })}
-            type={Types.TOP}
+            type={Types.TOP_PILL}
           >
             <TabBar.Item className={item} selectedItem={this.state.tab} id='INSTALLED'>
               {Messages.VIZALITY_INSTALLED}
@@ -30,6 +31,7 @@ class Themes extends Base {
               {Messages.DISCOVER}
             </TabBar.Item>
           </TabBar>
+          {super.renderButtons()}
         </div>
         {this.state.tab === 'INSTALLED'
           ? super.render()

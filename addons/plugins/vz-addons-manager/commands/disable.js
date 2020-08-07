@@ -5,15 +5,15 @@ module.exports = {
   executor (args) {
     let result;
 
-    if (vizality.pluginManager.plugins.has(args[0])) {
+    if (vizality.manager.plugins.has(args[0])) {
       if (args[0] === 'vz-commands') {
         result = `->> ERROR: You cannot unload this plugin as it depends on delivering these commands!
             (Tried to unload ${args[0]})`;
-      } else if (!vizality.pluginManager.isEnabled(args[0])) {
+      } else if (!vizality.manager.plugins.isEnabled(args[0])) {
         result = `->> ERROR: Tried to unload a non-loaded plugin!
             (${args[0]})`;
       } else {
-        vizality.pluginManager.disable(args[0]);
+        vizality.manager.plugins.disable(args[0]);
         result = `+>> SUCCESS: Plugin unloaded!
             (${args[0]})`;
       }
@@ -29,9 +29,9 @@ module.exports = {
   },
 
   autocomplete (args) {
-    const plugins = vizality.pluginManager.getPlugins()
+    const plugins = vizality.manager.plugins.getAll()
       .sort((a, b) => a - b)
-      .map(plugin => vizality.pluginManager.plugins.get(plugin));
+      .map(plugin => vizality.manager.plugins.get(plugin));
 
     if (!args[0] || args.length > 1) {
       return false;

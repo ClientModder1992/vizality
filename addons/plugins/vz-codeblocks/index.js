@@ -1,17 +1,17 @@
 const { Plugin } = require('@entities');
 const { patch, unpatch } = require('@patcher');
 const { React, getModule, hljs } = require('@webpack');
-const { react: { findInReactTree } } = require('@util');
+const { react: { findInReactTree } } = require('@utilities');
 
 const { clipboard } = require('electron');
 
 class Codeblocks extends Plugin {
-  async startPlugin () {
+  onStart () {
     this.loadStylesheet('style.scss');
     this.patchCodeblocks();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-codeblocks-inline');
     unpatch('vz-codeblocks-embed');
   }

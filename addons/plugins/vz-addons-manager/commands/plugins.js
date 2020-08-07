@@ -4,7 +4,7 @@ module.exports = {
   description: 'Prints out a list of currently installed plugins.',
   usage: '{c}',
   executor () {
-    const plugins = vizality.pluginManager.getPlugins();
+    const plugins = vizality.manager.plugins.getAll();
     const result = {
       type: 'rich',
       title: `List of Installed Plugins (${plugins.length})`,

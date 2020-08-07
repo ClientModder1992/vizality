@@ -14,9 +14,9 @@ module.exports = function () {
    * - Go to plugin requests (specific req):          store/requests/<issue-id>
    * - Go to docs:                                    docs
    * - Go to docs (specific page):                    docs/<category>/<page>
-   * - Go to plugins                                  plugins  (shortcut of settings/vz-module-manager-plugins)
+   * - Go to plugins                                  plugins  (shortcut of settings/vz-addons-manager-plugins)
    * - Go to plugins & scroll to a specific one       plugins#<plugin-id>
-   * - Go to themes                                   themes  (shortcut of settings/vz-module-manager-themes)
+   * - Go to themes                                   themes  (shortcut of settings/vz-addons-manager-themes)
    * - Go to themes & scroll to a specific one        themes#<theme-id>
    * - Go to Quick CSS                                themes/quick-css
    * - Go to a theme settings                         themes/<theme-id>/settings

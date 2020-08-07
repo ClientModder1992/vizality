@@ -5,12 +5,12 @@ module.exports = {
   executor (args) {
     let result;
 
-    if (vizality.pluginManager.plugins.has(args[0])) {
-      if (vizality.pluginManager.isEnabled(args[0])) {
+    if (vizality.manager.plugins.has(args[0])) {
+      if (vizality.manager.plugins.isEnabled(args[0])) {
         result = `->> ERROR: Tried to load an already loaded plugin!
             (${args[0]})`;
       } else {
-        vizality.pluginManager.enable(args[0]);
+        vizality.manager.plugins.enable(args[0]);
         result = `+>> SUCCESS: Plugin loaded!
             (${args[0]})`;
       }
@@ -25,9 +25,9 @@ module.exports = {
     };
   },
   autocomplete (args) {
-    const plugins = vizality.pluginManager.getPlugins()
+    const plugins = vizality.manager.plugins.getAll()
       .sort((a, b) => a - b)
-      .map(plugin => vizality.pluginManager.plugins.get(plugin));
+      .map(plugin => vizality.manager.plugins.get(plugin));
 
     if (args.length > 1) {
       return false;

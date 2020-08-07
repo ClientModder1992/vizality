@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
+
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
-const { string: { toHeaderCase } } = require('@util');
+const { string: { toHeaderCase, toPlural } } = require('@utilities');
+const { PLUGINS_FOLDER, THEMES_FOLDER } = require('@constants');
 
 const { shell } = require('electron');
 const { join } = require('path');
@@ -8,6 +11,7 @@ const { join } = require('path');
 class Base extends React.PureComponent {
   constructor () {
     super();
+
     this.state = {
       key: this.constructor.name.toLowerCase().slice(0, -1),
       search: ''
@@ -20,7 +24,6 @@ class Base extends React.PureComponent {
       <div className={`vizality-entities-manage ${colorStandard}`}>
         <div className='vizality-entities-manage-header'>
           {this.renderHeader()}
-          {this.renderButtons()}
         </div>
         <Divider/>
         {this.renderBody()}
@@ -90,7 +93,7 @@ class Base extends React.PureComponent {
             type: 'button',
             name: Messages.VIZALITY_ENTITIES_OPEN_FOLDER.format({ entityType: toHeaderCase(this.state.key) }),
             onClick: () => {
-              shell.openItem(join(__dirname, '..', '..', '..', '..', `${this.state.key}s`));
+              shell.openItem(eval(`${toPlural(this.state.key).toUpperCase()}_FOLDER`));
             }
           },
           {
@@ -103,18 +106,10 @@ class Base extends React.PureComponent {
     );
   }
 
-  async goToStore () {
-    const { popLayer } = getModule('popLayer');
-    const { transitionTo } = getModule('transitionTo');
-    popLayer();
-    transitionTo(`/_vizality/store/${this.state.key}`);
-  }
-
   async fetchMissing (type) {
-    vizality.api.notices.closeToast('vz-module-manager-fetch-entities');
+    vizality.api.notices.closeToast('vz-addons-manager-fetch-entities');
 
-    const entityManager = vizality[type === 'plugin' ? 'pluginManager' : 'styleManager'];
-    const missingEntities = type === 'plugin' ? await entityManager.startPlugins(true) : await entityManager.loadThemes(true);
+    const missingEntities = vizality.manager[toPlural(type)].start(true);
     const missingEntitiesList = missingEntities.length
       ? React.createElement('div', null,
         Messages.VIZALITY_MISSING_ENTITIES_RETRIEVED.format({ entity: type, count: missingEntities.length }),
@@ -124,7 +119,7 @@ class Base extends React.PureComponent {
       )
       : Messages.VIZALITY_MISSING_ENTITIES_NONE;
 
-    vizality.api.notices.sendToast('vz-module-manager-fetch-entities', {
+    vizality.api.notices.sendToast('vz-addons-manager-fetch-entities', {
       header: Messages.VIZALITY_MISSING_ENTITIES_FOUND.format({ entity: type, count: missingEntities.length }),
       content: missingEntitiesList,
       type: missingEntities.length > 0 && 'success',

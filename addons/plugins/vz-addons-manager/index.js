@@ -1,24 +1,22 @@
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('@constants');
 const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
-const { react : { forceUpdateElement } } = require('@util');
+const { react : { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const deeplinks = require('./deeplinks');
 const commands = require('./commands');
 
-const i18nLicenses = require('./licenses');
-const i18nStrings = require('./i18n');
+const i18n = require('./i18n');
 
 const Plugins = require('./components/manage/Plugins');
 const Themes = require('./components/manage/Themes');
 const Store = require('./components/store/Store');
 
-class ModuleManager extends Plugin {
-  async startPlugin () {
-    vizality.api.i18n.loadAllStrings(i18nStrings);
-    vizality.api.i18n.loadAllStrings(i18nLicenses);
+class AddonsManager extends Plugin {
+  async onStart () {
+    vizality.api.i18n.loadAllStrings(i18n);
 
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
 
@@ -49,19 +47,19 @@ class ModuleManager extends Plugin {
     });
   }
 
-  pluginWillUnload () {
+  onStop () {
     vizality.api.router.unregisterRoute('/store/plugins');
     vizality.api.router.unregisterRoute('/store/themes');
     vizality.api.settings.unregisterSettings('Plugins');
     vizality.api.settings.unregisterSettings('Themes');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
-    unpatch('vz-module-manager-channelItem');
-    unpatch('vz-module-manager-channelProps');
+    unpatch('vz-addons-manager-channelItem');
+    unpatch('vz-addons-manager-channelProps');
   }
 
   async _injectCommunityContent () {
     const permissionsModule = getModule('can');
-    patch('vz-module-manager-channelItem', permissionsModule, 'can', (args, res) => {
+    patch('vz-addons-manager-channelItem', permissionsModule, 'can', (args, res) => {
       const id = args[1].channelId || args[1].id;
       if (id === STORE_PLUGINS || id === STORE_THEMES) {
         return args[0] === Permissions.VIEW_CHANNEL;
@@ -71,7 +69,7 @@ class ModuleManager extends Plugin {
 
     const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
-    patch('vz-module-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
+    patch('vz-addons-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
         [STORE_PLUGINS]: {
           icon: PluginIcon,
@@ -104,4 +102,4 @@ class ModuleManager extends Plugin {
   }
 }
 
-module.exports = ModuleManager;
+module.exports = AddonsManager;
