@@ -69,13 +69,13 @@ class Vizality extends Updatable {
     super(ROOT_FOLDER, '', 'vizality');
 
     this.api = {};
+    this.modules = {};
+    this.manager = {};
     this.git = {
       upstream: '???',
       branch: '???',
       revision: '???'
     };
-
-    this.manager = {};
 
     this.styleManager = new StyleManager();
     this.pluginManager = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
@@ -122,6 +122,30 @@ class Vizality extends Updatable {
 
     // Startup banner
     console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
+
+    /*
+     * Setting up the modules for the global vizality object
+     * =====================================================
+     */
+
+    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'utilities' ];
+
+    for (const mdl of modules) {
+      const Mdl = require(`@${mdl}`);
+      Object.assign(this.modules, { [mdl]: Mdl });
+    }
+
+    /*
+     * const Webpack = require('@webpack');
+     * Object.getOwnPropertyNames(Webpack)
+     *   .forEach(e => {
+     *     if (!e.indexOf('get') || !e.indexOf('find') || !e.indexOf('_')) {
+     *       Modules.webpack[e] = Webpack[e];
+     *     } else {
+     *       Modules.webpack.modules[e] = Webpack[e];
+     *     }
+     *   });
+     */
 
     // APIs
     await this._apiManager.start();
