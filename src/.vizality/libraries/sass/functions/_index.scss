@@ -4,18 +4,12 @@
 @forward 'logo';
 @forward 'var';
 
-@forward 'find-class-paths';
-
 @forward 'str-replace';
 @forward 'str-replace-all';
 @forward 'str-trim';
-@forward 'slugify';
+@forward 'str-case';
 @forward 'svg-uri';
-@forward 'to-string';
 
 @forward 'map-merge-all';
 @forward 'map-deep-get';
-@forward 'map-has-keys';
-@forward 'map-has-nested-keys';
-@forward 'map-get-path';
 @forward 'non-destructive-map-merge';
