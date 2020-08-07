@@ -1,6 +1,6 @@
 const { AsyncComponent, Clickable, Tooltip, Icons: { ExternalLink, Pin, Unpin, Close } } = require('@components');
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 
 module.exports = AsyncComponent.from((async () => {
   const StandardSidebarView = getModuleByDisplayName('StandardSidebarView');

@@ -2,7 +2,7 @@
  * Forked from DevYukine's http module and Snekfetch
  */
 
-const { logger : { log } } = require('@util');
+const { logger : { log } } = require('@utilities');
 const { REPO } = require('@constants');
 
 const querystring = require('querystring');

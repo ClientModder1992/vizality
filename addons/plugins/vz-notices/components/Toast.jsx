@@ -1,6 +1,6 @@
 const { AsyncComponent, Button, Tooltip, Icon } = require('@components');
 const { React, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 
 const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
 

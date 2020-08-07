@@ -1,5 +1,5 @@
+const { logger: { warn } } = require('@utilities');
 const { getModule } = require('@webpack');
-const { logger: { warn } } = require('@util');
 
 const setSetting = async (setting, value, sync = true) => {
   const module = 'Module';

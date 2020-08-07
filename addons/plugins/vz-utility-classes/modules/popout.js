@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 const { getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 

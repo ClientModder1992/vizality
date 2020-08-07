@@ -1,5 +1,5 @@
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@utilities');
 const { React, getModule, contextMenu: { closeContextMenu } } = require('@webpack');
-const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
 
 class ContextMenu extends React.PureComponent {
   constructor (props) {

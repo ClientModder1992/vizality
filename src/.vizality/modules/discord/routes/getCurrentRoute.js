@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('@util');
+const { logger: { warn } } = require('@utilities');
 /* const currentWebContents = require('electron').remote.getCurrentWebContents(); */
 
 const _getRoutes = require('./_getRoutes');
@@ -22,8 +22,6 @@ const getCurrentRoute = () => {
       return location;
     }
   }
-
-  warn(module, submodule, null, `The current route is unknown.`);
 
   return 'unknown';
 };

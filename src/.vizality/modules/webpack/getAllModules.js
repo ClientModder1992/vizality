@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('@util');
+const { logger: { warn } } = require('@utilities');
 
 const _getModules = require('./_getModules');
 

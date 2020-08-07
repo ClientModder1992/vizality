@@ -1,4 +1,4 @@
-const { logger: { log, warn } } = require('@util');
+const { logger: { log, warn } } = require('@utilities');
 
 const getSettingInfo = (setting) => {
   const module = 'Module';

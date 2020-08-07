@@ -19,8 +19,8 @@ function loadSettings (file) {
         readFileSync(join(SETTINGS_FOLDER, file), 'utf8')
       )
     ];
-  } catch (e) {
-    // Maybe corrupted settings; Let's consider them empty
+  } catch (err) {
+    // Possibly corrupted settings; let's consider them empty
     return [ categoryId, {} ];
   }
 }

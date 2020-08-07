@@ -49,8 +49,8 @@ class Badges extends React.PureComponent {
       const { badges } = await get(`${WEBSITE}/api/badges/users/${this.props.id}.json`).then(res => res.body);
       this.setState(badges);
       badgesStore[this.props.id] = badges;
-    } catch (e) {
-      // Let it fail silently, probably just 404
+    } catch (err) {
+      // Let it fail silently.
     }
   }
 

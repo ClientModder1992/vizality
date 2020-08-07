@@ -1,8 +1,8 @@
-const { sleep } = require('@util');
+const { sleep } = require('@utilities');
 
+const moduleFilters = require('./modules');
 const Webpack = require('../webpack');
 const _getMdl = require('./_getMdl');
-const moduleFilters = require('./modules');
 
 /**
  * Initializes the injection into Webpack

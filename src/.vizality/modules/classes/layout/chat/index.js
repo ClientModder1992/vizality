@@ -1,5 +1,5 @@
+const { object: { removeProperties } } = require('@utilities');
 const { getModule } = require('@webpack');
-const { object: { removeProperties } } = require('@util');
 
 const attachments = require('./attachments');
 

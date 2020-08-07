@@ -1,4 +1,4 @@
-const { react: { forceUpdateElement }, joinClassNames } = require('@util');
+const { react: { forceUpdateElement }, joinClassNames } = require('@utilities');
 const { getModuleByDisplayName, getModule } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 

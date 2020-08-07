@@ -1,4 +1,4 @@
-const { array: { getLastElement } } = require('@util');
+const { array: { getLastElement } } = require('@utilities');
 
 const _getMdl = require('./_getMdl');
 

@@ -1,4 +1,4 @@
-const { object: { findEntriesByValue } } = require('@util');
+const { object: { findEntriesByValue } } = require('@utilities');
 
 const classes = require('../classes');
 

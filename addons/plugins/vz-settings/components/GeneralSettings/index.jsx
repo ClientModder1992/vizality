@@ -3,7 +3,7 @@ const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { WEBSITE, CACHE_FOLDER } = require('@constants');
 const { Confirm } = require('@components/modal');
-const { file: { rmdirRf } } = require('@util');
+const { file: { rmdirRf } } = require('@utilities');
 
 class GeneralSettings extends React.Component {
   constructor (props) {

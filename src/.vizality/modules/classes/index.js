@@ -6,8 +6,8 @@ require('fs')
     exports[moduleName] = require(`${__dirname}/${filename}`);
   });
 
-const { logger: { log } } = require('@util');
 const { LIBRARIES_FOLDER } = require('@constants');
+const { logger: { log } } = require('@utilities');
 
 const { join } = require('path');
 const { existsSync } = require('fs');
@@ -40,5 +40,5 @@ const SassClassFolder = join(LIBRARIES_FOLDER, 'sass', 'classes');
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();
 } else {
-  log(_module, _submodule, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping Sass class file generation...`);
+  log(_module, _submodule, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping file generation...`);
 }

@@ -1,8 +1,8 @@
 const { React, getModule } = require('@webpack');
 const { get } = require('@http');
 
-const { format } = require('util');
 const { resolve } = require('path');
+const { format } = require('util');
 const { parse } = require('url');
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;

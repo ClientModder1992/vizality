@@ -74,8 +74,8 @@ class KeybindsAPI extends API {
       } else {
         localShortcut.register(keybind.keybind, keybind.executor);
       }
-    } catch (e) {
-      this.error('Failed to register keybind!', e);
+    } catch (err) {
+      this.error('Failed to register keybind!', err);
     }
   }
 
@@ -87,8 +87,8 @@ class KeybindsAPI extends API {
       } else {
         localShortcut.unregister(keybind.keybind);
       }
-    } catch (e) {
-      // let it fail silently, probably just invalid/unset keybind
+    } catch (err) {
+      // Let it fail silently; probably just an invalid/unset keybind.
     }
   }
 }

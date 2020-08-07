@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const { React, getModule } = require('@webpack');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { joinClassNames } = require('@util');
 
 /*
  * This module does nothing currently. It is just here for future reference in the event context

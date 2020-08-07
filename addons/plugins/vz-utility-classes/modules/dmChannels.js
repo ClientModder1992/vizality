@@ -1,6 +1,6 @@
 const { getModuleByDisplayName } = require('@webpack');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { joinClassNames } = require('@util');
 
 module.exports = async () => {
   const PrivateChannel = await getModuleByDisplayName('PrivateChannel', true);

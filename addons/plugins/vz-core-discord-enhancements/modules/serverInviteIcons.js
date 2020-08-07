@@ -1,6 +1,6 @@
 const { React, getModule } = require('@webpack');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { joinClassNames } = require('@util');
 
 /*
  * Adds server icons to the 'Invite to Server' context submenu.

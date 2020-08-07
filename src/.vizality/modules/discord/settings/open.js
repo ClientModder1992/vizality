@@ -1,5 +1,5 @@
+const { logger: { warn } } = require('@utilities');
 const { getModule } = require('@webpack');
-const { logger: { warn } } = require('@util');
 
 const getSections = require('./getSections');
 
