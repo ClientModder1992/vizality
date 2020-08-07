@@ -14,17 +14,17 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
   logType = _parseType(logType);
   if (!Array.isArray(message)) message = [ message ];
 
-  /*
-   * module: '#591870',
-   * submodule: '#ce03e5'
-   */
   const BADGE_COLORS = {
     API: {
       module: '#dc2167',
       submodule: '#242a85'
     },
+    Core: {
+      module: '#591870',
+      submodule: '#ce03e5'
+    },
     HTTP: {
-      module: '#ff683b',
+      module: '#e63200',
       submodule: '#2e89c9'
     },
     Manager: {
@@ -44,7 +44,7 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
       submodule: '#d6409a'
     },
     Module: {
-      module: '#e56e60',
+      module: '#ed7c6f',
       submodule: '#34426e'
     },
     Patcher: {
@@ -63,7 +63,7 @@ const _log = (module, submodule, submoduleColor, message, logType) => {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     text-transform: uppercase;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 14px;
     margin-right: 3px;
     padding: 1px 4px;`;

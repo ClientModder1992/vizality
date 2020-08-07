@@ -27,7 +27,7 @@
     "@entities": "src/.vizality/modules/entities",
     "@http": "src/.vizality/modules/http",
     "@patcher": "src/.vizality/modules/patcher",
-    "@util": "src/.vizality/modules/util",
+    "@utilities": "src/.vizality/modules/utilities",
     "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {

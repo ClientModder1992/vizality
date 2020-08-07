@@ -14,7 +14,7 @@
       "@entities": [ "./.vizality/modules/entities" ],
       "@http": [ "./.vizality/modules/http" ],
       "@patcher": [ "./.vizality/modules/patcher" ],
-      "@util": [ "./.vizality/modules/util" ],
+      "@utilities": [ "./.vizality/modules/utilities" ],
       "@webpack": [ "./.vizality/modules/webpack" ]
     }
   }
