@@ -9,7 +9,7 @@ function init () {
   document.documentElement.setAttribute('vizality', '');
   const StyleManager = require('../.vizality/managers/styleManager');
   global.sm = new StyleManager();
-  global.sm.loadThemes();
+  global.sm.start();
 }
 
 if (document.readyState === 'loading') {

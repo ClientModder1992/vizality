@@ -1,34 +1,38 @@
-const { join } = require('path');
 const { BrowserWindow } = require('electron');
+const { join } = require('path');
 
-let settings = {};
+let experimentalWebPlatform = false;
 let transparency = false;
-let ewp = false;
+let settings = {};
+
 try {
-  settings = require(join(__dirname, '../../settings/vz-general.json'));
-} finally {
+  settings = require(join(__dirname, '..', '..', 'settings', 'vz-general.json'));
+
   transparency = settings.transparentWindow;
-  ewp = settings.experimentalWebPlatform;
+  ({ experimentalWebPlatform } = settings);
+} catch (err) {
+  // @todo: Handled this.
 }
 
 class PatchedBrowserWindow extends BrowserWindow {
   constructor (opts) {
     let originalPreload;
     if (opts.webContents) {
-      // General purpose popouts used by Discord
+      // General purpose popout windows used by Discord
     } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
       // Splash Screen
-      opts.webPreferences.preload = join(__dirname, '../preload/splash.js');
+      opts.webPreferences.preload = join(__dirname, '..', 'preload', 'splash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       originalPreload = opts.webPreferences.preload;
-      opts.webPreferences.preload = join(__dirname, '../preload/main.js');
+      opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
       opts.webPreferences.nodeIntegration = true;
     } else if (opts.webPreferences && opts.webPreferences.preload) {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
-      opts.webPreferences.preload = join(__dirname, '../preload/main.js');
+      opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
       opts.webPreferences.nodeIntegration = true;
+      opts.webPreferences.contextIsolation = false;
 
       if (transparency) {
         opts.transparent = true;
@@ -36,7 +40,7 @@ class PatchedBrowserWindow extends BrowserWindow {
         delete opts.backgroundColor;
       }
 
-      if (ewp) {
+      if (experimentalWebPlatform) {
         opts.webPreferences.experimentalFeatures = true;
       }
     }

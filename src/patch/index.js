@@ -1,9 +1,9 @@
 /* global appSettings */
-const Module = require('module');
-const { join, dirname } = require('path');
-const { existsSync, unlinkSync } = require('fs');
-const electron = require('electron');
 const PatchedBrowserWindow = require('./browserWindow');
+const { existsSync, unlinkSync } = require('fs');
+const { join, dirname } = require('path');
+const electron = require('electron');
+const Module = require('module');
 
 require('../ipc/main');
 
@@ -35,7 +35,7 @@ electron.app.once('ready', () => {
     if (details.url.startsWith('https://discord.com/_vizality')) {
       appSettings.set('_VIZALITY_ROUTE', details.url.replace('https://discord.com', ''));
       appSettings.save();
-      // It should get restored to _vizality url later
+      // It should get restored to the _vizality url later.
       done({ redirectURL: 'https://discord.com' });
     } else {
       done({});
@@ -48,13 +48,11 @@ electron.app.setAppPath(discordPath);
 electron.app.name = discordPackage.name;
 
 /**
- * Fix DevTools extensions for wintards
- * Keep in mind that this rather treats the symptom
- * than fixing the root issue.
+ * Bandaid fix for Windows users involving DevTools extensions.
  * @see https://github.com/electron/electron/issues/19468
  */
 if (process.platform === 'win32') {
-  setImmediate(() => { // WTF: the app name doesn't get set instantly?
+  setImmediate(() => { // The app name apparently doesn't get set instantly...
     const devToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
 
     if (existsSync(devToolsExtensions)) {

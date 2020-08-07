@@ -3,8 +3,10 @@ require('module-alias/register');
 const { LOGS_FOLDER } = require('@constants');
 
 const { existsSync, mkdirSync, open, write } = require('fs');
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, contextBridge } = require('electron');
 const { join } = require('path');
+
+contextBridge.exposeInMainWorld = () => void 0;
 
 require('../ipc/renderer');
 
@@ -19,11 +21,12 @@ if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin'
 
 // Discord's preload
 const preload = ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
+
 if (preload) {
   require(preload);
 }
 
-/* @todo: Redo debug logging section below. */
+/* @todo: Redo debug logging section below because it's gross. */
 
 // Debug logging
 let debugLogs;
