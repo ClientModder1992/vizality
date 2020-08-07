@@ -3,7 +3,7 @@ const { Plugin } = require('@entities');
 const modules = require('./modules');
 
 class CoreDiscordEnhancements extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('scss/style.scss');
 
     this.callbacks = [];
@@ -16,7 +16,7 @@ class CoreDiscordEnhancements extends Plugin {
     });
   }
 
-  pluginWillUnload () {
+  onStop () {
     this.callbacks.forEach(cb => cb());
   }
 }

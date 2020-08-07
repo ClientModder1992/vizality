@@ -4,11 +4,11 @@ const { Plugin } = require('@entities');
 const { Menu } = require('@components');
 
 class CopyRawMessage extends Plugin {
-  startPlugin () {
+  onStart () {
     this._patchContextMenu();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('copy-raw-message');
   }
 

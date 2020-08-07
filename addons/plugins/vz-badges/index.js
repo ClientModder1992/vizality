@@ -1,11 +1,11 @@
-const { get } = require('@http');
-const { Plugin } = require('@entities');
-const { WEBSITE } = require('@constants');
+const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@utilities');
+const { React, getModule, getAllModules, getModuleByDisplayName } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');
 const { patch, unpatch } = require('@patcher');
-const { React, getModule, getAllModules, getModuleByDisplayName } = require('@webpack');
-const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
+const { WEBSITE } = require('@constants');
+const { Plugin } = require('@entities');
+const { get } = require('@http');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');
@@ -16,7 +16,7 @@ class Badges extends Plugin {
     this.guildBadges = {};
   }
 
-  async startPlugin () {
+  onStart () {
     this.classes = {
       ...getModule('headerInfo', 'nameTag'),
       ...getAllModules([ 'modal', 'inner' ])[1],
@@ -34,7 +34,7 @@ class Badges extends Plugin {
     this._fetchBadges();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-badges-users');
     unpatch('vz-badges-guilds-header');
     unpatch('vz-badges-guilds-tooltip');
@@ -99,7 +99,7 @@ class Badges extends Plugin {
       if (document.querySelector(this.classes.header)) {
         forceUpdateElement(this.classes.header);
       }
-    } catch (e) {
+    } catch (err) {
       // Let it fail silently
     }
   }

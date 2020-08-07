@@ -4,12 +4,12 @@ const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 class CustomBanners extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('style.scss');
     this._patchPrivateChannelEmptyMessage();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-custom-banners-privateChannelsEmptyMessage');
   }
 

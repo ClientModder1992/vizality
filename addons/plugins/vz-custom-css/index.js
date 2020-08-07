@@ -1,6 +1,6 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { MAGIC_CHANNELS: { CSS_SNIPPETS } } = require('@constants');
-const { react : { findInReactTree } } = require('@util');
+const { react : { findInReactTree } } = require('@utilities');
 const { PopoutWindow } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
@@ -12,7 +12,7 @@ const SnippetButton = require('./components/SnippetButton');
 const CustomCSS = require('./components/CustomCSS');
 
 class CustomCSSPlugin extends Plugin {
-  async startPlugin () {
+  async onStart () {
     vizality.api.settings.registerSettings('Custom CSS', {
       category: 'vz-custom-css',
       label: () => 'Custom CSS',
@@ -35,7 +35,7 @@ class CustomCSSPlugin extends Plugin {
     this.loadStylesheet('scss/style.scss');
   }
 
-  pluginWillUnload () {
+  onStop () {
     vizality.api.settings.unregisterSettings('Custom CSS');
     unpatch('vz-custom-css-snippets');
   }
@@ -49,10 +49,12 @@ class CustomCSSPlugin extends Plugin {
           filename = filename.split('.').slice(0, -1).join('.');
           this.snippets[filename] = content;
         } catch (err) {
+          // @todo: Handle this.
           console.log('Bollocks', err);
         }
       }
     } catch (err) {
+      // @todo: Handle this.
       console.log('Ladies and gentlemen, we failed', err);
     }
   }

@@ -19,7 +19,7 @@ class ReactDevtools extends Plugin {
     return existsSync(this.path);
   }
 
-  startPlugin () {
+  onStart () {
     // eslint-disable-next-line no-unreachable
     this.listener = this.listener.bind(this);
     if (!this.isInstalledLocally) {
@@ -34,7 +34,7 @@ class ReactDevtools extends Plugin {
     }
   }
 
-  pluginWillUnload () {
+  onStop () {
     remote
       .getCurrentWindow()
       .webContents.removeListener('devtools-opened', this.listener);

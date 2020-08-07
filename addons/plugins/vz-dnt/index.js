@@ -2,7 +2,7 @@ const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
 
 class DoNotTrack extends Plugin {
-  async startPlugin () {
+  onStart () {
     const Analytics = getModule('getSuperPropertiesBase64');
     Analytics.__oldTrack = Analytics.track;
     Analytics.track = () => void 0;
@@ -39,7 +39,7 @@ class DoNotTrack extends Plugin {
     );
   }
 
-  async pluginWillUnload () {
+  onStop () {
     EventTarget.prototype.removeEventListener = this.__rel;
 
     const Analytics = getModule('getSuperPropertiesBase64');

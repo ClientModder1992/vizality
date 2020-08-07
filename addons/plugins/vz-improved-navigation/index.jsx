@@ -1,5 +1,5 @@
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { forceUpdateElement } } = require('@util');
+const { react: { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
@@ -7,7 +7,7 @@ const Settings = require('./components/Settings');
 const MainNav = require('./components/MainNav');
 
 class MainNavigation extends Plugin {
-  startPlugin () {
+  onStart () {
     vizality.api.settings.registerSettings('improved-navigation', {
       category: 'improved-navigation',
       label: 'improved-navigation',
@@ -20,6 +20,13 @@ class MainNavigation extends Plugin {
       this.settings.get('position', 'top'),
       this.settings.get('link-style', 'text')
     );
+  }
+
+  onStop () {
+    const el = document.querySelector('.vizality-main-nav');
+    if (el) el.remove();
+
+    unpatch('vz-mainNav');
   }
 
   async _injectMainNav (position = 'top', linkStyle = 'text') {
@@ -35,16 +42,6 @@ class MainNavigation extends Plugin {
     patch('vz-mainNav', Shakeable.prototype, 'render', (_, res) => [ navBar, res ]);
 
     setImmediate(() => forceUpdateElement(`.${app}`));
-  }
-
-  pluginWillUnload () {
-    const el = document.querySelector('.vizality-main-nav');
-
-    if (el) {
-      el.remove();
-    }
-
-    unpatch('vz-mainNav');
   }
 }
 

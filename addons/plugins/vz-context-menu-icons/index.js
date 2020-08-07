@@ -1,16 +1,22 @@
 const { React, getModule } = require('@webpack');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { joinClassNames } = require('@util');
 const { Plugin } = require('@entities');
 const { Icon } = require('@components');
 
 class ContextMenuIcons extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('style.scss');
 
     this._injectContextMenuItems();
     this._injectContextMenuCheckboxItems();
     this._injectContextMenuControlItems();
+  }
+
+  onStop () {
+    unpatch('vz-contextMenuIcons');
+    unpatch('vz-contextMenuCheckboxIcons');
+    unpatch('vz-contextMenuControlIcons');
   }
 
   async _injectContextMenuItems () {
@@ -121,12 +127,6 @@ class ContextMenuIcons extends Plugin {
 
       return res;
     });
-  }
-
-  pluginWillUnload () {
-    unpatch('vz-contextMenuIcons');
-    unpatch('vz-contextMenuCheckboxIcons');
-    unpatch('vz-contextMenuControlIcons');
   }
 }
 

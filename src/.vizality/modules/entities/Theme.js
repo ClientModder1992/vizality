@@ -1,4 +1,4 @@
-const { dom: { createElement }, logger: { error, log, warn } } = require('@util');
+const { dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
 const { resolveCompiler } = require('@compilers');
 
 const Updatable = require('./Updatable');
@@ -16,7 +16,7 @@ class Theme extends Updatable {
     this.submoduleColor = this.manifest.color || null;
   }
 
-  apply () {
+  _load () {
     if (!this.applied) {
       this.applied = true;
       const style = createElement('style', {
@@ -37,7 +37,7 @@ class Theme extends Updatable {
     this.log('Theme loaded.');
   }
 
-  remove () {
+  _unload () {
     if (this.applied) {
       this.applied = false;
       this.compiler.off('src-update', this._doCompile);

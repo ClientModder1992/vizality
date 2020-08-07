@@ -1,5 +1,5 @@
 const { React, getModuleByDisplayName, getModule, i18n } = require('@webpack');
-const { react : { findInReactTree } } = require('@util');
+const { react : { findInReactTree } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
@@ -14,13 +14,13 @@ class ChannelTitlebar extends Plugin {
     this.activityArtist = null;
   }
 
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('style.scss');
     this._getGuildChannelHeader();
     this._injectImprovedChannelHeader();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('pc-impChannelTitlebar-guildChannelHeader');
     unpatch('pc-impChannelTitlebar-channelHeader');
   }

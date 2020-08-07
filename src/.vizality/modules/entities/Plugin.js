@@ -1,5 +1,6 @@
-const { dom: { createElement }, logger: { error, log, warn }, sleep } = require('@util');
+const { dom: { createElement }, logger: { error, log, warn }, sleep } = require('@utilities');
 const { resolveCompiler } = require('@compilers');
+const { PLUGINS_FOLDER } = require('@constants');
 
 const { existsSync } = require('fs');
 const { join } = require('path');
@@ -8,21 +9,21 @@ const Updatable = require('./Updatable');
 
 /**
  * Main class for Vizality plugins
- * @property {Boolean} ready Whether the plugin is ready or not
+ * @property {Boolean} _ready Whether the plugin is ready or not
  * @property {SettingsCategory} settings Plugin settings
  * @property {Object.<String, Compiler>} styles Styles the plugin loaded
  * @abstract
  */
 class Plugin extends Updatable {
   constructor () {
-    super(vizality.pluginManager.pluginDir);
+    super(vizality.pluginManager._dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
-    this.ready = false;
     this.styles = {};
+    this._ready = false;
 
-    this.module = 'Plugin';
-    this.submodule = this.constructor.name;
-    this.submoduleColor = this.manifest.color || null;
+    this._module = 'Plugin';
+    this._submodule = this.constructor.name;
+    this._submoduleColor = this.manifest.color || null;
   }
 
   // Getters
@@ -65,7 +66,7 @@ class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(vizality.pluginManager.pluginDir, this.entityID, path);
+      resolvedPath = join(PLUGINS_FOLDER, this.entityID, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
@@ -96,7 +97,7 @@ class Plugin extends Updatable {
   // Update
   async _update (force = false) {
     const success = await super._update(force);
-    if (success && this.ready) {
+    if (success && this._ready) {
       await vizality.pluginManager.remount(this.entityID);
     }
     return success;
@@ -105,17 +106,17 @@ class Plugin extends Updatable {
   // Internals
   async _load () {
     try {
-      while (!this.allEffectiveDependencies.every(pluginName => vizality.pluginManager.get(pluginName).ready)) {
+      while (!this.allEffectiveDependencies.every(pluginName => vizality.pluginManager.get(pluginName)._ready)) {
         await sleep(1);
       }
 
-      if (typeof this.startPlugin === 'function') {
+      if (typeof this.onStart === 'function') {
         /**
          * @todo: Possibly add the next commented items as some sort of 'Debug Mode' settings option
          */
         // const before = performance.now();
 
-        await this.startPlugin();
+        await this.onStart();
 
         // const after = performance.now();
 
@@ -128,7 +129,7 @@ class Plugin extends Updatable {
     } catch (e) {
       this.error('An error occurred during initialization!', e);
     } finally {
-      this.ready = true;
+      this._ready = true;
     }
   }
 
@@ -140,28 +141,28 @@ class Plugin extends Updatable {
         this.styles[id].disableWatcher();
       }
 
-      if (typeof this.pluginWillUnload === 'function') {
-        await this.pluginWillUnload();
+      if (typeof this.onStop === 'function') {
+        await this.onStop();
       }
 
       this.log('Plugin unloaded');
     } catch (e) {
       this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
     } finally {
-      this.ready = false;
+      this._ready = false;
     }
   }
 
   log (...data) {
-    log(this.module, this.submodule, this.submoduleColor, ...data);
+    log(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   error (...data) {
-    error(this.module, this.submodule, this.submoduleColor, ...data);
+    error(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   warn (...data) {
-    warn(this.module, this.submodule, this.submoduleColor, ...data);
+    warn(this._module, this._submodule, this._submoduleColor, ...data);
   }
 }
 

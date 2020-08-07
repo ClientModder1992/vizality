@@ -1,36 +1,36 @@
-const { logger: { log, error } } = require('@util');
+const { logger: { log, error } } = require('@utilities');
 
 const Events = require('events');
 
 class API extends Events {
   constructor () {
     super();
-    this.module = 'API';
-    this.submodule = this.constructor.name;
-    this.ready = false;
+    this._module = 'API';
+    this._submodule = this.constructor.name;
+    this._ready = false;
   }
 
   async _load () {
     try {
-      if (typeof this.startAPI === 'function') {
-        await this.startAPI();
+      if (typeof this.onStart === 'function') {
+        await this.onStart();
       }
-      log(this.module, this.submodule, null, 'API loaded.');
-      this.ready = true;
+      log(this._module, this._submodule, null, 'API loaded.');
+      this._ready = true;
     } catch (e) {
-      error(this.module, this.submodule, null, 'An error occurred during initialization!', e);
+      error(this._module, this._submodule, null, 'An error occurred during initialization!', e);
     }
   }
 
   async _unload () {
     try {
-      if (typeof this.apiWillUnload === 'function') {
-        await this.apiWillUnload();
+      if (typeof this.onStop === 'function') {
+        await this.onStop();
       }
-      this.ready = false;
-      log(this.module, this.submodule, null, 'Plugin unloaded.');
+      this._ready = false;
+      log(this._module, this._submodule, null, 'Plugin unloaded.');
     } catch (e) {
-      error(this.module, this.submodule, null,
+      error(this._module, this._submodule, null,
         'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e
       );
     }

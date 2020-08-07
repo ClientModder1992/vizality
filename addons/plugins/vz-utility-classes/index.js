@@ -5,7 +5,7 @@ const { remote } = require('electron');
 const modules = require('./modules');
 
 class UtilityClasses extends Plugin {
-  startPlugin () {
+  onStart () {
     this.callbacks = [];
 
     Object.values(modules).forEach(async mod => {
@@ -46,7 +46,7 @@ class UtilityClasses extends Plugin {
     remote.getCurrentWindow().on('unmaximize', () => document.documentElement.setAttribute('vz-window', 'restored'));
   }
 
-  pluginWillUnload () {
+  onStop () {
     this.callbacks.forEach(cb => cb());
   }
 }

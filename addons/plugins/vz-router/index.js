@@ -4,7 +4,7 @@ const { patch, unpatch } = require('@patch');
 const { Plugin } = require('@entities');
 
 class Router extends Plugin {
-  async startPlugin () {
+  async onStart () {
     await this._injectRouter();
     this._listener = this._rerender.bind(this);
     vizality.api.router.on('routeAdded', this._listener);
@@ -12,7 +12,7 @@ class Router extends Plugin {
     setImmediate(() => vizality.api.router.restorePrevious());
   }
 
-  pluginWillUnload () {
+  onStop () {
     vizality.api.router.off('routeAdded', this._listener);
     vizality.api.router.off('routeRemoved', this._listener);
     unpatch('vz-router-route-side');

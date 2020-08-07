@@ -1,16 +1,16 @@
 const { React, getModuleByDisplayName } = require('@webpack');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { joinClassNames } = require('@util');
 const { Tooltip } = require('@components');
 const { Plugin } = require('@entities');
 
 class MembersActivityIcons extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('style.scss');
     this._injectActivityIcons();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-members-activity-icons');
   }
 

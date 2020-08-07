@@ -6,7 +6,7 @@ const { WEBSITE } = require('@constants');
 const { Plugin } = require('@entities');
 
 class RPC extends Plugin {
-  async startPlugin () {
+  async onStart () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
     this._patchWebSocketServer();
@@ -19,7 +19,7 @@ class RPC extends Plugin {
     vizality.api.rpc.on('eventRemoved', this._boundRemoveEvent);
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-rpc-ws');
     unpatch('vz-rpc-ws-promise');
 

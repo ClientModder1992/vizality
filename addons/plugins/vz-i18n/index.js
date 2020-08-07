@@ -9,7 +9,7 @@ const strings = require(I18N_FOLDER);
 const totalStrCount = Object.keys(strings['en-US']).length;
 
 class I18n extends Plugin {
-  async startPlugin () {
+  async onStart () {
     const FluxSettingsLocale = getModuleByDisplayName('FluxContainer(UserSettingsLocale)');
     // noinspection JSPotentiallyInvalidConstructorUsage
     const SettingsLocale = React.createElement(FluxSettingsLocale)
@@ -72,7 +72,7 @@ class I18n extends Plugin {
     });
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-i18n-psst');
   }
 }

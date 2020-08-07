@@ -1,4 +1,4 @@
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@util');
+const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { GUILD_ID, INVITE_CODE, ROOT_FOLDER } = require('@constants');
 const { patch, unpatch } = require('@patcher');
@@ -11,7 +11,7 @@ const AnnouncementContainer = require('./components/AnnouncementContainer');
 const ToastContainer = require('./components/ToastContainer');
 
 class Notices extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('scss/style.scss');
     this._patchAnnouncements();
     this._patchToasts();
@@ -28,7 +28,7 @@ class Notices extends Plugin {
     }
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-notices-announcements');
     unpatch('vz-notices-toast');
   }

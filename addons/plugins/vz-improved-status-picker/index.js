@@ -5,11 +5,11 @@ const { Plugin } = require('@entities');
 const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 
 class GameActivityToggle extends Plugin {
-  async startPlugin () {
+  onStart () {
     this._injectGameActivityToggle();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('game-activity-toggle');
   }
 

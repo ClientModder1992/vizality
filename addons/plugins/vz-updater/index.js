@@ -19,7 +19,7 @@ module.exports = class Updater extends Plugin {
     this.cwd = { cwd: ROOT_FOLDER };
   }
 
-  async startPlugin () {
+  async onStart () {
     this.settings.set('paused', false);
     this.settings.set('failed', false);
     this.settings.set('updating', false);
@@ -46,7 +46,7 @@ module.exports = class Updater extends Plugin {
     }
   }
 
-  pluginWillUnload () {
+  onStop () {
     vizality.api.settings.unregisterSettings('Updater');
     clearInterval(this._interval);
   }

@@ -6,14 +6,14 @@ const monkeypatchMessages = require('./monkeypatchMessages.js');
 const injectAutocomplete = require('./injectAutocomplete.js');
 
 class Commands extends Plugin {
-  startPlugin () {
+  onStart () {
     Object.values(commands).forEach(command => vizality.api.commands.registerCommand(command));
 
     monkeypatchMessages.call(this);
     injectAutocomplete.call(this);
   }
 
-  pluginWillUnload () {
+  onStop () {
     Object.values(commands).forEach(command => vizality.api.commands.unregisterCommand(command.command));
     unpatch('vz-commands-autocomplete-prefix');
     unpatch('vz-commands-autocomplete');

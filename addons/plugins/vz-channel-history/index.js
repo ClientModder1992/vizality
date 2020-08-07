@@ -7,7 +7,7 @@ const webContents = getCurrentWebContents();
 const currentWindow = getCurrentWindow();
 
 class ChannelHistory extends Plugin {
-  startPlugin () {
+  onStart () {
     currentWindow.on('app-command', this.listener);
   }
 
@@ -21,7 +21,7 @@ class ChannelHistory extends Plugin {
     }
   }
 
-  pluginWillUnload () {
+  onStop () {
     currentWindow.off('app-command', this.listener);
   }
 }

@@ -1,11 +1,19 @@
-const { react : { findInReactTree } } = require('@util');
+const { react : { findInReactTree } } = require('@utilities');
 const { React, getModule } = require('@webpack');
 const { Tooltip, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 class QuickDelete extends Plugin {
-  startPlugin () {
+  onStart () {
+    this._injectQuickDeleteButton();
+  }
+
+  onStop () {
+    unpatch('quick-delete-button');
+  }
+
+  _injectQuickDeleteButton () {
     const { deleteMessage } = getModule('deleteMessage', 'sendMessage');
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
 
@@ -44,10 +52,6 @@ class QuickDelete extends Plugin {
 
       return res;
     });
-  }
-
-  pluginWillUnload () {
-    unpatch('quick-delete-button');
   }
 }
 

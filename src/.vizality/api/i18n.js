@@ -12,7 +12,7 @@ class I18nAPI extends API {
     this.loadAllStrings(strings);
   }
 
-  async startAPI () {
+  async onStart () {
     await getModule('locale', 'theme', true).then(module => {
       this.locale = module.locale;
       module.addChangeListener(() => {

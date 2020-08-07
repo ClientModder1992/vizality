@@ -1,4 +1,4 @@
-const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
+const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@utilities');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('@components');
 const { React, getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
@@ -13,14 +13,14 @@ class SDK extends Plugin {
     this._storeListener = this._storeListener.bind(this);
   }
 
-  async startPlugin () {
+  onStart () {
     this.loadStylesheet('scss/style.scss');
     this.sdkEnabled = vizality.settings.get('sdkEnabled');
     vizality.api.settings.store.addChangeListener(this._storeListener);
     this._addPopoutIcon();
   }
 
-  pluginWillUnload () {
+  onStop () {
     unpatch('vz-sdk-icon');
     vizality.api.settings.store.removeChangeListener(this._storeListener);
   }
@@ -50,7 +50,8 @@ class SDK extends Plugin {
                   {
                     type: 'button',
                     name: 'Open QuickCSS Window',
-                    onClick: () => vizality.pluginManager.get('vz-module-manager')._openQuickCSSPopout()
+                    // @todo: Fix this.
+                    onClick: () => vizality.pluginManager.get('vz-addons-manager')._openQuickCSSPopout()
                   }
                 ], [
                   {

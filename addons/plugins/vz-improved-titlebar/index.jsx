@@ -1,5 +1,5 @@
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { forceUpdateElement } } = require('@util');
+const { react: { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
@@ -7,7 +7,7 @@ const Settings = require('./components/Settings');
 const Titlebar = require('./components/Titlebar');
 
 class ImprovedTitlebar extends Plugin {
-  startPlugin () {
+  onStart () {
     vizality.api.settings.registerSettings('improved-titlebar', {
       category: 'improved-titlebar',
       label: 'improved-titlebar',
@@ -24,7 +24,7 @@ class ImprovedTitlebar extends Plugin {
     );
   }
 
-  pluginWillUnload () {
+  onStop () {
     const el = document.querySelector('.vizality-titlebar');
     if (el) el.remove();
 

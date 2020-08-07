@@ -3,7 +3,7 @@ const { Plugin } = require('@entities');
 const Settings = require('./components/Settings');
 
 class DemoSettings extends Plugin {
-  startPlugin () {
+  onStart () {
     vizality.api.settings.registerSettings('demo-settings', {
       category: 'demo-settings',
       label: 'demo-settings',

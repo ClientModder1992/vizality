@@ -10,7 +10,7 @@ const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 
 module.exports = class Settings extends Plugin {
-  startPlugin () {
+  onStart () {
     this.loadStylesheet('scss/style.scss');
 
     vizality.api.settings.registerSettings('Settings', {
@@ -21,11 +21,10 @@ module.exports = class Settings extends Plugin {
 
     this.patchSettingsComponent();
     this.patchExperiments();
-
     this.patchSettingsContextMenu();
   }
 
-  async pluginWillUnload () {
+  onStop () {
     vizality.api.settings.unregisterSettings('Settings');
     unpatch('vz-settings-items');
     unpatch('vz-settings-actions');
@@ -41,8 +40,8 @@ module.exports = class Settings extends Plugin {
 
       // Ensure components do get the update
       experimentsModule._changeCallbacks.forEach(cb => cb());
-    } catch (_) {
-      // memes
+    } catch (err) {
+      // :eyes:
     }
   }
 

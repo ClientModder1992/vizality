@@ -4,12 +4,12 @@ const commands = require('./commands');
 const TAG_ARGUMENT_REGEX = /\$\$(@|\d+)/g;
 
 class Tags extends Plugin {
-  startPlugin () {
+  onStart () {
     this.registerMain();
     this.registerTags();
   }
 
-  pluginWillUnload () {
+  onStop () {
     this.unregisterTags();
     vizality.api.commands.unregisterCommand('tag');
   }
