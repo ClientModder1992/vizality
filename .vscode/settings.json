@@ -65,5 +65,9 @@
             "background": "#da4e4e",
             "opacity": 0
         }
-    }
+    },
+    "eslint.alwaysShowStatus": true,
+    "eslint.debug": true,
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true
 }
