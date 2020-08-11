@@ -13,6 +13,7 @@
       "@discord": [ "./.vizality/modules/discord" ],
       "@entities": [ "./.vizality/modules/entities" ],
       "@http": [ "./.vizality/modules/http" ],
+      "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
       "@utilities": [ "./.vizality/modules/utilities" ],
       "@webpack": [ "./.vizality/modules/webpack" ]

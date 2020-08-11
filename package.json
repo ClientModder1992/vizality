@@ -16,9 +16,9 @@
     "url": "https://github.com/vizality/vizality/issues"
   },
   "_moduleAliases": {
-    "vizality": "src/.vizality/modules",
     "@root": ".",
     "@src": "src",
+    "vizality": "src/.vizality/modules",
     "@classes": "src/.vizality/modules/classes",
     "@compilers": "src/.vizality/modules/compilers",
     "@components": "src/.vizality/modules/components",
@@ -26,12 +26,14 @@
     "@discord": "src/.vizality/modules/discord",
     "@entities": "src/.vizality/modules/entities",
     "@http": "src/.vizality/modules/http",
+    "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
     "@utilities": "src/.vizality/modules/utilities",
     "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {
     "codemirror": "^5.54.0",
+    "eslint-plugin-jsdoc": "^30.2.1",
     "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",
     "pluralize": "^8.0.0",
