@@ -17,9 +17,9 @@ module.exports = () => {
       res.props.className, {
         'vz-isSpeaking': participant.speaking,
         'vz-isRinging': participant.ringing,
-        'vz-hasVideo': participant.voiceState.selfVideo,
-        'vz-isSelfMute': participant.voiceState.selfMute,
-        'vz-isSelfDeaf': participant.voiceState.selfDeaf
+        'vz-hasVideo': participant.voiceState && participant.voiceState.selfVideo,
+        'vz-isSelfMute': participant.voiceState && participant.voiceState.selfMute,
+        'vz-isSelfDeaf': participant.voiceState && participant.voiceState.selfDeaf
       });
 
     return res;
