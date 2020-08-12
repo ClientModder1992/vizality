@@ -16,11 +16,6 @@ const getValidId = (id, type, submodule = null) => {
   const _module = 'Module';
   const _submodule = submodule || 'Discord:Utilities:getValidId';
 
-  // Check if the ID is a valid string
-  if (!isValidId(id, type, submodule || 'Discord:Utilities:isValidId')) {
-    return;
-  }
-
   // Check if ID is an empty string
   if (!id) {
     // Check if the type is a valid string
