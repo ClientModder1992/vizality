@@ -36,11 +36,11 @@ const getUserByTag = (userTag = '') => {
   const discriminator = userTag.slice(-4);
 
   try {
-    const User = getModule('getUser', 'getUsers').findByTag(username, discriminator);
-
-    return User;
+    const UserModule = getModule('getUser', 'getUsers');
+    const User = UserModule.findByTag(username, discriminator);
+    return User || error(_module, _submodule, null, `User with tag '${userTag}' not found. The tag is either invalid or the user is not yet cached.`);
   } catch (err) {
-    return error(_module, _submodule, null, `User with tag '${userTag}' not found. The tag is either invalid or the user is not yet cached.`);
+    // Fail silently
   }
 };
 

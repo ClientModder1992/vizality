@@ -7,9 +7,8 @@ const { getModule } = require('@webpack');
  */
 const getCurrentUserId = () => {
   try {
-    const CurrentUserId = getModule('getId').getId();
-
-    return CurrentUserId;
+    const CurrentUserIdModule = getModule('getId');
+    return CurrentUserIdModule.getId();
   } catch (err) {
     // Fail silently
   }

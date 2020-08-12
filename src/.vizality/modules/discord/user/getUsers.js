@@ -3,12 +3,12 @@ const { getModule } = require('@webpack');
 /**
  * Gets all of the cached user data objects.
  *
- * @returns {object} Cached user objects
+ * @returns {(object|undefined)} Cached user objects
  */
 const getUsers = () => {
   try {
-    const Users = getModule('getUser', 'getUsers').getUsers();
-
+    const UserModule = getModule('getUser', 'getUsers').getUsers();
+    const Users = UserModule.getUsers();
     return Users;
   } catch (err) {
     // Fail silently

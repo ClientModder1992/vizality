@@ -2,6 +2,7 @@ const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 const getValidId = require('../utilities/getValidId');
+const isValidId = require('../utilities/isValidId');
 
 /**
  * Gets a user's data object.
@@ -15,17 +16,20 @@ const getUser = (userId = '') => {
   const _submodule = 'Discord:User:getUser';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  try {
-    const User = getModule('getUser', 'getUsers').getUser(userId);
+  // Check if the ID is now a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
-    return User;
+  try {
+    const UserModule = getModule('getUser', 'getUsers');
+    const User = UserModule.getUser(userId);
+    return User || error(_module, _submodule, null, `User with ID '${userId}' not found. The ID is either invalid or the user is not yet cached.`);
   } catch (err) {
-    return error(_module, _submodule, null, `User with ID '${userId}' not found. The ID is either invalid or the user is not yet cached.`);
+    // Fail silently
   }
 };
 

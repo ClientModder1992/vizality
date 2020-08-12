@@ -1,4 +1,5 @@
 const getValidId = require('../utilities/getValidId');
+const isValidId = require('../utilities/isValidId');
 const getUser = require('./getUser');
 
 const Constants = require('../modules/constants');
@@ -8,21 +9,23 @@ const Constants = require('../modules/constants');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {(boolean|undefined)} Whether the user is a Discord partner
+ * @returns {boolean} Whether the user is a Discord partner
  */
 const isPartner = (userId = '') => {
   const _submodule = 'Discord:User:isPartner';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
 
+  // Check if the ID is now a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
+
   try {
     const isPartner = getUser(userId).hasFlag(Constants.UserFlags.PARTNER);
-
-    return isPartner;
+    return Boolean(isPartner);
   } catch (err) {
     // Fail silently
   }

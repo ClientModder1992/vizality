@@ -8,9 +8,8 @@ const { getModule } = require('@webpack');
  */
 const getToken = () => {
   try {
-    const Token = getModule('getToken').getToken();
-
-    return Token;
+    const TokenModule = getModule('getToken');
+    return TokenModule.getToken();
   } catch (err) {
     // Fail silently
   }

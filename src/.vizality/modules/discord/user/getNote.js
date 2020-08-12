@@ -12,14 +12,11 @@ const getNote = (userId) => {
   const _submodule = 'Discord:User:getNote';
 
   // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) {
-    return;
-  }
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   try {
-    const Note = getModule('getNote').getNote(userId).note;
-
-    return Note;
+    const NoteModule = getModule('getNote');
+    return NoteModule.getNote(userId).note;
   } catch (err) {
     // Fail silently
   }

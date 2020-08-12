@@ -1,4 +1,5 @@
 const getValidId = require('../utilities/getValidId');
+const isValidId = require('../utilities/isValidId');
 const getUser = require('./getUser');
 
 const Constants = require('../modules/constants');
@@ -14,19 +15,18 @@ const isBugHunter = (userId = '') => {
   const _submodule = 'Discord:User:isBugHunter';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
 
+  // Check if the ID is now a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
+
   try {
-    let isBugHunter = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1);
-
-    if (!isBugHunter) {
-      isBugHunter = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2)
-    }
-
-    return isBugHunter;
+    const isBugHunterLvl1 = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1);
+    const isBugHunterLvl2 = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2);
+    return Boolean(isBugHunterLvl1 || isBugHunterLvl2);
   } catch (err) {
     // Fail silently
   }
