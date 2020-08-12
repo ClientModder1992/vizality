@@ -15,7 +15,8 @@ exports.getAppDir = async () => {
       '/usr/share/discord',
       '/usr/lib64/discord',
       '/opt/discord',
-      '/opt/Discord'
+      '/opt/Discord',
+      '~/.local/bin/Discord/'
     ];
     const discordPath = paths.find(path => existsSync(path));
     return join(discordPath, 'resources', 'app');
