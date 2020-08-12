@@ -5,9 +5,9 @@ const getCurrentUserId = require('../getCurrentUserId');
 
 const Constants = require('../../modules/constants');
 
-const isPlaying = (userId = '') => {
+const isStreaming = (userId = '') => {
   const _module = 'Module';
-  const _submodule = 'Discord:User:Activity:isPlaying';
+  const _submodule = 'Discord:User:Activity:isStreaming';
 
   if (typeof userId !== 'string') {
     return error(_module, _submodule, null, `User ID must be a valid string.`);
@@ -19,9 +19,9 @@ const isPlaying = (userId = '') => {
 
   const { ActivityTypes } = Constants;
 
-  const isPlaying = hasActivityOfType(userId, ActivityTypes.PLAYING);
+  const isStreaming = hasActivityOfType(userId, ActivityTypes.STREAMING);
 
-  return isPlaying;
+  return isStreaming;
 };
 
-module.exports = isPlaying;
+module.exports = isStreaming;
