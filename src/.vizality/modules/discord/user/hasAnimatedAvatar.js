@@ -1,6 +1,6 @@
-const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
+const getValidId = require('../utilities/getValidId');
 const getUser = require('./getUser');
 
 /**
@@ -11,13 +11,13 @@ const getUser = require('./getUser');
  * @returns {boolean} Whether the user has an animated avatar
  */
 const hasAnimatedAvatar = (userId = '') => {
-  const _module = 'Module';
   const _submodule = 'Discord:User:hasAnimatedAvatar';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
+  /*
+   * Checks if user ID is a valid string
+   * If user ID is an empty string, return the current user's ID
+   */
+  userId = getValidId(userId, 'user', _submodule);
 
   try {
     const { hasAnimatedAvatar } = getModule('hasAnimatedAvatar');

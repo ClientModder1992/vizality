@@ -1,5 +1,6 @@
-const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
+
+const isValidId = require('../utilities/isValidId');
 
 /**
  * Gets the user's note contents.
@@ -8,12 +9,11 @@ const { getModule } = require('@webpack');
  * @returns {(string|undefined)} Note contents or undefined
  */
 const getNote = (userId) => {
-  const _module = 'Module';
   const _submodule = 'Discord:User:getNote';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
+  // Checks if user ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) {
+    return;
   }
 
   try {

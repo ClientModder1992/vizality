@@ -1,5 +1,4 @@
-const { logger: { error } } = require('@utilities');
-
+const getValidId = require('../utilities/getValidId');
 const getUser = require('./getUser');
 
 const Constants = require('../modules/constants');
@@ -12,13 +11,13 @@ const Constants = require('../modules/constants');
  * @returns {(boolean|undefined)} Whether the user is a Discord bug hunter
  */
 const isBugHunter = (userId = '') => {
-  const _module = 'Module';
   const _submodule = 'Discord:User:isBugHunter';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
+  /*
+   * Checks if user ID is a valid string
+   * If user ID is an empty string, return the current user's ID
+   */
+  userId = getValidId(userId, 'user', _submodule);
 
   try {
     let isBugHunter = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1);

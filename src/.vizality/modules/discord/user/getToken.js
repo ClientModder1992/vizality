@@ -7,9 +7,13 @@ const { getModule } = require('@webpack');
  * @returns {(string|undefined)} User token or undefined
  */
 const getToken = () => {
-  const Token = getModule('getToken').getToken();
+  try {
+    const Token = getModule('getToken').getToken();
 
-  return Token;
+    return Token;
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getToken;

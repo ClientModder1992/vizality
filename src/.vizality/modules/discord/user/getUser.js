@@ -1,7 +1,7 @@
 const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
-const getCurrentUserId = require('./getCurrentUserId');
+const getValidId = require('../utilities/getValidId');
 
 /**
  * Gets a user's data object.
@@ -14,23 +14,11 @@ const getUser = (userId = '') => {
   const _module = 'Module';
   const _submodule = 'Discord:User:getUser';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
-
-  // If no user ID specified, use the current user's
-  if (!userId) {
-    userId = getCurrentUserId();
-
-    /*
-     * Check if there is a current user ID... not sure why/when there wouldn't be
-     * but better safe than sorry
-     */
-    if (!userId) {
-      return error(_module, _submodule, null, 'You did not specify a user ID and no current user ID was found.');
-    }
-  }
+  /*
+   * Checks if user ID is a valid string
+   * If user ID is an empty string, return the current user's ID
+   */
+  userId = getValidId(userId, 'user', _submodule);
 
   try {
     const User = getModule('getUser', 'getUsers').getUser(userId);
