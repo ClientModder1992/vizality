@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule('CALL_ACCEPT').CALL_ACCEPT.action()

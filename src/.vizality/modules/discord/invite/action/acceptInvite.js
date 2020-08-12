@@ -1,0 +1,1 @@
+// getModule('acceptInviteAndTransitionToInviteChannel').acceptInvite(code);

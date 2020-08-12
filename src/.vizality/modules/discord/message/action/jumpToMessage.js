@@ -1,0 +1,2 @@
+// vizality.modules.webpack.getModule("selectChannel").selectChannel('689933814864150552', '690477562857521174', '742061275885862943')
+// Make message ID the first argument so the guild and channel IDs can be optional

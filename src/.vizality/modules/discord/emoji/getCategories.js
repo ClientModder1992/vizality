@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule("getByCategory", "EMOJI_NAME_RE").getCategories()

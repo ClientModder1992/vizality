@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule('selectVoiceChannel').selectVoiceChannel(null)

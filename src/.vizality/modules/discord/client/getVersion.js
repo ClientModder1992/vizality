@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule("getSuperProperties").getSuperProperties().client_version

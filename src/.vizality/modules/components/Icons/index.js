@@ -1,6 +1,5 @@
 /**
- * @powercord:
- * This directory is only here to allow Powercord
+ * @powercord This directory is only here to allow Powercord
  * plugins to continue to work that use them. Rather than
  * insert SVGs as React elements, which makes sense from a
  * native perspective, from a modder's perspective I have

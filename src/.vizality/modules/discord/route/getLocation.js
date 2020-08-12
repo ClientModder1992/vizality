@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule("transitionTo", "replaceWith", "getHistory").getHistory().location
