@@ -1,33 +1,31 @@
 const { logger: { error } } = require('@utilities');
 
 const hasActivityOfType = require('./hasActivityOfType');
-const getCurrentUserId = require('../getCurrentUserId');
+const isValidId = require('../../utilities/isValidId');
 const getActivities = require('./getActivities');
 
 const Constants = require('../../modules/constants');
 
-// @todo Change activityType to ...activityTypes to allow filtering for multiple types
+/*
+ * @todo Change activityType to ...activityTypes to allow filtering for multiple types.
+ * @todo Clean up this file.
+ */
 
 /**
- * Gets a user's current activities. If no user ID is specified, tries
- * to get the activities of the current user.
+ * Gets a user's current activities.
+ * If no user ID is specified, tries to get the activities of the current user.
  *
  * @param {string} userId - User ID
  * @param {(string|number)} [activityType] - Activity type
- * @returns {Array|object|void} User activities
+ * @returns {(Array|object|undefined)} User activities
  */
 const getActivitiesByType = (userId, activityType = '') => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Activity:getActivitiesByType';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
-
-  // If no user ID specified, use the current user's
-  if (!userId) {
-    userId = getCurrentUserId();
+  // Checks if user ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) {
+    return;
   }
 
   const { ActivityTypes } = Constants;

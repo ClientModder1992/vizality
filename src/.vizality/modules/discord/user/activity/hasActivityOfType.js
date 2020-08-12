@@ -1,8 +1,13 @@
 const { logger: { error } } = require('@utilities');
 
+const isValidId = require('../../utilities/isValidId');
 const getActivities = require('./getActivities');
 
 const Constants = require('../../modules/constants');
+
+/*
+ * @todo Clean up this file.
+ */
 
 /**
  * Checks if the user currently has the specified activity type(s).
@@ -15,9 +20,9 @@ const hasActivityOfType = (userId, ...activityTypes) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Activity:hasActivityOfType';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
+  // Checks if user ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) {
+    return;
   }
 
   const { ActivityTypes } = Constants;

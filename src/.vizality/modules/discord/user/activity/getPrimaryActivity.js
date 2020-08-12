@@ -1,26 +1,28 @@
-const { logger: { error } } = require('@utilities');
-
+const getValidId = require('../../utilities/getValidId');
 const getActivities = require('./getActivities');
 
 /**
- * Gets a user's primary activity object. If no user ID is specified, tries
- * to get the primary activity object of the current user.
+ * Gets a user's primary activity object.
+ * If no user ID is specified, tries to get the primary activity object of the current user.
  *
  * @param {string} [userId] - User ID
- * @returns {object|void} User primary activity object
+ * @returns {(object|undefined)} User primary activity object
  */
 const getPrimaryActivity = (userId = '') => {
-  const _module = 'Module';
   const _submodule = 'Discord:User:Activity:getPrimaryActivity';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
+  /*
+   * Checks if user ID is a valid string
+   * If user ID is an empty string, return the current user's ID
+   */
+  userId = getValidId(userId, 'user', _submodule);
+
+  try {
+    const Activity = getActivities(userId);
+    return Activity[0];
+  } catch (err) {
+    // Fail silently
   }
-
-  const Activity = getActivities(userId)[0];
-
-  return Activity;
 };
 
 module.exports = getPrimaryActivity;
