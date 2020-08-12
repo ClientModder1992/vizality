@@ -143,7 +143,7 @@ class StyleManager {
   }
 
   // Start/Stop
-  async start (sync = false) {
+  async load (sync = false) {
     const missingThemes = [];
     const files = readdirSync(this.themesDir);
     for (const filename of files) {
@@ -177,7 +177,7 @@ class StyleManager {
     }
   }
 
-  unloadThemes () {
+  unload () {
     [ ...this.themes.values() ].forEach(t => t._unload());
   }
 

@@ -65,7 +65,7 @@ module.exports = class Updater extends Plugin {
     this.settings.set('checking_progress', [ 0, 0 ]);
     const disabled = this.settings.get('entities_disabled', []).map(e => e.id);
     const skipped = this.settings.get('entities_skipped', []);
-    const plugins = [ ...vizality.pluginManager.plugins.values() ].filter(p => !p.isInternal);
+    const plugins = [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal);
     const themes = [ ...vizality.styleManager.themes.values() ].filter(t => t.isTheme);
 
     const entities = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());
@@ -140,7 +140,7 @@ module.exports = class Updater extends Plugin {
     for (const update of [ ...updates ]) {
       let entity = vizality;
       if (update.id.startsWith('plugin')) {
-        entity = vizality.pluginManager.get(update.id.replace('plugins_', ''));
+        entity = vizality.manager.plugins.get(update.id.replace('plugins_', ''));
       } else if (update.id.startsWith('theme')) {
         entity = vizality.styleManager.get(update.id.replace('themes_', ''));
       }

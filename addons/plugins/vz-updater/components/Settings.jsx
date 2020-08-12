@@ -14,7 +14,7 @@ const Icons = require('./Icons');
 class UpdaterSettings extends React.PureComponent {
   constructor () {
     super();
-    this.plugin = vizality.pluginManager.get('vz-updater');
+    this.plugin = vizality.manager.plugins.get('vz-updater');
     this.state = {
       opened: false,
       copied: false
@@ -297,7 +297,7 @@ class UpdaterSettings extends React.PureComponent {
   // --- DEBUG STUFF (Intentionally left english-only)
   renderDebugInfo (time) {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
-    const { _apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
+    const { manager: { apis: { apis } }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
     const plugins = vizality.manager.plugins.getAll().filter(plugin =>
       !vizality.manager.plugins.isInternal(plugin) && vizality.manager.plugins.isEnabled(plugin)

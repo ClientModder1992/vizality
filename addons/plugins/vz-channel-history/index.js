@@ -11,6 +11,10 @@ class ChannelHistory extends Plugin {
     currentWindow.on('app-command', this.listener);
   }
 
+  onStop () {
+    currentWindow.off('app-command', this.listener);
+  }
+
   async listener (_, cmd) {
     if (cmd !== 'browser-backward' && cmd !== 'browser-forward') return;
 
@@ -19,10 +23,6 @@ class ChannelHistory extends Plugin {
     } else if (cmd === 'browser-forward' && webContents.canGoForward()) {
       getModule('history').history.forward();
     }
-  }
-
-  onStop () {
-    currentWindow.off('app-command', this.listener);
   }
 }
 

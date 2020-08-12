@@ -16,7 +16,7 @@ const Updatable = require('./Updatable');
  */
 class Plugin extends Updatable {
   constructor () {
-    super(vizality.pluginManager._dir);
+    super(vizality.manager.plugins._dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
     this.styles = {};
     this._ready = false;
@@ -42,7 +42,7 @@ class Plugin extends Updatable {
   get effectiveOptionalDependencies () {
     const deps = this.manifest.optionalDependencies;
     const disabled = vizality.settings.get('disabledPlugins', []);
-    return deps.filter(d => vizality.pluginManager.get(d) !== void 0 && !disabled.includes(d));
+    return deps.filter(d => vizality.manager.plugins.get(d) !== void 0 && !disabled.includes(d));
   }
 
   get allDependencies () {
@@ -54,7 +54,7 @@ class Plugin extends Updatable {
   }
 
   get dependents () {
-    const dependents = [ ...vizality.pluginManager.plugins.values() ].filter(p => p.manifest.dependencies.includes(this.entityID));
+    const dependents = [ ...vizality.manager.plugins.values ].filter(p => p.manifest.dependencies.includes(this.entityID));
     return [ ...new Set(dependents.map(d => d.entityID).concat(...dependents.map(d => d.dependents))) ];
   }
 
@@ -98,7 +98,7 @@ class Plugin extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      await vizality.pluginManager.remount(this.entityID);
+      await vizality.manager.plugins.remount(this.entityID);
     }
     return success;
   }
@@ -106,28 +106,23 @@ class Plugin extends Updatable {
   // Internals
   async _load () {
     try {
-      while (!this.allEffectiveDependencies.every(pluginName => vizality.pluginManager.get(pluginName)._ready)) {
+      while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
         await sleep(1);
       }
 
       if (typeof this.onStart === 'function') {
-        /**
-         * @todo: Possibly add the next commented items as some sort of 'Debug Mode' settings option
-         */
-        // const before = performance.now();
+        const before = performance.now();
 
         await this.onStart();
 
-        // const after = performance.now();
+        const after = performance.now();
 
-        // const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');
+        const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');
 
-        // this.log(`Plug initialization took ${time} ms.`);
+        this.log(`Plugin loaded. Initialization took ${time} ms.`);
       }
-
-      this.log('Plugin loaded.');
-    } catch (e) {
-      this.error('An error occurred during initialization!', e);
+    } catch (err) {
+      this.error('An error occurred during initialization!', err);
     } finally {
       this._ready = true;
     }

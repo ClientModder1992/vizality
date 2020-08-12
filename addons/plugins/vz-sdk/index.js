@@ -50,8 +50,7 @@ class SDK extends Plugin {
                   {
                     type: 'button',
                     name: 'Open QuickCSS Window',
-                    // @todo: Fix this.
-                    onClick: () => vizality.pluginManager.get('vz-addons-manager')._openQuickCSSPopout()
+                    onClick: () => vizality.manager.plugins.get('vz-custom-css')._openCustomCSSPopout()
                   }
                 ], [
                   {

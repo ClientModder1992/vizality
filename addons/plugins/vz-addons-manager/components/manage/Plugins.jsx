@@ -49,7 +49,7 @@ class Plugins extends Base {
     return (
       <InstalledProduct
         product={item.manifest}
-        isEnabled={vizality.pluginManager.isEnabled(item.entityID)}
+        isEnabled={vizality.manager.plugins.isEnabled(item.entityID)}
         onToggle={async v => {
           await this._toggle(item.entityID, v);
           this.forceUpdate();
@@ -60,18 +60,18 @@ class Plugins extends Base {
   }
 
   getItems () {
-    return this._sortItems([ ...vizality.pluginManager.plugins.values() ]);
+    return this._sortItems([ ...vizality.manager.plugins.values ]);
   }
 
   _toggle (pluginID, enabled) {
     let fn;
     let plugins;
     if (enabled) {
-      plugins = [ pluginID ].concat(vizality.pluginManager.get(pluginID).dependencies);
-      fn = vizality.pluginManager.enable.bind(vizality.pluginManager);
+      plugins = [ pluginID ].concat(vizality.manager.plugins.get(pluginID).dependencies);
+      fn = vizality.manager.plugins.enable.bind(vizality.manager.plugins);
     } else {
-      plugins = [ pluginID ].concat(vizality.pluginManager.get(pluginID).dependents);
-      fn = vizality.pluginManager.disable.bind(vizality.pluginManager);
+      plugins = [ pluginID ].concat(vizality.manager.plugins.get(pluginID).dependents);
+      fn = vizality.manager.plugins.disable.bind(vizality.manager.plugins);
     }
 
     const apply = async () => {
@@ -106,7 +106,7 @@ class Plugins extends Base {
         <div className='vizality-entity-modal'>
           <span>{note}</span>
           <ul>
-            {plugins.map(p => <li key={p.id}>{vizality.pluginManager.get(p).manifest.name}</li>)}
+            {plugins.map(p => <li key={p.id}>{vizality.manager.plugins.get(p).manifest.name}</li>)}
           </ul>
         </div>
       </Confirm>
@@ -114,7 +114,7 @@ class Plugins extends Base {
   }
 
   _uninstall (pluginID) {
-    const plugins = [ pluginID ].concat(vizality.pluginManager.get(pluginID).dependents);
+    const plugins = [ pluginID ].concat(vizality.manager.plugins.get(pluginID).dependents);
     openModal(() => (
       <Confirm
         red
@@ -124,7 +124,7 @@ class Plugins extends Base {
         onCancel={closeModal}
         onConfirm={async () => {
           for (const plugin of plugins) {
-            await vizality.pluginManager.uninstall(plugin);
+            await vizality.manager.plugins.uninstall(plugin);
           }
           this.forceUpdate();
           closeModal();
@@ -133,7 +133,7 @@ class Plugins extends Base {
         <div className='vizality-entity-modal'>
           <span>{Messages.VIZALITY_ENTITIES_UNINSTALL_SURE.format({ entity: this.state.key, count: plugins.length })}</span>
           <ul>
-            {plugins.map(p => <li key={p.id}>{vizality.pluginManager.get(p).manifest.name}</li>)}
+            {plugins.map(p => <li key={p.id}>{vizality.manager.plugins.get(p).manifest.name}</li>)}
           </ul>
         </div>
       </Confirm>

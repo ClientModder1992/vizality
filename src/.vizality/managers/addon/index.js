@@ -13,6 +13,18 @@ class AddonManager {
     this[type] = new Map();
   }
 
+  get count () {
+    return this[this._type].size;
+  }
+
+  get values () {
+    return this[this._type].values();
+  }
+
+  get keys () {
+    return this[this._type].keys();
+  }
+
   get (addonId) {
     return this[this._type].get(addonId);
   }
@@ -120,43 +132,23 @@ class AddonManager {
     this[this._type].delete(pluginID);
   }
 
-  // Load
-  load (pluginID) {
-    const plugin = this.get(pluginID);
-    if (!plugin) {
-      throw new Error(`Tried to load a non-installed ${toSingular(this._type)}: (${plugin})`);
-    }
-    if (plugin._ready) {
-      return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${pluginID})`);
+  enable (addonId) {
+    const addon = this.get(addonId);
+
+    if (!addon) {
+      throw new Error(`Tried to enable a non-installed ${toSingular(this._type)}: (${addonId})`);
     }
 
-    plugin._load();
-  }
-
-  unload (pluginID) {
-    const plugin = this.get(pluginID);
-    if (!plugin) {
-      throw new Error(`Tried to unload a non-installed ${toSingular(this._type)}: (${plugin})`);
-    }
-    if (!plugin._ready) {
-      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${plugin})`);
-    }
-
-    plugin._unload();
-  }
-
-  // Enable
-  enable (pluginID) {
-    if (!this.get(pluginID)) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this._type)}: (${pluginID})`);
+    if (addon._ready) {
+      return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${addonId})`);
     }
 
     vizality.settings.set(
       'disabledPlugins',
-      vizality.settings.get('disabledPlugins', []).filter(p => p !== pluginID)
+      vizality.settings.get('disabledPlugins', []).filter(p => p !== addonId)
     );
 
-    this.load(pluginID);
+    addon._load();
   }
 
   disable (addonId) {
@@ -166,12 +158,16 @@ class AddonManager {
       throw new Error(`Tried to disable a non-installed ${toSingular(this._type)}: (${addonId})`);
     }
 
+    if (!addon._ready) {
+      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${plugin})`);
+    }
+
     vizality.settings.set('disabledPlugins', [
       ...vizality.settings.get('disabledPlugins', []),
       addonId
     ]);
 
-    this.unload(addonId);
+    addon._unload();
   }
 
   async install (addonId) {
@@ -188,7 +184,7 @@ class AddonManager {
   }
 
   // Start
-  start (sync = false) {
+  load (sync = false) {
     const missing = {};
     missing[this._type] = [];
     
@@ -204,10 +200,10 @@ class AddonManager {
         plugin.manifest.appMode === 'both'
       ) {
         if (sync && !this.get(plugin.entityID)._ready) {
-          this.load(plugin.entityID);
+          this.enable(plugin.entityID);
           missing[this._type].push(plugin.entityID);
         } else if (!sync) {
-          this.load(plugin.entityID);
+          this.enable(plugin.entityID);
         }
       } else {
         this[this._type].delete(plugin);
@@ -219,8 +215,8 @@ class AddonManager {
     }
   }
 
-  shutdownPlugins () {
-    return this._bulkUnload([ ...vizality.pluginManager.plugins.keys() ]);
+  unload () {
+    return this._bulkUnload([ ...vizality.manager.plugins.keys ]);
   }
 
   _sortPlugins (pluginA, pluginB) {

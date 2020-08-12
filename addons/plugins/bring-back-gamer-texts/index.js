@@ -6,6 +6,6 @@ class BringBackGamerTexts extends Plugin {
   onStart () {
     vizality.api.i18n.loadAllStrings(i18n);
   }
-};
+}
 
 module.exports = BringBackGamerTexts;

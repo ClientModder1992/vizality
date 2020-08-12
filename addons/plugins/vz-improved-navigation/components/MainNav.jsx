@@ -1,6 +1,6 @@
 const { React, getModuleByDisplayName, getModule } = require('@webpack');
 const { AsyncComponent, Icon } = require('@components');
-const { routes: { goTo } } = require('@discord');
+const { route: { goTo } } = require('@discord');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 

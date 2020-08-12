@@ -140,11 +140,10 @@ class Store extends React.Component {
   }
 
   renderList () {
-    const entityManager = vizality[this.state.type === 'plugins' ? 'pluginManager' : 'styleManager'];
     // @todo: do it but it's not shit and uses new manifest format
     return <>
       <div className={[ 'vizality-store-products', this.state.focused ? 'faded' : '' ].join(' ')}>
-        {[ ...entityManager[this.state.type].values() ].map(entity => <Product product={entity} type={this.state.type}/>)}
+        {[ ...vizality.manager[this.state.type].values() ].map(entity => <Product product={entity} type={this.state.type}/>)}
       </div>
     </>;
   }

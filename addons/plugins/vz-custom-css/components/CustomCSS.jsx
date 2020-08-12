@@ -183,7 +183,7 @@ class CustomCSS extends React.PureComponent {
 
   setupCodeMirror (cm) {
     cm.on('change', this._handleCodeMirrorUpdate);
-    cm.setValue(vizality.pluginManager.get('vz-custom-css')._customCSS);
+    cm.setValue(vizality.manager.plugins.get('vz-custom-css')._customCSS);
     if (this.props.popout) {
       setTimeout(() => cm.refresh(), 100);
     }
@@ -192,7 +192,7 @@ class CustomCSS extends React.PureComponent {
 
   _handleCodeMirrorUpdate (cm) {
     // noinspection JSIgnoredPromiseFromCall
-    vizality.pluginManager.get('vz-custom-css')._saveCustomCSS(cm.getValue());
+    vizality.manager.plugins.get('vz-custom-css')._saveCustomCSS(cm.getValue());
   }
 
   _handleResizeBegin () {

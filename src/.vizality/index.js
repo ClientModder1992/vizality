@@ -78,11 +78,11 @@ class Vizality extends Updatable {
     };
 
     this.styleManager = new StyleManager();
-    this.pluginManager = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
+    this.manager.apis = new APIManager();
+    this.manager.themes = new AddonManager('themes', resolve(ROOT_FOLDER, 'addons', 'themes'));
     this.manager.plugins = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
 
     this._initialized = false;
-    this._apiManager = new APIManager();
     this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
@@ -107,14 +107,14 @@ class Vizality extends Updatable {
     await Promise.all(modules.map(mdl => mdl()));
 
     // Start
-    await this.startup();
-    this.git = await this.pluginManager.get('vz-updater')._getGitInfo();
+    await this.start();
+    this.git = await this.manager.plugins.get('vz-updater')._getGitInfo();
 
     this.emit('loaded');
   }
 
   // Startup
-  async startup () {
+  async start () {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
     console.clear();
 
@@ -123,11 +123,20 @@ class Vizality extends Updatable {
     // Startup banner
     console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
 
-    /*
-     * Setting up the modules for the global vizality object
-     * =====================================================
-     */
+    // APIs
+    await this.manager.apis.start();
+    this.settings = vizality.api.settings.buildCategoryObject('vz-general');
+    this.emit('settingsReady');
 
+    // @todo: Make this and _removeDiscordLogs settings options
+
+    // Patch Discord's console logs
+    // this._patchDiscordLogs();
+
+    // Remove Discord's console logs
+    this._removeDiscordLogs();
+
+    // Setting up the modules for the global vizality object
     const modules = [ 'webpack', 'classes', 'constants', 'discord', 'utilities' ];
 
     for (const mdl of modules) {
@@ -146,30 +155,17 @@ class Vizality extends Updatable {
      *     }
      *   });
      */
-
-    // APIs
-    await this._apiManager.start();
-    this.settings = vizality.api.settings.buildCategoryObject('vz-general');
-    this.emit('settingsReady');
-
-    // @todo: Make this and _removeDiscordLogs settings options
-
-    // Patch Discord's console logs
-    // this._patchDiscordLogs();
-
-    // Remove Discord's console logs
-    this._removeDiscordLogs();
-
-    // Style Manager
-    this.styleManager.start();
+    
+    // Themes
+    this.manager.themes.load();
 
     // Plugins
-    await this.pluginManager.start();
+    await this.manager.plugins.load();
 
     this._initialized = true;
 
     // This needs to be here, after the Webpack modules have been initialized
-    const { routes: { getCurrentRoute } } = require('@discord');
+    const { route: { getCurrentRoute } } = require('@discord');
 
     document.documentElement.setAttribute('vz-route', getCurrentRoute());
 
@@ -186,13 +182,13 @@ class Vizality extends Updatable {
     this._unpatchDiscordLogs();
 
     // Plugins
-    await this.pluginManager.shutdownPlugins();
+    await this.manager.plugins.unload();
 
     // Style Manager
-    this.styleManager.unloadThemes();
+    this.manager.themes.unload();
 
     // APIs
-    await this._apiManager.unload();
+    await this.manager.apis.unload();
   }
 
   // Bad code
@@ -268,7 +264,7 @@ class Vizality extends Updatable {
     const success = await super._update(force);
     if (success) {
       await exec('npm install --only=prod', { cwd: this.entityPath });
-      const updater = this.pluginManager.get('vz-updater');
+      const updater = this.manager.plugins.get('vz-updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
         vizality.api.notices.sendToast('vizality-updater', {

@@ -41,7 +41,7 @@ class RPC extends Plugin {
         const data = JSON.stringify({
           code: 69,
           vizality: vizality.git,
-          plugins: [ ...vizality.pluginManager.plugins.values() ].filter(p => !p.isInternal).map(p => p.entityID),
+          plugins: [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal).map(p => p.entityID),
           themes: [ ...vizality.styleManager.themes.values() ].filter(t => t.isTheme).map(t => t.entityID)
         });
 

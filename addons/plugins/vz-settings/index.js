@@ -9,7 +9,7 @@ const ErrorBoundary = require('./components/ErrorBoundary');
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 
-module.exports = class Settings extends Plugin {
+class Settings extends Plugin {
   onStart () {
     this.loadStylesheet('scss/style.scss');
 
@@ -136,4 +136,6 @@ module.exports = class Settings extends Plugin {
       return res;
     });
   }
-};
+}
+
+module.exports = Settings;
