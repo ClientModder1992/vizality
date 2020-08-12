@@ -3,12 +3,16 @@ const { getModule } = require('@webpack');
 /**
  * Gets the current user's ID.
  *
- * @returns {?string} User ID
+ * @returns {(string|undefined)} User ID or undefined
  */
 const getCurrentUserId = () => {
-  const CurrentUserId = getModule('getId').getId();
+  try {
+    const CurrentUserId = getModule('getId').getId();
 
-  return CurrentUserId;
+    return CurrentUserId;
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getCurrentUserId;

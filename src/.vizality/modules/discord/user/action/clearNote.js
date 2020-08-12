@@ -3,7 +3,7 @@ const { logger: { error } } = require('@utilities');
 const setNote = require('./setNote');
 
 /**
- * Clears a note's contents for the user.
+ * Clears the user's note contents.
  *
  * @param {string} userId - User ID
  * @returns {undefined} Action

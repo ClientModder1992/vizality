@@ -4,7 +4,7 @@ const { getModule } = require('@webpack');
  * Gets your user token.
  *
  * @warn What you do with this is entirely your own responsibility
- * @returns {string} User token
+ * @returns {(string|undefined)} User token or undefined
  */
 const getToken = () => {
   const Token = getModule('getToken').getToken();

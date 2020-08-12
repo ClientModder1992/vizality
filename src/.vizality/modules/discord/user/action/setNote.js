@@ -2,7 +2,7 @@ const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 /**
- * Sets a note's contents for the user.
+ * Sets a user's note contents.
  *
  * @param {string} userId - User ID
  * @param {string} note - User note
@@ -10,7 +10,7 @@ const { getModule } = require('@webpack');
  */
 const setNote = (userId, note) => {
   const _module = 'Module';
-  const _submodule = 'Discord:User:Action:setUserNote';
+  const _submodule = 'Discord:User:Action:setNote';
 
   // Check if the user ID is a valid string
   if (typeof userId !== 'string') {

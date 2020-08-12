@@ -4,11 +4,11 @@ const { getModule } = require('@webpack');
 const getCurrentUserId = require('./getCurrentUserId');
 
 /**
- * Gets a user's data object. If no user ID is specified,
- * tries to get the data object of the current user.
+ * Gets a user's data object.
+ * If no user ID is specified, tries to get the data object of the current user.
  *
  * @param {string} [userId] - User ID
- * @returns {object} User data object
+ * @returns {(object|undefined)} User object or undefined
  */
 const getUser = (userId = '') => {
   const _module = 'Module';
@@ -32,14 +32,13 @@ const getUser = (userId = '') => {
     }
   }
 
-  const User = getModule('getUser', 'getUsers').getUser(userId);
+  try {
+    const User = getModule('getUser', 'getUsers').getUser(userId);
 
-  // Check if the user object exists
-  if (!User) {
+    return User;
+  } catch (err) {
     return error(_module, _submodule, null, `User with ID '${userId}' not found. The ID is either invalid or the user is not yet cached.`);
   }
-
-  return User;
 };
 
 module.exports = getUser;

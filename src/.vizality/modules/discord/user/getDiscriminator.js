@@ -3,11 +3,11 @@ const { logger: { error } } = require('@utilities');
 const getUser = require('./getUser');
 
 /**
- * Gets a user's discriminator. If no user ID is specified, tries
- * to get the discriminator of the current user.
+ * Gets the user's discriminator.
+ * If no user ID is specified, tries to get the avatar string of the current user.
  *
  * @param {string} [userId] - User ID
- * @returns {string} User discriminator
+ * @returns {(string|undefined)} User discriminator or undefined
  */
 const getDiscriminator = (userId = '') => {
   const _module = 'Module';
@@ -18,7 +18,13 @@ const getDiscriminator = (userId = '') => {
     return error(_module, _submodule, null, `User ID must be a valid string.`);
   }
 
-  return getUser(userId).discriminator;
+  try {
+    const { discriminator } = getUser(userId);
+
+    return discriminator;
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getDiscriminator;
