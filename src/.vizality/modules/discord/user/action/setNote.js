@@ -1,6 +1,8 @@
 const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
+const isValidId = require('../../utilities/isValidId');
+
 /**
  * Sets a user's note contents.
  *
@@ -12,22 +14,23 @@ const setNote = (userId, note) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Action:setNote';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   // Check if the user note is a valid string
   if (typeof note !== 'string') {
     return error(_module, _submodule, null, `Note must be a valid string.`);
   }
 
-  const { updateNote } = getModule('updateNote');
-
   try {
-    return updateNote(userId, note);
+    const UpdateNoteModule = getModule('updateNote');
+    return UpdateNoteModule.updateNote(userId, note);
   } catch (err) {
-    return error(_module, _submodule, null, `There was an error setting the user note:`, err.body.message);
+    if (err.body.message) {
+      return error(_module, _submodule, null, `There was an error setting the user note:`, err.body.message);
+    }
+
+    return error(_module, _submodule, null, 'There was an error setting the user note.');
   }
 };
 

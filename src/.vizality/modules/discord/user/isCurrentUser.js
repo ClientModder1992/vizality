@@ -7,7 +7,7 @@ const getUser = require('./getUser');
  * If no user ID is specified, it should always return true.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is the current user
+ * @returns {boolean} Is the user the current user?
  */
 const isCurrentUser = (userId = '') => {
   const _submodule = 'Discord:User:isCurrentUser';
@@ -18,7 +18,7 @@ const isCurrentUser = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

@@ -81,7 +81,7 @@ const getSettingInfo = (setting) => {
     ],
     renderSpoilers: [
       'Whether to show content from HTTP[s] links as embeds.',
-      'Either \'ON_CLICK\', \'IF_MODERATOR\', or \'ALWAYS\'.',
+      'Either \'ON_CLICK\', \'IF_MODERATOR\', or \'ALWAYS\'.', // vizality.modules.discord.modules.constants.SpoilerRenderSetting
       'Configurable in the \'Text & Images\' settings section.'
     ],
     showCurrentGame: [
@@ -90,7 +90,7 @@ const getSettingInfo = (setting) => {
     ],
     status: [
       'The user\'s current status.',
-      'Either \'online\', \'idle\', \'dnd\', or \'invisible\'.',
+      'Either \'online\', \'idle\', \'dnd\', or \'invisible\'.', // Object.values(vizality.modules.discord.modules.constants.StatusTypes)
       'Configurable in the \'Status Picker\' popout.'
     ],
     theme: [

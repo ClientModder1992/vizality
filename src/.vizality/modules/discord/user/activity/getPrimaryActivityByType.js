@@ -17,18 +17,17 @@ const getPrimaryActivityByType = (userId, activityType) => {
   const _submodule = 'Discord:User:Activity:getPrimaryActivityByType';
 
   // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) {
-    return;
-  }
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   // Check if the user has any activities of the specified type
-  if (!hasActivityOfType(userId, activityType)) {
-    return;
+  if (!hasActivityOfType(userId, activityType)) return;
+
+  try {
+    const Activities = getActivitiesByType(userId, activityType);
+    return Activities[0];
+  } catch (err) {
+    // Fail silently
   }
-
-  const Activity = getActivitiesByType(userId, activityType)[0];
-
-  return Activity;
 };
 
 module.exports = getPrimaryActivityByType;

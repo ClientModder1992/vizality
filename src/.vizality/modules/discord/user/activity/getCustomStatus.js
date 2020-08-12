@@ -1,5 +1,6 @@
 const getActivitiesByType = require('./getActivitiesByType');
 const getValidId = require('../../utilities/getValidId');
+const isValidId = require('../../utilities/isValidId');
 const hasCustomStatus = require('./hasCustomStatus');
 
 const Constants = require('../../modules/constants');
@@ -15,10 +16,13 @@ const getCustomStatus = (userId = '') => {
   const _submodule = 'Discord:User:Activity:getCustomStatus';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
+
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   // Check if the user has a custom status
   if (!hasCustomStatus(userId)) {

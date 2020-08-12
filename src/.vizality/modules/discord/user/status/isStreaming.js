@@ -1,5 +1,6 @@
 const getValidId = require('../../utilities/getValidId');
 const _isStreaming = require('../activity/isStreaming');
+const isValidId = require('../../utilities/isValidId');
 
 /**
  * Checks if the user is streaming.
@@ -7,16 +8,19 @@ const _isStreaming = require('../activity/isStreaming');
  *
  * @alias discord.user.activity.isStreaming
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is streaming or not
+ * @returns {boolean} Is the user streaming?
  */
 const isStreaming = (userId = '') => {
   const _submodule = 'Discord:User:Status:isStreaming';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
+
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   try {
     const isStreaming = _isStreaming(userId);

@@ -2,7 +2,6 @@ const { logger: { error } } = require('@utilities');
 
 const getCurrentGuildId = require('../guild/getCurrentGuildId');
 const getCurrentUserId = require('../user/getCurrentUserId');
-const isValidId = require('./isValidId');
 
 /**
  * Gets a valid ID string.
@@ -16,7 +15,7 @@ const getValidId = (id, type, submodule = null) => {
   const _module = 'Module';
   const _submodule = submodule || 'Discord:Utilities:getValidId';
 
-  // Check if ID is an empty string
+  // Check for ID
   if (!id) {
     // Check if the type is a valid string
     if (!type || typeof type !== 'string') {

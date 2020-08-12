@@ -19,7 +19,7 @@ const getUserByTag = (userTag = '') => {
     return error(_module, _submodule, null, `User ID must be a valid string.`);
   }
 
-  // If no user tag specified, use the current user's
+  // If no user tag specified, use the current user's tag
   if (!userTag) {
     userTag = getTag();
 

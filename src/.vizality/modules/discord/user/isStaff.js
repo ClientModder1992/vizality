@@ -7,7 +7,7 @@ const getUser = require('./getUser');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is a Discord staff member
+ * @returns {boolean} Is the user a Discord staff member?
  */
 const isStaff = (userId = '') => {
   const _submodule = 'Discord:User:isStaff';
@@ -18,7 +18,7 @@ const isStaff = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

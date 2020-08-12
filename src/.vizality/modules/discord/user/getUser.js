@@ -21,7 +21,7 @@ const getUser = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

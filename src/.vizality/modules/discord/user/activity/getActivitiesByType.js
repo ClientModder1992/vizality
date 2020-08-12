@@ -24,9 +24,7 @@ const getActivitiesByType = (userId, activityType = '') => {
   const _submodule = 'Discord:User:Activity:getActivitiesByType';
 
   // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) {
-    return;
-  }
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   const { ActivityTypes } = Constants;
 

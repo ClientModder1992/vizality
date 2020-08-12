@@ -5,30 +5,26 @@ const getActivities = require('./getActivities');
 
 const Constants = require('../../modules/constants');
 
-/*
- * @todo Clean up this file.
- */
+// @todo Clean up this file.
 
 /**
  * Checks if the user currently has the specified activity type(s).
  *
  * @param {string} userId - User ID
  * @param {string|number} activityTypes - Activity type
- * @returns {boolean} Whether the user has the specified activity type(s) present
+ * @returns {boolean} Does the user have the specified activity type(s) present?
  */
 const hasActivityOfType = (userId, ...activityTypes) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Activity:hasActivityOfType';
 
   // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) {
-    return;
-  }
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   const { ActivityTypes } = Constants;
 
   // Check if any activity types were specified
-  if (!activityTypes && activityTypes !== 'number') {
+  if (!String(activityTypes)) {
     return error(_module, _submodule, null, `No activity type specified. Here's a list of valid activity types:\n`, Object.values(ActivityTypes));
   }
 

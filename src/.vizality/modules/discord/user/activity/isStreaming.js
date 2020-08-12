@@ -1,5 +1,6 @@
 const hasActivityOfType = require('./hasActivityOfType');
 const getValidId = require('../../utilities/getValidId');
+const isValidId = require('../../utilities/isValidId');
 
 const Constants = require('../../modules/constants');
 
@@ -8,16 +9,19 @@ const Constants = require('../../modules/constants');
  * If no user ID is specified, tries to check for the current user.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is streaming
+ * @returns {boolean} Is the user streaming?
  */
 const isStreaming = (userId = '') => {
   const _submodule = 'Discord:User:Activity:isStreaming';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
+
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   const { ActivityTypes } = Constants;
 

@@ -9,7 +9,7 @@ const Constants = require('../modules/constants');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is a Discord partner
+ * @returns {boolean} Is the user a Discord partner?
  */
 const isPartner = (userId = '') => {
   const _submodule = 'Discord:User:isPartner';
@@ -20,7 +20,7 @@ const isPartner = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

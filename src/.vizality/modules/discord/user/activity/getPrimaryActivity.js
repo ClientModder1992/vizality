@@ -1,4 +1,5 @@
 const getValidId = require('../../utilities/getValidId');
+const isValidId = require('../../utilities/isValidId');
 const getActivities = require('./getActivities');
 
 /**
@@ -12,14 +13,17 @@ const getPrimaryActivity = (userId = '') => {
   const _submodule = 'Discord:User:Activity:getPrimaryActivity';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
 
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
+
   try {
-    const Activity = getActivities(userId);
-    return Activity[0];
+    const Activities = getActivities(userId);
+    return Activities[0];
   } catch (err) {
     // Fail silently
   }

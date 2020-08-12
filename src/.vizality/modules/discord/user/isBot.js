@@ -7,7 +7,7 @@ const getUser = require('./getUser');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is a bot
+ * @returns {boolean} Is the user a bot?
  */
 const isBot = (userId = '') => {
   const _submodule = 'Discord:User:isBot';
@@ -18,7 +18,7 @@ const isBot = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   console.log(userId);

@@ -1,5 +1,6 @@
 const { logger: { error } } = require('@utilities');
 
+const isValidId = require('../../utilities/isValidId');
 const setNote = require('./setNote');
 
 /**
@@ -12,13 +13,11 @@ const clearNote = (userId) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Action:clearUserNote';
 
-  // Check if the user ID is a valid string
-  if (typeof userId !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
-  }
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
 
   try {
-    return setNote(userId, '');
+    return setNote(userId, null);
   } catch (err) {
     return error(_module, _submodule, null, `There was an error clearing the user note:`, err.body.message);
   }

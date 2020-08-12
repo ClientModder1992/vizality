@@ -9,7 +9,7 @@ const Constants = require('../modules/constants');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {(boolean|undefined)} Whether the user is a Discord bug hunter
+ * @returns {(boolean|undefined)} Is the user a Discord bug hunter?
  */
 const isBugHunter = (userId = '') => {
   const _submodule = 'Discord:User:isBugHunter';
@@ -20,7 +20,7 @@ const isBugHunter = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

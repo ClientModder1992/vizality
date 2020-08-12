@@ -9,7 +9,7 @@ const Constants = require('../modules/constants');
  * If no user ID is specified, tries to use the current user's ID.
  *
  * @param {string} [userId] - User ID
- * @returns {boolean} Whether the user is a verified bot developer
+ * @returns {boolean} Is the user a verified bot developer?
  */
 const isVerifiedBotDev = (userId = '') => {
   const _submodule = 'Discord:User:isVerifiedBotDev';
@@ -20,7 +20,7 @@ const isVerifiedBotDev = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is now a valid string
+  // Check if the ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

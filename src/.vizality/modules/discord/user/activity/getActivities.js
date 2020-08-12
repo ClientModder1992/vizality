@@ -1,6 +1,7 @@
 const { getModule } = require('@webpack');
 
 const getValidId = require('../../utilities/getValidId');
+const isValidId = require('../../utilities/isValidId');
 
 /**
  * Gets a user's current activities.
@@ -13,14 +14,17 @@ const getActivities = (userId = '') => {
   const _submodule = 'Discord:User:Activity:getActivities';
 
   /*
-   * Checks if user ID is a valid string
-   * If user ID is an empty string, return the current user's ID
+   * If user ID is an empty string, return the current user's ID,
+   * else return the userId argument value
    */
   userId = getValidId(userId, 'user', _submodule);
 
+  // Check if the ID is a valid string
+  if (!isValidId(userId, 'user', _submodule)) return;
+
   try {
-    const Activities = getModule('getPrimaryActivity').getActivities(userId);
-    return Activities;
+    const ActivitiesModule = getModule('getPrimaryActivity');
+    return ActivitiesModule.getActivities(userId);
   } catch (err) {
     // Fail silently
   }

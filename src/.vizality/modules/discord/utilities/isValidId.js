@@ -6,7 +6,7 @@ const { logger: { error }, string: { toHeaderCase } } = require('@utilities');
  * @param {string} id - ID
  * @param {string} type - ID descriptor
  * @param {?string} submodule - Submodule
- * @returns {(boolean|undefined)} Whether the ID is a valid string
+ * @returns {(boolean|undefined)} Is the ID a valid string?
  */
 const isValidId = (id, type, submodule = null) => {
   const _module = 'Module';

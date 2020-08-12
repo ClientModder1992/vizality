@@ -8,8 +8,7 @@ const { getModule } = require('@webpack');
 const getUsers = () => {
   try {
     const UserModule = getModule('getUser', 'getUsers').getUsers();
-    const Users = UserModule.getUsers();
-    return Users;
+    return UserModule.getUsers();
   } catch (err) {
     // Fail silently
   }
