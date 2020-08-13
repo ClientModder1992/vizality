@@ -1,3 +1,9 @@
+/**
+ * Message action module.
+ * Contains functions/data that perform message-related actions.
+ *
+ * @module discord.message.action
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

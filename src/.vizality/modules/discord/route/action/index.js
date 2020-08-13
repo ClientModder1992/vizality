@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Route action module.
+ * Contains functions/data that perform generic route-related actions.
  *
- * @module discord.invite
+ * @module discord.route.action
  */
 require('fs')
   .readdirSync(__dirname)

@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Experiment action module.
+ * Contains functions/data that perform experiment-related actions.
  *
- * @module discord.invite
+ * @module discord.experiment.action
  */
 require('fs')
   .readdirSync(__dirname)

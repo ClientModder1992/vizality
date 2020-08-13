@@ -1,3 +1,9 @@
+/**
+ * Voice module.
+ * Contains functions/data relating to voice/video.
+ *
+ * @module discord.voice
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

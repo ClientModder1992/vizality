@@ -1,3 +1,9 @@
+/**
+ * Invite module.
+ * Contains functions/data relating to guild invites.
+ *
+ * @module discord.invite
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

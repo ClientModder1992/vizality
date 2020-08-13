@@ -1,3 +1,9 @@
+/**
+ * Guild action module.
+ * Contains functions/data that perform guild-related actions.
+ *
+ * @module discord.guild.member.action
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

@@ -1,3 +1,9 @@
+/**
+ * Client module.
+ * Contains function/data relating to the Discord client.
+ *
+ * @module discord.client
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

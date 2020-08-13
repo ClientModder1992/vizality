@@ -1,3 +1,9 @@
+/**
+ * Guild member module.
+ * Contains functions/data relating to guild members.
+ *
+ * @module discord.guild.member
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Emoji action module.
+ * Contains functions/data that perform emoji-related actions.
  *
- * @module discord.invite
+ * @module discord.emoji.action
  */
 require('fs')
   .readdirSync(__dirname)

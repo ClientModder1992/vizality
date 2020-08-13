@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Settings action module.
+ * Contains functions/data that perform generic settings-related actions.
  *
- * @module discord.invite
+ * @module discord.settings.action
  */
 require('fs')
   .readdirSync(__dirname)

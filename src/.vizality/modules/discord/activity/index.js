@@ -1,3 +1,9 @@
+/**
+ * Activity module.
+ * Contains functions/data related to activities.
+ *
+ * @module discord.activity
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

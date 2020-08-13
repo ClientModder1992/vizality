@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * User status action module.
+ * Contains functions/data that perform user status-related actions.
  *
- * @module discord.invite
+ * @module discord.user.status.action
  */
 require('fs')
   .readdirSync(__dirname)

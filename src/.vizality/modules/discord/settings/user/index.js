@@ -1,3 +1,9 @@
+/**
+ * User settings module.
+ * Contains functions/data relating to user settings.
+ *
+ * @module discord.settings.user
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

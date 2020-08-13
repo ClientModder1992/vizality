@@ -1,3 +1,9 @@
+/**
+ * Voice action module.
+ * Contains functions/data that perform voice-related actions.
+ *
+ * @module discord.voice
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

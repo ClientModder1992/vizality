@@ -1,3 +1,9 @@
+/**
+ * Guild role action module.
+ * Contains functions/data that perform guild role-related actions.
+ *
+ * @module discord.guild.role.action
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

@@ -1,3 +1,9 @@
+/**
+ * Guild role module.
+ * Contains functions/data relating to guild roles.
+ *
+ * @module discord.guild.role
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

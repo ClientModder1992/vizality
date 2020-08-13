@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Popout action module.
+ * Contains functions/data that perform generic popout-related actions.
  *
- * @module discord.invite
+ * @module discord.popout.action
  */
 require('fs')
   .readdirSync(__dirname)

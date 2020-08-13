@@ -1,3 +1,9 @@
+/**
+ * Channel settings module.
+ * Contains functions/data relating to channel settings.
+ *
+ * @module discord.settings.channel
+ */
 require('fs')
   .readdirSync(__dirname)
   .filter(file => file !== 'index.js')

@@ -1,8 +1,8 @@
 /**
- * Message module.
- * Contains functions/data relating to messages.
+ * Client action module.
+ * Contains functions/data that perform Discord client-related actions.
  *
- * @module discord.invite
+ * @module discord.client.action
  */
 require('fs')
   .readdirSync(__dirname)
