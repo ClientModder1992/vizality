@@ -1,4 +1,4 @@
-const { file: { rmdirRf }, string: { toSingular, toHeaderCase } } = require('@utilities');
+const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase } } = require('@utilities');
 const { ROOT_FOLDER } = require('@constants');
 
 const { readdirSync } = require('fs');
@@ -180,7 +180,7 @@ class AddonManager {
     }
 
     await this.unmount(addonId);
-    await rmdirRf(resolve(this._dir, addonId));
+    await removeDirRecursive(resolve(this._dir, addonId));
   }
 
   // Start

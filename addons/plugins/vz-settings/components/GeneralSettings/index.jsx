@@ -3,7 +3,7 @@ const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { WEBSITE, CACHE_FOLDER } = require('@constants');
 const { Confirm } = require('@components/modal');
-const { file: { rmdirRf } } = require('@utilities');
+const { file: { removeDirRecursive } } = require('@utilities');
 
 class GeneralSettings extends React.Component {
   constructor (props) {
@@ -125,7 +125,7 @@ class GeneralSettings extends React.Component {
 
   clearVizalityCache () {
     this.setState({ vizalityCleared: true });
-    rmdirRf(CACHE_FOLDER).then(() => {
+    removeDirRecursive(CACHE_FOLDER).then(() => {
       setTimeout(() => {
         this.setState({ vizalityCleared: false });
       }, 2500);

@@ -1,4 +1,3 @@
-const { file: { rmdirRf } } = require('@utilities');
 const { PLUGINS_FOLDER } = require('@constants');
 
 const { resolve } = require('path');

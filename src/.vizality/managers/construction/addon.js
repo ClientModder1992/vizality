@@ -1,4 +1,4 @@
-const { string: { toPlural, toHeaderCase } } = require('@utilities');
+const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@utilities');
 const { PLUGINS_FOLDER, THEMES_FOLDER } = require('@constants');
 
 const ErrorTypes = {
@@ -96,7 +96,7 @@ class AddonManager {
     }
 
     await this.unmount(addonId);
-    await rmdirRf(resolve(this.dir, addonId));
+    await removeDirRecursive(resolve(this.dir, addonId));
   }
 
   async unmount (addonId) {

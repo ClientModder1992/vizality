@@ -1,4 +1,3 @@
-const { file: { rmdirRf }, string: { toHeaderCase } } = require('@utilities');
 const { ROOT_FOLDER } = require('@constants');
 
 const { readdirSync } = require('fs');
