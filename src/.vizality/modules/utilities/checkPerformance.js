@@ -1,18 +1,31 @@
-const { log, warn } = require('./logger');
+const { log, error } = require('./logger');
 
+/**
+ * A simple utility to get gauge the performance
+ * of presented blocks of code.
+ *
+ * @param {string} testCases Test case
+ * @returns {undefined} Returns log information in console
+ */
 const checkPerformance = async (...testCases) => {
-  const module = 'Module';
-  const submodule = 'Util:checkPerformance';
+  const _module = 'Module';
+  const _submodule = 'Utilities:checkPerformance';
 
-  if (testCases.length < 1) {
-    return warn(module, submodule, null, 'You must enter at least 1 test case in the form of a string.');
+  if (arguments.length === 0) {
+    return error(_module, _submodule, null, 'You must supply at least 1 test case.');
   }
 
   const outcome = {};
 
   let caseNumber = 0;
 
+  // Set up and run the test case
   for (const test of testCases) {
+    // Check if the test is a valid string
+    if (test !== 'string') {
+      return error(_module, _submodule, null, `Test case '${test}' is not a valid string.`);
+    }
+
     caseNumber++;
 
     const before = performance.now();
@@ -21,7 +34,7 @@ const checkPerformance = async (...testCases) => {
 
     const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');
 
-    log(module, submodule, null, `Case #${caseNumber} took ${time} ms.`);
+    log(_module, _submodule, null, `Case #${caseNumber} took ${time} ms.`);
 
     outcome[caseNumber] = time;
   }
@@ -34,11 +47,13 @@ const checkPerformance = async (...testCases) => {
   const winningTime = winner[1];
   const secondPlaceTime = secondPlace[1];
 
+  // Limit the result to 4 decimal places and remove any leading zeroes
   const timeDifference = parseFloat((secondPlaceTime - winningTime).toFixed(4)).toString().replace(/^0+/, '');
 
+  // Convert difference to a percentage and limit the result to decimal places
   const percentPerformanceGain = parseFloat(((timeDifference / winningTime) * 100).toFixed(2));
 
-  return log(module, submodule, null, `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's ${percentPerformanceGain}% faster than second place!`);
+  return log(_module, _submodule, null, `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's ${percentPerformanceGain}% faster than second place!`);
 };
 
 module.exports = checkPerformance;
