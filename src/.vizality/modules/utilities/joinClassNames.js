@@ -1,13 +1,14 @@
+const classNames = require('classnames');
+
 /**
- * @hack: Figure out why const { getModule } = require('@webpack') doesn't work.
+ * A simple utility for conditionally joining class names together.
+ *
+ * @see {@link https://github.com/JedWatson/classnames}
+ * @param {(string|object)} args Class name
+ * @returns {string} String of class names joined together
  */
-
-let joinClassNamesModule;
-
 const joinClassNames = (...args) => {
-  if (!joinClassNamesModule) joinClassNamesModule = require('@webpack').getModule(e => e.default && e.default.default);
-
-  return joinClassNamesModule(...args);
+  return classNames(...args);
 };
 
 module.exports = joinClassNames;
