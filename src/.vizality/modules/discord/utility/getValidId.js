@@ -1,11 +1,12 @@
 const { logger: { error } } = require('@utilities');
 
+const getCurrentChannelId = require('../channel/getCurrentChannelId');
 const getCurrentGuildId = require('../guild/getCurrentGuildId');
 const getCurrentUserId = require('../user/getCurrentUserId');
 
 /**
  * Gets a valid ID string.
- * 
+ *
  * @param {string} id - ID
  * @param {string} type - ID descriptor
  * @param {?string} submodule - Submodule
@@ -19,7 +20,7 @@ const getValidId = (id, type, submodule = null) => {
   if (!id) {
     // Check if the type is a valid string
     if (!type || typeof type !== 'string') {
-      return error(_module, _submodule, null, `Type must be a valid string.`);
+      return error(_module, _submodule, null, `Type '${type}' is not a valid string.`);
     }
 
     type = type.toLowerCase();
@@ -29,6 +30,8 @@ const getValidId = (id, type, submodule = null) => {
         return getCurrentUserId();
       case 'guild':
         return getCurrentGuildId();
+      case 'channel':
+        return getCurrentChannelId();
       default:
         return error(_module, _submodule, null, `Could not find a valid ${type} ID for the current ${type}.`);
     }
