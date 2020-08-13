@@ -1,4 +1,4 @@
-const Routes = require('../modules/routes');
+const Routes = require('../module/routes');
 
 const _getRoutes = () => {
   const routes = {

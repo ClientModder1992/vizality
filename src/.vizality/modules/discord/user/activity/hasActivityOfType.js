@@ -3,7 +3,7 @@ const { logger: { error } } = require('@utilities');
 const isValidId = require('../../utility/isValidId');
 const getActivities = require('./getActivities');
 
-const Constants = require('../../modules/constants');
+const Constants = require('../../module/constants');
 
 // @todo Clean up this file.
 

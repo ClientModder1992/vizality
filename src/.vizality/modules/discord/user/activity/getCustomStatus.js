@@ -3,7 +3,7 @@ const getValidId = require('../../utility/getValidId');
 const isValidId = require('../../utility/isValidId');
 const hasCustomStatus = require('./hasCustomStatus');
 
-const Constants = require('../../modules/constants');
+const Constants = require('../../module/constants');
 
 /**
  * Gets a user's custom status.

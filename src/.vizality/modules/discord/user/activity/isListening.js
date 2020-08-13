@@ -2,7 +2,7 @@ const hasActivityOfType = require('./hasActivityOfType');
 const getValidId = require('../../utility/getValidId');
 const isValidId = require('../../utility/isValidId');
 
-const Constants = require('../../modules/constants');
+const Constants = require('../../module/constants');
 
 /**
  * Checks if the user is listening on Spotify.

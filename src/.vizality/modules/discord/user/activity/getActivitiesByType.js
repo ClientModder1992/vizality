@@ -4,7 +4,7 @@ const hasActivityOfType = require('./hasActivityOfType');
 const isValidId = require('../../utility/isValidId');
 const getActivities = require('./getActivities');
 
-const Constants = require('../../modules/constants');
+const Constants = require('../../module/constants');
 
 /*
  * @todo Change activityType to ...activityTypes to allow filtering for multiple types.

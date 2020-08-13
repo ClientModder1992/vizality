@@ -2,7 +2,7 @@ const getValidId = require('../utility/getValidId');
 const isValidId = require('../utility/isValidId');
 const getUser = require('./getUser');
 
-const Constants = require('../modules/constants');
+const Constants = require('../module/constants');
 
 /**
  * Checks if the user is a Discord partner.

@@ -3,7 +3,7 @@ const { logger: { error }, object: { isEmpty } } = require('@utilities');
 const isValidId = require('../../utility/isValidId');
 const getGuild = require('../getGuild');
 
-const Permissions = require('../../modules/permissions');
+const Permissions = require('../../module/permissions');
 
 /**
  * Checks if a role of a server has specified permission(s).
