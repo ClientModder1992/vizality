@@ -1,6 +1,6 @@
 const { existsSync, promises: { readdir, lstat, unlink, rmdir } } = require('fs');
 
-const rmdirRf = async (path) => {
+const removeDirRecursive = async (path) => {
   if (existsSync(path)) {
     const files = await readdir(path);
     for (const file of files) {
@@ -8,7 +8,7 @@ const rmdirRf = async (path) => {
       const stat = await lstat(curPath);
 
       if (stat.isDirectory()) {
-        await rmdirRf(curPath);
+        await removeDirRecursive(curPath);
       } else {
         await unlink(curPath);
       }
@@ -17,4 +17,4 @@ const rmdirRf = async (path) => {
   }
 };
 
-module.exports = rmdirRf;
+module.exports = removeDirRecursive;
