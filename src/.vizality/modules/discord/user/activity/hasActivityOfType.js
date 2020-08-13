@@ -47,7 +47,7 @@ const hasActivityOfType = (userId, ...activityTypes) => {
   for (let activity of activityTypes) {
     // Check if the activity type is a valid string or number
     if (typeof activity !== 'string' && typeof activity !== 'number') {
-      return error(_module, _submodule, null, `Activity type must be a string or number. Here's a list of valid activity types:\n`, Object.values(ActivityTypes));
+      return error(_module, _submodule, null, `Activity type '${activity}' is not a valid string or number. Here's a list of valid activity types:\n`, Object.values(ActivityTypes));
     }
 
     // If it's a string value, let's convert it over to the corresponding number value

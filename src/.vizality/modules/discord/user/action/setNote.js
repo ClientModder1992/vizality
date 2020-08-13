@@ -19,7 +19,7 @@ const setNote = (userId, note) => {
 
   // Check if the user note is a valid string
   if (typeof note !== 'string') {
-    return error(_module, _submodule, null, `Note must be a valid string.`);
+    return error(_module, _submodule, null, `Note '${note}' is not a valid string.`);
   }
 
   try {

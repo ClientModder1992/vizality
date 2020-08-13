@@ -6,9 +6,12 @@ const { getModule } = require('@webpack');
  * @returns {?string} Server ID
  */
 const getCurrentGuildId = () => {
-  const CurrentGuildId = getModule('getLastSelectedGuildId').getGuildId();
-
-  return CurrentGuildId;
+  try {
+    const CurrentGuildModule = getModule('getLastSelectedGuildId');
+    return CurrentGuildModule.getGuildId();
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getCurrentGuildId;

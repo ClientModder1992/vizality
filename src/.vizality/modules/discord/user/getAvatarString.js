@@ -18,7 +18,7 @@ const getAvatarString = (userId = '') => {
    */
   userId = getValidId(userId, 'user', _submodule);
 
-  // Check if the ID is a valid string
+  // Check if the user ID is a valid string
   if (!isValidId(userId, 'user', _submodule)) return;
 
   try {

@@ -1,13 +1,12 @@
-const { VIZALITY_FOLDER } = require('@constants');
-
 const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { join, dirname } = require('path');
 const Compiler = require('./compiler');
 const sass = require('sass');
 
 /**
- * SCSS compiler
- * @extends {Compiler}
+ * SCSS compiler.
+ * @class
+ * @augments Compiler
  */
 class SCSS extends Compiler {
   async listFiles () {
@@ -46,8 +45,9 @@ class SCSS extends Compiler {
 
   /**
    * Resolve dependencies imported in SCSS files.
-   * @param {String} file File to crawl
-   * @returns {Promise<String[]>}
+   * 
+   * @param {string} file File to crawl
+   * @returns {Promise<string[]>}
    */
   async _resolveDeps (file, resolvedFiles = []) {
     const scss = await readFile(file, 'utf8');

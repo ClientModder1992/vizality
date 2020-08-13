@@ -5,27 +5,25 @@ const getGuild = require('../getGuild');
 
 const Permissions = require('../../module/permissions');
 
+// @todo Try to clean this file up.
+
 /**
  * Checks if a role of a server has specified permission(s).
  *
  * @param {string} guildId - Server ID
  * @param {string} roleId - Role ID
  * @param {...string} permissions - Permission type
- * @returns {boolean} Whether the role has the specified permissions or not
+ * @returns {boolean} Does the role have the specified permission(s)?
  */
 const hasPermission = (guildId, roleId, ...permissions) => {
   const _module = 'Module';
   const _submodule = 'Discord:Guild:Role:hasPermission';
 
   // Check if the guild ID is a valid string
-  if (typeof guildId !== 'string') {
-    return error(_module, _submodule, null, 'Guild ID must be a valid string.');
-  }
+  if (!isValidId(guildId, 'guild', _submodule)) return;
 
   // Check if the role ID is a valid string
-  if (typeof roleId !== 'string') {
-    return error(_module, _submodule, null, 'Role ID must be a valid string.');
-  }
+  if (!isValidId(roleId, 'role', _submodule)) return;
 
   if (isEmpty(permissions)) {
     return error(_module, _submodule, null, `No permission type specified. Here's a list of valid permission types:\n`, Object.keys(Permissions));

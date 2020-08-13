@@ -16,7 +16,7 @@ const getUserByTag = (userTag = '') => {
 
   // Check if the user ID is a valid string
   if (typeof userTag !== 'string') {
-    return error(_module, _submodule, null, `User ID must be a valid string.`);
+    return error(_module, _submodule, null, `User tag '${userTag}' is not a valid string.`);
   }
 
   // If no user tag specified, use the current user's tag

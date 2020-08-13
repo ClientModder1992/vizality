@@ -15,7 +15,7 @@ const getCreatedAt = (guildId = '') => {
 
   // Check if the guild ID is a valid string
   if (typeof guildId !== 'string') {
-    return error(_module, _submodule, null, `Guild ID must be a valid string.`);
+    return error(_module, _submodule, null, `Guild ID '${guildId}' is not a valid string.`);
   }
 
   // If no server ID specified, use the currently selected server's ID

@@ -3,41 +3,45 @@ const isValidId = require('../../utility/isValidId');
 const getGuild = require('../getGuild');
 
 /**
- * Gets the specified role's data object. If no server ID is specified,
- * tries to get the currently selected server's role's data object.
+ * Gets the specified role's data object.
+ * If only 1 argument is specified, it will be assumed to be the role ID,
+ * and it will attempt to retreive the role object from the currently selected guild.
  *
- * @param {string} roleId - Role ID
- * @param {string} [guildId] - Server ID
- * @returns {object|undefined} Role data object
+ * @param {string} guildId - Guild ID | Role ID (if role ID argument not specified)
+ * @param {?string} [roleId] - Role ID
+ * @returns {(object|undefined)} Role object
  */
-const getRole = (roleId, guildId = '') => {
-  const _module = 'Module';
+const getRole = (guildId, roleId) => {
   const _submodule = 'Discord:Guild:Role:getRole';
 
-  // Check if the role ID is a valid string
-  if (typeof roleId !== 'string') {
-    return error(_module, _submodule, null, 'Role ID must be a valid string.');
+  if (arguments.length === 1) {
+    roleId = guildId;
+    /*
+     * Set guildID to empty an string here; it will be replaced with
+     * the current guild's ID (if there is one) through getValidId
+     */
+    guildId = '';
   }
+
+  // Check if the role ID is a valid string
+  if (!isValidId(roleId, 'role', _submodule)) return;
+
+  /*
+   * If guild ID is an empty string, get the current guild's ID,
+   * else return the guild ID argument value
+   */
+  guildId = getValidId(guildId, 'guild', _submodule);
 
   // Check if the guild ID is a valid string
-  if (typeof guildId !== 'string') {
-    return error(_module, _submodule, null, 'Guild ID must be a valid string.');
+  if (!isValidId(guildId, 'guild', _submodule)) return;
+
+  try {
+    const Roles = getGuild(guildId).roles;
+    const Role = Roles[roleId];
+    return Role;
+  } catch (err) {
+    // Fail silently
   }
-
-  // If no server ID specified, use the currently selected server's ID
-  if (!guildId) {
-    guildId = getCurrentGuildId();
-
-    // Check if there is a currently selected server
-    if (!guildId) {
-      return error(_module, _submodule, null, 'You did not specify a server ID and you do not currently have a server selected.');
-    }
-  }
-
-  const Roles = getGuild(guildId).roles;
-  const Role = Roles[roleId];
-
-  return Role;
 };
 
 module.exports = getRole;

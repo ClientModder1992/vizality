@@ -15,9 +15,9 @@ const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
  * the watcher if you no longer need the compiler. When watch events are emitted, the compiler
  * should be re-used if a recompile is performed.
  *
- * @property {String} file File to compile
- * @property {String} cacheDir Path where cached files will go
- * @property {String} watcherEnabled Whether the file watcher is enabled or not
+ * @property {string} file File to compile
+ * @property {string} cacheDir Path where cached files will go
+ * @property {string} watcherEnabled Whether the file watcher is enabled or not
  * @abstract
  */
 class Compiler extends Events {
@@ -54,7 +54,8 @@ class Compiler extends Events {
   /**
    * Arbitrary configuration for the compiler. Useless if not implemented in the _compile method.
    * *NOTE*: Will fire "src-update" if the watcher is enabled and at least one compilation has been performed.
-   * @param {Object} options Options for the compiler
+   *
+   * @param {object} options Options for the compiler
    */
   setCompileOptions (options) {
     // @todo: finish this
@@ -63,7 +64,8 @@ class Compiler extends Events {
 
   /**
    * Compiles the file (if necessary), and perform cache-related operations.
-   * @returns {Promise<String>|String} Compilation result
+   *
+   * @returns {Promise<string>|string} Compilation result
    */
   compile () {
     // Attemt to fetch from cache
@@ -128,9 +130,10 @@ class Compiler extends Events {
   }
 
   /**
-   * Lists all files involved during the compilation (parent file + imported files)
-   * Only applicable if files are concatenated during compilation (e.g. scss files)
-   * @returns {Promise<String[]>|String[]}
+   * Lists all files involved during the compilation (parent file + imported files).
+   * Only applicable if files are concatenated during compilation (e.g. scss files).
+   *
+   * @returns {Promise<string[]>|string[]}
    */
   listFiles () {
     return [ this.file ];
@@ -139,7 +142,8 @@ class Compiler extends Events {
   /**
    * Computes the hash corresponding to the file we're compiling.
    * MUST take into account imported files (if any) and always return the same hash for the same given file.
-   * @returns {Promise<String|null>|String|null} Cache key, or null if cache isn't available
+   *
+   * @returns {Promise<string|null>|string|null} Cache key, or null if cache isn't available
    */
   computeCacheKey () {
     const files = this.listFiles();
@@ -162,7 +166,8 @@ class Compiler extends Events {
 
   /**
    * Computes the hash of a given file
-   * @param {String} file File path
+   *
+   * @param {string} file File path
    */
   computeFileHash (file) {
     if (!existsSync(file)) {
@@ -177,15 +182,16 @@ class Compiler extends Events {
   }
 
   /**
-   * Compiles the file. Should NOT perform any cache-related actions
-   * @returns {Promise<String>} Compilation results.
+   * Compiles the file. Should NOT perform any cache-related actions.
+   *
+   * @returns {Promise<string>} Compilation results.
    */
   _compile () {
     throw new Error('Not implemented');
   }
 
   /**
-   * @returns {String} Compiler metadata (compiler used, version)
+   * @returns {string} Compiler metadata (compiler used, version)
    */
   get _metadata () {
     return '';

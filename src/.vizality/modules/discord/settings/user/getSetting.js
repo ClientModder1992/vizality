@@ -12,7 +12,7 @@ const getSetting = (setting) => {
   const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
   const moreSettings = getModule('darkSidebar', 'fontScale', 'fontSize');
 
-  /**
+  /*
    * @todo: Add `friendSourceFlags` and `restrictedGuilds`
    */
   switch (setting) {
