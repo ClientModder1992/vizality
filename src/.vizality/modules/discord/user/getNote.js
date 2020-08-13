@@ -1,6 +1,6 @@
 const { getModule } = require('@webpack');
 
-const isValidId = require('../utilities/isValidId');
+const isValidId = require('../utility/isValidId');
 
 /**
  * Gets the user's note contents.

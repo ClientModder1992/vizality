@@ -1,6 +1,6 @@
 const { logger: { error } } = require('@utilities');
 
-const getCreationDate = require('../utilities/getCreationDate');
+const getCreationDate = require('../utility/getCreationDate');
 const getCurrentGuildId = require('./getCurrentGuildId');
 
 /**

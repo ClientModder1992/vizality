@@ -1,6 +1,6 @@
 const getActivitiesByType = require('./getActivitiesByType');
 const hasActivityOfType = require('./hasActivityOfType');
-const isValidId = require('../../utilities/isValidId');
+const isValidId = require('../../utility/isValidId');
 
 // @todo Change activityType to ...activityTypes to allow filtering for multiple types
 

@@ -1,7 +1,7 @@
 const { getModule } = require('@webpack');
 
-const getValidId = require('../../utilities/getValidId');
-const isValidId = require('../../utilities/isValidId');
+const getValidId = require('../../utility/getValidId');
+const isValidId = require('../../utility/isValidId');
 
 /**
  * Checks if the user is on mobile.

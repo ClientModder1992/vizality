@@ -1,6 +1,6 @@
 const { logger: { error } } = require('@utilities');
 
-const isValidId = require('../../utilities/isValidId');
+const isValidId = require('../../utility/isValidId');
 const setNote = require('./setNote');
 
 /**

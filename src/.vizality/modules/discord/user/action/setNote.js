@@ -1,7 +1,7 @@
 const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
-const isValidId = require('../../utilities/isValidId');
+const isValidId = require('../../utility/isValidId');
 
 /**
  * Sets a user's note contents.

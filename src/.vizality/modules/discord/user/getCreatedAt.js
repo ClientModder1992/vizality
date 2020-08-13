@@ -1,6 +1,6 @@
-const getCreationDate = require('../utilities/getCreationDate');
-const getValidId = require('../utilities/getValidId');
-const isValidId = require('../utilities/isValidId');
+const getCreationDate = require('../utility/getCreationDate');
+const getValidId = require('../utility/getValidId');
+const isValidId = require('../utility/isValidId');
 
 /**
  * Gets the user's creation date/time.

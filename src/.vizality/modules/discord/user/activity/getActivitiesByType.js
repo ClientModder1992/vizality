@@ -1,7 +1,7 @@
 const { logger: { error } } = require('@utilities');
 
 const hasActivityOfType = require('./hasActivityOfType');
-const isValidId = require('../../utilities/isValidId');
+const isValidId = require('../../utility/isValidId');
 const getActivities = require('./getActivities');
 
 const Constants = require('../../modules/constants');

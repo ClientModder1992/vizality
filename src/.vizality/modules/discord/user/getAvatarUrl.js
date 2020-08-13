@@ -1,7 +1,7 @@
 const { string: { isValidUrl } } = require('@utilities');
 
-const getValidId = require('../utilities/getValidId');
-const isValidId = require('../utilities/isValidId');
+const getValidId = require('../utility/getValidId');
+const isValidId = require('../utility/isValidId');
 const getUser = require('./getUser');
 
 /**

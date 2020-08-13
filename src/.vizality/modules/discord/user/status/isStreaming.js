@@ -1,6 +1,6 @@
-const getValidId = require('../../utilities/getValidId');
+const getValidId = require('../../utility/getValidId');
 const _isStreaming = require('../activity/isStreaming');
-const isValidId = require('../../utilities/isValidId');
+const isValidId = require('../../utility/isValidId');
 
 /**
  * Checks if the user is streaming.
