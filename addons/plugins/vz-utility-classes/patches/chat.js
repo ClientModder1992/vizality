@@ -2,6 +2,8 @@ const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } =
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 
+// @test Set `this.props.isUnavailable` to true to test an unavailable channel
+
 module.exports = async () => {
   const { chat } = getModule('chat');
   const instance = getOwnerInstance(await waitForElement(`.${chat.split(' ')[0]}`));
@@ -54,5 +56,3 @@ module.exports = async () => {
 
   return () => unpatch('vz-utility-classes-chat');
 };
-
-// @testing: Set this.props.isUnavailable to true to test an unavailable channel

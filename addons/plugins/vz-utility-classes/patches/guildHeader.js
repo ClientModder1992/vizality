@@ -4,7 +4,7 @@ const { react: { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 
 /*
- * This module does nothing currently. It is just here for future reference in the event the
+ * @note This module does nothing currently. It is just here for future reference in the event the
  * guild header item needs to be patched.
  */
 

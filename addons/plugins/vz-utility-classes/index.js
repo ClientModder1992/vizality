@@ -2,14 +2,14 @@ const { Plugin } = require('@entities');
 
 const { remote } = require('electron');
 
-const modules = require('./modules');
+const patches = require('./patches');
 
 class UtilityClasses extends Plugin {
   onStart () {
     this.callbacks = [];
 
-    Object.values(modules).forEach(async mod => {
-      const callback = await mod();
+    Object.values(patches).forEach(async patch => {
+      const callback = typeof await patch();
       if (typeof callback === 'function') {
         this.callbacks.push(callback);
       }

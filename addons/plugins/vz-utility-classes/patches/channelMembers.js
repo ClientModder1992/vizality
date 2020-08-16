@@ -2,7 +2,7 @@ const { react: { forceUpdateElement }, joinClassNames } = require('@utilities');
 const { getModuleByDisplayName, getModule } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 
-module.exports = () => {
+const channelMembers = () => {
   const MemberListItem = getModuleByDisplayName('MemberListItem');
 
   patch('vz-utility-classes-members', MemberListItem.prototype, 'render', function (_, res) {
@@ -48,3 +48,5 @@ module.exports = () => {
     unpatch('vz-utility-classes-member-groups');
   };
 };
+
+module.exports = channelMembers;

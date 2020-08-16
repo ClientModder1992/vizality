@@ -8,8 +8,8 @@ module.exports = async () => {
   const instance = getOwnerInstance(guildElement);
 
   patch('vz-utility-classes-guild', instance.__proto__, 'render', function (_, res) {
-    // Guilds with outages
-    if (!this || !this.props) return;
+    if (!res) return _; // Needed for guilds with outages
+    if (!this || !this.props) return res;
 
     const { audio, badge: mentions, selected, unread, video, screenshare } = this.props;
 
