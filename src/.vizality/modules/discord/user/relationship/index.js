@@ -1,8 +1,9 @@
 /**
  * User relationship module.
  * Contains functions/data relating to user relationships.
- *
+ * @namespace discord.user.relationship
  * @module discord.user.relationship
+ * @memberof discord.user
  */
 require('fs')
   .readdirSync(__dirname)
