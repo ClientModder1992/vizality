@@ -21,11 +21,6 @@ const checkPerformance = async (...testCases) => {
 
   // Set up and run the test case
   for (const test of testCases) {
-    // Check if the test is a valid string
-    if (test !== 'string') {
-      return error(_module, _submodule, null, `Test case '${test}' is not a valid string.`);
-    }
-
     caseNumber++;
 
     const before = performance.now();

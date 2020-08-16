@@ -14,6 +14,7 @@ const _find = (object, targetValue, exact = false, type) => {
           : '_find'}`;
 
   if (typeof targetValue !== 'string' || targetValue.trim() === '') {
+    // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
     return error(module, submodule, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
   }
 
