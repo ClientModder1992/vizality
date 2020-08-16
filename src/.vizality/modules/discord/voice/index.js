@@ -1,8 +1,9 @@
 /**
  * Voice module.
  * Contains functions/data relating to voice/video.
- *
+ * @namespace discord.voice
  * @module discord.voice
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

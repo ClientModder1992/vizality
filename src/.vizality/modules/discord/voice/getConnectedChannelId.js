@@ -1,1 +1,1 @@
-// vizality.modules.webpack.getModule('getAveragePing', 'getDuration')
+// vizality.modules.webpack.getModule('getChannelId', 'getVoiceChannelId').getVoiceChannelId()

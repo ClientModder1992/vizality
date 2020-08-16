@@ -1,8 +1,9 @@
 /**
  * Voice action module.
  * Contains functions/data that perform voice-related actions.
- *
- * @module discord.voice
+ * @namespace discord.voice.action
+ * @module discord.voice.action
+ * @memberof discord.voice
  */
 require('fs')
   .readdirSync(__dirname)
