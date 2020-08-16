@@ -190,7 +190,7 @@ class UpdaterSettings extends React.PureComponent {
         <ButtonItem
           note={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS_DESC}
           button={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS}
-          onClick={() => this.plugin.openChangeLogs()}
+          onClick={() => this.plugin.openChangelogs()}
         >
           {Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS}
         </ButtonItem>

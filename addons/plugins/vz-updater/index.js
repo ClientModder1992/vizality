@@ -1,20 +1,26 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const changelog = require('@root/changelogs.json');
 const { DIR: { ROOT_DIR } } = require('@constants');
 const { Confirm } = require('@components/modal');
 const { Plugin } = require('@entities');
 
+const { promises: { readFile } } = require('fs');
 const { promisify } = require('util');
 const cp = require('child_process');
+const { join } = require('path');
 const exec = promisify(cp.exec);
 
 const Settings = require('./components/Settings');
+const Changelog = join(ROOT_DIR, 'CHANGELOG.md');
 
-module.exports = class Updater extends Plugin {
+class Updater extends Plugin {
   constructor () {
     super();
 
+    this.changelog = {
+      image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
+      footer: 'Missed an update? [Check out our previous change logs](https://google.com)'
+    };
     this.checking = false;
     this.cwd = { cwd: ROOT_DIR };
   }
@@ -41,9 +47,12 @@ module.exports = class Updater extends Plugin {
     this.checkForUpdates();
 
     const lastChangelog = this.settings.get('last_changelog', '');
-    if (changelog.id !== lastChangelog) {
-      this.openChangeLogs();
+
+    if (this.changelog.id !== lastChangelog) {
+      this.openChangelogs();
     }
+
+    this.openChangelogs();
   }
 
   onStop () {
@@ -267,10 +276,11 @@ module.exports = class Updater extends Plugin {
   }
 
   // Change Log
-  async openChangeLogs () {
+  async openChangelogs () {
+    const changelogObject = await this.formatChangelog();
     const ChangeLog = await this._getChangeLogsComponent();
     openModal(() => React.createElement(ChangeLog, {
-      changeLog: this.formatChangeLog(changelog)
+      changeLog: changelogObject
     }));
   }
 
@@ -297,29 +307,26 @@ module.exports = class Updater extends Plugin {
         }
 
         renderVideo () {
-          if (!changelog.image) {
+          if (!_this.changelog.image) {
             return null;
           }
 
           return React.createElement('img', {
-            src: changelog.image,
+            src: _this.changelog.image,
             className: video,
             alt: ''
           });
         }
 
         renderFooter () {
+          const { markdownToReact } = getModule('markdownToReact');
           const footer = super.renderFooter();
-          footer.props.children = React.createElement('span', {
-            dangerouslySetInnerHTML: {
-              __html: changelog.footer
-            }
-          });
+          footer.props.children = markdownToReact(_this.changelog.footer, { inline: true });
           return footer;
         }
 
         componentWillUnmount () {
-          _this.settings.set('last_changelog', changelog.id);
+          _this.settings.set('last_changelog', `updates-${_this.changelog.id}`);
         }
       }
 
@@ -328,33 +335,23 @@ module.exports = class Updater extends Plugin {
     return this._ChangeLog;
   }
 
-  formatChangeLog (json) {
-    let body = '';
-    const colorToClass = {
-      GREEN: 'added',
-      ORANGE: 'progress',
-      RED: 'fixed',
-      BLURPLE: 'improved'
-    };
-    json.contents.forEach(item => {
-      if (item.type === 'HEADER') {
-        body += `${item.text.toUpperCase()} {${colorToClass[item.color]}${item.noMargin ? ' marginTop' : ''}}\n======================\n\n`;
-      } else {
-        if (item.text) {
-          body += item.text;
-          body += '\n\n';
-        }
-        if (item.list) {
-          body += ` * ${item.list.join('\n\n * ')}`;
-          body += '\n\n';
-        }
-      }
-    });
+  async formatChangelog () {
+    const log = await readFile(Changelog, 'utf-8');
+
+    const dateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
+    const date = log.match(dateRegex)[0];
+    const previousDate = log.match(dateRegex)[1];
+
+    const body = log.slice(log.search(date) + 11, log.search(previousDate) - 13).trim();
+
     return {
-      date: json.date,
+      id: `updates-${date}`,
+      date,
       locale: 'en-us',
       revision: 1,
       body
     };
   }
-};
+}
+
+module.exports = Updater;
