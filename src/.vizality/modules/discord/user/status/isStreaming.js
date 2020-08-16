@@ -1,32 +1,26 @@
-const getValidId = require('../../utility/getValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('../getCurrentUserId');
 const _isStreaming = require('../activity/isStreaming');
-const isValidId = require('../../utility/isValidId');
 
 /**
  * Checks if the user is streaming.
  * If no user ID is specified, tries to use the current user's ID.
- *
  * @alias discord.user.activity.isStreaming
- * @param {string} [userId] - User ID
- * @returns {boolean} Is the user streaming?
+ * @param {snowflake} [userId] - User ID
+ * @returns {boolean} Whether the user is streaming
  */
-const isStreaming = (userId = '') => {
+const isStreaming = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:Status:isStreaming';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const isStreaming = _isStreaming(userId);
-    return isStreaming;
+    return _isStreaming(userId);
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

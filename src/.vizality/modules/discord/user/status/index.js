@@ -1,8 +1,9 @@
 /**
  * User status module.
  * Contains functions/data relating to user statuses.
- *
+ * @namespace discord.user.status
  * @module discord.user.status
+ * @memberof discord.user
  */
 require('fs')
   .readdirSync(__dirname)

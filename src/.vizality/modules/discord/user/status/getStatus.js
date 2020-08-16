@@ -1,32 +1,26 @@
+const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
-const getValidId = require('../../utility/getValidId');
-const isValidId = require('../../utility/isValidId');
+const getCurrentUserId = require('../getCurrentUserId');
 
 /**
  * Get's the user's status.
  * If no user ID is specified, tries to use the current user's ID.
- *
- * @param {string} [userId] - User ID
+ * @param {snowflake} [userId] - User ID
  * @returns {string} User status
  */
-const getStatus = (userId = '') => {
+const getStatus = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:Status:getStatus';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
     const StatusModule = getModule('getStatus', 'isMobileOnline');
     return StatusModule.getStatus(userId);
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 
