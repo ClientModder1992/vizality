@@ -1,31 +1,28 @@
-const getValidId = require('../../utility/getValidId');
-const isValidId = require('../../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('../getCurrentUserId');
 const getActivities = require('./getActivities');
 
 /**
  * Gets a user's primary activity object.
  * If no user ID is specified, tries to get the primary activity object of the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {(object|undefined)} User primary activity object
+ * @memberof discord.user.activity
+ * @param {snowflake} [userId] User ID
+ * @returns {Activity} User primary activity object
  */
-const getPrimaryActivity = (userId = '') => {
+const getPrimaryActivity = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:Activity:getPrimaryActivity';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
-
   try {
+    // If no user ID is provided, use the current user's ID
+    userId = userId || getCurrentUserId();
+
     const Activities = getActivities(userId);
+
     return Activities[0];
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

@@ -1,6 +1,5 @@
 const { logger: { error } } = require('@utilities');
 
-const isValidId = require('../../utility/isValidId');
 const getActivities = require('./getActivities');
 
 const Constants = require('../../module/constants');
@@ -8,18 +7,20 @@ const Constants = require('../../module/constants');
 // @todo Clean up this file.
 
 /**
- * Checks if the user currently has the specified activity type(s).
- *
- * @param {string} userId - User ID
- * @param {string|number} activityTypes - Activity type
- * @returns {boolean} Does the user have the specified activity type(s) present?
+ * Checks if a user has an activity with the provided activity types.
+ * @memberof discord.user.activity
+ * @param {snowflake} userId User ID
+ * @param {string|number} activityTypes Activity type
+ * @returns {boolean} Whether the user has an activity with the activity types
  */
 const hasActivityOfType = (userId, ...activityTypes) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:Activity:hasActivityOfType';
 
-  // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // Check if user ID is a string
+  if (typeof userId !== 'string') {
+    throw new TypeError(`"userId" argument must be a string (received ${typeof userId})`);
+  }
 
   const { ActivityTypes } = Constants;
 
@@ -47,6 +48,7 @@ const hasActivityOfType = (userId, ...activityTypes) => {
   for (let activity of activityTypes) {
     // Check if the activity type is a valid string or number
     if (typeof activity !== 'string' && typeof activity !== 'number') {
+      // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
       return error(_module, _submodule, null, `Activity type '${activity}' is not a valid string or number. Here's a list of valid activity types:\n`, Object.values(ActivityTypes));
     }
 

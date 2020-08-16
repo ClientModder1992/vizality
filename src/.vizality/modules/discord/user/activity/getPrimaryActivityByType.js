@@ -1,6 +1,5 @@
 const getActivitiesByType = require('./getActivitiesByType');
 const hasActivityOfType = require('./hasActivityOfType');
-const isValidId = require('../../utility/isValidId');
 
 // @todo Change activityType to ...activityTypes to allow filtering for multiple types
 
@@ -16,8 +15,10 @@ const isValidId = require('../../utility/isValidId');
 const getPrimaryActivityByType = (userId, activityType) => {
   const _submodule = 'Discord:User:Activity:getPrimaryActivityByType';
 
-  // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // Check if user ID is a string
+  if (typeof userId !== 'string') {
+    throw new TypeError(`"userId" argument must be a string (received ${typeof userId})`);
+  }
 
   // Check if the user has any activities of the specified type
   if (!hasActivityOfType(userId, activityType)) return;

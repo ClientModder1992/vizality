@@ -1,27 +1,23 @@
+const { logger: { error } } = require('@utilities');
+
 const hasActivityOfType = require('./hasActivityOfType');
-const getValidId = require('../../utility/getValidId');
-const isValidId = require('../../utility/isValidId');
+const getCurrentUserId = require('../getCurrentUserId');
 
 const Constants = require('../../module/constants');
 
 /**
- * Checks if the user has a custom status present.
- * If no user ID is specified, tries to check for the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {boolean} Does the user have a custom status?
+ * Checks if a user has a custom status.
+ * If no user ID is provided, tries to use the current user.
+ * @memberof discord.user.activity
+ * @param {snowflake} [userId] User ID
+ * @returns {boolean} Whether the user has a custom status
  */
-const hasCustomStatus = (userId = '') => {
+const hasCustomStatus = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:Activity:hasCustomStatus';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, try to use the current user's ID
+  userId = userId || getCurrentUserId();
 
   const { ActivityTypes } = Constants;
 
@@ -29,7 +25,7 @@ const hasCustomStatus = (userId = '') => {
     const hasCustomStatus = hasActivityOfType(userId, ActivityTypes.CUSTOM_STATUS);
     return Boolean(hasCustomStatus);
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

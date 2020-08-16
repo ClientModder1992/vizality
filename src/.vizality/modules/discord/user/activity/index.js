@@ -1,8 +1,9 @@
 /**
  * User activity module.
  * Contains functions/data relating to user activities.
- *
+ * @namespace discord.user.activity
  * @module discord.user.activity
+ * @memberof discord.user
  */
 require('fs')
   .readdirSync(__dirname)

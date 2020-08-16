@@ -1,27 +1,23 @@
+const { logger: { error } } = require('@utilities');
+
 const hasActivityOfType = require('./hasActivityOfType');
-const getValidId = require('../../utility/getValidId');
-const isValidId = require('../../utility/isValidId');
+const getCurrentUserId = require('../getCurrentUserId');
 
 const Constants = require('../../module/constants');
 
 /**
- * Checks if the user is listening on Spotify.
+ * Checks if a user is listening on Spotify.
  * If no user ID is specified, tries to check for the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {boolean} Is the user listening on Spotify?
+ * @memberof discord.user.activity
+ * @param {snowflake} [userId] User ID
+ * @returns {boolean} Whether the user is listening on Spotify
  */
-const isListening = (userId = '') => {
+const isListening = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:Activity:isListening';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, try to use the current user's ID
+  userId = userId || getCurrentUserId();
 
   const { ActivityTypes } = Constants;
 
@@ -29,7 +25,7 @@ const isListening = (userId = '') => {
     const isListening = hasActivityOfType(userId, ActivityTypes.LISTENING);
     return Boolean(isListening);
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 
