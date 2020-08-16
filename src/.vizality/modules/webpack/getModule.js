@@ -1,6 +1,6 @@
 const { array: { getLastElement } } = require('@utilities');
 
-const _getMdl = require('./_getMdl');
+const _getModule = require('./_getModule');
 
 const getModule = (...filter) => {
   let retry = false;
@@ -22,7 +22,7 @@ const getModule = (...filter) => {
     ([ filter ] = filter); // Thanks Lighty, I still don't understand this syntax.
   }
 
-  return _getMdl(filter, retry, forever, 'getModule', filter);
+  return _getModule(filter, retry, forever, 'getModule', filter);
 };
 
 module.exports = getModule;

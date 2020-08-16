@@ -7,14 +7,8 @@ const _getModule = require('./_getModule');
  * @param {Boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
  * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
  */
-const getModuleByDisplayName = (displayName, retry = false, forever = false) => {
-  return _getModule(
-    m => m.displayName && m.displayName.toLowerCase() === displayName.toLowerCase(),
-    retry,
-    forever,
-    'getModuleByDisplayName',
-    displayName
-  );
+const getModuleById = (id, retry = false, forever = false) => {
+  return _getModule(m => m._dispatchToken && m._dispatchToken === `ID_${id}`, retry, forever, 'getModuleByDisplayName', id);
 };
 
-module.exports = getModuleByDisplayName;
+module.exports = getModuleById;

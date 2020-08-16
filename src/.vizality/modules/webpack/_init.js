@@ -2,11 +2,11 @@ const { sleep } = require('@utilities');
 
 const moduleFilters = require('./modules');
 const Webpack = require('../webpack');
-const _getMdl = require('./_getMdl');
+const _getModule = require('./_getModule');
 
 /**
- * Initializes the injection into Webpack
- * @returns Promise<Void>
+ * Initializes the injection into Webpack.
+ * @returns {Promise<void>}
  */
 const _init = async () => {
   // Wait until webpack is ready
@@ -31,7 +31,7 @@ const _init = async () => {
 
   // Load modules pre-fetched
   for (const mdl in moduleFilters) {
-    Webpack[mdl] = await _getMdl(moduleFilters[mdl], true);
+    Webpack[mdl] = await _getModule(moduleFilters[mdl], true);
   }
 };
 
