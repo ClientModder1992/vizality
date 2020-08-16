@@ -5,14 +5,12 @@ const { react : { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
-const deeplinks = require('./deeplinks');
-const commands = require('./commands');
-
-const i18n = require('./i18n');
-
 const Plugins = require('./components/manage/Plugins');
 const Themes = require('./components/manage/Themes');
 const Store = require('./components/store/Store');
+const deeplinks = require('./deeplinks');
+const commands = require('./commands');
+const i18n = require('./i18n');
 
 class AddonsManager extends Plugin {
   async onStart () {
@@ -68,7 +66,7 @@ class AddonsManager extends Plugin {
       return res;
     });
 
-    const { transitionTo } = getModule('transitionTo');
+    // const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
     patch('vz-addons-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
@@ -84,16 +82,18 @@ class AddonsManager extends Plugin {
         }
       };
 
-      if (this.props.channel.id === STORE_PLUGINS || this.props.channel.id === STORE_THEMES) {
-        res.props.children[1].props.children[1].props.children = data[this.props.channel.id].name;
-        res.props.children[1].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
-          className: res.props.children[1].props.children[0].props.className,
+      if (this.props.channel.id === PLUGINS_CHANNEL || this.props.channel.id === THEMES_CHANNEL) {
+        res.props.children[1].props.children[0].props.children[1].props.children = data[this.props.channel.id].name;
+        res.props.children[1].props.children[0].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
+          className: res.props.children[1].props.children[0].props.children[0].props.className,
           width: 24,
           height: 24
         });
-        res.props.onClick = () => transitionTo(data[this.props.channel.id].route);
-        delete res.props.onMouseDown;
-        delete res.props.onContextMenu;
+        /*
+         * res.props.onClick = () => transitionTo(data[this.props.channel.id].route);
+         * delete res.props.onMouseDown;
+         * delete res.props.onContextMenu;
+         */
       }
       return res;
     });
