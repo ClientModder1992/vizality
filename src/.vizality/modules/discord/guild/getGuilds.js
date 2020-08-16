@@ -1,12 +1,17 @@
 const { getModule } = require('@webpack');
 
 /**
- * Gets all of the user's active server data objects.
- *
- * @returns {object} All of the server data objects of the user's current servers
+ * Gets all of the cached guild objects.
+ * @returns {object<snowflake, Guild>} All of the cached guild objects
+ * @note Returns an empty object if the user has not joined any guilds
  */
 const getGuilds = () => {
-  return getModule('getGuild').getGuilds();
+  try {
+    const GuildModule = getModule('getGuild', 'getGuilds');
+    return GuildModule.getGuilds();
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getGuilds;

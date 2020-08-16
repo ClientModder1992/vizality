@@ -4,39 +4,36 @@ const { getModule } = require('@webpack');
 const getCurrentGuildId = require('./getCurrentGuildId');
 
 /**
- * Gets the server's data object. If no server ID is specified,
- * tries to get the currently selected server's data object.
- *
- * @param {string} [guildId] - Server ID
- * @returns {object|undefined} Server data object or undefined
+ * Gets a guild's data object.
+ * If no guild ID is specified, tries to get the currently selected guild's object.
+ * @param {snowflake} [guildId] Guild ID
+ * @returns {Guild|undefined} Guild object
  */
-const getGuild = (guildId = '') => {
+const getGuild = (guildId) => {
   const _module = 'Module';
   const _submodule = 'Discord:Guild:getGuild';
 
-  // Check if the server ID is a valid string
-  if (typeof guildId !== 'string') {
-    return error(_module, _submodule, null, `Server ID must be a valid string.`);
-  }
+  // If no guild ID is provided, use the current guild ID
+  guildId = guildId || getCurrentGuildId();
 
-  // If no server ID specified, use the currently selected server's ID
-  if (!guildId) {
-    guildId = getCurrentGuildId();
+  try {
+    const GuildModule = getModule('getGuild', 'getGuilds');
+    const Guild = GuildModule.getGuild(guildId);
 
-    // Check if there is a currently selected server
-    if (!guildId) {
-      return error(_module, _submodule, null, 'You did not specify a server ID and you do not currently have a server selected.');
+    // Check if guild ID is a string
+    if (typeof guildId !== 'string') {
+      throw new TypeError(`"guildId" argument must be a string (received ${typeof guildId})`);
     }
+
+    // If no guild is returned
+    if (!Guild) {
+      throw new Error(`Guild with ID '${guildId}' not found. Either the ID is invalid, the guild is not cached, or it is facing an outage.`);
+    }
+
+    return Guild;
+  } catch (err) {
+    return error(_module, _submodule, null, err);
   }
-
-  const Guild = getModule('getGuild').getGuild(guildId);
-
-  // Check if the guild object exists
-  if (!Guild) {
-    return error(_module, _submodule, null, `Server with ID '${guildId}' not found. The ID is either invalid or the server is not yet cached.`);
-  }
-
-  return Guild;
 };
 
 module.exports = getGuild;

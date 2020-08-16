@@ -1,12 +1,15 @@
 const getGuilds = require('./getGuilds');
 
 /**
- * Gets a count of the user's currently active servers.
- *
- * @returns {number} Total joined server count
+ * Gets a count of the user's currently active guilds.
+ * @returns {number} - Total joined guild count
  */
 const getGuildsCount = () => {
-  return Object.keys(getGuilds()).length;
+  try {
+    return Object.keys(getGuilds()).length;
+  } catch (err) {
+    // Fail silently
+  }
 };
 
 module.exports = getGuildsCount;

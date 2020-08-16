@@ -2,16 +2,15 @@ const getLastSelectedGuildId = require('./getLastSelectedGuildId');
 const getGuild = require('./getGuild');
 
 /**
- * Gets the server data object of the last selected server.
- *
- * @returns {?object} Server data object
+ * Gets the guild data object of the last selected guild.
+ * @returns {?object} - Guild data object
  */
 const getLastSelectedGuild = () => {
-  if (!getLastSelectedGuildId()) {
-    return null;
+  try {
+    return getGuild(getLastSelectedGuildId());
+  } catch (err) {
+    // Fail silently
   }
-
-  return getGuild(getLastSelectedGuildId());
 };
 
 module.exports = getLastSelectedGuild;

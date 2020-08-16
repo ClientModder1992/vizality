@@ -1,16 +1,19 @@
+const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 /**
- * Gets the currently selected server's ID.
- *
- * @returns {?string} Server ID
+ * Gets the currently selected guild's ID.
+ * @returns {?snowflake} Guild ID
  */
 const getCurrentGuildId = () => {
+  const _module = 'Module';
+  const _submodule = 'Discord:Guild:getCurrentGuildId';
+
   try {
     const CurrentGuildModule = getModule('getLastSelectedGuildId');
     return CurrentGuildModule.getGuildId();
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 
