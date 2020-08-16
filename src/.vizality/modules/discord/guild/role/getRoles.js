@@ -1,31 +1,27 @@
-const getValidId = require('../../utility/getValidId');
-const isValidId = require('../../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentGuildId = require('../getCurrentGuildId');
 const getGuild = require('../getGuild');
 
 /**
- * Gets all of the specified server's role data objects.
- * If no server ID is specified, tries to get the currently selected server's role data objects.
- *
- * @param {string} [guildId] - Server ID
- * @returns {(object|undefined)} All of the role data objects for the server or undefined
+ * Gets all of the role objects for a guild.
+ * If no guild ID is specified, tries to get the currently selected guild's role objects.
+ * @param {snowflake} [guildId] - Guild ID
+ * @returns {Role|undefined} All of the role objects for a guild
  */
 const getRoles = (guildId = '') => {
+  const _module = 'Module';
   const _submodule = 'Discord:Guild:Role:getRoles';
 
-  /*
-   * If guild ID is an empty string, return the current guild's ID,
-   * else return the guild ID argument value
-   */
-  guildId = getValidId(guildId, 'guild', _submodule);
-
-  // Check if the guild ID is a valid string
-  if (!isValidId(guildId, 'guild', _submodule)) return;
+  // If no guild ID is provided, use the current guild ID
+  guildId = guildId || getCurrentGuildId();
 
   try {
-    const Roles = getGuild(guildId).roles;
+    const Guild = getGuild(guildId);
+    const Roles = Guild.roles;
     return Roles;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 
