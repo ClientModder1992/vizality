@@ -1,0 +1,1 @@
+// vizality.modules.webpack.getModule('Integrations').getCurrentHub()._stack[0].scope._tags.buildId
