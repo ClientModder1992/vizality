@@ -1,8 +1,9 @@
 /**
  * Popout module.
  * Contains functions/data relating to popouts.
- *
+ * @namespace discord.popout
  * @module discord.popout
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

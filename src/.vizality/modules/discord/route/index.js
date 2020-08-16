@@ -1,8 +1,9 @@
 /**
  * Route module.
  * Contains functions/data relating to routes.
- *
+ * @namespace discord.route
  * @module discord.route
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

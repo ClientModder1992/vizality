@@ -1,8 +1,9 @@
 /**
  * Message module.
  * Contains functions/data relating to messages.
- *
- * @module discord.invite
+ * @namespace discord.message
+ * @module discord.message
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

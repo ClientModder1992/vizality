@@ -1,8 +1,9 @@
 /**
  * Message action module.
  * Contains functions/data that perform message-related actions.
- *
+ * @namespace discord.message.action
  * @module discord.message.action
+ * @memberof discord.message
  */
 require('fs')
   .readdirSync(__dirname)

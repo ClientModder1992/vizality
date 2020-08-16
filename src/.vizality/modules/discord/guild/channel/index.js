@@ -1,9 +1,10 @@
 /**
  * Guild channel module.
  * Contains functions/data relating to guild channels.
- *
+ * @namespace discord.guild.channel
  * @module discord.guild.channel
- * @see module:discord.channel.guild
+ * @memberof discord.guild
+ * @see {module:discord.channel.guild}
  */
 const { join } = require('path');
 const mainModulePath = join(__dirname, '..', '..', 'channel', 'guild');

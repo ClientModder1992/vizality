@@ -1,8 +1,9 @@
 /**
  * Activity module.
  * Contains functions/data related to activities.
- *
+ * @namespace discord.activity
  * @module discord.activity
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

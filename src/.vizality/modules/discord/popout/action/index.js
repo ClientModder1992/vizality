@@ -1,8 +1,9 @@
 /**
  * Popout action module.
  * Contains functions/data that perform generic popout-related actions.
- *
+ * @namespace discord.popout.action
  * @module discord.popout.action
+ * @memberof discord.popout
  */
 require('fs')
   .readdirSync(__dirname)

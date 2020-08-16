@@ -1,8 +1,9 @@
 /**
- * Channel module.
+ * Channel submodule.
  * Contains functions/data that are usable for all channel types.
- *
+ * @namespace discord.channel
  * @module discord.channel
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

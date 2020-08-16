@@ -1,8 +1,9 @@
 /**
  * Message reaction module.
  * Contains functions/data relating to message reactions.
- *
+ * @namespace discord.message.reaction
  * @module discord.message.reaction
+ * @memberof discord.message
  */
 require('fs')
   .readdirSync(__dirname)

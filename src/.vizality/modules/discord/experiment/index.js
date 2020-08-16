@@ -1,8 +1,9 @@
 /**
  * Experiment module.
  * Contains functions/data relating to Discord's Experiments.
- *
+ * @namespace discord.experiment
  * @module discord.experiment
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

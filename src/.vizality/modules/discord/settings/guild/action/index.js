@@ -1,8 +1,9 @@
 /**
  * Guild settings action module.
  * Contains functions/data that perform guild settings-related actions.
- *
+ * @namespace discord.settings.guild.action
  * @module discord.settings.guild.action
+ * @memberof discord.settings.guild
  */
 require('fs')
   .readdirSync(__dirname)

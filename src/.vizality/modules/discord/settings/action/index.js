@@ -1,8 +1,9 @@
 /**
  * Settings action module.
  * Contains functions/data that perform generic settings-related actions.
- *
+ * @namespace discord.settings.action
  * @module discord.settings.action
+ * @memberof discord.settings
  */
 require('fs')
   .readdirSync(__dirname)

@@ -1,8 +1,9 @@
 /**
  * User settings module.
  * Contains functions/data relating to user settings.
- *
+ * @namespace discord.settings.user
  * @module discord.settings.user
+ * @memberof discord.settings
  */
 require('fs')
   .readdirSync(__dirname)

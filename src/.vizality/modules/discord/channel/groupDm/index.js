@@ -1,8 +1,9 @@
 /**
  * Group DM channel module.
  * Contains functions/data relating to group DM channels.
- *
+ * @namespace discord.channel.groupDm
  * @module discord.channel.groupDm
+ * @memberof discord.channel
  */
 require('fs')
   .readdirSync(__dirname)

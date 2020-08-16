@@ -1,9 +1,9 @@
 /**
- * Emoji module.
- * Contains functions/data relating to emojis.
- * @namespace discord.emoji
- * @module discord.emoji
- * @memberof discord
+ * Group DM channel action module.
+ * Contains functions/data that perform group DM channel-related actions.
+ * @namespace discord.channel.groupDm
+ * @module discord.channel.groupDm
+ * @memberof discord.channel
  */
 require('fs')
   .readdirSync(__dirname)

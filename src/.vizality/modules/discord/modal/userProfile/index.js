@@ -1,8 +1,9 @@
 /**
  * User profile modal module.
  * Contains functions/data relating to user profile modals.
- *
+ * @namespace discord.modal.userProfile
  * @module discord.modal.userProfile
+ * @memberof discord.modal
  */
 require('fs')
   .readdirSync(__dirname)

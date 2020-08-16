@@ -1,8 +1,9 @@
 /**
  * Guild action module.
  * Contains functions/data that perform guild-related actions.
- *
+ * @namespace discord.guild.action
  * @module discord.guild.action
+ * @memberof discord.guild
  */
 require('fs')
   .readdirSync(__dirname)

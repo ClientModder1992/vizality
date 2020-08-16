@@ -1,8 +1,9 @@
 /**
  * Route action module.
  * Contains functions/data that perform generic route-related actions.
- *
+ * @namespace discord.route.action
  * @module discord.route.action
+ * @memberof discord.route
  */
 require('fs')
   .readdirSync(__dirname)

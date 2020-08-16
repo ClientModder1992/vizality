@@ -1,8 +1,9 @@
 /**
  * Invite module.
  * Contains functions/data relating to guild invites.
- *
+ * @namespace discord.invite
  * @module discord.invite
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

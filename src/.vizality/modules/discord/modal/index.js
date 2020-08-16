@@ -1,8 +1,9 @@
 /**
  * Modal module.
  * Contains functions/data relating to modals.
- *
+ * @namespace discord.modal
  * @module discord.modal
+ * @memberof discord
  */
 require('fs')
   .readdirSync(__dirname)

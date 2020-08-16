@@ -20,10 +20,12 @@ const setSetting = async (setting, value, sync = true) => {
   const fix = `Use 'Discord:settings:getSettingInfo()' to see appropriate options.`;
 
   if (!setting || typeof setting !== 'string' || (!settings[setting] && !moreSettings[setting])) {
+    // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
     return warn(module, submodule, null, `You must enter a valid setting name of type string. ${fix}`);
   }
 
   if (!value) {
+    // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
     return warn(module, submodule, null, `You must enter a valid value for '${setting}'. ${fix}`);
   }
 

@@ -1,8 +1,9 @@
 /**
  * Guild channel module.
  * Contains functions/data relating to guild channels.
- *
+ * @namespace discord.channel.guild
  * @module discord.channel.guild
+ * @memberof discord.channel
  * @alias module:discord.guild.channel
  */
 require('fs')

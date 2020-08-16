@@ -1,8 +1,9 @@
 /**
  * Channel settings module.
  * Contains functions/data relating to channel settings.
- *
+ * @namespace discord.settings.channel
  * @module discord.settings.channel
+ * @memberof discord.settings
  */
 require('fs')
   .readdirSync(__dirname)

@@ -1,8 +1,9 @@
 /**
  * Emoji action module.
  * Contains functions/data that perform emoji-related actions.
- *
+ * @namespace discord.emoji.action
  * @module discord.emoji.action
+ * @memberof discord.emoji
  */
 require('fs')
   .readdirSync(__dirname)
