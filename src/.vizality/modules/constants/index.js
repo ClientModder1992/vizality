@@ -2,51 +2,65 @@ const { join } = require('path');
 
 const constants = Object.freeze({
   // Vizality
-  WEBSITE: 'https://vizality.com',
-  ASSETS: 'https://vizality.com/app/assets',
-  IMAGES: 'https://vizality.com/app/assets/images',
-  REPO: 'vizality/vizality',
+  CDN: Object.freeze({
+    WEBSITE_CDN: 'https://vizality.com',
+    API_CDN: 'https://vizality.com/app/api',
+    DOCS_CDN: 'https://vizality.com/app/api/docs',
+    ASSETS_CDN: 'https://vizality.com/app/assets',
+    IMAGES_CDN: 'https://vizality.com/app/assets/images'
+  }),
 
-  // Runtime
-  SETTINGS_FOLDER: join(__dirname, '..', '..', '..', '..', 'settings'),
-  CACHE_FOLDER: join(__dirname, '..', '..', '..', '..', '.cache'),
-  LOGS_FOLDER: join(__dirname, '..', '..', '..', '..', '.logs'),
+  REPO: Object.freeze({
+    VIZALITY_REPO: 'vizality/vizality',
+    COMMUNITY_REPO: 'vizality/vizality-community',
+    DOCS_REPO: 'vizality/vizality-docs',
+    I18N_REPO: 'vizality/vizality-i18n'
+  }),
 
   // Dirs
-  ROOT_FOLDER: join(__dirname, '..', '..', '..', '..'),
-  PLUGINS_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins'),
-    // --
-      BUNDLED_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.bundled'),
-      CORE_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.core'),
-  THEMES_FOLDER: join(__dirname, '..', '..', '..', '..', 'addons', 'themes'),
-  // --
-    SRC_FOLDER: join(__dirname, '..', '..', '..'),
-    // --
-      VIZALITY_FOLDER: join(__dirname, '..', '..'),
-      // ---
-        API_FOLDER: join(__dirname, '..', '..', 'api'),
-        I18N_FOLDER: join(__dirname, '..', '..', 'i18n'),
-        LIBRARIES_FOLDER: join(__dirname, '..', '..', 'libraries'),
-        MANAGERS_FOLDER: join(__dirname, '..', '..', 'managers'),
-        STYLES_FOLDER: join(__dirname, '..', '..', 'styles'),
-        MODULES_FOLDER: join(__dirname, '..'),
-
+  DIR: Object.freeze({
+    SETTINGS_DIR: join(__dirname, '..', '..', '..', '..', 'settings'),
+    CACHE_DIR: join(__dirname, '..', '..', '..', '..', '.cache'),
+    LOGS_DIR: join(__dirname, '..', '..', '..', '..', '.logs'),
+    ROOT_DIR: join(__dirname, '..', '..', '..', '..'),
+    SRC_DIR: join(__dirname, '..', '..', '..'),
+    VIZALITY_DIR: join(__dirname, '..', '..'),
+    // ---
+    ADDONS_DIR: join(__dirname, '..', '..', '..', '..', 'addons'),
+    PLUGINS_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins'),
+    BUNDLED_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.bundled'),
+    CORE_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.core'),
+    THEMES_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'themes'),
+    // ---
+    API_DIR: join(__dirname, '..', '..', 'api'),
+    I18N_DIR: join(__dirname, '..', '..', 'i18n'),
+    LIBRARIES_DIR: join(__dirname, '..', '..', 'libraries'),
+    MANAGERS_DIR: join(__dirname, '..', '..', 'managers'),
+    STYLES_DIR: join(__dirname, '..', '..', 'styles'),
+    MODULES_DIR: join(__dirname, '..')
+  }),
 
   // Discord Server
-  INVITE_CODE: '42B8AC9',
-  GUILD_ID: '689933814864150552',
-  MAGIC_CHANNELS: {
-    CSS_SNIPPETS: '705262981214371902',
-    JS_SNIPPETS: '705262981214371902',
-    STORE_PLUGINS: '700461738004578334',
-    STORE_THEMES: '700461710972157954',
-    STAFF_LOUNGE: '690452551233175602',
-    SUPPORT: {
-      INSTALLATION: '718478897695424613',
-      PLUGINS: '705264484528291956',
-      THEMES: '705264431831187496'
-    }
-  }
+  GUILD: Object.freeze({
+    GUILD_INVITE: '42B8AC9',
+    GUILD_ID: '689933814864150552',
+    // ---
+    CHANNEL: Object.freeze({
+      CSS_SNIPPETS_CHANNEL: '705262981214371902',
+      JS_SNIPPETS_CHANNEL: '705262981214371902',
+      PLUGINS_CHANNEL: '700461738004578334',
+      THEMES_CHANNEL: '700461710972157954',
+      DEVELOPMENT_CHANNEL: '690452269753171998',
+      STAFF_CHANNEL: '690452551233175602',
+      // ---
+      SUPPORT_CHANNEL: Object.freeze({
+        INSTALLATION_SUPPORT_CHANNEL: '718478897695424613',
+        PLUGINS_SUPPORT_CHANNEL: '705264484528291956',
+        THEMES_SUPPORT_CHANNEL: '705264431831187496',
+        MISC_SUPPORT_CHANNEL: '705264513728905266'
+      })
+    })
+  })
 });
 
 module.exports = constants;

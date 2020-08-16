@@ -1,5 +1,4 @@
 const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@utilities');
-const { PLUGINS_FOLDER, THEMES_FOLDER } = require('@constants');
 
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',

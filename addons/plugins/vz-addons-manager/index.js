@@ -1,5 +1,5 @@
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { MAGIC_CHANNELS: { STORE_PLUGINS, STORE_THEMES } } = require('@constants');
+const { GUILD: { CHANNEL: { PLUGINS_CHANNEL, THEMES_CHANNEL } } } = require('@constants');
 const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
 const { react : { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
@@ -61,9 +61,10 @@ class AddonsManager extends Plugin {
     const permissionsModule = getModule('can');
     patch('vz-addons-manager-channelItem', permissionsModule, 'can', (args, res) => {
       const id = args[1].channelId || args[1].id;
-      if (id === STORE_PLUGINS || id === STORE_THEMES) {
-        return args[0] === Permissions.VIEW_CHANNEL;
+      if (id === PLUGINS_CHANNEL || id === THEMES_CHANNEL) {
+        // return args[0] === Permissions.VIEW_CHANNEL;
       }
+
       return res;
     });
 
@@ -71,12 +72,12 @@ class AddonsManager extends Plugin {
     const ChannelItem = getModuleByDisplayName('ChannelItem');
     patch('vz-addons-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
-        [STORE_PLUGINS]: {
+        [PLUGINS_CHANNEL]: {
           icon: PluginIcon,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
           route: '/_vizality/store/plugins'
         },
-        [STORE_THEMES]: {
+        [THEMES_CHANNEL]: {
           icon: Theme,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
           route: '/_vizality/store/themes'

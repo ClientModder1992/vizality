@@ -1,6 +1,6 @@
 const { dom: { createElement }, logger: { error, log, warn }, sleep } = require('@utilities');
 const { resolveCompiler } = require('@compilers');
-const { PLUGINS_FOLDER } = require('@constants');
+const { DIR: { PLUGINS_DIR } } = require('@constants');
 
 const { existsSync } = require('fs');
 const { join } = require('path');
@@ -66,7 +66,7 @@ class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(PLUGINS_FOLDER, this.entityID, path);
+      resolvedPath = join(PLUGINS_DIR, this.entityID, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);

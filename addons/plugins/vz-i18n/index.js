@@ -1,10 +1,10 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { I18N_WEBSITE, I18N_FOLDER } = require('@constants');
+const { REPO: { I18N_REPO }, DIR: { I18N_DIR } } = require('@constants');
 const { patch, unpatch } = require('@patcher');
 const { Card } = require('@components');
 const { Plugin } = require('@entities');
 
-const strings = require(I18N_FOLDER);
+const strings = require(I18N_DIR);
 
 const totalStrCount = Object.keys(strings['en-US']).length;
 
@@ -27,7 +27,7 @@ class I18n extends Plugin {
             marginTop: 0,
             marginBottom: 30
           }
-        }, Messages.VIZALITY_I18N_CONTRIBUTE.format({ weblateUrl: I18N_WEBSITE }))
+        }, Messages.VIZALITY_I18N_CONTRIBUTE.format({ weblateUrl: I18N_REPO }))
       );
 
       const OgList = res.props.children.props.children[2].type;

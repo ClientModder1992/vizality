@@ -1,5 +1,5 @@
 const { getModule, messages, channels: { getChannelId } } = require('@webpack');
-const { IMAGES } = require('@constants');
+const { CDN: { IMAGES_CDN } } = require('@constants');
 
 const { receiveMessage } = messages;
 
@@ -8,7 +8,7 @@ async function monkeypatchMessages () {
   const { createBotMessage } = getModule('createBotMessage');
 
   // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
-  BOT_AVATARS.vizality = `${IMAGES}/logo.png`;
+  BOT_AVATARS.vizality = `${IMAGES_CDN}/logo.png`;
 
   messages.sendMessage = (sendMessage => async (id, message, ...params) => {
     if (!message.content.startsWith(vizality.api.commands.prefix)) {

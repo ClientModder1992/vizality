@@ -3,7 +3,7 @@
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
 const { string: { toHeaderCase, toPlural } } = require('@utilities');
-const { PLUGINS_FOLDER, THEMES_FOLDER } = require('@constants');
+const { DIR: { PLUGINS_DIR, THEMES_DIR } } = require('@constants');
 
 const { shell } = require('electron');
 const { join } = require('path');

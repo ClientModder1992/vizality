@@ -2,7 +2,7 @@ const { settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { Font
 const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { joinClassNames, time } = require('@utilities');
-const { REPO, CACHE_FOLDER } = require('@constants');
+const { REPO: { VIZALITY_REPO }, DIR: { CACHE_DIR } } = require('@constants');
 const { Confirm } = require('@components/modal');
 
 const { readdirSync, existsSync } = require('fs');
@@ -85,7 +85,7 @@ class UpdaterSettings extends React.PureComponent {
         <div className="about">
           <div>
             <span>{Messages.VIZALITY_UPDATES_UPSTREAM}</span>
-            <span>{vizality.git.upstream.replace(REPO, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
+            <span>{vizality.git.upstream.replace(VIZALITY_REPO, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
           </div>
           <div>
             <span>{Messages.VIZALITY_UPDATES_REVISION}</span>
@@ -317,8 +317,8 @@ class UpdaterSettings extends React.PureComponent {
       return path;
     };
 
-    const cachedFiles = (existsSync(CACHE_FOLDER) && readdirSync(CACHE_FOLDER)
-      .map(d => readdirSync(`${CACHE_FOLDER}/${d}`))
+    const cachedFiles = (existsSync(CACHE_DIR) && readdirSync(CACHE_DIR)
+      .map(d => readdirSync(`${CACHE_DIR}/${d}`))
       .flat().length) || 'n/a';
 
     const createPathReveal = (title, path) =>
@@ -375,7 +375,7 @@ class UpdaterSettings extends React.PureComponent {
 
           <b>Git</b>
           <div className='row'>
-            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(REPO, 'Official')}</div>
+            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(VIZALITY_REPO, 'Official')}</div>
             <div className='column'>Revision:&#10;
               <a
                 href={`https://github.com/${vizality.git.upstream}/commit/${vizality.git.revision}`}

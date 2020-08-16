@@ -1,6 +1,6 @@
 const { Spinner, FormNotice, AsyncComponent, FormTitle } = require('@components');
 const { React, getModule } = require('@webpack');
-const { WEBSITE } = require('@constants');
+const { CDN: { DOCS_CDN } } = require('@constants');
 const { get } = require('@http');
 
 const documentCache = {};
@@ -19,7 +19,8 @@ class DocPage extends React.PureComponent {
   }
 
   async componentDidMount () {
-    const baseUrl = vizality.settings.get('backendURL', WEBSITE);
+    // const baseUrl = vizality.settings.get('backendURL', WEBSITE);
+    const baseUrl = 'https://powercord.dev';
     const document = await get(`${baseUrl}/api/v2/docs/${this.props.category}/${this.props.doc}`).then(res => res.body);
     documentCache[this.key] = document;
     this.setState({ document });

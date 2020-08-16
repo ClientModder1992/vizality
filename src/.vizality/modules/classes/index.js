@@ -6,7 +6,7 @@ require('fs')
     exports[moduleName] = require(`${__dirname}/${filename}`);
   });
 
-const { LIBRARIES_FOLDER } = require('@constants');
+const { DIR: { LIBRARIES_DIR } } = require('@constants');
 const { logger: { log } } = require('@utilities');
 
 const { join } = require('path');
@@ -35,7 +35,7 @@ _checkForUndefined();
 
 const _module = 'Module';
 const _submodule = 'Classes';
-const SassClassFolder = join(LIBRARIES_FOLDER, 'sass', 'classes');
+const SassClassFolder = join(LIBRARIES_DIR, 'sass', 'classes');
 
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();

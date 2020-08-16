@@ -1,7 +1,7 @@
 const { sleep, string: { toPascalCase, toCamelCase } } = require('@utilities');
 const { PopoutWindow, Spinner } = require('@components');
 const { React, Flux, getModule } = require('@webpack');
-const { WEBSITE } = require('@constants');
+const { CDN: { DOCS_CDN } } = require('@constants');
 const { get } = require('@http');
 
 const SettingsView = require('./SettingsView');
@@ -25,7 +25,8 @@ class DocsLayer extends React.PureComponent {
   }
 
   async componentDidMount () {
-    const baseUrl = vizality.settings.get('backendURL', WEBSITE);
+    // const baseUrl = vizality.settings.get('backendURL', WEBSITE);
+    const baseUrl = 'https://powercord.dev';
     const sections = await get(`${baseUrl}/api/v2/docs/categories`).then(res => res.body).then(s => s.sort((a, b) => a.metadata.pos > b.metadata.pos ? 1 : -1));
     sectionsCache = [];
     sections.forEach(section => {

@@ -1,5 +1,5 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
-const { MAGIC_CHANNELS: { CSS_SNIPPETS } } = require('@constants');
+const { GUILD: { CHANNEL: { CSS_SNIPPETS_CHANNEL } } } = require('@constants');
 const { react : { findInReactTree } } = require('@utilities');
 const { PopoutWindow } = require('@components');
 const { patch, unpatch } = require('@patcher');
@@ -64,7 +64,7 @@ class CustomCSSPlugin extends Plugin {
     patch('vz-custom-css-snippets', MiniPopover, 'default', (_, res) => {
       const props = findInReactTree(res, r => r && r.message && r.setPopout);
 
-      if (!props || props.channel.id !== CSS_SNIPPETS) return res;
+      if (!props || props.channel.id !== CSS_SNIPPETS_CHANNEL) return res;
 
       res.props.children.unshift(
         React.createElement(SnippetButton, {

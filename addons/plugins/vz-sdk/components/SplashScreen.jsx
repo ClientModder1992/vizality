@@ -1,5 +1,5 @@
 const { Flex, Button } = require('@components');
-const { ROOT_FOLDER } = require('@constants');
+const { DIR: { SRC_FOLDER } } = require('@constants');
 const { React } = require('@webpack');
 
 const { remote: { BrowserWindow } } = require('electron');
@@ -104,7 +104,7 @@ class SplashScreen extends React.PureComponent {
       center: true,
       show: true,
       webPreferences: {
-        preload: join(ROOT_FOLDER, 'src', 'preload', 'splash.js'),
+        preload: join(SRC_FOLDER, 'preload', 'splash.js'),
         nodeIntegration: true
       }
     };

@@ -1,5 +1,4 @@
 const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase } } = require('@utilities');
-const { ROOT_FOLDER } = require('@constants');
 
 const { readdirSync } = require('fs');
 const { resolve } = require('path');

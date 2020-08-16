@@ -1,6 +1,6 @@
 const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
+const { GUILD: { GUILD_ID, GUILD_INVITE }, DIR: { SRC_DIR } } = require('@constants');
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { GUILD_ID, INVITE_CODE, ROOT_FOLDER } = require('@constants');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
@@ -16,7 +16,7 @@ class Notices extends Plugin {
     this._patchAnnouncements();
     this._patchToasts();
 
-    const injectedFile = resolve(ROOT_FOLDER, 'src', '__injected.txt');
+    const injectedFile = resolve(SRC_DIR, '__injected.txt');
 
     if (existsSync(injectedFile)) {
       this._welcomeNewUser();
@@ -67,7 +67,7 @@ class Notices extends Plugin {
         text: store.getGuilds(GUILD_ID) ? 'Go to Server' : 'Join Server',
         onClick: () => {
           const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
-          inviteStore.acceptInviteAndTransitionToInviteChannel(INVITE_CODE);
+          inviteStore.acceptInviteAndTransitionToInviteChannel(GUILD_INVITE);
           getModule('popLayer').popAllLayers();
         }
       }

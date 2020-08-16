@@ -1,6 +1,6 @@
 const { getModule, getModuleByPrototypes, _init } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@utilities');
-const { IMAGES, ROOT_FOLDER } = require('@constants');
+const { CDN: { IMAGES_CDN }, DIR: { ROOT_DIR, PLUGINS_DIR, THEMES_DIR } } = require('@constants');
 const { jsx: JsxCompiler } = require('@compilers');
 const { Updatable } = require('@entities');
 
@@ -66,7 +66,7 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  */
 class Vizality extends Updatable {
   constructor () {
-    super(ROOT_FOLDER, '', 'vizality');
+    super(ROOT_DIR, '', 'vizality');
 
     this.api = {};
     this.modules = {};
@@ -79,8 +79,8 @@ class Vizality extends Updatable {
 
     this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
-    this.manager.themes = new AddonManager('themes', resolve(ROOT_FOLDER, 'addons', 'themes'));
-    this.manager.plugins = new AddonManager('plugins', resolve(ROOT_FOLDER, 'addons', 'plugins'));
+    this.manager.themes = new AddonManager('themes', THEMES_DIR);
+    this.manager.plugins = new AddonManager('plugins', PLUGINS_DIR);
 
     this._initialized = false;
     this._originalLogFunc = {};
@@ -116,9 +116,9 @@ class Vizality extends Updatable {
   // Startup
   async start () {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
-    console.clear();
+    // console.clear();
 
-    const startupBanner = `${IMAGES}/console-startup-banner.gif`;
+    const startupBanner = `${IMAGES_CDN}/console-startup-banner.gif`;
 
     // Startup banner
     console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
@@ -155,7 +155,7 @@ class Vizality extends Updatable {
      *     }
      *   });
      */
-    
+
     // Themes
     this.manager.themes.load();
 
@@ -258,6 +258,14 @@ class Vizality extends Updatable {
         });
       }
     };
+  }
+
+  /**
+   * heheheh.
+   * @param {snowflake} userId sadasd
+   */
+  pie (userId) {
+
   }
 
   async _update (force = false) {

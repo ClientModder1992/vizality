@@ -2,7 +2,7 @@
 
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
-const { WEBSITE } = require('@constants');
+const { CDN: { WEBSITE_CDN } } = require('@constants');
 const { Plugin } = require('@entities');
 
 class RPC extends Plugin {
@@ -14,7 +14,7 @@ class RPC extends Plugin {
     this._boundAddEvent = this._addEvent.bind(this);
     this._boundRemoveEvent = this._removeEvent.bind(this);
 
-    vizality.api.rpc.registerScope('VIZALITY_PRIVATE', w => w === WEBSITE);
+    vizality.api.rpc.registerScope('VIZALITY_PRIVATE', w => w === WEBSITE_CDN);
     vizality.api.rpc.on('eventAdded', this._boundAddEvent);
     vizality.api.rpc.on('eventRemoved', this._boundRemoveEvent);
   }

@@ -1,4 +1,4 @@
-const { CACHE_FOLDER } = require('@constants');
+const { DIR: { CACHE_DIR } } = require('@constants');
 
 const Events = require('events');
 const { join } = require('path');
@@ -24,7 +24,7 @@ class Compiler extends Events {
   constructor (file) {
     super();
     this.file = file;
-    this.cacheDir = join(CACHE_FOLDER, this.constructor.name.toLowerCase());
+    this.cacheDir = join(CACHE_DIR, this.constructor.name.toLowerCase());
     this.watcherEnabled = false;
     this._watchers = {};
     this._compiledOnce = {};

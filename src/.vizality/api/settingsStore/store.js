@@ -1,13 +1,13 @@
 const { Flux, FluxDispatcher } = require('@webpack');
-const { SETTINGS_FOLDER } = require('@constants');
+const { DIR: { SETTINGS_DIR } } = require('@constants');
 
 const { join } = require('path');
 const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
 
 const ActionTypes = require('./constants');
 
-if (!existsSync(SETTINGS_FOLDER)) {
-  mkdirSync(SETTINGS_FOLDER);
+if (!existsSync(SETTINGS_DIR)) {
+  mkdirSync(SETTINGS_DIR);
 }
 
 function loadSettings (file) {
@@ -16,7 +16,7 @@ function loadSettings (file) {
     return [
       file.split('.')[0],
       JSON.parse(
-        readFileSync(join(SETTINGS_FOLDER, file), 'utf8')
+        readFileSync(join(SETTINGS_DIR, file), 'utf8')
       )
     ];
   } catch (err) {
@@ -26,7 +26,7 @@ function loadSettings (file) {
 }
 
 const settings = Object.fromEntries(
-  readdirSync(SETTINGS_FOLDER)
+  readdirSync(SETTINGS_DIR)
     .filter(f => !f.startsWith('.') && f.endsWith('.json'))
     .map(loadSettings)
 );
@@ -103,7 +103,7 @@ class SettingsStore extends Flux.Store {
 
   _persist () {
     for (const category in settings) {
-      const file = join(SETTINGS_FOLDER, `${category}.json`);
+      const file = join(SETTINGS_DIR, `${category}.json`);
       const data = JSON.stringify(settings[category], null, 2);
       writeFileSync(file, data);
     }

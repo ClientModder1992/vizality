@@ -3,7 +3,7 @@
  */
 
 const { logger : { log } } = require('@utilities');
-const { REPO } = require('@constants');
+const { REPO: { VIZALITY_REPO } } = require('@constants');
 
 const querystring = require('querystring');
 const https = require('https');
@@ -38,7 +38,7 @@ class GenericRequest {
       uri,
       query: {},
       headers: {
-        'User-Agent': `Vizality (https://github.com/${REPO})`
+        'User-Agent': `Vizality (https://github.com/${VIZALITY_REPO})`
       }
     };
   }
