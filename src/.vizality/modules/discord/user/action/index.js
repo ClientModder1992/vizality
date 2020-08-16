@@ -1,8 +1,9 @@
 /**
  * User action module.
  * Contains functions/data that perform generic user-related actions.
- *
+ * @namespace discord.user.action
  * @module discord.user.action
+ * @memberof discord.user
  */
 require('fs')
   .readdirSync(__dirname)
