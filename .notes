@@ -1,0 +1,65 @@
+//==============================================================================
+// Project Notes
+//==============================================================================
+
+/**
+ * ----------------
+ * Javascript Oddities
+ * ----------------
+ * These are what I feel are strange things I've come across in my time using Javascript
+ * that I feel can be good to know/be aware of.
+ * ----------------
+ * • typeof null -> 'object'
+ * • null instanceof Object -> false
+ * • typeof NaN -> 'number'
+ * • NaN === NaN -> false
+ * • NaN !== NaN -> true
+ * • .2 + .1 -> 0.30000000000000004
+ * • true + true -> 2
+ */
+
+/**
+ * ----------------
+ * Todo Anootations
+ * ----------------
+ * These todo annotations are used throughout the source code, and they're pretty
+ * self-explanatory but helpful to be aware of.
+ * ----------------
+ * @todo Task that has yet to be completed
+ * @bug Problem that produces some inconsistent or incorrect results
+ * @deprecated Code that will be removed in the future
+ * @docs Indication that the section needs to have proper documentation added
+ * @experimental Code that is not fully tested and possibly unstable
+ * @note Generic message meant to explain or point out something
+ * @i18n Indication that the section needs to have proper internationalization added
+ * @powercord Code that is a remnant of Powercord and needs to be removed
+ * @test Information for testing a certain scenario, or code that needs to be tested
+ * @warning Alert that indicates something important to be aware of
+ */
+
+/**
+ * ----------------
+ * Webpack Modules
+ * ----------------
+ * Below are some potentially useful webpack modules that need to be explored further.
+ * ----------------
+ * vizality.modules.webpack.getModule('getHighestRole')
+ * vizality.modules.webpack.getModule('getGuildPermissions')
+ * vizality.modules.webpack.getModule('isStreaming')
+ * vizality.modules.webpack.getModule('getActivity') // Spotify stuff
+ * vizality.modules.webpack.getModule('isEmojiDisabled')
+ * vizality.modules.webpack.getModule('getClass')
+ */
+
+ /**
+ * ----------------
+ * Type Definitions
+ * ----------------
+ * In order to get proper intellisense in VSCode for the custom-defined types the project
+ * uses, this file must remain opened. I was not able to find a viable workaround to
+ * importing typings into individual files, so this was the only solution that worked for
+ * me for cross-file types. In order for it to work, I also had to add the path to the
+ * typings file to jsconfig.json.
+ * ----------------
+ * File location: ./src/.vizality/typedefs/index.js
+  */
