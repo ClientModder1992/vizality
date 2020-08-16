@@ -1,31 +1,26 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
  * Checks if the user has a non-default avatar.
  * If no user ID is specified, tries to use the current user's ID.
- *
- * @param {string} [userId] - User ID
- * @returns {boolean} Does the user have a non-default avatar?
+ * @param {snowflake} [userId] - User ID
+ * @returns {boolean} Whether the user has a non-default avatar
  */
-const hasAvatar = (userId = '') => {
+const hasAvatar = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:hasAvatar';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const { avatar } = getUser(userId);
-    return Boolean(avatar);
+    const User = getUser(userId);
+    return User.avatar;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

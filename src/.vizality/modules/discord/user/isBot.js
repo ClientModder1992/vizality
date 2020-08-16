@@ -1,33 +1,42 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
- * Checks if the user's account is a bot account.
- * If no user ID is specified, tries to use the current user's ID.
- *
- * @param {string} [userId] - User ID
- * @returns {boolean} Is the user a bot?
+ * Checks if a user's account is a bot account.
+ * If no user ID is provided, tries to use the current user.
+ * @param {snowflake} [userId] User ID
+ * @returns {boolean} Whether the user is a bot
  */
-const isBot = (userId = '') => {
+const isBot = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:isBot';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
-
-  console.log(userId);
+  console.log(this.arguments);
 
   try {
-    const { bot } = getUser(userId);
-    return Boolean(bot);
+    // If no user ID is provided, try to use the current user's ID
+    if (undefined) {
+      userId = getCurrentUserId();
+    }
+
+    // Check if user ID is a string
+    if (userId && typeof userId !== 'string') {
+      // Check if user ID is null, because typeof null is 'object' in Javascript...
+      throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+    }
+
+    const User = getUser(userId);
+
+    // If no user is returned
+    if (!User) {
+      throw new Error(`User with ID "${userId}" not found. Either the ID is invalid or the user is not cached.`);
+    }
+
+    return User.bot;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

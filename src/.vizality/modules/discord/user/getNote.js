@@ -1,24 +1,20 @@
+const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
-
-const isValidId = require('../utility/isValidId');
 
 /**
  * Gets the user's note contents.
- *
- * @param {string} [userId] - User ID
- * @returns {(string|undefined)} Note contents or undefined
+ * @param {snowflake} [userId] - User ID
+ * @returns {string|undefined} Note contents
  */
 const getNote = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:getNote';
-
-  // Checks if user ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
 
   try {
     const NoteModule = getModule('getNote');
     return NoteModule.getNote(userId).note;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

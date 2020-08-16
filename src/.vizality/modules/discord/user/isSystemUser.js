@@ -1,31 +1,36 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
- * Checks if the user's account is a system account.
- * If no user ID is specified, tries to use the current user's ID.
- *
- * @param {string} [userId] - User ID
- * @returns {boolean} Is the user account a system account?
+ * Checks if a user's account is a system account.
+ * If no user ID is specified, tries to use the current user.
+ * @memberof discord.user
+ * @param {snowflake} [userId] User ID
+ * @returns {boolean} Whether the user is a system user
  */
-const isSystemUser = (userId = '') => {
+const isSystemUser = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:isSystemUser';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
-
   try {
-    const isSystemUser = getUser(userId).isSystemUser();
-    return Boolean(isSystemUser);
+    // If no user ID is provided, try to use the current user's ID
+    if (arguments.length === 0) {
+      userId = getCurrentUserId();
+    }
+
+    // Check if user ID is a string
+    if (typeof userId !== 'string') {
+      // Check if user ID is null, because typeof null is 'object' in Javascript...
+      throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+    }
+
+    const User = getUser(userId);
+
+    return User.isSystemUser();
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

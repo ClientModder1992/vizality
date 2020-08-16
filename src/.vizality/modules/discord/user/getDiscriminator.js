@@ -1,31 +1,26 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
  * Gets the user's discriminator.
  * If no user ID is specified, tries to get the avatar string of the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {(string|undefined)} User discriminator or undefined
+ * @param {snowflake} [userId] - User ID
+ * @returns {string|undefined} User discriminator
  */
-const getDiscriminator = (userId = '') => {
+const getDiscriminator = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:getDiscriminator';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const { discriminator } = getUser(userId);
-    return discriminator;
+    const User = getUser(userId);
+    return User.discriminator;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

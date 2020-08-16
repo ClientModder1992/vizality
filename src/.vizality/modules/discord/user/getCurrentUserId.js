@@ -1,16 +1,20 @@
+const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
+
 
 /**
  * Gets the current user's ID.
- *
- * @returns {(string|undefined)} User ID or undefined
+ * @returns {snowflake|undefined} User ID
  */
 const getCurrentUserId = () => {
+  const _module = 'Module';
+  const _submodule = 'Discord:User:getCurrentUserId';
+
   try {
     const CurrentUserIdModule = getModule('getId');
     return CurrentUserIdModule.getId();
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

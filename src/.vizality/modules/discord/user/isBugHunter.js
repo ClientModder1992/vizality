@@ -1,34 +1,28 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 const Constants = require('../module/constants');
 
 /**
- * Checks if the user is a Discord bug hunter.
+ * Checks if the user is a bug hunter.
  * If no user ID is specified, tries to use the current user's ID.
- *
- * @param {string} [userId] - User ID
- * @returns {(boolean|undefined)} Is the user a Discord bug hunter?
+ * @param {snowflake} [userId] - User ID
+ * @returns {boolean|undefined} Whether the user is a bug hunter
  */
-const isBugHunter = (userId = '') => {
+const isBugHunter = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:isBugHunter';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const isBugHunterLvl1 = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1);
-    const isBugHunterLvl2 = getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2);
-    return Boolean(isBugHunterLvl1 || isBugHunterLvl2);
+    const User = getUser(userId);
+    return User.hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1) || User.hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2);
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

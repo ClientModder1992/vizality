@@ -1,30 +1,26 @@
-const getCreationDate = require('../utility/getCreationDate');
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getTimestamp = require('../snowflake/getTimestamp');
+const getCurrentUserId = require('./getCurrentUserId');
 
 /**
- * Gets the user's creation date/time.
- *
- * @param {string} [userId] - User ID
- * @returns {(string|undefined)} User creation date timestamp in local string format
+ * Gets a user's account creation date/time.
+ * If no user ID is provided, tries to use the current user.
+ * @memberof discord.user
+ * @param {snowflake} [userId] User ID
+ * @returns {string|undefined} User creation date timestamp in local string format
  */
-const getCreatedAt = (userId = '') => {
+const getCreatedAt = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:getCreatedAt';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, try to use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const CreationDate = getCreationDate(userId);
-    return CreationDate;
+    return getTimestamp(userId).toLocaleString();
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

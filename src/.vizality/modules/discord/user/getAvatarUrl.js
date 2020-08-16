@@ -1,30 +1,24 @@
-const { string: { isValidUrl } } = require('@utilities');
+const { string: { isValidUrl }, logger: { error } } = require('@utilities');
 
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
  * Gets the user's avatar URL.
  * If no user ID is specified, tries to get the avatar URL of the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {(string|undefined)} User avatar URL or undefined
+ * @param {snowflake} [userId] User ID
+ * @returns {string|undefined} User avatar URL
  */
-const getAvatarUrl = (userId = '') => {
+const getAvatarUrl = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:getAvatarUrl';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const { avatarURL } = getUser(userId);
+    const User = getUser(userId);
+    const { avatarURL } = User;
 
     // Check if the avatar URL exists, is not a valid URL, and starts with /
     if (avatarURL && !isValidUrl(avatarURL) && avatarURL.startsWith('/')) {
@@ -33,7 +27,7 @@ const getAvatarUrl = (userId = '') => {
 
     return avatarURL;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

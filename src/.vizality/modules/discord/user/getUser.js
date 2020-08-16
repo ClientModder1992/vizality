@@ -1,35 +1,37 @@
 const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const getCurrentUserId = require('./getCurrentUserId');
 
 /**
- * Gets a user's data object.
- * If no user ID is specified, tries to get the data object of the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {(object|undefined)} User object or undefined
+ * Gets a user object.
+ * If no user ID is provided, tries to use the current user.
+ * @memberof discord.user
+ * @param {snowflake} [userId] The user ID
+ * @returns {User|undefined} User object
  */
-const getUser = (userId = '') => {
+const getUser = (userId) => {
   const _module = 'Module';
   const _submodule = 'Discord:User:getUser';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
-
   try {
+    // If no user ID is provided, try to use the current user's ID
+    if (arguments.length === 0) {
+      userId = getCurrentUserId();
+    }
+
+    // Check if user ID is a string
+    if (typeof userId !== 'string') {
+      // Check if user ID is null, because typeof null is 'object' in Javascript...
+      throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+    }
+
     const UserModule = getModule('getUser', 'getUsers');
     const User = UserModule.getUser(userId);
-    return User || error(_module, _submodule, null, `User with ID '${userId}' not found. The ID is either invalid or the user is not yet cached.`);
+
+    return User;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

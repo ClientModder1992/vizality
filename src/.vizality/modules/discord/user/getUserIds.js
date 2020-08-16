@@ -1,16 +1,19 @@
+const { logger: { error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 /**
- * Gets all of the cached user IDs.
- *
- * @returns {(Array|undefined)} Cached user IDs
+ * Gets all of the currently cached user IDs.
+ * @returns {Array<snowflake>|undefined} All cached user IDs
  */
 const getUserIds = () => {
+  const _module = 'Module';
+  const _submodule = 'Discord:User:getUserIds';
+
   try {
     const StatusModule = getModule('getStatus', 'getUserIds');
     return StatusModule.getUserIds();
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 

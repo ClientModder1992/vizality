@@ -1,31 +1,26 @@
-const getValidId = require('../utility/getValidId');
-const isValidId = require('../utility/isValidId');
+const { logger: { error } } = require('@utilities');
+
+const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
 
 /**
  * Gets the user's tag.
  * If no user ID is specified, tries to get the avatar string of the current user.
- *
- * @param {string} [userId] - User ID
- * @returns {(string|undefined)} User tag or undefined
+ * @param {snowflake} [userId] - User ID
+ * @returns {string|undefined} User tag
  */
-const getTag = (userId = '') => {
+const getTag = (userId) => {
+  const _module = 'Module';
   const _submodule = 'Discord:User:getTag';
 
-  /*
-   * If user ID is an empty string, return the current user's ID,
-   * else return the userId argument value
-   */
-  userId = getValidId(userId, 'user', _submodule);
-
-  // Check if the ID is a valid string
-  if (!isValidId(userId, 'user', _submodule)) return;
+  // If no user ID is provided, use the current user's ID
+  userId = userId || getCurrentUserId();
 
   try {
-    const { tag } = getUser(userId);
-    return tag;
+    const User = getUser(userId);
+    return User.tag;
   } catch (err) {
-    // Fail silently
+    return error(_module, _submodule, null, err);
   }
 };
 
