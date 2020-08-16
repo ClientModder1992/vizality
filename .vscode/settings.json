@@ -6,10 +6,12 @@
     "todo-tree.general.tags": [
         "@bug",
         "@deprecated",
-        "@hack",
+        "@docs",
+        "@experimental",
         "@i18n",
         "@note",
         "@powercord",
+        "@test",
         "@todo",
         "@warning"
     ],
@@ -19,8 +21,8 @@
     "todo-tree.highlights.customHighlight": {
         "@bug": {
             "icon": "bug",
-            "foreground": "#daaa4e",
-            "background": "#daaa4e",
+            "foreground": "#e87000",
+            "background": "#e87000",
             "opacity": 0
         },
         "@deprecated": {
@@ -29,10 +31,16 @@
             "background": "#dad24e",
             "opacity": 0
         },
-        "@hack": {
+        "@docs": {
+            "icon": "book",
+            "foreground": "#00d5ff",
+            "background": "#00d5ff",
+            "opacity": 0
+        },
+        "@experimental": {
             "icon": "beaker",
-            "foreground": "#4ea4da",
-            "background": "#4ea4da",
+            "foreground": "#456aff",
+            "background": "#456aff",
             "opacity": 0
         },
         "@i18n": {
@@ -43,20 +51,26 @@
         },
         "@note": {
             "icon": "pencil",
-            "foreground": "#a868f7",
-            "background": "#a868f7",
+            "foreground": "#7842ff",
+            "background": "#7842ff",
             "opacity": 0
         },
         "@powercord": {
             "icon": "zap",
+            "foreground": "#889c54",
+            "background": "#889c54",
+            "opacity": 0
+        },
+        "@test": {
+            "icon": "gear",
             "foreground": "#ec0ddf",
             "background": "#ec0ddf",
             "opacity": 0
         },
         "@todo": {
             "icon": "checklist",
-            "foreground": "#89da4e",
-            "background": "#89da4e",
+            "foreground": "#34eb52",
+            "background": "#34eb52",
             "opacity": 0
         },
         "@warning": {
@@ -66,8 +80,12 @@
             "opacity": 0
         }
     },
-    "eslint.alwaysShowStatus": true,
-    "eslint.debug": true,
-    "eslint.format.enable": true,
-    "eslint.lintTask.enable": true
+	"eslint.codeActionsOnSave.mode": "problems",
+    "debug.showBreakpointsInOverviewRuler": true,
+    "editor.rulers": [
+        {
+            "column": 90,
+            "color": "rgb(255 255 255 / .03)"
+        }
+    ]
 }
