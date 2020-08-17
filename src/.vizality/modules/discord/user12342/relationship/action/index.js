@@ -1,9 +1,3 @@
-const { logger: { log, warn, error } } = require('@utilities');
-const { getModule } = require('@webpack');
-
-const _module = 'Module';
-const _submodule = `Discord:User:Relationship:Action`;
-
 /**
  * User relationship action module.
  * Contains functions/data that perform user relationship-related actions.
@@ -11,8 +5,10 @@ const _submodule = `Discord:User:Relationship:Action`;
  * @module discord.user.relationship.action
  * @memberof discord.user.relationship
  */
-const action = {
-  
-};
-
-module.exports = action;
+require('fs')
+  .readdirSync(__dirname)
+  .filter(file => file !== 'index.js')
+  .forEach(filename => {
+    const moduleName = filename.split('.')[0];
+    exports[moduleName] = require(`${__dirname}/${filename}`);
+  });

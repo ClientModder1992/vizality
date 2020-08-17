@@ -1,4 +1,4 @@
-const { string: { isValidUrl }, logger: { error } } = require('@utilities');
+const { string: { isUrl }, logger: { error } } = require('@utilities');
 
 const getCurrentUserId = require('./getCurrentUserId');
 const getUser = require('./getUser');
@@ -21,7 +21,7 @@ const getAvatarUrl = (userId) => {
     const { avatarURL } = User;
 
     // Check if the avatar URL exists, is not a valid URL, and starts with /
-    if (avatarURL && !isValidUrl(avatarURL) && avatarURL.startsWith('/')) {
+    if (avatarURL && !isUrl(avatarURL) && avatarURL.startsWith('/')) {
       return window.location.origin + avatarURL;
     }
 

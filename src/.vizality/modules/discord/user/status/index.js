@@ -1,3 +1,11 @@
+const { logger: { log, warn, error } } = require('@utilities');
+const { getModule } = require('@webpack');
+
+const action = require('./action');
+
+const _module = 'Module';
+const _submodule = `Discord:User:Status`;
+
 /**
  * User status module.
  * Contains functions/data relating to user statuses.
@@ -5,10 +13,10 @@
  * @module discord.user.status
  * @memberof discord.user
  */
-require('fs')
-  .readdirSync(__dirname)
-  .filter(file => file !== 'index.js')
-  .forEach(filename => {
-    const moduleName = filename.split('.')[0];
-    exports[moduleName] = require(`${__dirname}/${filename}`);
-  });
+const status = {
+  action,
+
+
+};
+
+module.exports = status;
