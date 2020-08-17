@@ -1,4 +1,4 @@
-const isValidUrl = (url) => {
+const isUrl = (url) => {
   try {
     new URL(url);
   } catch (err) {
@@ -8,4 +8,4 @@ const isValidUrl = (url) => {
   return true;
 };
 
-module.exports = isValidUrl;
+module.exports = isUrl;
