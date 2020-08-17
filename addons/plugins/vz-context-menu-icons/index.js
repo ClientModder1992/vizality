@@ -6,7 +6,7 @@ const { Icon } = require('@components');
 
 class ContextMenuIcons extends Plugin {
   onStart () {
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
 
     this._injectContextMenuItems();
     this._injectContextMenuCheckboxItems();

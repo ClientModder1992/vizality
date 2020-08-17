@@ -4,7 +4,7 @@ const modules = require('./modules');
 
 class CoreDiscordEnhancements extends Plugin {
   onStart () {
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
 
     this.callbacks = [];
 

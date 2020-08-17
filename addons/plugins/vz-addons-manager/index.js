@@ -18,7 +18,7 @@ class AddonsManager extends Plugin {
 
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
 
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
     vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
       label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),

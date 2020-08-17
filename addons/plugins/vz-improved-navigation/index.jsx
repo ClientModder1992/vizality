@@ -14,7 +14,7 @@ class MainNavigation extends Plugin {
       render: Settings
     });
 
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
 
     this._injectMainNav(
       this.settings.get('position', 'top'),

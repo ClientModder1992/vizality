@@ -31,8 +31,8 @@ class CustomCSSPlugin extends Plugin {
     await this._loadCustomCSS();
 
     this._injectSnippetsButton();
-    this.loadStylesheet('custom-css/style.scss');
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('custom-css/style.scss');
+    this.injectStyles('scss/style.scss');
   }
 
   onStop () {

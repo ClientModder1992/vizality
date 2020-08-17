@@ -14,7 +14,7 @@ class ImprovedTitlebar extends Plugin {
       render: Settings
     });
 
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
 
     this._injectTitlebar(
       this.settings.get('type', 'windows'),

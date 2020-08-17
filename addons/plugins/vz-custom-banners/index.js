@@ -5,7 +5,7 @@ const { Plugin } = require('@entities');
 
 class CustomBanners extends Plugin {
   onStart () {
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
     this._patchPrivateChannelEmptyMessage();
   }
 

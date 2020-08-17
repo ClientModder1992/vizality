@@ -14,7 +14,7 @@ class SDK extends Plugin {
   }
 
   onStart () {
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
     this.sdkEnabled = vizality.settings.get('sdkEnabled');
     vizality.api.settings.store.addChangeListener(this._storeListener);
     this._addPopoutIcon();

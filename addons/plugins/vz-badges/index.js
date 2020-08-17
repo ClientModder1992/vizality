@@ -27,7 +27,7 @@ class Badges extends Plugin {
       key => this.classes[key] = `.${this.classes[key].split(' ')[0]}`
     );
 
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
     this._patchGuildTooltips();
     this._patchGuildHeaders();
     this._patchUserComponent();

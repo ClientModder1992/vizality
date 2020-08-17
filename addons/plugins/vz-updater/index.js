@@ -30,7 +30,7 @@ class Updater extends Plugin {
     this.settings.set('failed', false);
     this.settings.set('updating', false);
     this.settings.set('awaiting_reload', false);
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
     vizality.api.settings.registerSettings('Updater', {
       category: this.entityID,
       label: 'Updater', // Note to self: add this string to i18n last :^)

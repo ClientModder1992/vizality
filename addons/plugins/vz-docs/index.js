@@ -6,7 +6,7 @@ const DocsLayer = require('./components/DocsLayer');
 
 class Documentation extends Plugin {
   onStart () {
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
     this._addDocsItem();
 
     vizality.api.router.registerShortcut('documentation', this._openDocs);

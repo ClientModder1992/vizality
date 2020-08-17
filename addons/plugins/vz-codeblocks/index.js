@@ -7,7 +7,7 @@ const { clipboard } = require('electron');
 
 class Codeblocks extends Plugin {
   onStart () {
-    this.loadStylesheet('style.scss');
+    this.injectStyles('style.scss');
     this.patchCodeblocks();
   }
 

@@ -59,10 +59,13 @@ class Plugin extends Updatable {
   }
 
   /**
-   * Loads a plugin stylesheet. Will automatically get removed at plugin unload.
-   * @param {String} path Stylesheet path. Either absolute or relative to the plugin root
+   * Injects a style element containing the styles from the specified stylesheet into the
+   * document head. Style element (and styles) are automatically removed on
+   * plugin disable/unload.
+   * @param {string} path Stylesheet path. Either absolute or relative to the plugin root
+   * @returns {void}
    */
-  loadStylesheet (path) {
+  injectStyles (path) {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it

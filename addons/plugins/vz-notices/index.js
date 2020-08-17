@@ -12,7 +12,7 @@ const ToastContainer = require('./components/ToastContainer');
 
 class Notices extends Plugin {
   onStart () {
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
     this._patchAnnouncements();
     this._patchToasts();
 

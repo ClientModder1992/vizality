@@ -11,7 +11,7 @@ const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 
 class Settings extends Plugin {
   onStart () {
-    this.loadStylesheet('scss/style.scss');
+    this.injectStyles('scss/style.scss');
 
     vizality.api.settings.registerSettings('Settings', {
       category: 'vz-general',
