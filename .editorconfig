@@ -9,7 +9,6 @@ root = true
 
 # We use the same settings everywhere
 [*]
-end_of_line = lf
 charset = utf-8
 insert_final_newline = true
 indent_style = space

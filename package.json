@@ -28,7 +28,7 @@
     "@http": "src/.vizality/modules/http",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
-    "@typedefs": "src/typings",
+    "@typings": "src/.vizality/typings",
     "@utilities": "src/.vizality/modules/utilities",
     "@webpack": "src/.vizality/modules/webpack"
   },
