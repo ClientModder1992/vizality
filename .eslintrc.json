@@ -128,7 +128,7 @@
     "array-bracket-newline": [ "warn", "consistent" ],
     "array-bracket-spacing": [ "warn", "always" ],
     "block-spacing": [ "warn", "always" ],
-    "brace-style": [ "warn", "1tbs" ],
+    "brace-style": [ "warn", "1tbs", { "allowSingleLine": true } ],
     "comma-dangle": [ "warn" ],
     "comma-spacing": [ "warn", {
       "before": false,
@@ -258,6 +258,11 @@
         "object": "Object",
         "key": "key",
         "value": "value",
+        
+        "Git": "Git",
+        "VizalityModules": "VizalityModules",
+        "WebpackModule": "WebpackModule",
+
         "snowflake": "snowflake",
         "Collection": "Collection",
         "Activity": "Activity",
@@ -275,13 +280,14 @@
         "Member": "Member",
         "Mention": "Mention",
         "Message": "Message",
+        "Note": "Note",
         "Reaction": "Reaction",
         "Role": "Role",
         "User": "User",
-        "Voice": "Voice",
-        "WebpackModule": "WebpackModule"
+        "Voice": "Voice"
       },
       "tagNamePreference": {
+        "augments": "extends",
         "warn": "warn",
         "bug": "bug",
         "deprecated": "deprecated",

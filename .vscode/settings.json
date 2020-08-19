@@ -87,5 +87,16 @@
             "column": 90,
             "color": "rgb(255 255 255 / .03)"
         }
-    ]
+    ],
+    "files.exclude": {
+        "**/.cache": true,
+        "**/node_modules": true,
+        "**/package-lock.json": true
+    },
+    "search.exclude": {
+        "**/.cache": true
+    },
+    "files.watcherExclude": {
+        "**/.cache": true
+    }
 }
