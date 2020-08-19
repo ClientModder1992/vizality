@@ -28,7 +28,10 @@
     "@http": "src/.vizality/modules/http",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
+    "@plugin": "src/.vizality/modules/entities/plugin",
+    "@theme": "src/.vizality/modules/entities/theme",
     "@typings": "src/.vizality/typings",
+    "@updatable": "src/.vizality/modules/entities/updatable",
     "@utilities": "src/.vizality/modules/utilities",
     "@webpack": "src/.vizality/modules/webpack"
   },

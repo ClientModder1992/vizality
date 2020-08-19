@@ -15,7 +15,10 @@
       "@http": [ "./.vizality/modules/http" ],
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
+      "@plugin": [ "./.vizality/modules/entities/plugin" ],
+      "@theme": [ "./.vizality/modules/entities/theme" ],
       "@typings": [ "./.vizality/typings" ],
+      "@updatable": [ "./.vizality/modules/entities/updatable" ],
       "@utilities": [ "./.vizality/modules/utilities" ],
       "@webpack": [ "./.vizality/modules/webpack" ]
     }
