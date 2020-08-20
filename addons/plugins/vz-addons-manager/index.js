@@ -1,7 +1,7 @@
 const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { GUILD: { CHANNEL: { PLUGINS_CHANNEL, THEMES_CHANNEL } } } = require('@constants');
 const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
-const { react : { forceUpdateElement } } = require('@utilities');
+const { react : { forceUpdateElement } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 

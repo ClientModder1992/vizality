@@ -11,40 +11,34 @@ const _submodule = `Discord:User:Current`;
  * @module discord.user.current
  * @memberof discord.user
  */
-const current = {
-  /**
-   * Gets the current user.
-   * @returns {User} User object
-   */
-  '': 'lol',
-
-  get: () => {
+class Current {
+  static getCurrentUser () {
     try {
       return getModule('getCurrentUser').getCurrentUser();
     } catch (err) {
       return error(_module, `${_submodule}:get`, null, err);
     }
-  },
+  }
 
-  isSpotifyPremium: () => {
+  static isSpotifyPremium () {
     vizality.modules.webpack.getModule('isSpotifyPremium').isSpotifyPremium()
-  },
-  
+  }
+
   /**
    * Gets the current user ID.
    * @returns {snowflake} User ID
    */
-  getId: () => {
+  static getId () {
     try {
       return getModule('getId').getId();
     } catch (err) {
       return error(_module, `${_submodule}:getId`, null, err);
     }
-  },
+  }
 
-  getToken: () => {
-
-  },
+  static getToken () {
+    return void 0;
+  }
 };
 
-module.exports = current;
+module.exports = Current;

@@ -2,16 +2,16 @@ const { logger: { warn } } = require('@utilities');
 
 const classes = require('../classes');
 
-const _checkForUndefined = async (obj = classes, currentPath = '') => {
-  const module = 'Module';
-  const submodule = 'Classes:_checkForUndefined';
+const _checkForUndefined = async (obj = classes, currentPath) => {
+  const _module = 'Module';
+  const _submodule = 'Classes:_checkForUndefined';
 
   for (const key in obj) {
     if (typeof obj[key] === 'object') {
       const newPath = currentPath ? `${currentPath}.${key}` : key;
       _checkForUndefined(obj[key], newPath);
     } else if (typeof obj[key] === 'undefined') {
-      warn(module, submodule, null, `Value not found: ${currentPath}.${key}`);
+      warn(_module, _submodule, null, `Value not found: ${currentPath}.${key}`);
     }
   }
 };

@@ -1,11 +1,11 @@
-const { getModuleByDisplayName, React } = require('@webpack');
+const { React, getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Area = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
 
-class TextArea extends React.PureComponent {
+module.exports = class TextArea extends React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;
@@ -16,9 +16,7 @@ class TextArea extends React.PureComponent {
       </FormItem>
     );
   }
-}
-
-module.exports = TextArea;
+};
 
 /**
  * AVAILABLE PROPS

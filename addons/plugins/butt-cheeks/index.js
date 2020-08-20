@@ -1,4 +1,4 @@
-const { Plugin } = require('@entities');
+const Plugin = require('@plugin');
 
 class ButtCheeks extends Plugin {
   onStart () {

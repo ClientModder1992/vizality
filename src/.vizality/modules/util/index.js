@@ -1,0 +1,15 @@
+module.exports = {
+  Array = require('./array'),
+  Color = require('./color'),
+  DOM = require('./dom'),
+  File = require('./file'),
+  Filter = require('./filter'),
+  Logger = require('./logger'),
+  Misc = require('./misc'),
+  Number = require('./number'),
+  Object = require('./object'),
+  React = require('./react'),
+  String = require('./string'),
+  Time = require('./time'),
+  Type = require('./type')
+},

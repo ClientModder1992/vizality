@@ -1,11 +1,9 @@
-const { Plugin } = require('@entities');
+const Plugin = require('@plugin');
 
 const i18n = require('./i18n');
 
-class BringBackGamerTexts extends Plugin {
+module.exports = class BringBackGamerTexts extends Plugin {
   onStart () {
     vizality.api.i18n.loadAllStrings(i18n);
   }
-}
-
-module.exports = BringBackGamerTexts;
+};

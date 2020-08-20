@@ -10,6 +10,8 @@ require('fs')
     exports[moduleName] = require(`${__dirname}/${filename}`);
   });
 
+// @todo Make this a separate file?
+
 // Add some util components
 Object.assign(exports, {
   SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))

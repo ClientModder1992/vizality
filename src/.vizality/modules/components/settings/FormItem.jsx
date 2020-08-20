@@ -1,4 +1,4 @@
-const { getModule, getModuleByDisplayName, React } = require('@webpack');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');
@@ -6,7 +6,7 @@ const Divider = require('../Divider');
 const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
 const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 
-class FormItem extends React.PureComponent {
+module.exports = class FormItem extends React.PureComponent {
   render () {
     const Flex = getModuleByDisplayName('Flex');
     const margins = getModule('marginTop20');
@@ -27,6 +27,4 @@ class FormItem extends React.PureComponent {
       </DFormItem>
     );
   }
-}
-
-module.exports = FormItem;
+};

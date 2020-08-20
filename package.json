@@ -28,11 +28,11 @@
     "@http": "src/.vizality/modules/http",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
-    "@plugin": "src/.vizality/modules/entities/plugin",
-    "@theme": "src/.vizality/modules/entities/theme",
+    "@plugin": "src/.vizality/modules/entities/Plugin",
+    "@theme": "src/.vizality/modules/entities/Theme",
     "@typings": "src/.vizality/typings",
-    "@updatable": "src/.vizality/modules/entities/updatable",
-    "@utilities": "src/.vizality/modules/utilities",
+    "@updatable": "src/.vizality/modules/entities/Updatable",
+    "@util": "src/.vizality/modules/util",
     "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {

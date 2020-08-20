@@ -1,13 +1,12 @@
-const { dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
-const { resolveCompiler } = require('@compilers');
-
+const { dom: { createElement }, logger: { log, warn, error } } = require('../util');
+const Compilers = require('../compilers');
 const Updatable = require('./Updatable');
 
-class Theme extends Updatable {
+module.exports = class Theme extends Updatable {
   constructor (themeID, manifest) {
     const styleManager = typeof vizality !== 'undefined' ? vizality.styleManager : global.sm;
     super(styleManager.themesDir, themeID);
-    this.compiler = resolveCompiler(manifest.effectiveTheme);
+    this.compiler = Compilers.resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
 
@@ -57,6 +56,4 @@ class Theme extends Updatable {
   warn (...data) {
     warn(this.module, this.submodule, this.submoduleColor, ...data);
   }
-}
-
-module.exports = Theme;
+};

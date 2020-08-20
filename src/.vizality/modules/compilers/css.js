@@ -1,22 +1,19 @@
-const Compiler = require('./compiler');
 const { promises: { readFile } } = require('fs');
+
+const Compiler = require('./compiler');
 
 /**
  * CSS compiler
- * @extends {Compiler}
+ * @extends Compiler
  */
 class CSS extends Compiler {
   async compile () {
     const css = await readFile(this.file, 'utf8');
-    if (this.watcherEnabled) {
-      this._watchFiles();
-    }
+    if (this.watcherEnabled) { this._watchFiles(); }
     return css;
   }
 
-  computeCacheKey () {
-    return null;
-  }
+  computeCacheKey () { return null; }
 }
 
 module.exports = CSS;

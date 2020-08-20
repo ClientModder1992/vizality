@@ -1,4 +1,4 @@
-const { getModule, getModuleByDisplayName, React } = require('@webpack');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 
@@ -16,10 +16,9 @@ let classes = {
   classDescription: ''
 };
 
-class ButtonItem extends React.PureComponent {
+module.exports = class ButtonItem extends React.PureComponent {
   constructor () {
     super();
-
     this.state = { classes };
   }
 
@@ -74,6 +73,4 @@ class ButtonItem extends React.PureComponent {
       <div className={`${classes.classDivider} ${classes.classDividerDef}`} />
     </DFormItem>;
   }
-}
-
-module.exports = ButtonItem;
+};

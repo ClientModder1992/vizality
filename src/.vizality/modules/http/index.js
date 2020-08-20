@@ -1,10 +1,14 @@
 const GenericRequest = require('./GenericRequest');
 
-/** @module vizality/http */
+/**
+ * @module http
+ * @namespace http
+ * @version 0.0.1
+ */
 module.exports = {
   /**
    * Creates a GET request
-   * @param {String} url URL to call
+   * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
   get (url) {
@@ -13,7 +17,7 @@ module.exports = {
 
   /**
    * Creates a POST request
-   * @param {String} url URL to call
+   * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
   post (url) {
@@ -22,7 +26,7 @@ module.exports = {
 
   /**
    * Creates a PUT request
-   * @param {String} url URL to call
+   * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
   put (url) {
@@ -31,7 +35,7 @@ module.exports = {
 
   /**
    * Creates a DELETE request
-   * @param {String} url URL to call
+   * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
   del (url) {

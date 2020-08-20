@@ -1,7 +1,7 @@
 const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
 
-class DoNotTrack extends Plugin {
+module.exports = class DoNotTrack extends Plugin {
   onStart () {
     const Analytics = getModule('getSuperPropertiesBase64');
     Analytics.__oldTrack = Analytics.track;
@@ -61,6 +61,4 @@ class DoNotTrack extends Plugin {
     Sentry.client._prepareEvent = Sentry.client.__old_prepareEvent;
     window.console = window.__oldConsole;
   }
-}
-
-module.exports = DoNotTrack;
+};

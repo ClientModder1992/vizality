@@ -1,4 +1,5 @@
 /* eslint-disable spaced-comment */ /* eslint-disable multiline-comment-style */
+const __typings__ = {};
 /**
  * All of the custom typings used throughout the project. I'm keeping them all stored in a
  * single file, because it seems I have to keep this file opened while working on the
@@ -10,7 +11,6 @@
  * @module typings
  * @version 0.0.1
  */
-
 
 //==============================================================================
 // Discord Module
@@ -25,7 +25,6 @@
  * value is usually an object.
  * @typedef {Object<key, value>} Collection
  */
-
 
 //--------------
 // Emoji
@@ -55,9 +54,7 @@
  * "Default" emoji that are inherent to Discord. There are 1741 at the time of writing this.
  * @typedef {Object} DefaultEmoji
  * @property {}
- * @see {@link discord.emoji.default}
  */
-
 
 //--------------
 // User
@@ -67,9 +64,14 @@
  *
  * @typedef {Object} User
  * @property {}
- * @see {@link discord.user}
  */
 
+/**
+ * User notes; personal messages that only you can see.
+ * @typedef {Object} Note
+ * @property {boolean} loading Whether or not the load is loading
+ * @property {string} note The contents of the note
+ */
 
 //--------------
 // Message
@@ -96,7 +98,6 @@
  * @see {@link discord.message.embed}
  */
 
-
 //--------------
 // Settings
 //--------------
@@ -107,7 +108,6 @@
  * @property {}
  * @see {@link discord.settings.user}
  */
-
 
 //--------------
 // Guild
@@ -134,7 +134,6 @@
  * @see {@link discord.guild.role}
  */
 
-
 //--------------
 // Channel
 //--------------
@@ -144,7 +143,6 @@
  * @typedef {Object} Channel
  */
 
-
 //--------------
 // Activity
 //--------------
@@ -153,7 +151,6 @@
  *
  * @typedef {Object} Activity
  */
-
 
 //--------------
 // Snowflake
@@ -184,7 +181,6 @@
  * @property {string} binary Binary representation of the snowflake
  */
 
-
 //==============================================================================
 // Webpack Module
 //==============================================================================
@@ -193,3 +189,28 @@
  * @typedef {Object} WebpackModule
  * @property {string} test
  */
+
+//==============================================================================
+// Vizality
+//==============================================================================
+
+/**
+ * @typedef VizalityAPI
+ * @property {CommandsAPI} commands
+ * @property {SettingsAPI} settings
+ * @property {NoticesAPI} notices
+ * @property {KeybindsAPI} keybinds
+ * @property {RouterAPI} router
+ * @property {ConnectionsAPI} connections
+ * @property {I18nAPI} i18n
+ * @property {RPCAPI} rpc
+ */
+
+/**
+ * @typedef Git
+ * @property {string} upstream
+ * @property {string} branch
+ * @property {string} revision
+ */
+
+module.exports = __typings__;

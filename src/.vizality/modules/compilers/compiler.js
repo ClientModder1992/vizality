@@ -1,10 +1,12 @@
+/* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
+
 const { DIR: { CACHE_DIR } } = require('@constants');
 
-const Events = require('events');
-const { join } = require('path');
-const watch = require('node-watch');
-const { createHash } = require('crypto');
 const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+const { createHash } = require('crypto');
+const watch = require('node-watch');
+const { join } = require('path');
+const Events = require('events');
 
 // @todo: Schedule a cache cleanup?
 
@@ -14,7 +16,6 @@ const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
  * If using the watcher, MAKE SURE TO DISPOSE OF THE COMPILER PROPERLY. You **MUST** disable
  * the watcher if you no longer need the compiler. When watch events are emitted, the compiler
  * should be re-used if a recompile is performed.
- *
  * @property {string} file File to compile
  * @property {string} cacheDir Path where cached files will go
  * @property {string} watcherEnabled Whether the file watcher is enabled or not
@@ -53,9 +54,8 @@ class Compiler extends Events {
 
   /**
    * Arbitrary configuration for the compiler. Useless if not implemented in the _compile method.
-   * *NOTE*: Will fire "src-update" if the watcher is enabled and at least one compilation has been performed.
-   *
-   * @param {object} options Options for the compiler
+   * *NOTE*: Will fire "src-update" if the watcher is enabled and at least one compilation has been performe
+   * @param {Object} options Options for the compiler
    */
   setCompileOptions (options) {
     // @todo: finish this
@@ -64,7 +64,6 @@ class Compiler extends Events {
 
   /**
    * Compiles the file (if necessary), and perform cache-related operations.
-   *
    * @returns {Promise<string>|string} Compilation result
    */
   compile () {
@@ -132,7 +131,6 @@ class Compiler extends Events {
   /**
    * Lists all files involved during the compilation (parent file + imported files).
    * Only applicable if files are concatenated during compilation (e.g. scss files).
-   *
    * @returns {Promise<string[]>|string[]}
    */
   listFiles () {
@@ -142,7 +140,6 @@ class Compiler extends Events {
   /**
    * Computes the hash corresponding to the file we're compiling.
    * MUST take into account imported files (if any) and always return the same hash for the same given file.
-   *
    * @returns {Promise<string|null>|string|null} Cache key, or null if cache isn't available
    */
   computeCacheKey () {
@@ -165,9 +162,9 @@ class Compiler extends Events {
   }
 
   /**
-   * Computes the hash of a given file
-   *
+   * Computes the hash of a given file.
    * @param {string} file File path
+   * @returns {void}
    */
   computeFileHash (file) {
     if (!existsSync(file)) {
@@ -183,8 +180,6 @@ class Compiler extends Events {
 
   /**
    * Compiles the file. Should NOT perform any cache-related actions.
-   *
-   * @returns {Promise<string>} Compilation results.
    */
   _compile () {
     throw new Error('Not implemented');

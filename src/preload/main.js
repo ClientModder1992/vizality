@@ -84,7 +84,7 @@ try {
 }
 
 // Overlay devtools
-vizality.once('loaded', () => {
+vizality.once('initialized', () => {
   if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('vz-general', 'openOverlayDevTools', false)) {
     VizalityNative.openDevTools();
   }

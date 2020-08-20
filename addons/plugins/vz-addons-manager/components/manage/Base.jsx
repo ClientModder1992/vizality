@@ -2,7 +2,7 @@
 
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
-const { string: { toHeaderCase, toPlural } } = require('@utilities');
+const { string: { toHeaderCase, toPlural } } = require('@util');
 const { DIR: { PLUGINS_DIR, THEMES_DIR } } = require('@constants');
 
 const { shell } = require('electron');

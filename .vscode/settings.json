@@ -98,5 +98,6 @@
     },
     "files.watcherExclude": {
         "**/.cache": true
-    }
+    },
+    "eslint.run": "onSave"
 }

@@ -1,4 +1,4 @@
-const { getModule, getModuleByDisplayName, React } = require('@webpack');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 
@@ -15,21 +15,19 @@ let classes = {
   classDescription: ''
 };
 
-class Category extends React.PureComponent {
+module.exports = class Category extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = { classes };
   }
 
   async componentDidMount () {
-    if (classes.initialized) {
-      return;
-    }
+    if (classes.initialized) return;
 
     const Flex = getModuleByDisplayName('Flex');
+
     classes = {
       initialized: true,
-
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
       classMargins: getModule('marginTop20'),
       classTitle: getModule('titleDefault').titleDefault,
@@ -64,10 +62,7 @@ class Category extends React.PureComponent {
             {this.props.children}
           </div>
           : <div className={`${classes.classDivider} ${classes.classDividerDef}`} />}
-
       </DFormItem>
     );
   }
-}
-
-module.exports = Category;
+};

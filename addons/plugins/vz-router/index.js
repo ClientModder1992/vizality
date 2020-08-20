@@ -1,9 +1,9 @@
-const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@util');
-const { React, getModule, getModules, getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patch');
+const { react: { getOwnerInstance, findInReactTree }, dom: { waitForElement } } = require('@utilities');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
-class Router extends Plugin {
+module.exports = class Router extends Plugin {
   async onStart () {
     await this._injectRouter();
     this._listener = this._rerender.bind(this);
@@ -75,6 +75,4 @@ class Router extends Plugin {
     const instance = getOwnerInstance(await waitForElement(`.${app.split(' ')[0]}`));
     findInTree(instance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
   }
-}
-
-module.exports = Router;
+};

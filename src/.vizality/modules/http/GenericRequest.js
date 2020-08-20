@@ -2,7 +2,7 @@
  * Forked from DevYukine's http module and Snekfetch
  */
 
-const { logger : { log } } = require('@utilities');
+const { logger: { log }, REPO: { VIZALITY_REPO } } = require('@utilities');
 const { REPO: { VIZALITY_REPO } } = require('@constants');
 
 const querystring = require('querystring');
@@ -32,7 +32,6 @@ class GenericRequest {
   constructor (method, uri) {
     this.module = 'HTTP';
     this.submodule = this.constructor.name;
-
     this.opts = {
       method,
       uri,
@@ -87,7 +86,6 @@ class GenericRequest {
     } else {
       this.opts.data = data;
     }
-
     return this;
   }
 

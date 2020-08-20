@@ -10,6 +10,7 @@ const constants = Object.freeze({
     IMAGES_CDN: 'https://vizality.com/app/assets/images'
   }),
 
+  // Github
   REPO: Object.freeze({
     VIZALITY_REPO: 'vizality/vizality',
     COMMUNITY_REPO: 'vizality/vizality-community',
@@ -17,7 +18,7 @@ const constants = Object.freeze({
     I18N_REPO: 'vizality/vizality-i18n'
   }),
 
-  // Dirs
+  // Directories
   DIR: Object.freeze({
     SETTINGS_DIR: join(__dirname, '..', '..', '..', '..', 'settings'),
     CACHE_DIR: join(__dirname, '..', '..', '..', '..', '.cache'),

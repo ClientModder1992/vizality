@@ -1,4 +1,4 @@
-const { object: { removeProperties } } = require('@utilities');
+const { object: { removeEntriesByKey } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 const attachments = require('./attachments');
@@ -8,7 +8,7 @@ const chat = {
   ...getModule('poop'),
   textruler: getModule('emoji').textruler,
   alpha: getModule('emoji').textrudler,
-  ...removeProperties(getModule('chat'), 'chat'),
+  ...removeEntriesByKey(getModule('chat'), 'chat'),
   iconActiveLarge: 'iconActiveLarge-2nzn9z',
   iconActiveMedium: 'iconActiveMedium-1UaEIR',
   iconActiveMini: 'iconActiveMini-3PzjMn',

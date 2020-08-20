@@ -1,7 +1,10 @@
-const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase } } = require('@utilities');
+const { file: { removeDirRecursive }, string: { toPascalCase, toSingular }, logger: { log, warn, error } } = require('@utilities');
 
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
+
+const _module = 'Manager';
+const _submodule = 'Addon';
 
 class AddonManager {
   constructor (type, dir) {
@@ -41,7 +44,7 @@ class AddonManager {
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []).includes(addonId);
+    return !vizality.settings.get(`disabled${toPascalCase(this._type)}`, []).includes(addonId);
   }
 
   isInternal (addonId) {
@@ -61,7 +64,7 @@ class AddonManager {
   }
 
   getAllDisabled () {
-    return vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []);
+    return vizality.settings.get(`disabled${toPascalCase(this._type)}`, []);
   }
 
   // Mount/load/enable/install shit
@@ -73,12 +76,12 @@ class AddonManager {
         dependencies: [],
         optionalDependencies: []
       }, require(resolve(this._dir, pluginID, 'manifest.json')));
-    } catch (e) {
-      return this.error(`${toSingular(toHeaderCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+    } catch (err) {
+      return this.error(`${toSingular(toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toHeaderCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     try {
@@ -87,13 +90,13 @@ class AddonManager {
         entityID: {
           get: () => pluginID,
           set: () => {
-            throw new Error(`${toHeaderCase(this._type)} cannot update their ID at runtime!`);
+            throw new Error(`${toPascalCase(this._type)} cannot update their ID at runtime!`);
           }
         },
         manifest: {
           get: () => manifest,
           set: () => {
-            throw new Error(`${toHeaderCase(this._type)} cannot update manifest at runtime!`);
+            throw new Error(`${toPascalCase(this._type)} cannot update manifest at runtime!`);
           }
         }
       });
@@ -186,7 +189,7 @@ class AddonManager {
   load (sync = false) {
     const missing = {};
     missing[this._type] = [];
-    
+
     const isOverlay = (/overlay/).test(location.pathname);
     readdirSync(this._dir).sort(this._sortPlugins).forEach(filename =>/*!this.isInstalled(filename) &&*/ this.mount(filename));
     for (const plugin of [ ...this[this._type].values() ]) {
@@ -242,15 +245,15 @@ class AddonManager {
   }
 
   log (...data) {
-
+    log(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
   }
 
   warn (...data) {
-
+    warn(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
   }
 
   error (...data) {
-
+    error(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
   }
 }
 

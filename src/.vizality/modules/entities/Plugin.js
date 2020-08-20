@@ -1,6 +1,6 @@
-const { dom: { createElement }, logger: { error, log, warn }, sleep } = require('@utilities');
-const { resolveCompiler } = require('@compilers');
+const { misc: { sleep }, dom: { createElement }, logger: { log, warn, error } } = require('@utilities');
 const { DIR: { PLUGINS_DIR } } = require('@constants');
+const { resolveCompiler } = require('@compilers');
 
 const { existsSync } = require('fs');
 const { join } = require('path');
@@ -9,12 +9,12 @@ const Updatable = require('./Updatable');
 
 /**
  * Main class for Vizality plugins
- * @property {Boolean} _ready Whether the plugin is ready or not
+ * @property {boolean} _ready Whether the plugin is ready or not
  * @property {SettingsCategory} settings Plugin settings
- * @property {Object.<String, Compiler>} styles Styles the plugin loaded
+ * @property {Object<string, Compiler>} styles Styles the plugin loaded
  * @abstract
  */
-class Plugin extends Updatable {
+module.exports = class Plugin extends Updatable {
   constructor () {
     super(vizality.manager.plugins._dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
@@ -162,6 +162,4 @@ class Plugin extends Updatable {
   warn (...data) {
     warn(this._module, this._submodule, this._submoduleColor, ...data);
   }
-}
-
-module.exports = Plugin;
+};

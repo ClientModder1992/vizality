@@ -1,12 +1,12 @@
-const { logger: { warn } } = require('@utilities');
 const { DIR: { LIBRARIES_DIR } } = require('@constants');
+const { logger: { warn } } = require('@utilities');
 
-const { join } = require('path');
 const { promises: { writeFile, mkdir }, existsSync } = require('fs');
+const { join } = require('path');
 
 const classes = require('../classes');
 
-const _generateSassClasses = async (obj = classes, currentPath = '') => {
+const _generateSassClasses = async (obj = classes, currentPath) => {
   const module = 'Module';
   const submodule = 'Classes:_generateSassClasses';
 

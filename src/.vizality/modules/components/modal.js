@@ -1,13 +1,14 @@
-/**
- * This file is only here to allow Powercord
+/*
+ * @powercord This file is only here to allow Powercord
  * plugins to continue to work that use them. Confirm
  * has been changed to ConfirmationModal and both have
  * been added to index.
  *
- * Prefer to use const { Modal, ConfirmationModal } = require('@components');
+ * Prefer to use: const { Modal, ConfirmationModal } = require('@components');
  */
 
 const { getModuleByDisplayName, modal } = require('@webpack');
+
 const AsyncComponent = require('./AsyncComponent');
 
 require('fs')

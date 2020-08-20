@@ -13,7 +13,7 @@ const exec = promisify(cp.exec);
 const Settings = require('./components/Settings');
 const Changelog = join(ROOT_DIR, 'CHANGELOG.md');
 
-class Updater extends Plugin {
+module.exports = class Updater extends Plugin {
   constructor () {
     super();
 
@@ -21,6 +21,7 @@ class Updater extends Plugin {
       image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
       footer: 'Missed an update? [Check out our previous change logs](https://google.com)'
     };
+
     this.checking = false;
     this.cwd = { cwd: ROOT_DIR };
   }
@@ -48,11 +49,10 @@ class Updater extends Plugin {
 
     const lastChangelog = this.settings.get('last_changelog', '');
 
-    if (this.changelog.id !== lastChangelog) {
+    // @todo Figured out a better way to not hardcode the changelog id
+    if (lastChangelog !== 'updates-2019-02-15') {
       this.openChangelogs();
     }
-
-    this.openChangelogs();
   }
 
   onStop () {
@@ -244,7 +244,7 @@ class Updater extends Plugin {
     this.settings.set('updates', this.settings.get('updates', []).filter(u => u.id !== id));
   }
 
-  async _getGitInfo () {
+  async getGitInfo () {
     const branch = await exec('git branch', this.cwd)
       .then(({ stdout }) =>
         stdout
@@ -326,7 +326,7 @@ class Updater extends Plugin {
         }
 
         componentWillUnmount () {
-          _this.settings.set('last_changelog', `updates-${_this.changelog.id}`);
+          _this.settings.set('last_changelog', _this.changelog.id);
         }
       }
 
@@ -344,14 +344,14 @@ class Updater extends Plugin {
 
     const body = log.slice(log.search(date) + 11, log.search(previousDate) - 13).trim();
 
-    return {
+    Object.assign(this.changelog, {
       id: `updates-${date}`,
       date,
       locale: 'en-us',
       revision: 1,
       body
-    };
-  }
-}
+    });
 
-module.exports = Updater;
+    return this.changelog;
+  }
+};

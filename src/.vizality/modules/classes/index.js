@@ -1,11 +1,3 @@
-require('fs')
-  .readdirSync(__dirname)
-  .filter(file => file !== 'index.js')
-  .forEach(filename => {
-    const moduleName = filename.split('.')[0];
-    exports[moduleName] = require(`${__dirname}/${filename}`);
-  });
-
 const { DIR: { LIBRARIES_DIR } } = require('@constants');
 const { logger: { log } } = require('@utilities');
 
@@ -14,6 +6,7 @@ const { existsSync } = require('fs');
 
 const _checkForUndefined = require('./_checkForUndefined');
 const _generateSassClasses = require('./_generateSassClasses');
+const findClass = require('./findClass');
 
 const components = require('./components');
 const layout = require('./layout');
@@ -29,7 +22,7 @@ const classes = {
   vizality
 };
 
-exports = classes;
+module.exports = { classes, findClass };
 
 _checkForUndefined();
 

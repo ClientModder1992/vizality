@@ -15,11 +15,11 @@
       "@http": [ "./.vizality/modules/http" ],
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
-      "@plugin": [ "./.vizality/modules/entities/plugin" ],
-      "@theme": [ "./.vizality/modules/entities/theme" ],
+      "@plugin": [ "./.vizality/modules/entities/Plugin" ],
+      "@theme": [ "./.vizality/modules/entities/Theme" ],
       "@typings": [ "./.vizality/typings" ],
-      "@updatable": [ "./.vizality/modules/entities/updatable" ],
-      "@utilities": [ "./.vizality/modules/utilities" ],
+      "@updatable": [ "./.vizality/modules/entities/Updatable" ],
+      "@util": [ "./.vizality/modules/util" ],
       "@webpack": [ "./.vizality/modules/webpack" ]
     }
   }

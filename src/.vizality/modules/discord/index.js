@@ -1,3 +1,5 @@
+/* eslint-disable brace-style */
+
 /**
  * Discord module.
  * Contains all of the function/data that may be useful to allow
@@ -6,12 +8,12 @@
  * @module discord
  * @version 0.0.1
  */
-const user = require('./user');
-const snowflake = require('./snowflake');
+const User = require('./user');
+const Snowflake = require('./snowflake');
 
-const discord = {
-  user,
-  snowflake
-};
+class Discord {
+  static get Snowflake () { return Snowflake; }
+  static get User () { return User; }
+}
 
-module.exports = discord;
+module.exports = Discord;

@@ -10,7 +10,7 @@ const exec = promisify(cp.exec);
  * @property {String} entityPath
  * @property {String} updateIdentifier
  */
-class Updatable extends Events {
+module.exports = class Updatable extends Events {
   constructor (basePath, entityID, updateIdentifier) {
     super();
     this.basePath = basePath;
@@ -103,6 +103,4 @@ class Updatable extends Events {
         stdout.toString().split('\n').find(l => l.startsWith('*')).slice(2).trim()
       );
   }
-}
-
-module.exports = Updatable;
+};
