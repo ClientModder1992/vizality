@@ -1,7 +1,4 @@
-const { react: { getOwnerInstance, findInReactTree }, dom: { waitForElement } } = require('@utilities');
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Util, Webpack, Patcher, Entities: { Plugin } } = require('@modules');
 
 module.exports = class Router extends Plugin {
   async onStart () {
@@ -15,25 +12,25 @@ module.exports = class Router extends Plugin {
   onStop () {
     vizality.api.router.off('routeAdded', this._listener);
     vizality.api.router.off('routeRemoved', this._listener);
-    unpatch('vz-router-route-side');
-    unpatch('vz-router-route');
-    unpatch('vz-router-router');
+    Patcher.unpatch('vz-router-route-side');
+    Patcher.unpatch('vz-router-route');
+    Patcher.unpatch('vz-router-router');
   }
 
   async _injectRouter () {
-    const FluxViewsWithMainInterface = getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
+    const FluxViewsWithMainInterface = Webpack.getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
     const ViewsWithMainInterface = FluxViewsWithMainInterface
       .prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
-    const { container } = getModule('container', 'downloadProgressCircle');
-    const RouteRenderer = getOwnerInstance(await waitForElement(`.${container.split(' ')[0]}`));
-    patch('vz-router-route', RouteRenderer.__proto__, 'render', (_, res) => {
-      const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
+    const { container } = Webpack.getModule('container', 'downloadProgressCircle');
+    const RouteRenderer = Webpack.getOwnerInstance(await Util.DOM.waitForElement(`.${container.split(' ')[0]}`));
+    Patcher.patch('vz-router-route', RouteRenderer.__proto__, 'render', (_, res) => {
+      const { children: routes } = Util.React.findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
       routes.push(
         ...vizality.api.router.routes.map(route => ({
           ...routes[0],
           props: {
             // @todo: Error boundary (?)
-            render: () => React.createElement(route.render),
+            render: () => Webpack.React.createElement(route.render),
             path: `/_vizality${route.path}`
           }
         }))
@@ -41,7 +38,7 @@ module.exports = class Router extends Plugin {
       return res;
     });
 
-    patch('vz-router-route-side', RouteRenderer.__proto__, 'render', function (args) {
+    Patcher.patch('vz-router-route-side', RouteRenderer.__proto__, 'render', function (args) {
       const renderer = this.renderChannelSidebar;
       this.renderChannelSidebar = (props) => {
         const rte = vizality.api.router.routes.find(r => r.path === props.location.pathname.slice(11));
@@ -53,8 +50,8 @@ module.exports = class Router extends Plugin {
       return args;
     }, true);
 
-    patch('vz-router-router', ViewsWithMainInterface.prototype, 'render', (_, res) => {
-      const routes = findInTree(res, n => (
+    Patcher.patch('vz-router-router', ViewsWithMainInterface.prototype, 'render', (_, res) => {
+      const routes = Util.React.findInTree(res, n => (
         Array.isArray(n) && n[0] &&
         n[0].key &&
         n[0].props.path && n[0].props.render
@@ -71,8 +68,8 @@ module.exports = class Router extends Plugin {
   }
 
   async _rerender () {
-    const { app } = getModules([ 'app' ]).find(m => Object.keys(m).length === 1);
-    const instance = getOwnerInstance(await waitForElement(`.${app.split(' ')[0]}`));
-    findInTree(instance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
+    const { app } = Webpack.getModules([ 'app' ]).find(m => Object.keys(m).length === 1);
+    const instance = Util.React.getOwnerInstance(await Util.DOM.waitForElement(`.${app.split(' ')[0]}`));
+    Util.React.findInTree(instance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
   }
 };

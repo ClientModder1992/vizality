@@ -1,4 +1,4 @@
-const { logger: { error }, object: { isEmpty } } = require('@utilities');
+const { logger: { error }, object: { isEmpty } } = require('@util');
 
 const getGuild = require('../getGuild');
 

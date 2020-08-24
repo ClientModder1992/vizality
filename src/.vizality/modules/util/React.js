@@ -1,8 +1,14 @@
-const { isObject } = require('../object');
-const { isArray } = require('../array');
-const { isNull } = require('../type');
+const Object = require('./Object');
+const Array = require('./Array');
+const Type = require('./Type');
 
-const react = {
+/**
+ * @module Util.React
+ * @namespace Util.React
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class React {
   /**
    * Finds a value, subobject, or array from a tree that matches a specific filter. Great
    * for patching render functions.
@@ -12,9 +18,9 @@ const react = {
    * @param {Function} searchFilter Filter function to check subobjects against
    * @returns {Node|undefined}
    */
-  findInReactTree (tree, searchFilter) {
+  static findInReactTree (tree, searchFilter) {
     return this.findInTree(tree, searchFilter, { walkable: [ 'props', 'children', 'child', 'sibling' ] });
-  },
+  }
 
   /**
    * Finds a value, subobject, or array from a tree that matches a specific filter.
@@ -29,17 +35,17 @@ const react = {
    * from the search, most helpful when `walkable = null`
    * @returns {Node|undefined}
    */
-  findInTree (tree, searchFilter, { walkable = null, ignore = [] } = {}) {
+  static findInTree (tree, searchFilter, { walkable = null, ignore = [] } = {}) {
     if (typeof searchFilter === 'string') {
       if (tree.hasOwnProperty(searchFilter)) return tree[searchFilter];
     } else if (searchFilter(tree)) {
       return tree;
     }
 
-    if (!isObject(tree) || isNull(tree)) return undefined;
+    if (!Object.isObject(tree) || Type.isNull(tree)) return undefined;
 
     let tempReturn;
-    if (isArray(tree)) {
+    if (Array.isArray(tree)) {
       for (const value of tree) {
         tempReturn = this.findInTree(value, searchFilter, { walkable, ignore });
         if (typeof tempReturn !== 'undefined') return tempReturn;
@@ -53,23 +59,23 @@ const react = {
       }
     }
     return tempReturn;
-  },
+  }
 
-  forceUpdateElement (query, all = false) {
+  static forceUpdateElement (query, all = false) {
     const elements = all ? [ ...document.querySelectorAll(query) ] : [ document.querySelector(query) ];
     return elements.filter(Boolean).forEach(element => {
       this.getOwnerInstance(element).forceUpdate();
     });
-  },
+  }
 
-  getReactInstance (node) {
+  static getReactInstance (node) {
     if (!node) return null;
     if (!Object.keys(node) || !Object.keys(node).length) return null;
     const reactInternalInstanceKey = Object.keys(node).find(key => key.startsWith('__reactInternalInstance'));
     return reactInternalInstanceKey ? node[reactInternalInstanceKey] : null;
-  },
+  }
 
-  getOwnerInstance (node) {
+  static getOwnerInstance (node) {
     for (let currentNode = this.getReactInstance(node); currentNode; currentNode = currentNode.return) {
       const owner = currentNode.stateNode;
       if (owner && !(owner instanceof HTMLElement)) return owner;
@@ -77,5 +83,3 @@ const react = {
     return null;
   }
 };
-
-module.exports = react;

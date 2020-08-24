@@ -1,4 +1,4 @@
-const { API } = require('@entities');
+const Entities = require('@entities');
 
 /**
  * @typedef VizalityChatCommand
@@ -16,7 +16,7 @@ const { API } = require('@entities');
  * @type {CommandsAPI}
  * @property {Object.<String, VizalityChatCommand>} commands Registered commands
  */
-class CommandsAPI extends API {
+module.exports = class CommandsAPI extends Entities.API {
   constructor () {
     super();
     this.commands = {};
@@ -79,6 +79,4 @@ class CommandsAPI extends API {
       delete this.commands[command];
     }
   }
-}
-
-module.exports = CommandsAPI;
+};

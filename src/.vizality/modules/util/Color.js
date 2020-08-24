@@ -1,5 +1,5 @@
 /* eslint-disable jsdoc/require-param *//* eslint-disable prefer-const */
-const { error } = require('../logger');
+const Logger = require('./Logger');
 
 /**
  * @todo Add: isType, assertType, isHex, isHsl, isInt, isRgb, assertHex, assertHsl, assertInt, assertRgb
@@ -9,7 +9,13 @@ const { error } = require('../logger');
 const _module = 'Module';
 const _submodule = 'Util:Color';
 
-class Color {
+/**
+ * @module Util.Color
+ * @namespace Util.Color
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class Color {
   static _hex2hsl (color) {
     // Convert hex to RGB first
     let r, g, b;
@@ -53,7 +59,7 @@ class Color {
     l = +(l * 100).toFixed(1);
 
     return `hsl(${h} ${s}% ${l}%)`;
-  };
+  }
 
   static _hex2int (color) {
     if (color.length === 4) {
@@ -61,9 +67,9 @@ class Color {
     }
 
     return parseInt(color.slice(1), 16);
-  },
+  }
 
-  _hex2rgb (color) {
+  static _hex2rgb (color) {
     let r, g, b;
 
     // 3 digits
@@ -80,9 +86,9 @@ class Color {
     }
 
     return `rgb(${+r} ${+g} ${+b})`;
-  },
+  }
 
-  _hsl2hex (color) {
+  static _hsl2hex (color) {
     const ex = /^hsl\(((((([12]?[1-9]?\d)|[12]0\d|(3[0-5]\d))(\.\d+)?)|(\.\d+))(deg)?|(0|0?\.\d+)turn|(([0-6](\.\d+)?)|(\.\d+))rad)((,\s?(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2}|(\s(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2})\)$/i;
 
     if (ex.test(color)) {
@@ -156,9 +162,9 @@ class Color {
 
       return `#${r}${g}${b}`;
     }
-  },
+  }
 
-  _hsl2int (color) {
+  static _hsl2int (color) {
     const ex = /^hsl\(((((([12]?[1-9]?\d)|[12]0\d|(3[0-5]\d))(\.\d+)?)|(\.\d+))(deg)?|(0|0?\.\d+)turn|(([0-6](\.\d+)?)|(\.\d+))rad)((,\s?(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2}|(\s(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2})\)$/i;
 
     if (ex.test(color)) {
@@ -220,9 +226,9 @@ class Color {
 
       return (r << 16) + (g << 16) + b;
     }
-  },
+  }
 
-  _hsl2rgb (color) {
+  static _hsl2rgb (color) {
     const ex = /^hsl\(((((([12]?[1-9]?\d)|[12]0\d|(3[0-5]\d))(\.\d+)?)|(\.\d+))(deg)?|(0|0?\.\d+)turn|(([0-6](\.\d+)?)|(\.\d+))rad)((,\s?(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2}|(\s(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2})\)$/i;
 
     if (ex.test(color)) {
@@ -284,13 +290,13 @@ class Color {
 
       return `rgb(${+r} ${+g} ${+b})`;
     }
-  },
+  }
 
-  _int2hex (color) {
+  static _int2hex (color) {
     return `#${((color) >>> 0).toString(16)}`;
-  },
+  }
 
-  _int2hsl (color) {
+  static _int2hsl (color) {
     // Convert int to hex first
     const hex = `#${((color) >>> 0).toString(16)}`;
 
@@ -325,13 +331,13 @@ class Color {
     l = +(l * 100).toFixed(1);
 
     return `hsl(${h} ${s}% ${l}%)`;
-  },
+  }
 
-  _int2rgb (color) {
+  static _int2rgb (color) {
     return `rgb(${(color >> 16 & 255)} ${(color >> 8 & 255)} ${(255 & color)})`;
-  },
+  }
 
-  _rgb2hex (color) {
+  static _rgb2hex (color) {
     const ex = /^rgb\((((((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]),\s?)){2}|((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5])\s)){2})((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]))|((((([1-9]?\d(\.\d+)?)|100|(\.\d+))%,\s?){2}|((([1-9]?\d(\.\d+)?)|100|(\.\d+))%\s){2})(([1-9]?\d(\.\d+)?)|100|(\.\d+))%))\)$/i;
 
     if (ex.test(color)) {
@@ -363,9 +369,9 @@ class Color {
 
       return `#${r}${g}${b}`;
     }
-  },
+  }
 
-  _rgb2hsl (color) {
+  static _rgb2hsl (color) {
     const ex = /^rgb\((((((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]),\s?)){2}|((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5])\s)){2})((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]))|((((([1-9]?\d(\.\d+)?)|100|(\.\d+))%,\s?){2}|((([1-9]?\d(\.\d+)?)|100|(\.\d+))%\s){2})(([1-9]?\d(\.\d+)?)|100|(\.\d+))%))\)$/i;
 
     if (ex.test(color)) {
@@ -422,9 +428,9 @@ class Color {
 
       return `hsl(${h} ${s}% ${l}%)`;
     }
-  },
+  }
 
-  _rgb2int (color) {
+  static _rgb2int (color) {
     const ex = /^rgb\((((((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]),\s?)){2}|((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5])\s)){2})((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]))|((((([1-9]?\d(\.\d+)?)|100|(\.\d+))%,\s?){2}|((([1-9]?\d(\.\d+)?)|100|(\.\d+))%\s){2})(([1-9]?\d(\.\d+)?)|100|(\.\d+))%))\)$/i;
 
     if (ex.test(color)) {
@@ -452,9 +458,9 @@ class Color {
 
       return (r << 16) + (g << 16) + b;
     }
-  },
+  }
 
-  getContrastedColor (color) {
+  static getContrastedColor (color) {
     let r, g, b;
 
     /** @private */
@@ -476,9 +482,9 @@ class Color {
     if ((r * 0.299) + (g * 0.587) + (b * 0.114) > 186) return '#000';
 
     return '#fff';
-  },
+  }
 
-  getRandomColor (type = 'hex') {
+  static getRandomColor (type = 'hex') {
     // @todo Assert color type
 
     const base = '000000';
@@ -489,9 +495,9 @@ class Color {
     if (type === 'hex') return color;
     if (type === 'rgb') return this._hex2rgb(color);
     if (type === 'hsl') return this._hex2hsl(color);
-  },
+  }
 
-  getType (color) {
+  static getType (color) {
     // @todo Assert string
 
     const ex = {
@@ -508,37 +514,37 @@ class Color {
     if (Number.isInteger(parseInt(color))) { return 'int'; }
 
     // @todo Proper error message
-    return error(_module, `${_submodule}:getType`, null, 'Color type is not valid. Valid types are "hex", "int", "rgb", and "hsl".');
-  },
+    return Logger.error(_module, `${_submodule}:getType`, null, 'Color type is not valid. Valid types are "hex", "int", "rgb", and "hsl".');
+  }
 
-  toHex (color) {
+  static toHex (color) {
     const type = this.getType(color);
 
     if (type === 'int') return this._int2hex(color);
     if (type === 'hex') return color;
     if (type === 'rgb') return this._rgb2hex(color);
     if (type === 'hsl') return this._hsl2hex(color);
-  },
+  }
 
-  toHsl (color) {
+  static toHsl (color) {
     const type = this.getType(color);
 
     if (type === 'int') return this._int2hsl(color);
     if (type === 'hex') return this._hex2hsl(color);
     if (type === 'rgb') return this._rgb2hsl(color);
     if (type === 'hsl') return color;
-  },
+  }
 
-  toInt (color) {
+  static toInt (color) {
     const type = this.getType(color);
 
     if (type === 'int') return this._hex2int(color);
     if (type === 'hex') return this._hex2int(color);
     if (type === 'rgb') return this._rgb2int(color);
     if (type === 'hsl') return this._hsl2int(color);
-  },
+  }
 
-  toRgb (color) {
+  static toRgb (color) {
     const type = this.getType(color);
 
     if (type === 'int') return this._int2rgb(color);
@@ -547,5 +553,3 @@ class Color {
     if (type === 'hsl') return this._hsl2rgb(color);
   }
 };
-
-module.exports = color;

@@ -1,6 +1,6 @@
 const { settings: { TextInput, SwitchItem, Category, RadioGroup, SelectInput, ColorPickerInput, CopyInput, TextArea, RegionSelector, SliderInput, PermissionOverrideItem } } = require('@components');
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { sleep } = require('@utilities');
+const { sleep } = require('@util');
 
 const { clipboard } = require('electron');
 

@@ -1,6 +1,6 @@
-const { React } = require('@webpack');
+const Webpack = require('@webpack');
 
-module.exports = React.memo(
+module.exports = Webpack.React.memo(
   (props) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
     <g fill="none" fill-rule="evenodd">
       <rect width="24" height="24"></rect>

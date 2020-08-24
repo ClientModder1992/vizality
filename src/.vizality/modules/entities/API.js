@@ -1,6 +1,5 @@
-const { logger: { log, error } } = require('@utilities');
-
 const Events = require('events');
+const Logger = require('../util/Logger');
 
 module.exports = class API extends Events {
   constructor () {
@@ -10,27 +9,27 @@ module.exports = class API extends Events {
     this._ready = false;
   }
 
-  async _load () {
+  async initialize () {
     try {
-      if (typeof this.loadAPI === 'function') {
-        await this.loadAPI();
+      if (typeof this.onStart === 'function') {
+        await this.onStart();
       }
-      log(this._module, this._submodule, null, 'API loaded.');
+      Logger.log(this._module, this._submodule, null, 'API initialized.');
       this._ready = true;
     } catch (err) {
-      error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
+      Logger.error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
     }
   }
 
-  async _unload () {
+  async terminate () {
     try {
-      if (typeof this.unloadAPI === 'function') {
-        await this.unloadAPI();
+      if (typeof this.onStop === 'function') {
+        await this.onStop();
       }
       this._ready = false;
-      log(this._module, this._submodule, null, 'API unloaded.');
+      Logger.log(this._module, this._submodule, null, 'API terminated.');
     } catch (err) {
-      error(this._module, this._submodule, null,
+      Logger.error(this._module, this._submodule, null,
         'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', err
       );
     }

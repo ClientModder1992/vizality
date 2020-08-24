@@ -1,18 +1,15 @@
-const { React, getModuleByDisplayName } = require('@webpack');
-const { Text } = require('@components');
+const { Webpack, Components } = require('@modules');
 
-const Autocomplete = getModuleByDisplayName('Autocomplete');
+const Autocomplete = Webpack.getModuleByDisplayName('Autocomplete');
 
-class Command extends Autocomplete.Command {
+module.exports = class Command extends Autocomplete.Command {
   renderContent () {
     const res = super.renderContent();
-    res.props.children[0] = React.createElement(Text, {
+    res.props.children[0] = Webpack.React.createElement(Components.Text, {
       children: this.props.prefix ? this.props.prefix : vizality.api.commands.prefix,
       style: { color: '#72767d' }
     });
 
     return res;
   }
-}
-
-module.exports = Command;
+};

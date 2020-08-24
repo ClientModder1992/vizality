@@ -99,5 +99,6 @@
     "files.watcherExclude": {
         "**/.cache": true
     },
-    "eslint.run": "onSave"
+    "eslint.lintTask.enable": true,
+    "eslint.alwaysShowStatus": true
 }

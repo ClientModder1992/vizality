@@ -1,7 +1,14 @@
-const { existsSync, promises: { readdir, lstat, unlink, rmdir } } = require('fs');
+const { promises: { readdir, lstat, unlink, rmdir } } = require('fs');
+const { existsSync } = require('fs');
 
-const file = {
-  async removeDirRecursive (directory) {
+/**
+ * @module Util.File
+ * @namespace Util.File
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class File {
+  static async removeDirRecursive (directory) {
     if (existsSync(directory)) {
       const files = await readdir(directory);
       for (const file of files) {
@@ -18,5 +25,3 @@ const file = {
     }
   }
 };
-
-module.exports = file;

@@ -1,9 +1,9 @@
-const { joinClassNames } = require('@utilities');
-const { React } = require('@webpack');
+const Webpack = require('@webpack');
+const Util = require('@util');
 
-const Icon = React.memo(({ type, wrapperClassName, className, ...props }) =>
-  <div className={joinClassNames('vizality-icon-wrapper', wrapperClassName)}>
-    <icon className={joinClassNames('vizality-icon', type, className)} {...props}></icon>
+const Icon = Webpack.React.memo(({ type, wrapperClassName, className, ...props }) =>
+  <div className={Util.Misc.joinClassNames('vizality-icon-wrapper', wrapperClassName)}>
+    <icon className={Util.Misc.joinClassNames('vizality-icon', type, className)} {...props}></icon>
   </div>
 );
 

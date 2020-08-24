@@ -1,14 +1,14 @@
 const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { join, dirname } = require('path');
-const Compiler = require('./compiler');
 const sass = require('sass');
+const Compiler = require('./Compiler');
 
 /**
  * SCSS compiler.
  * @class
- * @augments Compiler
+ * @extends Compiler
  */
-class SCSS extends Compiler {
+module.exports = class SCSS extends Compiler {
   async listFiles () {
     return [
       this.file,
@@ -128,6 +128,4 @@ class SCSS extends Compiler {
   get _metadata () {
     return `${sass.info}; Vizality import resolver v1`;
   }
-}
-
-module.exports = SCSS;
+};

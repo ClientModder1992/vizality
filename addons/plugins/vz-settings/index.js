@@ -1,21 +1,18 @@
-const { React, getModuleByDisplayName, getModule, i18n: { Messages } } = require('@webpack');
-const { AsyncComponent } = require('@components');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Webpack, React, Localize, Components, Patcher, Util, Entities: { Plugin } } = require('@modules');
 
 const GeneralSettings = require('./components/GeneralSettings');
 const ErrorBoundary = require('./components/ErrorBoundary');
 
-const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
+const FormSection = Components.AsyncComponent.from(Webpack.getModuleByDisplayName('FormSection'));
+const FormTitle = Components.AsyncComponent.from(Webpack.getModuleByDisplayName('FormTitle'));
 
-class Settings extends Plugin {
+module.exports = class Settings extends Plugin {
   onStart () {
     this.injectStyles('scss/style.scss');
 
     vizality.api.settings.registerSettings('Settings', {
       category: 'vz-general',
-      label: () => Messages.VIZALITY_GENERAL_SETTINGS,
+      label: () => Localize.VIZALITY_GENERAL_SETTINGS,
       render: GeneralSettings
     });
 
@@ -26,14 +23,14 @@ class Settings extends Plugin {
 
   onStop () {
     vizality.api.settings.unregisterSettings('Settings');
-    unpatch('vz-settings-items');
-    unpatch('vz-settings-actions');
-    unpatch('vz-settings-errorHandler');
+    Patcher.unpatch('vz-settings-items');
+    Patcher.unpatch('vz-settings-actions');
+    Patcher.unpatch('vz-settings-errorHandler');
   }
 
   patchExperiments () {
     try {
-      const experimentsModule = getModule(r => r.isDeveloper !== void 0);
+      const experimentsModule = Webpack.getModule(r => r.isDeveloper !== void 0);
       Object.defineProperty(experimentsModule, 'isDeveloper', {
         get: () => vizality.settings.get('experiments', false)
       });
@@ -46,8 +43,8 @@ class Settings extends Plugin {
   }
 
   patchSettingsComponent () {
-    const SettingsView = getModuleByDisplayName('SettingsView');
-    patch('vz-settings-items', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
+    const SettingsView = Webpack.getModuleByDisplayName('SettingsView');
+    Patcher.patch('vz-settings-items', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
       const changelog = sections.find(c => c.section === 'changelog');
       if (changelog) {
         const settingsSections = Object.keys(vizality.api.settings.tabs).map(s => this._makeSection(s));
@@ -107,16 +104,16 @@ class Settings extends Plugin {
   }
 
   patchSettingsContextMenu () {
-    const SubMenuItem = getModuleByDisplayName('FluxContainer(SubMenuItem)');
-    const ImageMenuItem = getModuleByDisplayName('ImageMenuItem');
-    const SettingsContextMenu = getModuleByDisplayName('UserSettingsCogContextMenu');
-    patch('vz-settings-actions', SettingsContextMenu.prototype, 'render', (_, res) => {
+    const SubMenuItem = Webpack.getModuleByDisplayName('FluxContainer(SubMenuItem)');
+    const ImageMenuItem = Webpack.getModuleByDisplayName('ImageMenuItem');
+    const SettingsContextMenu = Webpack.getModuleByDisplayName('UserSettingsCogContextMenu');
+    Patcher.patch('vz-settings-actions', SettingsContextMenu.prototype, 'render', (_, res) => {
       const parent = React.createElement(SubMenuItem, {
         label: 'Vizality',
         render: () => vizality.api.settings.tabs.map(tab => React.createElement(ImageMenuItem, {
           label: tab.label,
           action: async () => {
-            const settingsModule = getModule('open', 'saveAccountChanges');
+            const settingsModule = Webpack.getModule('open', 'saveAccountChanges');
             settingsModule.open(tab.section);
           }
         }))
@@ -124,7 +121,7 @@ class Settings extends Plugin {
 
       parent.key = 'Vizality';
 
-      const items = res.props.children.find(child => Array.isArray(child));
+      const items = res.props.children.find(child => Util.Array.isArray(child));
       const changelog = items.find(item => item && item.key === 'changelog');
       if (changelog) {
         items.splice(items.indexOf(changelog), 0, parent);
@@ -136,6 +133,4 @@ class Settings extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = Settings;
+};

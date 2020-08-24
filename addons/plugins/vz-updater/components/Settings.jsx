@@ -1,7 +1,7 @@
 const { settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { React, getModule, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { joinClassNames, time } = require('@utilities');
+const { joinClassNames, time } = require('@util');
 const { REPO: { VIZALITY_REPO }, DIR: { CACHE_DIR } } = require('@constants');
 const { Confirm } = require('@components/modal');
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { forceUpdateElement } } = require('@utilities');
+const { react: { forceUpdateElement } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 
 /*

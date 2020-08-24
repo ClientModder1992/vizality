@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@utilities');
+const { logger: { error } } = require('@util');
 const { getModule } = require('@webpack');
 
 const getCurrentGuildId = require('./getCurrentGuildId');

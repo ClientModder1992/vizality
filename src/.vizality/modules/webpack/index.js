@@ -1,17 +1,17 @@
 /* eslint-disable brace-style */
-const { logger: { log, warn }, misc: { sleep } } = require('@utilities');
-
 const moduleFilters = require('./modules.json');
+const Logger = require('../util/Logger');
+const Misc = require('../util/Misc');
 
 const _module = 'Module';
 const _submodule = 'Webpack';
 
 /**
- * @namespace webpack
- * @module webpack
+ * @module Webpack
+ * @namespace Webpack
  * @version 0.0.1
  */
-class Webpack {
+module.exports = class Webpack {
   constructor () {
     this.instance = {};
   }
@@ -37,7 +37,7 @@ class Webpack {
       for (let i = 0; i < (forever ? 666 : 21); i++) {
         mdl = this._getModules(filter);
         if (mdl) return res(mdl);
-        await sleep(100);
+        await Misc.sleep(100);
       }
       res(mdl);
     });
@@ -70,7 +70,7 @@ class Webpack {
   static async initialize () {
     // Wait until webpack is ready
     while (!window.webpackJsonp) {
-      await sleep(1);
+      await Misc.sleep(1);
     }
 
     // Extract values from webpack
@@ -96,7 +96,7 @@ class Webpack {
 
   static findComponent (keyword, exact = false) {
     if (!keyword) {
-      return warn(_module, _submodule, null, `First argument provided must be a string.`);
+      return Logger.warn(_module, _submodule, null, `First argument provided must be a string.`);
     }
 
     let byDisplayName, byDefault, byType;
@@ -140,7 +140,7 @@ class Webpack {
     const choiceWord = exact ? 'matching' : 'containing';
 
     if (!results || !Object.keys(results).length) {
-      return warn(_module, _submodule, null, `No results found for components ${choiceWord} '${keyword}'`);
+      return Logger.warn(_module, _submodule, null, `No results found for components ${choiceWord} '${keyword}'`);
     }
 
     let count = 0;
@@ -148,7 +148,7 @@ class Webpack {
 
     Object.keys(results).forEach(key => count += results[key].matches.length);
 
-    log(_module, _submodule, null, `${count} ${resultsText} found for components ${choiceWord} '${keyword}':\n`);
+    Logger.log(_module, _submodule, null, `${count} ${resultsText} found for components ${choiceWord} '${keyword}':\n`);
 
     return results;
   }
@@ -243,6 +243,4 @@ class Webpack {
       return false;
     });
   }
-}
-
-module.exports = Webpack;
+};

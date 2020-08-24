@@ -1,5 +1,5 @@
 /* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
-const { logger: { error } } = require('@utilities');
+const Util = require('@util');
 
 /*
  * @todo Long is only used here. It may be worth adding that particular section
@@ -57,7 +57,7 @@ class Snowflake {
 
       return Long.fromString(BINARY, 2).toString();
     } catch (err) {
-      return error(_module, `${_submodule}:getSnowflake`, null, err);
+      return Util.Logger.error(_module, `${_submodule}:getSnowflake`, null, err);
     }
   }
 
@@ -94,7 +94,7 @@ class Snowflake {
 
       return res;
     } catch (err) {
-      return error(_module, `${_submodule}:getDeconstructedSnowflake`, null, err);
+      return Util.Logger.error(_module, `${_submodule}:getDeconstructedSnowflake`, null, err);
     }
   }
 
@@ -113,7 +113,7 @@ class Snowflake {
 
       return this.getDeconstructedSnowflake(snowflake).binary;
     } catch (err) {
-      return error(_module, `${_submodule}:getBinary`, null, err);
+      return Util.Logger.error(_module, `${_submodule}:getBinary`, null, err);
     }
   }
 
@@ -132,7 +132,7 @@ class Snowflake {
 
       return this.getDeconstructedSnowflake(snowflake).date;
     } catch (err) {
-      return error(_module, `${_submodule}:getDate`, null, err);
+      return Util.Logger.error(_module, `${_submodule}:getDate`, null, err);
     }
   }
 
@@ -151,7 +151,7 @@ class Snowflake {
 
       return this.getDeconstructedSnowflake(snowflake).timestamp;
     } catch (err) {
-      return error(_module, `${_submodule}:getTimestamp`, null, err);
+      return Util.Logger.error(_module, `${_submodule}:getTimestamp`, null, err);
     }
   }
 

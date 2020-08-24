@@ -1,43 +1,37 @@
-const { React, constants: { Permissions }, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { GUILD: { CHANNEL: { PLUGINS_CHANNEL, THEMES_CHANNEL } } } = require('@constants');
-const { Icons: { Plugin: PluginIcon, Theme } } = require('@components');
-const { react : { forceUpdateElement } } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Webpack, React, Patcher, Localize, Constants, Components, Util, Entities: { Plugin } } = require('@modules');
 
 const Plugins = require('./components/manage/Plugins');
 const Themes = require('./components/manage/Themes');
 const Store = require('./components/store/Store');
-const deeplinks = require('./deeplinks');
 const commands = require('./commands');
 const i18n = require('./i18n');
 
-class AddonsManager extends Plugin {
+module.exports = class AddonsManager extends Plugin {
   async onStart () {
+    this.injectStyles('scss/style.scss');
     vizality.api.i18n.loadAllStrings(i18n);
-
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
 
-    this.injectStyles('scss/style.scss');
     vizality.api.settings.registerSettings('Plugins', {
       category: this.entityID,
-      label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
+      label: () => Localize.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
       render: Plugins
     });
+
     vizality.api.settings.registerSettings('Themes', {
       category: this.entityID,
-      label: () => Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
+      label: () => Localize.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
       render: Themes
     });
 
-    deeplinks();
-
     this._injectCommunityContent();
+
     vizality.api.router.registerRoute({
       path: '/store/plugins',
       render: Store,
       noSidebar: true
     });
+
     vizality.api.router.registerRoute({
       path: '/store/themes',
       render: Store,
@@ -51,15 +45,15 @@ class AddonsManager extends Plugin {
     vizality.api.settings.unregisterSettings('Plugins');
     vizality.api.settings.unregisterSettings('Themes');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
-    unpatch('vz-addons-manager-channelItem');
-    unpatch('vz-addons-manager-channelProps');
+    Patcher.unpatch('vz-addons-manager-channelItem');
+    Patcher.unpatch('vz-addons-manager-channelProps');
   }
 
   async _injectCommunityContent () {
-    const permissionsModule = getModule('can');
-    patch('vz-addons-manager-channelItem', permissionsModule, 'can', (args, res) => {
+    const permissionsModule = Webpack.getModule('can');
+    Patcher.patch('vz-addons-manager-channelItem', permissionsModule, 'can', (args, res) => {
       const id = args[1].channelId || args[1].id;
-      if (id === PLUGINS_CHANNEL || id === THEMES_CHANNEL) {
+      if (id === Constants.Channels.PLUGINS || id === Constants.Channels.THEMES) {
         // return args[0] === Permissions.VIEW_CHANNEL;
       }
 
@@ -67,22 +61,22 @@ class AddonsManager extends Plugin {
     });
 
     // const { transitionTo } = getModule('transitionTo');
-    const ChannelItem = getModuleByDisplayName('ChannelItem');
+    const ChannelItem = Webpack.getModuleByDisplayName('ChannelItem');
     patch('vz-addons-manager-channelProps', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
-        [PLUGINS_CHANNEL]: {
-          icon: PluginIcon,
-          name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
+        [Constants.Channels.PLUGINS]: {
+          icon: Components.Icons.Plugin,
+          name: Localize.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
           route: '/_vizality/store/plugins'
         },
-        [THEMES_CHANNEL]: {
-          icon: Theme,
-          name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
+        [Constants.Channels.THEMES]: {
+          icon: Components.Icons.Theme,
+          name: Localize.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
           route: '/_vizality/store/themes'
         }
       };
 
-      if (this.props.channel.id === PLUGINS_CHANNEL || this.props.channel.id === THEMES_CHANNEL) {
+      if (this.props.channel.id === Constants.Channels.PLUGINS || this.props.channel.id === Constants.Channels.THEMES) {
         res.props.children[1].props.children[0].props.children[1].props.children = data[this.props.channel.id].name;
         res.props.children[1].props.children[0].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
           className: res.props.children[1].props.children[0].props.children[0].props.className,
@@ -98,9 +92,7 @@ class AddonsManager extends Plugin {
       return res;
     });
 
-    const { containerDefault } = getModule('containerDefault');
-    forceUpdateElement(`.${containerDefault}`, true);
+    const { containerDefault } = Webpack.getModule('containerDefault');
+    Util.React.forceUpdateElement(`.${containerDefault}`, true);
   }
-}
-
-module.exports = AddonsManager;
+};

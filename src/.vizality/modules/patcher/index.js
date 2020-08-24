@@ -1,11 +1,11 @@
 /* eslint-disable consistent-this *//* eslint-disable no-undef */
 
-const { array: { isArray } } = require('@utilities');
+const Util = require('@util');
 
 const _module = 'Module';
 const _submodule = 'Patcher';
 
-class Patcher {
+module.exports = class Patcher {
   constructor () {
     this.patches = [];
   }
@@ -17,7 +17,7 @@ class Patcher {
       try {
         finalReturn = i.method.call(_this, originalArgs, finalReturn);
       } catch (err) {
-        error(_module, _submodule, null, `Failed to run patch '${i.id}'.`, err);
+        Util.Logger.error(_module, _submodule, null, `Failed to run patch '${i.id}'.`, err);
       }
     });
     return finalReturn;
@@ -38,8 +38,8 @@ class Patcher {
       return false;
     }
 
-    if (!isArray(args)) {
-      error(_module, _submodule, null, `Pre-patch ${patch.id} returned something invalid. Patch will be ignored.`);
+    if (!Util.Array.isArray(args)) {
+      Util.Logger.error(_module, _submodule, null, `Pre-patch ${patch.id} returned something invalid. Patch will be ignored.`);
       args = originalArgs;
     }
 
@@ -68,11 +68,11 @@ class Patcher {
    */
   static patch (patchId, moduleToPatch, func, patch, pre = false) {
     if (!moduleToPatch) {
-      return error(_module, _submodule, null, `Tried to patch undefined (patch ID '${patchId}').`);
+      return Util.Logger.error(_module, _submodule, null, `Tried to patch undefined (patch ID '${patchId}').`);
     }
 
     if (this.patches.find(i => i.id === patchId)) {
-      return error(_module, _submodule, null, `Patch ID '${patchId}' is already used!`);
+      return Util.Logger.error(_module, _submodule, null, `Patch ID '${patchId}' is already used!`);
     }
 
     if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
@@ -83,7 +83,7 @@ class Patcher {
       const _oldMethod = moduleToPatch[func];
       moduleToPatch[func] = function (...args) {
         const finalArgs = this._runPrePatches(id, args, this);
-        if (finalArgs !== false && isArray(finalArgs)) {
+        if (finalArgs !== false && Util.Array.isArray(finalArgs)) {
           const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
           return this._runPatches(id, finalArgs, returned, this);
         }
@@ -111,6 +111,4 @@ class Patcher {
   static unpatch (patchId) {
     this.patches = this.patches.filter(i => i.id !== patchId);
   }
-}
-
-module.exports = Patcher;
+};

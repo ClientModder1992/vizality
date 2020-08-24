@@ -1,10 +1,10 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
-const Tooltip = AsyncComponent.from(getModuleByDisplayName('Tooltip', true));
+const DFormItem = AsyncComponent.from(Webpack.getModuleByDisplayName('FormItem', true));
+const FormText = AsyncComponent.from(Webpack.getModuleByDisplayName('FormText', true));
+const Tooltip = AsyncComponent.from(Webpack.getModuleByDisplayName('Tooltip', true));
 
 let classes = {
   initialized: false,
@@ -16,7 +16,7 @@ let classes = {
   classDescription: ''
 };
 
-module.exports = class ButtonItem extends React.PureComponent {
+module.exports = class ButtonItem extends Webpack.React.PureComponent {
   constructor () {
     super();
     this.state = { classes };
@@ -25,16 +25,16 @@ module.exports = class ButtonItem extends React.PureComponent {
   async componentWillMount () {
     if (classes.initialized) return;
 
-    const Flex = getModuleByDisplayName('Flex');
+    const Flex = Webpack.getModuleByDisplayName('Flex');
     classes = {
       initialized: true,
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: getModule('marginTop20'),
-      classTitle: getModule('titleDefault').titleDefault,
-      classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
-      classDividerDef: getModule('dividerDefault').dividerDefault,
-      classDescription: getModule('formText', 'description').description
+      classMargins: Webpack.getModule('marginTop20'),
+      classTitle: Webpack.getModule('titleDefault').titleDefault,
+      classDivider: Webpack.getModule(m => Object.keys(m).join('') === 'divider').divider,
+      classDividerDef: Webpack.getModule('dividerDefault').dividerDefault,
+      classDescription: Webpack.getModule('formText', 'description').description
     };
 
     this.setState({ classes });

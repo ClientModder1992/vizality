@@ -1,10 +1,9 @@
 /* @todo: Use logger. */
-
-const { Theme } = require('@entities');
-const { DIR: { THEMES_DIR, SETTINGS_DIR } } = require('@constants');
-
-const { join } = require('path');
 const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
+const { join } = require('path');
+
+const Constants = require('@constants');
+const Theme = require('@theme');
 
 const fileRegex = /\.((s?c|le)ss|styl)$/;
 
@@ -14,9 +13,9 @@ const ErrorTypes = Object.freeze({
   INVALID_MANIFEST: 'INVALID_MANIFEST'
 });
 
-class StyleManager {
+module.exports = class StyleManager {
   constructor () {
-    this.themesDir = THEMES_DIR;
+    this.themesDir = Constants.Directories.THEMES;
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
@@ -42,7 +41,7 @@ class StyleManager {
       if (!this.__settings) {
         this.__settings = {};
         try {
-          this.__settings = require(join(SETTINGS_DIR, 'vz-general.json'));
+          this.__settings = require(join(Constants.Directories.SETTINGS, 'vz-general.json'));
         } catch (err) {
           // @todo: Handled this.
         }
@@ -287,6 +286,4 @@ class StyleManager {
     }
     return errors;
   }
-}
-
-module.exports = StyleManager;
+};

@@ -1,9 +1,9 @@
-const { getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('./AsyncComponent');
 
 module.exports = AsyncComponent.from((async () => {
-  const DiscordPopoutWindow = getModuleByDisplayName('DragDropContext(ForwardRef(FluxContainer(PopoutWindow)))');
+  const DiscordPopoutWindow = Webpack.getModuleByDisplayName('DragDropContext(ForwardRef(FluxContainer(PopoutWindow)))');
   class PopoutWindow extends DiscordPopoutWindow {
     constructor (props) {
       if (!props.withTitleBar) {

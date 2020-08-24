@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@utilities');
+const { logger: { error } } = require('@util');
 
 const getCurrentGuildId = require('../getCurrentGuildId');
 const getGuild = require('../getGuild');

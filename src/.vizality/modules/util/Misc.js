@@ -1,24 +1,30 @@
-const { isArray } = require('../array');
-const { log, error } = require('../logger');
+const Logger = require('./Logger');
+const Array = require('./Array');
 
 const _module = 'Module';
 const _submodule = 'Utilities:Misc';
 
-const misc = {
+/**
+ * @module Util.Misc
+ * @namespace Util.Misc
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class Misc {
   /**
    * A simple utility for conditionally joining class names together.
    * @see {@link https://github.com/JedWatson/classnames}
    * @param {string|Object|Array} items Potential class names we're trying to join
    * @returns {string} String of class names joined together
    */
-  joinClassNames (...items) {
+  static joinClassNames (...items) {
     const classes = [];
     for (const item of items) {
       if (!item) continue;
       const argType = typeof item;
       if (argType === 'string' || argType === 'number') {
         classes.push(item);
-      } else if (isArray(item)) {
+      } else if (Array.isArray(item)) {
         if (item.length) {
           const inner = this.joinClassNames.apply(null, item);
           if (inner) classes.push(inner);
@@ -36,7 +42,7 @@ const misc = {
       }
     }
     return classes.join(' ');
-  },
+  }
 
   /**
    * A simple utility to get an idea of run-time performance of functions or
@@ -44,9 +50,9 @@ const misc = {
    * @param {*} tests Test case
    * @returns {void} Returns log information in console
    */
-  async checkPerformance (...tests) {
+  static async checkPerformance (...tests) {
     if (!tests) {
-      return error(_module, `${_submodule}:checkPerformance`, null, 'You must supply at least one test case.');
+      return Logger.error(_module, `${_submodule}:checkPerformance`, null, 'You must supply at least one test case.');
     }
 
     const outcome = {};
@@ -63,7 +69,7 @@ const misc = {
 
       const time = parseFloat((after - before).toFixed(4)).toString().replace(/^0+/, '');
 
-      log(_module, `${_submodule}:checkPerformance`, null, `Case #${testNumber} took ${time} ms.`);
+      Logger.log(_module, `${_submodule}:checkPerformance`, null, `Case #${testNumber} took ${time} ms.`);
 
       outcome[testNumber] = time;
     }
@@ -82,17 +88,15 @@ const misc = {
     // Convert difference to a percentage and limit the result to decimal places
     const percentPerformanceGain = parseFloat(((timeDifference / winningTime) * 100).toFixed(2));
 
-    return log(_module, `${_submodule}:checkPerformance`, null,
+    return Logger.log(_module, `${_submodule}:checkPerformance`, null,
       `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's
       ${percentPerformanceGain}% faster than second place!`
     );
-  },
+  }
 
-  sleep (time) {
+  static sleep (time) {
     return new Promise(resolve =>
       setTimeout(resolve, time)
     );
   }
 };
-
-module.exports = misc;

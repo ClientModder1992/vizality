@@ -1,11 +1,10 @@
-const { misc: { sleep }, dom: { createElement }, logger: { log, warn, error } } = require('@utilities');
-const { DIR: { PLUGINS_DIR } } = require('@constants');
-const { resolveCompiler } = require('@compilers');
-
 const { existsSync } = require('fs');
 const { join } = require('path');
 
-const Updatable = require('./Updatable');
+const Constants = require('@constants');
+const Compilers = require('@compilers');
+const Updatable = require('@updatable');
+const Util = require('@util');
 
 /**
  * Main class for Vizality plugins
@@ -69,7 +68,7 @@ module.exports = class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(PLUGINS_DIR, this.entityID, path);
+      resolvedPath = join(Constants.Directories.PLUGINS, this.entityID, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
@@ -77,8 +76,8 @@ module.exports = class Plugin extends Updatable {
     }
 
     const id = Math.random().toString(36).slice(2);
-    const compiler = resolveCompiler(resolvedPath);
-    const style = createElement('style', {
+    const compiler = Compilers.resolveCompiler(resolvedPath);
+    const style = Util.DOM.createElement('style', {
       id: `style-${this.entityID}-${id}`,
       'vz-style': true,
       'vz-plugin': true
@@ -110,7 +109,7 @@ module.exports = class Plugin extends Updatable {
   async _load () {
     try {
       while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
-        await sleep(1);
+        await Util.Misc.sleep(1);
       }
 
       if (typeof this.onStart === 'function') {
@@ -152,14 +151,14 @@ module.exports = class Plugin extends Updatable {
   }
 
   log (...data) {
-    log(this._module, this._submodule, this._submoduleColor, ...data);
+    Util.Logger.log(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   error (...data) {
-    error(this._module, this._submodule, this._submoduleColor, ...data);
+    Util.Logger.error(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   warn (...data) {
-    warn(this._module, this._submodule, this._submoduleColor, ...data);
+    Util.Logger.warn(this._module, this._submodule, this._submoduleColor, ...data);
   }
 };

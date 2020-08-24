@@ -1,6 +1,6 @@
-const { API } = require('@entities');
+const Entities = require('@entities');
 
-module.exports = class ConnectionsAPI extends API {
+module.exports = class ConnectionsAPI extends Entities.API {
   constructor () {
     super();
 

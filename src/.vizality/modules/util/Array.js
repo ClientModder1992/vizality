@@ -1,7 +1,13 @@
 /* eslint-disable no-useless-return */
-const Util = require('..');
+const Type = require('./Type');
 
-module.exports = class Array  {
+/**
+ * @module Util.Array
+ * @namespace Util.Array
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class Array {
   /**
    * Checks if the input is an array.
    * @param {*} input Argument input
@@ -9,7 +15,7 @@ module.exports = class Array  {
    * @returns {boolean} Whether or not the input is an array
    */
   static isArray (input, throwError = false) {
-    return isType(input, 'Array', throwError);
+    return Type.isType(input, 'Array', throwError);
   }
 
   /**
@@ -19,6 +25,6 @@ module.exports = class Array  {
    * @throws {TypeError} Throw an error if the input is not an array
    */
   static assertArray (input) {
-    if (Util.Type.assertType(input, 'Array')) return;
+    if (Type.assertType(input, 'Array')) return;
   }
 };

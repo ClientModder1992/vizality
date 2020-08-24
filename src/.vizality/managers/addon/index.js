@@ -1,7 +1,7 @@
-const { file: { removeDirRecursive }, string: { toPascalCase, toSingular }, logger: { log, warn, error } } = require('@utilities');
-
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
+
+const Util = require('@util');
 
 const _module = 'Manager';
 const _submodule = 'Addon';
@@ -44,7 +44,7 @@ class AddonManager {
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toPascalCase(this._type)}`, []).includes(addonId);
+    return !vizality.settings.get(`disabled${Util.String.toPascalCase(this._type)}`, []).includes(addonId);
   }
 
   isInternal (addonId) {
@@ -64,7 +64,7 @@ class AddonManager {
   }
 
   getAllDisabled () {
-    return vizality.settings.get(`disabled${toPascalCase(this._type)}`, []);
+    return vizality.settings.get(`disabled${Util.String.toPascalCase(this._type)}`, []);
   }
 
   // Mount/load/enable/install shit
@@ -77,11 +77,11 @@ class AddonManager {
         optionalDependencies: []
       }, require(resolve(this._dir, pluginID, 'manifest.json')));
     } catch (err) {
-      return this.error(`${toSingular(toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${Util.String.toSingular(Util.String.toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${Util.String.toSingular(Util.String.toPascalCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     try {
@@ -90,13 +90,13 @@ class AddonManager {
         entityID: {
           get: () => pluginID,
           set: () => {
-            throw new Error(`${toPascalCase(this._type)} cannot update their ID at runtime!`);
+            throw new Error(`${Util.String.toPascalCase(this._type)} cannot update their ID at runtime!`);
           }
         },
         manifest: {
           get: () => manifest,
           set: () => {
-            throw new Error(`${toPascalCase(this._type)} cannot update manifest at runtime!`);
+            throw new Error(`${Util.String.toPascalCase(this._type)} cannot update manifest at runtime!`);
           }
         }
       });
@@ -120,7 +120,7 @@ class AddonManager {
   async unmount (pluginID) {
     const plugin = this.get(pluginID);
     if (!plugin) {
-      throw new Error(`Tried to unmount a non-installed ${toSingular(this._type)}: ${plugin}`);
+      throw new Error(`Tried to unmount a non-installed ${Util.String.toSingular(this._type)}: ${plugin}`);
     }
     if (plugin._ready) {
       await plugin._unload();
@@ -138,11 +138,11 @@ class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this._type)}: (${addonId})`);
+      throw new Error(`Tried to enable a non-installed ${Util.String.toSingular(this._type)}: (${addonId})`);
     }
 
     if (addon._ready) {
-      return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${addonId})`);
+      return this.error(`Tried to load an already-loaded ${Util.String.toSingular(this._type)}: (${addonId})`);
     }
 
     vizality.settings.set(
@@ -157,11 +157,11 @@ class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to disable a non-installed ${toSingular(this._type)}: (${addonId})`);
+      throw new Error(`Tried to disable a non-installed ${Util.String.toSingular(this._type)}: (${addonId})`);
     }
 
     if (!addon._ready) {
-      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${plugin})`);
+      return this.error(`Tried to unload a non-loaded ${Util.String.toSingular(this._type)}: (${addonId})`);
     }
 
     vizality.settings.set('disabledPlugins', [
@@ -178,11 +178,11 @@ class AddonManager {
 
   async uninstall (addonId) {
     if (this.isInternal(addonId)) {
-      throw new Error(`You cannot uninstall an internal ${toSingular(this._type)}. (Tried to uninstall: ${addonId})`);
+      throw new Error(`You cannot uninstall an internal ${Util.String.toSingular(this._type)}. (Tried to uninstall: ${addonId})`);
     }
 
     await this.unmount(addonId);
-    await removeDirRecursive(resolve(this._dir, addonId));
+    await Util.File.removeDirRecursive(resolve(this._dir, addonId));
   }
 
   // Start
@@ -245,15 +245,15 @@ class AddonManager {
   }
 
   log (...data) {
-    log(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
+    Util.Logger.log(_module, `${_submodule}:${Util.String.toSingular(Util.String.toPascalCase(this._type))}`, null, ...data);
   }
 
   warn (...data) {
-    warn(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
+    Util.Logger.warn(_module, `${_submodule}:${Util.String.toSingular(Util.String.toPascalCase(this._type))}`, null, ...data);
   }
 
   error (...data) {
-    error(_module, `${_submodule}:${toSingular(toPascalCase(this._type))}`, null, ...data);
+    Util.Logger.error(_module, `${_submodule}:${Util.String.toSingular(Util.String.toPascalCase(this._type))}`, null, ...data);
   }
 }
 

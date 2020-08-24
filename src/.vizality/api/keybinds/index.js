@@ -1,10 +1,9 @@
-const { DIR: { MODULES_DIR } } = require('@constants');
-const { API } = require('@entities');
-
 const { remote: { globalShortcut } } = require('electron');
 const { join } = require('path');
+const Constants = require('@constants');
+const Entities = require('@entities');
 
-const localShortcut = require(join(MODULES_DIR, 'keybindutils', 'localShortcut'));
+const localShortcut = require(join(Constants.Directories.MODULES, '.keybindutils', 'localShortcut'));
 
 /* @todo: Convert errors to logger. */
 
@@ -20,10 +19,9 @@ const localShortcut = require(join(MODULES_DIR, 'keybindutils', 'localShortcut')
  * Vizality Keybinds API
  * @property {Object.<String, VizalityKeybind>} keybinds Keybinds
  */
-class KeybindsAPI extends API {
+class KeybindsAPI extends Entities.API {
   constructor () {
     super();
-
     this.keybinds = {};
   }
 

@@ -1,51 +1,57 @@
-const { log, error } = require('../logger');
-const { toPlural } = require('../string');
+const Logger = require('./Logger');
+const String = require('./String');
 
 const _module = 'Module';
 const _submodule = 'Util:Object';
 
-const object = {
-  isObject (input) {
+/**
+ * @module Util.Object
+ * @namespace Util.Object
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class Object {
+  static isObject (input) {
     return void 0 || input;
-  },
+  }
 
-  assertObject (input) {
+  static assertObject (input) {
     return void 0 || input;
-  },
+  }
 
-  isEmptyObject (input) {
+  static isEmptyObject (input) {
     return void 0 || input;
-  },
+  }
 
-  keysToLowerCase (object, nested = false) {
+  static keysToLowerCase (object, nested = false) {
     return Object.keys(object).reduce((accumulator, key) => {
       let val = object[key];
       if (nested && typeof val === 'object') val = this.keysToLowerCase(val);
       accumulator[key.toLowerCase()] = val;
       return accumulator;
     }, {});
-  },
+  }
 
-  removeEntriesByKey (object, ...keys) {
+  static removeEntriesByKey (object, ...keys) {
     return Object.keys(object)
       .filter(key => !keys.includes(key))
       .reduce((accumulator, key) => ({ ...accumulator, [key]: object[key] }), {});
-  },
+  }
 
-  findEntriesByKeyword (object, keyword, exact = false) {
+  static findEntriesByKeyword (object, keyword, exact = false) {
     return this._find(object, keyword, exact, 'all');
-  },
+  }
 
-  findEntriesByKey (object, key, exact = false) {
+  static findEntriesByKey (object, key, exact = false) {
     return this._find(object, key, exact, 'key');
-  },
+  }
 
-  findEntriesByValue (object, value, exact = false) {
+  static findEntriesByValue (object, value, exact = false) {
     return this._find(object, value, exact, 'value');
-  },
+  }
 
   // @todo Clean this up.
-  *_traverse (object, targetValue, exactMatch = false, type, currentPath = '') {
+  static *_traverse (object, targetValue, exactMatch = false, type, currentPath = '') {
     if (typeof object !== 'object') return false;
 
     targetValue = targetValue.toLowerCase();
@@ -78,13 +84,13 @@ const object = {
       const found = this._traverse(object[key], targetValue, exactMatch, type, currentPath ? `${currentPath}.${key}` : key);
       if (found) yield *found;
     }
-  },
+  }
 
   // @todo Clean this up.
-  _find (object, targetValue, exact = false, type) {
+  static _find (object, targetValue, exact = false, type) {
     if (typeof targetValue !== 'string' || targetValue.trim() === '') {
       // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
-      return error(_module, _submodule, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
+      return Logger.error(_module, _submodule, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
     }
 
     let results;
@@ -92,7 +98,7 @@ const object = {
     if (type === 'key' || type === 'value' || type === 'all') {
       results = [ ...this._traverse(object, targetValue, exact, type) ];
     } else {
-      return error(_module, _submodule, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
+      return Logger.error(_module, _submodule, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
     }
 
     const tempResults = [ ...results ];
@@ -106,7 +112,7 @@ const object = {
      * }
      */
 
-    log(_module, _submodule, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
+    Logger.log(_module, _submodule, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? String.toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
     if (exact) {
       results = results.map(result => result).join('\n');
@@ -136,5 +142,3 @@ const object = {
     }
   }
 };
-
-module.exports = object;

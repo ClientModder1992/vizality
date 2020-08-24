@@ -1,17 +1,16 @@
-const { patch } = require('@patcher');
-const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('@webpack');
+const { Patcher, Webpack, Localize, Util } = require('@modules');
 
-const Title = require('./components/Title');
 const Command = require('./components/Command');
+const Title = require('./components/Title');
 
 async function injectAutocomplete () {
-  const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete', true);
+  const ChannelAutocomplete = await Webpack.getModuleByDisplayName('ChannelAutocomplete', true);
 
   function renderCommandResults (query, selected, commands, onClick, onHover, formatCommand, formatHeader, customHeader) {
     const renderHeader = function (query, formatHeader) {
-      const title = query.length > 0 ? Messages.COMMANDS_MATCHING.format({ prefix: formatHeader(query) }) : Messages.COMMANDS;
+      const title = query.length > 0 ? Localize.COMMANDS_MATCHING.format({ prefix: formatHeader(query) }) : Localize.COMMANDS;
 
-      return React.createElement(Title, {
+      return Webpack.React.createElement(Title, {
         title: customHeader || [ 'Vizality ', title ]
       }, `autocomplete-title-${title}`);
     };
@@ -20,7 +19,7 @@ async function injectAutocomplete () {
       return null;
     }
 
-    const results = commands.map((command, index) => React.createElement(Command, Object.assign({
+    const results = commands.map((command, index) => Webpack.React.createElement(Command, Object.assign({
       onClick,
       onHover,
       selected: selected === index,
@@ -30,7 +29,7 @@ async function injectAutocomplete () {
     return [ renderHeader(query, formatHeader), results ];
   }
 
-  patch('vz-commands-autocomplete-prefix', ChannelAutocomplete.prototype, 'getAutocompletePrefix', function (_, res) {
+  Patcher.patch('vz-commands-autocomplete-prefix', ChannelAutocomplete.prototype, 'getAutocompletePrefix', function (_, res) {
     const { props: { textValue }, state: { autocompleteOptions } } = this;
     const { prefix } = vizality.api.commands;
 
@@ -44,7 +43,7 @@ async function injectAutocomplete () {
 
     const currentCommand = vizality.api.commands.find(c => [ c.command, ...(c.aliases || []) ].includes(command));
     if (!currentCommand || !currentCommand.showTyping) {
-      typing.stopTyping(this.props.channel.id);
+      Webpack.typing.stopTyping(this.props.channel.id);
     }
 
     currentWord.word = command && args[0] ? `${prefix}${command} ${args.join(' ')}` : textValue;
@@ -62,7 +61,7 @@ async function injectAutocomplete () {
     };
   });
 
-  patch('vz-commands-autocomplete', ChannelAutocomplete.prototype, 'render', function (_, res) {
+  Patcher.patch('vz-commands-autocomplete', ChannelAutocomplete.prototype, 'render', function (_, res) {
     const { props: { textValue }, state: { autocompleteOptions } } = this;
     const resultFilter = (value) => c => [ c.command, ...(c.aliases || []) ].some(commandName => commandName.includes(value));
 
@@ -105,7 +104,7 @@ async function injectAutocomplete () {
       },
       renderResults: (query, selected, onHover, onClick, autocompletes) => {
         if (autocompletes && autocompletes.commands) {
-          const customHeader = Array.isArray(autocompletes.commands.__header) ? autocompletes.commands.__header : [ autocompletes.commands.__header ];
+          const customHeader = Util.Array.isArray(autocompletes.commands.__header) ? autocompletes.commands.__header : [ autocompletes.commands.__header ];
 
           return renderCommandResults(query, selected, autocompletes.commands, onClick, onHover, (e) => ({
             prefix: query.slice(vizality.api.commands.prefix.length - 1).split(' ')[0],

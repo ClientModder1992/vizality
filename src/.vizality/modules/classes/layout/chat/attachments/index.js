@@ -1,10 +1,10 @@
-const { getModule } = require('@webpack');
+const Webpack = require('@webpack');
 
 const poo = require('./poo');
 
 const attachments = {
-  ...getModule('attachment'),
-  ...getModule('members'),
+  ...Webpack.getModule('attachment'),
+  ...Webpack.getModule('members'),
   iconasd: 'icon-man',
   poo
 };

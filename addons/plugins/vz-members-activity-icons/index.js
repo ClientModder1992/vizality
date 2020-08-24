@@ -1,5 +1,5 @@
 const { React, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { Tooltip } = require('@components');
 const { Plugin } = require('@entities');

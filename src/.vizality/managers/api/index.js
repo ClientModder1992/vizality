@@ -1,12 +1,12 @@
-const { logger: { error } } = require('@utilities');
-const { DIR: { API_DIR } } = require('@constants');
-
 const { readdirSync, statSync, existsSync } = require('fs');
 const { join } = require('path');
 
-class APIManager {
+const Constants = require('@constants');
+const Util = require('@util');
+
+module.exports = class APIManager {
   constructor () {
-    this.dir = API_DIR;
+    this.dir = Constants.Directories.API;
     this.apis = [];
   }
 
@@ -17,19 +17,19 @@ class APIManager {
       vizality.api[api] = new APIClass();
       this.apis.push(api);
     } catch (err) {
-      error('Manager', 'API', null, `An error occurred while initializing "${api}"!`, err);
+      Util.Logger.error('Manager', 'API', null, `An error occurred while initializing "${api}":`, err);
     }
   }
 
   async start () {
     for (const api of this.apis) {
-      await vizality.api[api]._load();
+      await vizality.api[api].initialize();
     }
   }
 
   async stop () {
     for (const api of this.apis) {
-      await vizality.api[api]._unload();
+      await vizality.api[api].terminate();
     }
   }
 
@@ -45,6 +45,4 @@ class APIManager {
     }
     await this.start();
   }
-}
-
-module.exports = APIManager;
+};

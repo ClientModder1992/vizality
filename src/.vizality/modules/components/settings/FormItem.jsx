@@ -1,16 +1,16 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
+const DFormItem = AsyncComponent.from(Webpack.getModuleByDisplayName('FormItem', true));
+const FormText = AsyncComponent.from(Webpack.getModuleByDisplayName('FormText', true));
 
-module.exports = class FormItem extends React.PureComponent {
+module.exports = class FormItem extends Webpack.React.PureComponent {
   render () {
-    const Flex = getModuleByDisplayName('Flex');
-    const margins = getModule('marginTop20');
-    const { description } = getModule('formText', 'description');
+    const Flex = Webpack.getModuleByDisplayName('Flex');
+    const margins = Webpack.getModule('marginTop20');
+    const { description } = Webpack.getModule('formText', 'description');
     return (
       <DFormItem
         title={this.props.title}

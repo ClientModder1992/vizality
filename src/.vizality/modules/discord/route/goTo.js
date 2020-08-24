@@ -1,5 +1,5 @@
 const { constants: { Routes }, getModule } = require('@webpack');
-const { logger: { warn } } = require('@utilities');
+const { logger: { warn } } = require('@util');
 
 const _getRoutes = require('./_getRoutes');
 

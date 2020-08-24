@@ -1,5 +1,5 @@
-const { API } = require('@entities');
-const { Flux } = require('@webpack');
+const Entities = require('@entities');
+const Webpack = require('@webpack');
 
 const actions = require('./store/actions');
 const store = require('./store/store');
@@ -28,10 +28,9 @@ const store = require('./store/store');
  * @property {Flux.Store} store Flux store
  * @property {Object.<String, SettingsTab>} tabs Settings tab
  */
-class SettingsAPI extends API {
+module.exports = class SettingsAPI extends Entities.API {
   constructor () {
     super();
-
     this.store = store;
     this.tabs = {};
   }
@@ -87,7 +86,7 @@ class SettingsAPI extends API {
    * @returns {Function}
    */
   connectStores (category) {
-    return Flux.connectStores([ this.store ], () => this._fluxProps(category));
+    return Webpack.Flux.connectStores([ this.store ], () => this._fluxProps(category));
   }
 
   /** @private */
@@ -99,6 +98,4 @@ class SettingsAPI extends API {
       toggleSetting: (setting, defaultValue) => actions.toggleSetting(category, setting, defaultValue)
     };
   }
-}
-
-module.exports = SettingsAPI;
+};

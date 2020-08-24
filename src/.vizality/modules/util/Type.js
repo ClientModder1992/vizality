@@ -1,11 +1,13 @@
 /* eslint-disable jsdoc/check-types *//* eslint-disable jsdoc/no-undefined-types */ /* eslint-disable no-useless-return */
-const { toPascalCase } = require('../string');
+const String = require('./String');
 
 /**
- * @namespace type
+ * @module Util.Type
+ * @namespace Util.Type
  * @memberof Util
+ * @version 0.0.1
  */
-const type = {
+module.exports = class Type {
   /**
    * Checks if the input is a certain type. Optionally throws an error.
    * Original source (modified):
@@ -17,7 +19,7 @@ const type = {
    * @param {boolean} [throwError=false] Whether or not it should throw an error
    * @returns {boolean} Whether or not the input is of a certain type
    */
-  isType (input, type, throwError = false) {
+  static isType (input, type, throwError = false) {
     /**
      * Establish the root object, window (self) in the browser, global on the server,
      * or this in some virtual machines. We use self instead of window for WebWorker support.
@@ -56,7 +58,7 @@ const type = {
     }
 
     return false;
-  },
+  }
 
   // @todo Fix string case conversion for NaN, RegExp, WeakMap, and Weakset
   /**
@@ -68,12 +70,12 @@ const type = {
    * @returns {void}
    * @throws {TypeError} Throw an error if the input is not of a certain type
    */
-  assertType (input, type) {
+  static assertType (input, type) {
     // @todo Circular dependency... Figure out how to fix.
-    if (this.isType(input, toPascalCase(type), true)) return;
-  },
+    if (this.isType(input, String.toPascalCase(type), true)) return;
+  }
 
-  isNull (input, throwError = false) { }
+  static isNull (input, throwError = false) {
+
+  }
 };
-
-module.exports = type;

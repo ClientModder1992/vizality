@@ -1,12 +1,12 @@
+const Constants = require('@constants');
+const Entities = require('@entities');
 const Webpack = require('@webpack');
-const { DIR: { I18N_DIR } } = require('@constants');
-const { API } = require('@entities');
 
-const strings = require(I18N_DIR);
+const strings = require(Constants.Directories.I18N);
 
 const i18n = Webpack.getModule('Messages', 'languages');
 
-class I18nAPI extends API {
+module.exports = class I18nAPI extends Entities.API {
   constructor () {
     super();
     this.messages = {};
@@ -54,6 +54,4 @@ class I18nAPI extends API {
     }
     this._addVizalityStrings();
   }
-}
-
-module.exports = I18nAPI;
+};

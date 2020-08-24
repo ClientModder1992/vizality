@@ -1,23 +1,19 @@
-const { Plugin } = require('@entities');
-const { unpatch } = require('@patcher');
+const { Patcher, Entities: { Plugin } } = require('@modules');
 
 const commands = require('./commands');
 const monkeypatchMessages = require('./monkeypatchMessages.js');
 const injectAutocomplete = require('./injectAutocomplete.js');
 
-class Commands extends Plugin {
+module.exports = class Commands extends Plugin {
   onStart () {
     Object.values(commands).forEach(command => vizality.api.commands.registerCommand(command));
-
     monkeypatchMessages.call(this);
     injectAutocomplete.call(this);
   }
 
   onStop () {
     Object.values(commands).forEach(command => vizality.api.commands.unregisterCommand(command.command));
-    unpatch('vz-commands-autocomplete-prefix');
-    unpatch('vz-commands-autocomplete');
+    Patcher.unpatch('vz-commands-autocomplete-prefix');
+    Patcher.unpatch('vz-commands-autocomplete');
   }
-}
-
-module.exports = Commands;
+};

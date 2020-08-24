@@ -1,4 +1,4 @@
-const { getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 
@@ -14,12 +14,12 @@ require('fs')
 
 // Add some util components
 Object.assign(exports, {
-  SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))
+  SwitchItem: AsyncComponent.from(Webpack.getModuleByDisplayName('SwitchItem', true))
 });
 
 // Re-export module properties
 (async () => {
-  const SwitchItem = await getModuleByDisplayName('SwitchItem', true, true);
+  const SwitchItem = await Webpack.getModuleByDisplayName('SwitchItem', true, true);
   [ 'Sizes', 'Themes' ].forEach(prop => exports.SwitchItem[prop] = SwitchItem[prop]);
 })();
 

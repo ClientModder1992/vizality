@@ -1,11 +1,11 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const Input = AsyncComponent.from(getModuleByDisplayName('TextInput', true));
+const Input = AsyncComponent.from(Webpack.getModuleByDisplayName('TextInput', true));
 
-module.exports = class TextInput extends React.PureComponent {
+module.exports = class TextInput extends Webpack.React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;

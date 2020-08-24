@@ -7,7 +7,7 @@
  * Prefer to use: const { Modal, ConfirmationModal } = require('@components');
  */
 
-const { getModuleByDisplayName, modal } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('./AsyncComponent');
 
@@ -20,13 +20,13 @@ require('fs')
   });
 
 Object.assign(exports, {
-  Confirm: AsyncComponent.from(getModuleByDisplayName('ConfirmModal', true)),
-  Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true))
+  Confirm: AsyncComponent.from(Webpack.getModuleByDisplayName('ConfirmModal', true)),
+  Modal: AsyncComponent.from(Webpack.getModuleByDisplayName('DeprecatedModal', true))
 });
 
 // Re-export module properties
 (async () => {
-  const Modal = await getModuleByDisplayName('DeprecatedModal', true, true);
+  const Modal = await Webpack.getModuleByDisplayName('DeprecatedModal', true, true);
   [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]);
   /*
    * ???
@@ -35,6 +35,6 @@ Object.assign(exports, {
    */
   exports.Confirm.defaultProps = {
     transitionState: 1,
-    onClose: modal.pop
+    onClose: Webpack.modal.pop
   };
 })();

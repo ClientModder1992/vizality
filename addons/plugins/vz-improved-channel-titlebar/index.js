@@ -1,5 +1,5 @@
 const { React, getModuleByDisplayName, getModule, i18n } = require('@webpack');
-const { react : { findInReactTree } } = require('@utilities');
+const { react : { findInReactTree } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 

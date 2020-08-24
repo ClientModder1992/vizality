@@ -1,4 +1,4 @@
-const { API } = require('@entities');
+const Entities = require('@entities');
 
 /*
  * @todo:
@@ -40,10 +40,9 @@ const { API } = require('@entities');
  * @property {object.<string, VizalityToast>} toasts
  * @property {object.<string, VizalityAnnouncement>} announcements
  */
-class NoticesAPI extends API {
+class NoticesAPI extends Entities.API {
   constructor () {
     super();
-
     this.announcements = {};
     this.toasts = {};
     this.alerts = {};

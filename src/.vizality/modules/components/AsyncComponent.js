@@ -1,6 +1,6 @@
-const { React } = require('@webpack');
+const Webpack = require('@webpack');
 
-module.exports = class AsyncComponent extends React.PureComponent {
+module.exports = class AsyncComponent extends Webpack.React.PureComponent {
   constructor (props) {
     super(props);
     this.state = { Component: null };
@@ -13,7 +13,7 @@ module.exports = class AsyncComponent extends React.PureComponent {
   render () {
     const { Component } = this.state;
     if (Component) {
-      return React.createElement(Component, Object.assign({}, this.props, this.props._pass));
+      return Webpack.React.createElement(Component, Object.assign({}, this.props, this.props._pass));
     }
     return this.props._fallback || null;
   }
@@ -25,8 +25,8 @@ module.exports = class AsyncComponent extends React.PureComponent {
    * @returns {AsyncComponent}
    */
   static from (promise, fallback) {
-    return React.memo(
-      (props) => React.createElement(AsyncComponent, {
+    return Webpack.React.memo(
+      (props) => Webpack.React.createElement(AsyncComponent, {
         _provider: () => promise,
         _fallback: fallback,
         ...props

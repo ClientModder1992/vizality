@@ -1,4 +1,4 @@
-const { React } = require('@webpack');
+const Webpack = require('@webpack');
 
 const FormItem = require('./FormItem');
 
@@ -15,7 +15,7 @@ const renameKeys = Object.freeze({
   AudioVolumeMute: 'VolumeMute'
 });
 
-module.exports = class KeybindRecorder extends React.PureComponent {
+module.exports = class KeybindRecorder extends Webpack.React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {

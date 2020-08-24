@@ -1,10 +1,31 @@
-const time = {
-  add () {},
-  substract () {},
-  calendar () {},
-  isDate () {},
-  assertDate () {},
-  formatDate () {}
-};
+/**
+ * @module Util.Time
+ * @namespace Util.Time
+ * @memberof Util
+ * @version 0.0.1
+ */
+module.exports = class Time {
+  static add () {
 
-module.exports = time;
+  }
+
+  static substract () {
+
+  }
+
+  static calendar () {
+
+  }
+
+  static isDate () {
+
+  }
+
+  static assertDate () {
+
+  }
+
+  static formatDate () {
+
+  }
+};

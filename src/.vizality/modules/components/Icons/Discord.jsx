@@ -1,6 +1,6 @@
-const { React } = require('@webpack');
+const Webpack = require('@webpack');
 
-module.exports = React.memo(
+module.exports = Webpack.React.memo(
   (props) => <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 245 240' {...props}>
     <g fill='currentColor'>
       <path d='M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z'/>

@@ -1,11 +1,11 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const SelectTempWrapper = AsyncComponent.from(getModuleByDisplayName('SelectTempWrapper', true));
+const SelectTempWrapper = AsyncComponent.from(Webpack.getModuleByDisplayName('SelectTempWrapper', true));
 
-module.exports = class SelectInput extends React.PureComponent {
+module.exports = class SelectInput extends Webpack.React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;

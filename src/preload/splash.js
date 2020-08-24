@@ -1,11 +1,10 @@
 require('module-alias/register');
-
 require('../ipc/renderer');
 
 window.__SPLASH__ = true;
 
 // CSS Injection
-function init () {
+function initialize () {
   document.documentElement.setAttribute('vizality', '');
   const StyleManager = require('../.vizality/managers/styleManager');
   global.sm = new StyleManager();
@@ -13,7 +12,7 @@ function init () {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', initialize);
 } else {
-  init();
+  initialize();
 }

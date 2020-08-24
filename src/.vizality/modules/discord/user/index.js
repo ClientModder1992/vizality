@@ -1,11 +1,11 @@
 /* eslint-disable brace-style */
-const { string: { assertString, isUrl } } = require('@utilities');
-const { getModule } = require('@webpack');
+const Webpack = require('@webpack');
+const Util = require('@util');
 
 // const Constants = require('../module/constants');
 // @todo Don't foreget to change this back.
 const Constants = {
-  ...getModule('Permissions', 'ActivityTypes', 'StatusTypes')
+  ...Webpack.getModule('Permissions', 'ActivityTypes', 'StatusTypes')
 };
 
 const Snowflake = require('../snowflake');
@@ -25,7 +25,7 @@ const Snowflake = require('../snowflake');
  */
 module.exports = class User {
   constructor (user) {
-    assertString(user.id);
+    Util.String.assertString(user.id);
     this._discordObject = user;
   }
 
@@ -45,7 +45,7 @@ module.exports = class User {
    * @returns {Object|undefined} The User class instance
    */
   static getUser (userId) {
-    const user = getModule('getUser', 'getUsers').getUser(userId);
+    const user = Webpack.getModule('getUser', 'getUsers').getUser(userId);
     if (user) return this._get(user);
   }
 
@@ -58,7 +58,7 @@ module.exports = class User {
     const username = userTag.slice(0, -5);
     const discriminator = userTag.slice(-4);
 
-    const user = getModule('getUser', 'getUsers').findByTag(username, discriminator);
+    const user = Webpack.getModule('getUser', 'getUsers').findByTag(username, discriminator);
     if (user) return this._get(user);
   }
 
@@ -67,7 +67,7 @@ module.exports = class User {
    * @returns {Collection<snowflake, Object>} All cached user objects
    */
   static getUsers () {
-    const users = getModule('getUser', 'getUsers').getUsers();
+    const users = Webpack.getModule('getUser', 'getUsers').getUsers();
     if (users) return users;
   }
 
@@ -76,7 +76,7 @@ module.exports = class User {
    * @returns {Array<snowflake>|undefined} All cached user IDs
    */
   static getUserIds () {
-    const usersIds = getModule('getStatus', 'getUserIds').getUserIds();
+    const usersIds = Webpack.getModule('getStatus', 'getUserIds').getUserIds();
     if (usersIds) return usersIds;
   }
 
@@ -130,7 +130,7 @@ module.exports = class User {
   get avatarUrl () {
     const avatarUrl = this._discordObject.avatarURL;
     // Check if the avatar URL exists, is not a valid URL, and starts with /
-    if (avatarUrl && !isUrl(avatarUrl) && avatarUrl.startsWith('/')) {
+    if (avatarUrl && !Util.String.isUrl(avatarUrl) && avatarUrl.startsWith('/')) {
       return window.location.origin + avatarUrl;
     }
 
@@ -157,7 +157,7 @@ module.exports = class User {
    */
   get nitroSinceTimestamp () {
     return new Promise(async resolve => {
-      const result = await getModule('getAPIBaseURL').get({
+      const result = await Webpack.getModule('getAPIBaseURL').get({
         url: `${Constants.Endpoints.USER_PROFILE(this.id)}`
       });
 
@@ -203,7 +203,7 @@ module.exports = class User {
    * @name User#note
    * @readonly
    */
-  get note () { return getModule('getNote').getNote(this.id); }
+  get note () { return Webpack.getModule('getNote').getNote(this.id); }
 
   /**
    * Checks if the user has a non-default avatar.
@@ -224,7 +224,7 @@ module.exports = class User {
    * @readonly
    */
   get hasAnimatedAvatar () {
-    const ImageResolver = getModule('hasAnimatedGuildIcon', 'getUserAvatarURL');
+    const ImageResolver = Webpack.getModule('hasAnimatedGuildIcon', 'getUserAvatarURL');
     const AnimatedAvatar = ImageResolver.hasAnimatedAvatar(this._discordObject);
 
     return AnimatedAvatar !== 'undefined'
@@ -240,7 +240,7 @@ module.exports = class User {
    */
   get isNitro () {
     return new Promise(async resolve => {
-      const result = await getModule('getAPIBaseURL').get({
+      const result = await Webpack.getModule('getAPIBaseURL').get({
         url: `${Constants.Endpoints.USER_PROFILE(this.id)}`
       });
 

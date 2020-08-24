@@ -3,7 +3,7 @@
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/webpackmodules.js}
  */
 
-const { Filter } = require('@utilities');
+const { Filter } = require('@util');
 
 /**
  * Random set of utilities that didn't fit elsewhere. Most of
@@ -12,7 +12,7 @@ const { Filter } = require('@utilities');
  * @namespace Webpack
  * @version 0.0.1
  */
-class Webpack {
+module.exports = class Webpack {
   static find (filter, first = true) {
     return this.getModule(filter, first);
   }
@@ -230,6 +230,4 @@ class Webpack {
   static getAllModules () {
     return this.require.c;
   }
-}
-
-module.exports = Webpack;
+};

@@ -1,11 +1,9 @@
+const { Webpack, React, Constants, Localize, Util } = require('@modules');
 const { settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { React, getModule, i18n: { Messages } } = require('@webpack');
-const { file: { removeDirRecursive } } = require('@utilities');
-const { DIR: { CACHE_DIR } } = require('@constants');
 const { Confirm } = require('@components/modal');
 
-class GeneralSettings extends React.Component {
+module.exports = class GeneralSettings extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -25,24 +23,24 @@ class GeneralSettings extends React.Component {
           onBlur={({ target }) => target.value = getSetting('prefix', '.')}
           error={getSetting('prefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Vizality autocompletions.' : ''}
         >
-          {Messages.VIZALITY_COMMAND_PREFIX}
+          {Localize.VIZALITY_COMMAND_PREFIX}
         </TextInput>
 
         <Category
-          name={Messages.ADVANCED_SETTINGS}
-          description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}
+          name={Localize.ADVANCED_SETTINGS}
+          description={Localize.VIZALITY_SETTINGS_ADVANCED_DESC}
           opened={getSetting('advancedSettings', false)}
           onChange={() => toggleSetting('advancedSettings')}
         >
           <SwitchItem
-            note={Messages.VIZALITY_SETTINGS_DEBUG_LOGS_DESC}
+            note={Localize.VIZALITY_SETTINGS_DEBUG_LOGS_DESC}
             value={getSetting('debugLogs', false)}
             onChange={() => {
               toggleSetting('debugLogs');
               this.askRestart();
             }}
           >
-            {Messages.VIZALITY_SETTINGS_DEBUG_LOGS}
+            {Localize.VIZALITY_SETTINGS_DEBUG_LOGS}
           </SwitchItem>
           <SwitchItem
             note={'Vizality\'s Software Development Kit (SDK) is a toolkit created to help make plugin developers\'s and theme developers\' lives easier. Once enabled, you can access it through an icon at the top right hand corner of the channel headerbar.'}
@@ -52,63 +50,63 @@ class GeneralSettings extends React.Component {
             Enable Software Development Kit
           </SwitchItem>
           <SwitchItem
-            note={Messages.VIZALITY_SETTINGS_OVERLAY_DESC}
+            note={Localize.VIZALITY_SETTINGS_OVERLAY_DESC}
             value={getSetting('openOverlayDevTools', false)}
             onChange={() => toggleSetting('openOverlayDevTools')}
           >
-            {Messages.VIZALITY_SETTINGS_OVERLAY}
+            {Localize.VIZALITY_SETTINGS_OVERLAY}
           </SwitchItem>
           <SwitchItem
             disabled={!!window.GlasscordApi}
             note={window.GlasscordApi
-              ? Messages.VIZALITY_SETTINGS_TRANSPARENT_GLASSCORD.format({ glasscordCfgUrl: 'https://github.com/AryToNeX/Glasscord#how-do-i-use-it' })
-              : Messages.VIZALITY_SETTINGS_TRANSPARENT_DESC.format()}
+              ? Localize.VIZALITY_SETTINGS_TRANSPARENT_GLASSCORD.format({ glasscordCfgUrl: 'https://github.com/AryToNeX/Glasscord#how-do-i-use-it' })
+              : Localize.VIZALITY_SETTINGS_TRANSPARENT_DESC.format()}
             value={getSetting('transparentWindow', false)}
             onChange={() => {
               toggleSetting('transparentWindow');
               this.askRestart();
             }}
           >
-            {Messages.VIZALITY_SETTINGS_TRANSPARENT}
+            {Localize.VIZALITY_SETTINGS_TRANSPARENT}
           </SwitchItem>
           <SwitchItem
-            note={Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC.format()}
+            note={Localize.VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC.format()}
             value={getSetting('experimentalWebPlatform', false)}
             onChange={() => {
               toggleSetting('experimentalWebPlatform');
               this.askRestart();
             }}
           >
-            {Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}
+            {Localize.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}
           </SwitchItem>
           <SwitchItem
-            note={Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}
+            note={Localize.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}
             value={getSetting('experiments', false)}
             onChange={() => {
               toggleSetting('experiments');
               // Update modules
-              const experimentsModule = getModule(r => r.isDeveloper !== void 0);
+              const experimentsModule = Webpack.getModule(r => r.isDeveloper !== void 0);
               experimentsModule._changeCallbacks.forEach(cb => cb());
             }}
           >
-            {Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS}
+            {Localize.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS}
           </SwitchItem>
         </Category>
         <ButtonItem
-          note={Messages.VIZALITY_SETTINGS_CACHE_VIZALITY_DESC}
-          button={this.state.vizalityCleared ? Messages.VIZALITY_SETTINGS_CACHE_CLEARED : Messages.VIZALITY_SETTINGS_CACHE_VIZALITY}
+          note={Localize.VIZALITY_SETTINGS_CACHE_VIZALITY_DESC}
+          button={this.state.vizalityCleared ? Localize.VIZALITY_SETTINGS_CACHE_CLEARED : Localize.VIZALITY_SETTINGS_CACHE_VIZALITY}
           success={this.state.vizalityCleared}
           onClick={() => this.clearVizalityCache()}
         >
-          {Messages.VIZALITY_SETTINGS_CACHE_VIZALITY}
+          {Localize.VIZALITY_SETTINGS_CACHE_VIZALITY}
         </ButtonItem>
         <ButtonItem
-          note={Messages.VIZALITY_SETTINGS_CACHE_DISCORD_DESC}
-          button={this.state.discordCleared ? Messages.VIZALITY_SETTINGS_CACHE_CLEARED : Messages.VIZALITY_SETTINGS_CACHE_DISCORD}
+          note={Localize.VIZALITY_SETTINGS_CACHE_DISCORD_DESC}
+          button={this.state.discordCleared ? Localize.VIZALITY_SETTINGS_CACHE_CLEARED : Localize.VIZALITY_SETTINGS_CACHE_DISCORD}
           success={this.state.discordCleared}
           onClick={() => this.clearDiscordCache()}
         >
-          {Messages.VIZALITY_SETTINGS_CACHE_DISCORD}
+          {Localize.VIZALITY_SETTINGS_CACHE_DISCORD}
         </ButtonItem>
       </div>
     );
@@ -125,7 +123,7 @@ class GeneralSettings extends React.Component {
 
   clearVizalityCache () {
     this.setState({ vizalityCleared: true });
-    removeDirRecursive(CACHE_DIR).then(() => {
+    Util.File.removeDirRecursive(Constants.Directories.CACHE).then(() => {
       setTimeout(() => {
         this.setState({ vizalityCleared: false });
       }, 2500);
@@ -133,21 +131,19 @@ class GeneralSettings extends React.Component {
   }
 
   askRestart () {
-    const { colorStandard } = getModule('colorStandard');
+    const { colorStandard } = Webpack.getModule('colorStandard');
 
     openModal(() => <Confirm
       red
-      header={Messages.ERRORS_RESTART_APP}
-      confirmText={Messages.BUNDLE_READY_RESTART}
-      cancelText={Messages.BUNDLE_READY_LATER}
+      header={Localize.ERRORS_RESTART_APP}
+      confirmText={Localize.BUNDLE_READY_RESTART}
+      cancelText={Localize.BUNDLE_READY_LATER}
       onConfirm={() => DiscordNative.app.relaunch()}
       onCancel={closeModal}
     >
       <div className={colorStandard}>
-        {Messages.VIZALITY_SETTINGS_RESTART}
+        {Localize.VIZALITY_SETTINGS_RESTART}
       </div>
     </Confirm>);
   }
-}
-
-module.exports = GeneralSettings;
+};

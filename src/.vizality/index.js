@@ -1,15 +1,14 @@
 /* eslint-disable brace-style *//* eslint-disable no-unused-vars *//* eslint-disable jsdoc/no-undefined-types */
+const childProcess = require('child_process');
+const util = require('util');
 const __typings__ = require('@typings');
-
-const { CDN: { IMAGES_CDN }, DIR: { ROOT_DIR, PLUGINS_DIR, THEMES_DIR } } = require('@constants');
-const { misc: { sleep }, logger: { log, warn, error } } = require('@utilities');
-const { jsx: JsxCompiler } = require('@compilers');
+const Constants = require('@constants');
+const Updatable = require('@updatable');
+const Compilers = require('@compilers');
 const Webpack = require('@webpack');
-const { Updatable } = require('@entities');
+const { Misc: { sleep } } = require('@util');
 
-const { promisify } = require('util');
-const cp = require('child_process');
-const exec = promisify(cp.exec);
+const exec = util.promisify(childProcess.exec);
 
 const AddonManager = require('./managers/addon');
 const StyleManager = require('./managers/styleManager');
@@ -27,7 +26,7 @@ const FluxModule = async () => {
 
 const JsxCompilerModule = async () => {
   require.extensions['.jsx'] = (module, filename) => {
-    const compiler = new JsxCompiler(filename);
+    const compiler = new Compilers.jsx(filename);
     const compiled = compiler.compile();
     module._compile(compiled, filename);
   };
@@ -49,7 +48,7 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  */
 module.exports = class Vizality extends Updatable {
   constructor () {
-    super(ROOT_DIR, '', 'vizality');
+    super(Constants.Directories.ROOT, '', 'vizality');
 
     this.api = {};
     this.modules = {};
@@ -58,8 +57,8 @@ module.exports = class Vizality extends Updatable {
 
     this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
-    this.manager.themes = new AddonManager('themes', THEMES_DIR);
-    this.manager.plugins = new AddonManager('plugins', PLUGINS_DIR);
+    this.manager.themes = new AddonManager('themes', Constants.Directories.THEMES);
+    this.manager.plugins = new AddonManager('plugins', Constants.Directories.PLUGINS);
 
     this._ready = false;
     this._originalLogFunc = {};
@@ -95,7 +94,7 @@ module.exports = class Vizality extends Updatable {
   // Startup
   async start () {
     // console.clear(); // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
-    const startupBanner = `${IMAGES_CDN}/console-startup-banner.gif`;
+    const startupBanner = `${Constants.HTTP.IMAGES}/console-startup-banner.gif`;
     // Startup banner
     console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
 
@@ -115,7 +114,7 @@ module.exports = class Vizality extends Updatable {
     this._removeDiscordLogs();
 
     // Setting up the modules for the global vizality object
-    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'utilities' ];
+    const modules = [ 'webpack', 'classes', 'constants', 'localize', 'discord', 'util' ];
 
     for (const mdl of modules) {
       const Mdl = require(`@${mdl}`);
@@ -175,15 +174,15 @@ module.exports = class Vizality extends Updatable {
       const submodule = this.name;
 
       if (type === 'info' || type === 'log') {
-        log(module, submodule, null, ...originalArgs);
+        Util.Logger.log(module, submodule, null, ...originalArgs);
       }
 
       if (type === 'error' || type === 'trace') {
-        error(module, submodule, null, ...originalArgs);
+        Util.Logger.error(module, submodule, null, ...originalArgs);
       }
 
       if (type === 'warn') {
-        warn(module, submodule, null, ...originalArgs);
+        Util.Logger.warn(module, submodule, null, ...originalArgs);
       }
     };
   }

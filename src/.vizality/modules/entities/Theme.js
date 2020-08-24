@@ -1,6 +1,6 @@
-const { dom: { createElement }, logger: { log, warn, error } } = require('../util');
-const Compilers = require('../compilers');
-const Updatable = require('./Updatable');
+const Compilers = require('@compilers');
+const Updatable = require('@updatable');
+const Util = require('@util');
 
 module.exports = class Theme extends Updatable {
   constructor (themeID, manifest) {
@@ -18,7 +18,7 @@ module.exports = class Theme extends Updatable {
   _load () {
     if (!this.applied) {
       this.applied = true;
-      const style = createElement('style', {
+      const style = Util.DOM.createElement('style', {
         id: `theme-${this.entityID}`,
         'vz-style': true,
         'vz-theme': true
@@ -46,14 +46,14 @@ module.exports = class Theme extends Updatable {
   }
 
   log (...data) {
-    log(this.module, this.submodule, this.submoduleColor, ...data);
+    Util.Logger.log(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   error (...data) {
-    error(this.module, this.submodule, this.submoduleColor, ...data);
+    Util.Logger.error(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   warn (...data) {
-    warn(this.module, this.submodule, this.submoduleColor, ...data);
+    Util.Logger.warn(this.module, this.submodule, this.submoduleColor, ...data);
   }
 };

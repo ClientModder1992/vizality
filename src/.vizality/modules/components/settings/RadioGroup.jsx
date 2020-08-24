@@ -1,12 +1,12 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const Webpack = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const DRadioGroup = AsyncComponent.from(getModuleByDisplayName('RadioGroup', true));
+const DRadioGroup = AsyncComponent.from(Webpack.getModuleByDisplayName('RadioGroup', true));
 
 let margin = '';
-module.exports = class RadioGroup extends React.PureComponent {
+module.exports = class RadioGroup extends Webpack.React.PureComponent {
   constructor () {
     super();
     this.state = { margin };
@@ -17,7 +17,7 @@ module.exports = class RadioGroup extends React.PureComponent {
       return;
     }
 
-    margin = getModule('marginTop20').marginTop20;
+    margin = Webpack.getModule('marginTop20').marginTop20;
     this.setState({ margin });
   }
 

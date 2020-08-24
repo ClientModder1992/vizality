@@ -1,12 +1,11 @@
 /* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
-
-const { DIR: { CACHE_DIR } } = require('@constants');
-
 const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
 const { createHash } = require('crypto');
-const watch = require('node-watch');
 const { join } = require('path');
+const watch = require('node-watch');
 const Events = require('events');
+
+const Constants = require('@constants');
 
 // @todo: Schedule a cache cleanup?
 
@@ -25,7 +24,7 @@ class Compiler extends Events {
   constructor (file) {
     super();
     this.file = file;
-    this.cacheDir = join(CACHE_DIR, this.constructor.name.toLowerCase());
+    this.cacheDir = join(Constants.Directories.CACHE, this.constructor.name.toLowerCase());
     this.watcherEnabled = false;
     this._watchers = {};
     this._compiledOnce = {};

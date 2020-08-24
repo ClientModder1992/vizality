@@ -1,13 +1,13 @@
-const { Flux, FluxDispatcher } = require('@webpack');
-const { DIR: { SETTINGS_DIR } } = require('@constants');
-
-const { join } = require('path');
 const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
+const { join } = require('path');
+
+const Constants = require('@constants');
+const Webpack = require('@webpack');
 
 const ActionTypes = require('./constants');
 
-if (!existsSync(SETTINGS_DIR)) {
-  mkdirSync(SETTINGS_DIR);
+if (!existsSync(Constants.Directories.SETTINGS)) {
+  mkdirSync(Constants.Directories.SETTINGS);
 }
 
 function loadSettings (file) {
@@ -16,7 +16,7 @@ function loadSettings (file) {
     return [
       file.split('.')[0],
       JSON.parse(
-        readFileSync(join(SETTINGS_DIR, file), 'utf8')
+        readFileSync(join(Constants.Directories.SETTINGS, file), 'utf8')
       )
     ];
   } catch (err) {
@@ -26,7 +26,7 @@ function loadSettings (file) {
 }
 
 const settings = Object.fromEntries(
-  readdirSync(SETTINGS_DIR)
+  readdirSync(Constants.Directories.SETTINGS)
     .filter(f => !f.startsWith('.') && f.endsWith('.json'))
     .map(loadSettings)
 );
@@ -68,7 +68,7 @@ function deleteSetting (category, setting) {
   delete settings[category][setting];
 }
 
-class SettingsStore extends Flux.Store {
+class SettingsStore extends Webpack.Flux.Store {
   constructor (Dispatcher, handlers) {
     super(Dispatcher, handlers);
 
@@ -103,14 +103,14 @@ class SettingsStore extends Flux.Store {
 
   _persist () {
     for (const category in settings) {
-      const file = join(SETTINGS_DIR, `${category}.json`);
+      const file = join(Constants.Directories.SETTINGS, `${category}.json`);
       const data = JSON.stringify(settings[category], null, 2);
       writeFileSync(file, data);
     }
   }
 }
 
-module.exports = new SettingsStore(FluxDispatcher, {
+module.exports = new SettingsStore(Webpack.FluxDispatcher, {
   [ActionTypes.UPDATE_SETTINGS]: ({ category, settings }) => updateSettings(category, settings),
   [ActionTypes.TOGGLE_SETTING]: ({ category, setting, defaultValue }) => toggleSetting(category, setting, defaultValue),
   [ActionTypes.UPDATE_SETTING]: ({ category, setting, value }) => updateSetting(category, setting, value),

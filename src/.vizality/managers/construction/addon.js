@@ -1,4 +1,4 @@
-const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@utilities');
+const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@util');
 
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',
