@@ -6,9 +6,9 @@ const { join } = require('path');
 const exec = promisify(cp.exec);
 
 /**
- * @property {String} entityID
- * @property {String} entityPath
- * @property {String} updateIdentifier
+ * @property {string} entityID
+ * @property {string} entityPath
+ * @property {string} updateIdentifier
  */
 module.exports = class Updatable extends Events {
   constructor (basePath, entityID, updateIdentifier) {
@@ -30,7 +30,7 @@ module.exports = class Updatable extends Events {
   }
 
   /**
-   * @returns {Boolean} Whether this can be updated or not
+   * @returns {boolean} Whether this can be updated or not
    */
   isUpdatable () {
     return existsSync(join(this.basePath, this.entityID, '.git'));
@@ -81,7 +81,7 @@ module.exports = class Updatable extends Events {
 
   /**
    * Fetches the git repository for this entity
-   * @returns {Promise<String|null>}
+   * @returns {Promise<?string>}
    */
   async getGitRepo () {
     try {
@@ -95,7 +95,7 @@ module.exports = class Updatable extends Events {
 
   /**
    * Fetches the current branch for this entity
-   * @returns {Promise<String|null>}
+   * @returns {Promise<?string>}
    */
   getBranch () {
     return exec('git branch', this._cwd)

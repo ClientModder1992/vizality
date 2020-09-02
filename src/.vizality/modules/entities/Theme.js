@@ -1,12 +1,13 @@
-const Compilers = require('@compilers');
-const Updatable = require('@updatable');
-const Util = require('@util');
+const { dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
+const { resolveCompiler } = require('@compilers');
+
+const Updatable = require('./Updatable');
 
 module.exports = class Theme extends Updatable {
   constructor (themeID, manifest) {
     const styleManager = typeof vizality !== 'undefined' ? vizality.styleManager : global.sm;
     super(styleManager.themesDir, themeID);
-    this.compiler = Compilers.resolveCompiler(manifest.effectiveTheme);
+    this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
 
@@ -18,7 +19,7 @@ module.exports = class Theme extends Updatable {
   _load () {
     if (!this.applied) {
       this.applied = true;
-      const style = Util.DOM.createElement('style', {
+      const style = createElement('style', {
         id: `theme-${this.entityID}`,
         'vz-style': true,
         'vz-theme': true
@@ -46,14 +47,14 @@ module.exports = class Theme extends Updatable {
   }
 
   log (...data) {
-    Util.Logger.log(this.module, this.submodule, this.submoduleColor, ...data);
+    log(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   error (...data) {
-    Util.Logger.error(this.module, this.submodule, this.submoduleColor, ...data);
+    error(this.module, this.submodule, this.submoduleColor, ...data);
   }
 
   warn (...data) {
-    Util.Logger.warn(this.module, this.submodule, this.submoduleColor, ...data);
+    warn(this.module, this.submodule, this.submoduleColor, ...data);
   }
 };

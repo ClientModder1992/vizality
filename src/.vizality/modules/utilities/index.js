@@ -1,7 +1,17 @@
-require('fs')
-  .readdirSync(__dirname)
-  .filter(file => file !== 'index.js')
-  .forEach(filename => {
-    const moduleName = filename.split('.')[0];
-    exports[moduleName] = require(`${__dirname}/${filename}`);
-  });
+module.exports = {
+  checkPerformance: require('./checkPerformance'),
+  joinClassNames: require('./joinClassNames'),
+  sleep: require('./sleep'),
+  array: require('./array'),
+  color: require('./color'),
+  dom: require('./dom'),
+  file: require('./file'),
+  logger: require('./logger'),
+  number: require('./number'),
+  object: require('./object'),
+  react: require('./react'),
+  security: require('./security'),
+  string: require('./string'),
+  time: require('./time'),
+  type: require('./type')
+};

@@ -3,7 +3,6 @@ const { log, error } = require('./logger');
 /**
  * A simple utility to get gauge the performance
  * of presented blocks of code.
- *
  * @param {string} testCases Test case
  * @returns {undefined} Returns log information in console
  */

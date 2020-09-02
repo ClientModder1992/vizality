@@ -1,5 +1,6 @@
+const { logger: { log, error } } = require('@utilities');
+
 const Events = require('events');
-const Logger = require('../util/Logger');
 
 module.exports = class API extends Events {
   constructor () {
@@ -9,27 +10,27 @@ module.exports = class API extends Events {
     this._ready = false;
   }
 
-  async initialize () {
+  async start () {
     try {
       if (typeof this.onStart === 'function') {
         await this.onStart();
       }
-      Logger.log(this._module, this._submodule, null, 'API initialized.');
+      log(this._module, this._submodule, null, 'API loaded.');
       this._ready = true;
     } catch (err) {
-      Logger.error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
+      error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
     }
   }
 
-  async terminate () {
+  async stop () {
     try {
       if (typeof this.onStop === 'function') {
         await this.onStop();
       }
       this._ready = false;
-      Logger.log(this._module, this._submodule, null, 'API terminated.');
+      log(this._module, this._submodule, null, 'API unloaded.');
     } catch (err) {
-      Logger.error(this._module, this._submodule, null,
+      error(this._module, this._submodule, null,
         'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', err
       );
     }

@@ -1,16 +1,17 @@
+const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
+const { resolveCompiler } = require('@compilers');
+const { DIR: { PLUGINS_DIR } } = require('@constants');
+
 const { existsSync } = require('fs');
 const { join } = require('path');
 
-const Constants = require('@constants');
-const Compilers = require('@compilers');
-const Updatable = require('@updatable');
-const Util = require('@util');
+const Updatable = require('./Updatable');
 
 /**
  * Main class for Vizality plugins
  * @property {boolean} _ready Whether the plugin is ready or not
  * @property {SettingsCategory} settings Plugin settings
- * @property {Object<string, Compiler>} styles Styles the plugin loaded
+ * @property {object<string, Compiler>} styles Styles the plugin loaded
  * @abstract
  */
 module.exports = class Plugin extends Updatable {
@@ -68,7 +69,7 @@ module.exports = class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(Constants.Directories.PLUGINS, this.entityID, path);
+      resolvedPath = join(PLUGINS_DIR, this.entityID, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
@@ -76,8 +77,8 @@ module.exports = class Plugin extends Updatable {
     }
 
     const id = Math.random().toString(36).slice(2);
-    const compiler = Compilers.resolveCompiler(resolvedPath);
-    const style = Util.DOM.createElement('style', {
+    const compiler = resolveCompiler(resolvedPath);
+    const style = createElement('style', {
       id: `style-${this.entityID}-${id}`,
       'vz-style': true,
       'vz-plugin': true
@@ -109,7 +110,7 @@ module.exports = class Plugin extends Updatable {
   async _load () {
     try {
       while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
-        await Util.Misc.sleep(1);
+        await sleep(1);
       }
 
       if (typeof this.onStart === 'function') {
@@ -139,6 +140,7 @@ module.exports = class Plugin extends Updatable {
       }
 
       if (typeof this.onStop === 'function') {
+        console.log(this);
         await this.onStop();
       }
 
@@ -151,14 +153,14 @@ module.exports = class Plugin extends Updatable {
   }
 
   log (...data) {
-    Util.Logger.log(this._module, this._submodule, this._submoduleColor, ...data);
+    log(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   error (...data) {
-    Util.Logger.error(this._module, this._submodule, this._submoduleColor, ...data);
+    error(this._module, this._submodule, this._submoduleColor, ...data);
   }
 
   warn (...data) {
-    Util.Logger.warn(this._module, this._submodule, this._submoduleColor, ...data);
+    warn(this._module, this._submodule, this._submoduleColor, ...data);
   }
 };

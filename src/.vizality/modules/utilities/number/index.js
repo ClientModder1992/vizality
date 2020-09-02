@@ -5,12 +5,14 @@
  * @version 0.0.1
  */
 
-const isNumber = (input) => {
-  return void 0 || input;
+const number = {
+  isNumber (input) {
+    return void 0 || input;
+  },
+
+  assertNumber (input) {
+    return void 0 || input;
+  }
 };
 
-const assertNumber = (input) => {
-  return void 0 || input;
-};
-
-module.exports = { isNumber, assertNumber };
+module.exports = number;
