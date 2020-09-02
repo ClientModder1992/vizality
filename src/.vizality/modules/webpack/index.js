@@ -1,21 +1,17 @@
 /* eslint-disable brace-style */
 const moduleFilters = require('./modules.json');
-const Logger = require('../util/Logger');
-const Misc = require('../util/Misc');
+const { log, warn } = require('../utilities/logger');
+const sleep = require('../utilities/sleep');
 
 const _module = 'Module';
 const _submodule = 'Webpack';
 
 /**
- * @module Webpack
- * @namespace Webpack
+ * @module webpack
+ * @namespace webpack
  * @version 0.0.1
  */
-module.exports = class Webpack {
-  constructor () {
-    this.instance = {};
-  }
-
+const webpack = {
   /**
    * Grabs a module from the Webpack store
    * @param {Function|Array} filter Filter used to grab the module. Can be a function or an array of keys the object must have.
@@ -24,27 +20,27 @@ module.exports = class Webpack {
    * @returns {Promise<Object>|Object} The found module. A promise will always be returned, unless retry is false.
    * @private
    */
-  static _getModule (filter, retry = false, forever = false) {
+  _getModule (filter, retry = false, forever = false) {
     if (Array.isArray(filter)) {
       const keys = filter;
       filter = m => keys.every(key => m.hasOwnProperty(key) || (m.__proto__ && m.__proto__.hasOwnProperty(key)));
     }
 
-    if (!retry) return this._getModules(filter);
+    if (!retry) return webpack._getModules(filter);
 
     return new Promise(async res => {
       let mdl;
       for (let i = 0; i < (forever ? 666 : 21); i++) {
-        mdl = this._getModules(filter);
+        mdl = webpack._getModules(filter);
         if (mdl) return res(mdl);
-        await Misc.sleep(100);
+        await sleep(100);
       }
       res(mdl);
     });
-  }
+  },
 
-  static _getModules (filter, all = false) {
-    const moduleInstances = Object.values(this.instance.cache).filter(m => m.exports);
+  _getModules (filter, all = false) {
+    const moduleInstances = Object.values(webpack.instance.cache).filter(m => m.exports);
 
     if (all) {
       const exports = moduleInstances.filter(m => filter(m.exports)).map(m => m.exports);
@@ -61,20 +57,22 @@ module.exports = class Webpack {
     if (expDefault) { return expDefault.exports.default; }
 
     return null;
-  }
+  },
 
   /**
    * Initializes the injection into Webpack.
    * @returns {Promise<void>}
    */
-  static async initialize () {
+  async initialize () {
+    delete webpack.initialize;
+
     // Wait until webpack is ready
     while (!window.webpackJsonp) {
-      await Misc.sleep(1);
+      await sleep(1);
     }
 
     // Extract values from webpack
-    const moduleID = Math.random.toString();
+    const moduleID = Math.random().toString(36).substring(2);
     const instance = webpackJsonp.push([
       [],
       {
@@ -86,31 +84,31 @@ module.exports = class Webpack {
       [ [ moduleID ] ]
     ]);
     delete instance.cache[moduleID];
-    this.instance = instance;
+    webpack.instance = instance;
 
     // Load modules pre-fetched
     for (const mdl in moduleFilters) {
-      this[mdl] = await this._getModule(moduleFilters[mdl], true);
+      webpack[mdl] = await webpack._getModule(moduleFilters[mdl], true);
     }
-  }
+  },
 
-  static findComponent (keyword, exact = false) {
+  findComponent (keyword, exact = false) {
     if (!keyword) {
-      return Logger.warn(_module, _submodule, null, `First argument provided must be a string.`);
+      return warn(_module, _submodule, null, `First argument provided must be a string.`);
     }
 
     let byDisplayName, byDefault, byType;
     const results = {};
 
     if (exact) {
-      byDisplayName = this.getModuleByDisplayName(keyword);
-      byDefault = this.getModules(m => m.default && m.default.displayName === keyword);
-      byType = this.getModules(m => m.type && m.type.displayName === keyword);
+      byDisplayName = webpack.getModuleByDisplayName(keyword);
+      byDefault = webpack.getModules(m => m.default && m.default.displayName === keyword);
+      byType = webpack.getModules(m => m.type && m.type.displayName === keyword);
     } else {
       keyword = keyword.toLowerCase();
-      byDisplayName = this.getModules(m => m.displayName && m.displayName.toLowerCase().indexOf(keyword) > -1);
-      byDefault = this.getModules(m => m.default && m.default.displayName && m.default.displayName.toLowerCase().indexOf(keyword) > -1);
-      byType = this.getModules(m => m.type && m.type.displayName && m.type.displayName.toLowerCase().indexOf(keyword) > -1);
+      byDisplayName = webpack.getModules(m => m.displayName && m.displayName.toLowerCase().indexOf(keyword) > -1);
+      byDefault = webpack.getModules(m => m.default && m.default.displayName && m.default.displayName.toLowerCase().indexOf(keyword) > -1);
+      byType = webpack.getModules(m => m.type && m.type.displayName && m.type.displayName.toLowerCase().indexOf(keyword) > -1);
     }
 
     if (byDisplayName && byDisplayName.length) {
@@ -140,7 +138,7 @@ module.exports = class Webpack {
     const choiceWord = exact ? 'matching' : 'containing';
 
     if (!results || !Object.keys(results).length) {
-      return Logger.warn(_module, _submodule, null, `No results found for components ${choiceWord} '${keyword}'`);
+      return warn(_module, _submodule, null, `No results found for components ${choiceWord} '${keyword}'`);
     }
 
     let count = 0;
@@ -148,20 +146,20 @@ module.exports = class Webpack {
 
     Object.keys(results).forEach(key => count += results[key].matches.length);
 
-    Logger.log(_module, _submodule, null, `${count} ${resultsText} found for components ${choiceWord} '${keyword}':\n`);
+    log(_module, _submodule, null, `${count} ${resultsText} found for components ${choiceWord} '${keyword}':\n`);
 
     return results;
-  }
+  },
 
   /**
    * Gets all cached Webpack modules.
    * @returns {Object[]} Cached Webpack modules
    */
-  static getAllModules () {
-    return this.getModules(m => m);
-  }
+  getAllModules () {
+    return webpack.getModules(m => m);
+  },
 
-  static getModule (...filter) {
+  getModule (...filter) {
     let retry = false;
     let forever = false;
 
@@ -179,8 +177,8 @@ module.exports = class Webpack {
       ([ filter ] = filter); // Thanks Lighty, I still don't understand this syntax.
     }
 
-    return this._getModule(filter, retry, forever);
-  }
+    return webpack._getModule(filter, retry, forever);
+  },
 
   /**
    * Grabs a React component by its display name
@@ -189,9 +187,9 @@ module.exports = class Webpack {
    * @param {boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
    * @returns {Promise<Object>|Object} The component. A promise will always be returned, unless retry is false.
    */
-  static getModuleByDisplayName (displayName, retry = false, forever = false) {
-    return this._getModule(m => m.displayName && m.displayName.toLowerCase() === displayName.toLowerCase(), retry, forever);
-  }
+  getModuleByDisplayName (displayName, retry = false, forever = false) {
+    return webpack._getModule(m => m.displayName && m.displayName.toLowerCase() === displayName.toLowerCase(), retry, forever);
+  },
 
   /**
    * Grabs a React component by its display name.
@@ -200,9 +198,9 @@ module.exports = class Webpack {
    * @param {boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
    * @returns {Promise<Object>|Object} The component. A promise will always be returned, unless retry is false.
    */
-  static getModuleById (id, retry = false, forever = false) {
-    return this._getModule(m => m._dispatchToken && m._dispatchToken === `ID_${id}`, retry, forever);
-  }
+  getModuleById (id, retry = false, forever = false) {
+    return webpack._getModule(m => m._dispatchToken && m._dispatchToken === `ID_${id}`, retry, forever);
+  },
 
   /*
    * @todo: Make this work like getModule, where it accepts the argument as strings... i.e.
@@ -216,25 +214,25 @@ module.exports = class Webpack {
    * @param {boolean} forever Whether to try to fetch the module forever. Should be used only if you're in early stages of startup.
    * @returns {WebpackModule|Promise<WebpackModule>} The found module. A promise will only be returned if `retry` is true.
    */
-  static getModuleByPrototypes (filter, retry = false, forever = false) {
-    return this._getModule(m => m.prototype && filter.every(prop => m.prototype[prop]), retry, forever);
-  }
+  getModuleByPrototypes (filter, retry = false, forever = false) {
+    return webpack._getModule(m => m.prototype && filter.every(prop => m.prototype[prop]), retry, forever);
+  },
 
   /**
    * Grabs all found modules from the webpack store.
    * @param {Function|Array} filter Filter used to grab the module
    * @returns {Array<WebpackModule>|undefined} The found modules
    */
-  static getModules (filter) {
+  getModules (filter) {
     if (Array.isArray(filter)) {
       const keys = filter;
       filter = m => keys.every(key => m.hasOwnProperty(key) || (m.__proto__ && m.__proto__.hasOwnProperty(key)));
     }
-    return this._getModules(filter, true);
-  }
+    return webpack._getModules(filter, true);
+  },
 
-  static getModulesByKeyword (keyword, exact = false) {
-    return this.getModules(module => {
+  getModulesByKeyword (keyword, exact = false) {
+    return webpack.getModules(module => {
       const modules = [ ...Object.keys(module), ...Object.keys(module.__proto__) ];
       for (const mdl of modules) {
         if (exact) { if (mdl === keyword) return true; }
@@ -244,3 +242,5 @@ module.exports = class Webpack {
     });
   }
 };
+
+module.exports = webpack;
