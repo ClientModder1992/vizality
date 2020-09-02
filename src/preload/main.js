@@ -1,10 +1,10 @@
 require('module-alias/register');
-const electron = require('electron');
-const path = require('path');
-const fs = require('fs');
-const Constants = require('@constants');
 
-electron.contextBridge.exposeInMainWorld = () => void 0;
+const { DIR: { LOGS_DIR, SETTINGS_DIR } } = require('@constants');
+
+const { existsSync, mkdirSync, open, write } = require('fs');
+const { ipcRenderer, contextBridge } = require('electron');
+const { join } = require('path');
 
 require('../ipc/renderer');
 
@@ -18,9 +18,15 @@ if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin'
 }
 
 // Discord's preload
-const preload = electron.ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
+const preload = ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
 
 if (preload) {
+  // Restore original preload for future windows
+  process.electronBinding('command_line').appendSwitch('preload', preload);
+
+  // Make sure DiscordNative gets exposed
+  contextBridge.exposeInMainWorld = (key, val) => window[key] = val;
+
   require(preload);
 }
 
@@ -29,19 +35,19 @@ if (preload) {
 // Debug logging
 let debugLogs;
 try {
-  const settings = require(path.join(Constants.Directories.SETTINGS, 'vz-general.json'));
+  const settings = require(join(SETTINGS_DIR, 'vz-settings.json'));
   // eslint-disable-next-line prefer-destructuring
   debugLogs = settings.debugLogs;
 } finally {
   if (debugLogs) {
-    if (!fs.existsSync(Constants.Directories.LOGS)) {
-      fs.mkdirSync(Constants.Directories.LOGS, { recursive: true });
+    if (!existsSync(LOGS_DIR)) {
+      mkdirSync(LOGS_DIR, { recursive: true });
     }
     const getDate = () => new Date().toISOString().replace('T', ' ').split('.')[0];
     const filename = `${window.__OVERLAY__ ? 'overlay' : 'discord'}-${new Date().toISOString().replace('T', '_').replace(/:/g, '-').split('.')[0]}.txt`;
-    const logsPath = path.join(Constants.Directories.LOGS, filename);
-    console.log('[Vizality] Debug logs enabled. Logs will be saved in', logsPath);
-    fs.open(logsPath, 'w', (_, fd) => {
+    const path = join(LOGS_DIR, filename);
+    console.log('[Vizality] Debug logs enabled. Logs will be saved in', path);
+    open(path, 'w', (_, fd) => {
       // Patch console methods
       const levels = {
         debug: 'DEBUG',
@@ -67,23 +73,23 @@ try {
               cleaned.push(part);
             }
           }
-          fs.write(fd, `[${getDate()}] [CONSOLE] [${levels[key]}] ${cleaned.join(' ')}\n`, 'utf8', () => void 0);
+          write(fd, `[${getDate()}] [CONSOLE] [${levels[key]}] ${cleaned.join(' ')}\n`, 'utf8', () => void 0);
           ogFunction.call(console, ...args);
         };
       }
 
       // Add listeners
-      process.on('uncaughtException', ev => fs.write(fd, `[${getDate()}] [PROCESS] [ERROR] Uncaught Exception: ${ev.error}\n`, 'utf8', () => void 0));
-      process.on('unhandledRejection', ev => fs.write(fd, `[${getDate()}] [PROCESS] [ERROR] Unhandled Rejection: ${ev.reason}\n`, 'utf8', () => void 0));
-      window.addEventListener('error', ev => fs.write(fd, `[${getDate()}] [WINDOW] [ERROR] ${ev.error}\n`, 'utf8', () => void 0));
-      window.addEventListener('unhandledRejection', ev => fs.write(fd, `[${getDate()}] [WINDOW] [ERROR] Unhandled Rejection: ${ev.reason}\n`, 'utf8', () => void 0));
+      process.on('uncaughtException', ev => write(fd, `[${getDate()}] [PROCESS] [ERROR] Uncaught Exception: ${ev.error}\n`, 'utf8', () => void 0));
+      process.on('unhandledRejection', ev => write(fd, `[${getDate()}] [PROCESS] [ERROR] Unhandled Rejection: ${ev.reason}\n`, 'utf8', () => void 0));
+      window.addEventListener('error', ev => write(fd, `[${getDate()}] [WINDOW] [ERROR] ${ev.error}\n`, 'utf8', () => void 0));
+      window.addEventListener('unhandledRejection', ev => write(fd, `[${getDate()}] [WINDOW] [ERROR] Unhandled Rejection: ${ev.reason}\n`, 'utf8', () => void 0));
     });
   }
 }
 
 // Overlay devtools
 vizality.once('initialized', () => {
-  if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('vz-general', 'openOverlayDevTools', false)) {
-    VizalityNative.openDevTools();
+  if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('vz-settings', 'openOverlayDevTools', false)) {
+    VizalityNative.openDevTools({}, true);
   }
 });

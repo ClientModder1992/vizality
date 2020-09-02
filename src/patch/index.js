@@ -1,14 +1,17 @@
-/* global appSettings */
 const PatchedBrowserWindow = require('./browserWindow');
 const { existsSync, unlinkSync } = require('fs');
 const { join, dirname } = require('path');
 const electron = require('electron');
 const Module = require('module');
 
+require('../update');
 require('../ipc/main');
 
 const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
+
+// Restore the classic path; The updater relies on it and it makes Discord go corrupt
+require.main.filename = join(discordPath, 'app_bootstrap/index.js');
 
 const electronExports = new Proxy(electron, {
   get (target, prop) {
@@ -32,11 +35,9 @@ electron.app.once('ready', () => {
   });
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
-    if (details.url.startsWith('https://discord.com/_vizality')) {
-      appSettings.set('_VIZALITY_ROUTE', details.url.replace('https://discord.com', ''));
-      appSettings.save();
+    if (details.url.startsWith('https://discordapp.com/_vizality')) {
       // It should get restored to the _vizality url later.
-      done({ redirectURL: 'https://discord.com' });
+      done({ redirectURL: 'https://discordapp.com/app' });
     } else {
       done({});
     }
@@ -49,7 +50,7 @@ electron.app.name = discordPackage.name;
 
 /**
  * Bandaid fix for Windows users involving DevTools extensions.
- * @see https://github.com/electron/electron/issues/19468
+ * @see {@link https://github.com/electron/electron/issues/19468}
  */
 if (process.platform === 'win32') {
   setImmediate(() => { // The app name apparently doesn't get set instantly...

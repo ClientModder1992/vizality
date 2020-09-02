@@ -6,15 +6,15 @@ let transparency = false;
 let settings = {};
 
 try {
-  settings = require(join(__dirname, '..', '..', 'settings', 'vz-general.json'));
+  settings = require(join(__dirname, '..', '..', 'settings', 'vz-settings.json'));
 
   transparency = settings.transparentWindow;
   ({ experimentalWebPlatform } = settings);
 } catch (err) {
-  // @todo: Handled this.
+  // @todo Handle this.
 }
 
-class PatchedBrowserWindow extends BrowserWindow {
+module.exports = class PatchedBrowserWindow extends BrowserWindow {
   constructor (opts) {
     let originalPreload;
     if (opts.webContents) {
@@ -45,12 +45,25 @@ class PatchedBrowserWindow extends BrowserWindow {
       }
     }
 
-    // @todo: get rid of this.
+    // @todo Get rid of this.
     opts.webPreferences.enableRemoteModule = true;
     const win = new BrowserWindow(opts);
+    const ogLoadUrl = win.loadURL.bind(win);
+    Object.defineProperty(win, 'loadURL', {
+      get: () => PatchedBrowserWindow.loadUrl.bind(win, ogLoadUrl),
+      configurable: true
+    });
+
     win.webContents._preload = originalPreload;
     return win;
   }
-}
 
-module.exports = PatchedBrowserWindow;
+  static loadUrl (ogLoadUrl, url, opts) {
+    console.log(url);
+    if (url.match(/^https:\/\/discord(app)?\.com\/_vizality\//)) {
+      this.webContents._vizalityOgUrl = url;
+      return ogLoadUrl('https://discordapp.com/app', opts);
+    }
+    return ogLoadUrl(url, opts);
+  }
+};

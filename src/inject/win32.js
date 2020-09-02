@@ -9,10 +9,5 @@ exports.getAppDir = async () => {
     .filter(path => path.startsWith('app-'))
     .reverse()[0];
 
-  return join(
-    discordPath,
-    currentBuild,
-    'resources',
-    'app'
-  );
+  return join(discordPath, currentBuild, 'resources', 'app');
 };
