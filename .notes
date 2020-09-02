@@ -1,5 +1,5 @@
 //==============================================================================
-// Project Notes
+// Project Developer Notes
 //==============================================================================
 
 /**
@@ -16,8 +16,6 @@
  * • NaN !== NaN -> true
  * • .2 + .1 -> 0.30000000000000004
  * • true + true -> 2
- * • {} === {} -> false
- * • [] === [] -> false
  */
 
 /**
@@ -63,5 +61,5 @@
  * me for cross-file types. In order for it to work, I also had to add the path to the
  * typings file to jsconfig.json.
  * ----------------
- * File location: ./src/.vizality/typedefs/index.js
+ * File location: ./src/.vizality/typings/index.js
   */

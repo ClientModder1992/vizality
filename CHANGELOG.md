@@ -1,33 +1,25 @@
-# This Changelog is just a placeholder for now...
-
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project attempts to loosely adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project will be documented in this file. This project attempts to loosely adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ## [1.1.0] - 2019-02-15
 
-Added {added marginTop}
-======================
+### Added {added marginTop}
 
 - Danish translation from [@frederikspang](https://github.com/frederikspang).
 - Georgian translation from [@tatocaster ](https://github.com/tatocaster).
 - Changelog inconsistency section in Bad Practices
 
-Changed {fixed}
-======================
+### Changed {fixed}
 
 - Fixed typos in Italian translation from [@lorenzo-arena](https://github.com/lorenzo-arena).
 - Fixed typos in Indonesian translation from [@ekojs](https://github.com/ekojs).
 
 ## [1.0.0] - 2017-06-20
 
-Added
-======================
+### Added
 
 - New visual identity by [@tylerfortune8](https://github.com/tylerfortune8).
 - Version navigation.
@@ -53,8 +45,7 @@ Added
 - Persian translation from [@Hameds](https://github.com/Hameds).
 - Ukrainian translation from [@osadchyi-s](https://github.com/osadchyi-s).
 
-Changed
-======================
+### Changed
 
 - Start using "changelog" over "change log" since it's the common usage.
 - Start versioning based on the current English version at 0.3.0 to help
@@ -74,8 +65,7 @@ Changed
 - Improve phrasing in French translation.
 - Fix phrasing and spelling in German translation.
 
-Removed
-======================
+### Removed
 
 - Section about "changelog" vs "CHANGELOG".
 
