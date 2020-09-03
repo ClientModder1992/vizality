@@ -70,20 +70,14 @@ $module: (
   )
 );
 
-.vizality-icon {
-	@include size(100%);
-	display: flex;
-	background-color: currentColor;
-}
-
-@each $i, $k in $module {
-  @each $key, $value in $k {
-    .vizality-icon {
-      &.#{$key} {
-        @include mask(icon($key));
-      }
-    }
-  }
-}
+// @each $i, $k in $module {
+//   @each $key, $value in $k {
+//     .vizality-icon {
+//       &.#{$key} {
+//         @include mask(icon($key));
+//       }
+//     }
+//   }
+// }
 
 :root { @include generate-css-vars($module); }

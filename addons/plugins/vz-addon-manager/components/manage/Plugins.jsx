@@ -1,7 +1,7 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Confirm } = require('@components/modal');
-const { TabBar } = require('@components');
+const { Confirm, TabBar } = require('@components');
+const { Messages } = require('@i18n');
 
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');

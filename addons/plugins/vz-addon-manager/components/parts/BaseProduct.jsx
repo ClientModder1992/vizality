@@ -27,7 +27,6 @@ class BaseProduct extends React.PureComponent {
           author={this.props.product.author}
           version={this.props.product.version}
           description={this.props.product.description}
-          license={this.props.product.license}
         />
       </>
     );

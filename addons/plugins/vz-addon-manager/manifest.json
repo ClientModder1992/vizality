@@ -2,6 +2,5 @@
   "name": "Module Manager",
   "version": "0.1.1",
   "description": "Vizality's module manager",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "author": "Vizality"
 }
