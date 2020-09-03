@@ -4,7 +4,7 @@ const { Tooltip, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
-class QuickDelete extends Plugin {
+module.exports = class QuickDelete extends Plugin {
   onStart () {
     this._injectQuickDeleteButton();
   }
@@ -53,6 +53,4 @@ class QuickDelete extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = QuickDelete;
+};

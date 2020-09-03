@@ -11,7 +11,7 @@ const CoreSettings = require('./components/Settings');
 
 module.exports = class Settings extends Plugin {
   onStart () {
-    this.injectStyles('scss/style.scss');
+    this.injectStyles('styles/main.scss');
 
     vizality.api.settings.registerCoreDashboardSettings({
       path: 'settings',

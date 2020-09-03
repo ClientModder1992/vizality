@@ -12,11 +12,11 @@ const url = require('url');
 
 /**
  * @typedef HTTPResponse
- * @property {String} raw
- * @property {Object|String} body
- * @property {Boolean} ok
- * @property {Number} statusCode
- * @property {String} statusText
+ * @property {string} raw
+ * @property {object|string} body
+ * @property {boolean} ok
+ * @property {number} statusCode
+ * @property {string} statusText
  * @property {object} headers
  */
 
@@ -28,7 +28,7 @@ class HTTPError extends Error {
   }
 }
 
-class GenericRequest {
+module.exports = class GenericRequest {
   constructor (method, uri) {
     this.module = 'HTTP';
     this.submodule = this.constructor.name;
@@ -51,8 +51,8 @@ class GenericRequest {
 
   /**
    * Appends a querystring parameter
-   * @param {String} key Parameter key
-   * @param {String} value Parameter value
+   * @param {string} key Parameter key
+   * @param {string} value Parameter value
    * @returns {GenericRequest} Self, for fluent calls
    */
   query (key, value) {
@@ -62,8 +62,8 @@ class GenericRequest {
 
   /**
    * Sets a header for the request
-   * @param {String} key Header name
-   * @param {String} value Header value
+   * @param {string} key Header name
+   * @param {string} value Header value
    * @returns {GenericRequest} Self, for fluent calls
    */
   set (key, value) {
@@ -74,7 +74,7 @@ class GenericRequest {
   /**
    * Specifies the data to send (for non-GET requests), which will get serialized based on the Content-Type header
    * <b>Make sure to specify the Content-Type header before calling this</b>
-   * @param {Object|String} data Data that'll be sent
+   * @param {object|string} data Data that'll be sent
    * @returns {GenericRequest} Self, for fluent calls
    */
   send (data) {
@@ -188,6 +188,4 @@ class GenericRequest {
   catch (rejector) {
     return this.then(null, rejector);
   }
-}
-
-module.exports = GenericRequest;
+};

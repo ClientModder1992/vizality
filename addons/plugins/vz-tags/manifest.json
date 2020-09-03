@@ -1,7 +1,7 @@
 {
   "name": "Tags",
   "version": "1.0.1",
-  "description": "Allows you to create and manage textchat tags",
+  "description": "Allows you to create and manage text chat tags.",
   "author": "Vizality",
   "license": "GPL-3.0"
 }

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const sleep = require('../sleep');
 
 /**
@@ -6,8 +8,7 @@ const sleep = require('../sleep');
  * @memberof util
  * @version 0.0.1
  */
-
-const dom = {
+const dom = module.exports = {
   createElement (type, props) {
     const element = document.createElement(type);
     for (const prop in props) {
@@ -27,5 +28,3 @@ const dom = {
     return element;
   }
 };
-
-module.exports = dom;

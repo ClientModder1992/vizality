@@ -11,13 +11,13 @@ const _submodule = 'Webpack';
  * @namespace webpack
  * @version 0.0.1
  */
-const webpack = {
+const webpack = module.exports = {
   /**
    * Grabs a module from the Webpack store
    * @param {Function|Array} filter Filter used to grab the module. Can be a function or an array of keys the object must have.
    * @param {boolean} retry Whether or not to retry fetching if the module is not found. Each try will be delayed by 100ms and max retries is 20.
    * @param {boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
-   * @returns {Promise<Object>|Object} The found module. A promise will always be returned, unless retry is false.
+   * @returns {Promise<object>|object} The found module. A promise will always be returned, unless retry is false.
    * @private
    */
   _getModule (filter, retry = false, forever = false) {
@@ -153,7 +153,7 @@ const webpack = {
 
   /**
    * Gets all cached Webpack modules.
-   * @returns {Object[]} Cached Webpack modules
+   * @returns {object[]} Cached Webpack modules
    */
   getAllModules () {
     return webpack.getModules(m => m);
@@ -192,11 +192,11 @@ const webpack = {
   },
 
   /**
-   * Grabs a React component by its display name.
-   * @param {string} displayName Component's display name.
+   * Grabs a Webpack module by its ID.
+   * @param {string} id Webpack module's ID
    * @param {boolean} retry Whether or not to retry fetching if the module is not found. Each try will be delayed by 100ms and max retries is 20.
    * @param {boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
-   * @returns {Promise<Object>|Object} The component. A promise will always be returned, unless retry is false.
+   * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
    */
   getModuleById (id, retry = false, forever = false) {
     return webpack._getModule(m => m._dispatchToken && m._dispatchToken === `ID_${id}`, retry, forever);
@@ -242,5 +242,3 @@ const webpack = {
     });
   }
 };
-
-module.exports = webpack;

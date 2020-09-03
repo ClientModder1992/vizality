@@ -1,6 +1,7 @@
 {
-  "name": "Module Manager",
+  "name": "Addon Manager",
   "version": "0.1.1",
-  "description": "Vizality's module manager",
-  "author": "Vizality"
+  "description": "Vizality's addon manager",
+  "author": "Vizality",
+  "license": "GPL-3.0"
 }

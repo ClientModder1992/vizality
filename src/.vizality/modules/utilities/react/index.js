@@ -4,15 +4,14 @@
  * @memberof util
  * @version 0.0.1
  */
-
- const react = {
+const react = module.exports = {
   /**
    * Finds a value, subobject, or array from a tree that matches a specific filter.
    * @copyright MIT License - (c) 2018 Zachary Rauen
    * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L140}
-   * @param {Object} tree Tree that should be walked
-   * @param {Function} searchFilter Filter to check against each object and subobject
-   * @param {Object} options Additional options to customize the search
+   * @param {object} tree Tree that should be walked
+   * @param {Function} filter Filter to check against each object and subobject
+   * @param {object} options Additional options to customize the search
    * @param {Array<string>|null} [options.walkable=null] Array of strings to use as keys
    * that are allowed to be walked on. Null value indicates all keys are walkable
    * @param {Array<string>} [options.ignore=[]] Array of strings to use as keys to exclude
@@ -74,7 +73,7 @@
    * for patching render functions.
    * @copyright MIT License - (c) 2018 Zachary Rauen
    * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L128}
-   * @param {Object} tree React tree to look through. Can be a rendered object or an internal instance
+   * @param {object} tree React tree to look through. Can be a rendered object or an internal instance
    * @param {Function} searchFilter Filter function to check subobjects against
    * @returns {Node|undefined}
    */
@@ -106,5 +105,3 @@
     });
   }
 };
-
-module.exports = react;

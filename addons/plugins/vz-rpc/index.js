@@ -5,7 +5,7 @@ const { getModule } = require('@webpack');
 const { HTTP } = require('@constants');
 const { Plugin } = require('@entities');
 
-class RPC extends Plugin {
+module.exports = class RPC extends Plugin {
   async onStart () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
@@ -89,6 +89,4 @@ class RPC extends Plugin {
   _removeEvent (event) {
     delete this.handlers[event];
   }
-}
-
-module.exports = RPC;
+};

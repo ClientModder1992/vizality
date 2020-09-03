@@ -11,11 +11,11 @@ const { join } = require('path');
 const SnippetButton = require('./components/SnippetButton');
 const CustomCSS = require('./components/CustomCSS');
 
-class CustomCSSPlugin extends Plugin {
+module.exports = class Snippets extends Plugin {
   async onStart () {
-    vizality.api.settings.registerSettings('Custom CSS', {
-      category: 'vz-custom-css',
-      label: () => 'Custom CSS',
+    vizality.api.settings.registerSettings('Snippets', {
+      category: 'vz-snippets',
+      label: () => 'Snippets',
       render: (props) => React.createElement(CustomCSS, {
         openPopout: () => this._openCustomCSSPopout(),
         ...props
@@ -23,21 +23,21 @@ class CustomCSSPlugin extends Plugin {
     });
 
     this.snippets = {};
-    this.snippetsDirectory = join(__dirname, 'custom-css', 'snippets/');
+    this.snippetsDirectory = join(__dirname, 'snippets', 'css');
     await this._readSnippets();
 
     this._customCSS = '';
-    this._customCSSFile = join(__dirname, 'custom-css', 'style.scss');
+    this._customCSSFile = join(__dirname, 'custom', 'css', 'style.scss');
     await this._loadCustomCSS();
 
     this._injectSnippetsButton();
-    this.injectStyles('custom-css/style.scss');
-    this.injectStyles('scss/style.scss');
+    this.injectStyles('snippets/css/main.scss');
+    this.injectStyles('styles/main.scss');
   }
 
   onStop () {
-    vizality.api.settings.unregisterSettings('Custom CSS');
-    unpatch('vz-custom-css-snippets');
+    vizality.api.settings.unregisterSettings('Snippets');
+    unpatch('vz-css-snippets');
   }
 
   async _readSnippets () {
@@ -61,7 +61,7 @@ class CustomCSSPlugin extends Plugin {
 
   async _injectSnippetsButton () {
     const MiniPopover = getModule(m => m.default && m.default.displayName === 'MiniPopover');
-    patch('vz-custom-css-snippets', MiniPopover, 'default', (_, res) => {
+    patch('vz-css-snippets', MiniPopover, 'default', (_, res) => {
       const props = findInReactTree(res, r => r && r.message && r.setPopout);
 
       if (!props || props.channel.id !== Channels.CSS_SNIPPETS) return res;
@@ -99,7 +99,7 @@ class CustomCSSPlugin extends Plugin {
 
   async _removeSnippet (message) {
     const snippetId = message.id;
-    const snippetFile = join(__dirname, 'custom-css', 'snippets', `_${snippetId}.scss`);
+    const snippetFile = join(__dirname, 'snippets', `_${snippetId}.scss`);
 
     const snippetValue = this.snippets[`_${snippetId}`];
 
@@ -121,7 +121,7 @@ class CustomCSSPlugin extends Plugin {
   }
 
   async _saveSnippet (snippetId, snippet) {
-    const snippetFile = join(__dirname, 'custom-css', 'snippets', `_${snippetId}.scss`);
+    const snippetFile = join(__dirname, 'snippets', `_${snippetId}.scss`);
     await writeFile(snippetFile, snippet);
     this.snippets[`_${snippetId}`] = snippet;
   }
@@ -152,10 +152,8 @@ class CustomCSSPlugin extends Plugin {
     popoutModule.open('DISCORD_VIZALITY_CUSTOMCSS', (key) => (
       React.createElement(PopoutWindow, {
         windowKey: key,
-        title: 'Custom CSS'
+        title: 'Snippets'
       }, React.createElement(CustomCSS, { popout: true }))
     ));
   }
-}
-
-module.exports = CustomCSSPlugin;
+};

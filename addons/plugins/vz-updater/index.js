@@ -30,7 +30,7 @@ module.exports = class Updater extends Plugin {
     this.settings.set('failed', false);
     this.settings.set('updating', false);
     this.settings.set('awaiting_reload', false);
-    this.injectStyles('style.scss');
+    this.injectStyles('styles/main.scss');
 
     vizality.api.actions.registerAction({
       name: 'openLatestChangelog',

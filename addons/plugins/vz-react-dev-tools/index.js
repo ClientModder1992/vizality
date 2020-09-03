@@ -1,12 +1,12 @@
-const { Plugin } = require('@entities');
-const { get } = require('@http');
-
 const { createWriteStream, existsSync, readFileSync } = require('fs');
 const { remote } = require('electron');
 const unzip = require('unzip-crx');
 const { join } = require('path');
 
-class ReactDevtools extends Plugin {
+const { Plugin } = require('@entities');
+const { get } = require('@http');
+
+module.exports = class ReactDevtools extends Plugin {
   get path () {
     return join(__dirname, 'rdt.crx');
   }
@@ -80,6 +80,4 @@ class ReactDevtools extends Plugin {
       });
     }, err => this.error(err)), err => this.error(err));
   }
-}
-
-module.exports = ReactDevtools;
+};

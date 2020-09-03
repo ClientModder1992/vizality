@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/check-types *//* eslint-disable jsdoc/no-undefined-types */ /* eslint-disable no-useless-return */
+/* eslint-disable jsdoc/check-types *//* eslint-disable jsdoc/no-undefined-types *//* eslint-disable no-useless-return */
 
 /**
  * @module util.type
@@ -6,8 +6,7 @@
  * @memberof util
  * @version 0.0.1
  */
-
-const type = {
+const type = module.exports = {
   /**
    * Checks if the input is a certain type. Optionally throws an error.
    * Original source (modified):
@@ -65,7 +64,7 @@ const type = {
   /**
    * Asserts the input is of a certain type. If it isn't of type, throw an error, otherwise do nothing.
    * @param {*} input Argument input
-   * @param {*} type Type to test for, case-insensitive. Valid types: Arguments, Function,
+   * @param {*} testType Type to test for, case-insensitive. Valid types: Arguments, Function,
    * Array, Object, NaN, boolean, null, undefined, string, number, Date, RegExp, Error,
    * Symbol, Map, WeakMap, WeakSet
    * @returns {void}
@@ -81,5 +80,3 @@ const type = {
     return type.isType(input, 'Null', throwError);
   }
 };
-
-module.exports = type;

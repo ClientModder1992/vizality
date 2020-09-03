@@ -3,9 +3,9 @@ const { getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
-class CustomBanners extends Plugin {
+module.exports = class CustomBanners extends Plugin {
   onStart () {
-    this.injectStyles('style.scss');
+    this.injectStyles('styles/main.scss');
     this._patchPrivateChannelEmptyMessage();
   }
 
@@ -23,6 +23,4 @@ class CustomBanners extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = CustomBanners;
+};

@@ -2,5 +2,6 @@
   "name": "Commands Manager",
   "version": "1.0.0",
   "description": "Vizality's command manager",
-  "author": "Vizality"
+  "author": "Vizality",
+  "license": "GPL-3.0"
 }

@@ -1,8 +1,11 @@
 const { getModule } = require('../webpack');
 
-const react = {
-  ...getModule('render', 'createPortal'),
-  ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
+// eslint-disable-next-line no-unused-vars
+const react = module.exports = {
+  React: {
+    ...getModule('render', 'createPortal')
+  },
+  ReactDOM: {
+    ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
+  }
 };
-
-module.exports = react;

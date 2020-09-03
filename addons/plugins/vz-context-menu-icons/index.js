@@ -4,10 +4,9 @@ const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 const { Icon } = require('@components');
 
-class ContextMenuIcons extends Plugin {
+module.exports = class ContextMenuIcons extends Plugin {
   onStart () {
-    this.injectStyles('style.scss');
-
+    this.injectStyles('styles/main.scss');
     this._injectContextMenuItems();
     this._injectContextMenuCheckboxItems();
     this._injectContextMenuControlItems();
@@ -128,6 +127,4 @@ class ContextMenuIcons extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = ContextMenuIcons;
+};

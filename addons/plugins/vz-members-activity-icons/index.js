@@ -6,7 +6,7 @@ const { Plugin } = require('@entities');
 
 class MembersActivityIcons extends Plugin {
   onStart () {
-    this.injectStyles('style.scss');
+    this.injectStyles('styles/main.scss');
     this._injectActivityIcons();
   }
 

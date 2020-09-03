@@ -1,14 +1,14 @@
-/* eslint-disable no-useless-return */
+/* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
+
 const { assertType, isType } = require('../type');
 
 /**
- * @module Util.Array
- * @namespace Util.Array
- * @memberof Util
+ * @module util.array
+ * @namespace util.array
+ * @memberof util
  * @version 0.0.1
  */
-
-const array = {
+const array = module.exports = {
   /**
    * Checks if the input is an array.
    * @param {*} input Argument input
@@ -29,5 +29,3 @@ const array = {
     if (assertType(input, 'Array')) return;
   }
 };
-
-module.exports = array;

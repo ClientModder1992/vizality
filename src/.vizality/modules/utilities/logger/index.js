@@ -1,13 +1,12 @@
 const { getRandomColor, getContrastedColor } = require('../color');
 
 /**
- * @module Util.Logger
- * @namespace Util.Logger
- * @memberof Util
+ * @module util.logger
+ * @namespace util.logger
+ * @memberof util
  * @version 0.0.1
  */
-
-const logger = {
+const logger = module.exports = {
   _parseType (type) {
     const types = [ 'log', 'warn', 'error', 'deprecate' ];
     return types.find(t => t === type) || 'log';
@@ -117,5 +116,3 @@ const logger = {
     return logger._log(module, submodule, submoduleLabelColor, `Deprecation Notice: ${message}`, 'warn');
   }
 };
-
-module.exports = logger;

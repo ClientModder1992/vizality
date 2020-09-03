@@ -23,7 +23,7 @@ require('codemirror/addon/lint/lint');
 require('codemirror/addon/selection/active-line');
 require('codemirror/mode/css/css');
 
-class CodeMirrorComponent extends React.PureComponent {
+module.exports = class CodeMirrorComponent extends React.PureComponent {
   constructor () {
     super();
     this.state = { cm: null };
@@ -77,6 +77,4 @@ class CodeMirrorComponent extends React.PureComponent {
   shouldComponentUpdate () {
     return false;
   }
-}
-
-module.exports = CodeMirrorComponent;
+};

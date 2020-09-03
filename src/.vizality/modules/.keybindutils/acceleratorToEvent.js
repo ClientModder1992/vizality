@@ -199,13 +199,32 @@ const domKeys = Object.assign(Object.create(null), {
   mediaprevioustrack: 'MediaTrackPrevious',
   mediastop: 'MediaStop',
   mediaplaypause: 'MediaPlayPause',
-  printscreen: 'PrintScreen'
+  printscreen: 'PrintScreen',
+  f1: 'F1',
+  f2: 'F2',
+  f3: 'F3',
+  f4: 'F4',
+  f5: 'F5',
+  f6: 'F6',
+  f7: 'F7',
+  f8: 'F8',
+  f9: 'F9',
+  f10: 'F10',
+  f11: 'F11',
+  f12: 'F12',
+  f13: 'F13',
+  f14: 'F14',
+  f15: 'F15',
+  f16: 'F16',
+  f17: 'F17',
+  f18: 'F18',
+  f19: 'F19',
+  f20: 'F20',
+  f21: 'F21',
+  f22: 'F22',
+  f23: 'F23',
+  f24: 'F24',
 });
-
-// Add function keys
-for (let i = 1; i <= 24; i++) {
-  domKeys[`f${i}`] = `F${i}`;
-}
 
 function reduceCode ({ accelerator, event }, { code, key }) {
   if (event.code) {
@@ -221,9 +240,8 @@ function reduceCode ({ accelerator, event }, { code, key }) {
 /**
  * This function transform an Electron Accelerator string into
  * a DOM KeyboardEvent object.
- *
- * @param  {string} accelerator an Electron Accelerator string, e.g. `Ctrl+C` or `Shift+Space`.
- * @return {object} a DOM KeyboardEvent object derivate from the `accelerator` argument.
+ * @param  {string} accelerator Electron Accelerator string, e.g. `Ctrl+C` or `Shift+Space`
+ * @return {object} DOM KeyboardEvent object derivate from the `accelerator` argument
  */
 module.exports = function toKeyEvent (accelerator) {
   let state = {

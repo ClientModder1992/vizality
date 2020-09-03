@@ -5,13 +5,12 @@ const _module = 'Module';
 const _submodule = 'Util:Object';
 
 /**
- * @module Util.Object
- * @namespace Util.Object
- * @memberof Util
+ * @module util.object
+ * @namespace util.object
+ * @memberof util
  * @version 0.0.1
  */
-
-const object = {
+const object = module.exports = {
   // @todo Clean this up.
   *_traverse (obj, targetValue, exactMatch = false, type, currentPath = '') {
     if (typeof obj !== 'object') return false;
@@ -151,5 +150,3 @@ const object = {
     return obj;
   }
 };
-
-module.exports = object;

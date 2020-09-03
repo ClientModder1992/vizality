@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
+
+const { promises: { readdir, lstat, unlink, rmdir } } = require('fs');
+const { existsSync } = require('fs');
+
 /**
  * @module util.file
  * @namespace util.file
  * @memberof util
  * @version 0.0.1
  */
-
-const { promises: { readdir, lstat, unlink, rmdir } } = require('fs');
-const { existsSync } = require('fs');
-
-const file = {
+const file = module.exports = {
   async removeDirRecursive (directory) {
     if (existsSync(directory)) {
       const files = await readdir(directory);
@@ -26,7 +27,7 @@ const file = {
     }
   },
 
-  getImageDimensions (image) {
+  async getImageDimensions (image) {
     return new Promise(resolved => {
       const img = new Image();
       img.onload = () => {
@@ -36,5 +37,3 @@ const file = {
     });
   }
 };
-
-module.exports = file;

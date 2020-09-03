@@ -6,26 +6,23 @@ const { Plugin } = require('@entities');
 const Settings = require('./components/Settings');
 const MainNav = require('./components/MainNav');
 
-class MainNavigation extends Plugin {
+module.exports = class MainNavigation extends Plugin {
   onStart () {
+    this.injectStyles('styles/main.scss');
+    this._injectMainNav(
+      this.settings.get('position', 'top'),
+      this.settings.get('link-style', 'text')
+    );
     vizality.api.settings.registerSettings('improved-navigation', {
       category: 'improved-navigation',
       label: 'improved-navigation',
       render: Settings
     });
-
-    this.injectStyles('scss/style.scss');
-
-    this._injectMainNav(
-      this.settings.get('position', 'top'),
-      this.settings.get('link-style', 'text')
-    );
   }
 
   onStop () {
     const el = document.querySelector('.vizality-main-nav');
     if (el) el.remove();
-
     unpatch('vz-mainNav');
   }
 
@@ -43,6 +40,4 @@ class MainNavigation extends Plugin {
 
     setImmediate(() => forceUpdateElement(`.${app}`));
   }
-}
-
-module.exports = MainNavigation;
+};

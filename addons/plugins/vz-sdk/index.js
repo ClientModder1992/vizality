@@ -6,7 +6,7 @@ const { Plugin } = require('@entities');
 
 const SdkWindow = require('./components/SdkWindow');
 
-class SDK extends Plugin {
+module.exports = class SDK extends Plugin {
   constructor () {
     super();
     // @todo: Figure out how to use this for plugins like Titlebar and Main Navigation.
@@ -14,7 +14,7 @@ class SDK extends Plugin {
   }
 
   onStart () {
-    this.injectStyles('scss/style.scss');
+    this.injectStyles('styles/main.scss');
     this.sdkEnabled = vizality.settings.get('sdkEnabled');
     vizality.api.settings.store.addChangeListener(this._storeListener);
     this._addPopoutIcon();
@@ -50,7 +50,7 @@ class SDK extends Plugin {
                   {
                     type: 'button',
                     name: 'Open QuickCSS Window',
-                    onClick: () => vizality.manager.plugins.get('vz-custom-css')._openCustomCSSPopout()
+                    onClick: () => vizality.manager.plugins.get('vz-snippets')._openCustomCSSPopout()
                   }
                 ], [
                   {
@@ -95,6 +95,4 @@ class SDK extends Plugin {
       getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
     }
   }
-}
-
-module.exports = SDK;
+};

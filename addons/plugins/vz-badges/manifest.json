@@ -1,6 +1,7 @@
 {
   "name": "Badges",
   "version": "1.0.0",
-  "description": "Add some fancy custom badges",
-  "author": "Vizality"
+  "description": "Add some fancy custom badges to users and servers.",
+  "author": "Vizality",
+  "license": "GPL-3.0"
 }

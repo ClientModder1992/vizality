@@ -1,16 +1,16 @@
-/* eslint-disable no-extra-boolean-cast *//* eslint-disable no-useless-return */
+/* eslint-disable no-extra-boolean-cast *//* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
+
 const pluralize = require('pluralize');
 
 const { isType, assertType } = require('../type');
 
 /**
- * @module Util.String
- * @namespace Util.String
- * @memberof Util
+ * @module util.string
+ * @namespace util.string
+ * @memberof util
  * @version 0.0.1
  */
-
-const string = {
+const string = module.exports = {
   isSingular (string) {
     return pluralize.isSingular(string);
   },
@@ -220,5 +220,3 @@ const string = {
     if (assertType(input, 'String')) return;
   }
 };
-
-module.exports = string;

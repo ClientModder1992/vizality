@@ -2,10 +2,9 @@ const { Plugin } = require('@entities');
 
 const modules = require('./modules');
 
-class CoreDiscordEnhancements extends Plugin {
+module.exports = class CoreDiscordEnhancements extends Plugin {
   onStart () {
-    this.injectStyles('scss/style.scss');
-
+    this.injectStyles('styles/main.scss');
     this.callbacks = [];
 
     Object.values(modules).forEach(async mod => {
@@ -19,6 +18,4 @@ class CoreDiscordEnhancements extends Plugin {
   onStop () {
     this.callbacks.forEach(cb => cb());
   }
-}
-
-module.exports = CoreDiscordEnhancements;
+};

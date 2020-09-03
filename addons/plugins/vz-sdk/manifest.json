@@ -1,6 +1,7 @@
 {
   "name": "SDK",
   "version": "0.0.1",
-  "description": "Sandbox Development Kit for plugin and themes developers",
-  "author": "Vizality"
+  "description": "Sandbox Development Kit for plugin and theme developers.",
+  "author": "Vizality",
+  "license": "GPL-3.0"
 }

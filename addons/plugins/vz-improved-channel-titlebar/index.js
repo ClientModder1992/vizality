@@ -3,10 +3,9 @@ const { react : { findInReactTree } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
-class ChannelTitlebar extends Plugin {
+module.exports = class ChannelTitlebar extends Plugin {
   constructor () {
     super();
-
     this.guildHeader = null;
     this.activityPre = null;
     this.activity = null;
@@ -15,7 +14,7 @@ class ChannelTitlebar extends Plugin {
   }
 
   onStart () {
-    this.injectStyles('style.scss');
+    this.injectStyles('styles/main.scss');
     this._getGuildChannelHeader();
     this._injectImprovedChannelHeader();
   }
@@ -205,6 +204,4 @@ class ChannelTitlebar extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = ChannelTitlebar;
+};

@@ -1,9 +1,10 @@
 const { Plugin } = require('@entities');
+
 const commands = require('./commands');
 
 const TAG_ARGUMENT_REGEX = /\$\$(@|\d+)/g;
 
-class Tags extends Plugin {
+module.exports = class Tags extends Plugin {
   onStart () {
     this.registerMain();
     this.registerTags();
@@ -86,6 +87,4 @@ class Tags extends Plugin {
     this.unregisterTag(name);
     this.registerTag(name);
   }
-}
-
-module.exports = Tags;
+};

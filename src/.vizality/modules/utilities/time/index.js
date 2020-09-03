@@ -1,32 +1,33 @@
+/* eslint-disable no-unused-vars */
+
 /**
  * @module util.time
  * @namespace util.time
  * @memberof util
  * @version 0.0.1
  */
+const time = module.exports = {
+  add (date) {
 
-const add = () => {
+  },
 
+  substract (date) {
+
+  },
+
+  calendar (date) {
+
+  },
+
+  isDate (input) {
+
+  },
+
+  assertDate (input) {
+
+  },
+
+  formatDate (date) {
+
+  }
 };
-
-const substract = () => {
-
-};
-
-const calendar = () => {
-
-};
-
-const isDate = () => {
-
-};
-
-const assertDate = () => {
-
-};
-
-const formatDate = () => {
-
-};
-
-module.exports = { };

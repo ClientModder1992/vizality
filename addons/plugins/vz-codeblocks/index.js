@@ -1,22 +1,21 @@
+const { clipboard } = require('electron');
+
 const { Plugin } = require('@entities');
 const { patch, unpatch } = require('@patcher');
 const { React, getModule, hljs } = require('@webpack');
 const { react: { findInReactTree } } = require('@utilities');
 
-const { clipboard } = require('electron');
-
-class Codeblocks extends Plugin {
+module.exports = class Codeblocks extends Plugin {
   onStart () {
-    this.injectStyles('style.scss');
+    this.injectStyles('styles/main.scss');
     this.patchCodeblocks();
-    console.log('Hmm');
   }
 
   onStop () {
     unpatch('vz-codeblocks-inline');
     unpatch('vz-codeblocks-embed');
 
-    document.querySelectorAll('.hljs [class^=vizality]').forEach(e => e.remove());
+    document.querySelectorAll('.hljs [class^=vizality]').forEach(e => e.style.display = 'none');
   }
 
   async patchCodeblocks () {
@@ -111,6 +110,4 @@ class Codeblocks extends Plugin {
 
     selection.removeAllRanges();
   }
-}
-
-module.exports = Codeblocks;
+};

@@ -2,5 +2,6 @@
   "name": "Better Codeblocks",
   "version": "1.0.0",
   "description": "Improve Discord codeblocks",
-  "author": "Vizality"
+  "author": "dperolio",
+  "license": "GPL-3.0"
 }

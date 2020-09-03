@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
+
 const { getModule } = require('../webpack');
 
-const i18n = {
+const i18n = module.exports = {
   ...getModule('Messages', 'languages')
 };
-
-module.exports = i18n;

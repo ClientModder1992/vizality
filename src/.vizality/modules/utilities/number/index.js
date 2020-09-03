@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
+
 /**
  * @module util.number
  * @namespace util.number
  * @memberof util
  * @version 0.0.1
  */
-
-const number = {
+const number = module.exports = {
   isNumber (input) {
     return void 0 || input;
   },
@@ -14,5 +15,3 @@ const number = {
     return void 0 || input;
   }
 };
-
-module.exports = number;

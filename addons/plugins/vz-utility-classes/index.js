@@ -1,10 +1,10 @@
-const { Plugin } = require('@entities');
-
 const { remote } = require('electron');
+
+const { Plugin } = require('@entities');
 
 const patches = require('./patches');
 
-class UtilityClasses extends Plugin {
+module.exports = class UtilityClasses extends Plugin {
   onStart () {
     this.callbacks = [];
 
@@ -63,7 +63,4 @@ class UtilityClasses extends Plugin {
   onStop () {
     this.callbacks.forEach(cb => cb());
   }
-}
-
-module.exports = UtilityClasses;
-
+};

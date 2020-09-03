@@ -16,7 +16,7 @@ const { error } = require('../logger');
 const _module = 'Module';
 const _submodule = 'Util:Color';
 
-const color = {
+const color = module.exports = {
   _hex2hsl (color) {
     // Convert hex to RGB first
     let r, g, b;
@@ -554,5 +554,3 @@ const color = {
     if (type === 'hsl') return color._hsl2rgb(input);
   }
 };
-
-module.exports = color;

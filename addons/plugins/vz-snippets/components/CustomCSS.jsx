@@ -181,7 +181,7 @@ class CustomCSS extends React.PureComponent {
 
   setupCodeMirror (cm) {
     cm.on('change', this._handleCodeMirrorUpdate);
-    cm.setValue(vizality.manager.plugins.get('vz-custom-css')._customCSS);
+    cm.setValue(vizality.manager.plugins.get('vz-snippets')._customCSS);
     if (this.props.popout) {
       setTimeout(() => cm.refresh(), 100);
     }
@@ -190,7 +190,7 @@ class CustomCSS extends React.PureComponent {
 
   _handleCodeMirrorUpdate (cm) {
     // noinspection JSIgnoredPromiseFromCall
-    vizality.manager.plugins.get('vz-custom-css')._saveCustomCSS(cm.getValue());
+    vizality.manager.plugins.get('vz-snippets')._saveCustomCSS(cm.getValue());
   }
 
   _handleResizeBegin () {
@@ -219,6 +219,6 @@ module.exports = AsyncComponent.from((() => {
   return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOMCSS'),
     windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_CUSTOMCSS'),
-    ...vizality.api.settings._fluxProps('vz-custom-css')
+    ...vizality.api.settings._fluxProps('vz-snippets')
   }))(CustomCSS);
 })());

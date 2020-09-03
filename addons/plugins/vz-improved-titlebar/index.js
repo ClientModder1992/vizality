@@ -6,28 +6,25 @@ const { Plugin } = require('@entities');
 const Settings = require('./components/Settings');
 const Titlebar = require('./components/Titlebar');
 
-class ImprovedTitlebar extends Plugin {
+module.exports = class ImprovedTitlebar extends Plugin {
   onStart () {
-    vizality.api.settings.registerSettings('improved-titlebar', {
-      category: 'improved-titlebar',
-      label: 'improved-titlebar',
-      render: Settings
-    });
-
-    this.injectStyles('style.scss');
-
+    this.injectStyles('styles/main.scss');
     this._injectTitlebar(
       this.settings.get('type', 'windows'),
       this.settings.get('showHeader', true),
       this.settings.get('headerText', 'Vizality'),
       this.settings.get('showExtras', false)
     );
+    vizality.api.settings.registerSettings('improved-titlebar', {
+      category: 'improved-titlebar',
+      label: 'improved-titlebar',
+      render: Settings
+    });
   }
 
   onStop () {
     const el = document.querySelector('.vizality-titlebar');
     if (el) el.remove();
-
     unpatch('advancedTitlebar-titlebar');
     /*
      * @todo: impl; re-render normal titlebar (so none if linux)
@@ -43,6 +40,4 @@ class ImprovedTitlebar extends Plugin {
 
     setImmediate(() => forceUpdateElement(`.${app}`));
   }
-}
-
-module.exports = ImprovedTitlebar;
+};

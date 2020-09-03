@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const { log, error } = require('./logger');
 
 /**
@@ -6,7 +8,7 @@ const { log, error } = require('./logger');
  * @param {string} testCases Test case
  * @returns {undefined} Returns log information in console
  */
-const checkPerformance = async (...testCases) => {
+const checkPerformance = module.exports = async (...testCases) => {
   const _module = 'Module';
   const _submodule = 'Utilities:checkPerformance';
 
@@ -49,5 +51,3 @@ const checkPerformance = async (...testCases) => {
 
   return log(_module, _submodule, null, `Case #${winner[0]} is the winner with a time of ${winningTime} ms. That's ${percentPerformanceGain}% faster than second place!`);
 };
-
-module.exports = checkPerformance;
