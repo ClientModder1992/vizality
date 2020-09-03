@@ -1,9 +1,8 @@
-const Entities = require('@entities');
+const { API } = require('@entities');
 
-module.exports = class ConnectionsAPI extends Entities.API {
+module.exports = class ConnectionsAPI extends API {
   constructor () {
     super();
-
     this.connections = [];
   }
 

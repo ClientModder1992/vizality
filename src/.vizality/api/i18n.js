@@ -1,12 +1,10 @@
-const Constants = require('@constants');
-const Entities = require('@entities');
-const Webpack = require('@webpack');
+const { getModule, i18n } = require('@webpack');
+const { DIR: { I18N_DIR } } = require('@constants');
+const { API } = require('@entities');
 
-const strings = require(Constants.Directories.I18N);
+const strings = require(I18N_DIR);
 
-const i18n = Webpack.getModule('Messages', 'languages');
-
-module.exports = class I18nAPI extends Entities.API {
+module.exports = class I18nAPI extends API {
   constructor () {
     super();
     this.messages = {};
@@ -14,8 +12,8 @@ module.exports = class I18nAPI extends Entities.API {
     this.loadAllStrings(strings);
   }
 
-  async loadAPI () {
-    await Webpack.getModule('locale', 'theme', true).then(module => {
+  async onStart () {
+    await getModule('locale', 'theme', true).then(module => {
       this.locale = module.locale;
       module.addChangeListener(() => {
         if (module.locale !== this.locale) {

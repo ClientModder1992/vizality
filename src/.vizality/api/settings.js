@@ -1,8 +1,15 @@
-const Entities = require('@entities');
-const Webpack = require('@webpack');
+const { API } = require('@entities');
+const { React, Flux } = require('@webpack');
+const { logger: { error } } = require('@utilities');
 
-const actions = require('./store/actions');
-const store = require('./store/store');
+const actions = require('./settingsStore/actions');
+const store = require('./settingsStore/store');
+
+const Layout = require('@root/addons/plugins/vz-dashboard/components/parts/Layout');
+const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
+
+const _module = 'API';
+const _submodule = 'Settings';
 
 /* @todo: Use logger. */
 
@@ -17,8 +24,8 @@ const store = require('./store/store');
 
 /**
  * @typedef SettingsTab
- * @property {String} category Settings category. Most of the time, you want this to be the entity ID
- * @property {String|function(): String} label Settings tab label
+ * @property {string} category Settings category. Most of the time, you want this to be the entity ID
+ * @property {string|function(): string} label Settings tab label
  * @property {function(): React.ReactNode} render Render method
  * @property {undefined} settings Use it and you'll be fined 69 cookies
  */
@@ -26,18 +33,19 @@ const store = require('./store/store');
 /**
  * Vizality Settings API
  * @property {Flux.Store} store Flux store
- * @property {Object.<String, SettingsTab>} tabs Settings tab
+ * @property {object<string, SettingsTab>} tabs Settings tab
  */
-module.exports = class SettingsAPI extends Entities.API {
+module.exports = class SettingsAPI extends API {
   constructor () {
     super();
     this.store = store;
     this.tabs = {};
+    this.toobs = [];
   }
 
   /**
    * Registers a settings tab
-   * @param {String} tabId Settings tab ID
+   * @param {string} tabId Settings tab ID
    * @param {SettingsTab} props Props of your settings tab
    */
   registerSettings (tabId, props) {
@@ -48,9 +56,48 @@ module.exports = class SettingsAPI extends Entities.API {
     this.tabs[tabId].render = this.connectStores(props.category)(props.render);
   }
 
+  registerDashboardSettings (tabId, props) {
+    if (this.tabs[tabId]) {
+      throw new Error(`Plugin settings panel "${tabId}" is already registered!`);
+    }
+    this.tabs[tabId] = props;
+    this.tabs[tabId].render = this.connectStores(props.id)(props.render);
+
+    vizality.api.router.registerRoute(tabId, {
+      path: `/dashboard/plugins/installed/${props.id}`,
+      render: () => React.createElement(Layout, {},
+        React.createElement(props.render)
+      )
+    });
+  }
+
+  registerCoreDashboardSettings (toob) {
+    try {
+      if (this.toobs.find(r => r.path === toob.path)) {
+        throw new Error(`Dashboard route "${toob.path}" is already registered!`);
+      }
+
+      this.toobs.push(toob);
+
+      this.toobs[toob.id] = toob;
+      this.toobs[toob.id].render = this.connectStores(toob.id)(toob.render);
+
+      vizality.api.router.registerRoute({
+        path: `/dashboard/${toob.path}`,
+        render: () => React.createElement(Layout, {},
+          React.createElement(toob.render)
+        ),
+        sidebar: Sidebar
+      });
+      this.emit('toobAdded', toob);
+    } catch (err) {
+      return error(_module, `${_submodule}:registerCoreSettings`, null, err);
+    }
+  }
+
   /**
    * Unregisters a settings tab
-   * @param {String} tabId Settings tab ID to unregister
+   * @param {string} tabId Settings tab ID to unregister
    */
   unregisterSettings (tabId) {
     if (this.tabs[tabId]) {
@@ -60,7 +107,7 @@ module.exports = class SettingsAPI extends Entities.API {
 
   /**
    * Builds a settings category that can be used by a plugin
-   * @param {String} category Settings category name
+   * @param {string} category Settings category name
    * @returns {SettingsCategory}
    */
   buildCategoryObject (category) {
@@ -82,11 +129,11 @@ module.exports = class SettingsAPI extends Entities.API {
 
   /**
    * Creates a flux decorator for a given settings category
-   * @param {String} category Settings category
+   * @param {string} category Settings category
    * @returns {Function}
    */
   connectStores (category) {
-    return Webpack.Flux.connectStores([ this.store ], () => this._fluxProps(category));
+    return Flux.connectStores([ this.store ], () => this._fluxProps(category));
   }
 
   /** @private */

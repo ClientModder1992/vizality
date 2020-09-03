@@ -1,10 +1,10 @@
-const Webpack = require('@webpack');
+const { FluxDispatcher } = require('@webpack');
 
 const ActionTypes = require('./constants');
 
 module.exports = {
   toggleSetting (category, setting, defaultValue) {
-    Webpack.FluxDispatcher.dispatch({
+    FluxDispatcher.dispatch({
       type: ActionTypes.TOGGLE_SETTING,
       category,
       setting,
@@ -12,7 +12,7 @@ module.exports = {
     });
   },
   updateSettings (category, settings) {
-    Webpack.FluxDispatcher.dispatch({
+    FluxDispatcher.dispatch({
       type: ActionTypes.UPDATE_SETTINGS,
       category,
       settings
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   updateSetting (category, setting, value) {
-    Webpack.FluxDispatcher.dispatch({
+    FluxDispatcher.dispatch({
       type: ActionTypes.UPDATE_SETTING,
       category,
       setting,
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   deleteSetting (category, setting) {
-    Webpack.FluxDispatcher.dispatch({
+    FluxDispatcher.dispatch({
       type: ActionTypes.DELETE_SETTING,
       category,
       setting

@@ -1,4 +1,4 @@
-const Entities = require('@entities');
+const { API } = require('@entities');
 
 /* @todo: Use logger. */
 
@@ -16,9 +16,10 @@ const Entities = require('@entities');
  * @property {Object.<String, function(String): Boolean>} scopes RPC Scopes
  * @property {Object.<String, DiscordRpcEvent>} scopes RPC Scopes
  */
-class RpcAPI extends Entities.API {
+class RpcAPI extends API {
   constructor () {
     super();
+
     this.scopes = {};
     this.events = {};
   }

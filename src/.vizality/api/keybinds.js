@@ -1,25 +1,26 @@
+const { DIR: { MODULES_DIR } } = require('@constants');
+const { API } = require('@entities');
+
 const { remote: { globalShortcut } } = require('electron');
 const { join } = require('path');
-const Constants = require('@constants');
-const Entities = require('@entities');
 
-const localShortcut = require(join(Constants.Directories.MODULES, '.keybindutils', 'localShortcut'));
+const localShortcut = require(join(MODULES_DIR, '.keybindutils', 'localShortcut'));
 
 /* @todo: Convert errors to logger. */
 
 /**
  * @typedef VizalityKeybind
- * @property {String} keybind Keybind accelerator
+ * @property {string} keybind Keybind accelerator
  * @property {Function} executor Executor
- * @property {Boolean} isGlobal Whether the keybind should be usable when Discord is not focused or not
+ * @property {boolean} isGlobal Whether the keybind should be usable when Discord is not focused or not
  * @see https://github.com/electron/electron/blob/master/docs/api/accelerator.md
  */
 
 /**
  * Vizality Keybinds API
- * @property {Object.<String, VizalityKeybind>} keybinds Keybinds
+ * @property {object<string, VizalityKeybind>} keybinds Keybinds
  */
-class KeybindsAPI extends Entities.API {
+module.exports = class KeybindsAPI extends API {
   constructor () {
     super();
     this.keybinds = {};
@@ -27,7 +28,7 @@ class KeybindsAPI extends Entities.API {
 
   /**
    * Registers a keybind
-   * @param {String} id Keybind ID
+   * @param {string} id Keybind ID
    * @param {VizalityKeybind} keybind Keybind
    */
   registerKeybind (id, keybind) {
@@ -40,8 +41,8 @@ class KeybindsAPI extends Entities.API {
 
   /**
    * Changes a keybind
-   * @param {String} id Keybind ID to update
-   * @param {String} newBind New keybind to bind
+   * @param {string} id Keybind ID to update
+   * @param {string} newBind New keybind to bind
    */
   changeBind (id, newBind) {
     if (!this.keybinds[id]) {
@@ -55,7 +56,7 @@ class KeybindsAPI extends Entities.API {
 
   /**
    * Unregisters a keybind
-   * @param {String} id Keybind to unregister
+   * @param {string} id Keybind to unregister
    */
   unregisterKeybind (id) {
     if (this.keybinds[id]) {
@@ -89,6 +90,4 @@ class KeybindsAPI extends Entities.API {
       // Let it fail silently; probably just an invalid/unset keybind.
     }
   }
-}
-
-module.exports = KeybindsAPI;
+};
