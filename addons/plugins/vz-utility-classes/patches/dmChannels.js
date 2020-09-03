@@ -1,5 +1,5 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 
 module.exports = async () => {

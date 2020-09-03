@@ -1,6 +1,6 @@
 const { AsyncComponent, Button, Tooltip, Icon } = require('@components');
 const { React, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 
 const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
 
@@ -34,19 +34,19 @@ class Toast extends React.PureComponent {
         case 'err':
         case 'error':
         case 'danger':
-          this.props.icon = 'remove-circle';
+          this.props.icon = 'Activity';
           break;
         case 'info':
         case 'information':
-          this.props.icon = 'info-circle';
+          this.props.icon = 'Activity';
           break;
         case 'success':
-          this.props.icon = 'check-circle';
+          this.props.icon = 'Activity';
           break;
         case 'warn':
         case 'warning':
         case 'caution':
-          this.props.icon = 'exclamation-circle';
+          this.props.icon = 'Activity';
           break;
       }
     }
@@ -89,7 +89,7 @@ class Toast extends React.PureComponent {
         >
           {this.props.image
             ? <img src={this.props.image} alt='' className={joinClassNames('vizality-toast-image', this.props.imageClassName)} />
-            : <Icon wrapperClassName='vizality-toast-icon-wrapper' className='vizality-toast-icon' type={this.props.icon} />}
+            : <Icon /*wrapperClassName='vizality-toast-icon-wrapper' className='vizality-toast-icon'*/ name={this.props.icon} />}
         </Tooltip>
       )}
       {this.props.header}

@@ -41,4 +41,4 @@ class Settings extends React.PureComponent {
   }
 }
 
-module.exports = vizality.api.settings.connectStores('vz-general')(Settings);
+module.exports = vizality.api.settings.connectStores('vz-settings')(Settings);

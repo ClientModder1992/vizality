@@ -4,18 +4,18 @@ const { Plugin } = require('@entities');
 module.exports = class DoNotTrack extends Plugin {
   onStart () {
     const Analytics = getModule('getSuperPropertiesBase64');
-    Analytics.__oldTrack = Analytics.track;
-    Analytics.track = () => void 0;
-
     const Reporter = getModule('submitLiveCrashReport');
-    Reporter.__oldSubmitLiveCrashReport = Reporter.submitLiveCrashReport;
-    Reporter.submitLiveCrashReport = () => void 0;
-
     const Sentry = {
       main: window.__SENTRY__.hub,
       client: window.__SENTRY__.hub.getClient(),
       breadcrumbs: window.__SENTRY__.hub.getIntegration({ id: 'Breadcrumbs' })
     };
+
+    Analytics.__oldTrack = Analytics.track;
+    Analytics.track = () => void 0;
+
+    Reporter.__oldSubmitLiveCrashReport = Reporter.submitLiveCrashReport;
+    Reporter.submitLiveCrashReport = () => void 0;
 
     Sentry.main.__oldAddBreadcrumb = Sentry.main.addBreadcrumb;
     Sentry.breadcrumbs.__old_domBreadcrumb = Sentry.breadcrumbs._domBreadcrumb;
@@ -40,25 +40,21 @@ module.exports = class DoNotTrack extends Plugin {
   }
 
   onStop () {
-    EventTarget.prototype.removeEventListener = this.__rel;
-
     const Analytics = getModule('getSuperPropertiesBase64');
-    Analytics.track = Analytics.__oldTrack;
-
     const Reporter = getModule('submitLiveCrashReport');
-    Reporter.submitLiveCrashReport = Reporter.__oldSubmitLiveCrashReport;
-
     const Sentry = {
       main: window.__SENTRY__.hub,
       client: window.__SENTRY__.hub.getClient(),
       breadcrumbs: window.__SENTRY__.hub.getIntegration({ id: 'Breadcrumbs' })
     };
 
-    Sentry.client.getOptions().enabled = true;
+    Analytics.track = Analytics.__oldTrack;
+    Reporter.submitLiveCrashReport = Reporter.__oldSubmitLiveCrashReport;
     Sentry.main.addBreadcrumb = Sentry.main.__oldAddBreadcrumb;
     Sentry.breadcrumbs._domBreadcrumb = Sentry.breadcrumbs.__old_domBreadcrumb;
     Sentry.client._processEvent = Sentry.client.__old_processEvent;
     Sentry.client._prepareEvent = Sentry.client.__old_prepareEvent;
     window.console = window.__oldConsole;
+    Sentry.client.getOptions().enabled = true;
   }
 };

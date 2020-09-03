@@ -1,10 +1,11 @@
 /* eslint-disable no-unreachable */
-const { CDN: { WEBSITE_CDN } } = require('@constants');
+
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
+const { CDN: { WEBSITE_CDN } } = require('@constants');
 const { Plugin } = require('@entities');
 
-module.exports = class RPC extends Plugin {
+class RPC extends Plugin {
   async onStart () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
@@ -88,4 +89,6 @@ module.exports = class RPC extends Plugin {
   _removeEvent (event) {
     delete this.handlers[event];
   }
-};
+}
+
+module.exports = RPC;

@@ -1,4 +1,4 @@
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 

@@ -1,6 +1,6 @@
 const { Flux, React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icons } = require('@components');
-const { joinClassNames } = require('@util');
+const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icon } = require('@components');
+const { joinClassNames } = require('@utilities');
 
 const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');
@@ -43,15 +43,14 @@ class SdkWindow extends React.PureComponent {
         {this.renderIcon('Discord Splash Screen', 'Arch', 'splash-screen')}
         {this.renderIcon('SDK Settings', 'Gear', 'sdk-settings')}
         {this.props.windowOnTop
-          ? this.renderIcon(Messages.POPOUT_REMOVE_FROM_TOP, 'Unpin', null, 'left')
-          : this.renderIcon(Messages.POPOUT_STAY_ON_TOP, 'Pin', null, 'left')}
+          ? this.renderIcon(Messages.POPOUT_REMOVE_FROM_TOP, 'UnpinLayer', null, 'left')
+          : this.renderIcon(Messages.POPOUT_STAY_ON_TOP, 'PinLayer', null, 'left')}
       </HeaderBar>
     );
   }
 
   renderIcon (tooltip, icon, id, placement = 'bottom') {
     const headerBarClasses = getModule('iconWrapper', 'clickable');
-    const Icon = Icons[icon];
     return (
       <Tooltip text={tooltip} position={placement}>
         <Clickable
@@ -66,7 +65,7 @@ class SdkWindow extends React.PureComponent {
             this.scrollerRef.current.scrollIntoView(el);
           }}
         >
-          <Icon className={headerBarClasses.icon}/>
+          <Icon name={icon} className={headerBarClasses.icon}/>
         </Clickable>
       </Tooltip>
     );

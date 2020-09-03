@@ -1,4 +1,4 @@
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@util');
+const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
 const { GUILD: { GUILD_ID, GUILD_INVITE }, DIR: { SRC_DIR } } = require('@constants');
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');

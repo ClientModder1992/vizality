@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const { React, getModule } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 
 /*
