@@ -1,7 +1,6 @@
 const { sleep, string: { toPascalCase, toCamelCase } } = require('@utilities');
 const { PopoutWindow, Spinner } = require('@components');
 const { React, Flux, getModule } = require('@webpack');
-const { CDN: { DOCS_CDN } } = require('@constants');
 const { get } = require('@http');
 
 const SettingsView = require('./SettingsView');

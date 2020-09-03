@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
 
+const { shell } = require('electron');
+
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
 const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
 const { string: { toHeaderCase, toPlural } } = require('@utilities');
-const { DIR: { PLUGINS_DIR, THEMES_DIR } } = require('@constants');
-
-const { shell } = require('electron');
-const { join } = require('path');
 
 class Base extends React.PureComponent {
   constructor () {

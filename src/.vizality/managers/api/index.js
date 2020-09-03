@@ -1,12 +1,12 @@
 const { logger: { error } } = require('@utilities');
-const { DIR: { API_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
 
 class APIManager {
   constructor () {
-    this.dir = API_DIR;
+    this.dir = Directories.API;
     this.apis = [];
   }
 

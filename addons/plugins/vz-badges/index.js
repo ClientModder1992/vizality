@@ -2,7 +2,7 @@ const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }
 const { React, getModule, getModules, getModuleByDisplayName } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');
-const { CDN: { API_CDN } } = require('@constants');
+const { HTTP } = require('@constants');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 const { get } = require('@http');
@@ -94,7 +94,7 @@ class Badges extends Plugin {
 
   async _fetchBadges () {
     try {
-      this.guildBadges = await get(`${API_CDN}/guilds/badges`).then(res => res.body);
+      this.guildBadges = await get(`${HTTP.API}/guilds/badges`).then(res => res.body);
 
       if (document.querySelector(this.classes.header)) {
         forceUpdateElement(this.classes.header);

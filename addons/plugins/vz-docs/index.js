@@ -8,13 +8,10 @@ class Documentation extends Plugin {
   onStart () {
     this.injectStyles('scss/style.scss');
     this._addDocsItem();
-
-    vizality.api.router.registerShortcut('documentation', this._openDocs);
   }
 
   onStop () {
     unpatch('vz-docs-tab');
-    vizality.api.router.unregisterShortcut('documentation');
   }
 
   _openDocs () {

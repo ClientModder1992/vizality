@@ -1,7 +1,7 @@
 /* @todo: Use logger. */
 
 const { Theme } = require('@entities');
-const { DIR: { THEMES_DIR, SETTINGS_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 const { join } = require('path');
 const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
@@ -16,7 +16,7 @@ const ErrorTypes = Object.freeze({
 
 class StyleManager {
   constructor () {
-    this.themesDir = THEMES_DIR;
+    this.themesDir = Directories.THEMES;
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
@@ -42,7 +42,7 @@ class StyleManager {
       if (!this.__settings) {
         this.__settings = {};
         try {
-          this.__settings = require(join(SETTINGS_DIR, 'vz-settings.json'));
+          this.__settings = require(join(Directories.SETTINGS, 'vz-settings.json'));
         } catch (err) {
           // @todo: Handled this.
         }

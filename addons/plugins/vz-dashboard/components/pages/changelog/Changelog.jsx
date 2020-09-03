@@ -5,10 +5,10 @@ const { join } = require('path');
 
 const { Icon } = require('@components');
 const { React, getModule, React: { useState } } = require('@webpack');
-const { DIR: { ROOT_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 const { joinClassNames, string: { toKebabCase } } = require('@utilities');
 
-const Changelog = join(ROOT_DIR, 'CHANGELOG.md');
+const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 
 const Content = require('../../parts/Content');
 

@@ -1,6 +1,6 @@
 const { Button, Icon, SVG: { WaveDivider } } = require('@components');
 const { React, getModule, React: { useState, useEffect } } = require('@webpack');
-const { GUILD: { GUILD_ID, GUILD_INVITE } } = require('@constants');
+const { Guild } = require('@constants');
 
 module.exports = React.memo(() => {
   const [ hasJoinedDiscord, setHasJoined ] = useState();
@@ -10,7 +10,7 @@ module.exports = React.memo(() => {
   const guilds = getModule('getGuild', 'getGuilds').getGuilds();
 
   useEffect(() => {
-    setHasJoined(Boolean(Object.keys(guilds).find(guild => guild === GUILD_ID)));
+    setHasJoined(Boolean(Object.keys(guilds).find(guild => guild === Guild.ID)));
   }, [ hasJoinedDiscord ]);
 
   return (
@@ -34,7 +34,7 @@ module.exports = React.memo(() => {
               onClick={() => {
                 const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
                 const pop = getModule('popLayer');
-                inviteStore.acceptInviteAndTransitionToInviteChannel(GUILD_INVITE);
+                inviteStore.acceptInviteAndTransitionToInviteChannel(Guild.INVITE);
                 pop.popAllLayers();
               }}
               color={Button.Colors.WHITE}

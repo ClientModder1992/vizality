@@ -1,6 +1,6 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { DIR: { ROOT_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 const { Confirm } = require('@components');
 const { Plugin } = require('@entities');
 const { joinClassNames } = require('@utilities');
@@ -11,7 +11,7 @@ const cp = require('child_process');
 const { join } = require('path');
 const exec = promisify(cp.exec);
 
-const Changelog = join(ROOT_DIR, 'CHANGELOG.md');
+const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 
 module.exports = class Updater extends Plugin {
   constructor () {
@@ -22,7 +22,7 @@ module.exports = class Updater extends Plugin {
       id: 'updates-2019-02-15'
     };
     this.checking = false;
-    this.cwd = { cwd: ROOT_DIR };
+    this.cwd = { cwd: Directories.ROOT };
   }
 
   async onStart () {

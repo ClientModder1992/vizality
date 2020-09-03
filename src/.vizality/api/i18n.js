@@ -1,8 +1,8 @@
 const { getModule, i18n } = require('@webpack');
-const { DIR: { I18N_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 const { API } = require('@entities');
 
-const strings = require(I18N_DIR);
+const strings = require(Directories.I18N);
 
 module.exports = class I18nAPI extends API {
   constructor () {

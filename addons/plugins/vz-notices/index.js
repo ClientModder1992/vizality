@@ -1,22 +1,22 @@
 const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
-const { GUILD: { GUILD_ID, GUILD_INVITE }, DIR: { SRC_DIR } } = require('@constants');
+const { Guild, Directories } = require('@constants');
 const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 
 const { promises: { unlink }, existsSync } = require('fs');
-const { resolve } = require('path');
+const { join } = require('path');
 
 const AnnouncementContainer = require('./components/AnnouncementContainer');
 const ToastContainer = require('./components/ToastContainer');
 
-class Notices extends Plugin {
+module.exports = class Notices extends Plugin {
   onStart () {
     this.injectStyles('scss/style.scss');
     this._patchAnnouncements();
     this._patchToasts();
 
-    const injectedFile = resolve(SRC_DIR, '__injected.txt');
+    const injectedFile = join(Directories.SRC, '__injected.txt');
 
     if (existsSync(injectedFile)) {
       this._welcomeNewUser();
@@ -64,10 +64,10 @@ class Notices extends Plugin {
       color: 'green',
       message: 'Welcome! Vizality has been successfully injected into your Discord client. Feel free to visit our Discord server for announcements, support, and more!',
       button: {
-        text: store.getGuilds(GUILD_ID) ? 'Go to Server' : 'Join Server',
+        text: store.getGuilds(Guild.ID) ? 'Go to Server' : 'Join Server',
         onClick: () => {
           const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
-          inviteStore.acceptInviteAndTransitionToInviteChannel(GUILD_INVITE);
+          inviteStore.acceptInviteAndTransitionToInviteChannel(Guild.INVITE);
           getModule('popLayer').popAllLayers();
         }
       }
@@ -81,6 +81,4 @@ class Notices extends Plugin {
       message: `Vizality does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Stable for best results.`
     });
   }
-}
-
-module.exports = Notices;
+};

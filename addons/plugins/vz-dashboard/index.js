@@ -2,7 +2,7 @@ const { Plugin } = require('@entities');
 const { patch, unpatch } = require('@patcher');
 const { React, getModule, getModuleByDisplayName, FluxDispatcher, i18n: { Messages } } = require('@webpack');
 const { Tooltip, Icon, CustomIcons: { Plugin: PluginIcon, Theme: ThemeIcon } } = require('@components');
-const { GUILD: { CHANNEL: { PLUGINS_CHANNEL, THEMES_CHANNEL } } } = require('@constants');
+const {Channels } = require('@constants');
 const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@utilities');
 
 const Sidebar = require('./components/parts/sidebar/Sidebar');
@@ -36,19 +36,19 @@ module.exports = class Dashboard extends Plugin {
     const ChannelItem = getModuleByDisplayName('ChannelItem');
     patch('vz-dashboard-channels-props', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
-        [PLUGINS_CHANNEL]: {
+        [Channels.PLUGINS]: {
           icon: PluginIcon,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
           route: '/_vizality/dashboard/plugins'
         },
-        [THEMES_CHANNEL]: {
+        [Channels.THEMES]: {
           icon: ThemeIcon,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
           route: '/_vizality/dashboard/themes'
         }
       };
 
-      if (this.props.channel.id === PLUGINS_CHANNEL || this.props.channel.id === THEMES_CHANNEL) {
+      if (this.props.channel.id === Channels.PLUGINS || this.props.channel.id === Channels.THEMES) {
         res.props.children[1].props.children[0].props.children[1].props.children = data[this.props.channel.id].name;
         res.props.children[1].props.children[0].props.children[0] = React.createElement(data[this.props.channel.id].icon, {
           className: res.props.children[1].props.children[0].props.children[0].props.className,

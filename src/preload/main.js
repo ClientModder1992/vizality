@@ -1,6 +1,6 @@
 require('module-alias/register');
 
-const { DIR: { LOGS_DIR, SETTINGS_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 const { existsSync, mkdirSync, open, write } = require('fs');
 const { ipcRenderer, contextBridge } = require('electron');
@@ -35,17 +35,17 @@ if (preload) {
 // Debug logging
 let debugLogs;
 try {
-  const settings = require(join(SETTINGS_DIR, 'vz-settings.json'));
+  const settings = require(join(Directories.SETTINGS, 'vz-settings.json'));
   // eslint-disable-next-line prefer-destructuring
   debugLogs = settings.debugLogs;
 } finally {
   if (debugLogs) {
-    if (!existsSync(LOGS_DIR)) {
-      mkdirSync(LOGS_DIR, { recursive: true });
+    if (!existsSync(Directories.LOGS)) {
+      mkdirSync(Directories.LOGS, { recursive: true });
     }
     const getDate = () => new Date().toISOString().replace('T', ' ').split('.')[0];
     const filename = `${window.__OVERLAY__ ? 'overlay' : 'discord'}-${new Date().toISOString().replace('T', '_').replace(/:/g, '-').split('.')[0]}.txt`;
-    const path = join(LOGS_DIR, filename);
+    const path = join(Directories.LOGS, filename);
     console.log('[Vizality] Debug logs enabled. Logs will be saved in', path);
     open(path, 'w', (_, fd) => {
       // Patch console methods

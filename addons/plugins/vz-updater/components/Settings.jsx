@@ -2,7 +2,7 @@ const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Icon
 const { React, getModule, React: { useState }, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { joinClassNames } = require('@utilities');
-const { REPO: { VIZALITY_REPO }, DIR: { CACHE_DIR } } = require('@constants');
+const { Repositories, Directories } = require('@constants');
 
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
@@ -178,8 +178,8 @@ module.exports = () => {
       return path;
     };
 
-    const cachedFiles = (existsSync(CACHE_DIR) && readdirSync(CACHE_DIR)
-      .map(d => readdirSync(`${CACHE_DIR}/${d}`))
+    const cachedFiles = (existsSync(Directories.CACHE) && readdirSync(Directories.CACHE)
+      .map(d => readdirSync(`${Directories.CACHE}/${d}`))
       .flat().length) || 'n/a';
 
     const createPathReveal = (title, path) =>
@@ -236,7 +236,7 @@ module.exports = () => {
 
           <b>Git</b>
           <div className='row'>
-            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(VIZALITY_REPO, 'Official')}</div>
+            <div className='column'>Upstream:&#10;{vizality.git.upstream.replace(Repositories.VIZALITY, 'Official')}</div>
             <div className='column'>Revision:&#10;
               <a
                 href={`https://github.com/${vizality.git.upstream}/commit/${vizality.git.revision}`}
@@ -298,7 +298,7 @@ module.exports = () => {
         <div className="about">
           <div>
             <span>{Messages.VIZALITY_UPDATES_UPSTREAM}</span>
-            <span>{vizality.git.upstream.replace(VIZALITY_REPO, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
+            <span>{vizality.git.upstream.replace(Repositories.VIZALITY, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
           </div>
           <div>
             <span>{Messages.VIZALITY_UPDATES_REVISION}</span>

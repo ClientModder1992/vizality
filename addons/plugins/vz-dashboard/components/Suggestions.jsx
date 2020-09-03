@@ -1,7 +1,7 @@
 const { shell: { openExternal } } = require('electron');
 const { React, getModule } = require('@webpack');
 const { Clickable, ErrorState } = require('@components');
-const { CDN: { WEBSITE_CDN } } = require('@constants');
+const { HTTP } = require('@constants');
 const { get } = require('@http');
 
 const Layout = require('./parts/Layout');
@@ -28,7 +28,7 @@ module.exports = React.memo(
       [ suggestions, search ]
     );
     React.useEffect(() => {
-      const baseUrl = vizality.settings.get('backendURL', WEBSITE_CDN);
+      const baseUrl = vizality.settings.get('backendURL', HTTP.WEBSITE);
       get(`${baseUrl}/api/v2/store/suggestions`).then(res => {
         if (!res.ok) {
           return setSuggestions({ state: States.ERRORED });

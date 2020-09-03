@@ -1,66 +1,76 @@
 const { join } = require('path');
 
-const constants = Object.freeze({
+const constants = module.exports = Object.freeze({
   // Vizality
-  CDN: Object.freeze({
-    WEBSITE_CDN: 'https://vizality.com',
-    API_CDN: 'https://vizality.com/app/api',
-    DOCS_CDN: 'https://vizality.com/app/api/docs',
-    ASSETS_CDN: 'https://vizality.com/app/assets',
-    IMAGES_CDN: 'https://vizality.com/app/assets/images'
+  HTTP: Object.freeze({
+    WEBSITE: 'https://vizality.com',
+    get API () { return `${constants.HTTP.WEBSITE}/app/api`; },
+    get DOCS () { return `${constants.HTTP.API}/docs`; },
+    get ASSETS () { return `${constants.HTTP.WEBSITE}/app/assets`; },
+    get IMAGES () { return `${constants.HTTP.ASSETS}/images`; }
   }),
 
-  REPO: Object.freeze({
-    VIZALITY_REPO: 'vizality/vizality',
-    COMMUNITY_REPO: 'vizality/vizality-community',
-    DOCS_REPO: 'vizality/vizality-docs',
-    I18N_REPO: 'vizality/vizality-i18n'
+  // GitHub
+  Repositories: Object.freeze({
+    ORG: 'vizality',
+    get VIZALITY () { return `${constants.Repositories.ORG}/vizality`; },
+    get COMMUNITY () { return `${constants.Repositories.ORG}/vizality-community`; },
+    get DOCS () { return `${constants.Repositories.ORG}/vizality-docs`; },
+    get I18N () { return `${constants.Repositories.ORG}/vizality-i18n`; }
   }),
 
-  // Dirs
-  DIR: Object.freeze({
-    SETTINGS_DIR: join(__dirname, '..', '..', '..', '..', 'settings'),
-    CACHE_DIR: join(__dirname, '..', '..', '..', '..', '.cache'),
-    LOGS_DIR: join(__dirname, '..', '..', '..', '..', '.logs'),
-    ROOT_DIR: join(__dirname, '..', '..', '..', '..'),
-    SRC_DIR: join(__dirname, '..', '..', '..'),
-    VIZALITY_DIR: join(__dirname, '..', '..'),
+  // Directories
+  Directories: Object.freeze({
+    ROOT: join(__dirname, '..', '..', '..', '..'),
+    get SRC () { return join(constants.Directories.ROOT, 'src'); },
+    get VIZALITY () { return join(constants.Directories.SRC, '.vizality'); },
     // ---
-    ADDONS_DIR: join(__dirname, '..', '..', '..', '..', 'addons'),
-    PLUGINS_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins'),
-    BUNDLED_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.bundled'),
-    CORE_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'plugins', '.core'),
-    THEMES_DIR: join(__dirname, '..', '..', '..', '..', 'addons', 'themes'),
+    get SETTINGS () { return join(constants.Directories.ROOT, 'settings'); },
+    get CACHE () { return join(constants.Directories.ROOT, '.cache'); },
+    get LOGS () { return join(constants.Directories.ROOT, '.logs'); },
     // ---
-    API_DIR: join(__dirname, '..', '..', 'api'),
-    I18N_DIR: join(__dirname, '..', '..', 'i18n'),
-    LIBRARIES_DIR: join(__dirname, '..', '..', 'libraries'),
-    MANAGERS_DIR: join(__dirname, '..', '..', 'managers'),
-    STYLES_DIR: join(__dirname, '..', '..', 'styles'),
-    MODULES_DIR: join(__dirname, '..')
+    get ADDONS () { return join(constants.Directories.ROOT, 'addons'); },
+    get PLUGINS () { return join(constants.Directories.ADDONS, 'plugins'); },
+    get BUNDLED () { return join(constants.Directories.PLUGINS, '.bundled'); },
+    get CORE () { return join(constants.Directories.PLUGINS, '.core'); },
+    get THEMES () { return join(constants.Directories.ADDONS, 'themes'); },
+    // ---
+    get API () { return join(constants.Directories.VIZALITY, 'api'); },
+    get I18N () { return join(constants.Directories.VIZALITY, 'i18n'); },
+    get LIBRARIES () { return join(constants.Directories.VIZALITY, 'libraries'); },
+    get MANAGERS () { return join(constants.Directories.VIZALITY, 'managers'); },
+    get STYLES () { return join(constants.Directories.VIZALITY, 'styles'); },
+    get MODULES () { return join(__dirname, '..'); },
+    // ---
+    get DASHBOARD () { return join(constants.Directories.PLUGINS, 'vz-dashboard'); }
   }),
 
-  // Discord Server
-  GUILD: Object.freeze({
-    GUILD_INVITE: '42B8AC9',
-    GUILD_ID: '689933814864150552',
-    // ---
-    CHANNEL: Object.freeze({
-      CSS_SNIPPETS_CHANNEL: '705262981214371902',
-      JS_SNIPPETS_CHANNEL: '705262981214371902',
-      PLUGINS_CHANNEL: '700461738004578334',
-      THEMES_CHANNEL: '700461710972157954',
-      DEVELOPMENT_CHANNEL: '690452269753171998',
-      STAFF_CHANNEL: '690452551233175602',
-      // ---
-      SUPPORT_CHANNEL: Object.freeze({
-        INSTALLATION_SUPPORT_CHANNEL: '718478897695424613',
-        PLUGINS_SUPPORT_CHANNEL: '705264484528291956',
-        THEMES_SUPPORT_CHANNEL: '705264431831187496',
-        MISC_SUPPORT_CHANNEL: '705264513728905266'
-      })
-    })
+  // Guild
+  Guild: Object.freeze({
+    INVITE: '42B8AC9',
+    ID: '689933814864150552'
+  }),
+
+  // Channels
+  Channels: Object.freeze({
+    CSS_SNIPPETS: '705262981214371902',
+    JS_SNIPPETS: '705262981214371902',
+    PLUGINS: '700461738004578334',
+    THEMES: '700461710972157954',
+    DEVELOPMENT: '690452269753171998',
+    STAFF: '690452551233175602',
+    INSTALLATION_SUPPORT: '718478897695424613',
+    PLUGINS_SUPPORT: '705264484528291956',
+    THEMES_SUPPORT: '705264431831187496',
+    MISC_SUPPORT: '705264513728905266'
+  }),
+
+  // Errors
+  ErrorTypes: Object.freeze({
+    // Misc
+    NOT_A_DIRECTORY: 'NOT_A_DIRECTORY',
+    // Addons
+    MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
+    INVALID_MANIFEST: 'INVALID_MANIFEST'
   })
 });
-
-module.exports = constants;

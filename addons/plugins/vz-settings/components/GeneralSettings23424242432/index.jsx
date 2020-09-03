@@ -2,7 +2,7 @@ const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = r
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { file: { removeDirRecursive } } = require('@utilities');
-const { DIR: { CACHE_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 class GeneralSettings extends React.Component {
   constructor (props) {
@@ -124,7 +124,7 @@ class GeneralSettings extends React.Component {
 
   clearVizalityCache () {
     this.setState({ vizalityCleared: true });
-    removeDirRecursive(CACHE_DIR).then(() => {
+    removeDirRecursive(Directories.CACHE).then(() => {
       setTimeout(() => {
         this.setState({ vizalityCleared: false });
       }, 2500);

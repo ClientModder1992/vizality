@@ -1,10 +1,10 @@
 const { Flex, Button } = require('@components');
-const { DIR: { SRC_FOLDER } } = require('@constants');
+const { Directories } = require('@constants');
 const { React } = require('@webpack');
 
 const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
-const { join, dirname } = require('path');
+const { join } = require('path');
 
 const SplashStages = Object.freeze({
   CHECKING_FOR_UPDATES: 'CHECKING_FOR_UPDATES',
@@ -104,7 +104,7 @@ class SplashScreen extends React.PureComponent {
       center: true,
       show: true,
       webPreferences: {
-        preload: join(SRC_FOLDER, 'preload', 'splash.js'),
+        preload: join(Directories.SRC, 'preload', 'splash.js'),
         nodeIntegration: true
       }
     };

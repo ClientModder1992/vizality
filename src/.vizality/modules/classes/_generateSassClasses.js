@@ -1,5 +1,5 @@
 const { logger: { warn } } = require('@utilities');
-const { DIR: { LIBRARIES_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 const { join } = require('path');
 const { promises: { writeFile, mkdir }, existsSync } = require('fs');
@@ -10,7 +10,7 @@ const _generateSassClasses = async (obj = classes, currentPath = '') => {
   const module = 'Module';
   const submodule = 'Classes:_generateSassClasses';
 
-  const SassClassFolder = join(LIBRARIES_DIR, 'sass', 'classes');
+  const SassClassFolder = join(Directories.LIBRARIES, 'sass', 'classes');
 
   if (!existsSync(SassClassFolder)) {
     await mkdir(SassClassFolder);

@@ -2,7 +2,7 @@ const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = r
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { React, getModule, i18n: { Messages }, React: { useState } } = require('@webpack');
 const { file: { removeDirRecursive } } = require('@utilities');
-const { DIR: { CACHE_DIR } } = require('@constants');
+const { Directories } = require('@constants');
 
 module.exports = React.memo(() => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);
@@ -22,7 +22,7 @@ module.exports = React.memo(() => {
 
   const clearVizalityCache = () => {
     setVizalityCacheCleared(true);
-    removeDirRecursive(CACHE_DIR).then(() => {
+    removeDirRecursive(Directories.CACHE).then(() => {
       setTimeout(() => {
         setVizalityCacheCleared(false);
       }, 2500);

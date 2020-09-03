@@ -1,4 +1,4 @@
-const { GUILD: { GUILD_ID, GUILD_INVITE }, REPO: { I18N_REPO, VIZALITY_REPO }, CDN: { WEBSITE_CDN, API_CDN } } = require('@constants');
+const { Guild, Repositories, HTTP } = require('@constants');
 const { React, getModule, constants: { Routes } } = require('@webpack');
 const { Clickable, Tooltip } = require('@components');
 const { open: openModal } = require('vizality/modal');
@@ -11,28 +11,28 @@ const Badge = require('./Badge');
 
 const badgesStore = {};
 const badges = {
-  developer: () => openExternal(`${WEBSITE_CDN}/contributors`),
+  developer: () => openExternal(`${HTTP.WEBSITE}/contributors`),
   staff: async () => {
     const store = getModule('getGuilds');
-    if (store.getGuilds()[GUILD_ID]) {
+    if (store.getGuilds()[Guild.ID]) {
       const router = getModule('transitionTo');
       const channel = getModule('getLastSelectedChannelId');
       const userProfileModal = getModule('fetchProfile');
       // eslint-disable-next-line new-cap
-      router.transitionTo(Routes.CHANNEL(GUILD_ID, channel.getChannelId(GUILD_ID)));
+      router.transitionTo(Routes.CHANNEL(Guild.ID, channel.getChannelId(Guild.ID)));
       userProfileModal.close();
     } else {
       const windowManager = getModule('flashFrame', 'minimize');
       const { INVITE_BROWSER: { handler: popInvite } } = getModule('INVITE_BROWSER');
       const oldMinimize = windowManager.minimize;
       windowManager.minimize = () => void 0;
-      popInvite({ args: { code: GUILD_INVITE } });
+      popInvite({ args: { code: Guild.INVITE } });
       windowManager.minimize = oldMinimize;
     }
   },
-  contributor: () => openExternal(`${WEBSITE_CDN}/contributors`),
-  translator: () => openExternal(I18N_REPO),
-  hunter: () => openExternal(`https://github.com/${VIZALITY_REPO}/issues?q=label:bug`),
+  contributor: () => openExternal(`${HTTP.WEBSITE}/contributors`),
+  translator: () => openExternal(Repositories.I18N),
+  hunter: () => openExternal(`https://github.com/${Repositories.VIZALITY}/issues?q=label:bug`),
   early: () => void 0
 };
 
@@ -46,7 +46,7 @@ class Badges extends React.PureComponent {
   async componentDidMount () {
     // Fetch even if the store is populated, to update cached stuff
     try {
-      const { badges } = await get(`${API_CDN}/badges/users/${this.props.id}.json`).then(res => res.body);
+      const { badges } = await get(`${HTTP.API}/badges/users/${this.props.id}.json`).then(res => res.body);
       this.setState(badges);
       badgesStore[this.props.id] = badges;
     } catch (err) {

@@ -1,12 +1,11 @@
 const { getModule, getModuleByPrototypes, initialize } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@utilities');
-const { CDN: { IMAGES_CDN }, DIR: { ROOT_DIR, PLUGINS_DIR, THEMES_DIR } } = require('@constants');
+const { HTTP, Directories } = require('@constants');
 const { jsx: JsxCompiler } = require('@compilers');
 const { Updatable } = require('@entities');
 
 const { promisify } = require('util');
 const cp = require('child_process');
-const { resolve } = require('path');
 const exec = promisify(cp.exec);
 
 const AddonManager = require('./managers/addon');
@@ -58,15 +57,14 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  * Main Vizality class
  * @type {Vizality}
  * @property {VizalityAPI} api
- * @property {StyleManager} styleManager
- * @property {PluginManager} pluginManager
+ * @property {AddonManager} manager
  * @property {APIManager} _apiManager
  * @property {Git} git
- * @property {Boolean} _initialized
+ * @property {boolean} _initialized
  */
 class Vizality extends Updatable {
   constructor () {
-    super(ROOT_DIR, '', 'vizality');
+    super(Directories.ROOT, '', 'vizality');
 
     this.api = {};
     this.modules = {};
@@ -79,8 +77,8 @@ class Vizality extends Updatable {
 
     this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
-    this.manager.themes = new AddonManager('themes', THEMES_DIR);
-    this.manager.plugins = new AddonManager('plugins', PLUGINS_DIR);
+    this.manager.themes = new AddonManager('themes', Directories.THEMES);
+    this.manager.plugins = new AddonManager('plugins', Directories.PLUGINS);
 
     this._initialized = false;
     this._originalLogFunc = {};
@@ -119,7 +117,7 @@ class Vizality extends Updatable {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
     // console.clear();
 
-    const startupBanner = `${IMAGES_CDN}/console-startup-banner.gif`;
+    const startupBanner = `${HTTP.IMAGES}/console-startup-banner.gif`;
 
     // Startup banner
     console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
@@ -279,14 +277,6 @@ class Vizality extends Updatable {
         });
       }
     };
-  }
-
-  /**
-   * heheheh.
-   * @param {snowflake} userId sadasd
-   */
-  pie (userId) {
-
   }
 
   async _update (force = false) {
