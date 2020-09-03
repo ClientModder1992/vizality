@@ -1,5 +1,5 @@
 const { React, getModule } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 
 /*

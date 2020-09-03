@@ -1,40 +1,41 @@
 .vizality-codeblock-copy-btn {
-  color: #fff;
+  color: var(--header-secondary);
   border-radius: 4px;
+  box-shadow: var(--elevation-medium);
 
-  line-height: 20px;
-  padding: 0 10px;
+  line-height: 1.5;
+  padding: 8px 12px;
   font-family: 'Raleway', sans-serif;
   font-size: 0.8em;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 700;
 
-  margin: 3px;
-  background: rgba(0, 0, 0, .5);
+  margin: 10px;
+  background: var(--background-tertiary);
   position: absolute;
   right: 0 !important;
   bottom: 0 !important;
   opacity: 0;
-  transition: .3s;
+  transition: .2s;
 
   &.copied {
     background-color: #00c853;
+    color: #fff;
     opacity: 1;
   }
 }
 
 .vizality-codeblock-lang {
   color: var(--text-normal);
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-
+  background: rgb(0 0 0 / .1);
+  border-bottom: 1px solid var(--background-tertiary);
   line-height: 20px;
-  padding: 0 5px;
+  padding: 0 10px;
   font-family: 'Raleway', sans-serif;
   font-size: 0.8em;
   text-transform: uppercase;
   font-weight: bold;
   font-style: initial;
-
   position: absolute;
   top: 0 !important;
   left: 0 !important;

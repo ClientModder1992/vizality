@@ -1,6 +1,5 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
-const { Button } = require('@components');
-const { Modal } = require('@components/modal');
+const { Modal, Button } = require('@components');
 const { close: closeModal } = require('vizality/modal');
 
 const Header = require('./Header');

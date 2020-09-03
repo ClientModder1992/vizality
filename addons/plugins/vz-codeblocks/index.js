@@ -1,7 +1,7 @@
 const { Plugin } = require('@entities');
 const { patch, unpatch } = require('@patcher');
 const { React, getModule, hljs } = require('@webpack');
-const { react: { findInReactTree } } = require('@util');
+const { react: { findInReactTree } } = require('@utilities');
 
 const { clipboard } = require('electron');
 
@@ -9,11 +9,14 @@ class Codeblocks extends Plugin {
   onStart () {
     this.injectStyles('style.scss');
     this.patchCodeblocks();
+    console.log('Hmm');
   }
 
   onStop () {
     unpatch('vz-codeblocks-inline');
     unpatch('vz-codeblocks-embed');
+
+    document.querySelectorAll('.hljs [class^=vizality]').forEach(e => e.remove());
   }
 
   async patchCodeblocks () {

@@ -1,8 +1,8 @@
-const { Webpack } = require('@modules');
+const { getModuleByDisplayName } = require('@webpack');
 
-const Autocomplete = Webpack.getModuleByDisplayName('Autocomplete');
+const Autocomplete = getModuleByDisplayName('Autocomplete');
 
-module.exports = class Title extends Autocomplete.Title {
+class Title extends Autocomplete.Title {
   render () {
     const res = super.render();
     if (!this.props.title[0]) {
@@ -12,4 +12,6 @@ module.exports = class Title extends Autocomplete.Title {
 
     return res;
   }
-};
+}
+
+module.exports = Title;

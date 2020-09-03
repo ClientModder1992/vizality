@@ -1,16 +1,16 @@
-const Constants = require('@constants');
-const Webpack = require('@webpack');
+const { getModule, messages, channels: { getChannelId } } = require('@webpack');
+const { CDN: { IMAGES_CDN } } = require('@constants');
 
-const { receiveMessage } = Webpack.messages;
+const { receiveMessage } = messages;
 
 async function monkeypatchMessages () {
-  const { BOT_AVATARS } = Webpack.getModule('BOT_AVATARS');
-  const { createBotMessage } = Webpack.getModule('createBotMessage');
+  const { BOT_AVATARS } = getModule('BOT_AVATARS');
+  const { createBotMessage } = getModule('createBotMessage');
 
   // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
-  BOT_AVATARS.vizality = `${Constants.HTTP.IMAGES}/logo.png`;
+  BOT_AVATARS.vizality = `${IMAGES_CDN}/logo.png`;
 
-  Webpack.messages.sendMessage = (sendMessage => async (id, message, ...params) => {
+  messages.sendMessage = (sendMessage => async (id, message, ...params) => {
     if (!message.content.startsWith(vizality.api.commands.prefix)) {
       return sendMessage(id, message, ...params);
     }
@@ -29,7 +29,7 @@ async function monkeypatchMessages () {
     if (result.send) {
       message.content = result.result;
     } else {
-      const receivedMessage = createBotMessage(Webpack.channels.getChannelId(), '');
+      const receivedMessage = createBotMessage(getChannelId(), '');
 
       if (vizality.settings.get('replaceClyde', true)) {
         receivedMessage.author.username = result.username || 'Vizality';
@@ -51,7 +51,7 @@ async function monkeypatchMessages () {
     }
 
     return sendMessage(id, message, ...params);
-  })(this.oldSendMessage = Webpack.messages.sendMessage);
+  })(this.oldSendMessage = messages.sendMessage);
 }
 
 module.exports = monkeypatchMessages;

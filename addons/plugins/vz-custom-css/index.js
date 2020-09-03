@@ -1,6 +1,6 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { GUILD: { CHANNEL: { CSS_SNIPPETS_CHANNEL } } } = require('@constants');
-const { react : { findInReactTree } } = require('@util');
+const { react : { findInReactTree } } = require('@utilities');
 const { PopoutWindow } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');

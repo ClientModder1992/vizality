@@ -1,6 +1,6 @@
 const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { Icon, Tooltip } = require('@components');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 
 // @todo: Figure out a way to re-enable the button if the snippet gets removed. Requires reload for now.
 class SnippetButton extends React.Component {
@@ -14,7 +14,7 @@ class SnippetButton extends React.Component {
     return (
       <div className={joinClassNames('vizality-snippet-apply', { applied })}>
         <Tooltip className={classes.button} text={applied ? Messages.VIZALITY_SNIPPET_APPLIED : Messages.VIZALITY_SNIPPET_APPLY} position='top'>
-          <Icon wrapperClassName={classes.icon} type={applied ? 'remove-circle' : 'add-circle'}
+          <Icon name='Science'/*wrapperClassName={classes.icon} type={applied ? 'remove-circle' : 'add-circle'}*/
             onClick={() => {
               if (!applied) {
                 this.props.main._applySnippet(this.props.message).then(() => this.forceUpdate()); // yes ik its ew

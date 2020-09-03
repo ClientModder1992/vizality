@@ -1,5 +1,5 @@
 const { React, getModule } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 const { Icon } = require('@components');
@@ -30,33 +30,33 @@ class ContextMenuIcons extends Plugin {
       res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
-        id === 'textarea-context-languages' && 'atom',
-        id === 'textarea-context-copy' && 'atom',
-        id === 'textarea-context-cut' && 'atom',
-        id === 'textarea-context-paste' && 'atom',
+        id === 'textarea-context-languages' && 'Science',
+        id === 'textarea-context-copy' && 'Science',
+        id === 'textarea-context-cut' && 'Science',
+        id === 'textarea-context-paste' && 'Science',
 
-        id === 'user-context-user-profile' && 'atom',
-        id === 'user-context-mention' && 'atom',
-        id === 'user-context-message-user' && 'atom',
-        id === 'user-context-call' && 'atom',
-        id === 'user-context-note' && 'atom',
-        id === 'user-context-invite-to-server' && 'atom',
-        id === 'user-context-add-friend' && 'atom',
-        id === 'user-context-remove-friend' && 'atom',
-        id === 'user-context-block' && 'atom',
-        id === 'user-context-roles' && 'atom',
-        id === 'user-context-devmode-copy-id' && 'atom',
+        id === 'user-context-user-profile' && 'Science',
+        id === 'user-context-mention' && 'Science',
+        id === 'user-context-message-user' && 'Science',
+        id === 'user-context-call' && 'Science',
+        id === 'user-context-note' && 'Science',
+        id === 'user-context-invite-to-server' && 'Science',
+        id === 'user-context-add-friend' && 'Science',
+        id === 'user-context-remove-friend' && 'Science',
+        id === 'user-context-block' && 'Science',
+        id === 'user-context-roles' && 'Science',
+        id === 'user-context-devmode-copy-id' && 'Science',
 
-        id === 'message-add-reaction' && 'atom',
-        id === 'message-edit' && 'atom',
-        id === 'message-pin' && 'atom',
-        id === 'message-quote' && 'atom',
-        id === 'message-mark-unread' && 'atom',
-        id === 'message-copy-link' && 'atom',
-        id === 'message-copy-native-link' && 'atom',
-        id === 'message-open-native-link' && 'atom',
-        id === 'message-delete' && 'atom',
-        id === 'message-devmode-copy-id' && 'atom'
+        id === 'message-add-reaction' && 'Science',
+        id === 'message-edit' && 'Science',
+        id === 'message-pin' && 'Science',
+        id === 'message-quote' && 'Science',
+        id === 'message-mark-unread' && 'Science',
+        id === 'message-copy-link' && 'Science',
+        id === 'message-copy-native-link' && 'Science',
+        id === 'message-open-native-link' && 'Science',
+        id === 'message-delete' && 'Science',
+        id === 'message-devmode-copy-id' && 'Science'
       ].filter(Boolean).join(' ');
 
       if (!type) {
@@ -83,10 +83,10 @@ class ContextMenuIcons extends Plugin {
       res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
-        id === 'textarea-context-spellcheck' && 'atom',
+        id === 'textarea-context-spellcheck' && 'Science',
 
-        id === 'user-context-disable-video' && 'atom',
-        id === 'user-context-mute' && 'atom'
+        id === 'user-context-disable-video' && 'Science',
+        id === 'user-context-mute' && 'Science'
       ].filter(Boolean).join(' ');
 
       if (!type) {
@@ -113,7 +113,7 @@ class ContextMenuIcons extends Plugin {
       res.props.className = joinClassNames(res.props.className, 'vz-hasIcon');
 
       const type = [
-        id === 'user-context-user-volume' && 'atom'
+        id === 'user-context-user-volume' && 'Science'
       ].filter(Boolean).join(' ');
 
       if (!type) {

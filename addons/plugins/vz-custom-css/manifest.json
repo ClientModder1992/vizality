@@ -1,7 +1,6 @@
 {
   "name": "Custom CSS",
   "version": "0.0.1",
-  "description": "Adds Vizality's Custom Styles that lets you add custom CSS, SCSS, Less, or Stylus code snippets.",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "description": "Adds Custom CSS.",
+  "author": "Vizality"
 }

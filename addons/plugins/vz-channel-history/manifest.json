@@ -1,8 +1,0 @@
-{
-  "name": "Channel History",
-  "version": "1.0.0",
-  "description": "Allows you to navigate forwards and backwards with your side mouse buttons, like in the browser.",
-  "author": "Vizality",
-  "license": "GPL-3.0",
-  "color": "#33FFCC"
-}

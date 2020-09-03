@@ -1,9 +1,7 @@
-const { React, Flux, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { settings: { SwitchItem, SliderInput }, Icons: { Pin, Unpin, Gear, Close, ExternalLink }, AsyncComponent, Clickable, FormTitle, Tooltip } = require('@components');
+const { React, Flux, getModule, i18n: { Messages } } = require('@webpack');
+const { AdvancedScrollerThin, AsyncComponent, Clickable, FormTitle, Tooltip, settings: { SwitchItem, SliderInput }, Icons: { Pin, Unpin, Gear, Close, ExternalLink } } = require('@components');
 
 const CodeMirror = require('./CodeMirror');
-
-const VerticalScroller = AsyncComponent.from(getModuleByDisplayName('VerticalScroller'));
 
 class CustomCSS extends React.PureComponent {
   constructor () {
@@ -91,7 +89,7 @@ class CustomCSS extends React.PureComponent {
     const { getSetting, updateSetting, toggleSetting } = this.props;
 
     return (
-      <VerticalScroller outerClassName='vizality-quickcss-editor-settings' theme='themeGhostHairline-DBD-2d' fade>
+      <AdvancedScrollerThin className='vizality-quickcss-editor-settings' theme='themeGhostHairline-DBD-2d' fade>
         <FormTitle tag='h2'>{Messages.VIZALITY_QUICKCSS_SETTINGS}</FormTitle>
         <div className='close-wrapper'>
           <Tooltip text={Messages.CLOSE} position='left'>
@@ -100,7 +98,7 @@ class CustomCSS extends React.PureComponent {
             </Clickable>
           </Tooltip>
         </div>
-        <div>
+        <div className='settings'>
           <SwitchItem
             value={getSetting('cm-lineNumbers', true)}
             onChange={v => {
@@ -177,7 +175,7 @@ class CustomCSS extends React.PureComponent {
             {Messages.VIZALITY_QUICKCSS_SETTINGS_INDENT}
           </SliderInput>
         </div>
-      </VerticalScroller>
+      </AdvancedScrollerThin>
     );
   }
 
