@@ -1,4 +1,5 @@
 /* eslint-disable consistent-this */
+
 const { randomBytes } = require('crypto');
 
 const { logger : { error } } = require('@utilities');
@@ -6,7 +7,7 @@ const { logger : { error } } = require('@utilities');
 const _module = 'Module';
 const _submodule = 'Patcher';
 
-const patcher = {
+const patcher = module.exports = {
   patches: [],
 
   _runPatches (moduleId, originalArgs, originalReturn, _this) {
@@ -111,5 +112,3 @@ const patcher = {
     patcher.patches = patcher.patches.filter(i => i.id !== patchId);
   }
 };
-
-module.exports = patcher;
