@@ -6,6 +6,7 @@
   "homepage": "https://vizality.com",
   "main": "index.js",
   "scripts": {
+    "compile-sass": "node src/compile",
     "lint": "eslint --ext js --ext jsx src",
     "inject": "node src/inject/index.js inject",
     "uninject": "node src/inject/index.js uninject"
