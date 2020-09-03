@@ -29,6 +29,7 @@
     "@http": "src/.vizality/modules/http",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
+    "@react": "src/.vizality/modules/react",
     "@typings": "src/.vizality/typings",
     "@utilities": "src/.vizality/modules/utilities",
     "@webpack": "src/.vizality/modules/webpack"

@@ -15,6 +15,7 @@
       "@http": [ "./.vizality/modules/http" ],
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
+      "@react": [ "./.vizality/modules/react" ],
       "@typings": [ "./.vizality/typings" ],
       "@utilities": [ "./.vizality/modules/utilities" ],
       "@webpack": [ "./.vizality/modules/webpack" ]
