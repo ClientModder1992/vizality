@@ -1,13 +1,14 @@
 /**
  * Forked from DevYukine's http module and Snekfetch
  */
+
+const { logger : { log } } = require('@utilities');
+const { REPO: { VIZALITY_REPO } } = require('@constants');
+
 const querystring = require('querystring');
 const https = require('https');
 const http = require('http');
 const url = require('url');
-
-const Constants = require('@constants');
-const Util = require('@util');
 
 /**
  * @typedef HTTPResponse
@@ -31,12 +32,13 @@ class GenericRequest {
   constructor (method, uri) {
     this.module = 'HTTP';
     this.submodule = this.constructor.name;
+
     this.opts = {
       method,
       uri,
       query: {},
       headers: {
-        'User-Agent': `Vizality (https://github.com/${Constants.Repositories.VIZALITY})`
+        'User-Agent': `Vizality (https://github.com/${VIZALITY_REPO})`
       }
     };
   }
@@ -85,6 +87,7 @@ class GenericRequest {
     } else {
       this.opts.data = data;
     }
+
     return this;
   }
 
@@ -101,7 +104,7 @@ class GenericRequest {
       /* */ const opts = Object.assign(this.opts, resolve);
       /* */ if (!opts.uri) return;
 
-      Util.Logger.log(this.module, this.submodule, null, 'Performing request to', opts.uri);
+      log(this.module, this.submodule, null, 'Performing request to', opts.uri);
       const { request } = opts.uri.startsWith('https')
         ? https
         : http;

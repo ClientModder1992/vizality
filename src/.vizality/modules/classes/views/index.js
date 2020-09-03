@@ -1,8 +1,8 @@
-const Webpack = require('@webpack');
+const { getModule } = require('@webpack');
 
 const views = {
-  ...Webpack.getModule('attachment'),
-  ...Webpack.getModule('members')
+  ...getModule('attachment'),
+  ...getModule('members')
 };
 
 module.exports = views;

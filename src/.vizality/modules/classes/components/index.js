@@ -1,9 +1,9 @@
-const Webpack = require('@webpack');
+const { getModule } = require('@webpack');
 
 const components = {
-  ...Webpack.getModule('attachment'),
-  ...Webpack.getModule('members'),
-  hunk: Webpack.getModule('members').hunk
+  ...getModule('attachment'),
+  ...getModule('members'),
+  hunk: getModule('members').hunk
 };
 
 module.exports = components;

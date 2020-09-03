@@ -1,19 +1,15 @@
-// eslint-disable-next-line no-unused-vars
-const __typings__ = require('@typings');
-
 module.exports = {
-  // Modules
-  Classes: require('./classes'),
-  Compilers: require('./compilers'),
-  Components: require('./components'),
-  Constants: require('./constants'),
-  Discord: require('./discord'),
-  Entities: require('./entities'),
-  HTTP: require('./http'),
-  Localize: require('./localize/Messages'),
-  Patcher: require('./patcher'),
-  React: require('./react/React'),
-  ReactDOM: require('./react/ReactDOM'),
-  Util: require('./util'),
-  Webpack: require('./webpack')
+  compilers: require('./compilers'),
+  components: require('./components'),
+  constants: require('./constants'),
+  discord: require('./discord'),
+  entities: require('./entities'),
+  http: require('./http'),
+  i18n: require('./i18n'),
+  // @todo Merge this with the modal Component
+  modal: require('./modal'),
+  patcher: require('./patcher'),
+  react: require('./react'),
+  utilities: require('./utilities'),
+  webpack: require('./webpack')
 };

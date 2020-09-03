@@ -1,14 +1,14 @@
-const Webpack = require('@webpack');
-const Util = require('@util');
+const { object: { excludeProperties } } = require('@utilities');
+const { getModule } = require('@webpack');
 
 const attachments = require('./attachments');
 
-const chat = {
-  ...Webpack.getModule('pie'),
-  ...Webpack.getModule('poop'),
-  textruler: Webpack.getModule('emoji').textruler,
-  alpha: Webpack.getModule('emoji').textrudler,
-  ...Util.Object.removeEntriesByKey(Webpack.getModule('chat'), 'chat'),
+module.exports = {
+  ...getModule('pie'),
+  ...getModule('poop'),
+  textruler: getModule('emoji').textruler,
+  alpha: getModule('emoji').textrudler,
+  ...excludeProperties(getModule('chat'), 'chat'),
   iconActiveLarge: 'iconActiveLarge-2nzn9z',
   iconActiveMedium: 'iconActiveMedium-1UaEIR',
   iconActiveMini: 'iconActiveMini-3PzjMn',
@@ -18,5 +18,3 @@ const chat = {
   markup: 'markup-2BOw-j',
   attachments
 };
-
-module.exports = chat;

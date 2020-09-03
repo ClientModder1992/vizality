@@ -1,8 +1,8 @@
-const Webpack = require('@webpack');
+const { getModule } = require('@webpack');
 
 const plugins = {
-  ...Webpack.getModule('attachment'),
-  ...Webpack.getModule('members'),
+  ...getModule('attachment'),
+  ...getModule('members'),
   test: 'iconActiveLarge-2nzn9z',
   test2: 'iconActiveMedium-1UaEIR',
   test3: 'iconActiveMini-3PzjMn',

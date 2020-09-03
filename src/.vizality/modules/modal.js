@@ -6,11 +6,13 @@ module.exports = {
    * @param {React.Component|function(): React.Element} Component
    */
   open: (Component) => {
-    modal.push(class VizalityModal extends React.Component {
-      render () {
-        return React.createElement(Component);
+    modal.push(
+      class VizalityModal extends React.Component {
+        render () {
+          return React.createElement(Component);
+        }
       }
-    });
+    );
   },
 
   /**
