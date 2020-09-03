@@ -27,6 +27,7 @@
     "@discord": "src/.vizality/modules/discord",
     "@entities": "src/.vizality/modules/entities",
     "@http": "src/.vizality/modules/http",
+    "@i18n": "src/.vizality/modules/i18n",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
     "@react": "src/.vizality/modules/react",

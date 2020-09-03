@@ -13,6 +13,7 @@
       "@discord": [ "./.vizality/modules/discord" ],
       "@entities": [ "./.vizality/modules/entities" ],
       "@http": [ "./.vizality/modules/http" ],
+      "@i18n": [ "./.vizality/modules/i18n" ],
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
       "@react": [ "./.vizality/modules/react" ],
