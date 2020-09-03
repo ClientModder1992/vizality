@@ -1,75 +1,95 @@
-const { Util, Webpack, Patcher, Entities: { Plugin } } = require('@modules');
+const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
+const { React, getModule, getModules, getModuleByDisplayName } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
+const { Plugin } = require('@entities');
 
 module.exports = class Router extends Plugin {
   async onStart () {
-    await this._injectRouter();
-    this._listener = this._rerender.bind(this);
-    vizality.api.router.on('routeAdded', this._listener);
-    vizality.api.router.on('routeRemoved', this._listener);
-    setImmediate(() => vizality.api.router.restorePrevious());
+    await this.injectRouter();
+    await this.injectViews();
+    await this.injectSidebar();
+    this.forceRouterUpdate();
+    vizality.api.router.on('routeAdded', this.forceRouterUpdate);
+    vizality.api.router.on('routeRemoved', this.forceRouterUpdate);
   }
 
   onStop () {
-    vizality.api.router.off('routeAdded', this._listener);
-    vizality.api.router.off('routeRemoved', this._listener);
-    Patcher.unpatch('vz-router-route-side');
-    Patcher.unpatch('vz-router-route');
-    Patcher.unpatch('vz-router-router');
+    vizality.api.router.off('routeAdded', this.forceRouterUpdate);
+    vizality.api.router.off('routeRemoved', this.forceRouterUpdate);
+    unpatch('vz-router-routes');
+    unpatch('vz-router-views');
+    unpatch('vz-router-sidebar');
+    this.forceRouterUpdate();
   }
 
-  async _injectRouter () {
-    const FluxViewsWithMainInterface = Webpack.getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
-    const ViewsWithMainInterface = FluxViewsWithMainInterface
-      .prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
-    const { container } = Webpack.getModule('container', 'downloadProgressCircle');
-    const RouteRenderer = Webpack.getOwnerInstance(await Util.DOM.waitForElement(`.${container.split(' ')[0]}`));
-    Patcher.patch('vz-router-route', RouteRenderer.__proto__, 'render', (_, res) => {
-      const { children: routes } = Util.React.findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
+  async injectRouter () {
+    const { container } = await getModule('container', 'downloadProgressCircle', true);
+    const RouteRenderer = getOwnerInstance(await waitForElement(`.${container.split(' ')[0]}`));
+    patch('vz-router-routes', RouteRenderer.__proto__, 'render', (_, res) => {
+      const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
+
       routes.push(
         ...vizality.api.router.routes.map(route => ({
           ...routes[0],
           props: {
             // @todo: Error boundary (?)
-            render: () => Webpack.React.createElement(route.render),
+            render: () => React.createElement(route.render),
             path: `/_vizality${route.path}`
           }
         }))
       );
       return res;
     });
+  }
 
-    Patcher.patch('vz-router-route-side', RouteRenderer.__proto__, 'render', function (args) {
-      const renderer = this.renderChannelSidebar;
-      this.renderChannelSidebar = (props) => {
-        const rte = vizality.api.router.routes.find(r => r.path === props.location.pathname.slice(11));
-        if (rte && rte.noSidebar) {
-          return null;
-        }
-        return renderer.call(this, props);
-      };
-      return args;
-    }, true);
+  async injectViews () {
+    const FluxifiedViews = await getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)', true);
+    const Views = FluxifiedViews.prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
 
-    Patcher.patch('vz-router-router', ViewsWithMainInterface.prototype, 'render', (_, res) => {
-      const routes = Util.React.findInTree(res, n => (
-        Array.isArray(n) && n[0] &&
-        n[0].key &&
-        n[0].props.path && n[0].props.render
-      ));
+    patch('vz-router-views', Views.prototype, 'render', (args, res) => {
+      const routes = findInTree(res, n => Array.isArray(n) && n[0] && n[0].key && n[0].props.path && n[0].props.render);
 
       routes[routes.length - 1].props.path = [
         ...new Set(routes[routes.length - 1].props.path.concat(vizality.api.router.routes.map(route => `/_vizality${route.path}`)))
       ];
       return res;
     });
-
-    RouteRenderer.forceUpdate();
-    this._rerender();
   }
 
-  async _rerender () {
-    const { app } = Webpack.getModules([ 'app' ]).find(m => Object.keys(m).length === 1);
-    const instance = Util.React.getOwnerInstance(await Util.DOM.waitForElement(`.${app.split(' ')[0]}`));
-    Util.React.findInTree(instance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
+  async injectSidebar () {
+    const { panels } = await getModule('panels', true);
+    const instance = getOwnerInstance(await waitForElement(`.${panels}`));
+
+    patch('vz-router-sidebar', instance._reactInternalFiber.type.prototype, 'render', (_, res) => {
+      const renderer = res.props.children;
+
+      res.props.children = (props) => {
+        const rendered = renderer(props);
+        const className = rendered && rendered.props && rendered.props.children && rendered.props.children.props && rendered.props.children.props.className;
+        if (className && className.startsWith('sidebar-') && rendered.props.value.location.pathname.startsWith('/_vizality')) {
+          const rawPath = rendered.props.value.location.pathname.substring('_vizality'.length + 1);
+          const route = vizality.api.router.routes.find(rte => rawPath.startsWith(rte.path));
+          if (route && route.sidebar) {
+            rendered.props.children.props.children[0] = React.createElement(route.sidebar);
+          } else {
+            rendered.props.children = null;
+          }
+        }
+        return rendered;
+      };
+      return res;
+    });
+  }
+
+  async forceRouterUpdate () {
+    // Views
+    const { app } = getModules([ 'app' ]).find(m => Object.keys(m).length === 1);
+    const viewsInstance = getOwnerInstance(await waitForElement(`.${app}`));
+    findInTree(viewsInstance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
+
+    // Routes
+    const { container } = await getModule('container', 'downloadProgressCircle', true);
+    const routesInstance = getOwnerInstance(await waitForElement(`.${container}`));
+    routesInstance.forceUpdate();
   }
 };

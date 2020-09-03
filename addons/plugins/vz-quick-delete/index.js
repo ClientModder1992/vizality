@@ -1,4 +1,4 @@
-const { react : { findInReactTree } } = require('@util');
+const { react : { findInReactTree } } = require('@utilities');
 const { React, getModule } = require('@webpack');
 const { Tooltip, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
@@ -42,7 +42,7 @@ class QuickDelete extends Plugin {
             },
             React.createElement(Icon, {
               wrapperClassName: classes.icon,
-              type: 'trash',
+              name: 'Science',
               onClick: () => deleteMessage(props.channel.id, props.message.id)
             })
           )

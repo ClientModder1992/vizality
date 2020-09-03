@@ -1,21 +1,20 @@
-/* eslint-disable brace-style *//* eslint-disable no-unused-vars *//* eslint-disable jsdoc/no-undefined-types */
-const childProcess = require('child_process');
-const util = require('util');
-const __typings__ = require('@typings');
-const Constants = require('@constants');
-const Updatable = require('@updatable');
-const Compilers = require('@compilers');
-const Webpack = require('@webpack');
-const { Misc: { sleep } } = require('@util');
+const { getModule, getModuleByPrototypes, initialize } = require('@webpack');
+const { sleep, logger: { log, warn, error } } = require('@utilities');
+const { CDN: { IMAGES_CDN }, DIR: { ROOT_DIR, PLUGINS_DIR, THEMES_DIR } } = require('@constants');
+const { jsx: JsxCompiler } = require('@compilers');
+const { Updatable } = require('@entities');
 
-const exec = util.promisify(childProcess.exec);
+const { promisify } = require('util');
+const cp = require('child_process');
+const { resolve } = require('path');
+const exec = promisify(cp.exec);
 
 const AddonManager = require('./managers/addon');
 const StyleManager = require('./managers/styleManager');
 const APIManager = require('./managers/api');
 
 const FluxModule = async () => {
-  const Flux = Webpack.getModule('Store', 'PersistedStore');
+  const Flux = getModule('Store', 'PersistedStore');
   Flux.connectStoresAsync = (stores, fn) => (Component) =>
     require('@components').AsyncComponent.from((async () => {
       const awaitedStores = await Promise.all(stores);
@@ -26,7 +25,7 @@ const FluxModule = async () => {
 
 const JsxCompilerModule = async () => {
   require.extensions['.jsx'] = (module, filename) => {
-    const compiler = new Compilers.jsx(filename);
+    const compiler = new JsxCompiler(filename);
     const compiled = compiler.compile();
     module._compile(compiled, filename);
   };
@@ -37,30 +36,53 @@ const modules = [ FluxModule, JsxCompilerModule ];
 const currentWebContents = require('electron').remote.getCurrentWebContents();
 
 /**
+ * @typedef VizalityAPI
+ * @property {CommandsAPI} commands
+ * @property {SettingsAPI} settings
+ * @property {NoticesAPI} notices
+ * @property {KeybindsAPI} keybinds
+ * @property {RouterAPI} router
+ * @property {ConnectionsAPI} connections
+ * @property {I18nAPI} i18n
+ * @property {RPCAPI} rpc
+ */
+
+/**
+ * @typedef Git
+ * @property {String} upstream
+ * @property {String} branch
+ * @property {String} revision
+ */
+
+/**
  * Main Vizality class
  * @type {Vizality}
  * @property {VizalityAPI} api
- * @property {AddonManager} manager
- * @property {VizalityModules} modules
- * @property {Git} git
- * @property {boolean} _ready
+ * @property {StyleManager} styleManager
+ * @property {PluginManager} pluginManager
  * @property {APIManager} _apiManager
+ * @property {Git} git
+ * @property {Boolean} _initialized
  */
-module.exports = class Vizality extends Updatable {
+class Vizality extends Updatable {
   constructor () {
-    super(Constants.Directories.ROOT, '', 'vizality');
+    super(ROOT_DIR, '', 'vizality');
 
     this.api = {};
     this.modules = {};
     this.manager = {};
-    this.git = { upstream: '???', branch: '???', revision: '???' };
+    this.git = {
+      upstream: '???',
+      branch: '???',
+      revision: '???'
+    };
 
     this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
-    this.manager.themes = new AddonManager('themes', Constants.Directories.THEMES);
-    this.manager.plugins = new AddonManager('plugins', Constants.Directories.PLUGINS);
+    this.manager.themes = new AddonManager('themes', THEMES_DIR);
+    this.manager.plugins = new AddonManager('plugins', PLUGINS_DIR);
 
-    this._ready = false;
+    this._initialized = false;
     this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
@@ -74,17 +96,18 @@ module.exports = class Vizality extends Updatable {
 
   // Initialization
   async initialize () {
-    // const isOverlay = (/overlay/).test(location.pathname);
-
+    const isOverlay = (/overlay/).test(location.pathname);
+    if (isOverlay) { // eh
+      // await sleep(250);
+    }
     await sleep(1e3);
 
     // Webpack & Modules
-    await Webpack.initialize();
+    await initialize();
     await Promise.all(modules.map(mdl => mdl()));
 
     // Start
     await this.start();
-
     this.git = await this.manager.plugins.get('vz-updater').getGitInfo();
 
     // Used in src/preload/main
@@ -93,38 +116,74 @@ module.exports = class Vizality extends Updatable {
 
   // Startup
   async start () {
-    // console.clear(); // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
-    const startupBanner = `${Constants.HTTP.IMAGES}/console-startup-banner.gif`;
+    // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
+    // console.clear();
+
+    const startupBanner = `${IMAGES_CDN}/console-startup-banner.gif`;
+
     // Startup banner
-    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 116px 350px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
 
     // APIs
     await this.manager.apis.initialize();
-    this.settings = vizality.api.settings.buildCategoryObject('vz-general');
+    this.settings = vizality.api.settings.buildCategoryObject('vz-settings');
     this.emit('settingsReady');
 
-    // @todo: Make this and _removeDiscordLogs settings options
+    // @todo: Make this and removeDiscordLogs settings options
 
-    /*
-     * Patch Discord's console logs
-     * this._patchDiscordLogs();
-     */
+    // Patch Discord's console logs
+    // this.patchDiscordLogs();
 
     // Remove Discord's console logs
-    this._removeDiscordLogs();
+    this.removeDiscordLogs();
 
     // Setting up the modules for the global vizality object
-    const modules = [ 'webpack', 'classes', 'constants', 'localize', 'discord', 'util' ];
+    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'utilities' ];
 
     for (const mdl of modules) {
       const Mdl = require(`@${mdl}`);
       Object.assign(this.modules, { [mdl]: Mdl });
     }
 
-    this.manager.themes.load(); // Themes
-    await this.manager.plugins.load(); // Plugins
+    /*
+     * const Webpack = require('@webpack');
+     * Object.getOwnPropertyNames(Webpack)
+     *   .forEach(e => {
+     *     if (!e.indexOf('get') || !e.indexOf('find') || !e.indexOf('_')) {
+     *       Modules.webpack[e] = Webpack[e];
+     *     } else {
+     *       Modules.webpack.modules[e] = Webpack[e];
+     *     }
+     *   });
+     */
 
-    this._ready = true;
+    // Themes
+    this.manager.themes.load();
+
+    // Plugins
+    await this.manager.plugins.load();
+
+    this._initialized = true;
+
+    /**
+     *
+     *
+     * @returns {*}
+     */
+    (() => {
+      const { wrapper } = getModule('wrapper', 'unreadMentionsBar');
+      const { listItem } = getModule('guildsError', 'selected');
+      const { blobContainer } = getModule('blobContainer');
+      return new Promise(resolve => {
+        const checkForGuilds = () => {
+          if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
+            return resolve(vizality.api.router.go('/dashboard'));
+          }
+          setTimeout(checkForGuilds, 100);
+        };
+        setTimeout(checkForGuilds, 100);
+      });
+    })();
 
     // This needs to be here, after the Webpack modules have been initialized
     const { route: { getCurrentRoute } } = require('@discord');
@@ -138,58 +197,64 @@ module.exports = class Vizality extends Updatable {
 
   // Vizality shutdown
   async stop () {
-    this._ready = false;
+    this._initialized = false;
 
     // Unpatch Discord's console logs
-    this._unpatchDiscordLogs();
+    this.unpatchDiscordLogs();
 
-    await this.manager.plugins.unload(); // Plugins
-    this.manager.themes.unload(); // Themes
-    await this.manager.apis.unload(); // APIs
+    // Plugins
+    await this.manager.plugins.unload();
+
+    // Style Manager
+    this.manager.themes.unload();
+
+    // APIs
+    await this.manager.apis.unload();
   }
 
   // Bad code
   async _hookRPCServer () {
     const _this = this;
 
-    while (!global.DiscordNative) await sleep(1);
+    while (!global.DiscordNative) {
+      await sleep(1);
+    }
 
     await DiscordNative.nativeModules.ensureModule('discord_rpc');
     const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
     const { createServer } = discordRpc.RPCWebSocket.http;
-
-    discordRpc.RPCWebSocket.http.createServer = () => {
+    discordRpc.RPCWebSocket.http.createServer = function () {
       _this.rpcServer = createServer();
       return _this.rpcServer;
     };
   }
 
   // Patch Discord's logs to follow Vizality's log style
-  _patchDiscordLogs () {
-    const Log = Webpack.getModuleByPrototypes([ '_log' ]);
+  patchDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
 
     this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
-    Log.prototype._log = function (type, ...originalArgs) {
+    Log.prototype._log = function (firstArg, ...originalArgs) {
       const module = 'Discord';
       const submodule = this.name;
 
-      if (type === 'info' || type === 'log') {
-        Util.Logger.log(module, submodule, null, ...originalArgs);
+      if (firstArg === 'info' || firstArg === 'log') {
+        log(module, submodule, null, ...originalArgs);
       }
 
-      if (type === 'error' || type === 'trace') {
-        Util.Logger.error(module, submodule, null, ...originalArgs);
+      if (firstArg === 'error' || firstArg === 'trace') {
+        error(module, submodule, null, ...originalArgs);
       }
 
-      if (type === 'warn') {
-        Util.Logger.warn(module, submodule, null, ...originalArgs);
+      if (firstArg === 'warn') {
+        warn(module, submodule, null, ...originalArgs);
       }
     };
   }
 
   // Remove Discord's logs entirely
-  _removeDiscordLogs () {
-    const Log = Webpack.getModuleByPrototypes([ '_log' ]);
+  removeDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
 
     this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
     // eslint-disable-next-line no-empty-function
@@ -197,8 +262,8 @@ module.exports = class Vizality extends Updatable {
   }
 
   // Unpatch Discord's logs back to the default style
-  _unpatchDiscordLogs () {
-    const Log = Webpack.getModuleByPrototypes([ '_log' ]);
+  unpatchDiscordLogs () {
+    const Log = getModuleByPrototypes([ '_log' ]);
     Log.prototype._log = vizality._originalLogFunc._log;
   }
 
@@ -214,6 +279,14 @@ module.exports = class Vizality extends Updatable {
         });
       }
     };
+  }
+
+  /**
+   * heheheh.
+   * @param {snowflake} userId sadasd
+   */
+  pie (userId) {
+
   }
 
   async _update (force = false) {
@@ -243,4 +316,6 @@ module.exports = class Vizality extends Updatable {
     }
     return success;
   }
-};
+}
+
+module.exports = Vizality;
