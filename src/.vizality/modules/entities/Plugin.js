@@ -1,9 +1,10 @@
 const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
 const { resolveCompiler } = require('@compilers');
 const { DIR: { PLUGINS_DIR } } = require('@constants');
+const watch = require('node-watch');
 
 const { existsSync } = require('fs');
-const { join } = require('path');
+const { join, win32, extname } = require('path');
 
 const Updatable = require('./Updatable');
 
@@ -20,6 +21,18 @@ module.exports = class Plugin extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
     this.styles = {};
     this._ready = false;
+
+    /*
+     * @todo Have this be a toggleable developer setting, default to off. Also have a notice
+     * warning about potential performance issues, though I haven't encountered any yet, the
+     * potential still exists from the extra overhead.
+     * Setting up the hotreload
+     */
+    this._watcher = watch(this.entityPath, { recursive: true }, (evt, file) => {
+      // Don't do anything if it's a Sass/CSS file or the manifest file
+      if (win32.basename(file) === 'manifest.json' || extname(file) === '.scss' || extname(file) === '.css') return;
+      vizality.manager.plugins.remount(this.entityID);
+    });
 
     this._module = 'Plugin';
     this._submodule = this.constructor.name;
@@ -118,6 +131,8 @@ module.exports = class Plugin extends Updatable {
 
         await this.onStart();
 
+        console.log('_watcher', this._watcher);
+
         const after = performance.now();
 
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');
@@ -140,15 +155,14 @@ module.exports = class Plugin extends Updatable {
       }
 
       if (typeof this.onStop === 'function') {
-        console.log(this);
         await this.onStop();
       }
-
       this.log('Plugin unloaded');
     } catch (e) {
       this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
     } finally {
       this._ready = false;
+      this._watcher.close();
     }
   }
 
