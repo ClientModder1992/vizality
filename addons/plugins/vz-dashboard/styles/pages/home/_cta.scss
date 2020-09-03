@@ -1,0 +1,149 @@
+@use '../../../../../../src/.vizality/libraries/sass' as *;
+
+// @todo Fix him at varying resolutions and rename class
+.bob {
+  @include size(400px, auto);
+  position: absolute;
+  right: 100px;
+  bottom: -20px;
+  color: #fff;
+}
+.vizality-dashboard-page-home-cta {
+  .vizality-icon.vizality{
+    color: #fff;
+    stroke: #fff;
+    path {
+      stroke-dasharray: 150;
+      animation: strokeSVG 1s ease-in forwards, fillSVG .5s .5s ease-in forwards;
+      stroke-width: 10;
+    }
+  }  
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  &-overlay-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    // Fix a bug with a line showing through behind the wave divider when hovering
+    // over the feature cards that utilize transforms.
+    height: calc(100% - 1px);
+    background: url(https://i.imgur.com/fIIzj3q.png);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 150%;
+    animation: backgroundPositionMoveDiagonal 100s ease infinite;
+  }
+  &-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    overflow: hidden;
+    background-size: 400% 400%;
+    animation: backgroundPositionMoveDiagonal 15s ease infinite;
+    opacity: .9;
+  }
+  &-content {
+    max-width: 800px;
+    // About the height of the wave divider
+    margin: -100px 0 0 5%;
+    z-index: 1;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeShortSlideInFromTop 1.5s forwards;
+    &-icon-container {
+      width: 200px;
+      flex: 1 0 auto;
+      margin-right: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      padding-top: 200px;
+      height: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    &-icon {
+      margin-left: 5px;
+      height: 70%;
+      width: 70%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      stroke-width: 5px;
+    }
+    &-header {
+      &-welcome {
+        font-size: 40px;
+        font-weight: 700;
+        color: #fff;
+      }
+      &-subtext {
+        font-size: 20px;
+        line-height: 1.2;
+        margin-top: 10px;
+        color: #fff;
+        opacity: .9;
+      }
+    }
+    &-buttons-wrapper {
+      display: flex;
+      margin-top: 30px;
+    }
+    &-button {
+      height: 40px;
+      background: #fff!important;
+      transition: transform .3s, box-shadow .3s;
+      border-radius: 1000px;
+      // contents
+      > div {
+        padding: 0 15px;
+        font-size: 18px;
+      }
+      &:hover {
+        box-shadow: 0 0 50px rgba(255, 255, 255, .3);
+        transform: translateY(-2px);
+      }
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// @todo Move this and wave styles to main Vizality styles
+.vizality-wave-divider {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+  &-svg {
+    display: block;
+    &-path {
+      animation: vz-wave-divider 10s linear infinite alternate;
+    }
+  }
+}
+@keyframes vz-wave-divider {
+	0% {
+		d: path("M826.337463,25.5396311 C670.970254,58.655965 603.696181,68.7870267 447.802481,35.1443383 C293.342778,1.81111414 137.33377,1.81111414 0,1.81111414 L0,150 L1920,150 L1920,1.81111414 C1739.53523,-16.6853983 1679.86404,73.1607868 1389.7826,37.4859505 C1099.70117,1.81111414 981.704672,-7.57670281 826.337463,25.5396311 Z")
+	}
+	50% {
+		d: path("M655.558582,28.4898877 C500.191373,61.6062216 422.833785,83.5422763 266.940085,49.8995879 C112.480383,16.5663637 84.0992497,8.02840272 0,44.7243294 L0,150.727527 L1920,150.727527 L1920,49.8995879 C1580.91676,-34.8808285 1438.10804,73.6768193 1148.0266,38.0019829 C857.945166,2.32714659 810.925791,-4.62644617 655.558582,28.4898877 Z")
+	}
+	to {
+		d: path("M842.322034,38.0019829 C686.954825,71.1183168 623.386282,53.08497 467.492582,19.4422816 C313.032879,-13.8909426 84.0992497,8.02840272 0,44.7243294 L0,150.727527 L1920,150.727527 L1920,76.8685643 C1512.23604,-35.3595639 1568.70222,67.4289432 1278.62078,31.7541069 C988.539347,-3.92072949 997.689243,4.88564905 842.322034,38.0019829 Z")
+	}
+}
