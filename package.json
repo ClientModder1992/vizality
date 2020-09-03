@@ -8,8 +8,9 @@
   "scripts": {
     "compile-sass": "node src/compile",
     "lint": "eslint --ext js --ext jsx src",
-    "inject": "node src/inject/index.js inject",
-    "uninject": "node src/inject/index.js uninject"
+    "inject": "node src/inject inject",
+    "uninject": "node src/inject uninject",
+    "generate-docs": "jsdoc --configure .jsdoc.json"
   },
   "repository": "https://github.com/vizality/vizality.git",
   "license": "GPL-3.0",
