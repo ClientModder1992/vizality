@@ -1,8 +1,9 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { DIR: { ROOT_DIR } } = require('@constants');
-const { Confirm } = require('@components/modal');
+const { Confirm } = require('@components');
 const { Plugin } = require('@entities');
+const { joinClassNames } = require('@utilities');
 
 const { promises: { readFile } } = require('fs');
 const { promisify } = require('util');
@@ -10,18 +11,16 @@ const cp = require('child_process');
 const { join } = require('path');
 const exec = promisify(cp.exec);
 
-const Settings = require('./components/Settings');
 const Changelog = join(ROOT_DIR, 'CHANGELOG.md');
 
 module.exports = class Updater extends Plugin {
   constructor () {
     super();
-
     this.changelog = {
       image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
-      footer: 'Missed an update? [Check out our previous change logs](https://google.com)'
+      footer: 'Missed an update? [Check out our previous change logs](https://google.com)',
+      id: 'updates-2019-02-15'
     };
-
     this.checking = false;
     this.cwd = { cwd: ROOT_DIR };
   }
@@ -32,10 +31,10 @@ module.exports = class Updater extends Plugin {
     this.settings.set('updating', false);
     this.settings.set('awaiting_reload', false);
     this.injectStyles('style.scss');
-    vizality.api.settings.registerSettings('Updater', {
-      category: this.entityID,
-      label: 'Updater', // Note to self: add this string to i18n last :^)
-      render: Settings
+
+    vizality.api.actions.registerAction({
+      name: 'openLatestChangelog',
+      action: this.openLatestChangelog.bind(this)
     });
 
     let minutes = Number(this.settings.get('interval', 15));
@@ -49,9 +48,8 @@ module.exports = class Updater extends Plugin {
 
     const lastChangelog = this.settings.get('last_changelog', '');
 
-    // @todo Figured out a better way to not hardcode the changelog id
-    if (lastChangelog !== 'updates-2019-02-15') {
-      this.openChangelogs();
+    if (this.changelog.id !== lastChangelog) {
+      this.openLatestChangelog();
     }
   }
 
@@ -276,7 +274,7 @@ module.exports = class Updater extends Plugin {
   }
 
   // Change Log
-  async openChangelogs () {
+  async openLatestChangelog () {
     const changelogObject = await this.formatChangelog();
     const ChangeLog = await this._getChangeLogsComponent();
     openModal(() => React.createElement(ChangeLog, {
@@ -319,14 +317,18 @@ module.exports = class Updater extends Plugin {
         }
 
         renderFooter () {
-          const { markdownToReact } = getModule('markdownToReact');
+          const { anchor, anchorUnderlineOnHover } = getModule('anchorUnderlineOnHover');
+          const { colorStandard } = getModule('colorStandard');
           const footer = super.renderFooter();
-          footer.props.children = markdownToReact(_this.changelog.footer, { inline: true });
+          footer.props.children =
+            React.createElement('div', {
+              className: joinClassNames('vz-changelog-modal-footer', colorStandard)
+            }, 'Missed an update? ',
+            React.createElement('a', {
+              className: joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover),
+              onClick: () => vizality.api.router.go('/dashboard/changelog')
+            }, 'Check out our full changelog history.'));
           return footer;
-        }
-
-        componentWillUnmount () {
-          _this.settings.set('last_changelog', _this.changelog.id);
         }
       }
 
@@ -344,14 +346,14 @@ module.exports = class Updater extends Plugin {
 
     const body = log.slice(log.search(date) + 11, log.search(previousDate) - 13).trim();
 
-    Object.assign(this.changelog, {
-      id: `updates-${date}`,
+    this.settings.set('last_changelog', this.changelog.id);
+
+    return {
+      id: this.changelog.id,
       date,
       locale: 'en-us',
       revision: 1,
       body
-    });
-
-    return this.changelog;
+    };
   }
 };

@@ -1,6 +1,5 @@
 const { React, getModuleByDisplayName, getModule } = require('@webpack');
 const { AsyncComponent, Icon } = require('@components');
-const { route: { goTo } } = require('@discord');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 
@@ -10,19 +9,19 @@ class MainNav extends React.Component {
       <nav className='vizality-main-nav'>
         <div className='vizality-main-nav__section-left'>
           <div className='vizality-main-nav__logo'></div>
-          <div className='vizality-main-nav__link' onClick={() => goTo('dm')}>
+          <div className='vizality-main-nav__link' onClick={() => void 0}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='mail'></Icon>
             <p className='vizality-main-nav__link-text'>Messages</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => goTo('discover')}>
+          <div className='vizality-main-nav__link' onClick={() => void 0}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='discover'></Icon>
             <p className='vizality-main-nav__link-text'>Discover</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => goTo('friends')}>
+          <div className='vizality-main-nav__link' onClick={() => void 0}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='users'></Icon>
             <p className='vizality-main-nav__link-text'>Friends</p>
           </div>
-          <div className='vizality-main-nav__link' onClick={() => goTo('library')}>
+          <div className='vizality-main-nav__link' onClick={() => void 0}>
             <Icon wrapperClassName='vizality-main-nav__link-icon-wrapper' type='backpack'></Icon>
             <p className='vizality-main-nav__link-text'>Library</p>
           </div>

@@ -131,8 +131,6 @@ module.exports = class Plugin extends Updatable {
 
         await this.onStart();
 
-        console.log('_watcher', this._watcher);
-
         const after = performance.now();
 
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');

@@ -3,16 +3,14 @@ const { Icon } = require('@components');
 
 const { remote: { getCurrentWebContents } } = require('electron');
 
-const store = require('../../../api/settingsStore/store');
-
 class Titlebar extends React.PureComponent {
   componentDidMount () {
-    this._onSettingsChange = () => this.forceUpdate();
-    store.addChangeListener(this._onSettingsChange);
+    // this._onSettingsChange = () => this.forceUpdate();
+    // store.addChangeListener(this._onSettingsChange);
   }
 
   componentWillMount () {
-    store.removeChangeListener(this._onSettingsChange);
+    // store.removeChangeListener(this._onSettingsChange);
   }
 
   render () {
