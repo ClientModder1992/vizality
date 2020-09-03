@@ -255,7 +255,6 @@
   "settings": {
     "jsdoc": {
       "preferredTypes": {
-        "object": "Object",
         "key": "key",
         "value": "value",
 
