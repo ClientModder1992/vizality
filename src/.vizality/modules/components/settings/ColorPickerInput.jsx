@@ -1,13 +1,13 @@
-const Webpack = require('@webpack');
+const { React, getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE_COLORS } } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const ColorPicker = AsyncComponent.from(Webpack.getModuleByDisplayName('ColorPicker', true));
-const FormTitle = AsyncComponent.from(Webpack.getModuleByDisplayName('FormTitle', true));
-const Slider = AsyncComponent.from(Webpack.getModuleByDisplayName('Slider', true));
+const ColorPicker = AsyncComponent.from(getModuleByDisplayName('ColorPicker', true));
+const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
-module.exports = class ColorPickerInput extends Webpack.React.PureComponent {
+class ColorPickerInput extends React.PureComponent {
   constructor (props) {
     super(props);
     const color = props.value || props.default || 0;
@@ -25,8 +25,8 @@ module.exports = class ColorPickerInput extends Webpack.React.PureComponent {
     return (
       <FormItem title={title} note={note} required={required} noteHasMargin>
         <ColorPicker
-          colors={defaultColors || Webpack.constants.ROLE_COLORS.map(c => c - 16777216)}
-          defaultColor={def || Webpack.constants.DEFAULT_ROLE_COLOR - 16777216}
+          colors={defaultColors || ROLE_COLORS.map(c => c - 16777216)}
+          defaultColor={def || DEFAULT_ROLE_COLOR - 16777216}
           onChange={s => this.handleChange(s, this.state.alpha)}
           disabled={disabled}
           value={value}
@@ -37,7 +37,7 @@ module.exports = class ColorPickerInput extends Webpack.React.PureComponent {
   }
 
   renderOpacity () {
-    const { marginTop8, marginTop20 } = Webpack.getModule('marginTop20');
+    const { marginTop8, marginTop20 } = getModule('marginTop20');
     return (
       <>
         <FormTitle className={marginTop8}>Opacity</FormTitle>
@@ -56,4 +56,6 @@ module.exports = class ColorPickerInput extends Webpack.React.PureComponent {
   handleChange (solid, alpha) {
     this.props.onChange(solid + (alpha << 24));
   }
-};
+}
+
+module.exports = ColorPickerInput;

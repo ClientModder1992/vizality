@@ -1,4 +1,4 @@
-const Webpack = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 
@@ -10,16 +10,13 @@ require('fs')
     exports[moduleName] = require(`${__dirname}/${filename}`);
   });
 
-// @todo Make this a separate file?
-
 // Add some util components
 Object.assign(exports, {
-  SwitchItem: AsyncComponent.from(Webpack.getModuleByDisplayName('SwitchItem', true))
+  SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))
 });
 
 // Re-export module properties
 (async () => {
-  const SwitchItem = await Webpack.getModuleByDisplayName('SwitchItem', true, true);
+  const SwitchItem = await getModuleByDisplayName('SwitchItem', true, true);
   [ 'Sizes', 'Themes' ].forEach(prop => exports.SwitchItem[prop] = SwitchItem[prop]);
 })();
-

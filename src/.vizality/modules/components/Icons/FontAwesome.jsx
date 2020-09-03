@@ -1,6 +1,6 @@
-const Webpack = require('@webpack');
+const { React } = require('@webpack');
 
-module.exports = Webpack.React.memo(
+module.exports = React.memo(
   (props) => {
     const styles = {
       regular: 'r',

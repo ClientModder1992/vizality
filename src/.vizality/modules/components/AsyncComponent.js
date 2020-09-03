@@ -1,36 +1,40 @@
-const Webpack = require('@webpack');
+const { React } = require('@webpack');
 
-module.exports = class AsyncComponent extends Webpack.React.PureComponent {
+class AsyncComponent extends React.PureComponent {
   constructor (props) {
     super(props);
-    this.state = { Component: null };
+    this.state = {
+      Component: null
+    };
   }
 
   async componentDidMount () {
-    this.setState({ Component: await this.props._provider() });
+    this.setState({
+      Component: await this.props._provider()
+    });
   }
 
   render () {
     const { Component } = this.state;
     if (Component) {
-      return Webpack.React.createElement(Component, Object.assign({}, this.props, this.props._pass));
+      return React.createElement(Component, Object.assign({}, this.props, this.props._pass));
     }
     return this.props._fallback || null;
   }
 
   /**
-   * Creates an AsyncComponent from a promise.
-   * @param {Promise<ReactComponent>} promise Promise of a React component
-   * @param {ReactComponent} fallback Fallback React component
-   * @returns {AsyncComponent}
+   * Creates an AsyncComponent from a promise
+   * @param {Promise} promise Promise of a React component
    */
   static from (promise, fallback) {
-    return Webpack.React.memo(
-      (props) => Webpack.React.createElement(AsyncComponent, {
+    return React.memo(
+      (props) => React.createElement(AsyncComponent, {
         _provider: () => promise,
         _fallback: fallback,
         ...props
       })
     );
   }
-};
+}
+
+module.exports = AsyncComponent;

@@ -1,22 +1,20 @@
-const Webpack = require('@webpack');
+const { React, getModuleByDisplayName } = require('@webpack');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
-const Area = AsyncComponent.from(Webpack.getModuleByDisplayName('TextArea', true));
+const TextArea = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
 
-module.exports = class TextArea extends Webpack.React.PureComponent {
-  render () {
-    const { children: title, note, required } = this.props;
-    delete this.props.children;
+module.exports = React.memo(props => {
+  const { children: title, note, required } = props;
+  delete this.props.children;
 
-    return (
-      <FormItem title={title} note={note} required={required}>
-        <Area {...this.props} />
-      </FormItem>
-    );
-  }
-};
+  return (
+    <FormItem title={title} note={note} required={required} noteHasMargin>
+      <TextArea {...props}/>
+    </FormItem>
+  );
+});
 
 /**
  * AVAILABLE PROPS

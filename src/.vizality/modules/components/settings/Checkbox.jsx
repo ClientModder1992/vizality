@@ -1,31 +1,21 @@
-/**
- * @todo: Fix this
- *
- * const { React, getModuleByDisplayName } = require('@webpack');
- *
- * const AsyncComponent = require('../AsyncComponent');
- * const FormItem = require('./FormItem');
- */
+const { React, getModuleByDisplayName, getModule } = require('@webpack');
 
-// const Box = AsyncComponent.from(getModuleByDisplayName('Checkbox'));
+const AsyncComponent = require('../AsyncComponent');
+const Divider = require('../Divider');
 
-/*
- * class Checkbox extends React.Component {
- *   render () {
- *     const { children: title, note, required, text } = this.props;
- *     const Text = this.props.children;
- *     return (
- *       <FormItem title={title} note={note} required={required}>
- *         <Box {...this.props}>
- *           <Text children={text}/>
- *         </Box>
- *       </FormItem>
- *     );
- *   }
- * }
- *
- * module.exports = Checkbox;
- */
+const Checkbox = AsyncComponent.from(getModuleByDisplayName('Checkbox', true));
+
+module.exports = React.memo(props => {
+  const Flex = getModuleByDisplayName('Flex');
+  const { marginBottom20 } = getModule('marginBottom20');
+
+  return (
+    <Flex className={marginBottom20} direction={Flex.Direction.VERTICAL}>
+      <Checkbox {...props}/>
+      <Divider/>
+    </Flex>
+  );
+});
 
 /**
  * AVAILABLE PROPS

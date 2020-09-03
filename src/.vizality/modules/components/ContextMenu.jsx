@@ -1,7 +1,7 @@
-const Webpack = require('@webpack');
-const Util = require('@util');
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@utilities');
+const { React, getModule, contextMenu: { closeContextMenu } } = require('@webpack');
 
-module.exports = class ContextMenu extends Webpack.React.PureComponent {
+class ContextMenu extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {};
@@ -27,11 +27,11 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
       });
     }
 
-    const { default: Menu, MenuGroup } = Webpack.getModule('MenuGroup');
+    const { default: Menu, MenuGroup } = getModule('MenuGroup');
     return (
       <Menu
         navId={this.props.navId || `vz-${Math.random().toString(32).slice(2)}`}
-        onClose={Webpack.contextMenu.closeContextMenu}
+        onClose={closeContextMenu}
       >
         {this.props.itemGroups.map((items, i) => (
           <MenuGroup>
@@ -69,7 +69,7 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
   }
 
   renderButton (item, ctx) {
-    const { MenuItem } = Webpack.getModule('MenuGroup');
+    const { MenuItem } = getModule('MenuGroup');
     return (
       <MenuItem
         id={item.id || `item-${ctx.group}-${ctx.depth}-${ctx.i}`}
@@ -80,7 +80,7 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
         subtext={item.subtext}
         action={() => {
           if (item.disabled) {
-            Util.DOM.waitForElement('#app-mount > div[class] > div').then(app => Util.React.getOwnerInstance(app).shake(600, 5));
+            waitForElement('#app-mount > div[class] > div').then(app => getOwnerInstance(app).shake(600, 5));
           } else if (item.onClick) {
             item.onClick();
           }
@@ -90,7 +90,7 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
   }
 
   renderCheckbox (item, ctx) {
-    const { MenuCheckboxItem } = Webpack.getModule('MenuGroup');
+    const { MenuCheckboxItem } = getModule('MenuGroup');
     const elementKey = `active-${ctx.group}-${ctx.depth}-${ctx.i}`;
     const isStandalone = !!ctx.standalone;
     const active = this.state[elementKey] !== void 0
@@ -112,7 +112,7 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
           }
           if (isStandalone) {
             const el = e.target.closest('[role="menu"]');
-            setImmediate(() => Util.React.getOwnerInstance(el).forceUpdate());
+            setImmediate(() => getOwnerInstance(el).forceUpdate());
           } else {
             this.setState({ [elementKey]: newActive });
           }
@@ -122,8 +122,8 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
   }
 
   renderSlider (item, ctx) {
-    const { MenuControlItem } = Webpack.getModule('MenuGroup');
-    const Slider = Webpack.getModule(m => m.render && m.render.toString().includes('sliderContainer'));
+    const { MenuControlItem } = getModule('MenuGroup');
+    const Slider = getModule(m => m.render && m.render.toString().includes('sliderContainer'));
     return (
       <MenuControlItem
         id={item.id || `item-${ctx.group}-${ctx.depth}-${ctx.i}`}
@@ -144,7 +144,7 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
   }
 
   renderSubMenu (item, ctx) {
-    const { MenuItem } = Webpack.getModule('MenuGroup');
+    const { MenuItem } = getModule('MenuGroup');
     const elementKey = `items-${ctx.group}-${ctx.depth}-${ctx.i}`;
     let items = this.state[elementKey];
     if (items === void 0) {
@@ -171,4 +171,6 @@ module.exports = class ContextMenu extends Webpack.React.PureComponent {
       </MenuItem>
     );
   }
-};
+}
+
+module.exports = ContextMenu;

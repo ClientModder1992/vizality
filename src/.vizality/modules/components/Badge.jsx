@@ -1,8 +1,8 @@
-const Webpack = require('@webpack');
-const Util = require('@util');
+const { joinClassNames } = require('@utilities');
+const { React } = require('@webpack');
 
-const Badge = Webpack.React.memo(({ type, className, ...props }) =>
-  <div className={Util.Misc.joinClassNames('vizality-badge', type, className)} {...props}></div>
+const Badge = React.memo(({ type, className, ...props }) =>
+  <div className={joinClassNames('vizality-badge', type, className)} {...props}></div>
 );
 
 module.exports = Badge;
