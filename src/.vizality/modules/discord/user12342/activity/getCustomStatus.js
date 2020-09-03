@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@util');
+const { logger: { error } } = require('@utilities');
 
 const getActivitiesByType = require('./getActivitiesByType');
 const getCurrentUserId = require('../getCurrentUserId');

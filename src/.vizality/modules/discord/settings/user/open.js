@@ -1,4 +1,4 @@
-const { logger: { warn }, string: { toHeaderCase } } = require('@util');
+const { logger: { warn }, string: { toHeaderCase } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 const getSections = require('./getSections');

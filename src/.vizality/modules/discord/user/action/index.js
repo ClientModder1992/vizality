@@ -1,4 +1,4 @@
-const { logger: { log, warn, error } } = require('@util');
+const { logger: { log, warn, error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 const _module = 'Module';

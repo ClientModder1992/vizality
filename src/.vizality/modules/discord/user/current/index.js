@@ -1,4 +1,4 @@
-const { logger: { log, warn, error } } = require('@util');
+const { logger: { log, warn, error } } = require('@utilities');
 const { getModule } = require('@webpack');
 
 const _module = 'Module';
@@ -11,34 +11,40 @@ const _submodule = `Discord:User:Current`;
  * @module discord.user.current
  * @memberof discord.user
  */
-class Current {
-  static getCurrentUser () {
+const current = {
+  /**
+   * Gets the current user.
+   * @returns {User} User object
+   */
+  '': 'lol',
+
+  get: () => {
     try {
       return getModule('getCurrentUser').getCurrentUser();
     } catch (err) {
       return error(_module, `${_submodule}:get`, null, err);
     }
-  }
+  },
 
-  static isSpotifyPremium () {
+  isSpotifyPremium: () => {
     vizality.modules.webpack.getModule('isSpotifyPremium').isSpotifyPremium()
-  }
-
+  },
+  
   /**
    * Gets the current user ID.
    * @returns {snowflake} User ID
    */
-  static getId () {
+  getId: () => {
     try {
       return getModule('getId').getId();
     } catch (err) {
       return error(_module, `${_submodule}:getId`, null, err);
     }
-  }
+  },
 
-  static getToken () {
-    return void 0;
-  }
+  getToken: () => {
+
+  },
 };
 
-module.exports = Current;
+module.exports = current;

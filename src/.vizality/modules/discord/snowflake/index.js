@@ -1,5 +1,5 @@
 /* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
-const Util = require('@util');
+const { logger: { error } } = require('@utilities');
 
 /*
  * @todo Long is only used here. It may be worth adding that particular section
@@ -27,7 +27,7 @@ const _submodule = 'Discord:Snowflake';
  * @module discord.snowflake
  * @memberof discord
  */
-class Snowflake {
+const snowflake = {
   /**
    * Generates a snowflake from a timestamp.
    * <info>This hardcodes the worker ID as 1 and the process ID as 0.</info>
@@ -37,7 +37,7 @@ class Snowflake {
    * @param {number|Date} [timestamp=Date.now()] Timestamp or date of the snowflake to generate
    * @returns {snowflake} Generated snowflake
    */
-  static getSnowflake (timestamp = Date.now()) {
+  getSnowflake: (timestamp = Date.now()) => {
     let INCREMENT = 0;
 
     try {
@@ -53,29 +53,29 @@ class Snowflake {
 
       if (INCREMENT >= 4095) INCREMENT = 0;
 
-      const BINARY = `${this._pad((timestamp - EPOCH).toString(2), 42)}0000100000${this._pad((INCREMENT++).toString(2), 12)}`;
+      const BINARY = `${snowflake._pad((timestamp - EPOCH).toString(2), 42)}0000100000${snowflake._pad((INCREMENT++).toString(2), 12)}`;
 
       return Long.fromString(BINARY, 2).toString();
     } catch (err) {
-      return Util.Logger.error(_module, `${_submodule}:getSnowflake`, null, err);
+      return error(_module, `${_submodule}:getSnowflake`, null, err);
     }
-  }
+  },
 
   /**
    * Deconstructs a snowflake.
    * Sourced from @see {@link https://discord.js.org|discord.js}
-   * @param {snowflake} snowflake Snowflake to deconstruct
+   * @param {snowflake} snow Snowflake to deconstruct
    * @returns {DeconstructedSnowflake} Deconstructed snowflake
    */
-  static getDeconstructedSnowflake (snowflake) {
+  getDeconstructedSnowflake: (snow) => {
     try {
       // Check if the snowflake is a string
-      if (typeof snowflake !== 'string') {
+      if (typeof snow !== 'string') {
         // Check if the user ID is null, because typeof null is 'object' in Javascript...
-        throw new TypeError(`"snowflake" argument must be a string (received ${snowflake === null ? 'null' : typeof snowflake})`);
+        throw new TypeError(`"snow" argument must be a string (received ${snow === null ? 'null' : typeof snow})`);
       }
 
-      const BINARY = this._pad(Long.fromString(snowflake).toString(2), 64);
+      const BINARY = snowflake._pad(Long.fromString(snow).toString(2), 64);
 
       const res = {
         timestamp: parseInt(BINARY.substring(0, 42), 2) + EPOCH,
@@ -94,71 +94,71 @@ class Snowflake {
 
       return res;
     } catch (err) {
-      return Util.Logger.error(_module, `${_submodule}:getDeconstructedSnowflake`, null, err);
+      return error(_module, `${_submodule}:getDeconstructedSnowflake`, null, err);
     }
-  }
+  },
 
   /**
    * Breaks the snowflake down into binary.
-   * @param {snowflake} snowflake Snowflake
+   * @param {snowflake} snow Snowflake
    * @returns {Date} Date
    */
-  static getBinary (snowflake) {
+  getBinary: (snow) => {
     try {
       // Check if the snowflake is a string
-      if (typeof snowflake !== 'string') {
+      if (typeof snow !== 'string') {
         // Check if the snowflake is null, because typeof null is 'object' in Javascript...
-        throw new TypeError(`"snowflake" argument must be a string (received ${snowflake === null ? 'null' : typeof snowflake})`);
+        throw new TypeError(`"snowflake" argument must be a string (received ${snow === null ? 'null' : typeof snow})`);
       }
 
-      return this.getDeconstructedSnowflake(snowflake).binary;
+      return snowflake.getDeconstructedSnowflake(snow).binary;
     } catch (err) {
-      return Util.Logger.error(_module, `${_submodule}:getBinary`, null, err);
+      return error(_module, `${_submodule}:getBinary`, null, err);
     }
-  }
+  },
 
   /**
    * Extracts a date from the snowflake.
-   * @param {snowflake} snowflake Snowflake
+   * @param {snowflake} snow Snowflake
    * @returns {Date} Date
    */
-  static getDate (snowflake) {
+  getDate: (snow) => {
     try {
       // Check if the snowflake is a string
-      if (typeof snowflake !== 'string') {
+      if (typeof snow !== 'string') {
         // Check if the snowflake is null, because typeof null is 'object' in Javascript...
-        throw new TypeError(`"snowflake" argument must be a string (received ${snowflake === null ? 'null' : typeof snowflake})`);
+        throw new TypeError(`"snowflake" argument must be a string (received ${snow === null ? 'null' : typeof snow})`);
       }
 
-      return this.getDeconstructedSnowflake(snowflake).date;
+      return snowflake.getDeconstructedSnowflake(snow).date;
     } catch (err) {
-      return Util.Logger.error(_module, `${_submodule}:getDate`, null, err);
+      return error(_module, `${_submodule}:getDate`, null, err);
     }
-  }
+  },
 
   /**
    * Extracts a timestamp from the snowflake.
-   * @param {snowflake} snowflake Snowflake
+   * @param {snowflake} snow Snowflake
    * @returns {timestamp} Timestamp
    */
-  static getTimestamp (snowflake) {
+  getTimestamp: (snow) => {
     try {
       // Check if the snowflake is a string
-      if (typeof snowflake !== 'string') {
+      if (typeof snow !== 'string') {
         // Check if the snowflake is null, because typeof null is 'object' in Javascript...
-        throw new TypeError(`"snowflake" argument must be a string (received ${snowflake === null ? 'null' : typeof snowflake})`);
+        throw new TypeError(`"snowflake" argument must be a string (received ${snow === null ? 'null' : typeof snow})`);
       }
 
-      return this.getDeconstructedSnowflake(snowflake).timestamp;
+      return snowflake.getDeconstructedSnowflake(snow).timestamp;
     } catch (err) {
-      return Util.Logger.error(_module, `${_submodule}:getTimestamp`, null, err);
+      return error(_module, `${_submodule}:getTimestamp`, null, err);
     }
-  }
+  },
 
   /** @private */
-  static _pad (v, n, c = '0') {
+  _pad: (v, n, c = '0') => {
     return String(v).length >= n ? String(v) : (String(c).repeat(n) + v).slice(-n);
   }
 };
 
-module.exports = Snowflake;
+module.exports = snowflake;

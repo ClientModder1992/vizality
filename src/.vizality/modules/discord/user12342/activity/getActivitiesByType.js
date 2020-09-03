@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@util');
+const { logger: { error } } = require('@utilities');
 
 const hasActivityOfType = require('./hasActivityOfType');
 const getActivities = require('./getActivities');

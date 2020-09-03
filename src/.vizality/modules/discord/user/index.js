@@ -1,14 +1,19 @@
-/* eslint-disable brace-style */
-const Webpack = require('@webpack');
-const Util = require('@util');
+const { string: { isUrl }, logger: { error } } = require('@utilities');
+const { getModule } = require('@webpack');
+// eslint-disable-next-line no-unused-vars
+const __typings__ = require('@typings');
 
-// const Constants = require('../module/constants');
-// @todo Don't foreget to change this back.
-const Constants = {
-  ...Webpack.getModule('Permissions', 'ActivityTypes', 'StatusTypes')
-};
+const Constants = require('../module/constants');
 
-const Snowflake = require('../snowflake');
+const relationship = require('./relationship');
+const snowflake = require('../snowflake');
+const activity = require('./activity');
+const current = require('./current');
+const status = require('./status');
+const action = require('./action');
+
+const _module = 'Module';
+const _submodule = 'Discord:User';
 
 /**
  * User module.
@@ -23,298 +28,433 @@ const Snowflake = require('../snowflake');
  * @module discord.user
  * @memberof discord
  */
-module.exports = class User {
-  constructor (user) {
-    Util.String.assertString(user.id);
-    this._discordObject = user;
-  }
+const user = {
+  action,
+  activity,
+  // No, there is no meaning in chaining the next 3 items ( ͡° ͜ʖ ͡°)
+  current,
+  relationship,
+  status,
 
   /**
-   * Creates an instance of the User class.
-   * @param {Object} user The user object
-   * @returns {User|undefined} The User class instance
-   * @private
+   * Gets the user object.
+   * @param {snowflake} userId User ID
+   * @returns {User|undefined} User object
    */
-  static _get (user) {
-    return new User(user);
-  }
+  getUser: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return getModule('getUser', 'getUsers').getUser(userId);
+    } catch (err) {
+      return error(_module, `${_submodule}:getUser`, null, err);
+    }
+  },
 
   /**
-   * Gets the user object, and creates a User instance from it.
-   * @param {snowflake} userId The user ID
-   * @returns {Object|undefined} The User class instance
+   * Gets the user object from their user tag.
+   * @param {snowflake} userTag User tag
+   * @returns {User|undefined} User object
    */
-  static getUser (userId) {
-    const user = Webpack.getModule('getUser', 'getUsers').getUser(userId);
-    if (user) return this._get(user);
-  }
+  getUserByTag: (userTag) => {
+    try {
+      // Check if the user tag is a string
+      if (typeof userTag !== 'string') {
+        // Check if the user tag is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userTag === null ? 'null' : typeof userTag})`);
+      }
 
-  /**
-   * Gets the user object from their user tag, and creates a User instance from it.
-   * @param {snowflake} userTag The user tag
-   * @returns {Object|undefined} The User class instance
-   */
-  static getUserByTag (userTag) {
-    const username = userTag.slice(0, -5);
-    const discriminator = userTag.slice(-4);
+      const username = userTag.slice(0, -5);
+      const discriminator = userTag.slice(-4);
 
-    const user = Webpack.getModule('getUser', 'getUsers').findByTag(username, discriminator);
-    if (user) return this._get(user);
-  }
+      return getModule('getUser', 'getUsers').findByTag(username, discriminator);
+    } catch (err) {
+      return error(_module, `${_submodule}:getUserByTag`, null, err);
+    }
+  },
 
   /**
    * Gets all of the currently cached user objects.
-   * @returns {Collection<snowflake, Object>} All cached user objects
+   * @returns {Collection<snowflake, User>} All cached user objects
    */
-  static getUsers () {
-    const users = Webpack.getModule('getUser', 'getUsers').getUsers();
-    if (users) return users;
-  }
+  getUsers: () => {
+    try {
+      return getModule('getUser', 'getUsers').getUsers();
+    } catch (err) {
+      return error(_module, `${_submodule}:getUsers`, null, err);
+    }
+  },
 
   /**
    * Gets all of the currently cached user IDs.
    * @returns {Array<snowflake>|undefined} All cached user IDs
    */
-  static getUserIds () {
-    const usersIds = Webpack.getModule('getStatus', 'getUserIds').getUserIds();
-    if (usersIds) return usersIds;
-  }
+  getUserIds: () => {
+    try {
+      return getModule('getStatus', 'getUserIds').getUserIds();
+    } catch (err) {
+      return error(_module, `${_submodule}:getUserIds`, null, err);
+    }
+  },
 
   /**
-   * Get the user id.
-   * @type {snowflake} The IS of the user
-   * @name User#id
-   * @readonly
+   * Gets the user's avatar hash. @see {@link https://discord.com/developers/docs/reference#image-formatting-image-base-url|Discord}
+   * If no user ID is specified, tries to get the avatar string of the current user.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User avatar string
    */
-  get id () { return this._discordObject.id; }
+  getAvatar: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
 
-  /**
-   * Gets the user username.
-   * @type {string} The username of the user
-   * @name User#username
-   * @readonly
-   */
-  get username () { return this._discordObject.username; }
-
-  /**
-   * Gets the user discriminator (4 digit indentifier).
-   * @type {string} The discriminator of the user
-   * @name User#discriminator
-   * @readonly
-   */
-  get discriminator () { return this._discordObject.discriminator; }
-
-  /**
-   * Gets the user tag, which is a combination of the username and discriminator.
-   * @type {string} The tag of the user
-   * @name User#tag
-   * @readonly
-   */
-  get tag () { return this._discordObject.tag; }
-
-  /**
-   * Gets the user avatar hash.
-   * @see {@link https://discord.com/developers/docs/reference#image-formatting-image-base-url|Discord}
-   * @type {string} The avatar hash of the user
-   * @name User#avatar
-   * @readonly
-   */
-  get avatar () { return this._discordObject.avatar; }
+      return user.getUser(userId).avatar;
+    } catch (err) {
+      return error(_module, `${_submodule}:getAvatar`, null, err);
+    }
+  },
 
   /**
    * Gets the user avatar URL.
-   * @type {string} The avatar URL of the user
-   * @name User#avatarUrl
-   * @readonly
+   * @param {snowflake} [userId] User ID
+   * @returns {string|undefined} User avatar URL
    */
-  get avatarUrl () {
-    const avatarUrl = this._discordObject.avatarURL;
-    // Check if the avatar URL exists, is not a valid URL, and starts with /
-    if (avatarUrl && !Util.String.isUrl(avatarUrl) && avatarUrl.startsWith('/')) {
-      return window.location.origin + avatarUrl;
+  getAvatarUrl: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      const AvatarURL = user.getUser(userId).avatarURL;
+
+      // Check if the avatar URL exists, is not a valid URL, and starts with /
+      if (AvatarURL && !isUrl(AvatarURL) && AvatarURL.startsWith('/')) {
+        return window.location.origin + AvatarURL;
+      }
+
+      return AvatarURL;
+    } catch (err) {
+      return error(_module, `${_submodule}:getAvatarUrl`, null, err);
     }
-
-    return avatarUrl;
-  }
+  },
 
   /**
-   * Checks if the user has a Nitro (premium) subscription, and if they do, gets how
-   * long they've had it since in date format
-   * @type {?Promise<Date>} Date
-   * @name User#nitroSince
-   * @readonly
+   * Gets the user account creation date and time in local string format.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User creation date and time
    */
-  get nitroSince () {
-    return this.nitroSinceTimestamp.getTime();
-  }
+  getCreatedAt: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
 
-  /**
-   * Checks if the user has a Nitro (premium) subscription, and if they do, gets how
-   * long they've had it since in timestamp format
-   * @type {?Promise<Date>} Timestamp
-   * @name User#nitroSinceTimestamp
-   * @readonly
-   */
-  get nitroSinceTimestamp () {
-    return new Promise(async resolve => {
-      const result = await Webpack.getModule('getAPIBaseURL').get({
-        url: `${Constants.Endpoints.USER_PROFILE(this.id)}`
-      });
-
-      resolve(new Date(Date.parse(result.body.premium_since)) || null);
-    });
-  }
-
-  /**
-   * Gets the user account creation date in local string format.
-   * @type {string} When the user created their account in date format
-   * @name User#createdAt
-   * @readonly
-   */
-  get createdAt () { return new Date(this.createdAtTimestamp); }
+      return snowflake.getTimestamp(userId).toLocaleString();
+    } catch (err) {
+      return error(_module, `${_submodule}:getCreatedAt`, null, err);
+    }
+  },
 
   /**
    * Gets the user account creation timestamp.
-   * @type {string} The user account creation timestamp
-   * @name User#createdAtTimestamp
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User account creation timestamp
    */
-  get createdAtTimestamp () { return Snowflake.getTimestamp(this.id); }
+  getCreatedTimestamp: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return snowflake.getTimestamp(userId);
+    } catch (err) {
+      return error(_module, `${_submodule}:getCreatedTimestamp`, null, err);
+    }
+  },
 
   /**
-   * Gets the last message (that's visible to your client) sent by the user.
-   * @type {Message} The last message sent by the user
-   * @name User#lastMessage
-   * @readonly
+   * Gets the user discriminator (4 digit indentifier).
+   * If no user ID is specified, tries to get the avatar string of the current user.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User discriminator
    */
-  get lastMessage () { return void 0; }
+  getDiscriminator: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).discriminator;
+    } catch (err) {
+      return error(_module, `${_submodule}:getDiscriminator`, null, err);
+    }
+  },
 
   /**
-   * Gets the ID of the last message (that's visible to your client) sent by the user
-   * @type {snowflake} The ID of the last message sent by the user
-   * @name User#lastMessageId
-   * @readonly
+   * Gets the last message the user sent (that's visible to your client).
+   * @param {snowflake} userId User ID
+   * @returns {?Message|undefined} Message object
    */
-  get lastMessageId () { return void 0; }
+  getLastMessage: (userId) => {
+    // @todo: Not sure how to check for this.
+    return false;
+  },
 
   /**
-   * Gets the note contents of the user.
-   * @type {Note} The note contents for the user
-   * @name User#note
-   * @readonly
+   * Gets the user note contents.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} Note contents
    */
-  get note () { return Webpack.getModule('getNote').getNote(this.id); }
+  getNote: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return getModule('getNote').getNote(userId).note;
+    } catch (err) {
+      return error(_module, `${_submodule}:getNote`, null, err);
+    }
+  },
 
   /**
-   * Checks if the user has a non-default avatar.
-   * @type {?boolean} Whether the user has a non-default avatar
-   * @name User#hasAvatar
-   * @readonly
+   * Gets the user tag, which is a combination of the username and discriminator.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User tag
    */
-  get hasAvatar () {
-    return this.avatar !== 'undefined'
-      ? Boolean(this.avatar)
-      : null;
-  }
+  getTag: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).tag;
+    } catch (err) {
+      return error(_module, `${_submodule}:getTag`, null, err);
+    }
+  },
+
+  /**
+   * Gets the user username.
+   * @param {snowflake} userId User ID
+   * @returns {string|undefined} User username
+   */
+  getUsername: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).username;
+    } catch (err) {
+      return error(_module, `${_submodule}:getUsername`, null, err);
+    }
+  },
 
   /**
    * Checks if the user has an animated avatar.
-   * @type {?boolean} Whether the user has an animated avatar
-   * @name User#hasAnimatedAvatar
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user has an animated avatar
    */
-  get hasAnimatedAvatar () {
-    const ImageResolver = Webpack.getModule('hasAnimatedGuildIcon', 'getUserAvatarURL');
-    const AnimatedAvatar = ImageResolver.hasAnimatedAvatar(this._discordObject);
+  hasAnimatedAvatar: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
 
-    return AnimatedAvatar !== 'undefined'
-      ? Boolean(AnimatedAvatar)
-      : null;
-  }
+      const User = user.getUser(userId);
+      const ImageResolver = getModule('getUserAvatarURL', 'getGuildIconURL', 'hasAnimatedGuildIcon');
+
+      return ImageResolver.hasAnimatedAvatar(User);
+    } catch (err) {
+      return error(_module, `${_submodule}:hasAnimatedAvatar`, null, err);
+    }
+  },
+
+  /**
+   * Checks if the user has a non-default avatar.
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user has a non-default avatar
+   */
+  hasAvatar: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return Boolean(user.getUser(userId).avatar);
+    } catch (err) {
+      return error(_module, `${_submodule}:hasAvatar`, null, err);
+    }
+  },
 
   /**
    * Checks if the user has a Nitro (premium) subscription.
-   * @type {Promise<boolean>} Whether or not the user has a Nitro subscription
-   * @name User#isNitro
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user has a Nitro subscription
    */
-  get isNitro () {
-    return new Promise(async resolve => {
-      const result = await Webpack.getModule('getAPIBaseURL').get({
-        url: `${Constants.Endpoints.USER_PROFILE(this.id)}`
-      });
-
-      resolve(Boolean(result.body.premium_since));
-    });
-  }
+  hasNitro: (userId) => {
+    // @todo: Not sure how to check for this.
+    return false;
+  },
 
   /**
    * Checks if the user is a bot.
-   * @type {?boolean} Whether or not the user is a bot
-   * @name User#isBot
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a bot
    */
-  get isBot () {
-    return this._discordObject.bot !== 'undefined'
-      ? Boolean(this._discordObject.bot)
-      : null;
-  }
+  isBot: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
 
-  /**
-   * Checks if this is an official Discord System user (part of the urgent message system)
-   * @type {?boolean}
-   * @name User#isSystem
-   * @readonly
-   */
-  get isSystem () {
-    return this._discordObject.system !== 'undefined'
-      ? Boolean(this._discordObject.system)
-      : null;
-  }
+      return user.getUser(userId).bot;
+    } catch (err) {
+      return error(_module, `${_submodule}:isBot`, null, err);
+    }
+  },
 
   /**
    * Checks if the user is a bug hunter.
-   * @type {?boolean}
-   * @name User#isBugHunter
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a bug hunter
    */
-  get isBugHunter () {
-    return this._discordObject.system !== 'undefined'
-      ? Boolean(
-        this._discordObject.hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1) ||
-        this._discordObject.hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2))
-      : null;
-  }
+  isBugHunter: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_1) || user.getUser(userId).hasFlag(Constants.UserFlags.BUG_HUNTER_LEVEL_2);
+    } catch (err) {
+      return error(_module, `${_submodule}:isBugHunter`, null, err);
+    }
+  },
 
   /**
-   * Checks if the user is a Discord Partner.
-   * @type {?boolean}
-   * @name User#isPartner
-   * @readonly
+   * Checks if the user is a Discord partner.
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a Discord partner
    */
-  get isPartner () { return this._discordObject.hasFlag(Constants.UserFlags.PARTNER); }
+  isPartner: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).hasFlag(Constants.UserFlags.PARTNER);
+    } catch (err) {
+      return error(_module, `${_submodule}:isPartner`, null, err);
+    }
+  },
 
   /**
    * Checks if the user is a Discord staff member.
-   * @type {?boolean}
-   * @name User#isStaff
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a Discord staff member
    */
-  get isStaff () { return this._discordObject.hasFlag(Constants.UserFlags.STAFF); }
+  isStaff: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).hasFlag(Constants.UserFlags.STAFF);
+    } catch (err) {
+      return error(_module, `${_submodule}:isStaff`, null, err);
+    }
+  },
+
+  /**
+   * Checks if the user is a system user.
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a system user
+   */
+  isSystemUser: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).system;
+    } catch (err) {
+      return error(_module, `${_submodule}:isSystemUser`, null, err);
+    }
+  },
 
   /**
    * Checks if the user is a verified bot.
-   * @type {?boolean}
-   * @name User#isVerifiedBot
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a verified bot
    */
-  get isVerifiedBot () { return this._discordObject.hasFlag(Constants.UserFlags.VERIFIED_BOT); }
+  isVerifiedBot: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).hasFlag(Constants.UserFlags.VERIFIED_BOT);
+    } catch (err) {
+      return error(_module, `${_submodule}:isVerifiedBot`, null, err);
+    }
+  },
 
   /**
    * Checks if the user is a verified bot developer.
-   * @type {?boolean}
-   * @name User#isVerifiedBotDev
-   * @readonly
+   * @param {snowflake} userId User ID
+   * @returns {boolean} Whether the user is a verified bot developer
    */
-  get isVerifiedBotDev () { return this._discordObject.hasFlag(Constants.UserFlags.VERIFIED_DEVELOPER); }
+  isVerifiedBotDev: (userId) => {
+    try {
+      // Check if the user ID is a string
+      if (typeof userId !== 'string') {
+        // Check if the user ID is null, because typeof null is 'object' in Javascript...
+        throw new TypeError(`"userId" argument must be a string (received ${userId === null ? 'null' : typeof userId})`);
+      }
+
+      return user.getUser(userId).hasFlag(Constants.UserFlags.VERIFIED_DEVELOPER);
+    } catch (err) {
+      return error(_module, `${_submodule}:isVerifiedBotDev`, null, err);
+    }
+  }
 };
+
+module.exports = user;

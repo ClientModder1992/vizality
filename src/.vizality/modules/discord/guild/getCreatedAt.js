@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@util');
+const { logger: { error } } = require('@utilities');
 
 const getTimestamp = require('../snowflake/getTimestamp');
 const getCurrentGuildId = require('./getCurrentGuildId');
