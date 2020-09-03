@@ -1,9 +1,10 @@
 /* @todo: Use logger. */
-const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
-const { join } = require('path');
 
-const Constants = require('@constants');
-const Theme = require('@theme');
+const { Theme } = require('@entities');
+const { DIR: { THEMES_DIR, SETTINGS_DIR } } = require('@constants');
+
+const { join } = require('path');
+const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
 
 const fileRegex = /\.((s?c|le)ss|styl)$/;
 
@@ -13,9 +14,9 @@ const ErrorTypes = Object.freeze({
   INVALID_MANIFEST: 'INVALID_MANIFEST'
 });
 
-module.exports = class StyleManager {
+class StyleManager {
   constructor () {
-    this.themesDir = Constants.Directories.THEMES;
+    this.themesDir = THEMES_DIR;
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
@@ -41,7 +42,7 @@ module.exports = class StyleManager {
       if (!this.__settings) {
         this.__settings = {};
         try {
-          this.__settings = require(join(Constants.Directories.SETTINGS, 'vz-general.json'));
+          this.__settings = require(join(SETTINGS_DIR, 'vz-settings.json'));
         } catch (err) {
           // @todo: Handled this.
         }
@@ -256,9 +257,6 @@ module.exports = class StyleManager {
     if (typeof manifest.author !== 'string') {
       errors.push(`Invalid author: expected a string got ${typeof manifest.author}`);
     }
-    if (typeof manifest.license !== 'string') {
-      errors.push(`Invalid license: expected a string got ${typeof manifest.license}`);
-    }
     if (typeof manifest.theme !== 'string') {
       errors.push(`Invalid theme: expected a string got ${typeof manifest.theme}`);
     } else if (!fileRegex.test(manifest.theme)) {
@@ -286,4 +284,6 @@ module.exports = class StyleManager {
     }
     return errors;
   }
-};
+}
+
+module.exports = StyleManager;

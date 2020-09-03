@@ -1,12 +1,12 @@
-const { readdirSync, statSync, existsSync } = require('fs');
+const { logger: { error } } = require('@utilities');
+const { DIR: { API_DIR } } = require('@constants');
+
+const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
 
-const Constants = require('@constants');
-const Util = require('@util');
-
-module.exports = class APIManager {
+class APIManager {
   constructor () {
-    this.dir = Constants.Directories.API;
+    this.dir = API_DIR;
     this.apis = [];
   }
 
@@ -16,33 +16,31 @@ module.exports = class APIManager {
       api = api.replace(/\.js$/, '');
       vizality.api[api] = new APIClass();
       this.apis.push(api);
-    } catch (err) {
-      Util.Logger.error('Manager', 'API', null, `An error occurred while initializing "${api}":`, err);
+    } catch (e) {
+      error('Manager', 'API', null, `An error occurred while initializing '${api}'!`, e);
     }
   }
 
   async start () {
     for (const api of this.apis) {
-      await vizality.api[api].initialize();
+      await vizality.api[api].start();
     }
   }
 
   async stop () {
     for (const api of this.apis) {
-      await vizality.api[api].terminate();
+      await vizality.api[api].start();
     }
   }
 
   // Start
   async initialize () {
     this.apis = [];
-    const dir = readdirSync(this.dir);
-    for (const item of dir) {
-      const itemInDir = join(this.dir, item);
-      const isDir = statSync(itemInDir).isDirectory();
-      const hasIndex = existsSync(join(itemInDir, 'index.js'));
-      if (isDir && hasIndex) this.mount(item);
-    }
+    readdirSync(this.dir)
+      .filter(f => statSync(join(this.dir, f)).isFile())
+      .forEach(filename => this.mount(filename));
     await this.start();
   }
-};
+}
+
+module.exports = APIManager;

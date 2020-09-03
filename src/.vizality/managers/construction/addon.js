@@ -1,4 +1,4 @@
-const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@util');
+const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@utilities');
 
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',
@@ -18,7 +18,7 @@ class AddonManager {
   }
 
   get _getRequiredManifestKeys () {
-    return [ 'name', 'version', 'description', 'author', 'license' ];
+    return [ 'name', 'version', 'description', 'author' ];
   }
 
   get (addonId) {
@@ -131,9 +131,6 @@ class AddonManager {
     }
     if (typeof manifest.author !== 'string') {
       errors.push(`Invalid author: expected a string got ${typeof manifest.author}`);
-    }
-    if (typeof manifest.license !== 'string') {
-      errors.push(`Invalid license: expected a string got ${typeof manifest.license}`);
     }
   }
 
