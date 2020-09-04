@@ -7,7 +7,7 @@ require('fs')
   });
 
 const { Directories } = require('@constants');
-const { logger: { log }, object: { removeEmptyProperties } } = require('@utilities');
+const { logger: { log }, object: { removeEmptyProperties } } = require('@util');
 
 const { join } = require('path');
 const { existsSync } = require('fs');

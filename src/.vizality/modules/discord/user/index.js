@@ -1,4 +1,4 @@
-const { string: { isUrl }, logger: { error } } = require('@utilities');
+const { string: { isUrl }, logger: { error } } = require('@util');
 const { getModule } = require('@webpack');
 // eslint-disable-next-line no-unused-vars
 const __typings__ = require('@typings');

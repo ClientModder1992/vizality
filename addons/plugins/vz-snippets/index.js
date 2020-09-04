@@ -1,7 +1,7 @@
 const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
 const { join } = require('path');
 
-const { react : { findInReactTree } } = require('@utilities');
+const { react : { findInReactTree } } = require('@util');
 const { PopoutWindow } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Channels } = require('@constants');

@@ -1,6 +1,6 @@
 const { Flux, getModule, getModuleByDisplayName } = require('@webpack');
 const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icon } = require('@components');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 

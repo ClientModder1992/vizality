@@ -33,7 +33,7 @@
     "@patcher": "src/.vizality/modules/patcher",
     "@react": "src/.vizality/modules/react",
     "@typings": "src/.vizality/typings",
-    "@utilities": "src/.vizality/modules/utilities",
+    "@util": "src/.vizality/modules/util",
     "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@utilities');
+const { logger: { error } } = require('@util');
 const { API } = require('@entities');
 const { Flux } = require('@webpack');
 const { React } = require('@react');

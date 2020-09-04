@@ -1,6 +1,6 @@
 const { Icon, Tooltip, TabBar, settings: { TextInput } } = require('@components');
 const { React, React: { useState, useEffect } } = require('@react');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
 const Codeblock = require('../../../parts/Codeblock');

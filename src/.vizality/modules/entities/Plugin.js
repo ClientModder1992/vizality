@@ -1,4 +1,4 @@
-const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@utilities');
+const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@util');
 const { resolveCompiler } = require('@compilers');
 const { Directories } = require('@constants');
 const watch = require('node-watch');

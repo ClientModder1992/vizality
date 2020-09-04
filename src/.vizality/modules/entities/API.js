@@ -1,4 +1,4 @@
-const { logger: { log, error } } = require('@utilities');
+const { logger: { log, error } } = require('@util');
 
 const Events = require('events');
 

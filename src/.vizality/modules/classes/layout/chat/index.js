@@ -1,4 +1,4 @@
-const { object: { excludeProperties } } = require('@utilities');
+const { object: { excludeProperties } } = require('@util');
 const { getModule } = require('@webpack');
 
 const attachments = require('./attachments');

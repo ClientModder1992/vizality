@@ -1,6 +1,6 @@
 const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { file: { removeDirRecursive } } = require('@utilities');
+const { file: { removeDirRecursive } } = require('@util');
 const { React, React: { useState } } = require('@react');
 const { Directories } = require('@constants');
 const { getModule } = require('@webpack');

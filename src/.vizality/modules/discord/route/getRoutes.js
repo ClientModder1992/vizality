@@ -1,4 +1,4 @@
-const { logger: { log } } = require('@utilities');
+const { logger: { log } } = require('@util');
 
 const _getRoutes = require('./_getRoutes');
 

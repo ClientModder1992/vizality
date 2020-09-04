@@ -1,4 +1,4 @@
-const { sleep, string: { toPascalCase, toCamelCase } } = require('@utilities');
+const { sleep, string: { toPascalCase, toCamelCase } } = require('@util');
 const { PopoutWindow, Spinner } = require('@components');
 const { Flux, getModule } = require('@webpack');
 const { React } = require('@react');

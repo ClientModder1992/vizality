@@ -1,4 +1,4 @@
-const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@utilities');
+const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 

@@ -1,4 +1,4 @@
-const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@utilities');
+const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('@components');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
 const { patch, unpatch } = require('@patcher');

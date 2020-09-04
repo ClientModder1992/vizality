@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('@utilities');
+const { logger: { warn } } = require('@util');
 const { getModule } = require('@webpack');
 
 const getSettingInfo = require('./getSettingInfo');

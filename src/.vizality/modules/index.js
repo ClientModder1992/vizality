@@ -10,6 +10,6 @@ module.exports = {
   modal: require('./modal'),
   patcher: require('./patcher'),
   react: require('./react'),
-  utilities: require('./utilities'),
+  util: require('./util'),
   webpack: require('./webpack')
 };

@@ -1,4 +1,4 @@
-const { joinClassNames, string: { toCamelCase }, logger: { error } } = require('@utilities');
+const { joinClassNames, string: { toCamelCase }, logger: { error } } = require('@util');
 const { getModule } = require('@webpack');
 const { React } = require('@react');
 

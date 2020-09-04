@@ -1,6 +1,6 @@
 const { AsyncComponent, Clickable, Tooltip, Icons: { ExternalLink, Pin, Unpin, Close } } = require('@components');
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 

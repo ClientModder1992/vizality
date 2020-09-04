@@ -3,7 +3,7 @@
 const { shell } = require('electron');
 
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
-const { string: { toHeaderCase, toPlural } } = require('@utilities');
+const { string: { toHeaderCase, toPlural } } = require('@util');
 const { getModule, contextMenu } = require('@webpack');
 const { Messages } = require('@i18n');
 const { React } = require('@react');

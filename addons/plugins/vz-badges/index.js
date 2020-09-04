@@ -1,4 +1,4 @@
-const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@utilities');
+const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
 const { getModule, getModules, getModuleByDisplayName } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');

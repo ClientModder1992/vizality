@@ -6,7 +6,7 @@ const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Messages, chosenLocale: currentLocale } = require('@i18n');
 const { Repositories, Directories } = require('@constants');
 const { React, React: { useState } } = require('@react');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
 const Update = require('./Update');

@@ -2,7 +2,7 @@ const { clipboard } = require('electron');
 
 const { settings: { TextInput, SwitchItem, Category, RadioGroup, SelectInput, ColorPickerInput, CopyInput, TextArea, RegionSelector, SliderInput, PermissionOverrideItem } } = require('@components');
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { sleep } = require('@utilities');
+const { sleep } = require('@util');
 const { React } = require('@react');
 
 let classes = {

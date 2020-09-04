@@ -1,5 +1,5 @@
 /* eslint-disable no-unreachable */
-const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@utilities');
+const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@util');
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 

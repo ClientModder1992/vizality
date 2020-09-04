@@ -1,7 +1,8 @@
 /* eslint-disable brace-style */
+
 const moduleFilters = require('./modules.json');
-const { log, warn } = require('../utilities/logger');
-const sleep = require('../utilities/sleep');
+const { log, warn } = require('../util/logger');
+const sleep = require('../util/sleep');
 
 const _module = 'Module';
 const _submodule = 'Webpack';

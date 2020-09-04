@@ -1,5 +1,5 @@
 const { getModule, getModuleByPrototypes, initialize } = require('@webpack');
-const { sleep, logger: { log, warn, error } } = require('@utilities');
+const { sleep, logger: { log, warn, error } } = require('@util');
 const { HTTP, Directories } = require('@constants');
 const { jsx: JsxCompiler } = require('@compilers');
 const { Updatable } = require('@entities');
@@ -136,7 +136,7 @@ class Vizality extends Updatable {
     this.removeDiscordLogs();
 
     // Setting up the modules for the global vizality object
-    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'utilities' ];
+    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'util' ];
 
     for (const mdl of modules) {
       const Mdl = require(`@${mdl}`);

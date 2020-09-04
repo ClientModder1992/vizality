@@ -1,4 +1,4 @@
-const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@utilities');
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
 const { getModule, contextMenu: { closeContextMenu } } = require('@webpack');
 const { React } = require('@react');
 

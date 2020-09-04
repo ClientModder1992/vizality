@@ -1,7 +1,7 @@
 const { promises: { unlink }, existsSync } = require('fs');
 const { join } = require('path');
 
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
+const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@util');
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { Guild, Directories } = require('@constants');
 const { patch, unpatch } = require('@patcher');

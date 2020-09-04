@@ -1,4 +1,4 @@
-const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@utilities');
+const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@util');
 const { Tooltip, Icon, CustomIcons: { Plugin: PluginIcon, Theme: ThemeIcon } } = require('@components');
 const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@webpack');
 const { patch, unpatch } = require('@patcher');

@@ -1,4 +1,4 @@
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 const { Icon } = require('@components');
 const { React } = require('@react');

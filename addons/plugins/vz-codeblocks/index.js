@@ -1,6 +1,6 @@
 const { clipboard } = require('electron');
 
-const { react: { findInReactTree } } = require('@utilities');
+const { react: { findInReactTree } } = require('@util');
 const { getModule, hljs } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');

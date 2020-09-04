@@ -1,4 +1,4 @@
-const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@utilities');
+const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');

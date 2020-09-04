@@ -1,4 +1,4 @@
-const { react : { findInReactTree } } = require('@utilities');
+const { react : { findInReactTree } } = require('@util');
 const { Tooltip, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');

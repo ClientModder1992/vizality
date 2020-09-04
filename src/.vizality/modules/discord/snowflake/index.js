@@ -1,5 +1,5 @@
 /* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
-const { logger: { error } } = require('@utilities');
+const { logger: { error } } = require('@util');
 
 /*
  * @todo Long is only used here. It may be worth adding that particular section

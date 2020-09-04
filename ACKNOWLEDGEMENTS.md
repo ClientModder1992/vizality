@@ -7,7 +7,7 @@ This project is not the work of a single person. It contains Node packages and c
 ### [Zack Rauenzi](https://github.com/rauenzi)
 #### Developer of [BandagedBetterDiscord](https://github.com/rauenzi/BetterDiscordApp)
 
-He has helped both directly and indirectly on Vizality by letting me bounce ideas off of him, giving me ideas, researching into Discord's internals, fixing problems, and continuing to be a dedicated member of the Discord modding community. In particular, Vizality is utilizing his code on function patching, webpack modules, filter utilities, and react utilities.
+He has helped both directly and indirectly on Vizality by letting me bounce ideas off of him, giving me ideas, researching into Discord's internals, fixing problems, and continuing to be a dedicated member of the Discord modding community. In particular, Vizality is utilizing his coding on some React and DOM utilities.
 
 ### [Amish Shah](https://github.com/amishshah)
 #### Developer of [discord.js](https://discord.js.org/)

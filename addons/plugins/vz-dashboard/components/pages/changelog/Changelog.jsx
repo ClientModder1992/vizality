@@ -3,7 +3,7 @@ const { promises: { readFile } } = require('fs');
 const Markdown = require('react-markdown');
 const { join } = require('path');
 
-const { joinClassNames, string: { toKebabCase } } = require('@utilities');
+const { joinClassNames, string: { toKebabCase } } = require('@util');
 const { React, React: { useState } } = require('@react');
 const { Directories } = require('@constants');
 const { getModule } = require('@webpack');

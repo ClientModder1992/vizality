@@ -1,5 +1,5 @@
 const { AdvancedScrollerThin } = require('@components');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 const { React } = require('@react');
 

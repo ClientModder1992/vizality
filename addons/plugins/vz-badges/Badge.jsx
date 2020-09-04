@@ -1,5 +1,5 @@
 const { Clickable, Tooltip, Badge } = require('@components');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');
 const { React } = require('@react');

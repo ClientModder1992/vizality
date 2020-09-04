@@ -6,7 +6,7 @@ const exec = promisify(cp.exec);
 
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { Directories } = require('@constants');
 const { Confirm } = require('@components');
 const { Plugin } = require('@entities');

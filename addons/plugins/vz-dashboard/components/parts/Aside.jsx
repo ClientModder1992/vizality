@@ -1,5 +1,5 @@
 const { React, React: { useState } } = require('@react');
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { Icon } = require('@components');
 
 module.exports = React.memo(({ type, header, sections }) => {

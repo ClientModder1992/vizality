@@ -1,4 +1,4 @@
-const { joinClassNames } = require('@utilities');
+const { joinClassNames } = require('@util');
 const { React } = require('@react');
 
 module.exports = React.memo(({ type, className, ...props }) =>
