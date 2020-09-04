@@ -1,16 +1,17 @@
 const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@utilities');
-const { React, getModule, getModules, getModuleByDisplayName } = require('@webpack');
+const { getModule, getModules, getModuleByDisplayName } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');
 const { HTTP } = require('@constants');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 const { get } = require('@http');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');
 
-class Badges extends Plugin {
+module.exports = class Badges extends Plugin {
   constructor () {
     super();
     this.guildBadges = {};
@@ -116,6 +117,4 @@ class Badges extends Plugin {
       alt: ''
     })));
   }
-}
-
-module.exports = Badges;
+};

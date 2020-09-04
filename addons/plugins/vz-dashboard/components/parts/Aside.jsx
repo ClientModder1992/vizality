@@ -1,4 +1,4 @@
-const { React, React: { useState } } = require('@webpack');
+const { React, React: { useState } } = require('@react');
 const { joinClassNames } = require('@utilities');
 const { Icon } = require('@components');
 
@@ -9,9 +9,6 @@ module.exports = React.memo(({ type, header, sections }) => {
     header = type;
     if (type === 'Components') {
       sections = [ 'Button', 'Button Group', 'Checkbox', 'Select', 'Slider', 'Switch', 'Text' ];
-    }
-    if (type === 'Getting Started') {
-
     }
   }
 

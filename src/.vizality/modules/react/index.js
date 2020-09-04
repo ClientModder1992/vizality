@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
+
 const { getModule } = require('../webpack');
 
-// eslint-disable-next-line no-unused-vars
-const react = module.exports = {
+module.exports = {
   React: {
-    ...getModule('render', 'createPortal')
+    ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
   },
   ReactDOM: {
-    ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
+    ...getModule('render', 'createPortal')
+  },
+  Router: {
+    ...getModule('BrowserRouter', 'Router')
   }
 };

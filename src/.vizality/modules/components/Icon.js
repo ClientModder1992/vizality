@@ -1,9 +1,9 @@
-const { React, getModule } = require('@webpack');
 const { joinClassNames, string: { toCamelCase }, logger: { error } } = require('@utilities');
-
-const CustomIcons = require('./CustomIcons');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('./AsyncComponent');
+const CustomIcons = require('./CustomIcons');
 
 const _module = 'Module';
 const _submodule = 'Component:Icon';
@@ -18,7 +18,7 @@ const blacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './Disc
 
 let Icons = [ ...Object.keys(CustomIcons) ];
 
-const Icon = AsyncComponent.from((async () => {
+const Icon = module.exports = AsyncComponent.from((async () => {
   const registry = await getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
   Icon.Names = registry.keys()
     .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k))
@@ -67,5 +67,3 @@ const Icon = AsyncComponent.from((async () => {
     });
   };
 })());
-
-module.exports = Icon;

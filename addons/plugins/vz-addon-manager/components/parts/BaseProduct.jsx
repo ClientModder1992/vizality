@@ -1,10 +1,12 @@
 const { Tooltip, Button, Clickable, Divider, Icons: { Discord, Gear }, Switch } = require('@components');
-const { React, getModule, i18n: { Messages } } = require('@webpack');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const Permissions = require('./Permissions');
 const Details = require('./Details');
 
-class BaseProduct extends React.PureComponent {
+module.exports = class BaseProduct extends React.PureComponent {
   renderHeader () {
     return (
       <div className='vizality-entity-header'>
@@ -88,6 +90,4 @@ class BaseProduct extends React.PureComponent {
     inviteStore.acceptInviteAndTransitionToInviteChannel(code);
     getModule('popLayer').popAllLayers();
   }
-}
-
-module.exports = BaseProduct;
+};

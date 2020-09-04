@@ -1,8 +1,10 @@
+const { typing, getModuleByDisplayName } = require('@webpack');
 const { patch } = require('@patcher');
-const { React, i18n: { Messages }, typing, getModuleByDisplayName } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
-const Title = require('./components/Title');
 const Command = require('./components/Command');
+const Title = require('./components/Title');
 
 async function injectAutocomplete () {
   const ChannelAutocomplete = await getModuleByDisplayName('ChannelAutocomplete', true);

@@ -1,12 +1,10 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
-const FormItem = require('./FormItem');
 
 const DRegionSelect = AsyncComponent.from(getModuleByDisplayName('RegionSelector', true));
 
-class RegionSelect extends React.PureComponent {
+module.exports = class RegionSelect extends React.PureComponent {
 
-}
-
-module.exports = RegionSelect;
+};

@@ -1,4 +1,4 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const Section = require('../../parts/Section');
 const Content = require('../../parts/Content');

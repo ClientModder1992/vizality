@@ -1,9 +1,11 @@
-const { Plugin } = require('@entities');
-const { patch, unpatch } = require('@patcher');
-const { React, getModule, getModuleByDisplayName, FluxDispatcher, i18n: { Messages } } = require('@webpack');
-const { Tooltip, Icon, CustomIcons: { Plugin: PluginIcon, Theme: ThemeIcon } } = require('@components');
-const {Channels } = require('@constants');
 const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@utilities');
+const { Tooltip, Icon, CustomIcons: { Plugin: PluginIcon, Theme: ThemeIcon } } = require('@components');
+const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
+const { Channels } = require('@constants');
+const { Plugin } = require('@entities');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const Sidebar = require('./components/parts/sidebar/Sidebar');
 const Routes = require('./routes/Routes');

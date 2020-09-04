@@ -1,4 +1,5 @@
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('./AsyncComponent');
 const Icon = require('./Icon');

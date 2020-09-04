@@ -1,10 +1,11 @@
+const { shell: { openExternal } } = require('electron');
+
 const { Guild, Repositories, HTTP } = require('@constants');
-const { React, getModule, constants: { Routes } } = require('@webpack');
+const { getModule, constants: { Routes } } = require('@webpack');
 const { Clickable, Tooltip } = require('@components');
 const { open: openModal } = require('vizality/modal');
+const { React } = require('@react');
 const { get } = require('@http');
-
-const { shell: { openExternal } } = require('electron');
 
 const DonateModal = require('./DonateModal');
 const Badge = require('./Badge');
@@ -36,7 +37,7 @@ const badges = {
   early: () => void 0
 };
 
-class Badges extends React.PureComponent {
+module.exports = class Badges extends React.PureComponent {
   constructor (props) {
     super(props);
 
@@ -70,6 +71,4 @@ class Badges extends React.PureComponent {
       />)
     ];
   }
-}
-
-module.exports = Badges;
+};

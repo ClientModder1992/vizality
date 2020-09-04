@@ -1,5 +1,6 @@
 const { FormTitle, Icons: { Keyboard, PersonShield, Copy, ImportExport } } = require('@components');
-const { React, i18n: { Messages } } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const perms = {
   keypresses: {

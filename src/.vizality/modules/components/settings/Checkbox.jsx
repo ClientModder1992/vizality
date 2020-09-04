@@ -1,4 +1,5 @@
-const { React, getModuleByDisplayName, getModule } = require('@webpack');
+const { getModuleByDisplayName, getModule } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');

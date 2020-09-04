@@ -1,5 +1,5 @@
 const { Button, Icon } = require('@components');
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const Card = React.memo(({ icon, header, description, buttonText, path }) => {
   return (

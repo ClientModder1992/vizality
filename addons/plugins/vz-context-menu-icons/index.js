@@ -1,8 +1,9 @@
-const { React, getModule } = require('@webpack');
 const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
+const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
 const { Icon } = require('@components');
+const { React } = require('@react');
 
 module.exports = class ContextMenuIcons extends Plugin {
   onStart () {

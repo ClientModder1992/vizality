@@ -1,5 +1,5 @@
 const { SVG: { WaveDivider } } = require('@components');
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const Layout = require('../parts/Layout');
 

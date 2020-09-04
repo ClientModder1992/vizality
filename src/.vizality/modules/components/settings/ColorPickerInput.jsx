@@ -1,4 +1,5 @@
-const { React, getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE_COLORS } } = require('@webpack');
+const { getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE_COLORS } } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
@@ -7,7 +8,7 @@ const ColorPicker = AsyncComponent.from(getModuleByDisplayName('ColorPicker', tr
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
 const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
-class ColorPickerInput extends React.PureComponent {
+module.exports = class ColorPickerInput extends React.PureComponent {
   constructor (props) {
     super(props);
     const color = props.value || props.default || 0;
@@ -56,6 +57,4 @@ class ColorPickerInput extends React.PureComponent {
   handleChange (solid, alpha) {
     this.props.onChange(solid + (alpha << 24));
   }
-}
-
-module.exports = ColorPickerInput;
+};

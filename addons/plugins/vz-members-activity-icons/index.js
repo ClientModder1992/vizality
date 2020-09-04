@@ -1,10 +1,11 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Tooltip } = require('@components');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 
-class MembersActivityIcons extends Plugin {
+module.exports = class MembersActivityIcons extends Plugin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this._injectActivityIcons();
@@ -60,6 +61,4 @@ class MembersActivityIcons extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = MembersActivityIcons;
+};

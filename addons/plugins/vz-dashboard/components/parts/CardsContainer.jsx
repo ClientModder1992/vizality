@@ -1,4 +1,5 @@
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 const COUNTS = [ [ 1696, 20 ], [ 1432, 16 ], [ 1168, 12 ], [ 0, 8 ] ]; // yoinked from Discord's source code
 

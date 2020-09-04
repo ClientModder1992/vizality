@@ -1,9 +1,10 @@
 const { clipboard } = require('electron');
 
-const { Plugin } = require('@entities');
-const { patch, unpatch } = require('@patcher');
-const { React, getModule, hljs } = require('@webpack');
 const { react: { findInReactTree } } = require('@utilities');
+const { getModule, hljs } = require('@webpack');
+const { patch, unpatch } = require('@patcher');
+const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 module.exports = class Codeblocks extends Plugin {
   onStart () {

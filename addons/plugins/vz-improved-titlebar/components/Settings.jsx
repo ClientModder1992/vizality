@@ -1,5 +1,6 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { settings: { TextInput, SwitchItem, Category, RadioGroup } } = require('@components');
+const { getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 let classes = {
   initialized: false,

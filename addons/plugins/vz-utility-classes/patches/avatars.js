@@ -1,6 +1,7 @@
 const { react: { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 module.exports = async () => {
   const Avatar = await getModule('AnimatedAvatar', true);

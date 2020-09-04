@@ -1,9 +1,10 @@
-const { React, getModuleByDisplayName, getModule } = require('@webpack');
+const { getModuleByDisplayName, getModule } = require('@webpack');
 const { AsyncComponent, Icon } = require('@components');
+const { React } = require('@react');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 
-class MainNav extends React.Component {
+module.exports = class MainNav extends React.Component {
   render () {
     return (
       <nav className='vizality-main-nav'>
@@ -64,6 +65,4 @@ class MainNav extends React.Component {
       </nav>
     );
   }
-}
-
-module.exports = MainNav;
+};

@@ -1,4 +1,4 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 // Btw have I told you I use Arch?
 module.exports = React.memo(

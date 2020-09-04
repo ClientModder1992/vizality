@@ -1,6 +1,7 @@
-const { React, getModule } = require('@webpack');
 const { Clickable, Icon, Tooltip } = require('@components');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 module.exports = React.memo(({ icon, label, path, action, launch, expandable, subItem, disabled, auxillaryIconTooltipText, children }) => {
   const { useLocation } = getModule('useLocation');

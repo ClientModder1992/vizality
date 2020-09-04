@@ -1,6 +1,7 @@
-const { React, getModule } = require('@webpack');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
 const { Icon } = require('@components');
+const { React } = require('@react');
 
 module.exports = React.memo(({ icon, header, subtext, className, hasPadding, hasBackground, children }) => {
   const { base } = getModule('base');

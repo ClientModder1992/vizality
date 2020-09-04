@@ -1,9 +1,10 @@
-const { React, getModule } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
+const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
 const { Menu } = require('@components');
+const { React } = require('@react');
 
-class CopyRawMessage extends Plugin {
+module.exports = class CopyRawMessage extends Plugin {
   onStart () {
     this._patchContextMenu();
   }
@@ -31,6 +32,4 @@ class CopyRawMessage extends Plugin {
       return res;
     });
   }
-}
-
-module.exports = CopyRawMessage;
+};

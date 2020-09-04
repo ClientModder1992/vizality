@@ -1,19 +1,19 @@
-const { React, getModule } = require('@webpack');
-const { get } = require('@http');
-
 const { resolve } = require('path');
 const { format } = require('util');
 const { parse } = require('url');
+
+const { getModule } = require('@webpack');
+const { React } = require('@react');
+const { get } = require('@http');
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;
 
 const ReactInvariant = get('https://raw.githubusercontent.com/facebook/react/master/scripts/error-codes/codes.json')
   .then(res => JSON.parse(res.body.toString()));
 
-class ErrorBoundary extends React.PureComponent {
+module.exports = class ErrorBoundary extends React.PureComponent {
   constructor (props) {
     super(props);
-
     this.state = {
       crashed: false,
       errorStack: '',
@@ -76,6 +76,4 @@ class ErrorBoundary extends React.PureComponent {
       )
       : this.props.children;
   }
-}
-
-module.exports = ErrorBoundary;
+};

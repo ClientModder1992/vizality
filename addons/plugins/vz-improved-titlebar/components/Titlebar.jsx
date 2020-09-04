@@ -1,18 +1,10 @@
-const { React, getModule } = require('@webpack');
-const { Icon } = require('@components');
-
 const { remote: { getCurrentWebContents } } = require('electron');
 
-class Titlebar extends React.PureComponent {
-  componentDidMount () {
-    // this._onSettingsChange = () => this.forceUpdate();
-    // store.addChangeListener(this._onSettingsChange);
-  }
+const { getModule } = require('@webpack');
+const { Icon } = require('@components');
+const { React } = require('@react');
 
-  componentWillMount () {
-    // store.removeChangeListener(this._onSettingsChange);
-  }
-
+module.exports = class Titlebar extends React.PureComponent {
   render () {
     const { type, headerText, showExtras } = this.props;
     const { history } = getModule('history');
@@ -90,6 +82,4 @@ class Titlebar extends React.PureComponent {
       </>
     );
   }
-}
-
-module.exports = Titlebar;
+};

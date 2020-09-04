@@ -1,7 +1,8 @@
 const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@utilities');
-const { React, getModule, contextMenu: { closeContextMenu } } = require('@webpack');
+const { getModule, contextMenu: { closeContextMenu } } = require('@webpack');
+const { React } = require('@react');
 
-class ContextMenu extends React.PureComponent {
+module.exports = class ContextMenu extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {};
@@ -171,6 +172,4 @@ class ContextMenu extends React.PureComponent {
       </MenuItem>
     );
   }
-}
-
-module.exports = ContextMenu;
+};

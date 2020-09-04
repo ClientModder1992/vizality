@@ -1,6 +1,7 @@
 const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@utilities');
-const { getModule, i18n: { Messages } } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
 
 module.exports = async () => {
   const channelHeaderButtonClasses = await getModule('iconWrapper', 'toolbar', true);

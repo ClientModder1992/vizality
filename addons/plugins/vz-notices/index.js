@@ -1,11 +1,12 @@
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
-const { Guild, Directories } = require('@constants');
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
-
 const { promises: { unlink }, existsSync } = require('fs');
 const { join } = require('path');
+
+const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { Guild, Directories } = require('@constants');
+const { patch, unpatch } = require('@patcher');
+const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 const AnnouncementContainer = require('./components/AnnouncementContainer');
 const ToastContainer = require('./components/ToastContainer');

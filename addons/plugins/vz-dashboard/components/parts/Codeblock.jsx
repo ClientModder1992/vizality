@@ -1,16 +1,16 @@
-const { React, getModule, getModules } = require('@webpack');
+const { getModule, getModules } = require('@webpack');
+const { React } = require('@react');
 
 const handleCodeCopy = (e) => {
   vizality.manager.plugins.get('vz-codeblocks')._onClickHandler(e);
 };
-
 
 /**
  * 
  * @note Can't be an arrow function or we lose this `this` context.
  * @param {*} type
  * @param {*} content
- * @returns {*}  
+ * @returns {*}
  */
 function getCodeblock (type, content) {
   return React.createElement('div', {

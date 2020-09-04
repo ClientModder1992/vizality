@@ -1,6 +1,7 @@
 const { AdvancedScrollerAuto } = require('@components');
-const { React, getModule } = require('@webpack');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 module.exports = React.memo(({ className, wrapperClassName, isFullWidth, children }) => {
   const { pageWrapper } = getModule('pageWrapper');

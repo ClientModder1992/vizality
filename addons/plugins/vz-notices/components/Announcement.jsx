@@ -1,12 +1,12 @@
-const { React, getModule } = require('@webpack');
 const { Clickable } = require('@components');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 let classesCache = null;
 
-class Announcement extends React.PureComponent {
+module.exports = class Announcement extends React.PureComponent {
   constructor () {
     super();
-
     this.state = classesCache || {
       types: {},
       button: '',
@@ -57,6 +57,4 @@ class Announcement extends React.PureComponent {
       func();
     }
   }
-}
-
-module.exports = Announcement;
+};

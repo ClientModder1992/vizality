@@ -1,4 +1,4 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 /*
  * You cannot use anything with the word 'key' in it, or you'll crash Discord wehen you try to use it

@@ -1,7 +1,8 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
 const { react: { forceUpdateElement } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 const Settings = require('./components/Settings');
 const Titlebar = require('./components/Titlebar');

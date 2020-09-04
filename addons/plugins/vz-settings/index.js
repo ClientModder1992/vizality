@@ -1,7 +1,8 @@
-const { React, getModuleByDisplayName, getModule } = require('@webpack');
+const { getModuleByDisplayName, getModule } = require('@webpack');
 // const { AsyncComponent } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 const CoreSettings = require('./components/Settings');
 // const ErrorBoundary = require('./components/ErrorBoundary');

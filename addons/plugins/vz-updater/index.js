@@ -1,15 +1,17 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Directories } = require('@constants');
-const { Confirm } = require('@components');
-const { Plugin } = require('@entities');
-const { joinClassNames } = require('@utilities');
-
 const { promises: { readFile } } = require('fs');
 const { promisify } = require('util');
 const cp = require('child_process');
 const { join } = require('path');
 const exec = promisify(cp.exec);
+
+const { open: openModal, close: closeModal } = require('vizality/modal');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { joinClassNames } = require('@utilities');
+const { Directories } = require('@constants');
+const { Confirm } = require('@components');
+const { Plugin } = require('@entities');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 

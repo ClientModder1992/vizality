@@ -3,10 +3,11 @@ const { promises: { readFile } } = require('fs');
 const Markdown = require('react-markdown');
 const { join } = require('path');
 
-const { Icon } = require('@components');
-const { React, getModule, React: { useState } } = require('@webpack');
-const { Directories } = require('@constants');
 const { joinClassNames, string: { toKebabCase } } = require('@utilities');
+const { React, React: { useState } } = require('@react');
+const { Directories } = require('@constants');
+const { getModule } = require('@webpack');
+const { Icon } = require('@components');
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 

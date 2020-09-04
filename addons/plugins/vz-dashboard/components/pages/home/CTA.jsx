@@ -1,5 +1,6 @@
 const { Button, Icon, SVG: { WaveDivider } } = require('@components');
-const { React, getModule, React: { useState, useEffect } } = require('@webpack');
+const { React, React: { useState, useEffect } } = require('@react');
+const { getModule } = require('@webpack');
 const { Guild } = require('@constants');
 
 module.exports = React.memo(() => {

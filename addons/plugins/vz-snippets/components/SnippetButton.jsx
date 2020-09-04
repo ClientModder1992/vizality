@@ -1,9 +1,11 @@
-const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { Icon, Tooltip } = require('@components');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 // @todo: Figure out a way to re-enable the button if the snippet gets removed. Requires reload for now.
-class SnippetButton extends React.Component {
+module.exports = class SnippetButton extends React.Component {
   render () {
     const classes = {
       ...getModule('button', 'wrapper', 'disabled'),
@@ -26,6 +28,4 @@ class SnippetButton extends React.Component {
       </div>
     );
   }
-}
-
-module.exports = SnippetButton;
+};

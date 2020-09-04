@@ -1,6 +1,8 @@
-const { Flux, React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { Flux, getModule, getModuleByDisplayName } = require('@webpack');
 const { AsyncComponent, Tooltip, HeaderBar, Clickable, Icon } = require('@components');
 const { joinClassNames } = require('@utilities');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');

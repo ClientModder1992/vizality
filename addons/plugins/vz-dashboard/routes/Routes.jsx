@@ -1,4 +1,4 @@
-const { React, Router: { Route, Switch, Redirect } } = require('@webpack');
+const { React, Router: { Route, Switch, Redirect } } = require('@react');
 
 const Icons = require('../components/pages/documentation/components/Icons');
 const Screenshots = require('../components/pages/screenshots/Screenshots');

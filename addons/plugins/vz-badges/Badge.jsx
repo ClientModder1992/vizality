@@ -1,6 +1,8 @@
-const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { Clickable, Tooltip, Badge } = require('@components');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 module.exports = ({ badge, onClick, location }) => {
   this.badgeWrapperClass = {};

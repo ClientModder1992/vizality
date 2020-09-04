@@ -1,15 +1,15 @@
-const { React, getModule, getModuleByDisplayName } = require('@webpack');
 const { open: openModal, close: closeModal } = require('vizality/modal');
+const { getModule, getModuleByDisplayName } = require('@webpack');
 const { Confirm, TabBar } = require('@components');
 const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');
 
-class Plugins extends Base {
+module.exports = class Plugins extends Base {
   constructor () {
     super();
-
     this.state = {
       tab: 'INSTALLED',
       key: this.constructor.name.toLowerCase().slice(0, -1)
@@ -139,6 +139,4 @@ class Plugins extends Base {
       </Confirm>
     ));
   }
-}
-
-module.exports = Plugins;
+};

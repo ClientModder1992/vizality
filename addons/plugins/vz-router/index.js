@@ -1,7 +1,8 @@
 const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@utilities');
-const { React, getModule, getModules, getModuleByDisplayName } = require('@webpack');
+const { getModule, getModules, getModuleByDisplayName } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 module.exports = class Router extends Plugin {
   async onStart () {

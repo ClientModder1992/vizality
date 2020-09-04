@@ -1,11 +1,13 @@
 const { shell: { openExternal } } = require('electron');
-const { React, getModule } = require('@webpack');
+
 const { Clickable, ErrorState } = require('@components');
+const { getModule } = require('@webpack');
 const { HTTP } = require('@constants');
+const { React } = require('@react');
 const { get } = require('@http');
 
-const Layout = require('./parts/Layout');
 const CardsContainer = require('./parts/CardsContainer');
+const Layout = require('./parts/Layout');
 
 const States = Object.freeze({
   LOADING: 'LOADING',

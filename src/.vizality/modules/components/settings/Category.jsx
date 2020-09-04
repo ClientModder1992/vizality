@@ -1,4 +1,5 @@
-const { getModule, getModuleByDisplayName, React } = require('@webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 
@@ -15,7 +16,7 @@ let classes = {
   classDescription: ''
 };
 
-class Category extends React.PureComponent {
+module.exports = class Category extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = { classes };
@@ -68,6 +69,4 @@ class Category extends React.PureComponent {
       </DFormItem>
     );
   }
-}
-
-module.exports = Category;
+};

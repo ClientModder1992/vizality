@@ -1,11 +1,12 @@
-const { getModuleByDisplayName, React } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Copy = AsyncComponent.from(getModuleByDisplayName('CopyInput', true));
 
-class CopyInput extends React.PureComponent {
+module.exports = class CopyInput extends React.PureComponent {
   render () {
     const { children: title, note, required } = this.props;
     delete this.props.children;
@@ -17,9 +18,7 @@ class CopyInput extends React.PureComponent {
       </FormItem>
     );
   }
-}
-
-module.exports = CopyInput;
+};
 
 /**
  * AVAILABLE PROPS

@@ -1,12 +1,13 @@
-const { API } = require('@entities');
-const { React, Flux } = require('@webpack');
 const { logger: { error } } = require('@utilities');
+const { API } = require('@entities');
+const { Flux } = require('@webpack');
+const { React } = require('@react');
 
 const actions = require('./settingsStore/actions');
 const store = require('./settingsStore/store');
 
-const Layout = require('@root/addons/plugins/vz-dashboard/components/parts/Layout');
 const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
+const Layout = require('@root/addons/plugins/vz-dashboard/components/parts/Layout');
 
 const _module = 'API';
 const _submodule = 'Settings';

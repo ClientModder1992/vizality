@@ -1,7 +1,9 @@
-const { React, getModuleByDisplayName, getModule, i18n } = require('@webpack');
+const { getModuleByDisplayName, getModule } = require('@webpack');
 const { react : { findInReactTree } } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
+const { _proxyContext } = require('@i18n');
 const { Plugin } = require('@entities');
+const { React } = require('@react');
 
 module.exports = class ChannelTitlebar extends Plugin {
   constructor () {
@@ -76,7 +78,7 @@ module.exports = class ChannelTitlebar extends Plugin {
             this.activityPre = 'Streaming';
             this.activity = activity.details;
           } else if (activity.type === 2) {
-            this.activityPre = i18n._proxyContext.messages.ACTIVITY_FEED_NOW_PLAYING_SPOTIFY.split(' ');
+            this.activityPre = _proxyContext.messages.ACTIVITY_FEED_NOW_PLAYING_SPOTIFY.split(' ');
             this.activityPre.pop();
             this.activityPre = this.activityPre.join(' ');
             this.activitySong = activity.details;

@@ -1,11 +1,10 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const Announcement = require('./Announcement');
 
-class AnnouncementContainer extends React.PureComponent {
+module.exports = class AnnouncementContainer extends React.PureComponent {
   constructor (props) {
     super(props);
-
     this._handler = () => this.forceUpdate();
   }
 
@@ -25,6 +24,4 @@ class AnnouncementContainer extends React.PureComponent {
       ? <Announcement id={announcementId} {...vizality.api.notices.announcements[announcementId]}/>
       : null;
   }
-}
-
-module.exports = AnnouncementContainer;
+};

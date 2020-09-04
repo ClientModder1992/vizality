@@ -1,8 +1,10 @@
 const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
-const { React, getModule, i18n: { Messages }, React: { useState } } = require('@webpack');
 const { file: { removeDirRecursive } } = require('@utilities');
+const { React, React: { useState } } = require('@react');
 const { Directories } = require('@constants');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
 
 module.exports = React.memo(() => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);

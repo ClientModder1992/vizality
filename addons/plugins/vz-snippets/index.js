@@ -1,12 +1,14 @@
-const { React, getModule, i18n: { Messages } } = require('@webpack');
-const { Channels } = require('@constants');
+const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
+const { join } = require('path');
+
 const { react : { findInReactTree } } = require('@utilities');
 const { PopoutWindow } = require('@components');
 const { patch, unpatch } = require('@patcher');
+const { Channels } = require('@constants');
+const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
-
-const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
-const { join } = require('path');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const SnippetButton = require('./components/SnippetButton');
 const CustomCSS = require('./components/CustomCSS');

@@ -1,5 +1,6 @@
 const { Spinner, FormNotice, AsyncComponent, FormTitle } = require('@components');
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 const { get } = require('@http');
 
 const documentCache = {};

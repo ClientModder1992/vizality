@@ -1,6 +1,7 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
 const { AsyncComponent, Icons: { VizalityCutie } } = require('@components');
 const { close: closeModal } = require('vizality/modal');
+const { React } = require('@react');
 
 module.exports = AsyncComponent.from((async () => {
   const PremiumGuildModalHeader = getModuleByDisplayName('PremiumGuildModalHeader');

@@ -1,10 +1,10 @@
-const { Flex, Button } = require('@components');
-const { Directories } = require('@constants');
-const { React } = require('@webpack');
-
 const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
 const { join } = require('path');
+
+const { Flex, Button } = require('@components');
+const { Directories } = require('@constants');
+const { React } = require('@react');
 
 const SplashStages = Object.freeze({
   CHECKING_FOR_UPDATES: 'CHECKING_FOR_UPDATES',
@@ -15,7 +15,7 @@ const SplashStages = Object.freeze({
   STARTING_UP: 'STARTING_UP'
 });
 
-class SplashScreen extends React.PureComponent {
+module.exports = class SplashScreen extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -159,6 +159,4 @@ class SplashScreen extends React.PureComponent {
     }
     this._window.webContents.send('DISCORD_SPLASH_UPDATE_STATE', data);
   }
-}
-
-module.exports = SplashScreen;
+};

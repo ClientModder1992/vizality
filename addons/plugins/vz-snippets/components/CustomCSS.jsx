@@ -1,5 +1,7 @@
-const { React, Flux, getModule, i18n: { Messages } } = require('@webpack');
 const { AdvancedScrollerThin, AsyncComponent, Clickable, FormTitle, Tooltip, settings: { SwitchItem, SliderInput }, Icons: { Pin, Unpin, Gear, Close, ExternalLink } } = require('@components');
+const { Flux, getModule } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const CodeMirror = require('./CodeMirror');
 

@@ -1,6 +1,6 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
-class AsyncComponent extends React.PureComponent {
+module.exports = class AsyncComponent extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -35,6 +35,4 @@ class AsyncComponent extends React.PureComponent {
       })
     );
   }
-}
-
-module.exports = AsyncComponent;
+};

@@ -1,5 +1,6 @@
 const { Icons: { SdkWordmark }, AsyncComponent } = require('@components');
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 const TitleBar = AsyncComponent.from((async () => {
   const titleBar = getModule(m => typeof m === 'function' && m.toString().includes('PlatformTypes.WINDOWS') && m.toString().includes('PlatformTypes.OSX'));

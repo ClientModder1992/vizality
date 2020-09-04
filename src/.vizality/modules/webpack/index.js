@@ -185,7 +185,7 @@ const webpack = module.exports = {
    * @param {string} displayName Component's display name.
    * @param {boolean} retry Whether or not to retry fetching if the module is not found. Each try will be delayed by 100ms and max retries is 20.
    * @param {boolean} forever If Vizality should try to fetch the module forever. Should be used only if you're in early stages of startup.
-   * @returns {Promise<Object>|Object} The component. A promise will always be returned, unless retry is false.
+   * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
    */
   getModuleByDisplayName (displayName, retry = false, forever = false) {
     return webpack._getModule(m => m.displayName && m.displayName.toLowerCase() === displayName.toLowerCase(), retry, forever);

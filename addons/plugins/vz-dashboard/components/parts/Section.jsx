@@ -1,7 +1,8 @@
-const { React, getModule } = require('@webpack');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
-const SectionHeader = React.memo(({ header, subtext }) => {
+const Header = React.memo(({ header, subtext }) => {
   const { base } = getModule('base');
   const { size32 } = getModule('size24');
   const { content } = getModule('wrappedLayout');
@@ -22,7 +23,7 @@ const SectionHeader = React.memo(({ header, subtext }) => {
 module.exports = React.memo(({ header, subtext, className, children, hasPadding }) => {
   return (
     <div className={joinClassNames('vizality-dashboard-section', className, { 'vz-hasPadding': hasPadding })}>
-      {header && <SectionHeader header={header} subtext={subtext} />}
+      {header && <Header header={header} subtext={subtext} />}
       <div className='vizality-dashboard-section-contents'>
         {children}
       </div>

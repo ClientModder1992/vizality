@@ -1,6 +1,7 @@
-const { React, React: { useState, useEffect }, getModule } = require('@webpack');
 const { Icon, Tooltip, TabBar, settings: { TextInput } } = require('@components');
+const { React, React: { useState, useEffect } } = require('@react');
 const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
 
 const Codeblock = require('../../../parts/Codeblock');
 const Section = require('../../../parts/Section');

@@ -1,13 +1,13 @@
 const { AsyncComponent, Button, Tooltip, Icon } = require('@components');
-const { React, getModuleByDisplayName } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@utilities');
+const { React } = require('@react');
 
 const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
 
-class Toast extends React.PureComponent {
+module.exports = class Toast extends React.PureComponent {
   constructor (props) {
     super(props);
-
     this.state = {
       timeout: null,
       progress: 100
@@ -151,6 +151,4 @@ class Toast extends React.PureComponent {
       animate={true}
     />;
   }
-}
-
-module.exports = Toast;
+};

@@ -1,12 +1,13 @@
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('@webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
 const { TabBar } = require('@components');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const Base = require('./Base');
 
-class Themes extends Base {
+module.exports = class Themes extends Base {
   constructor () {
     super();
-
     this.state = {
       tab: 'INSTALLED',
       key: this.constructor.name.toLowerCase().slice(0, -1)
@@ -55,6 +56,4 @@ class Themes extends Base {
   getItems () {
     return this._sortItems([ ...vizality.styleManager.themes.values() ].filter(t => t.isTheme));
   }
-}
-
-module.exports = Themes;
+};

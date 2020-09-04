@@ -1,11 +1,12 @@
-const { getModule, getModuleByDisplayName, React } = require('@webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
-class SliderInput extends React.PureComponent {
+module.exports = class SliderInput extends React.PureComponent {
   render () {
     const { marginTop20 } = getModule('marginTop20');
     const { children: title, note, required } = this.props;
@@ -20,6 +21,4 @@ class SliderInput extends React.PureComponent {
       </FormItem>
     );
   }
-}
-
-module.exports = SliderInput;
+};

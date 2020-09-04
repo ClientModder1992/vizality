@@ -1,7 +1,8 @@
 const { settings: { ButtonItem } } = require('@components');
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
-class ForceUI extends React.PureComponent {
+module.exports = class ForceUI extends React.PureComponent {
   render () {
     return (
       <div id='force-ui' className='category'>
@@ -47,7 +48,7 @@ class ForceUI extends React.PureComponent {
     everyoneMdl.extractEveryoneRole = ogExtractEveryoneRole;
     everyoneMdl.shouldShowEveryoneGuard = ogShouldShowEveryoneGuard;
   }
-}
+};
 
 /*
  * Upload modal
@@ -60,4 +61,3 @@ class ForceUI extends React.PureComponent {
  * Offline & Login screens
  * Typing indicator
  */
-module.exports = ForceUI;

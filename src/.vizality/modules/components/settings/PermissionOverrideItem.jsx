@@ -1,14 +1,15 @@
-/**
+/*
  * @todo: Fix this
  *
- * const { getModuleByDisplayName, React } = require('@webpack');
+ * const { getModuleByDisplayName } = require('@webpack');
+ * const { React } = require('@react');
  *
  * const AsyncComponent = require('../AsyncComponent');
  * const FormItem = require('./FormItem');
  *
  * const DPermissionOverride = AsyncComponent.from(getModuleByDisplayName('PermissionOverrideItem'));
  *
- * class PermissionOverride extends React.Component {
+ * module.exports = class PermissionOverride extends React.Component {
  * render () {
  * const { children: title, note, required } = this.props;
  * delete this.props.children;
@@ -19,9 +20,7 @@
  * </FormItem>
  * );
  * }
- * }
- *
- * module.exports = PermissionOverride;
+ * };
  *
  * /**
  * AVAILABLE PROPS

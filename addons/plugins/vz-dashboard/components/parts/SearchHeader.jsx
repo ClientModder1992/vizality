@@ -1,4 +1,5 @@
-const { React, getModule } = require('@webpack');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 const SearchBar = require('./SearchBar');
 

@@ -1,5 +1,6 @@
-const { React, i18n: { Messages } } = require('@webpack');
 const { Modal, Card, FormTitle } = require('@components');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const License = ({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
   const data = {
@@ -34,6 +35,6 @@ const License = ({ spdx, license: { name, url, permissions, conditions, limitati
       </Modal.Content>
     </Modal>
   );
-}
+};
 
 module.exports = License;

@@ -1,6 +1,8 @@
-const { getModule, React, i18n: { Messages } } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
+const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 

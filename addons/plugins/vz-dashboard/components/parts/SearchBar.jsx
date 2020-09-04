@@ -1,5 +1,7 @@
-const { React, getModule, i18n: { Messages } } = require('@webpack');
 const { Clickable, Icon } = require('@components');
+const { getModule } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
 module.exports = React.memo(({ placeholder, onSearch }) => {
   const { size12 } = getModule('size12');

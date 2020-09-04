@@ -1,4 +1,5 @@
-const { React, modal } = require('@webpack');
+const { modal } = require('@webpack');
+const { React } = require('@react');
 
 module.exports = {
   /**

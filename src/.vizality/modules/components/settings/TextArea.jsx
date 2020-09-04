@@ -1,4 +1,5 @@
-const { React, getModuleByDisplayName } = require('@webpack');
+const { getModuleByDisplayName } = require('@webpack');
+const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');

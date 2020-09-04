@@ -1,16 +1,18 @@
-const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
-const { React, getModule, React: { useState }, i18n: { Messages, chosenLocale: currentLocale } } = require('@webpack');
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { joinClassNames } = require('@utilities');
-const { Repositories, Directories } = require('@constants');
-
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
+
+const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
+const { open: openModal, close: closeModal } = require('vizality/modal');
+const { Messages, chosenLocale: currentLocale } = require('@i18n');
+const { Repositories, Directories } = require('@constants');
+const { React, React: { useState } } = require('@react');
+const { joinClassNames } = require('@utilities');
+const { getModule } = require('@webpack');
 
 const Update = require('./Update');
 const Icons = require('./Icons');
 
-module.exports = () => {
+module.exports = React.memo(() => {
   const [ opened, setOpened ] = useState(false);
   const [ copied, setCopied ] = useState(false);
   const [ debugInfoOpened, setDebugInfoOpened ] = useState();
@@ -418,4 +420,4 @@ module.exports = () => {
       </>}
     </div>
   );
-};
+});

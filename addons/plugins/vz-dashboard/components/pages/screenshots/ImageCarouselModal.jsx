@@ -1,6 +1,6 @@
 const { ImageCarouselModal, Image } = require('@components');
-const { React } = require('@webpack');
 const { open: openModal } = require('vizality/modal');
+const { React } = require('@react');
 
 const Layout = require('../../parts/Layout');
 

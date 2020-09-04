@@ -2,6 +2,6 @@
 
 const { getModule } = require('../webpack');
 
-const i18n = module.exports = {
+module.exports = {
   ...getModule('Messages', 'languages')
 };

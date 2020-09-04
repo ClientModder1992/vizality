@@ -3,13 +3,14 @@
 const { shell } = require('electron');
 
 const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
-const { React, getModule, contextMenu, i18n: { Messages } } = require('@webpack');
 const { string: { toHeaderCase, toPlural } } = require('@utilities');
+const { getModule, contextMenu } = require('@webpack');
+const { Messages } = require('@i18n');
+const { React } = require('@react');
 
-class Base extends React.PureComponent {
+module.exports = class Base extends React.PureComponent {
   constructor () {
     super();
-
     this.state = {
       key: this.constructor.name.toLowerCase().slice(0, -1),
       search: ''
@@ -156,6 +157,4 @@ class Base extends React.PureComponent {
       return 0;
     });
   }
-}
-
-module.exports = Base;
+};

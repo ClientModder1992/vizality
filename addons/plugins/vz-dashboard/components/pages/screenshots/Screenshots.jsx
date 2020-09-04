@@ -2,9 +2,9 @@ const imageToBase64 = require('image-to-base64');
 const { readdirSync } = require('fs');
 const { join, extname } = require('path');
 
-const { ImageModal, Image } = require('@components');
-const { React, React: { useState, useEffect } } = require('@webpack');
+const { React, React: { useState, useEffect } } = require('@react');
 const { open: openModal } = require('vizality/modal');
+const { ImageModal, Image } = require('@components');
 
 const Content = require('../../parts/Content');
 const Layout = require('../../parts/Layout');

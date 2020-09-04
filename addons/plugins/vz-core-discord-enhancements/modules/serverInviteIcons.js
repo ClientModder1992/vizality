@@ -1,11 +1,16 @@
-const { React, getModule } = require('@webpack');
 const { joinClassNames } = require('@utilities');
 const { patch, unpatch } = require('@patcher');
+const { getModule } = require('@webpack');
+const { React } = require('@react');
 
 /*
  * Adds server icons to the 'Invite to Server' context submenu.
  */
 
+/*
+ * @todo Try to convert this and utility-class ones into:
+ * const contextServerInviteIcons = module.exports = () => {
+ */
 const contextServerInviteIcons = () => {
   const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
   const GuildStore = getModule('getGuild');

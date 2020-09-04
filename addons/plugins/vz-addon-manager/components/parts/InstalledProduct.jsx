@@ -1,9 +1,9 @@
 const { Card } = require('@components');
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const BaseProduct = require('./BaseProduct');
 
-class InstalledProduct extends BaseProduct {
+module.exports = class InstalledProduct extends BaseProduct {
   render () {
     return (
       <Card className='vizality-entity'>
@@ -14,6 +14,4 @@ class InstalledProduct extends BaseProduct {
       </Card>
     );
   }
-}
-
-module.exports = InstalledProduct;
+};

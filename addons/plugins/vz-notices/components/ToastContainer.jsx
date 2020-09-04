@@ -1,11 +1,10 @@
-const { React } = require('@webpack');
+const { React } = require('@react');
 
 const Toast = require('./Toast');
 
-class ToastContainer extends React.PureComponent {
+module.exports = class ToastContainer extends React.PureComponent {
   constructor (props) {
     super(props);
-
     this.state = { closing: null };
     this._addedHandler = () => this.forceUpdate();
     this._closingHandler = (id) => {
@@ -33,6 +32,4 @@ class ToastContainer extends React.PureComponent {
       />}
     </div>;
   }
-}
-
-module.exports = ToastContainer;
+};
