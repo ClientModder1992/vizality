@@ -5,23 +5,22 @@ const { React } = require('@react');
 const AsyncComponent = require('./AsyncComponent');
 const CustomIcons = require('./CustomIcons');
 
-const _module = 'Module';
-const _submodule = 'Component:Icon';
+const _module = 'Component';
+const _submodule = 'Icon';
 
 /*
- * @todo Look into overwriting Discord native values with custom ones (i.e. Verified to overwrite Verified)
  * @todo Look into changing names or adding aliases... i.e. 'EmojiFoodCategory' to 'Popsicle'
  */
 
 // These are icons that aren't really icons, or that will cause Discord to crash
-const blacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro', './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered', './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType', './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple', './PremiumGuildTier3Simple', './PremiumGuildTierSimple' ];
+const iconBlacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro', './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered', './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType', './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple', './PremiumGuildTier3Simple', './PremiumGuildTierSimple' ];
 
 let Icons = [ ...Object.keys(CustomIcons) ];
 
 const Icon = module.exports = AsyncComponent.from((async () => {
   const registry = await getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
   Icon.Names = registry.keys()
-    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k))
+    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !iconBlacklist.includes(k))
     .map(m => m.substring(2));
 
   const IconOverlaps = Icons.filter(icon => Icon.Names.includes(icon));
@@ -40,10 +39,15 @@ const Icon = module.exports = AsyncComponent.from((async () => {
     }
 
     let icon;
-    if (Icons.filter(icon => icon.includes(props.name)).length > 0) {
+    if (Icons.filter(icon => icon === props.name).length > 0) {
       icon = CustomIcons[props.name];
     } else {
-      icon = registry(`./${props.name}`).default;
+      try {
+        icon = registry(`./${props.name}`).default;
+      } catch (err) {
+        icon = registry('./Poop').default;
+        error(_module, _submodule, null, `"${props.name}" is not an available icon. A full list of available icon names:`, Icon.Names);
+      }
     }
 
     const newProps = global._.cloneDeep(props);

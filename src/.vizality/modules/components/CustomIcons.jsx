@@ -1,9 +1,5 @@
 const { React } = require('@react');
 
-/*
- * You cannot use anything with the word 'key' in it, or you'll crash Discord wehen you try to use it
- * Minified React error #130;
- */
 module.exports = {
   Arch: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
@@ -87,7 +83,7 @@ module.exports = {
     </svg>
   ),
 
-  TypingBoard: React.memo(props =>
+  Keyboard: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' d='M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm8 7H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1zm1-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z'/>
     </svg>
@@ -129,7 +125,7 @@ module.exports = {
     </svg>
   ),
 
-  Verified: React.memo(props =>
+  VerifiedBadge: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' {...props}>
       <path fill='currentColor' d='M14.5,5.6c-0.2-0.8,0.5-2,0-2.6C14,2.3,12.6,2.6,12,2.2s-0.8-1.9-1.5-2.1C9.8-0.1,8.8,0.9,8,0.9S6.3-0.2,5.5,0 C4.8,0.3,4.6,1.7,4,2.2S2,2.4,1.5,3c-0.4,0.6,0.2,1.9,0,2.6C1.3,6.3,0,6.9,0,7.6C0,8.4,1.3,9,1.5,9.7c0.2,0.8-0.5,2,0,2.6 C2,12.9,3.4,12.7,4,13.1s0.8,1.9,1.5,2.1c0.7,0.2,1.7-0.8,2.5-0.8s1.7,1,2.5,0.8s0.9-1.6,1.5-2.1s2-0.2,2.5-0.8 c0.4-0.6-0.2-1.9,0-2.6S16,8.4,16,7.6C16,6.9,14.7,6.3,14.5,5.6z M7.4,11.2L4,8.7l1-1.4l2,1.5L10.6,4L12,5L7.4,11.2z'/>
     </svg>
