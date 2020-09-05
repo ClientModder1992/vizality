@@ -1,0 +1,33 @@
+@use 'base';
+@use 'components';
+
+.vz-hasNoGuildIcon {
+  background-image: url('https://i.imgur.com/Fa13xn9.png');
+}
+
+.vz-hasNoGameIcon {
+  background-image: url('https://i.imgur.com/Fa13xn9.png');
+}
+.vz-hasNoGameIcon * {
+  display: none;
+}
+
+.vz-hasNoUserAvatar {
+
+}
+
+.vz-hasNoGroupIcon {
+
+}
+
+.vz-hasNoSplashImage {
+
+}
+
+/*
+ * This is needed to hide initial toasts from view until the
+ * the styles can be loaded from the 'vz-notices' plugin.
+ */
+.vizality-toast {
+  display: none;
+}

@@ -1,7 +1,8 @@
 /* @todo: Use logger. */
-
-const { Theme } = require('@entities');
+const { dom: { createElement }, logger: { error, log, warn } } = require('@util');
+const { resolveCompiler } = require('@compilers');
 const { Directories } = require('@constants');
+const { Theme } = require('@entities');
 
 const { join } = require('path');
 const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
@@ -20,21 +21,64 @@ class StyleManager {
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
-      readFile(join(__dirname, '..', 'styles', 'main.css'), 'utf8').then(css => {
-        const appendStyle = () => {
-          const style = document.createElement('style');
-          style.id = 'vizality-main-css';
-          style.setAttribute('vz-style', '');
-          style.innerHTML = css;
-          document.head.appendChild(style);
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', appendStyle);
-        } else {
-          appendStyle();
+      /**
+       * Injects a style element containing the styles from the specified stylesheet into the
+       * document head. Style element (and styles) are automatically removed on
+       * plugin disable/unload.
+       * @returns {void}
+       */
+      const injectStyles = () => {
+        const path = '../styles/main.scss';
+
+        // Assume it's a relative path and try resolving it
+        const resolvedPath = join(__dirname, path);
+
+        if (!existsSync(resolvedPath)) {
+          throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
         }
-      });
+
+        const id = Math.random().toString(36).slice(2);
+        const compiler = resolveCompiler(resolvedPath);
+        const style = createElement('style', {
+          id: 'vizality-styles-base',
+          'vz-style': true
+        });
+
+        document.head.appendChild(style);
+        const compile = async () => {
+          style.innerHTML = await compiler.compile();
+        };
+
+        compiler.enableWatcher();
+        compiler.on('src-update', compile);
+        this[`__compileStylesheet_${id}`] = compile;
+        this[`__compiler_${id}`] = compiler;
+        return compile();
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectStyles);
+      } else {
+        injectStyles();
+      }
     }
+    /*
+     * if (!window.__SPLASH__) {
+     *   readFile(join(__dirname, '..', 'styles', 'main.css'), 'utf8').then(css => {
+     *     const appendStyle = () => {
+     *       const style = document.createElement('style');
+     *       style.id = 'vizality-main-css';
+     *       style.setAttribute('vz-style', '');
+     *       style.innerHTML = css;
+     *       document.head.appendChild(style);
+     *     };
+     *     if (document.readyState === 'loading') {
+     *       document.addEventListener('DOMContentLoaded', appendStyle);
+     *     } else {
+     *       appendStyle();
+     *     }
+     *   });
+     * }
+     */
   }
 
   get disabledThemes () {
