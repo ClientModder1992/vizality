@@ -7,9 +7,7 @@ const Item = require('./Item');
 
 const Header = React.memo(({ children }) => {
   const { header } = getModule('header', 'item', 'separator');
-  return (
-    <h2 className={joinClassNames('vizality-dashboard-sidebar-header', header)}>{children}</h2>
-  );
+  return <h2 className={joinClassNames('vizality-dashboard-sidebar-header', header)}>{children}</h2>;
 });
 
 const Separator = React.memo(props =>
@@ -39,17 +37,17 @@ module.exports = React.memo(() =>
       <SubItem label='Getting Started' path='/documentation/getting-started' />
       <SubItem label='Plugins' path='/documentation/plugins' />
       <SubItem label='Themes' path='/documentation/themes' />
-      <SubItem label='Testing' path='/documentation/components/test' />
       <SubItem label='Screenshots' path='/documentation/components/screenshots' />
       <SubItem label='Components' path='/documentation/components/icons' />
-      <SubItem label='Components' path='/documentation/components/test' />
+      <SubItem label='Error Test' path='/documentation/components/error-test' />
+      <SubItem label='Test' path='/documentation/components/test' />
     </Item>
     <Item icon='Experiment' label='Experiments' path='/experiments' />
     <Separator />
     <Item icon='CloudDownload' label='Updates' path='/updates' />
     <Item icon='History' label='Changelog' path='/changelog'
       launch={`vizality.api.actions.run('openLatestChangelog')`}
-      auxillaryIconTooltipText='Open Latest Log'
+      auxillaryIconTooltipText='Open Latest Update'
     />
   </AdvancedScrollerThin>
 );

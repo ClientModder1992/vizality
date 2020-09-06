@@ -1,9 +1,11 @@
 const { React, Router: { Route, Switch, Redirect } } = require('@react');
 
 const Icons = require('../components/pages/documentation/components/Icons');
+const Experiments = require('../components/pages/experiments/Experiments');
 const Screenshots = require('../components/pages/screenshots/Screenshots');
 const Changelog = require('../components/pages/changelog/Changelog');
 const Updates = require('../../vz-updater/components/Settings');
+const ErrorTest = require('../components/pages/ErrorTest');
 const Content = require('../components/parts/Content');
 const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
@@ -31,9 +33,16 @@ module.exports = () => {
           </Content>
         </Layout>
       </Route>
-      <Route path={`${basePath}/plugins`} exact>
+      {/* <Route path={`${basePath}/plugins`} exact>
         <Layout isFullWidth>
           <Content header='Plugins' icon='Plugin' hasBackground>
+            <Plugins />
+          </Content>
+        </Layout>
+      </Route> */}
+      <Route path={`${basePath}/plugins`} exact>
+        <Layout>
+          <Content header='Plugins'>
             <Plugins />
           </Content>
         </Layout>
@@ -70,11 +79,18 @@ module.exports = () => {
       {/* <Route path={`${basePath}/documentation/components/test`} exact>
         <Icons selectedTab='CODE' />
       </Route> */}
+      <Route path={`${basePath}/documentation/components/error-test`} exact>
+        <ErrorTest />
+      </Route>
       <Route path={`${basePath}/documentation/components/test`} exact>
         <Test />
       </Route>
       <Route path={`${basePath}/experiments`} exact>
-        <Layout />
+        <Layout>
+          <Content header='Experiments'>
+            <Experiments />
+          </Content>
+        </Layout>
       </Route>
       <Route path={`${basePath}/updates`} exact>
         <Layout>

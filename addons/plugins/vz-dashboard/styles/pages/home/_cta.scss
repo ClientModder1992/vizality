@@ -7,6 +7,13 @@
   right: 100px;
   bottom: -20px;
   color: #fff;
+  @at-root {
+    @media (max-width: 1750px) {
+      & {
+        display: none;
+      }
+    }
+  }
 }
 .vizality-dashboard-page-home-cta {
   .vizality-icon.vizality{
@@ -86,7 +93,7 @@
     }
     &-header {
       &-welcome {
-        font-size: 40px;
+        font-size: 54px;
         font-weight: 700;
         color: #fff;
       }

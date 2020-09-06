@@ -26,7 +26,7 @@ module.exports = React.memo(() => {
         <div className='vizality-dashboard-page-home-cta-content-header'>
           <h1 className='vizality-dashboard-page-home-cta-content-header-welcome'>Welcome, {currentUserName}!</h1>
           <h3 className='vizality-dashboard-page-home-cta-content-header-subtext'>
-            <span>You've made the right choice. The power of customization is now at your fingertips. Check out the features below to learn to harness your newfound power.</span>
+            <span>You've made the right choice. The power of customization is now at your fingertips. Check out the features below to learn how to harness your newfound power.</span>
             {!hasJoinedDiscord && <span> Make sure you check out the Discord server, we'd love to have you!</span>}
           </h3>
           {!hasJoinedDiscord && <div className='vizality-dashboard-page-home-cta-content-buttons-wrapper'>
