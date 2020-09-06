@@ -51,7 +51,7 @@ const object = module.exports = {
   _find (obj, targetValue, exact = false, type) {
     if (typeof targetValue !== 'string' || targetValue.trim() === '') {
       // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
-      return error(_module, `${_submodule}:_find`, null, `Expected a 'string' argument but received '${typeof targetValue}'.`);
+      return error(_module, `${_submodule}:_find`, null, `Expected a string argument but received ${typeof targetValue}'.`);
     }
 
     let results;
@@ -59,7 +59,7 @@ const object = module.exports = {
     if (type === 'key' || type === 'value' || type === 'all') {
       results = [ ...object._traverse(obj, targetValue, exact, type) ];
     } else {
-      return error(_module, `${_submodule}:_find`, null, `Argument 'type' must be a string value of 'key', 'value', or 'both'`);
+      return error(_module, `${_submodule}:_find`, null, `Argument "type" must be a string value of "key", "value", or "both"`);
     }
 
     const tempResults = [ ...results ];
@@ -68,11 +68,9 @@ const object = module.exports = {
     const choiceWord = exact ? 'matching' : 'containing';
 
     /*
-    * if (!results || !results.length) {
-    *   return log(module, submodule, null, `${results.length} ${resultsText} found for values ${choiceWord} '${targetValue}':`);
-    * }
-    */
-
+     * @todo This needs reworking somehow. It is bugged for objects which contain
+     * keys with period(s) in them.
+     */
     log(_module, `${_submodule}:_find`, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
     if (exact) {
@@ -80,27 +78,33 @@ const object = module.exports = {
     } else {
       results = results.map(result => {
         const resultArray = result.split('.');
-        let outputResult = object;
+        let outputResult = obj;
 
         for (const result of resultArray) {
-          outputResult = outputResult[result];
+          /**
+           * Weird bug caused by splitting by . above, because some
+           * keys do have a . in them, which causes issues: @see {@link https://i.imgur.com/2pvyjlI.png}
+           */
+          try {
+            outputResult = outputResult[result];
+          } catch (err) {
+            continue;
+          }
+
+          if (!outputResult) outputResult = [ 'N̶U̶L̶L' ];
         }
 
-        if (typeof outputResult === 'object') {
-          return `${result.padEnd(longestResult.length, ' ')}`;
-        }
+        if (typeof outputResult === 'object') return `${result.padEnd(longestResult.length, ' ')}`;
 
         /*
-        * We're using replace(/\n/g, '\\n') here particularly because Discord likes to sometimes
-        * include \n for line breaks in their i18n strings, and if so we want to see them.
-        */
+         * We're using replace(/\n/g, '\\n') here particularly because Discord likes to sometimes
+         * include \n for line breaks in their i18n strings, and if so we want to see them.
+         */
         return `${result.padEnd(longestResult.length, ' ')} | ${outputResult.replace(/\n/g, '\\n')}`;
       }).join('\n');
     }
 
-    if (results.length > 0) {
-      return console.log(results);
-    }
+    if (results.length > 0) return console.log(results);
   },
 
   isObject (input) {

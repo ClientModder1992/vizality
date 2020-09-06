@@ -67,43 +67,43 @@ module.exports = class ErrorBoundary extends React.PureComponent {
 
     return (
       <>
-        {this.state.crashed && <div className={joinClassNames('vizality-error-boundary', this.props.className, colorStandard)}>
-          <h1 className={joinClassNames('vizality-error-boundary-header', this.props.headerClassName)}>Huh, that's odd.</h1>
-          <div className='vizality-error-boundary-text'>An error occurred while rendering the page:</div>
-          <div className='vizality-error-boundary-error-stack'>{this.state.errorStack}</div>
-          <div className='vizality-error-boundary-text'>Component stack:</div>
-          <div className='vizality-error-boundary-component-stack'>{this.state.componentStack}</div>
-          <div className='vizality-error-boundary-scene'>
-            <div className='vizality-error-boundary-flying-wumpus-wrapper'>
-              <img className='vizality-error-boundary-flying-wumpus' src='/assets/7558b67985f4035ed2b2cf9e3072d81f.svg' />
+        {this.state.crashed && <div className={joinClassNames('vz-error-boundary', this.props.className, colorStandard)}>
+          <h1 className={joinClassNames('vz-error-boundary__header', this.props.headerClassName)}>Huh, that's odd.</h1>
+          <div className='vz-error-boundary__text'>An error occurred while rendering the page:</div>
+          <div className='vz-error-boundary__block vz-error-boundary__block--error-stack'>{this.state.errorStack}</div>
+          <div className='vz-error-boundary__text'>Component stack:</div>
+          <div className='vz-error-boundary__block vz-error-boundary__block--component-stack'>{this.state.componentStack}</div>
+          <div className='vz-error-boundary__scene'>
+            <div className='vz-error-boundary__flying-wumpus-wrapper'>
+              <img className='vz-error-boundary__flying-wumpus' src='/assets/7558b67985f4035ed2b2cf9e3072d81f.svg' />
             </div>
-            <div className='vizality-error-boundary-clouds'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='762px' height='331px' viewBox='0 0 762 331' className='vizality-error-boundary-cloud big front slowest'>
-                <path fill='#FFFFFF' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
+            <div className='vz-error-boundary__clouds'>
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 762 331' className='vz-error-boundary__cloud vz-error-boundary__cloud--big vz-error-boundary__cloud--front vz-error-boundary__cloud--slowest'>
+                <path fill='currentColor' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
                 c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529
                 C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5
                 S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z'/>
               </svg>
-              <svg xmlns='http://www.w3.org/2000/svg' width='762px' height='331px' viewBox='0 0 762 331' className='vizality-error-boundary-cloud distant smaller'>
-                <path fill='#FFFFFF' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 762 331' className='vz-error-boundary__cloud vz-error-boundary__cloud--distant vz-error-boundary__cloud--smaller'>
+                <path fill='currentColor' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
                 c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529
                 C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5
                 S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z'/>
               </svg>
-              <svg xmlns='http://www.w3.org/2000/svg' width='762px' height='331px' viewBox='0 0 762 331' className='vizality-error-boundary-cloud small slow'>
-                <path fill='#FFFFFF' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 762 331' className='vz-error-boundary__cloud vz-error-boundary__cloud--small vz-error-boundary__cloud--slow'>
+                <path fill='currentColor' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
                 c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529
                 C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5
                 S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z'/>
               </svg>
-              <svg xmlns='http://www.w3.org/2000/svg' width='762px' height='331px' viewBox='0 0 762 331' className='vizality-error-boundary-cloud distant super-slow massive'>
-                <path fill='#FFFFFF' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 762 331' className='vz-error-boundary__cloud vz-error-boundary__cloud--distant vz-error-boundary__cloud--super-slow vz-error-boundary__cloud--massive'>
+                <path fill='currentColor' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
                 c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529
                 C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5
                 S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z'/>
               </svg>
-              <svg xmlns='http://www.w3.org/2000/svg' width='762px' height='331px' viewBox='0 0 762 331' className='vizality-error-boundary-cloud slower'>
-                <path fill='#FFFFFF' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 762 331' className='vz-error-boundary__cloud vz-error-boundary__cloud--slower'>
+                <path fill='currentColor' d='M715.394,228h-16.595c0.79-5.219,1.201-10.562,1.201-16c0-58.542-47.458-106-106-106
                 c-8.198,0-16.178,0.932-23.841,2.693C548.279,45.434,488.199,0,417.5,0c-84.827,0-154.374,65.401-160.98,148.529
                 C245.15,143.684,232.639,141,219.5,141c-49.667,0-90.381,38.315-94.204,87H46.607C20.866,228,0,251.058,0,279.5
                 S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715.394,228z'/>

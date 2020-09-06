@@ -1,10 +1,10 @@
-.vizality-error-boundary {
+.vz-error-boundary {
+  $base: &;
   font-size: 16px;
-  &-text {
+  &__text {
     margin: 30px 0 15px;
   }
-  &-error-stack,
-  &-component-stack {
+  &__block {
     font-size: 18px;
     line-height: 1.4;
     background: var(--background-secondary);
@@ -12,94 +12,99 @@
     border-radius: 4px;
     padding: 20px;
     white-space: pre-line;
+    &--error-stack::first-line {
+      font-weight: 600;
+      color: var(--header-primary);
+    }
   }
-  &-error-stack::first-line {
-    font-weight: 600;
-    color: var(--header-primary);
-  }
-  &-scene {
+  &__scene {
     width: 100%;
   }
-  &-flying-wumpus {
+  &__flying-wumpus {
     width: 300px;
     height: auto;
     animation-timing-function: ease-in-out;
-    animation: vz-errorBoundaryWumpusSoaring 4s forwards infinite;
+    animation: vz-error-boundary-wumpus-soaring 4s forwards infinite;
     &-wrapper {
       width: 300px;
       margin: 0 auto;
       z-index: 1;
       position: relative;
       margin-right: 300px;
-      animation: vz-errorBoundaryWumpusScoping 2s alternate infinite;
+      animation: vz-error-boundary-wumpus-scoping 2s alternate infinite;
       animation-timing-function: linear;
     }
   }
-  &-clouds {
+  &__clouds {
     position: absolute;
     overflow: hidden;
     transform: translate3d(0, -130px, 0);
     height: 420px;
     width: 110%;
   }
-  &-cloud {
+  &__cloud {
     position: absolute;
     top: 20%;
     width: 300px;
     right: 0;
     opacity: 1;
-    animation-name: vz-errorBoundaryCloudMovement;
+    animation-name: vz-error-boundary-cloud-movement;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-duration: 8s;
-    &.front {
+    &--front {
       z-index: 9;
     }
-    &.distant {
+    &--distant {
       z-index: 1;
     }
-    &.background {
-      z-index: 1;
-    }
-    &.smaller {
+    &--smaller {
       margin-right: 400px;
       width: 100px;
       margin-top: 50px;
     }
-    &.small {
+    &--small {
       margin-right: 200px;
       width: 150px;
     }
-    &.big {
+    &--big {
       width: 500px;
       margin-top: 50px;
       margin-right: 150px;
     }
-    &.massive {
+    &--massive {
       width: 600px;
       margin-top: 20px;
       margin-right: 0px;
     }
-    &.slow { animation-duration: 9.2s; }
-    &.slower { animation-duration: 11.2s; }
-    &.slowest { animation-duration: 13.5s; }  
-    &.super-slow { animation-duration: 20.5s; }
+    &--slow {
+      animation-duration: 9.2s;
+    }
+    &--slower {
+      animation-duration: 11.2s;
+    }
+    &--slowest {
+      animation-duration: 13.5s;
+    }
+    &--super-slow {
+      animation-duration: 20.5s;
+    }
   }
 }
 
-@keyframes vz-errorBoundaryWumpusScoping {
+@keyframes vz-error-boundary-wumpus-scoping {
   0% {
-    transform: translate3d(0);
+    transform: translate3d(0, 100px, 0);
   }
   50% {
-    transform: translate3d(0, 50px, 0);
+    transform: translate3d(0, 140px, 0);
   }
   100% {
-    transform: translate3d(20px, -20px, 0);
+    transform: translate3d(20px, 80px, 0);
   }
 }
 
-@keyframes vz-errorBoundaryWumpusSoaring {
+@keyframes vz-error-boundary-wumpus-soaring {
   0% {
     transform: rotate(0deg);
   }
@@ -120,7 +125,7 @@
   }
 }
 
-@keyframes vz-errorBoundaryCloudMovement {
+@keyframes vz-error-boundary-cloud-movement {
   0% {
     opacity: 0.1;
     transform: translateX(300px);
