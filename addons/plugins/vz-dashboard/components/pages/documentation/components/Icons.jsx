@@ -1,9 +1,8 @@
-const { Icon, Tooltip, TabBar, settings: { TextInput } } = require('@components');
+const { CodeBlock, Icon, Tooltip, TabBar, settings: { TextInput } } = require('@components');
 const { React, React: { useState, useEffect } } = require('@react');
 const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
-const Codeblock = require('../../../parts/Codeblock');
 const Section = require('../../../parts/Section');
 const Content = require('../../../parts/Content');
 const Layout = require('../../../parts/Layout');
@@ -109,8 +108,8 @@ module.exports = React.memo(({ selectedTab }) => {
                 {renderContent()}
               </>}
               {tab === 'CODE' && <>
-                <Codeblock type='JSX' content={`<Icon name='${iconName}' />`} />
-                <Codeblock type='React' content={
+                <CodeBlock header='JSX' content={`<Icon name='${iconName}' />`} />
+                <CodeBlock theme='Dracula' showHeader={false} showCopyButton={false} showLineNumbers={false} content={
                   `React.createElement(Icon, {\n` +
                   `  name: '${iconName}'\n` +
                   `});`}
