@@ -39,6 +39,7 @@ module.exports = React.memo(() =>
       <SubItem label='Themes' path='/documentation/themes' />
       <SubItem label='Screenshots' path='/documentation/components/screenshots' />
       <SubItem label='Components' path='/documentation/components/icons' />
+      <SubItem label='Markdown' path='/documentation/components/markdown' />
       <SubItem label='Error Test' path='/documentation/components/error-test' />
       <SubItem label='Test' path='/documentation/components/test' />
     </Item>

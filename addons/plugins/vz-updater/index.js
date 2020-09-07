@@ -121,20 +121,16 @@ module.exports = class Updater extends Plugin {
         vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
-          icon: 'wrench',
+          icon: 'UpdateAvailable',
           buttons: [ {
+            text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
+            color: 'white',
+            look: 'ghost',
+            onClick: () => vizality.api.router.go('/dashboard/updates')
+          }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',
-            look: 'outlined',
             onClick: () => this.doUpdate()
-          }, {
-            text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
-            color: 'blue',
-            look: 'ghost',
-            onClick: () => {
-              const settingsModule = getModule('open', 'saveAccountChanges');
-              settingsModule.open('vz-updater');
-            }
           } ]
         });
       }

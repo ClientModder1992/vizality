@@ -29,7 +29,8 @@ module.exports = React.memo(({
   showHeader = true,
   showLineNumbers = true,
   showCopyButton = true,
-  theme
+  theme,
+  className
 }) => {
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const { markup } = getModule('markup');
@@ -39,7 +40,7 @@ module.exports = React.memo(({
   const { getLanguage } = getModule('initHighlighting', 'highlight');
 
   // Set language to its full name, or `null` if a name is not found
-  if (!getLanguage(language).name) language = undefined;
+  if (!getLanguage(language)) language = undefined;
 
   // Set header to `language` if showHeader is true and no header is provided and the language is recognized
   header = header || getLanguage(language) ? getLanguage(language).name : undefined;
@@ -69,7 +70,7 @@ module.exports = React.memo(({
   }
 
   return (
-    <div className={joinClassNames('vz-code-block__markup', markup, marginBottom20)}>
+    <div className={joinClassNames('vz-code-block__markup', className, markup, marginBottom20)}>
       <pre className='vz-code-block__pre'>
         <code className={joinClassNames('hljs', scrollbarGhostHairline, 'vz-code-block', {
           [language]: language,

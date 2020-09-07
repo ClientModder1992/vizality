@@ -1,4 +1,4 @@
-const { CodeBlock, Icon, Tooltip, ComponentPreview } = require('@components');
+const { Markdown, CodeBlock, Icon, Tooltip, ComponentPreview } = require('@components');
 const { React, React: { useState, useEffect } } = require('@react');
 const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
@@ -18,7 +18,6 @@ module.exports = React.memo(({ selectedTab }) => {
     if (!selectedTab || selectedTab === 'PREVIEW') setTab('PREVIEW');
     else if (selectedTab === 'CODE') setTab('CODE');
   }, [ selectedTab ]);
-
 
   const renderContent = () => {
     const { marginBottom20 } = getModule('marginBottom20');
@@ -73,6 +72,9 @@ module.exports = React.memo(({ selectedTab }) => {
                 `});`} />
             </div>}
           />
+        </Section>
+        <Section header='Testing Stuff' subtext='asdasdad'>
+          <div>Testing whewfheh whfwhjef wjhefjhw hjefwhjef hjwef</div>
         </Section>
       </Content>
       <Aside type='Components' />

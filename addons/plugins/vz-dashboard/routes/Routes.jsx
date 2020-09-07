@@ -1,5 +1,6 @@
 const { React, Router: { Route, Switch, Redirect } } = require('@react');
 
+const Markdown = require('../components/pages/documentation/components/Markdown');
 const Icons = require('../components/pages/documentation/components/Icons');
 const Experiments = require('../components/pages/experiments/Experiments');
 const Screenshots = require('../components/pages/screenshots/Screenshots');
@@ -75,6 +76,9 @@ module.exports = () => {
       </Route>
       <Route path={`${basePath}/documentation/components/icons`} exact>
         <Icons selectedTab='PREVIEW' />
+      </Route>
+      <Route path={`${basePath}/documentation/components/markdown`} exact>
+        <Markdown />
       </Route>
       {/* <Route path={`${basePath}/documentation/components/test`} exact>
         <Icons selectedTab='CODE' />
