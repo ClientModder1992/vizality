@@ -5,7 +5,7 @@ const { resolve } = require('path');
 
 const _module = 'AddonManager';
 
-class AddonManager {
+module.exports = class AddonManager {
   constructor (type, dir) {
     this._dir = dir;
     this._type = type;
@@ -95,7 +95,7 @@ class AddonManager {
         }
       });
 
-      this.plugins.set(pluginID, new PluginClass());
+      this[this._type].set(pluginID, new PluginClass());
     } catch (err) {
       this.error(`An error occurred while initializing "${pluginID}"!`, err);
     }
@@ -211,7 +211,7 @@ class AddonManager {
     }
   }
 
-  unload () {
+  terminate () {
     return this._bulkUnload([ ...vizality.manager.plugins.keys ]);
   }
 
@@ -249,6 +249,4 @@ class AddonManager {
   error (...data) {
     error(_module, this._type, null, ...data);
   }
-}
-
-module.exports = AddonManager;
+};

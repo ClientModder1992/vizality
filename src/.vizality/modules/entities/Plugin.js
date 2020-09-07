@@ -3,7 +3,7 @@ const { resolveCompiler } = require('@compilers');
 const { Directories } = require('@constants');
 const watch = require('node-watch');
 
-const { existsSync } = require('fs');
+const { existsSync, readdirSync } = require('fs');
 const { join, win32, extname } = require('path');
 
 const Updatable = require('./Updatable');
@@ -21,7 +21,8 @@ module.exports = class Plugin extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
     this.styles = {};
     this._ready = false;
-    this._watcher = {};
+    this._watcherEnabled = true;
+    this._watchers = {};
     this._module = 'Plugin';
     this._submodule = this.constructor.name;
     this._submoduleColor = this.manifest.color || null;
@@ -106,6 +107,32 @@ module.exports = class Plugin extends Updatable {
     return success;
   }
 
+  /**
+   * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
+   */
+  enableWatcher () {
+    this._watcherEnabled = true;
+  }
+
+  /**
+   * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
+   * was previously enabled.
+   */
+  disableWatcher () {
+    this._watcherEnabled = false;
+    this._watchers.close();
+    this._watchers = {};
+  }
+
+  /** @private */
+  async _watchFiles () {
+    this._watchers = watch(this.entityPath, { recursive: true }, (evt, file) => {
+      // Don't do anything if it's a Sass/CSS file or the manifest file
+      if (win32.basename(file) === 'manifest.json' || extname(file) === '.scss' || extname(file) === '.css') return;
+      vizality.manager.plugins.remount(this.entityID);
+    });
+  }
+
   // Internals
   async _load () {
     try {
@@ -131,14 +158,14 @@ module.exports = class Plugin extends Updatable {
       /*
        * @todo Have this be a toggleable developer setting, default to off. Also have a notice
        * warning about potential performance issues, though I haven't encountered any yet, the
-       * potential still exists from the extra overhead.
-       * Setting up the hotreload
+       * potential still exists from the extra overhead. Also seems to have a bug/interference
+       * with JSX file caching, which you can see if you disable a plugin, edit a file, and enable
+       * the plugin.
        */
-      watch(this.entityPath, { recursive: true }, (evt, file) => {
-        // Don't do anything if it's a Sass/CSS file or the manifest file
-        if (win32.basename(file) === 'manifest.json' || extname(file) === '.scss' || extname(file) === '.css') return;
-        vizality.manager.plugins.remount(this.entityID);
-      });
+      this.enableWatcher();
+      if (this._watcherEnabled) {
+        this._watchFiles();
+      }
     }
   }
 
@@ -159,7 +186,10 @@ module.exports = class Plugin extends Updatable {
       this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
     } finally {
       this._ready = false;
-      this._watcher.close();
+      // this._watcher.close();
+      if (this._watcherEnabled) {
+        this.disableWatcher();
+      }
     }
   }
 

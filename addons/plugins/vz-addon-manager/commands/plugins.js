@@ -7,7 +7,7 @@ module.exports = {
     const plugins = vizality.manager.plugins.getAll();
     const result = {
       type: 'rich',
-      title: `List of Installed Plugins (${plugins.length})`,
+      title: `Installed Plugins (${plugins.length})`,
       description: plugins.join('\n')
     };
 
