@@ -2,9 +2,11 @@ const { getModuleByDisplayName, getModule } = require('@webpack');
 // const { AsyncComponent } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
+const { Menu } = require('@components');
 const { React } = require('@react');
 
 const CoreSettings = require('./components/Settings');
+const ContextMenu = require('./components/ContextMenu');
 // const ErrorBoundary = require('./components/ErrorBoundary');
 
 // const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
@@ -73,51 +75,16 @@ module.exports = class Settings extends Plugin {
     });
   }
 
-  // _makeSection (tabId) {
-  //   const props = vizality.api.settings.tabs[tabId];
-  //   const label = typeof props.label === 'function' ? props.label() : props.label;
-  //   return {
-  //     label,
-  //     section: tabId,
-  //     element: () => this._renderWrapper(label, props.render)
-  //   };
-  // }
-
-  // _renderWrapper (label, Component) {
-  //   return React.createElement(ErrorBoundary, null,
-  //     React.createElement(FormSection, {},
-  //       React.createElement(FormTitle, { tag: 'h2' }, label),
-  //       React.createElement(Component)
-  //     )
-  //   );
-  // }
-
   patchSettingsContextMenu () {
-    const SubMenuItem = getModuleByDisplayName('FluxContainer(SubMenuItem)');
-    const ImageMenuItem = getModuleByDisplayName('ImageMenuItem');
-    const SettingsContextMenu = getModuleByDisplayName('UserSettingsCogContextMenu');
-    patch('vz-settings-actions', SettingsContextMenu.prototype, 'render', (_, res) => {
-      const parent = React.createElement(SubMenuItem, {
-        label: 'Vizality',
-        render: () => vizality.api.settings.tabs.map(tab => React.createElement(ImageMenuItem, {
-          label: tab.label,
-          action: async () => {
-            const settingsModule = getModule('open', 'saveAccountChanges');
-            settingsModule.open(tab.section);
-          }
-        }))
-      });
-
-      parent.key = 'Vizality';
-
+    const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
+    console.log('cheese');
+    patch('vz-settings-actions', SettingsContextMenu, 'default', (_, res) => {
+      console.log(res);
+      const parent = React.createElement(ContextMenu);
+      console.log(ContextMenu);
+      console.log(parent);
       const items = res.props.children.find(child => Array.isArray(child));
-      const changelog = items.find(item => item && item.key === 'changelog');
-      if (changelog) {
-        items.splice(items.indexOf(changelog), 0, parent);
-      } else {
-        this.error('Unable to locate \'Change Log\' item; forcing element to context menu!');
-        res.props.children.push(parent);
-      }
+      items.push(ContextMenu.prototype.render());
 
       return res;
     });

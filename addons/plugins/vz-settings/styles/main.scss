@@ -186,3 +186,20 @@
     filter: brightness(0.6);
   }
 }
+
+
+[id^='user-settings-cog-vizality--'] {
+  .label-22pbtT {
+    order: 2;
+  }
+  .iconContainer-2-XQPY {
+    margin-left: 0;
+    margin-right: 8px;
+    order: 1;
+    + .iconContainer-2-XQPY {
+      margin-left: 8px;
+      margin-right: 0;
+      order: 3;
+    }
+  }
+}
