@@ -35,7 +35,10 @@ class AddonManager {
   }
 
   getAll () {
-    return [ ...this[this._type].keys() ];
+    return [
+      ...this[this._type].keys(),
+      ...this.getAllDisabled()
+    ];
   }
 
   isInstalled (addonId) {
@@ -51,15 +54,7 @@ class AddonManager {
   }
 
   getAllEnabled () {
-    const enabled = [];
-
-    for (const addon of [ ...this[this._type].values() ]) {
-      if (this.isEnabled(addon)) {
-        enabled.push(addon.entityID);
-      }
-    }
-
-    return enabled;
+    return [ ...this[this._type].keys() ];
   }
 
   getAllDisabled () {
@@ -75,7 +70,7 @@ class AddonManager {
         dependencies: [],
         optionalDependencies: []
       }, require(resolve(this._dir, pluginID, 'manifest.json')));
-    } catch (e) {
+    } catch (err) {
       return this.error(`${toSingular(toHeaderCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
@@ -100,16 +95,16 @@ class AddonManager {
         }
       });
 
-      this[this._type].set(pluginID, new PluginClass());
-    } catch (e) {
-      this.error(`An error occurred while initializing "${pluginID}"!`, e);
+      this.plugins.set(pluginID, new PluginClass());
+    } catch (err) {
+      this.error(`An error occurred while initializing "${pluginID}"!`, err);
     }
   }
 
   async remount (pluginID) {
     try {
       await this.unmount(pluginID);
-    } catch (e) {
+    } catch (err) {
       // chhhh
     }
     this.mount(pluginID);

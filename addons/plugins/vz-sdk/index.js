@@ -1,5 +1,5 @@
 const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
-const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('@components');
+const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@components');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
@@ -35,7 +35,8 @@ module.exports = class SDK extends Plugin {
           className: joinClassNames(classes.iconWrapper, classes.clickable),
           text: 'Vizality SDK',
           position: 'bottom'
-        }, React.createElement(CodeBraces, {
+        }, React.createElement(Icon, {
+          name: 'OpenBox',
           className: classes.icon,
           onClick: () => this._openSdk(),
           onContextMenu: (e) => {

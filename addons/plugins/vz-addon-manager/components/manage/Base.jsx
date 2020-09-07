@@ -2,7 +2,7 @@
 
 const { shell } = require('electron');
 
-const { settings: { TextInput }, ContextMenu, Divider, Icons: { Overflow } } = require('@components');
+const { settings: { TextInput }, ContextMenu, Divider, Icon } = require('@components');
 const { string: { toHeaderCase, toPlural } } = require('@util');
 const { getModule, contextMenu } = require('@webpack');
 const { Messages } = require('@i18n');
@@ -39,7 +39,7 @@ module.exports = class Base extends React.PureComponent {
   renderButtons () {
     return (
       <div className='vizality-entities-manage-buttons'>
-        <Overflow onClick={e => this.openOverflowMenu(e)} onContextMenu={e => this.openOverflowMenu(e)}/>
+        <Icon name='OverflowMenu' onClick={e => this.openOverflowMenu(e)} onContextMenu={e => this.openOverflowMenu(e)} />
       </div>
     );
   }

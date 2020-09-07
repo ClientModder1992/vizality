@@ -201,10 +201,10 @@ class Vizality extends Updatable {
     this.unpatchDiscordLogs();
 
     // Plugins
-    await this.manager.plugins.unload();
+    await this.manager.plugins.terminate();
 
     // Style Manager
-    this.manager.themes.unload();
+    this.manager.themes.terminate();
 
     // APIs
     await this.manager.apis.unload();

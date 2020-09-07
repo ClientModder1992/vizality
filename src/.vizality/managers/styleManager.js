@@ -221,7 +221,7 @@ class StyleManager {
     }
   }
 
-  unload () {
+  terminate () {
     [ ...this.themes.values() ].forEach(t => t._unload());
   }
 

@@ -28,11 +28,7 @@ module.exports = () => {
         <Home />
       </Route>
       <Route path={`${basePath}/settings`} exact>
-        <Layout>
-          <Content header='Settings'>
-            <Settings />
-          </Content>
-        </Layout>
+        <Settings />
       </Route>
       {/* <Route path={`${basePath}/plugins`} exact>
         <Layout isFullWidth>
@@ -42,25 +38,20 @@ module.exports = () => {
         </Layout>
       </Route> */}
       <Route path={`${basePath}/plugins`} exact>
-        <Layout>
-          <Content header='Plugins'>
-            <Plugins />
-          </Content>
-        </Layout>
+        <Plugins />
       </Route>
       <Route path={`${basePath}/plugins/discover`} exact>
-        <Layout>
-          <Content header='Plugins'>
-            <Plugins tab='DISCOVER' />
-          </Content>
-        </Layout>
+        <Plugins tab='DISCOVER' />
       </Route>
-      <Route path={`${basePath}/themes`} exact>
+      {/* <Route path={`${basePath}/themes`} exact>
         <Layout isFullWidth>
           <Content header='Themes' icon='Theme' hasBackground>
             <Themes />
           </Content>
         </Layout>
+      </Route> */}
+      <Route path={`${basePath}/themes`} exact>
+        <Themes />
       </Route>
       <Route path={`${basePath}/snippets`} exact>
         <Layout />
@@ -90,25 +81,13 @@ module.exports = () => {
         <Test />
       </Route>
       <Route path={`${basePath}/experiments`} exact>
-        <Layout>
-          <Content header='Experiments'>
-            <Experiments />
-          </Content>
-        </Layout>
+        <Experiments />
       </Route>
       <Route path={`${basePath}/updates`} exact>
-        <Layout>
-          <Content header='Updates'>
-            <Updates />
-          </Content>
-        </Layout>
+        <Updates />
       </Route>
       <Route path={`${basePath}/changelog`} exact>
-        <Layout>
-          <Content header='Changelog'>
-            <Changelog />
-          </Content>
-        </Layout>
+        <Changelog />
       </Route>
     </Switch>
   );

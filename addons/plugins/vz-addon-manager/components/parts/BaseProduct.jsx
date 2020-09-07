@@ -1,4 +1,4 @@
-const { Tooltip, Button, Clickable, Divider, Icons: { Discord, Gear }, Switch } = require('@components');
+const { Tooltip, Button, Clickable, Divider, Icon, Switch } = require('@components');
 const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
@@ -59,13 +59,13 @@ module.exports = class BaseProduct extends React.PureComponent {
           {this.props.product.discord && // @todo: i18n
           <Tooltip text='Go to their Discord support server'>
             <Clickable onClick={() => this.goToDiscord(this.props.product.discord)}>
-              <Discord/>
+              <Icon name='Discord' />
             </Clickable>
           </Tooltip>}
           {typeof this.props.goToSettings === 'function' && // @todo: i18n
           <Tooltip text='Settings'>
             <Clickable onClick={() => this.props.goToSettings()}>
-              <Gear/>
+              <Icon name='Gear' />
             </Clickable>
           </Tooltip>}
           <div className='buttons'>

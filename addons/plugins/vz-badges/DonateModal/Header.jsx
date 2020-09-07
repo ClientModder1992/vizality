@@ -1,5 +1,5 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { AsyncComponent, Icons: { VizalityCutie } } = require('@components');
+const { AsyncComponent, Icon } = require('@components');
 const { close: closeModal } = require('vizality/modal');
 const { React } = require('@react');
 
@@ -13,7 +13,7 @@ module.exports = AsyncComponent.from((async () => {
       const res = renderer(props);
       res.props.children[1] =
         <div className='vizality-cutie'>
-          <VizalityCutie height={32}/>
+          <Icon name='Vizality' height={32}/>
         </div>;
 
       return res;

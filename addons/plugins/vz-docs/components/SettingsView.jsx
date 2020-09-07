@@ -1,4 +1,4 @@
-const { AsyncComponent, Clickable, Tooltip, Icons: { ExternalLink, Pin, Unpin, Close } } = require('@components');
+const { AsyncComponent, Clickable, Tooltip, Icon } = require('@components');
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@util');
 const { Messages } = require('@i18n');
@@ -27,7 +27,7 @@ module.exports = AsyncComponent.from((async () => {
             onClick={this.props.onPopout}
             className='vizality-docs-button'
           >
-            <ExternalLink/>
+            <Icon name='Launch' />
           </Clickable>
         </Tooltip>
       ];
@@ -60,7 +60,7 @@ module.exports = AsyncComponent.from((async () => {
                     .setAlwaysOnTop('DISCORD_VIZALITY_DOCUMENTATION', !this.props.windowOnTop)}
                   className='button'
                 >
-                  {this.props.windowOnTop ? <Unpin/> : <Pin/>}
+                  {this.props.windowOnTop ? <Icon name='UnpinLayer' /> : <Icon name='PinLayer' />}
                 </Clickable>
               </Tooltip>
               <Tooltip text={Messages.CLOSE_WINDOW} position='left'>
@@ -68,7 +68,7 @@ module.exports = AsyncComponent.from((async () => {
                   className='button'
                   onClick={() => getModule('setAlwaysOnTop', 'open').close('DISCORD_VIZALITY_DOCUMENTATION')}
                 >
-                  <Close/>
+                  <Icon name='Close' />
                 </Clickable>
               </Tooltip>
             </div>

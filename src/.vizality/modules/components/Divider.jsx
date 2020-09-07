@@ -1,10 +1,9 @@
+const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 const { React } = require('@react');
 
-const AsyncComponent = require('./AsyncComponent');
-
-module.exports = AsyncComponent.from((() => {
+module.exports = React.memo(() => {
   const { dividerDefault } = getModule('dividerDefault');
   const { divider } = getModule(m => m.divider && Object.keys(m).length === 1);
-  return () => <div className={`${divider} ${dividerDefault}`}/>;
-})());
+  return () => <div className={joinClassNames(divider, dividerDefault)} />;
+});

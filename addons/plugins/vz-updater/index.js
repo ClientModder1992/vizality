@@ -124,8 +124,8 @@ module.exports = class Updater extends Plugin {
           icon: 'UpdateAvailable',
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
-            color: 'white',
-            look: 'ghost',
+            color: 'primary',
+            look: 'link',
             onClick: () => vizality.api.router.go('/dashboard/updates')
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
