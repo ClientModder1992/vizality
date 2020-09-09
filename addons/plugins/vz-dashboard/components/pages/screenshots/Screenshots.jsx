@@ -33,12 +33,8 @@ module.exports = React.memo(() => {
     <Layout>
       <Content className='vizality-dashboard-addon-screenshots'>
         {images.map(image => <Image className='vizality-image' src={image}
-          onClick={() => {
-            openModal(() => React.createElement(ImageModal, {
-              className: 'vizality-image-modal',
-              src: image
-            }));
-          }} />)}
+          onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={image} />)} />
+        )}
       </Content>
     </Layout>
   );

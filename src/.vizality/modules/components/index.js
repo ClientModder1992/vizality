@@ -76,9 +76,6 @@ getModule('MenuGroup', true, true).then(Menu => {
 getModuleByDisplayName('DeprecatedModal', true, true).then(Modal => {
   [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]);
 });
-getModuleByDisplayName('ImageModal', true, true).then(Modal => {
-  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]);
-});
 exports.Confirm.defaultProps = {
   transitionState: 1,
   onClose: modal.pop

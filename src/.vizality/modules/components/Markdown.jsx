@@ -35,6 +35,14 @@ module.exports = React.memo(({ source, className }) => {
       : React.Children.toArray(child.props.children).reduce(flatten, text);
   };
 
+  const generateId = (() => {
+    let i = 0;
+    return (prefix = '') => {
+      i += 1;
+      return `${prefix}-${i}`;
+    };
+  })();
+
   const renderers = {
     root: ({ children }) => {
       return <div className={joinClassNames('vz-markdown', className)}>
@@ -116,12 +124,7 @@ module.exports = React.memo(({ source, className }) => {
         className={joinClassNames('vz-markdown__image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => {
-          openModal(() => React.createElement(ImageModal, {
-            className: 'vizality-image-modal',
-            src
-          }));
-        }}
+        onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
       />;
     },
 
@@ -130,12 +133,7 @@ module.exports = React.memo(({ source, className }) => {
         className={joinClassNames('vz-markdown__image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => {
-          openModal(() => React.createElement(ImageModal, {
-            className: 'vizality-image-modal',
-            src
-          }));
-        }}
+        onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
       />;
     },
 
@@ -163,8 +161,8 @@ module.exports = React.memo(({ source, className }) => {
 
     heading: ({ level, children }) => {
       const sizes = [ null, size32, size24, size20, size16, size14, size12 ];
-      const text = children.reduce(flatten, '');
-      const slug = `vz-markdown__header:${toKebabCase(text.toLowerCase().replace(/\W/g, '-'))}-${Math.random().toString(36).substring(2, 8)}`;
+      const text = toKebabCase(children.reduce(flatten, ''));
+      const slug = `vz-markdown__header:${generateId(text)}`;
 
       return React.createElement(`h${level}`, {
         className: joinClassNames('vz-markdown__header', `vz-markdown__header--h${level}`, sizes[level], base),
