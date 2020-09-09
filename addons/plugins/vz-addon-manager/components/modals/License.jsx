@@ -2,7 +2,7 @@ const { Modal, Card, FormTitle } = require('@components');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 
-const License = ({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
+module.exports = React.memo(({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
   const data = {
     permissions,
     conditions,
@@ -11,9 +11,6 @@ const License = ({ spdx, license: { name, url, permissions, conditions, limitati
 
   return (
     <Modal className='vizality-entity-license-modal'>
-      <Modal.Header>
-        <FormTitle tag='h4'>{name}</FormTitle>
-      </Modal.Header>
       <Modal.Content>
         <p className='vizality-entity-license-modal-description'>{Messages[`VIZALITY_ENTITIES_LICENSE_DESC_${spdx}`]}</p>
         <Card className='vizality-entity-license-modal-card'>
@@ -35,6 +32,4 @@ const License = ({ spdx, license: { name, url, permissions, conditions, limitati
       </Modal.Content>
     </Modal>
   );
-};
-
-module.exports = License;
+});

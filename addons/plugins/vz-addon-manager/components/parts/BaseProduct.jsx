@@ -1,4 +1,4 @@
-const { Tooltip, Button, Clickable, Divider, Icon, Switch } = require('@components');
+const { Card, Tooltip, Button, Clickable, Divider, Icon, Switch } = require('@components');
 const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
@@ -6,49 +6,57 @@ const { React } = require('@react');
 const Permissions = require('./Permissions');
 const Details = require('./Details');
 
-module.exports = class BaseProduct extends React.PureComponent {
-  renderHeader () {
+module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSettings }) => {
+  const renderHeader = () => {
     return (
       <div className='vizality-entity-header'>
-        <h4>{this.props.product.name}</h4>
-        <Tooltip text={this.props.isEnabled ? Messages.DISABLE : Messages.ENABLE} position='top'>
+        <h4>{product.name}</h4>
+        <Tooltip text={isEnabled ? Messages.DISABLE : Messages.ENABLE} position='top'>
           <div>
-            <Switch value={this.props.isEnabled} onChange={v => this.props.onToggle(v.target.checked)}/>
+            <Switch value={isEnabled} onChange={v => onToggle(v.target.checked)}/>
           </div>
         </Tooltip>
       </div>
     );
-  }
+  };
 
-  renderDetails () {
+  const renderDetails = () => {
     return (
       <>
         <Divider/>
         <Details
           svgSize={24}
-          author={this.props.product.author}
-          version={this.props.product.version}
-          description={this.props.product.description}
+          author={product.author}
+          version={product.version}
+          description={product.description}
+          license={product.license}
         />
       </>
     );
-  }
+  };
 
-  renderPermissions () {
-    const hasPermissions = this.props.product.permissions && this.props.product.permissions.length > 0;
+  const renderPermissions = () => {
+    const hasPermissions = product.permissions && product.permissions.length > 0;
 
     if (!hasPermissions) return null;
 
     return (
       <>
         <Divider/>
-        <Permissions svgSize={22} permissions={this.props.product.permissions}/>
+        <Permissions svgSize={22} permissions={product.permissions}/>
       </>
     );
-  }
+  };
 
-  renderFooter () {
-    if (!this.props.product.discord && typeof this.props.goToSettings !== 'function' && typeof this.props.onUninstall !== 'function') {
+  // @todo: Consider making this an @discord utility function
+  const goToDiscord = (code) => {
+    const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
+    inviteStore.acceptInviteAndTransitionToInviteChannel(code);
+    getModule('popLayer').popAllLayers();
+  };
+
+  const renderFooter = () => {
+    if (!product.discord && typeof goToSettings !== 'function' && typeof onUninstall !== 'function') {
       return null;
     }
 
@@ -56,22 +64,22 @@ module.exports = class BaseProduct extends React.PureComponent {
       <>
         <Divider/>
         <div className='vizality-entity-footer'>
-          {this.props.product.discord && // @todo: i18n
+          {product.discord && // @todo: i18n
           <Tooltip text='Go to their Discord support server'>
-            <Clickable onClick={() => this.goToDiscord(this.props.product.discord)}>
+            <Clickable onClick={() => goToDiscord(product.discord)}>
               <Icon name='Discord' />
             </Clickable>
           </Tooltip>}
-          {typeof this.props.goToSettings === 'function' && // @todo: i18n
+          {typeof goToSettings === 'function' && // @todo: i18n
           <Tooltip text='Settings'>
-            <Clickable onClick={() => this.props.goToSettings()}>
+            <Clickable onClick={() => goToSettings()}>
               <Icon name='Gear' />
             </Clickable>
           </Tooltip>}
           <div className='buttons'>
-            {typeof this.props.onUninstall === 'function' &&
+            {typeof onUninstall === 'function' &&
             <Button
-              onClick={() => this.onUninstall()}
+              onClick={() => onUninstall()}
               color={Button.Colors.RED}
               look={Button.Looks.FILLED}
               size={Button.Sizes.SMALL}
@@ -82,12 +90,14 @@ module.exports = class BaseProduct extends React.PureComponent {
         </div>
       </>
     );
-  }
+  };
 
-  // @todo: Consider making this an @discord utility function
-  goToDiscord (code) {
-    const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
-    inviteStore.acceptInviteAndTransitionToInviteChannel(code);
-    getModule('popLayer').popAllLayers();
-  }
-};
+  return (
+    <Card className='vizality-entity'>
+      {renderHeader()}
+      {renderDetails()}
+      {renderPermissions()}
+      {renderFooter()}
+    </Card>
+  );
+});

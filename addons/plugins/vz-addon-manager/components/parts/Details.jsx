@@ -1,9 +1,13 @@
-const { Tooltip, Icon } = require('@components');
+const { Tooltip, Icon, Clickable } = require('@components');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
+const { open: openModal } = require('vizality/modal');
 
-const Details = React.memo(
-  ({ author, version, description, svgSize }) => (
+const LicenseModal = require('../modals/License');
+const licenses = require('../../licenses');
+
+module.exports = React.memo(({ author, version, description, license, svgSize }) => {
+  return (
     <div className='vizality-entity-details'>
       <div className='vizality-entity-description'>
         <Tooltip text={Messages.DESCRIPTION} position='top'>
@@ -28,9 +32,19 @@ const Details = React.memo(
             <Icon name='Experiment' width={svgSize} height={svgSize}/>
           </Tooltip>}
         </div>
+        <div className='license'>
+          <Tooltip text={Messages.VIZALITY_ENTITIES_LICENSE} position='top'>
+            <Icon name='Scale' width={svgSize} height={svgSize}/>
+          </Tooltip>
+          <span>{license}</span>
+          {licenses[license] &&
+          <Clickable onClick={() => openModal(() => <LicenseModal spdx={license} license={licenses[license]} />)}>
+            <Tooltip text={Messages.LEARN_MORE} position='top'>
+              <Icon name='Info' width={14} height={14}/>
+            </Tooltip>
+          </Clickable>}
+        </div>
       </div>
     </div>
-  )
-);
-
-module.exports = Details;
+  );
+});

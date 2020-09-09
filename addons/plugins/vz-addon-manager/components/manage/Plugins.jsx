@@ -4,7 +4,7 @@ const { Confirm, TabBar } = require('@components');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 
-const InstalledProduct = require('../parts/InstalledProduct');
+const BaseProduct = require('../parts/BaseProduct');
 const Base = require('./Base');
 
 module.exports = class Plugins extends Base {
@@ -47,7 +47,7 @@ module.exports = class Plugins extends Base {
 
   renderItem (item) {
     return (
-      <InstalledProduct
+      <BaseProduct
         product={item.manifest}
         isEnabled={vizality.manager.plugins.isEnabled(item.entityID)}
         onToggle={async v => {
