@@ -13,7 +13,7 @@ const _submodule = 'Icon';
  */
 
 // These are icons that aren't really icons, or that will cause Discord to crash
-const iconBlacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro', './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered', './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType', './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple', './PremiumGuildTier3Simple', './PremiumGuildTierSimple' ];
+const iconBlacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro', './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic', './NitroStacked', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered', './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType', './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple', './PremiumGuildTier3Simple', './PremiumGuildTierSimple' ];
 
 let Icons = [ ...Object.keys(CustomIcons) ];
 
@@ -35,7 +35,7 @@ const Icon = module.exports = AsyncComponent.from((async () => {
 
   return (props) => {
     if (!props.name) {
-      error(_module, _submodule, null, `You must specific a 'name' property for an Icon component.`);
+      return error(_module, _submodule, null, `You must specify a "name" property for an Icon component.`);
     }
 
     let icon;

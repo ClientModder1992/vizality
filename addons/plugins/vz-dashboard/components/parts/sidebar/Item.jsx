@@ -62,7 +62,9 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
         itemInner
         )}>
           {icon && <div className={`vizality-dashboard-sidebar-item-icon-wrapper ${avatar}`}>
-            <Icon name={icon} />
+            {icon === 'Scissors'
+              ? <Icon name='Scissors' width='22' height='22' />
+              : <Icon name={icon} />}
           </div>}
           <div className={content}>{label}</div>
           {expandable && <Clickable

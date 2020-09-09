@@ -22,14 +22,14 @@ module.exports = React.memo(() =>
   <AdvancedScrollerThin className='vizality-dashboard-sidebar'>
     <Header>Vizality Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />
-    <Item icon='Gear' label='Settings' path='/settings' />
+    <Item icon='Wrench' label='Settings' path='/settings' />
     {/* Installed, Discover, Ideas & Inspiration */}
     <Item icon='Plugin' label='Plugins' path='/plugins' />
     {/* Installed, Discover, Ideas & Inspiration */}
     <Item icon='Theme' label='Themes' path='/themes' />
     {/* CSS, JS, Custom CSS, Custom JS */}
-    <Item icon='InlineCode' label='Snippets' path='/snippets' />
-    <Item icon='Editor' label='Theme Editor' path='/form' />
+    <Item icon='Scissors' label='Snippets' path='/snippets' />
+    <Item icon='Settings' label='Theme Editor' path='/form' />
     <Separator />
     {/* Addon Guidelines, Publish an Addon, Get Verified */}
     <Item icon='UnknownUser' label='Developers' path='/developers' />
@@ -46,7 +46,7 @@ module.exports = React.memo(() =>
     <Item icon='Experiment' label='Experiments' path='/experiments' />
     <Separator />
     <Item icon='CloudDownload' label='Updates' path='/updates' />
-    <Item icon='History' label='Changelog' path='/changelog'
+    <Item icon='ClockReverse' label='Changelog' path='/changelog'
       launch={`vizality.api.actions.run('openLatestChangelog')`}
       auxillaryIconTooltipText='Open Latest Update'
     />
