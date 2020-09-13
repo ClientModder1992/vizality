@@ -1,4 +1,7 @@
+const { existsSync, promises: { readFile } } = require('fs');
 const { ipcMain, BrowserWindow } = require('electron');
+const { join, dirname } = require('path');
+const sass = require('sass');
 
 if (!ipcMain) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
@@ -22,24 +25,40 @@ function closeDevTools (e) {
   e.sender.closeDevTools();
 }
 
-async function installExtension (e, extPath) {
-  const ext = await e.sender.session.loadExtension(extPath);
-  return ext.id;
-}
-
-function uninstallExtension (e, extId) {
-  return e.sender.session.removeExtension(extId);
-}
-
 function clearCache (e) {
   return new Promise(resolve => {
     e.sender.session.clearCache(() => resolve(null));
   });
 }
 
+function compileSass (_, file) {
+  return new Promise((resolve, reject) => {
+    readFile(file, 'utf8').then(rawScss => {
+      sass.render({
+        data: rawScss,
+        importer: (url, prev) => {
+          url = url.replace('file:///', '');
+          if (existsSync(url)) {
+            return { file: url };
+          }
+
+          const prevFile = prev === 'stdin' ? file : prev.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com/i, '');
+          return {
+            file: join(dirname(decodeURI(prevFile)), url).replace(/\\/g, '/')
+          };
+        }
+      }, (err, compiled) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(compiled.css.toString());
+      });
+    });
+  });
+}
+
 ipcMain.on('VIZALITY_GET_PRELOAD', e => e.returnValue = e.sender._preload);
 ipcMain.handle('VIZALITY_OPEN_DEVTOOLS', openDevTools);
 ipcMain.handle('VIZALITY_CLOSE_DEVTOOLS', closeDevTools);
-ipcMain.handle('VIZALITY_INSTALL_EXTENSION', installExtension);
-ipcMain.handle('VIZALITY_UNINSTALL_EXTENSION', uninstallExtension);
 ipcMain.handle('VIZALITY_CACHE_CLEAR', clearCache);
+ipcMain.handle('VIZALITY_COMPILE_SASS', compileSass);

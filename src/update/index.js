@@ -4,7 +4,7 @@ const { inject } = require('../inject/main');
 const applicableEnvs = [ 'win32', 'darwin' ];
 
 if (applicableEnvs.includes(process.platform)) {
-  console.log('[Powercord] Detected an installation sensitive to host updates. Injecting into the updater');
+  console.log('[Vizality] Detected an installation sensitive to host updates. Injecting into the updater');
   const injector = require(`../inject/${process.platform}`);
   const squirrelUpdateScript = join(require.main.filename, '../../app.asar', 'app_bootstrap/squirrelUpdate.js');
 

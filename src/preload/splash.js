@@ -1,8 +1,6 @@
-require('module-alias/register');
+window.__SPLASH__ = true;
 
 require('../ipc/renderer');
-
-window.__SPLASH__ = true;
 
 /*
  * CSS Injection

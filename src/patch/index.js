@@ -35,8 +35,8 @@ electron.app.once('ready', () => {
   });
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
-    if (details.url.startsWith('https://discordapp.com/_vizality')) {
-      // It should get restored to the _vizality url later.
+    if (details.url.startsWith('https://discordapp.com/vizality')) {
+      // It should get restored to the vizality url later.
       done({ redirectURL: 'https://discordapp.com/app' });
     } else {
       done({});

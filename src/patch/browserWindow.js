@@ -25,13 +25,13 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       originalPreload = opts.webPreferences.preload;
-      opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-      opts.webPreferences.nodeIntegration = true;
+      // opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
+      // opts.webPreferences.nodeIntegration = true;
     } else if (opts.webPreferences && opts.webPreferences.preload) {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-      opts.webPreferences.nodeIntegration = true;
+      // opts.webPreferences.nodeIntegration = true;
       opts.webPreferences.contextIsolation = false;
 
       if (transparency) {
@@ -48,9 +48,9 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
     // @todo Get rid of this.
     opts.webPreferences.enableRemoteModule = true;
     const win = new BrowserWindow(opts);
-    const ogLoadUrl = win.loadURL.bind(win);
+    const originalLoadUrl = win.loadURL.bind(win);
     Object.defineProperty(win, 'loadURL', {
-      get: () => PatchedBrowserWindow.loadUrl.bind(win, ogLoadUrl),
+      get: () => PatchedBrowserWindow.loadUrl.bind(win, originalLoadUrl),
       configurable: true
     });
 
@@ -58,12 +58,11 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
     return win;
   }
 
-  static loadUrl (ogLoadUrl, url, opts) {
-    console.log(url);
-    if (url.match(/^https:\/\/discord(app)?\.com\/_vizality\//)) {
-      this.webContents._vizalityOgUrl = url;
-      return ogLoadUrl('https://discordapp.com/app', opts);
+  static loadUrl (originalLoadUrl, url, opts) {
+    if (url.match(/^https:\/\/discord(app)?\.com\/vizality\//)) {
+      this.webContents.vizalityOriginalUrl = url;
+      return originalLoadUrl('https://discordapp.com/app', opts);
     }
-    return ogLoadUrl(url, opts);
+    return originalLoadUrl(url, opts);
   }
 };

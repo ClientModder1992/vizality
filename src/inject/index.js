@@ -21,7 +21,7 @@ try {
       // To show the announcement message
       await writeFile(
         resolve(__dirname, '..', '__injected.txt'),
-        'Vizality successfully injected'
+        'Vizality successfully injected.'
       );
 
       console.log('\x1b[32mSUCCESS: \x1b[0mVizality has been injected!');

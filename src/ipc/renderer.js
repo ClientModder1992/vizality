@@ -24,24 +24,6 @@ global.VizalityNative = {
   },
 
   /**
-   * Installs a chrome extension
-   * @param {string} extPath Path to the extension
-   * @returns {Promise<string>} Extension ID, to be used with uninstallExtension.
-   */
-  installExtension (extPath) { // tbd
-    return ipcRenderer.invoke('VIZALITY_INSTALL_EXTENSION', extPath);
-  },
-
-  /**
-   * Uninstalls an extension
-   * @param {string} extId Extension ID
-   * @returns {Promise<void>}
-   */
-  uninstallExtension (extId) { // tbd
-    return ipcRenderer.invoke('VIZALITY_UNINSTALL_EXTENSION', extId);
-  },
-
-  /**
    * Clears Chromium's cache
    * @returns {Promise<void>}
    */
@@ -51,5 +33,33 @@ global.VizalityNative = {
 
   openBrowserWindow (opts) {
     throw new Error('Not implemented');
+  },
+
+  __compileSass (file) {
+    return ipcRenderer.invoke('VIZALITY_COMPILE_SASS', file);
   }
 };
+
+if (!window.__SPLASH__) {
+  window.require = module => {
+    switch (module) {
+      case '@classes':
+      case '@compilers':
+      case '@components':
+      case '@constants':
+      case '@discord':
+      case '@http':
+      case '@i18n':
+      case '@patcher':
+      case '@react':
+      case '@util':
+      case '@webpack':
+      case 'vizality':
+      case 'electron':
+        return require(module);
+      default:
+        // @todo Use @constants.ErrorTypes
+        throw new Error('Unknown module.');
+    }
+  };
+}
