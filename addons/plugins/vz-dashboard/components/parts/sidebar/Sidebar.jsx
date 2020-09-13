@@ -47,7 +47,7 @@ module.exports = React.memo(() =>
     <Separator />
     <Item icon='CloudDownload' label='Updates' path='/updates' />
     <Item icon='ClockReverse' label='Changelog' path='/changelog'
-      launch={`vizality.api.actions.run('openLatestChangelog')`}
+      launch={`vizality.api.actions.invoke('openLatestChangelog')`}
       auxillaryIconTooltipText='Open Latest Update'
     />
   </AdvancedScrollerThin>

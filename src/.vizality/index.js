@@ -175,7 +175,7 @@ class Vizality extends Updatable {
       return new Promise(resolve => {
         const checkForGuilds = () => {
           if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
-            return resolve(vizality.api.router.go('/dashboard'));
+            return resolve(vizality.api.router.navigate('/dashboard'));
           }
           setTimeout(checkForGuilds, 100);
         };

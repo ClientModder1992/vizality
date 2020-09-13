@@ -1,11 +1,17 @@
 const { getModuleByDisplayName } = require('@webpack');
-const { AsyncComponent } = require('@components');
 const { React } = require('@react');
 
-const DiscordExperiments = AsyncComponent.from(getModuleByDisplayName('UserSettingsExperiments'));
+const Content = require('../../parts/Content');
+const Layout = require('../../parts/Layout');
+
+const DiscordExperiments = getModuleByDisplayName('UserSettingsExperiments');
 
 module.exports = React.memo(() => {
   return (
-    <DiscordExperiments />
+    <Layout>
+      <Content header='Experiments'>
+        <DiscordExperiments />
+      </Content>
+    </Layout>
   );
 });

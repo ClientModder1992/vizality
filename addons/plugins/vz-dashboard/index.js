@@ -33,7 +33,6 @@ module.exports = class Dashboard extends Plugin {
   }
 
   injectChannels () {
-    // (getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity')))('./Activity').default;
     const { transitionTo } = getModule('transitionTo');
     const ChannelItem = getModuleByDisplayName('ChannelItem');
     patch('vz-dashboard-channels-props', ChannelItem.prototype, 'render', function (_, res) {
@@ -41,12 +40,12 @@ module.exports = class Dashboard extends Plugin {
         [Channels.PLUGINS]: {
           icon: PluginIcon,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
-          route: '/_vizality/dashboard/plugins'
+          route: '/vizality/dashboard/plugins'
         },
         [Channels.THEMES]: {
           icon: ThemeIcon,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
-          route: '/_vizality/dashboard/themes'
+          route: '/vizality/dashboard/themes'
         }
       };
 
@@ -80,7 +79,7 @@ module.exports = class Dashboard extends Plugin {
     patch('vz-dashboard-guilds-button', instance.__proto__, 'render', (_, res) => {
       const VizalityGuildButton = React.createElement('div', {
         class: 'listItem-2P_4kh vizality-dashboard-guild-button',
-        onClick: async () => vizality.api.router.go('/dashboard')
+        onClick: async () => vizality.api.router.navigate('/dashboard')
       }, React.createElement(Tooltip, {
         text: 'Vizality Dashboard',
         position: 'right',

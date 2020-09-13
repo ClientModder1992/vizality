@@ -126,7 +126,7 @@ module.exports = class Updater extends Plugin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'primary',
             look: 'link',
-            onClick: () => vizality.api.router.go('/dashboard/updates')
+            onClick: () => vizality.api.router.navigate('/dashboard/updates')
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',
@@ -324,7 +324,7 @@ module.exports = class Updater extends Plugin {
             }, 'Missed an update? ',
             React.createElement('a', {
               className: joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover),
-              onClick: () => vizality.api.router.go('/dashboard/changelog')
+              onClick: () => vizality.api.router.navigate('/dashboard/changelog')
             }, 'Check out our full changelog history.'));
           return footer;
         }

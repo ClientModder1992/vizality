@@ -30,7 +30,7 @@ module.exports = class RouterAPI extends API {
     return null;
     /*
      * const oldRoute = await DiscordNative.settings.get('_VIZALITY_ROUTE');
-     * if (oldRoute && this.routes.find(c => c.path === oldRoute.split('/_vizality')[1])) {
+     * if (oldRoute && this.routes.find(c => c.path === oldRoute.split('/vizality')[1])) {
      *   const router = getModule('replaceWith');
      *   router.replaceWith(oldRoute);
      * }
@@ -75,7 +75,7 @@ module.exports = class RouterAPI extends API {
     }
   }
 
-  go (path) {
+  navigate (path) {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');
@@ -85,9 +85,9 @@ module.exports = class RouterAPI extends API {
       // Pop all modals
       popAll();
       // Go to route
-      transitionTo(`/_vizality${path}`);
+      transitionTo(`/vizality${path}`);
     } catch (err) {
-      return error(_module, `${_submodule}:go`, null, err);
+      return error(_module, `${_submodule}:navigate`, null, err);
     }
   }
 };

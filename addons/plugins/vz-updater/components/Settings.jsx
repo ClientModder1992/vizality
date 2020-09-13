@@ -2,6 +2,7 @@ const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
 
 const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
+const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Messages, chosenLocale: currentLocale } = require('@i18n');
 const { Repositories, Directories } = require('@constants');
@@ -14,7 +15,7 @@ const Icons = require('./Icons');
 
 module.exports = React.memo(() => {
   const [ opened, setOpened ] = useState(false);
-  const [ copied, setCopied ] = useState(false);
+  const [ copyText, setCopyText ] = useState(Messages.COPY);
   const [ debugInfoOpened, setDebugInfoOpened ] = useState();
   const [ pathsRevealed, setPathsRevealed ] = useState();
   const [ pluginsRevealed, setPluginsRevealed ] = useState();
@@ -146,7 +147,7 @@ module.exports = React.memo(() => {
     const extract = document.querySelector('.vizality-debug-info > code')
       .innerText.replace(/([A-Z/ ]+) (?=\s(?!C:\\).*?:)/g, '\n[$1]').replace(/(.*?):\s(.*.+)/g, '$1="$2"').replace(/[ -](\w*(?=.*=))/g, '$1');
 
-    setCopied(true);
+    setCopyText(Messages.COPIED);
     clipboard.writeText(
       `\`\`\`ini
       # Debugging Information | Result created: ${time().calendar()}
@@ -154,7 +155,7 @@ module.exports = React.memo(() => {
       Plugins="${plugins.join(', ')}"
       \`\`\``.replace(/ {6}|n\/a/g, '').replace(/(?![0-9]{1,3}) \/ (?=[0-9]{1,3})/g, '/')
     );
-    setTimeout(() => setCopied(false), 2500);
+    setTimeout(() => setCopyText(Messages.COPY), 2500);
   };
 
   // --- DEBUG STUFF (Intentionally left english-only)
@@ -195,7 +196,7 @@ module.exports = React.memo(() => {
 
     return <FormNotice
       type={FormNotice.Types.PRIMARY}
-      body={<div className={ joinClassNames('vizality-debug-info', { copied })}>
+      body={<div className={ joinClassNames('vizality-debug-info', { copied: copyText === Messages.COPIED })}>
         <code>
           <b>System / Discord</b>
           <div className='row'>
@@ -268,10 +269,10 @@ module.exports = React.memo(() => {
         </code>
         <Button
           size={Button.Sizes.SMALL}
-          color={copied ? Button.Colors.GREEN : Button.Colors.BRAND}
+          color={copyText === Messages.COPIED ? Button.Colors.GREEN : Button.Colors.BRAND}
           onClick={() => handleDebugInfoCopy(time, plugins)}
         >
-          <FontAwesome icon={copied ? 'clipboard-check' : 'clipboard'}/> {copied ? 'Copied!' : 'Copy'}
+          {copyText}
         </Button>
       </div>}
     />;

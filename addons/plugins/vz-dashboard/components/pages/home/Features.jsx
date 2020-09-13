@@ -5,9 +5,7 @@ const Card = React.memo(({ icon, header, description, buttonText, path }) => {
   return (
     <div className='vizality-dashboard-page-home-features-card-wrapper'>
       <div className='vizality-dashboard-page-home-features-card'>
-        <div className='vizality-dashboard-page-home-features-card-icon-wrapper'>
-          <Icon name={icon} className='vizality-dashboard-page-home-features-card-icon' width={'100%'} height={'100%'} />
-        </div>
+        <Icon name={icon} className='vz-home-features-icon-wrapper' iconClassName='vz-home-features-icon' width={'100%'} height={'100%'} />
         <div className='vizality-dashboard-page-home-features-card-header'>
           {header}
         </div>
@@ -17,7 +15,7 @@ const Card = React.memo(({ icon, header, description, buttonText, path }) => {
         <div className='vizality-dashboard-page-home-features-card-footer'>
           <Button
             className='vizality-dashboard-page-home-features-button'
-            onClick={() => vizality.api.router.go(path)}
+            onClick={() => vizality.api.router.navigate(path)}
             size={Button.Sizes.LARGE}
           >
             {buttonText}

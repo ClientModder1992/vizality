@@ -16,7 +16,7 @@ const Plugins = require('@root/addons/plugins/vz-addon-manager/components/manage
 const Themes = require('@root/addons/plugins/vz-addon-manager/components/manage/Themes');
 const Settings = require('@root/addons/plugins/vz-settings/components/Settings');
 
-const basePath = '/_vizality/dashboard';
+const basePath = '/vizality/dashboard';
 
 module.exports = () => {
   return (
@@ -38,7 +38,11 @@ module.exports = () => {
         </Layout>
       </Route> */}
       <Route path={`${basePath}/plugins`} exact>
-        <Plugins />
+        <Layout>
+          <Content header='Plugins'>
+            <Plugins />
+          </Content>
+        </Layout>
       </Route>
       <Route path={`${basePath}/plugins/discover`} exact>
         <Plugins tab='DISCOVER' />
@@ -51,7 +55,11 @@ module.exports = () => {
         </Layout>
       </Route> */}
       <Route path={`${basePath}/themes`} exact>
-        <Themes />
+        <Layout>
+          <Content header='Themes'>
+            <Plugins />
+          </Content>
+        </Layout>
       </Route>
       <Route path={`${basePath}/snippets`} exact>
         <Layout />
@@ -84,7 +92,11 @@ module.exports = () => {
         <Experiments />
       </Route>
       <Route path={`${basePath}/updates`} exact>
-        <Updates />
+        <Layout>
+          <Content header='Updates'>
+            <Updates />
+          </Content>
+        </Layout>
       </Route>
       <Route path={`${basePath}/changelog`} exact>
         <Changelog />

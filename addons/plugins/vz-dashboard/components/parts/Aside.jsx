@@ -20,7 +20,7 @@ module.exports = React.memo(({ type, header, sections }) => {
       <div className='vizality-dashboard-aside-inner-wrapper'>
         <div className='vizality-dashboard-aside-header'>
           <div>{header}</div>
-          <div className='vizality-icon-wrapper vizality-dashboard-aside-header-icon-wrapper' onClick={() => setCollapsed(true)}>
+          <div className='vz-icon-wrapper vizality-dashboard-aside-header-icon-wrapper' onClick={() => setCollapsed(true)}>
             <Icon className='vizality-dashboard-aside-header-icon' style={{ transform: 'rotate(180deg)' }} name={'ArrowLeft'} />
           </div>
         </div>

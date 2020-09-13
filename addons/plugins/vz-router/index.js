@@ -35,7 +35,7 @@ module.exports = class Router extends Plugin {
           props: {
             // @todo: Error boundary (?)
             render: () => React.createElement(route.render),
-            path: `/_vizality${route.path}`
+            path: `/vizality${route.path}`
           }
         }))
       );
@@ -51,7 +51,7 @@ module.exports = class Router extends Plugin {
       const routes = findInTree(res, n => Array.isArray(n) && n[0] && n[0].key && n[0].props.path && n[0].props.render);
 
       routes[routes.length - 1].props.path = [
-        ...new Set(routes[routes.length - 1].props.path.concat(vizality.api.router.routes.map(route => `/_vizality${route.path}`)))
+        ...new Set(routes[routes.length - 1].props.path.concat(vizality.api.router.routes.map(route => `/vizality${route.path}`)))
       ];
       return res;
     });
@@ -67,8 +67,8 @@ module.exports = class Router extends Plugin {
       res.props.children = (props) => {
         const rendered = renderer(props);
         const className = rendered && rendered.props && rendered.props.children && rendered.props.children.props && rendered.props.children.props.className;
-        if (className && className.startsWith('sidebar-') && rendered.props.value.location.pathname.startsWith('/_vizality')) {
-          const rawPath = rendered.props.value.location.pathname.substring('_vizality'.length + 1);
+        if (className && className.startsWith('sidebar-') && rendered.props.value.location.pathname.startsWith('/vizality')) {
+          const rawPath = rendered.props.value.location.pathname.substring('vizality'.length + 1);
           const route = vizality.api.router.routes.find(rte => rawPath.startsWith(rte.path));
           if (route && route.sidebar) {
             rendered.props.children.props.children[0] = React.createElement(route.sidebar);

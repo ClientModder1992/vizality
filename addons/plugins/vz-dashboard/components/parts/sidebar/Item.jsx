@@ -9,7 +9,7 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
   const { container, selected: selectedClass, clickable, wrappedLayout, layout, avatar, content } = getModule('wrappedLayout');
 
   const loc = useLocation();
-  const fullPath = `/_vizality/dashboard${path}`;
+  const fullPath = `/vizality/dashboard${path}`;
   const selected = loc.pathname.startsWith(fullPath);
   const isSubItemSelected = selected && loc.pathname !== fullPath;
 
@@ -29,10 +29,10 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
 
           if (path) {
             if (action) {
-              vizality.api.router.go(`/dashboard${path}`);
+              vizality.api.router.navigate(`/dashboard${path}`);
               return eval(action);
             }
-            vizality.api.router.go(`/dashboard${path}`);
+            vizality.api.router.navigate(`/dashboard${path}`);
           } else {
             if (action) {
               return eval(action);
