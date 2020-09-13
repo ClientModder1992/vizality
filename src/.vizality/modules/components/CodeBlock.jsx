@@ -37,7 +37,6 @@ module.exports = React.memo(({
   className
 }) => {
   const [ copyText, setCopyText ] = useState(Messages.COPY);
-  const [ copyButtonColor, setCopyButtonColor ] = useState(Button.Colors.BRAND);
   const { markup } = getModule('markup');
   const { marginBottom20 } = getModule('marginBottom20');
   const { scrollbarGhostHairline } = getModule('scrollbarGhostHairline');
@@ -70,11 +69,9 @@ module.exports = React.memo(({
     if (copyText === Messages.COPIED) return;
 
     setCopyText(Messages.COPIED);
-    setCopyButtonColor(Button.Colors.GREEN);
 
     setTimeout(() => {
       setCopyText(Messages.COPY);
-      setCopyButtonColor(Button.Colors.BRAND);
     }, 1000);
 
     clipboard.writeText(content);
@@ -89,7 +86,7 @@ module.exports = React.memo(({
     return React.createElement('div', {
       className: 'vz-code-block-inner',
       dangerouslySetInnerHTML: {
-        __html: language && !contentIsRaw ? highlight(language, content).value : content
+        __html: (language && !contentIsRaw) ? highlight(language, content, true).value : content
       }
     });
   }
@@ -110,7 +107,7 @@ module.exports = React.memo(({
             {showLineNumbers && <div className='vz-code-block-line-numbers'/>}
             {showCopyButton && <Button
               className={joinClassNames('vz-code-block-copy-button', { 'vz-is-copied': copyText === Messages.COPIED })}
-              color={copyButtonColor}
+              color={copyText === Messages.COPY ? Button.Colors.BRAND : Button.Colors.GREEN}
               look={Button.Looks.FILLED}
               size={Button.Sizes.SMALL}
               onClick={handleCodeCopy}>

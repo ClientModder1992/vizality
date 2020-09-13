@@ -1,14 +1,14 @@
 const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { join, dirname } = require('path');
 const Compiler = require('./compiler');
-const sass = require('sass');
+const { info: sassInfo } = require('sass');
 
 /**
  * SCSS compiler.
  * @class
- * @augments Compiler
+ * @extends Compiler
  */
-class SCSS extends Compiler {
+module.exports = class SCSS extends Compiler {
   async listFiles () {
     return [
       this.file,
@@ -17,30 +17,7 @@ class SCSS extends Compiler {
   }
 
   _compile () {
-    return new Promise((resolve, reject) => {
-      // @todo: this.compilerOptions
-      readFile(this.file, 'utf8').then(rawScss => {
-        sass.render({
-          data: rawScss,
-          importer: (url, prev) => {
-            url = url.replace('file:///', '');
-            if (existsSync(url)) {
-              return { file: url };
-            }
-
-            const prevFile = prev === 'stdin' ? this.file : prev.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com/i, '');
-            return {
-              file: join(dirname(decodeURI(prevFile)), url).replace(/\\/g, '/')
-            };
-          }
-        }, (err, compiled) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(compiled.css.toString());
-        });
-      });
-    });
+    return VizalityNative.__compileSass(this.file);
   }
 
   /**
@@ -126,8 +103,6 @@ class SCSS extends Compiler {
   }
 
   get _metadata () {
-    return `${sass.info}; Vizality import resolver v1`;
+    return `${sassInfo}; Vizality import resolver v1`;
   }
-}
-
-module.exports = SCSS;
+};

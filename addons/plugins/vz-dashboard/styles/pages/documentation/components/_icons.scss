@@ -1,0 +1,38 @@
+ .vz-docs-components-icons {
+  &-icon-wrapper {
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 5px;
+    display: flex;
+    padding: 10px;
+    &:hover {
+      background-color: var(--background-modifier-selected);
+      color: var(--interactive-hover);
+    }
+    &.vz-is-active {
+      background: #7289da;
+      color: #fff;
+      pointer-events: none;
+    }
+  }
+  &-icon {
+    overflow: visible;
+  }
+  &-aside {
+    &-icon-wrapper {
+      cursor: default;
+      color: var(--header-primary);
+      max-width: 200px;
+      padding: 0 40px;
+      backface-visibility: hidden;
+    }
+    &-icon {
+      overflow: visible;
+      box-sizing: border-box;
+      height: max-content;
+    }
+    &-icon-name {
+      padding: 0 20px;
+    }
+  }
+}

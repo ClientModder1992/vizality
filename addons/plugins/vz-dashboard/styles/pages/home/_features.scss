@@ -49,28 +49,6 @@
         transform: scale(1.5);
       }
     }
-    &-icon {
-      transition: transform .3s ease;
-      color: var(--header-primary);
-      stroke: var(--header-primary);
-      path {
-        stroke-dasharray: 150;
-        animation: strokeSVG 1s ease-in forwards, fillSVG .5s .5s ease-in forwards;
-        stroke-width: 1;
-      }
-      // @todo Fix background color for light theme.
-      &-wrapper {
-        display: flex;
-        height: 50px;
-        width: 50px;
-        margin-top: -90px;
-        border-radius: 50%;
-        padding: 20px;
-        border: 20px solid var(--background-primary);
-        background-color: var(--background-accent);
-        transition: background-color .3s ease;
-      }
-    }
     &-header {
       font-size: 24px;
       font-weight: 700;
@@ -85,6 +63,31 @@
     }
     &-footer {
       margin: 30px 0 10px 0;
+    }
+  }
+}
+
+.vz-home-features {
+  &-icon {
+    transition: transform .3s ease;
+    color: var(--header-primary);
+    stroke: var(--header-primary);
+    path {
+      stroke-dasharray: 150;
+      animation: strokeSVG 1s ease-in forwards, fillSVG .5s .5s ease-in forwards;
+      stroke-width: 1;
+    }
+    // @todo Fix background color for light theme.
+    &-wrapper {
+      display: flex;
+      height: 50px;
+      width: 50px;
+      margin-top: -90px;
+      border-radius: 50%;
+      padding: 20px;
+      border: 20px solid var(--background-primary);
+      background-color: var(--background-accent);
+      transition: background-color .3s ease;
     }
   }
 }
