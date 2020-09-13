@@ -1,5 +1,5 @@
 module.exports = {
-  checkPerformance: require('./checkPerformance'),
+  benchmark: require('./benchmark'),
   joinClassNames: require('./joinClassNames'),
   sleep: require('./sleep'),
   array: require('./array'),

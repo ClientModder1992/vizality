@@ -178,26 +178,10 @@ const string = module.exports = {
 
   // @todo Find a better version.
   toKebabCase (string) {
-    let from = 'ąàáäâãåæăćčĉęèéëêĝĥìíïîĵłľńňòóöőôõðøśșşšŝťțţŭùúüűûñÿýçżźž';
-    let to = 'aaaaaaaaaccceeeeeghiiiijllnnoooooooossssstttuuuuuunyyczzz';
-
-    from += from.toUpperCase();
-    to += to.toUpperCase();
-    to = to.split('');
-
-    // For tokens requiring multitoken output
-    from += 'ß';
-    to.push('ss');
-
     return string
-      .trim()
-      .replace(/.{1}/g, c => {
-        const index = from.indexOf(c);
-        return index === -1 ? c : to[index];
-      })
-      .replace(/[^\w\s-]/g, '-').toLowerCase()
-      .replace(/([A-Z])/g, '-$1')
-      .replace(/[-_\s]+/g, '-').toLowerCase();
+      .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+      .map(x => x.toLowerCase())
+      .join('-');
   },
 
   /**

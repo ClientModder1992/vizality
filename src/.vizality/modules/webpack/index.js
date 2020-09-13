@@ -73,7 +73,7 @@ const webpack = module.exports = {
     }
 
     // Extract values from webpack
-    const moduleID = Math.random().toString(36).substring(2);
+    const moduleID = 'vizality';
     const instance = webpackJsonp.push([
       [],
       {
