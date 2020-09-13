@@ -4,6 +4,7 @@ const constants = module.exports = Object.freeze({
   // Vizality
   HTTP: Object.freeze({
     WEBSITE: 'https://vizality.com',
+    TRELLO: 'https://trello.com/vizality',
     get API () { return `${constants.HTTP.WEBSITE}/app/api`; },
     get DOCS () { return `${constants.HTTP.API}/docs`; },
     get ASSETS () { return `${constants.HTTP.WEBSITE}/app/assets`; },
