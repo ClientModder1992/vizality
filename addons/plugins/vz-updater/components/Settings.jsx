@@ -1,7 +1,6 @@
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
 
-const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Icons: { FontAwesome }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
 const { open: openModal, close: closeModal } = require('vizality/modal');
 const { Messages, chosenLocale: currentLocale } = require('@i18n');

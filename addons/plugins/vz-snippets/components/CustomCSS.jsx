@@ -1,4 +1,4 @@
-const { AdvancedScrollerThin, AsyncComponent, Clickable, FormTitle, Tooltip, settings: { SwitchItem, SliderInput }, Icons: { Pin, Unpin, Gear, Close, ExternalLink } } = require('@components');
+const { AdvancedScrollerThin, AsyncComponent, Clickable, FormTitle, Tooltip, settings: { SwitchItem, SliderInput } } = require('@components');
 const { Flux, getModule } = require('@webpack');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
@@ -38,7 +38,7 @@ class CustomCSS extends React.PureComponent {
             <div className='vizality-quickcss-header'>
               <Tooltip text={Messages.SETTINGS} position='right'>
                 <Clickable onClick={() => this.setState({ cmSettings: true })} className='button'>
-                  <Gear/>
+                  <Icon name='Gear' />
                 </Clickable>
               </Tooltip>
               <div>
@@ -54,7 +54,7 @@ class CustomCSS extends React.PureComponent {
                     }}
                     className='button'
                   >
-                    {this.props.windowOnTop ? <Unpin/> : <Pin/>}
+                    {this.props.windowOnTop ? <Icon name='UnpinLayer' /> : <Icon name='PinLayer' />}
                   </Clickable>
                 </Tooltip>}
                 <Tooltip text={this.props.popout ? Messages.CLOSE_WINDOW : Messages.POPOUT_PLAYER} position='left'>
@@ -64,7 +64,7 @@ class CustomCSS extends React.PureComponent {
                       : this.props.openPopout()}
                     className='button'
                   >
-                    {this.props.popout ? <Close/> : <ExternalLink/>}
+                    {this.props.popout ? <Icon name='Close' /> : <Icon name='Launcher' />}
                   </Clickable>
                 </Tooltip>
               </div>

@@ -1,0 +1,9 @@
+.vz-icon {
+  display: flex;
+  fill: currentColor;
+  &-wrapper {
+    display: inline-flex;
+    width: fit-content;
+    height: fit-content;
+  }
+}

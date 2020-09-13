@@ -1,5 +1,5 @@
-const { Icon, CodeBlock, Tooltip, ComponentPreview, settings: { TextInput } } = require('@components');
-const { React, React: { useState, useEffect } } = require('@react');
+const { Pee, CodeBlock, Tooltip, ComponentPreview, settings: { TextInput } } = require('@components');
+const { React, React: { useState } } = require('@react');
 const { joinClassNames } = require('@util');
 const { getModule } = require('@webpack');
 
@@ -8,25 +8,14 @@ const Content = require('../parts/Content');
 const Layout = require('../parts/Layout');
 const Aside = require('../parts/Aside');
 
-module.exports = React.memo(() => {
-  const Icons = Icon.Names;
-  const [ selectedIcon, setSelectedIcon ] = useState('');
-  const [ iconList, setIconList ] = useState(Icons);
+module.exports = () => {
+  const [ iconName, setIconName ] = useState('');
   const [ search, setSearch ] = useState('');
   const [ hasSearchResults, setHasSearchResults ] = useState(true);
   const { marginBottom20 } = getModule('marginBottom20');
   const { weightMedium } = getModule('weightMedium');
   const { size20 } = getModule('size24');
-
-  useEffect(() => {
-    const iconList = Icons.map(name => {
-      if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
-        return <Icon name={name} tooltip={name} className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': name === selectedIcon })} iconClassName='vz-docs-components-icons-icon' onClick={() => setSelectedIcon(name)} />;
-      }
-      return false;
-    });
-    setIconList(iconList);
-  }, [ search, selectedIcon ]);
+  const Icons = Pee.Names;
 
   const renderSearch = () => {
     return (
@@ -48,11 +37,11 @@ module.exports = React.memo(() => {
   const renderAside = () => {
     return (
       <>
-        {hasSearchResults && selectedIcon && <>
-          <div className={`vz-docs-components-icons-aside-icon-name ${size20} ${marginBottom20} ${weightMedium}`}>
-            {selectedIcon}
+        {hasSearchResults && iconName && <>
+          <div className={`vz-docs-components-icons-aside-icon-name ${size20} ${marginBottom20} ${weightMedium}`}>{iconName}</div>
+          <div className='vz-icon-wrapper vz-docs-components-icons-aside-icon-wrapper'>
+            <Pee name={iconName} width={'100%'} height={'100%'} />
           </div>
-          <Icon name={selectedIcon} width={'100%'} height={'100%'} className='vz-docs-components-icons-aside-icon-wrapper' />
         </>}
       </>
     );
@@ -63,12 +52,12 @@ module.exports = React.memo(() => {
       <>
         <CodeBlock language='js' header='JSX' content={
           `const { Icon } = require('@components');\n\n` +
-          `<Icon name='${selectedIcon}' />`}
+          `<Icon name='${iconName}' />`}
         />
         <CodeBlock language='js' header='React' content={
           `const { Icon } = require('@components');\n\n` +
           `React.createElement(Icon, {\n` +
-          `  name: '${selectedIcon}'\n` +
+          `  name: '${iconName}'\n` +
           `});`}
         />
       </>
@@ -78,7 +67,24 @@ module.exports = React.memo(() => {
   const renderPreviewTab = () => {
     return (
       <>
-        {iconList}
+        {/* eslint-disable-next-line array-callback-return */}
+        {Icons.map(name => {
+          if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
+            return (
+              <Pee
+                showBadge
+                className='vz-docs-components-icons-icon'
+                tooltip={name}
+                tooltipPosition='top'
+                name={name}
+                onClick={() => {
+                  console.log('test-poopheh');
+                  setIconName(name);
+                }}
+              />
+            );
+          }
+        })}
         {!hasSearchResults && <div className='vz-component-preview-no-results'>
           <div className='vz-component-preview-no-results-image' />
           <div className={`vz-component-preview-no-results-text ${marginBottom20}`}>
@@ -105,4 +111,4 @@ module.exports = React.memo(() => {
       <Aside type='Components' />
     </Layout>
   );
-});
+};

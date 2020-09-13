@@ -11,6 +11,8 @@ const Content = require('../components/parts/Content');
 const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
+const Test2 = require('../components/pages/Test2');
+const Test3 = require('../components/pages/Test3');
 
 const Plugins = require('@root/addons/plugins/vz-addon-manager/components/manage/Plugins');
 const Themes = require('@root/addons/plugins/vz-addon-manager/components/manage/Themes');
@@ -87,6 +89,12 @@ module.exports = () => {
       </Route>
       <Route path={`${basePath}/documentation/components/test`} exact>
         <Test />
+      </Route>
+      <Route path={`${basePath}/documentation/components/test2`} exact>
+        <Test2 />
+      </Route>
+      <Route path={`${basePath}/documentation/components/test3`} exact>
+        <Test3 />
       </Route>
       <Route path={`${basePath}/experiments`} exact>
         <Experiments />

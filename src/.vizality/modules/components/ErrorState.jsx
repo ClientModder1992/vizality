@@ -10,7 +10,7 @@ module.exports = React.memo(props => {
 
   return (
     <div className={joinClassNames(error, backgroundRed, marginBottom20)}>
-      <Icon className={icon} name='WarningCircle'/>
+      <Icon className={icon} name='WarningCircle' />
       <div className={text}>
         {props.children}
       </div>

@@ -42,6 +42,8 @@ module.exports = React.memo(() =>
       <SubItem label='Markdown' path='/documentation/components/markdown' />
       <SubItem label='Error Test' path='/documentation/components/error-test' />
       <SubItem label='Test' path='/documentation/components/test' />
+      <SubItem label='Test2' path='/documentation/components/test2' />
+      <SubItem label='Test3' path='/documentation/components/test3' />
     </Item>
     <Item icon='Experiment' label='Experiments' path='/experiments' />
     <Separator />

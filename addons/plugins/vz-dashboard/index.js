@@ -1,5 +1,5 @@
 const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@util');
-const { Tooltip, Icon, CustomIcons: { Plugin: PluginIcon, Theme: ThemeIcon } } = require('@components');
+const { Tooltip, Icon } = require('@components');
 const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@webpack');
 const { patch, unpatch } = require('@patcher');
 const { Channels } = require('@constants');
@@ -38,12 +38,12 @@ module.exports = class Dashboard extends Plugin {
     patch('vz-dashboard-channels-props', ChannelItem.prototype, 'render', function (_, res) {
       const data = {
         [Channels.PLUGINS]: {
-          icon: PluginIcon,
+          icon: Icon.Icons.Plugin,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Plugin' }),
           route: '/vizality/dashboard/plugins'
         },
         [Channels.THEMES]: {
-          icon: ThemeIcon,
+          icon: Icon.Icons.Theme,
           name: Messages.VIZALITY_ENTITIES.format({ entityType: 'Theme' }),
           route: '/vizality/dashboard/themes'
         }
