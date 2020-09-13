@@ -72,25 +72,24 @@ module.exports = class SettingsAPI extends API {
     });
   }
 
-  registerCoreDashboardSettings (toob) {
+  registerCoreDashboardSettings (tabId, props) {
     try {
       if (this.toobs.find(r => r.path === toob.path)) {
         throw new Error(`Dashboard route "${toob.path}" is already registered!`);
       }
 
-      this.toobs.push(toob);
+      this.tabs[tabId] = props;
+      this.tabs[tabId].render = this.connectStores(props.category)(props.render);
 
-      this.toobs[toob.id] = toob;
-      this.toobs[toob.id].render = this.connectStores(toob.id)(toob.render);
+      const Render = this.connectStores(props.category)(props.render);
 
       vizality.api.router.registerRoute({
-        path: `/dashboard/${toob.path}`,
+        path: `/test/${this.tabs[tabId].path}`,
         render: () => React.createElement(Layout, {},
-          React.createElement(toob.render)
+          React.createElement(Render)
         ),
         sidebar: Sidebar
       });
-      this.emit('toobAdded', toob);
     } catch (err) {
       return error(_module, `${_submodule}:registerCoreSettings`, null, err);
     }

@@ -16,9 +16,9 @@ module.exports = class Settings extends Plugin {
   onStart () {
     this.injectStyles('styles/main.scss');
 
-    vizality.api.settings.registerCoreDashboardSettings({
+    vizality.api.settings.registerCoreDashboardSettings('vz-settings', {
+      category: 'vz-settings',
       path: 'settings',
-      id: this.entityID,
       render: CoreSettings
     });
 

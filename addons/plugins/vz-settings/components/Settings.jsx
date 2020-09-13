@@ -6,12 +6,9 @@ const { Directories } = require('@constants');
 const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');
 
-module.exports = React.memo(() => {
+module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);
   const [ isVizalityCacheCleared, setVizalityCacheCleared ] = useState(false);
-
-  // eslint-disable-next-line consistent-this
-  const _this = vizality.manager.plugins.get('vz-settings');
 
   const clearDiscordCache = () => {
     setDiscordCacheCleared(true);
@@ -51,10 +48,10 @@ module.exports = React.memo(() => {
   return (
     <div>
       <TextInput
-        defaultValue={_this.settings.get('prefix', '.')}
-        onChange={p => _this.settings.set('prefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
-        onBlur={({ target }) => target.value = _this.settings.get('prefix', '.')}
-        error={_this.settings.get('prefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Vizality autocompletions.' : ''}
+        defaultValue={getSetting('prefix', '.')}
+        onChange={p => updateSetting('prefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
+        onBlur={({ target }) => target.value = getSetting('prefix', '.')}
+        error={getSetting('prefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Vizality autocompletions.' : ''}
       >
         {Messages.VIZALITY_COMMAND_PREFIX}
       </TextInput>
@@ -62,14 +59,14 @@ module.exports = React.memo(() => {
       <Category
         name={Messages.ADVANCED_SETTINGS}
         description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}
-        opened={_this.settings.get('advancedSettings', false)}
-        onChange={() => _this.settings.set('advancedSettings')}
+        opened={getSetting('advancedSettings', false)}
+        onChange={() => toggleSetting('advancedSettings')}
       >
         <SwitchItem
           note={Messages.VIZALITY_SETTINGS_DEBUG_LOGS_DESC}
-          value={_this.settings.get('debugLogs', false)}
+          value={getSetting('debugLogs', false)}
           onChange={() => {
-            _this.settings.set('debugLogs');
+            toggleSetting('debugLogs');
             askRestart();
           }}
         >
@@ -77,15 +74,15 @@ module.exports = React.memo(() => {
         </SwitchItem>
         <SwitchItem
           note={'Vizality\'s Software Development Kit (SDK) is a toolkit created to help make plugin developers\'s and theme developers\' lives easier. Once enabled, you can access it through an icon at the top right hand corner of the channel headerbar.'}
-          value={_this.settings.get('sdkEnabled', false)}
-          onChange={() => _this.settings.set('sdkEnabled')}
+          value={getSetting('sdkEnabled', false)}
+          onChange={() => toggleSetting('sdkEnabled')}
         >
           Enable Software Development Kit
         </SwitchItem>
         <SwitchItem
           note={Messages.VIZALITY_SETTINGS_OVERLAY_DESC}
-          value={_this.settings.get('openOverlayDevTools', false)}
-          onChange={() => _this.settings.set('openOverlayDevTools')}
+          value={getSetting('openOverlayDevTools', false)}
+          onChange={() => toggleSetting('openOverlayDevTools')}
         >
           {Messages.VIZALITY_SETTINGS_OVERLAY}
         </SwitchItem>
@@ -94,9 +91,9 @@ module.exports = React.memo(() => {
           note={window.GlasscordApi
             ? Messages.VIZALITY_SETTINGS_TRANSPARENT_GLASSCORD.format({ glasscordCfgUrl: 'https://github.com/AryToNeX/Glasscord#how-do-i-use-it' })
             : Messages.VIZALITY_SETTINGS_TRANSPARENT_DESC.format()}
-          value={_this.settings.get('transparentWindow', false)}
+          value={getSetting('transparentWindow', false)}
           onChange={() => {
-            _this.settings.set('transparentWindow');
+            toggleSetting('transparentWindow');
             askRestart();
           }}
         >
@@ -104,9 +101,9 @@ module.exports = React.memo(() => {
         </SwitchItem>
         <SwitchItem
           note={Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM_DESC.format()}
-          value={_this.settings.get('experimentalWebPlatform', false)}
+          value={getSetting('experimentalWebPlatform', false)}
           onChange={() => {
-            _this.settings.set('experimentalWebPlatform');
+            toggleSetting('experimentalWebPlatform');
             askRestart();
           }}
         >
@@ -114,9 +111,9 @@ module.exports = React.memo(() => {
         </SwitchItem>
         <SwitchItem
           note={Messages.VIZALITY_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}
-          value={_this.settings.get('experiments', false)}
+          value={getSetting('experiments', false)}
           onChange={() => {
-            _this.settings.set('experiments');
+            toggleSetting('experiments');
             // Update modules
             const experimentsModule = getModule(r => r.isDeveloper !== void 0);
             experimentsModule._changeCallbacks.forEach(cb => cb());

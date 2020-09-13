@@ -16,7 +16,8 @@ const Test3 = require('../components/pages/Test3');
 
 const Plugins = require('@root/addons/plugins/vz-addon-manager/components/manage/Plugins');
 const Themes = require('@root/addons/plugins/vz-addon-manager/components/manage/Themes');
-const Settings = require('@root/addons/plugins/vz-settings/components/Settings');
+// const Settings = require('@root/addons/plugins/vz-settings/components/Settings');
+// const Settings = vizality.api.settings.tabs['vz-settings'].render;
 
 const basePath = '/vizality/dashboard';
 
@@ -29,9 +30,9 @@ module.exports = () => {
       <Route path={`${basePath}/home`} exact>
         <Home />
       </Route>
-      <Route path={`${basePath}/settings`} exact>
+      {/* <Route path={`${basePath}/settings`} exact>
         <Settings />
-      </Route>
+      </Route> */}
       {/* <Route path={`${basePath}/plugins`} exact>
         <Layout isFullWidth>
           <Content header='Plugins' icon='Plugin' hasBackground>

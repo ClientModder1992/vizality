@@ -23,8 +23,10 @@ module.exports = async () => {
     if (!key) {
       const SelectedChannelId = getModule('getChannelId', 'getVoiceChannelId').getChannelId();
       const ChannelStore = getModule('getChannel').getChannel(SelectedChannelId);
-      if (ariaLabel === Messages.CHANNEL_MUTE_LABEL.format({ channelName: ChannelStore.name })) {
-        key = 'CHANNEL_MUTE';
+      if (ChannelStore && ChannelStore.name) {
+        if (ariaLabel === Messages.CHANNEL_MUTE_LABEL.format({ channelName: ChannelStore.name })) {
+          key = 'CHANNEL_MUTE';
+        }
       }
     }
 

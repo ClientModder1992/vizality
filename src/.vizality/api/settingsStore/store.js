@@ -1,8 +1,8 @@
+const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
+const { join } = require('path');
+
 const { Flux, FluxDispatcher } = require('@webpack');
 const { Directories } = require('@constants');
-
-const { join } = require('path');
-const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
 
 const ActionTypes = require('./constants');
 
