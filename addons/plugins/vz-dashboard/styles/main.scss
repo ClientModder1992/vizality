@@ -302,19 +302,6 @@
   background: var(--background-modifier-accent);
 }
 
-.vizality-dashboard-aside {
-  animation: slight-slide-in .3s forwards;
-}
-
-@keyframes slight-slide-in {
-  0% {
-    transform: translate3d(40px, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 .vizality-dashboard-guild-button {
   cursor: pointer;
 }

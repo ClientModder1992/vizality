@@ -8,7 +8,7 @@
       padding: 12px 15px;
       margin: 0;
       background: none;
-      &.selected-3s45Ha {
+      &.vz-is-active {
         background: none !important;
         &::after {
           content: '';
@@ -49,19 +49,8 @@
     // Page padding
     padding: 40px 0 0;
   }
-  &-tabs-search {
+  &-tabs-children {
     justify-content: center;
-    > div {
-      margin: 0;
-    }
-    input {
-      height: 30px;
-      padding-right: 40px;
-    }
-    .vz-icon.vz-icon-is-clear {
-      position: absolute;
-      right: 10px;
-    }
   }
   &-inner {
     display: flex;
@@ -117,7 +106,7 @@
     font-size: 16px;
     opacity: .5;
   }
-  &.vz-selected-tab-is-code {
+  &.vz-is-active-code {
     #{$base}-content {
       align-self: center;
       display: block;

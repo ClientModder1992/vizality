@@ -1,18 +1,17 @@
-const { shell: { openExternal } } = require('electron');
 const { existsSync, promises: { readFile } } = require('fs');
+const { shell: { openExternal } } = require('electron');
 const Markdown = require('react-markdown');
 
 const { joinClassNames, string: { toKebabCase } } = require('@util');
-const { React, React: { useState } } = require('@react');
 const { getModule, getModuleByDisplayName } = require('@webpack');
-const { Icon, CodeBlock } = require('@components');
+const { React, React: { useState } } = require('@react');
 const { open: openModal } = require('vizality/modal');
+const { Icon, CodeBlock } = require('@components');
 
 const ImageModal = getModuleByDisplayName('ImageModal');
 
 module.exports = React.memo(({ source, className }) => {
   const [ markdown, setMarkdown ] = useState();
-
   const { base } = getModule('base');
   const { size32, size24, size20, size16, size14, size12 } = getModule('size32');
   const { anchor, anchorUnderlineOnHover } = getModule('anchorUnderlineOnHover');
@@ -36,10 +35,10 @@ module.exports = React.memo(({ source, className }) => {
   };
 
   const generateId = (() => {
-    let i = 0;
+    let index = 0;
     return (prefix = '') => {
-      i += 1;
-      return `${prefix}-${i}`;
+      index += 1;
+      return `${prefix}-${index}`;
     };
   })();
 
@@ -57,7 +56,7 @@ module.exports = React.memo(({ source, className }) => {
      */
 
     paragraph: ({ children }) => {
-      return <p className='vz-markdown__p'>
+      return <p className='vz-markdown-p'>
         {children}
       </p>;
     },
@@ -68,20 +67,20 @@ module.exports = React.memo(({ source, className }) => {
         attrs.start = start.toString();
       }
       return React.createElement(ordered ? 'ol' : 'ul', {
-        className: joinClassNames('vz-markdown__list', `vz-markdown__list--${ordered ? 'ol' : 'ul'}`),
+        className: joinClassNames('vz-markdown-list', `vz-is-${ordered ? 'ol' : 'ul'}`),
         start: attrs.start
       }, children);
     },
 
     listItem: ({ children }) => {
-      return <li className='vz-markdown__list-item'>
+      return <li className='vz-markdown-list-item'>
         {children}
       </li>;
     },
 
     link: ({ href, children }) => {
       return <>
-        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown__link', anchor, anchorUnderlineOnHover)}>
+        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}>
           {children}
         </a>
       </>;
@@ -89,26 +88,26 @@ module.exports = React.memo(({ source, className }) => {
 
     linkReference: ({ href, children }) => {
       return <>
-        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown__link', anchor, anchorUnderlineOnHover)}>
+        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}>
           {children}
         </a>
       </>;
     },
 
     emphasis: ({ children }) => {
-      return <em className='vz-markdown__em'>{children}</em>;
+      return <em className='vz-markdown-em'>{children}</em>;
     },
 
     strong: ({ children }) => {
-      return <strong className='vz-markdown__strong'>{children}</strong>;
+      return <strong className='vz-markdown-strong'>{children}</strong>;
     },
 
     blockquote: ({ children }) => {
-      return <blockquote className='vz-markdown__blockquote'>{children}</blockquote>;
+      return <blockquote className='vz-markdown-blockquote'>{children}</blockquote>;
     },
 
     thematicBreak: () => {
-      return <hr className='vz-markdown__hr' />;
+      return <hr className='vz-markdown-hr' />;
     },
 
     code: ({ language, value }) => {
@@ -116,12 +115,12 @@ module.exports = React.memo(({ source, className }) => {
     },
 
     inlineCode: ({ children }) => {
-      return <code className='vz-markdown__code--inline inline'>{children}</code>;
+      return <code className='vz-markdown-code--inline inline'>{children}</code>;
     },
 
     image: ({ alt, src }) => {
       return <img
-        className={joinClassNames('vz-markdown__image', imageWrapper)}
+        className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
         onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
@@ -130,7 +129,7 @@ module.exports = React.memo(({ source, className }) => {
 
     imageReference: ({ alt, src }) => {
       return <img
-        className={joinClassNames('vz-markdown__image', imageWrapper)}
+        className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
         onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
@@ -138,40 +137,40 @@ module.exports = React.memo(({ source, className }) => {
     },
 
     table: ({ children }) => {
-      return <table className='vz-markdown__table'>{children}</table>;
+      return <table className='vz-markdown-table'>{children}</table>;
     },
 
     tableHead: ({ children }) => {
-      return <thead className='vz-markdown__thead'>{children}</thead>;
+      return <thead className='vz-markdown-thead'>{children}</thead>;
     },
 
     tableBody: ({ children }) => {
-      return <tbody className='vz-markdown__tbody'>{children}</tbody>;
+      return <tbody className='vz-markdown-tbody'>{children}</tbody>;
     },
 
     tableRow: ({ children }) => {
-      return <tr className='vz-markdown__tr'>{children}</tr>;
+      return <tr className='vz-markdown-tr'>{children}</tr>;
     },
 
     tableCell: ({ isHeader, align, children }) => {
       return isHeader
-        ? <th className={joinClassNames('vz-markdown__th', { 'vz-markdown__th--align-right': align })}>{children}</th>
-        : <td className={joinClassNames('vz-markdown__td', { 'vz-markdown__td--align-right': align })}>{children}</td>;
+        ? <th className={joinClassNames('vz-markdown-th', { 'vz-markdown-th vz-align-right': align })}>{children}</th>
+        : <td className={joinClassNames('vz-markdown-td', { 'vz-markdown-td vz-align-right': align })}>{children}</td>;
     },
 
     heading: ({ level, children }) => {
       const sizes = [ null, size32, size24, size20, size16, size14, size12 ];
       const text = toKebabCase(children.reduce(flatten, ''));
-      const slug = `vz-markdown__header:${generateId(text)}`;
+      const slug = `vz-markdown-header:${generateId(text)}`;
 
       return React.createElement(`h${level}`, {
-        className: joinClassNames('vz-markdown__header', `vz-markdown__header--h${level}`, sizes[level], base),
+        className: joinClassNames('vz-markdown-header', `vz-markdown-header-h${level}`, sizes[level], base),
         id: slug
       }, React.createElement('a', {
-        className: 'vz-markdown__anchor',
+        className: 'vz-markdown-anchor',
         href: `#${slug}`
       }, React.createElement(Icon, {
-        className: 'vz-markdown__anchor-icon',
+        className: 'vz-markdown-anchor-icon',
         name: 'Link',
         width: '16px',
         height: '16px'
