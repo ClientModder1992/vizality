@@ -1,7 +1,10 @@
-const { Icon, CodeBlock, Tooltip, ComponentPreview, settings: { TextInput } } = require('@components');
+const { Icon, CodeBlock, Tooltip, ComponentPreview } = require('@components');
 const { React, React: { useState, useEffect } } = require('@react');
 const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
+const { getModule, getModuleByDisplayName } = require('@webpack');
+
+// @todo Remember to use @component later when you add this.
+const TextInput = getModuleByDisplayName('TextInput');
 
 const Section = require('../parts/Section');
 const Content = require('../parts/Content');
@@ -13,7 +16,7 @@ module.exports = React.memo(() => {
   const [ selectedIcon, setSelectedIcon ] = useState('');
   const [ iconList, setIconList ] = useState(Icons);
   const [ search, setSearch ] = useState('');
-  const [ hasSearchResults, setHasSearchResults ] = useState(true);
+  const [ hasSearchResults, setHasSearchResults ] = useState(typeof search);
   const { marginBottom20 } = getModule('marginBottom20');
   const { weightMedium } = getModule('weightMedium');
   const { size20 } = getModule('size24');
@@ -21,7 +24,7 @@ module.exports = React.memo(() => {
   useEffect(() => {
     const iconList = Icons.map(name => {
       if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
-        return <Icon name={name} tooltip={name} className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': name === selectedIcon })} iconClassName='vz-docs-components-icons-icon' onClick={() => setSelectedIcon(name)} />;
+        return <Icon name={name} tooltip={name} className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': name === selectedIcon })} iconClassName='vz-docs-components-icons-icon' onClick={() => { name === selectedIcon ? setSelectedIcon('') : setSelectedIcon(name); }} />;
       }
       return false;
     });
@@ -30,18 +33,18 @@ module.exports = React.memo(() => {
 
   const renderSearch = () => {
     return (
-      <TextInput
-        title='pie'
-        note='poo'
-        required={true}
-        className='poop-test'
-        value={search}
-        onChange={search => {
-          setSearch(search);
-          setHasSearchResults(Icons.filter(f => f.toLowerCase().includes(search)).length > 0);
-        }}
-        placeholder='Search icons...'
-      />
+      <div className='vz-component-preview-search'>
+        <TextInput
+          size={TextInput.Sizes.MINI}
+          className='vz-component-preview-search-input-wrapper'
+          value={search}
+          onChange={search => {
+            setSearch(search);
+            setHasSearchResults(Icons.filter(f => f.toLowerCase().includes(search)).length > 0);
+          }}
+          placeholder='Search icons...'
+        />
+      </div>
     );
   };
 
@@ -96,7 +99,7 @@ module.exports = React.memo(() => {
         <Section header='Icons' subtext='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'>
           <ComponentPreview
             aside={renderAside()}
-            tabsChildren={renderSearch()}
+            tabChildren={renderSearch()}
             previewTabChildren={renderPreviewTab()}
             codeTabChildren={renderCodeTab()}
           />

@@ -1,5 +1,5 @@
 /* eslint-disable prefer-arrow-callback */
-const { joinClassNames, string: { toKebabCase }, logger: { log, error } } = require('@util');
+const { joinClassNames, string: { toKebabCase }, logger: { warn, error } } = require('@util');
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { React } = require('@react');
 
@@ -2025,7 +2025,45 @@ const Icons = {
   )
 };
 
+// Cache the icon names
 const Names = Object.keys(Icons);
+
+/**
+ * Automated warning system to let us know when Discord has added an icon to their batch, basically.
+ */
+(() => {
+  // These are icons that aren't really icons, or that will cause Discord to crash
+  const blacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro',
+    './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic',
+    './NitroStacked', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered',
+    './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType',
+    './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple',
+    './PremiumGuildTier3Simple', './PremiumGuildTierSimple' ];
+
+  /*
+   * These are icons I have purposely altered or removed for whatever reason.
+   * CopyID: Name changed to CopyId.
+   * EarlyAccess: Discord had this as an opened lock icon, for some reason... renamed to Lock.
+   * EmojiActivityCategory: Very similar to Activity icon, so just removed it.
+   * PlatformBlizzard: Ugly at small size, don't really see a purpose for it, removed.
+   * TRemplateIcon: Ugly, don't really see a purpose for it, removed.
+   * TrendingArrow: This is just a triangle, unnecessary, removed.
+   */
+  const knownAlterations = [ 'CopyID', 'EarlyAccess', 'EmojiActivityCategory', 'PlatformBlizzard', 'TemplateIcon', 'TrendingArrow' ];
+
+  const registry = getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
+
+  const DiscordIcons = registry.keys()
+    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k) && !knownAlterations)
+    .map(m => m.substring(2));
+
+  const missing = DiscordIcons.filter(icon => !Names.includes(icon));
+
+  // @i18n
+  if (missing.length > 0) {
+    warn(_module, _submodule, null, `${missing.length} icon names found to be missing: "${missing.join('", "')}"`);
+  }
+})();
 
 const Icon = module.exports = React.memo(({
   name,
@@ -2055,11 +2093,8 @@ const Icon = module.exports = React.memo(({
   const clickable = Boolean(onClick || onContextMenu);
 
   let SVG;
-  if (icon) {
-    console.log('uhhhhhhhhhh');
-  } else {
-    SVG = Icons[name];
-  }
+  if (icon) SVG = icon;
+  else SVG = Icons[name];
 
   if (!SVG && !icon) {
     return error(_module, _submodule, null, `Invalid "name" ${name} specified. A full list of available icon names:`, Names);
