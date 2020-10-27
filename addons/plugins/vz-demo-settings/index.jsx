@@ -1,12 +1,11 @@
 const { Plugin } = require('@entities');
 
-const Settings = require('./components/Settings');
+const Settings = require('./components/Settingsold');
 
 module.exports = class DemoSettings extends Plugin {
   onStart () {
-    vizality.api.settings.registerSettings('demo-settings', {
-      category: 'demo-settings',
-      label: 'demo-settings',
+    vizality.api.settings.registerDashboardSettings({
+      id: 'vz-demo-settings',
       render: Settings
     });
   }

@@ -7,6 +7,7 @@ const actions = require('./settingsStore/actions');
 const store = require('./settingsStore/store');
 
 const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
+const Content = require('@root/addons/plugins/vz-dashboard/components/parts/Content');
 const Layout = require('@root/addons/plugins/vz-dashboard/components/parts/Layout');
 
 const _module = 'API';
@@ -57,36 +58,41 @@ module.exports = class SettingsAPI extends API {
     this.tabs[tabId].render = this.connectStores(props.category)(props.render);
   }
 
-  registerDashboardSettings (tabId, props) {
-    if (this.tabs[tabId]) {
-      throw new Error(`Plugin settings panel "${tabId}" is already registered!`);
-    }
-    this.tabs[tabId] = props;
-    this.tabs[tabId].render = this.connectStores(props.id)(props.render);
-
-    vizality.api.router.registerRoute(tabId, {
-      path: `/dashboard/plugins/installed/${props.id}`,
-      render: () => React.createElement(Layout, {},
-        React.createElement(props.render)
-      )
-    });
-  }
-
-  registerCoreDashboardSettings (tabId, props) {
+  registerDashboardSettings (props) {
     try {
-      if (this.toobs.find(r => r.path === toob.path)) {
-        throw new Error(`Dashboard route "${toob.path}" is already registered!`);
-      }
+      this.tabs[props.id] = props;
+      this.tabs[props.id].render = this.connectStores(props.id)(props.render);
 
-      this.tabs[tabId] = props;
-      this.tabs[tabId].render = this.connectStores(props.category)(props.render);
-
-      const Render = this.connectStores(props.category)(props.render);
+      const Render = this.connectStores(props.id)(props.render);
 
       vizality.api.router.registerRoute({
-        path: `/test/${this.tabs[tabId].path}`,
-        render: () => React.createElement(Layout, {},
-          React.createElement(Render)
+        path: `/dashboard/plugins/${props.id}`,
+        render: () => React.createElement(Layout, null,
+          React.createElement(Content, {
+            heading: props.id
+          }, React.createElement(Render, null))
+        ),
+        sidebar: Sidebar
+      });
+    } catch (err) {
+      return error(_module, `${_submodule}:registerCoreSettings`, null, err);
+    }
+  }
+
+  /** @private */
+  registerDashboardItem (props) {
+    try {
+      this.tabs[props.id] = props;
+      this.tabs[props.id].render = this.connectStores(props.id)(props.render);
+
+      vizality.api.router.registerRoute({
+        path: `/dashboard/${this.tabs[props.id].path}`,
+        render: () => React.createElement(Layout, null,
+          React.createElement(Content, {
+            heading: props.header,
+            subheading: props.subtext,
+            icon: props.icon
+          }, React.createElement(this.tabs[props.id].render, null))
         ),
         sidebar: Sidebar
       });

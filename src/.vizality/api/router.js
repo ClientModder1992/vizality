@@ -5,6 +5,9 @@ const { API } = require('@entities');
 const _module = 'API';
 const _submodule = 'Router';
 
+const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
+const Routes = require('@root/addons/plugins/vz-dashboard/routes/Routes');
+
 /**
  * @typedef VizalityRoute
  * @property {string} path Route path
@@ -39,6 +42,22 @@ module.exports = class RouterAPI extends API {
   }
 
   /**
+   * This is a hacky method used to unregister and reregister the main dashboard route
+   * so that it doesn't override the plugin and theme routes... Not really sure how to do
+   * this in a better way at the moment, but definitely should be addressed in the future.
+   */
+  /** @private */
+  _reregisterDashboard () {
+    if (!this.routes.find(r => r.path === '/dashboard')) return;
+    this.unregisterRoute('/dashboard');
+    this.registerRoute({
+      path: '/dashboard',
+      render: Routes,
+      sidebar: Sidebar
+    });
+  }
+
+  /**
    * Registers a route
    * @param {VizalityRoute} route Route to register
    * @emits RouterAPI#routeAdded
@@ -50,6 +69,10 @@ module.exports = class RouterAPI extends API {
         throw new Error(`Route "${route.path}" is already registered!`);
       }
       this.routes.push(route);
+      if (this.routes[this.routes.length - 1].path !== '/dashboard') {
+        console.log('test');
+        this._reregisterDashboard();
+      }
       this.emit('routeAdded', route);
     } catch (err) {
       return error(_module, `${_submodule}:registerRoute`, null, err);

@@ -216,7 +216,7 @@ module.exports = class AddonManager {
   }
 
   _sortPlugins (pluginA, pluginB) {
-    const priority = [ 'vz-updater', 'vz-addon-manager', 'vz-settings', 'vz-dashboard', 'vz-commands', 'vz-router', 'vz-dnt' ];
+    const priority = [ 'vz-updater', 'vz-addon-manager', 'vz-dashboard', 'vz-settings', 'vz-commands', 'vz-router', 'vz-dnt' ];
     const priorityA = priority.indexOf(pluginA);
     const priorityB = priority.indexOf(pluginB);
     return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));

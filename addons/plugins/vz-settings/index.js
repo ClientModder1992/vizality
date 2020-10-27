@@ -2,23 +2,27 @@ const { getModuleByDisplayName, getModule } = require('@webpack');
 // const { AsyncComponent } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
-const { Menu } = require('@components');
 const { React } = require('@react');
 
-const CoreSettings = require('./components/Settings');
 const ContextMenu = require('./components/ContextMenu');
-// const ErrorBoundary = require('./components/ErrorBoundary');
-
-// const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
-// const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
+const CoreSettings = require('./components/Settings');
 
 module.exports = class Settings extends Plugin {
   onStart () {
     this.injectStyles('styles/main.scss');
 
-    vizality.api.settings.registerCoreDashboardSettings('vz-settings', {
-      category: 'vz-settings',
+    // vizality.api.settings.registerSettings('vz-settings', {
+    //   category: 'vz-settings',
+    //   label: () => 'Settings',
+    //   render: CoreSettings
+    // });
+
+    vizality.api.settings.registerDashboardItem({
+      id: 'vz-settings',
       path: 'settings',
+      header: 'Settings',
+      subtext: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
+      icon: 'Wrench',
       render: CoreSettings
     });
 
@@ -77,15 +81,9 @@ module.exports = class Settings extends Plugin {
 
   patchSettingsContextMenu () {
     const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
-    console.log('cheese');
     patch('vz-settings-actions', SettingsContextMenu, 'default', (_, res) => {
-      console.log(res);
-      const parent = React.createElement(ContextMenu);
-      console.log(ContextMenu);
-      console.log(parent);
       const items = res.props.children.find(child => Array.isArray(child));
       items.push(ContextMenu.prototype.render());
-
       return res;
     });
   }
