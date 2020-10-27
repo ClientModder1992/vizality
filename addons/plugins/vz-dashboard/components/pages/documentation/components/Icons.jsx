@@ -1,89 +1,91 @@
-const { CodeBlock, Icon, Tooltip, TabBar, settings: { TextInput } } = require('@components');
+const { Icon, CodeBlock, ComponentPreview } = require('@components');
 const { React, React: { useState, useEffect } } = require('@react');
+const { getModule, getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
+
+// @todo Remember to use @component later when you add this.
+const TextInput = getModuleByDisplayName('TextInput');
 
 const Section = require('../../../parts/Section');
 const Content = require('../../../parts/Content');
 const Layout = require('../../../parts/Layout');
-const Aside = require('../../../parts/Aside');
+const AsideNav = require('../../../parts/AsideNav');
 
-module.exports = React.memo(({ selectedTab }) => {
-  const [ tab, setTab ] = useState(selectedTab);
-  const [ iconName, setIcon ] = useState('');
+module.exports = React.memo(() => {
+  const Icons = Icon.Names;
+  const [ selectedIcon, setSelectedIcon ] = useState('');
+  const [ iconList, setIconList ] = useState(Icons);
   const [ search, setSearch ] = useState('');
-  const [ hasSearchResults, setHasSearchResults ] = useState(true);
-
-  const { size20 } = getModule('size24');
+  const [ hasSearchResults, setHasSearchResults ] = useState(typeof search === 'string');
   const { marginBottom20 } = getModule('marginBottom20');
   const { weightMedium } = getModule('weightMedium');
+  const { size20 } = getModule('size24');
 
   useEffect(() => {
-    if (!selectedTab || selectedTab === 'PREVIEW') setTab('PREVIEW');
-    else if (selectedTab === 'CODE') setTab('CODE');
-  }, [ selectedTab ]);
+    const iconList = Icons.map(name => {
+      if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
+        return <Icon name={name} tooltip={name} className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': name === selectedIcon })} iconClassName='vz-docs-components-icons-icon' onClick={() => { name === selectedIcon ? setSelectedIcon('') : setSelectedIcon(name); }} />;
+      }
+      return false;
+    });
+    setIconList(iconList);
+  }, [ search, selectedIcon ]);
 
   const renderSearch = () => {
     return (
-      <TextInput
-        className='poop-test'
-        value={search}
-        onChange={search => {
-          setSearch(search);
-          setHasSearchResults(Icon.Names.filter(f => f.toLowerCase().includes(search)).length > 0);
-        }}
-        placeholder='Search icons...'
-        disabled={tab === 'CODE'}
-      />
+      <div className='vz-component-preview-search'>
+        <TextInput
+          size={TextInput.Sizes.MINI}
+          className='vz-component-preview-search-input-wrapper'
+          value={search}
+          onChange={search => {
+            setSearch(search);
+            setHasSearchResults(Icons.filter(f => f.toLowerCase().includes(search)).length > 0);
+          }}
+          placeholder='Search icons...'
+        />
+      </div>
     );
   };
 
-  const renderTabs = () => {
-    const { topPill, item } = getModule('topPill');
+  const renderAside = () => {
     return (
       <>
-        <div className='vizality-entities-manage-tabs'>
-          <TabBar
-            selectedItem={tab}
-            onItemSelect={tab => setTab(tab)}
-            type={topPill}
-          >
-            <TabBar.Item className={item} selectedItem={tab} id='PREVIEW'>
-              Preview
-            </TabBar.Item>
-            {hasSearchResults && <TabBar.Item className={item} selectedItem={tab} id='CODE'>
-              Code
-            </TabBar.Item>}
-          </TabBar>
-          {renderSearch()}
-        </div>
+        {hasSearchResults && selectedIcon && <>
+          <div className={`vz-docs-components-icons-aside-icon-name ${size20} ${marginBottom20} ${weightMedium}`}>
+            {selectedIcon}
+          </div>
+          <Icon name={selectedIcon} width={'100%'} height={'100%'} className='vz-docs-components-icons-aside-icon-wrapper' />
+        </>}
       </>
     );
   };
 
-  const renderContent = () => {
-    const { marginBottom20 } = getModule('marginBottom20');
-
+  const renderCodeTab = () => {
     return (
       <>
-        {/* eslint-disable-next-line array-callback-return */}
-        {Icon.Names.map(name => {
-          if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
-            return (
-              <div
-                onClick={() => setIcon(name)}
-                className={joinClassNames('vizality-icon-wrapper', 'vizality-demo-icon-wrapper', { active: iconName === name })}
-              >
-                <Tooltip text={name} position='top'>
-                  <Icon className='vizality-demo-icon' name={name} />
-                </Tooltip>
-              </div>
-            );
-          }
-        })}
-        {!hasSearchResults && <div className='vizality-dashboard-section-no-results'>
-          <div className='vizality-dashboard-section-no-results-image'></div>
-          <div className={`vizality-dashboard-section-no-results-text ${marginBottom20}`}>
+        <CodeBlock language='js' header='JSX' content={
+          `const { Icon } = require('@components');\n\n` +
+          `<Icon name='${selectedIcon}' />`}
+        />
+        <CodeBlock language='js' header='React' content={
+          `const { Icon } = require('@components');\n\n` +
+          `React.createElement(Icon, {\n` +
+          `  name: '${selectedIcon}'\n` +
+          `});`}
+        />
+      </>
+    );
+  };
+
+  const renderPreviewTab = () => {
+    return (
+      <>
+        {iconList}
+        {!hasSearchResults && <div className='vz-component-preview-no-results'>
+          <div className='vz-component-preview-no-results-image' />
+          <div className={`vz-component-preview-no-results-text ${marginBottom20}`}>
+            {/* @i18n */}
             {`There were no icons found matching '${search}'`}
           </div>
         </div>}
@@ -93,33 +95,17 @@ module.exports = React.memo(({ selectedTab }) => {
 
   return (
     <Layout>
-      <Content header='Components' subtext='I like components and stuff'>
-        <Section header='Icons' subtext='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'>
-          {renderTabs()}
-          <div className={joinClassNames(`poop-div ${tab.toLowerCase()}`)}>
-            {hasSearchResults && iconName && <div className='vizality-component-preview-aside'>
-              <div className={`vizality-demo-large-icon-name ${size20} ${marginBottom20} ${weightMedium}`}>{iconName}</div>
-              <div className='vizality-icon-wrapper vizality-demo-large-icon-wrapper'>
-                <Icon className='vizality-icon' name={iconName} width={'100%'} height={'100%'} />
-              </div>
-            </div>}
-            <div className='some-div'>
-              {tab === 'PREVIEW' && <>
-                {renderContent()}
-              </>}
-              {tab === 'CODE' && <>
-                <CodeBlock header='JSX' content={`<Icon name='${iconName}' />`} />
-                <CodeBlock theme='Dracula' showHeader={false} showCopyButton={false} showLineNumbers={false} content={
-                  `React.createElement(Icon, {\n` +
-                  `  name: '${iconName}'\n` +
-                  `});`}
-                />
-              </>}
-            </div>
-          </div>
+      <Content heading='Components' subheading='I like components and stuff'>
+        <Section heading='Icons' subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'>
+          <ComponentPreview
+            aside={renderAside()}
+            tabChildren={renderSearch()}
+            previewTabChildren={renderPreviewTab()}
+            codeTabChildren={renderCodeTab()}
+          />
         </Section>
       </Content>
-      <Aside type='Components' />
+      <AsideNav type='Components' />
     </Layout>
   );
 });

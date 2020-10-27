@@ -1,0 +1,80 @@
+
+.vz-aside-nav {
+  $base: &;
+  padding: 0 0 0 40px;
+  top: 40px;
+  position: sticky;
+  height: calc(100vh - 104px); /* titlebar height (24px) + top padding (40px) + bottom padding (40px) */
+  flex: 0;
+  &-header {
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--header-primary);
+    &-icon-wrapper {
+      transform: translate3d(0, 0, 0);
+      transition: transform .3s;
+      cursor: pointer;
+      &:hover {
+        transform: translate3d(3px, 0, 0);
+      }
+    }
+  }
+  &-inner {
+    height: 100%;
+    transition: opacity .3s .3s, transform .3s .3s, width 0s .3s, min-width 0s .3s;
+    width: 25%;
+    min-width: 180px;
+    max-width: 300px;
+    opacity: 1;
+  }
+  &-items {
+    height: 100%;
+    overflow: hidden auto;
+  }
+  &-item {
+    margin: 15px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  &-collapser {
+    background: var(--background-secondary);
+    height: 50px;
+    width: 50px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--elevation-medium);
+    border: 1px solid var(--background-tertiary);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    transform: translate3d(1000%, 0, 0);
+    transition: opacity .3s, background .3s, transform 1s 0s;
+    &:hover {
+      background: var(--background-secondary-alt);
+    }
+  }
+  &.collapsed {
+    #{$base}-inner {
+      width: 50px;
+      transform: translate3d(200%, 0, 0);
+      min-width: 0;
+      opacity: 0;
+      transition: opacity .3s, transform .6s, width 0s .3s, min-width 0s .3s;
+    }
+    #{$base}-collapser {
+      transform: translate3d(0, 0, 0);
+      transition: opacity .3s, background .3s, transform .3s .3s;
+      opacity: 1;
+    }
+  }
+}

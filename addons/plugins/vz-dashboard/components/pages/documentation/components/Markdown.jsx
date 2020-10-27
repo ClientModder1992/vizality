@@ -160,8 +160,8 @@ With a reference later in the document defining the URL location:
 module.exports = React.memo(() => {
   return (
     <Layout>
-      <Content header='Components' subtext='I like components and stuff'>
-        <Section header='Markdown' subtext='Testing markdown stuff.'>
+      <Content heading='Components' subheading='I like components and stuff'>
+        <Section heading='Markdown' subheading='Testing markdown stuff.'>
           <Markdown source={preview} />
         </Section>
       </Content>

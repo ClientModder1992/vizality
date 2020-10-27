@@ -14,94 +14,145 @@ const Test = require('../components/pages/Test');
 
 const Plugins = require('@root/addons/plugins/vz-addon-manager/components/manage/Plugins');
 const Themes = require('@root/addons/plugins/vz-addon-manager/components/manage/Themes');
-// const Settings = require('@root/addons/plugins/vz-settings/components/Settings');
 // const Settings = vizality.api.settings.tabs['vz-settings'].render;
-
-const basePath = '/vizality/dashboard';
 
 module.exports = () => {
   return (
-    <Switch>
-      <Redirect from={basePath} to={`${basePath}/home`} exact />
-      <Redirect from={`${basePath}/documentation`} to={`${basePath}/documentation/getting-started`} exact />
-
-      <Route path={`${basePath}/home`} exact>
+    <>
+      <Switch>
+        <Redirect from='/vizality/dashboard' to='/vizality/dashboard/home' exact />
+        <Redirect from='/vizality/dashboard/documentation' to='/vizality/dashboard/documentation/getting-started' exact />
+      </Switch>
+      <Route path='/vizality/dashboard/home' exact>
         <Home />
       </Route>
-      {/* <Route path={`${basePath}/settings`} exact>
+      {/* <Route path='/vizality/dashboard/settings' exact>
         <Settings />
       </Route> */}
-      {/* <Route path={`${basePath}/plugins`} exact>
+      {/* <Route path='/vizality/dashboard/plugins' exact>
         <Layout isFullWidth>
           <Content header='Plugins' icon='Plugin' hasBackground>
             <Plugins />
           </Content>
         </Layout>
       </Route> */}
-      <Route path={`${basePath}/plugins`} exact>
+      <Route path='/vizality/dashboard/plugins' exact>
         <Layout>
-          <Content header='Plugins'>
+          <Content
+            heading='Plugins'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Plugin'
+          >
             <Plugins />
           </Content>
         </Layout>
       </Route>
-      <Route path={`${basePath}/plugins/discover`} exact>
+      <Route path='/vizality/dashboard/plugins/discover' exact>
         <Plugins tab='DISCOVER' />
       </Route>
-      {/* <Route path={`${basePath}/themes`} exact>
+      {/* <Route path='/vizality/dashboard/themes' exact>
         <Layout isFullWidth>
           <Content header='Themes' icon='Theme' hasBackground>
             <Themes />
           </Content>
         </Layout>
       </Route> */}
-      <Route path={`${basePath}/themes`} exact>
+      <Route path='/vizality/dashboard/themes' exact>
         <Layout>
-          <Content header='Themes'>
+          <Content
+            heading='Themes'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Theme'
+          >
             <Plugins />
           </Content>
         </Layout>
       </Route>
-      <Route path={`${basePath}/snippets`} exact>
-        <Layout />
+      <Route path='/vizality/dashboard/snippets' exact>
+        <Layout>
+          <Content
+            heading='Snippets'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Scissors'
+          >
+          </Content>
+        </Layout>
       </Route>
-      <Route path={`${basePath}/theme-editor`} exact>
-        <Layout />
+      <Route path='/vizality/dashboard/theme-editor' exact>
+        <Layout>
+          <Content
+            heading='Theme Editor'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Settings'
+          >
+          </Content>
+        </Layout>
       </Route>
-      <Route path={`${basePath}/developers`} exact>
-        <Layout />
+      <Route path='/vizality/dashboard/developers' exact>
+        <Layout>
+          <Content
+            heading='Developers'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='UnknownUser'
+          >
+          </Content>
+        </Layout>
       </Route>
-      <Route path={`${basePath}/documentation/components/screenshots`} exact>
-        <Screenshots />
+      <Route path='/vizality/dashboard/documentation/components/screenshots' exact>
+        <Layout>
+          <Content heading='Screenshots' className='vizality-dashboard-addon-screenshots'>
+            <Screenshots />
+          </Content>
+        </Layout>
       </Route>
-      <Route path={`${basePath}/documentation/components/icons`} exact>
+      <Route path='/vizality/dashboard/documentation/components/icons' exact>
         <Icons selectedTab='PREVIEW' />
       </Route>
-      <Route path={`${basePath}/documentation/components/markdown`} exact>
+      <Route path='/vizality/dashboard/documentation/components/markdown' exact>
         <Markdown />
       </Route>
-      {/* <Route path={`${basePath}/documentation/components/test`} exact>
+      {/* <Route path='/vizality/dashboard/documentation/components/test' exact>
         <Icons selectedTab='CODE' />
       </Route> */}
-      <Route path={`${basePath}/documentation/components/error-test`} exact>
+      <Route path='/vizality/dashboard/documentation/components/error-test' exact>
         <ErrorTest />
       </Route>
-      <Route path={`${basePath}/documentation/components/test`} exact>
+      <Route path='/vizality/dashboard/documentation/components/test' exact>
         <Test />
       </Route>
-      <Route path={`${basePath}/experiments`} exact>
-        <Experiments />
-      </Route>
-      <Route path={`${basePath}/updates`} exact>
+      <Route path='/vizality/dashboard/experiments' exact>
         <Layout>
-          <Content header='Updates'>
+          <Content
+            heading='Experiments'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Experiment'
+          >
+            <Experiments />
+          </Content>
+        </Layout>
+      </Route>
+      <Route path='/vizality/dashboard/updates' exact>
+        <Layout>
+          <Content
+            heading='Updates'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='CloudDownload'
+          >
             <Updates />
           </Content>
         </Layout>
       </Route>
-      <Route path={`${basePath}/changelog`} exact>
-        <Changelog />
+      <Route path='/vizality/dashboard/changelog' exact>
+        <Layout>
+          <Content
+            heading='Changelog'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='ClockReverse'
+          >
+            <Changelog />
+          </Content>
+        </Layout>
       </Route>
-    </Switch>
+    </>
   );
 };

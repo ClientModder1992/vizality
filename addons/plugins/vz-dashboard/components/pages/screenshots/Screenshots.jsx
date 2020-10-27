@@ -1,4 +1,4 @@
-const imageToBase64 = require('image-to-base64');
+const imageToBase64 = require('base64-img');
 const { readdirSync } = require('fs');
 const { join, extname } = require('path');
 
@@ -6,22 +6,16 @@ const { React, React: { useState, useEffect } } = require('@react');
 const { open: openModal } = require('vizality/modal');
 const { ImageModal, Image } = require('@components');
 
-const Content = require('../../parts/Content');
-const Layout = require('../../parts/Layout');
-
 module.exports = React.memo(() => {
   const [ images, setImages ] = useState([]);
 
   const convertScreenshotsToBase64 = async () => {
     readdirSync(join(__dirname, 'screenshots'))
-      .filter(file => extname(file) === '.png' || extname(file) === '.jpg' || extname(file) === '.jpeg' || extname(file) === '.webp')
+      .filter(file => extname(file) === '.png' || extname(file) === '.jpg' || extname(file) === '.jpeg' || extname(file) === '.webp' || extname(file) === '.gif')
       .forEach(file => {
         const image = join(__dirname, 'screenshots', file);
-        imageToBase64(image)
-          .then(response => {
-            setImages(images => [ ...images, `data:image/${extname(image).substring(1)};base64,${response}` ]);
-          })
-          .catch(err => console.error(err));
+        const img = imageToBase64.base64Sync(image);
+        setImages(images => [ ...images, img ]);
       });
   };
 
@@ -30,12 +24,16 @@ module.exports = React.memo(() => {
   }, []);
 
   return (
-    <Layout>
-      <Content className='vizality-dashboard-addon-screenshots'>
-        {images.map(image => <Image className='vizality-image' src={image}
-          onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={image} />)} />
-        )}
-      </Content>
-    </Layout>
+    <>
+      {images.map(image =>
+        <Image
+          className='vz-image-wrapper'
+          src={image}
+          onClick={() => {
+            openModal(() => <ImageModal className='vz-image-modal' src={image} />);
+          }}
+        />
+      )}
+    </>
   );
 });

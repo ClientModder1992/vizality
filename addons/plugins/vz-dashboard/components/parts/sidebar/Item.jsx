@@ -8,16 +8,17 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
   const { categoryItem, selectedCategoryItem, itemInner } = getModule('discoverHeader');
   const { container, selected: selectedClass, clickable, wrappedLayout, layout, avatar, content } = getModule('wrappedLayout');
 
-  const loc = useLocation();
+  const location = useLocation();
   const fullPath = `/vizality/dashboard${path}`;
-  const selected = loc.pathname.startsWith(fullPath);
-  const isSubItemSelected = selected && loc.pathname !== fullPath;
+  const selected = location.pathname.startsWith(fullPath);
+  const isSubItemSelected = selected && location.pathname !== fullPath;
 
   return (
     <>
       <Clickable
         onClick={(e) => {
           if (disabled) return;
+          // @todo Make this... not so bad.
           // eslint-disable-next-line consistent-this
           const _this = e.target.closest('.vizality-dashboard-sidebar-item');
           if (_this &&
@@ -42,11 +43,11 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
         className={joinClassNames({
           expandable,
           disabled,
-          expanded: isSubItemSelected && !subItem,
+          expanded: isSubItemSelected && !subItem && expandable,
           'vizality-dashboard-sidebar-item': !subItem,
           'vizality-dashboard-sidebar-subitem': subItem,
           'subitem-is-selected': isSubItemSelected,
-          [`${selectedCategoryItem} ${selectedClass}`]: (selected && !isSubItemSelected) || (selected && isSubItemSelected && subItem),
+          [`${selectedCategoryItem} ${selectedClass}`]: (selected && !isSubItemSelected) || (selected && isSubItemSelected && subItem) || (selected && isSubItemSelected && !expandable),
           [`${clickable}`]: !selected || isSubItemSelected
         },
         container,
@@ -63,6 +64,10 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
         )}>
           {icon && <div className={`vizality-dashboard-sidebar-item-icon-wrapper ${avatar}`}>
             {icon === 'Scissors'
+              /*
+               * Just a small adjustment to make the Scissors icon appear about the same size
+               * as the other icons.
+               */
               ? <Icon name='Scissors' width='22' height='22' />
               : <Icon name={icon} />}
           </div>}
@@ -71,7 +76,7 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
             className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-collapser'
             onClick={(e) => e.target.closest('.vizality-dashboard-sidebar-item').classList.toggle('expanded')}
           >
-            <Icon name='Caret' className='vizality-dashboard-sidebar-auxillary-icon' />
+            <Icon name='RightCaret' width='18' height='18' className='vizality-dashboard-sidebar-auxillary-icon' />
           </Clickable>}
           {launch && <Tooltip
             text={auxillaryIconTooltipText || 'Open'}

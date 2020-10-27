@@ -3,5 +3,6 @@
   "version": "0.0.1",
   "description": "Vizality's dashboard for handling the various custom routes and sections created by Vizality.",
   "author": "Vizality",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "color": "#fff"
 }

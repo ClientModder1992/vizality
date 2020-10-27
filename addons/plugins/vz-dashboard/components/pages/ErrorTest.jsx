@@ -7,7 +7,7 @@ const Layout = require('../parts/Layout');
 module.exports = React.memo(() => {
   return (
     <Layout>
-      <Content header='Error Test'>
+      <Content heading='Error Test'>
         <Section>
           {new Error()}
         </Section>

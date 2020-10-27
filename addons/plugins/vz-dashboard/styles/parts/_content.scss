@@ -53,7 +53,7 @@
     }
     &-icon-wrapper {
       @include size(36px);
-      margin-right: 10px;
+      margin-right: 16px;
       z-index: 1;
     }
   }
@@ -69,7 +69,6 @@
     }
     .vizality-dashboard-content-header-icon-wrapper {
       @include size(60px);
-      margin-right: 14px;
       position: relative;
     }
     .vizality-dashboard-content-header-icon {
