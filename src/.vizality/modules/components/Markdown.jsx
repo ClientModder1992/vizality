@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 const { existsSync, promises: { readFile } } = require('fs');
 const { shell: { openExternal } } = require('electron');
 const Markdown = require('react-markdown');
@@ -8,15 +9,15 @@ const { React, React: { useState } } = require('@react');
 const { open: openModal } = require('vizality/modal');
 const { Icon, CodeBlock } = require('@components');
 
-const ImageModal = getModuleByDisplayName('ImageModal');
-
-module.exports = React.memo(({ source, className }) => {
+module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
   const [ markdown, setMarkdown ] = useState();
   const { base } = getModule('base');
   const { size32, size24, size20, size16, size14, size12 } = getModule('size32');
   const { anchor, anchorUnderlineOnHover } = getModule('anchorUnderlineOnHover');
   const { imageWrapper } = getModule('imageWrapper');
+  const ImageModal = getModuleByDisplayName('ImageModal');
 
+  // This would probably better be done as a hook with useEffect, but meh.
   (async () => {
     if (markdown) return;
     if (existsSync(source)) {

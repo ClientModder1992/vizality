@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 const { clipboard } = require('electron');
 
 const { React, React: { useState } } = require('@react');
@@ -24,7 +25,7 @@ const Button = getModule(m => m.DropdownSizes);
  * />
  * ```
  */
-module.exports = React.memo(({
+module.exports = React.memo(function VizalityCodeBlock ({
   language,
   header,
   content,
@@ -35,7 +36,7 @@ module.exports = React.memo(({
   contentIsRaw = false,
   hasWrapper = true,
   className
-}) => {
+}) {
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const { markup } = getModule('markup');
   const { marginBottom20 } = getModule('marginBottom20');

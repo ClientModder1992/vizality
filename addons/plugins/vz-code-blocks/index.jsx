@@ -1,34 +1,34 @@
-const { joinClassNames, react: { findInReactTree, getReactInstance } } = require('@util');
-const { getModule } = require('@webpack');
+const { react: { findInReactTree, getReactInstance } } = require('@util');
 const { patch, unpatch } = require('@patcher');
 const { CodeBlock } = require('@components');
+const { getModule } = require('@webpack');
 const { Plugin } = require('@entities');
 const { React } = require('@react');
 
 module.exports = class CodeBlocks extends Plugin {
   onStart () {
     this.injectStyles('styles/main.scss');
-    this.patchCodeblocks();
+    this.patchCodeBlocks();
   }
 
   onStop () {
-    unpatch('vz-codeblocks-inline');
-    unpatch('vz-codeblocks-embed');
+    unpatch('vz-code-blocks-inline');
+    unpatch('vz-code-blocks-embed');
     this._forceUpdate();
   }
 
-  async patchCodeblocks () {
+  patchCodeBlocks () {
     const parser = getModule('parse', 'parseTopic');
-    patch('vz-codeblocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
-      this.injectCodeblock(args, res);
+    patch('vz-code-blocks-inline', parser.defaultRules.codeBlock, 'react', (args, res) => {
+      this.injectCodeBlock(args, res);
       return res;
     });
 
-    patch('vz-codeblocks-embed', parser, 'parseAllowLinks', (args, res) => {
+    patch('vz-code-blocks-embed', parser, 'parseAllowLinks', (_, res) => {
       for (const children of res) {
         const codeblock = findInReactTree(children, n => n.type && n.type.name === '');
         if (codeblock) {
-          this.injectCodeblock(null, codeblock);
+          this.injectCodeBlock(null, codeblock);
         }
       }
       return res;
@@ -36,7 +36,7 @@ module.exports = class CodeBlocks extends Plugin {
     this._forceUpdate();
   }
 
-  injectCodeblock (args, codeblock) {
+  injectCodeBlock (args, codeblock) {
     const { render } = codeblock.props;
 
     codeblock.props.render = (codeblock) => {

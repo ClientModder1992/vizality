@@ -1,0 +1,7 @@
+{
+  "name": "Better Code Blocks",
+  "version": "1.0.0",
+  "description": "Improves Discord code blocks, giving you options to show a copy button, language header, line numbers, and different syntax highlighting themes.",
+  "author": "dperolio",
+  "license": "GPL-3.0"
+}

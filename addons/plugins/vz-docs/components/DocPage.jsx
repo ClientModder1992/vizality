@@ -146,7 +146,7 @@ class DocPage extends React.PureComponent {
   }
 
   _handleCodeCopy (e) {
-    vizality.manager.plugins.get('vz-codeblocks')._onClickHandler(e);
+    vizality.manager.plugins.get('vz-code-blocks')._onClickHandler(e);
   }
 }
 

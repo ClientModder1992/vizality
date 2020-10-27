@@ -25,6 +25,7 @@
     bottom: initial;
   }
   &-line-numbers {
+    color: var(--interactive-muted);
     text-align: right;
     height: 100%;
     width: 30px;
@@ -47,14 +48,14 @@
     }
   }
   /*
-   * 75% height and small bottom and right distances is to take into account
-   * single line generic codeblocks that have no header.
+   * Small bottom and right distance is to take into account
+   * single line generic code blocks that have no header.
    */
   &-copy-button {
     position: absolute;
     right: 5px;
     bottom: 5px;
-    // 100% - bottom * 2 for single-line codeblocks without headers
+    // 100% - bottom * 2 for single-line code blocks without headers
     max-height: calc(100% - 10px);
     min-height: 0;
     opacity: 0;

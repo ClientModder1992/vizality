@@ -73,18 +73,17 @@ const webpack = module.exports = {
     }
 
     // Extract values from webpack
-    const moduleID = 'vizality';
     const instance = webpackJsonp.push([
       [],
       {
-        [moduleID]: (_, e, r) => {
+        _vizality: (_, e, r) => {
           e.cache = r.c;
           e.require = r;
         }
       },
-      [ [ moduleID ] ]
+      [ [ '_vizality' ] ]
     ]);
-    delete instance.cache[moduleID];
+    delete instance.cache._vizality;
     webpack.instance = instance;
 
     // Load modules pre-fetched

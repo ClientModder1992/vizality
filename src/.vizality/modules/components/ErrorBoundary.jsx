@@ -12,18 +12,18 @@ const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?in
 const ReactInvariant = get('https://raw.githubusercontent.com/facebook/react/master/scripts/error-codes/codes.json')
   .then(res => JSON.parse(res.body.toString()));
 
-module.exports = class ErrorBoundary extends React.PureComponent {
+module.exports = class VizalityErrorBoundary extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
-      crashed: false,
+      hasCrashed: false,
       errorStack: '',
       componentStack: ''
     };
   }
 
   componentDidCatch (error, info) {
-    this.setState({ crashed: true });
+    this.setState({ hasCrashed: true });
     ReactInvariant.then(invariant => {
       const componentStack = info.componentStack
         .split('\n')
@@ -67,7 +67,7 @@ module.exports = class ErrorBoundary extends React.PureComponent {
 
     return (
       <>
-        {this.state.crashed && <div className={joinClassNames('vz-error-boundary', this.props.className, colorStandard)}>
+        {this.state.hasCrashed && <div className={joinClassNames('vz-error-boundary', this.props.className, colorStandard)}>
           <h1 className={joinClassNames('vz-error-boundary-header', this.props.headerClassName)}>Huh, that's odd.</h1>
           <div className='vz-error-boundary-text'>An error occurred while rendering the page:</div>
           <div className='vz-error-boundary-block vz-error-boundary-error-stack'>{this.state.errorStack}</div>
@@ -111,7 +111,7 @@ module.exports = class ErrorBoundary extends React.PureComponent {
             </div>
           </div>
         </div>}
-        {!this.state.crashed && this.props.children}
+        {!this.state.hasCrashed && this.props.children}
       </>
     );
   }

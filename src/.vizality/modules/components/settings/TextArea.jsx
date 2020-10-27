@@ -8,7 +8,7 @@ const TextArea = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
 
 module.exports = React.memo(props => {
   const { children: title, note, required } = props;
-  delete this.props.children;
+  delete this?.props?.children;
 
   return (
     <FormItem title={title} note={note} required={required} noteHasMargin>

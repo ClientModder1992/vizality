@@ -37,6 +37,7 @@
     "@webpack": "src/.vizality/modules/webpack"
   },
   "dependencies": {
+    "base64-img": "^1.0.4",
     "codemirror": "^5.57.0",
     "image-to-base64": "^2.1.1",
     "long": "^4.0.0",

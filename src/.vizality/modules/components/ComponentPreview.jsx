@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 const { React, React: { useState, useEffect } } = require('@react');
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@util');
@@ -5,13 +6,13 @@ const { joinClassNames } = require('@util');
 const TabBar = getModuleByDisplayName('TabBar');
 const Icon = require('./Icon');
 
-module.exports = React.memo(({
+module.exports = React.memo(function VizalityComponentPreview ({
   previewTabChildren,
   codeTabChildren,
   tabChildren,
   aside,
   selectedTab = 'PREVIEW'
-}) => {
+}) {
   const [ tab, setTab ] = useState(selectedTab);
   const { topPill, item } = getModule('topPill');
 
