@@ -17,3 +17,7 @@ settings/*.json
 
 *injected.txt
 *.nogit.*
+
+debug.log
+
+snippets/*

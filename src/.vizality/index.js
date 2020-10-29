@@ -62,7 +62,7 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
  * @property {Git} git
  * @property {boolean} _initialized
  */
-class Vizality extends Updatable {
+module.exports = class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
 
@@ -81,7 +81,6 @@ class Vizality extends Updatable {
     this.manager.plugins = new AddonManager('plugins', Directories.PLUGINS);
 
     this._initialized = false;
-    this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
 
@@ -228,42 +227,47 @@ class Vizality extends Updatable {
   }
 
   // Patch Discord's logs to follow Vizality's log style
-  patchDiscordLogs () {
-    const Log = getModuleByPrototypes([ '_log' ]);
+  // patchDiscordLogs () {
+  //   const Log = getModuleByPrototypes([ 'log' ]);
 
-    this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
-    Log.prototype._log = function (firstArg, ...originalArgs) {
-      const module = 'Discord';
-      const submodule = this.name;
+  //   this._originalLogFunc.log = this._originalLogFunc.log || Log.prototype.log;
+  //   Log.prototype.log = function (firstArg, ...originalArgs) {
+  //     const module = 'Discord';
+  //     const submodule = this.name;
 
-      if (firstArg === 'info' || firstArg === 'log') {
-        log(module, submodule, null, ...originalArgs);
-      }
+  //     if (firstArg === 'info' || firstArg === 'log') {
+  //       log(module, submodule, null, ...originalArgs);
+  //     }
 
-      if (firstArg === 'error' || firstArg === 'trace') {
-        error(module, submodule, null, ...originalArgs);
-      }
+  //     if (firstArg === 'error' || firstArg === 'trace') {
+  //       error(module, submodule, null, ...originalArgs);
+  //     }
 
-      if (firstArg === 'warn') {
-        warn(module, submodule, null, ...originalArgs);
-      }
-    };
-  }
+  //     if (firstArg === 'warn') {
+  //       warn(module, submodule, null, ...originalArgs);
+  //     }
+  //   };
+  // }
+
+  // Remove Discord's logs entirely
+  // removeDiscordLogs () {
+  //   const Log = getModuleByPrototypes([ 'log' ]);
+
+  //   this._originalLogFunc.log = this._originalLogFunc.log || Log.prototype.log;
+  //   // eslint-disable-next-line no-empty-function
+  //   Log.prototype.log = function () { };
+  // }
 
   // Remove Discord's logs entirely
   removeDiscordLogs () {
-    const Log = getModuleByPrototypes([ '_log' ]);
-
-    this._originalLogFunc._log = this._originalLogFunc._log || Log.prototype._log;
-    // eslint-disable-next-line no-empty-function
-    Log.prototype._log = function () { };
+    const { setLogFn } = getModule('setLogFn');
+    setLogFn(() => void 0);
   }
 
   // Unpatch Discord's logs back to the default style
-  unpatchDiscordLogs () {
-    const Log = getModuleByPrototypes([ '_log' ]);
-    Log.prototype._log = vizality._originalLogFunc._log;
-  }
+  // unpatchDiscordLogs () {
+  //   const { setLogFn } = getModule('setLogFn');
+  // }
 
   _patchWebSocket () {
     const _this = this;
@@ -306,6 +310,4 @@ class Vizality extends Updatable {
     }
     return success;
   }
-}
-
-module.exports = Vizality;
+};

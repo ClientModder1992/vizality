@@ -1,9 +1,0 @@
-//==============================================================================
-// Known Issues
-//==============================================================================
-
-/**
- * [✓] Seems to be a problem when a server has an outage, which crashes Discord whenever you try to go to a server: Minified React error #152
- * [✓] Error when clicking a link on a custom changelog; link still works, just gives an error, likely just related to analytics: Uncaught TypeError: t.props.track *      is not a function at Object.t.trackLinkClick [as onLinkClick] (f7cb4df9dcfa23a500a6.js:1)
- * [✗] Settings changes for Settings and Updater not causing rerenders
- */

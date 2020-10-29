@@ -9,7 +9,6 @@
     "compile-sass": "node src/compile",
     "lint": "eslint --ext js --ext jsx src",
     "inject": "node src/inject inject",
-    "generate-docs": "jsdoc --configure .jsdoc.json"
     "uninject": "node src/inject uninject"
   },
   "repository": "https://github.com/vizality/vizality.git",

@@ -48,14 +48,20 @@ module.exports = class SettingsAPI extends API {
   /**
    * Registers a settings tab
    * @param {string} tabId Settings tab ID
-   * @param {SettingsTab} props Props of your settings tab
+   * @param {SettingsTab} props Props of the settings tab
    */
   registerSettings (tabId, props) {
-    if (this.tabs[tabId]) {
-      throw new Error(`Settings tab ${tabId} is already registered!`);
+    try {
+      if (this.tabs[tabId]) {
+        throw new Error(`Settings tab "${tabId}" is already registered!`);
+      }
+      this.tabs[tabId] = props;
+      this.tabs[tabId].render = this.connectStores(props.category)(props.render);
+      Object.freeze(this.tabs[tabId].render.prototype);
+      Object.freeze(this.tabs[tabId]);
+    } catch (err) {
+      return error(_module, `${_submodule}:registerSettings`, null, err);
     }
-    this.tabs[tabId] = props;
-    this.tabs[tabId].render = this.connectStores(props.category)(props.render);
   }
 
   registerDashboardSettings (props) {
