@@ -3,11 +3,11 @@
  * All of the custom typings used throughout the project. I'm keeping them all stored in a
  * single file, because it seems I have to keep this file opened while working on the
  * project in order to get proper intellisense for custom types in VSCode. I have spent
- * hours trying various way to import the typings and have had no luck, so this is my
- * solution. In order for it to work, I also had to add the path of the typings file
+ * hours trying various way to import the typedefs and have had no luck, so this is my
+ * solution. In order for it to work, I also had to add the path of the typedefs file
  * to jsconfig.json.
- * @namespace typings
- * @module typings
+ * @namespace typedefs
+ * @module typedefs
  * @version 0.0.1
  */
 

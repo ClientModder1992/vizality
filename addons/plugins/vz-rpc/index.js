@@ -1,5 +1,4 @@
 /* eslint-disable no-unreachable */
-
 const { patch, unpatch } = require('@patcher');
 const { getModule } = require('@webpack');
 const { HTTP } = require('@constants');
@@ -83,7 +82,7 @@ module.exports = class RPC extends Plugin {
   }
 
   _addEvent (event) {
-    this.handlers[event] = vizality.rpc.api.events[event];
+    this.handlers[event] = vizality.api.rpc.events[event];
   }
 
   _removeEvent (event) {

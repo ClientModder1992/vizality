@@ -2,9 +2,9 @@ const { getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE
 const { React } = require('@react');
 
 const AsyncComponent = require('../AsyncComponent');
+const ColorPicker = require('../ColorPicker');
 const FormItem = require('./FormItem');
 
-const ColorPicker = AsyncComponent.from(getModuleByDisplayName('ColorPicker', true));
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
 const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
 
@@ -26,13 +26,13 @@ module.exports = class ColorPickerInput extends React.PureComponent {
     return (
       <FormItem title={title} note={note} required={required} noteHasMargin>
         <ColorPicker
-          colors={defaultColors || ROLE_COLORS.map(c => c - 16777216)}
-          defaultColor={def || DEFAULT_ROLE_COLOR - 16777216}
-          onChange={s => this.handleChange(s, this.state.alpha)}
+          colors={defaultColors || ROLE_COLORS}
+          defaultColor={typeof def === 'number' ? def : DEFAULT_ROLE_COLOR}
+          onChange={s => this.props.onChange(s)}
           disabled={disabled}
           value={value}
         />
-        {transparency && this.renderOpacity()}
+        {/* transparency && this.renderOpacity() */}
       </FormItem>
     );
   }

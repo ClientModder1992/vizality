@@ -17,7 +17,7 @@
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
       "@react": [ "./.vizality/modules/react" ],
-      "@typings": [ "./.vizality/typings" ],
+      "@typedefs": [ "./.vizality/typedefs" ],
       "@util": [ "./.vizality/modules/util" ],
       "@webpack": [ "./.vizality/modules/webpack" ]
     }

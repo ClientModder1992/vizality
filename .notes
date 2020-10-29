@@ -57,9 +57,9 @@
  * ----------------
  * In order to get proper intellisense in VSCode for the custom-defined types the project
  * uses, this file must remain opened. I was not able to find a viable workaround to
- * importing typings into individual files, so this was the only solution that worked for
+ * importing typedefs into individual files, so this was the only solution that worked for
  * me for cross-file types. In order for it to work, I also had to add the path to the
- * typings file to jsconfig.json.
+ * typedef file to jsconfig.json.
  * ----------------
- * File location: ./src/.vizality/typings/index.js
+ * File location: ./src/.vizality/typedef/index.js
   */

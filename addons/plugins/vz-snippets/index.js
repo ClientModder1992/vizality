@@ -24,6 +24,15 @@ module.exports = class Snippets extends Plugin {
       })
     });
 
+    vizality.api.settings.registerSettings('Snippets', {
+      category: 'vz-snippets',
+      label: () => 'Snippets',
+      render: (props) => React.createElement(CustomCSS, {
+        openPopout: () => this._openCustomCSSPopout(),
+        ...props
+      })
+    });
+
     this.snippets = {};
     this.snippetsDirectory = join(__dirname, 'snippets', 'css');
     await this._readSnippets();

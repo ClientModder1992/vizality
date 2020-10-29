@@ -11,8 +11,6 @@ module.exports = class AddonsManager extends Plugin {
   }
 
   onStop () {
-    vizality.api.settings.unregisterSettings('Plugins');
-    vizality.api.settings.unregisterSettings('Themes');
     Object.values(commands).forEach(cmd => vizality.api.commands.unregisterCommand(cmd.command));
   }
 };

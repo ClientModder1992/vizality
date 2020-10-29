@@ -56,7 +56,6 @@ module.exports = class Updater extends Plugin {
   }
 
   onStop () {
-    vizality.api.settings.unregisterSettings('Updater');
     clearInterval(this._interval);
   }
 
@@ -75,7 +74,7 @@ module.exports = class Updater extends Plugin {
     const disabled = this.settings.get('entities_disabled', []).map(e => e.id);
     const skipped = this.settings.get('entities_skipped', []);
     const plugins = [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal);
-    const themes = [ ...vizality.styleManager.themes.values() ].filter(t => t.isTheme);
+    const themes = [ ...vizality.manager.themes.values ].filter(t => t.isTheme);
 
     const entities = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());
     if (!disabled.includes(vizality.updateIdentifier)) {
