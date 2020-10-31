@@ -1,6 +1,6 @@
 const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
-const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@components');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
+const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Plugin } = require('@entities');
 const { React } = require('@react');
@@ -52,7 +52,7 @@ module.exports = class SDK extends Plugin {
                   {
                     type: 'button',
                     name: 'Open QuickCSS Window',
-                    onClick: () => vizality.manager.plugins.get('vz-snippets')._openCustomCSSPopout()
+                    onClick: () => vizality.manager.builtins.get('snippet-manager')._openCustomCSSPopout()
                   }
                 ], [
                   {
@@ -80,6 +80,7 @@ module.exports = class SDK extends Plugin {
   }
 
   async _openSdk () {
+    console.log('???')
     const popoutModule = getModule('setAlwaysOnTop', 'open');
     popoutModule.open('DISCORD_VIZALITY_SANDBOX', (key) =>
       React.createElement(PopoutWindow, {

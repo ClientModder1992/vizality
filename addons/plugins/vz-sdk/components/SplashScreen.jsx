@@ -1,6 +1,6 @@
 const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
-const { join } = require('path');
+const { join, dirname } = require('path');
 
 const { Flex, Button } = require('@components');
 const { Directories } = require('@constants');
@@ -84,13 +84,14 @@ module.exports = class SplashScreen extends React.PureComponent {
   }
 
   openSplashScreen (keepState) {
-    // @todo: Fix this.
     const baseAsar = process.resourcesPath;
+
     const splashIndex = formatUrl({
       protocol: 'file',
       slashes: true,
       pathname: join(baseAsar, 'app.asar', 'app_bootstrap/splash/index.html')
     });
+
     const windowSettings = {
       /*
        * Here's a c/c of the comment I've found in Discord's src code regarding this:
@@ -109,7 +110,7 @@ module.exports = class SplashScreen extends React.PureComponent {
       }
     };
 
-    // this._window = PowercordNative.openBrowserWindow(windowSettings);
+    // this._window = VizalityNative.openBrowserWindow(windowSettings);
     this._window = new BrowserWindow(windowSettings);
     this._window.loadURL(splashIndex);
     this._window.webContents.openDevTools({ mode: 'detach' });

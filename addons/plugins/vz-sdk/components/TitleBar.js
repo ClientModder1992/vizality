@@ -9,7 +9,7 @@ const TitleBar = AsyncComponent.from((async () => {
     const res = windows(props);
     res.props.className += ' vizality-sdk-title';
     // res.props.children[0].props.children = React.createElement(SdkWordmark, { height: 16 });
-    // return res;
+    return res;
   };
 })());
 
