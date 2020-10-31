@@ -1,10 +1,10 @@
-const { Directories } = require('@constants');
-
+const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+const { createHash } = require('crypto');
+const watch = require('node-watch');
 const Events = require('events');
 const { join } = require('path');
-const watch = require('node-watch');
-const { createHash } = require('crypto');
-const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+
+const { Directories } = require('@constants');
 
 // @todo: Schedule a cache cleanup?
 

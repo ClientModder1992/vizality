@@ -44,7 +44,6 @@ if (!window.__SPLASH__) {
   window.require = module => {
     switch (module) {
       case '@classes':
-      case '@compilers':
       case '@components':
       case '@constants':
       case '@discord':
