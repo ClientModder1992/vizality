@@ -13,18 +13,18 @@ module.exports = async () => {
 
     if (!msg) {
       if (findInReactTree(res, n => n.className && !n.className.startsWith('blockedSystemMessage'))) {
-        res.props.className = joinClassNames(res.props.className, 'vz-isBlockedMessage');
+        res.props.children.props.className = joinClassNames(res.props.children.props.className, 'vz-isBlockedMessage');
       }
       return res;
     }
 
     const { message, channel } = msg;
 
-    res.props['vz-message-type'] = message.type;
-    res.props['vz-author-id'] = message.author.id;
+    res.props.children.props['vz-message-type'] = message.type;
+    res.props.children.props['vz-author-id'] = message.author.id;
 
-    res.props.className = joinClassNames(
-      res.props.className, {
+    res.props.children.props.className = joinClassNames(
+      res.props.children.props.className, {
         'vz-isBotUser': message.author.bot,
         'vz-isCurrentUser': (message.author.id === currentUserId && message.type === 0),
         'vz-isGuildOwner': (channel && channel.guild_id && message.author.id === guildModule.getGuild(channel.guild_id) && message.type === 0),
