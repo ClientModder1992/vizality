@@ -38,8 +38,8 @@ const constants = module.exports = Object.freeze({
     get THEMES () { return join(constants.Directories.ADDONS, 'themes'); },
     // ---
     get API () { return join(constants.Directories.VIZALITY, 'api'); },
-    get I18N () { return join(constants.Directories.VIZALITY, 'i18n'); },
-    get LIBRARIES () { return join(constants.Directories.VIZALITY, 'libraries'); },
+    get LIB () { return join(constants.Directories.VIZALITY, 'lib'); },
+    get LANGUAGES () { return join(constants.Directories.VIZALITY, 'languages'); },
     get MANAGERS () { return join(constants.Directories.VIZALITY, 'managers'); },
     get STYLES () { return join(constants.Directories.VIZALITY, 'styles'); },
     get MODULES () { return join(__dirname, '..'); }

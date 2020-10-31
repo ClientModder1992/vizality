@@ -36,7 +36,7 @@ removeEmptyProperties(classes);
 
 const _module = 'Module';
 const _submodule = 'Classes';
-const SassClassFolder = join(Directories.LIBRARIES, 'sass', 'classes');
+const SassClassFolder = join(Directories.LIB, 'sass', 'classes');
 
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();

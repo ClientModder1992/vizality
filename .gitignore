@@ -20,4 +20,4 @@ settings/*.json
 
 debug.log
 
-snippets/*
+addons/plugins/vz-snippets/snippets/*

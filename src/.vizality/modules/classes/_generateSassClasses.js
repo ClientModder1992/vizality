@@ -10,7 +10,7 @@ const _generateSassClasses = async (obj = classes, currentPath = '') => {
   const module = 'Module';
   const submodule = 'Classes:_generateSassClasses';
 
-  const SassClassFolder = join(Directories.LIBRARIES, 'sass', 'classes');
+  const SassClassFolder = join(Directories.LIB, 'sass', 'classes');
 
   if (!existsSync(SassClassFolder)) {
     await mkdir(SassClassFolder);
