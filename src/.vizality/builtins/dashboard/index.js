@@ -1,16 +1,16 @@
 const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@util');
-const { Tooltip, Icon } = require('@components');
 const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@webpack');
+const { Tooltip, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
 const { Channels } = require('@constants');
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 
 const Sidebar = require('./components/parts/sidebar/Sidebar');
 const Routes = require('./routes/Routes');
 
-module.exports = class Dashboard extends Plugin {
+module.exports = class Dashboard extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this.injectGuildsButton();
@@ -72,11 +72,14 @@ module.exports = class Dashboard extends Plugin {
   }
 
   async injectGuildsButton () {
+    return void 0;
     const { listItemTooltip } = getModule('listItemTooltip');
     const guildClasses = getModule('tutorialContainer');
     const guildElement = (await waitForElement(`.${guildClasses.tutorialContainer.split(' ')[0]}`)).parentElement;
     const instance = getOwnerInstance(guildElement);
-    patch('vz-dashboard-guilds-button', instance.__proto__, 'render', (_, res) => {
+
+    patch('vz-dashboard-guilds-button', instance, 'render', (_, res) => {
+      console.log(res.props);
       const VizalityGuildButton = React.createElement('div', {
         class: 'listItem-2P_4kh vizality-dashboard-guild-button',
         onClick: async () => vizality.api.router.navigate('/dashboard')

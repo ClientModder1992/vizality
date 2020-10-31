@@ -48,8 +48,7 @@ module.exports = {
           .map(plugin => ({
             command: plugin.entityID,
             description: plugin.manifest.description
-          }))
-          .slice(0, 10),
+          })),
       header: 'Vizality Plugin List'
     };
   }

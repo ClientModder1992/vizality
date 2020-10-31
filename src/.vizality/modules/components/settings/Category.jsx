@@ -10,10 +10,10 @@ let classes = {
   initialized: false,
   flexClassName: '',
   classMargins: {},
-  classTitle: '',
   classDivider: '',
   classDividerDef: '',
-  classDescription: ''
+  classDescription: '',
+  classesLabel: {}
 };
 
 module.exports = class Category extends React.PureComponent {
@@ -33,10 +33,10 @@ module.exports = class Category extends React.PureComponent {
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
       classMargins: getModule('marginTop20'),
-      classTitle: getModule('titleDefault').titleDefault,
       classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
       classDividerDef: getModule('dividerDefault').dividerDefault,
-      classDescription: getModule('formText', 'description').description
+      classDescription: getModule('formText', 'description').description,
+      classesLabel: getModule('labelRow')
     };
 
     this.setState({ classes });
@@ -52,8 +52,10 @@ module.exports = class Category extends React.PureComponent {
               d='M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z' />
           </svg>
           <div>
-            <div className={classes.classTitle}>
-              {this.props.name}
+            <div className={classes.classesLabel.labelRow}>
+              <label class={classes.classesLabel.title}>
+                {this.props.name}
+              </label>
             </div>
             <FormText className={classes.classDescription}>
               {this.props.description}

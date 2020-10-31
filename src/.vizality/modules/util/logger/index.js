@@ -24,15 +24,42 @@ const logger = module.exports = {
    */
   _log (module, submodule, submoduleLabelColor, message, type) {
     const badgeColors = {
-      api: { module: '#dc2167', submodule: '#242a85' },
-      core: { module: '#591870', submodule: '#ce03e5' },
-      http: { module: '#e63200', submodule: '#2e89c9' },
-      manager: { module: '#1e2963', submodule: '#782049' },
-      plugin: { module: '#057b81', submodule: '#5b3c89' },
-      theme: { module: '#e23773', submodule: '#568763' },
-      discord: { module: '#7289DA', submodule: '#d6409a' },
-      module: { module: '#ed7c6f', submodule: '#34426e' },
-      patch: { module: '#a70338', submodule: '#0195b5' }
+      api: {
+        module: '#dc2167',
+        submodule: '#242a85'
+      },
+      core: {
+        module: '#591870',
+        submodule: '#ce03e5'
+      },
+      http: {
+        module: '#e63200', 
+        submodule: '#2e89c9'
+      },
+      manager: {
+        module: '#1e2963', 
+        submodule: '#782049'
+      },
+      plugin: {
+        module: '#057b81', 
+        submodule: '#5b3c89'
+      },
+      theme: {
+        module: '#e23773', 
+        submodule: '#568763'
+      },
+      discord: {
+        module: '#7289DA',
+        submodule: '#18191c'
+      },
+      module: {
+        module: '#ed7c6f',
+        submodule: '#34426e'
+      },
+      patch: {
+        module: '#a70338',
+        submodule: '#0195b5'
+      }
     };
 
     type = logger._parseType(type);
@@ -45,9 +72,9 @@ const logger = module.exports = {
     const randomModuleColor = getRandomColor();
     const randomSubmoduleLabelColor = getRandomColor();
 
-    const baseBadgeStyles = `border-radius: 3px; text-align: center; display: inline-block; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase; font-size: 10px; font-weight: 600; line-height: 14px; margin-right: 3px; padding: 1px 4px;`;
+    const baseBadgeStyles = `border-radius: 2px; text-align: center; display: inline-block; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase; font-size: 10px; font-weight: 600; line-height: 14px; margin-right: 3px; padding: 1px 4px;`;
 
-    const badgeStyles = `background-image: url(https://i.imgur.com/t0eWy67.png); background-repeat: no-repeat; background-position: center; background-size: contain; padding: 2px 14px 5px 0; border-radius: 5px; text-align: center; margin: 0 4px 1px 0; display: inline-block;`;
+    const badgeStyles = `background-image: url(https://i.imgur.com/t0eWy67.png); background-repeat: no-repeat; background-position: center; background-size: contain; padding: 2px 14px 5px 0; border-radius: 3px; text-align: center; margin: 0 4px 1px 0; display: inline-block;`;
 
     const moduleStyles =
       `${baseBadgeStyles}

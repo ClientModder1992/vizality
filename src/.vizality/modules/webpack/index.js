@@ -135,10 +135,8 @@ const webpack = module.exports = {
       });
     }
 
-    const choiceWord = exact ? 'matching' : 'containing';
-
     if (!results || !Object.keys(results).length) {
-      return warn(_module, _submodule, null, `No results found for components ${choiceWord} '${keyword}'`);
+      return warn(_module, _submodule, null, `No results found for components ${exact ? 'matching' : 'containing'} '${keyword}'`);
     }
 
     let count = 0;
@@ -146,7 +144,7 @@ const webpack = module.exports = {
 
     Object.keys(results).forEach(key => count += results[key].matches.length);
 
-    log(_module, _submodule, null, `${count} ${resultsText} found for components ${choiceWord} '${keyword}':\n`);
+    log(_module, _submodule, null, `${count} ${resultsText} found for components ${exact ? 'matching' : 'containing'} '${keyword}':\n`);
 
     return results;
   },

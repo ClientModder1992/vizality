@@ -14,7 +14,8 @@ module.exports = class Commands extends Plugin {
 
   onStop () {
     Object.values(commands).forEach(command => vizality.api.commands.unregisterCommand(command.command));
-    unpatch('vz-commands-autocomplete-prefix');
-    unpatch('vz-commands-autocomplete');
+    unpatch('vz-commands-textArea');
+    unpatch('vz-commands-plainAutocomplete');
+    unpatch('vz-commands-slateAutocomplete');
   }
 };

@@ -6,9 +6,9 @@ const { React } = require('@react');
 const actions = require('./settingsStore/actions');
 const store = require('./settingsStore/store');
 
-const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
-const Content = require('@root/addons/plugins/vz-dashboard/components/parts/Content');
-const Layout = require('@root/addons/plugins/vz-dashboard/components/parts/Layout');
+const Sidebar = require('@builtins/dashboard/components/parts/sidebar/Sidebar');
+const Content = require('@builtins/dashboard/components/parts/Content');
+const Layout = require('@builtins/dashboard/components/parts/Layout');
 
 const _module = 'API';
 const _submodule = 'Settings';

@@ -14,6 +14,7 @@
       "@entities": [ "./.vizality/modules/entities" ],
       "@http": [ "./.vizality/modules/http" ],
       "@i18n": [ "./.vizality/modules/i18n" ],
+      "@builtins": [ "./.vizality/builtins"],
       "@modules": [ "./.vizality/modules"],
       "@patcher": [ "./.vizality/modules/patcher" ],
       "@react": [ "./.vizality/modules/react" ],

@@ -1,3 +1,4 @@
+const { getModule, getModuleByDisplayName } = require('@webpack');
 const { React } = require('@react');
 
 module.exports = class AsyncComponent extends React.PureComponent {
@@ -27,12 +28,24 @@ module.exports = class AsyncComponent extends React.PureComponent {
    * @param {Promise} promise Promise of a React component
    */
   static from (promise, fallback) {
-    return React.memo(
-      (props) => React.createElement(AsyncComponent, {
+    return React.memo(props =>
+      React.createElement(AsyncComponent, {
         _provider: () => promise,
         _fallback: fallback,
         ...props
       })
     );
+  }
+
+  static fromDisplayName (displayName, fallback) {
+    return AsyncComponent.from(getModuleByDisplayName(displayName), fallback);
+  }
+
+  static fromModule (filter, fallback) {
+    return AsyncComponent.from(getModule(filter), fallback);
+  }
+
+  static fromModuleProp (filter, prop, fallback) {
+    return AsyncComponent.from((async () => (await getModule(filter))[prop])(), fallback);
   }
 };

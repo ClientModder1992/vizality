@@ -5,8 +5,8 @@ const { API } = require('@entities');
 const _module = 'API';
 const _submodule = 'Router';
 
-const Sidebar = require('@root/addons/plugins/vz-dashboard/components/parts/sidebar/Sidebar');
-const Routes = require('@root/addons/plugins/vz-dashboard/routes/Routes');
+const Sidebar = require('@builtins/dashboard/components/parts/sidebar/Sidebar');
+const Routes = require('@builtins/dashboard/routes/Routes');
 
 /**
  * @typedef VizalityRoute
@@ -70,7 +70,6 @@ module.exports = class RouterAPI extends API {
       }
       this.routes.push(route);
       if (this.routes[this.routes.length - 1].path !== '/dashboard') {
-        console.log('test');
         this._reregisterDashboard();
       }
       this.emit('routeAdded', route);

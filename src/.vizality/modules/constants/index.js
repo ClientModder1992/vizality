@@ -32,6 +32,7 @@ const constants = module.exports = Object.freeze({
     // ---
     get ADDONS () { return join(constants.Directories.ROOT, 'addons'); },
     get PLUGINS () { return join(constants.Directories.ADDONS, 'plugins'); },
+    get BUILTINS () { return join(constants.Directories.VIZALITY, 'builtins'); },
     get BUNDLED () { return join(constants.Directories.PLUGINS, '.bundled'); },
     get CORE () { return join(constants.Directories.PLUGINS, '.core'); },
     get THEMES () { return join(constants.Directories.ADDONS, 'themes'); },
@@ -41,9 +42,7 @@ const constants = module.exports = Object.freeze({
     get LIBRARIES () { return join(constants.Directories.VIZALITY, 'libraries'); },
     get MANAGERS () { return join(constants.Directories.VIZALITY, 'managers'); },
     get STYLES () { return join(constants.Directories.VIZALITY, 'styles'); },
-    get MODULES () { return join(__dirname, '..'); },
-    // ---
-    get DASHBOARD () { return join(constants.Directories.PLUGINS, 'vz-dashboard'); }
+    get MODULES () { return join(__dirname, '..'); }
   }),
 
   // Guild

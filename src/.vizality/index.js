@@ -4,6 +4,7 @@ const { HTTP, Directories } = require('@constants');
 const { jsx: JsxCompiler } = require('@compilers');
 const { Updatable } = require('@entities');
 
+const { join } = require('path');
 const { promisify } = require('util');
 const cp = require('child_process');
 const exec = promisify(cp.exec);
@@ -78,9 +79,11 @@ module.exports = class Vizality extends Updatable {
     this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
     this.manager.themes = new AddonManager('themes', Directories.THEMES);
+    this.manager.builtins = new AddonManager('builtins', join(__dirname, 'builtins'));
     this.manager.plugins = new AddonManager('plugins', Directories.PLUGINS);
 
     this._initialized = false;
+    this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
 
@@ -153,6 +156,9 @@ module.exports = class Vizality extends Updatable {
      *     }
      *   });
      */
+
+     // Builtins
+    await this.manager.builtins.load();
 
     // Themes
     this.manager.themes.load();
@@ -227,36 +233,8 @@ module.exports = class Vizality extends Updatable {
   }
 
   // Patch Discord's logs to follow Vizality's log style
-  // patchDiscordLogs () {
-  //   const Log = getModuleByPrototypes([ 'log' ]);
-
-  //   this._originalLogFunc.log = this._originalLogFunc.log || Log.prototype.log;
-  //   Log.prototype.log = function (firstArg, ...originalArgs) {
-  //     const module = 'Discord';
-  //     const submodule = this.name;
-
-  //     if (firstArg === 'info' || firstArg === 'log') {
-  //       log(module, submodule, null, ...originalArgs);
-  //     }
-
-  //     if (firstArg === 'error' || firstArg === 'trace') {
-  //       error(module, submodule, null, ...originalArgs);
-  //     }
-
-  //     if (firstArg === 'warn') {
-  //       warn(module, submodule, null, ...originalArgs);
-  //     }
-  //   };
-  // }
-
-  // Remove Discord's logs entirely
-  // removeDiscordLogs () {
-  //   const Log = getModuleByPrototypes([ 'log' ]);
-
-  //   this._originalLogFunc.log = this._originalLogFunc.log || Log.prototype.log;
-  //   // eslint-disable-next-line no-empty-function
-  //   Log.prototype.log = function () { };
-  // }
+  patchDiscordLogs () {
+  }
 
   // Remove Discord's logs entirely
   removeDiscordLogs () {
@@ -265,9 +243,8 @@ module.exports = class Vizality extends Updatable {
   }
 
   // Unpatch Discord's logs back to the default style
-  // unpatchDiscordLogs () {
-  //   const { setLogFn } = getModule('setLogFn');
-  // }
+  unpatchDiscordLogs () {
+  }
 
   _patchWebSocket () {
     const _this = this;

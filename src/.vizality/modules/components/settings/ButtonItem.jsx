@@ -11,10 +11,9 @@ let classes = {
   initialized: false,
   flexClassName: '',
   classMargins: {},
-  classTitle: '',
   classDivider: '',
   classDividerDef: '',
-  classDescription: ''
+  classesLabel: {}
 };
 
 module.exports = class ButtonItem extends React.PureComponent {
@@ -32,10 +31,10 @@ module.exports = class ButtonItem extends React.PureComponent {
 
       flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
       classMargins: getModule('marginTop20'),
-      classTitle: getModule('titleDefault').titleDefault,
       classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
       classDividerDef: getModule('dividerDefault').dividerDefault,
-      classDescription: getModule('formText', 'description').description
+      classDescription: getModule('formText', 'description').description,
+      classesLabel: getModule('labelRow')
     };
 
     this.setState({ classes });
@@ -47,8 +46,10 @@ module.exports = class ButtonItem extends React.PureComponent {
       className={`vizality-settings-item vizality-button-item ${this.state.classes.flexClassName} ${this.state.classes.classMargins.marginBottom20}`}>
       <div className='vizality-settings-item-title'>
         <div>
-          <div className={this.state.classes.classTitle}>
-            {this.props.children}
+          <div className={this.state.classes.classesLabel.labelRow}>
+            <label class={this.state.classes.classesLabel.title}>
+              {this.props.children}
+            </label>
           </div>
           <FormText className={this.state.classes.classDescription}>
             {this.props.note}

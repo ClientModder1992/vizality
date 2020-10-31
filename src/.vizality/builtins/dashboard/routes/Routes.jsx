@@ -5,13 +5,13 @@ const Icons = require('../components/pages/documentation/components/Icons');
 const Experiments = require('../components/pages/experiments/Experiments');
 const Screenshots = require('../components/pages/screenshots/Screenshots');
 const Changelog = require('../components/pages/changelog/Changelog');
-const Updates = require('../../vz-updater/components/Settings');
 const ErrorTest = require('../components/pages/ErrorTest');
 const Content = require('../components/parts/Content');
 const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
+const Updates = require('@root/addons/plugins/vz-updater/components/Settings');
 const Plugins = require('@root/addons/plugins/vz-addon-manager/components/manage/Plugins');
 const Themes = require('@root/addons/plugins/vz-addon-manager/components/manage/Themes');
 // const Settings = vizality.api.settings.tabs['vz-settings'].render;

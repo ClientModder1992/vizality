@@ -28,7 +28,6 @@ Object.assign(exports, {
   FormNotice: AsyncComponent.from(getModuleByDisplayName('FormNotice', true)),
   Card: AsyncComponent.from(getModuleByDisplayName('Card', true)),
   Clickable: AsyncComponent.from(getModuleByDisplayName('Clickable', true)),
-  Switch: AsyncComponent.from(getModuleByDisplayName('Switch', true)),
   Spinner: AsyncComponent.from(getModuleByDisplayName('Spinner', true)),
   FormTitle: AsyncComponent.from(getModuleByDisplayName('FormTitle', true)),
   HeaderBar: AsyncComponent.from(getModuleByDisplayName('HeaderBar', true)),

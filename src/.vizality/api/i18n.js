@@ -33,8 +33,9 @@ module.exports = class I18nAPI extends API {
      * mention everyone popout... Look for a fix, possibly patching into a
      * function call by DiscordNative that is fired when dev tools are opened.
      */
-    delete i18n._proxyContext.messages.SELF_XSS_HEADER;
-    delete i18n._proxyContext.defaultMessages.SELF_XSS_HEADER;
+    [ 'messages', 'defaultMessages' ].forEach(obj => {
+      Object.keys(i18n._proxyContext[obj]).filter(key => key.startsWith('SELF_XSS')).forEach(key => delete i18n._proxyContext[obj][key]);
+    });
   }
 
   loadAllStrings (strings) {

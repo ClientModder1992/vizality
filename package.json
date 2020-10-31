@@ -28,6 +28,7 @@
     "@entities": "src/.vizality/modules/entities",
     "@http": "src/.vizality/modules/http",
     "@i18n": "src/.vizality/modules/i18n",
+    "@builtins": "src/.vizality/builtins",
     "@modules": "src/.vizality/modules",
     "@patcher": "src/.vizality/modules/patcher",
     "@react": "src/.vizality/modules/react",

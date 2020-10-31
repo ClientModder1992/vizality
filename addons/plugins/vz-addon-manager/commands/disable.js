@@ -45,7 +45,9 @@ module.exports = {
         .sort((a, b) => a - b)
         .map(plugin => vizality.manager.plugins.get(plugin));
 
-    if (!args[0] || args.length > 1) return false;
+    if (args.length > 1) {
+      return false;
+    }
 
     return {
       commands:
@@ -55,8 +57,7 @@ module.exports = {
           .map(plugin => ({
             command: plugin.entityID,
             description: plugin.manifest.description
-          }))
-          .slice(0, 10),
+          })),
       header: 'Vizality Plugin List'
     };
   }

@@ -1,9 +1,9 @@
-const { getModule, messages, channels: { getChannelId } } = require('@webpack');
+const { getModule, channels: { getChannelId } } = require('@webpack');
 const { HTTP } = require('@constants');
 
-const { receiveMessage } = messages;
+module.exports = async function monkeypatchMessages () {
+  const messages = await getModule('sendMessage', 'editMessage');
 
-async function monkeypatchMessages () {
   const { BOT_AVATARS } = getModule('BOT_AVATARS');
   const { createBotMessage } = getModule('createBotMessage');
 
@@ -47,11 +47,9 @@ async function monkeypatchMessages () {
         receivedMessage.embeds.push(result.result);
       }
 
-      return (receiveMessage(receivedMessage.channel_id, receivedMessage), delete BOT_AVATARS[result.avatar_url]);
+      return (messages.receiveMessage(receivedMessage.channel_id, receivedMessage), delete BOT_AVATARS[result.avatar_url]);
     }
 
     return sendMessage(id, message, ...params);
   })(this.oldSendMessage = messages.sendMessage);
-}
-
-module.exports = monkeypatchMessages;
+};
