@@ -2,6 +2,5 @@
   "name": "Notices",
   "version": "1.0.0",
   "description": "Vizality's notice renderer.",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "author": "Vizality"
 }

@@ -13,7 +13,7 @@ module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSe
         <h4>{product.name}</h4>
         <Tooltip text={isEnabled ? Messages.DISABLE : Messages.ENABLE} position='top'>
           <div>
-            <Switch value={isEnabled} onChange={v => onToggle(v.target.checked)}/>
+            <Switch value={isEnabled} onChange={v => onToggle(v.target.checked)} />
           </div>
         </Tooltip>
       </div>
@@ -23,7 +23,7 @@ module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSe
   const renderDetails = () => {
     return (
       <>
-        <Divider/>
+        <Divider />
         <Details
           svgSize={24}
           author={product.author}
@@ -42,8 +42,8 @@ module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSe
 
     return (
       <>
-        <Divider/>
-        <Permissions svgSize={22} permissions={product.permissions}/>
+        <Divider />
+        <Permissions svgSize={22} permissions={product.permissions} />
       </>
     );
   };

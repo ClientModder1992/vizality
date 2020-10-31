@@ -3,6 +3,7 @@
   "author": "vizality",
   "version": "0.0.1",
   "description": "A robust @discord client mod focused on design and user customizability",
+  "license": "GPL-3.0",
   "homepage": "https://vizality.com",
   "main": "index.js",
   "scripts": {
@@ -12,7 +13,6 @@
     "uninject": "node src/inject uninject"
   },
   "repository": "https://github.com/vizality/vizality.git",
-  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/vizality/vizality/issues"
   },
@@ -39,7 +39,6 @@
   "dependencies": {
     "base64-img": "^1.0.4",
     "codemirror": "^5.57.0",
-    "image-to-base64": "^2.1.1",
     "long": "^4.0.0",
     "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",

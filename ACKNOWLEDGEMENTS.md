@@ -2,7 +2,7 @@
 
 This project is not the work of a single person. It contains Node packages and code from many members of the Discord modding community and even Javascript community in general. I try to make citations in the code to give credit where credit is due as much as possible---indicating the author, license type, and usually a link to the original source---but I am sure I've missed some people as well. Still, this is a thank to all of those people whose code and ideas have contributed to the creation of Vizality and making Discord a better place.
 
-# Notable Mentions
+## Notable Mentions
 
 **[Zack Rauenzi](https://github.com/rauenzi)**<br>
 _Developer of [BandagedBetterDiscord](https://github.com/rauenzi/BetterDiscordApp)_
@@ -19,7 +19,7 @@ _Developers of [Powercord](https://powercord.dev/)_
 
 It's no secret that there is plenty of bad blood between me and the Powercord community--- Bowser and Aetheryx in particular. I don't always agree with their personalities or choices in the modding department, but they are skilled developers and much of Vizality's base code is attributed to them. Regardless, without their work on Powercord, Vizality would not be around today, and I thank them for their work and dedication to the community.
 
-# Other Mentions
+## Other Mentions
 
 - Special thanks to anyone that has donated anything, pledged on Patreon, and everyone that has joined our [Discord server](https://discord.gg/42B8AC9) and been very supportive along the way towards creating a better Discord experience for everyone.
 
@@ -29,7 +29,7 @@ It's no secret that there is plenty of bad blood between me and the Powercord co
 
 - Discord, because without you none of this would be possible. But really, trying to build and keep up with your updates has certainly been a ride.
 
-# Copyright Addendum
+## Copyright Addendum
 
 Here are the copyright notices of code used throughout Vizality:
 

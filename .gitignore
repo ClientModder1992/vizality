@@ -3,14 +3,13 @@
 node_modules
 package-lock.json
 
-# addons/plugins/*
+addons/plugins/*
+!addons/plugins/.exists
 !addons/plugins/vz-*
-addons/plugins/text-react/
 addons/plugins/vz-react-dev-tools/rdt.crx
 addons/plugins/vz-react-dev-tools/react-dev-tools/*
 
 addons/themes/*
-# !addons/themes/twitchcord
 !addons/themes/.exists
 
 settings/*.json

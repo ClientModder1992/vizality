@@ -2,6 +2,5 @@
   "name": "Updater",
   "version": "2.0.0",
   "description": "Ensure Vizality, plugins, and themes are always up to date.",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "author": "Vizality"
 }

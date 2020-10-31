@@ -2,6 +2,5 @@
   "name": "Router",
   "version": "0.0.1",
   "description": "Vizality's internal custom router.",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "author": "Vizality"
 }

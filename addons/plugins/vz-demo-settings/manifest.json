@@ -2,6 +2,5 @@
   "name": "Demo Settings",
   "version": "0.0.1",
   "description": "A quick example of how to use various implemented settings options in your plugins.",
-  "author": "dperolio",
-  "license": "GPL-3.0"
+  "author": "dperolio"
 }

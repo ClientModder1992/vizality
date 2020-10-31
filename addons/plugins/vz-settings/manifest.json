@@ -2,6 +2,5 @@
   "name": "Settings",
   "version": "1.0.0",
   "description": "Vizality's Settings UI.",
-  "author": "Vizality",
-  "license": "GPL-3.0"
+  "author": "Vizality"
 }
