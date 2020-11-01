@@ -11,22 +11,22 @@
   @return $map;
 }
 
-/* Example
-********************
+// Example
+// ********************
 
-$grid-configuration: (
-  'columns': 12,
-  'layouts': (
-    'small': 800px,
-    'medium': 1000px,
-    'large': 1200px,
-  ),
-);
+// $grid-configuration: (
+//   'columns': 12,
+//   'layouts': (
+//     'small': 800px,
+//     'medium': 1000px,
+//     'large': 1200px,
+//   ),
+// );
 
-// Without `map-deep-get`
-$medium: map-get(map-get($grid-configuration, 'layouts'), 'medium');
+// // Without `map-deep-get`
+// $medium: map-get(map-get($grid-configuration, 'layouts'), 'medium');
 
-// With `map-deep-get`
-$medium: map-deep-get($grid-configuration, 'layouts', 'medium');
+// // With `map-deep-get`
+// $medium: map-deep-get($grid-configuration, 'layouts', 'medium');
 
-*********************/
+// *********************

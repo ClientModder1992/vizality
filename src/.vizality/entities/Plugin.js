@@ -4,7 +4,7 @@ const { Directories } = require('@constants');
 const watch = require('node-watch');
 
 const { existsSync, readdirSync } = require('fs');
-const { join, win32, extname } = require('path');
+const { join, win32, extname, dirname } = require('path');
 
 const Updatable = require('./Updatable');
 
@@ -126,7 +126,13 @@ module.exports = class Plugin extends Updatable {
 
   /** @private */
   async _watchFiles () {
-    this._watchers = watch(this.entityPath, { recursive: true }, (evt, file) => {
+    this._watchers = watch(this.entityPath, {
+      recursive: true,
+      filter (f, skip) {
+        // skip .git file updates
+        if ((/\/.git/).test(f)) return skip;
+      }
+    }, (evt, file) => {
       // Don't do anything if it's a Sass/CSS file or the manifest file
       if (win32.basename(file) === 'manifest.json' || extname(file) === '.scss' || extname(file) === '.css') return;
       vizality.manager.plugins.remount(this.entityID);

@@ -84,12 +84,19 @@ module.exports = React.memo(function VizalityCodeBlock ({
    */
   /** @private **/
   function renderCode (language, content) {
-    return React.createElement('div', {
-      className: 'vz-code-block-inner',
-      dangerouslySetInnerHTML: {
-        __html: (language && !contentIsRaw) ? highlight(language, content, true).value : content
-      }
-    });
+    console.log(content);
+    return (
+      <>
+        {language && !contentIsRaw
+          ? React.createElement('div', {
+            className: 'vz-code-block-inner',
+            dangerouslySetInnerHTML: {
+              __html: highlight(language, content, true).value
+            }
+          })
+          : <div className='vz-code-block-inner'>{content}</div>}
+      </>
+    );
   }
 
   const renderCodeBlock = () => {
