@@ -43,7 +43,6 @@ module.exports = React.memo(() =>
       <SubItem label='Error Test' path='/documentation/components/error-test' />
       <SubItem label='Test' path='/documentation/components/test' />
     </Item>
-    <Item icon='Experiment' label='Experiments' path='/experiments' />
     <Separator />
     <Item icon='CloudDownload' label='Updates' path='/updates' />
     <Item icon='ClockReverse' label='Changelog' path='/changelog'

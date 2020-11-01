@@ -1,24 +1,45 @@
+const { clipboard } = require('electron');
+
+const { React, React: { useState } } = require('@react');
 const { getModuleByDisplayName } = require('@webpack');
-const { React } = require('@react');
+const { Messages } = require('@i18n');
+const { sleep } = require('@util');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');
 
 const Copy = AsyncComponent.from(getModuleByDisplayName('CopyInput', true));
 
-module.exports = class CopyInput extends React.PureComponent {
-  render () {
-    const { children: title, note, required } = this.props;
-    delete this.props.children;
+module.exports = React.memo(props => {
+  const copyInput = getModuleByDisplayName('CopyInput');
 
-    return (
-      <FormItem title={title} note={note} required={required}>
-        <Copy {...this.props}
-        />
-      </FormItem>
-    );
-  }
-};
+  const [ copyText, setCopyText ] = useState(Messages.COPY);
+  const [ mode, setMode ] = useState(copyInput.Modes.DEFAULT);
+
+  const { children: title, note, required } = props;
+
+  return (
+    <FormItem title={title} note={note} required={required}>
+      <Copy
+        text={copyText}
+        mode={mode}
+        onCopy={async val => {
+          // For some reason, this selects the text in the input so let's clear the selection
+          window.getSelection().removeAllRanges();
+          clipboard.writeText(val);
+          window.getSelection().removeAllRanges();
+
+          setMode(copyInput.Modes.SUCCESS);
+          setCopyText(Messages.COPIED);
+          await sleep(500);
+          setMode(copyInput.Modes.DEFAULT);
+          setCopyText(Messages.COPY);
+        }}
+        value={props.value}
+      />
+    </FormItem>
+  );
+});
 
 /**
  * AVAILABLE PROPS

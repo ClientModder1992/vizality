@@ -2,7 +2,6 @@ const { React, Router: { Route, Switch, Redirect } } = require('@react');
 
 const Markdown = require('../components/pages/documentation/components/Markdown');
 const Icons = require('../components/pages/documentation/components/Icons');
-const Experiments = require('../components/pages/experiments/Experiments');
 const Screenshots = require('../components/pages/screenshots/Screenshots');
 const Changelog = require('../components/pages/changelog/Changelog');
 const ErrorTest = require('../components/pages/ErrorTest');
@@ -119,17 +118,6 @@ module.exports = () => {
       </Route>
       <Route path='/vizality/dashboard/documentation/components/test' exact>
         <Test />
-      </Route>
-      <Route path='/vizality/dashboard/experiments' exact>
-        <Layout>
-          <Content
-            heading='Experiments'
-            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
-            icon='Experiment'
-          >
-            <Experiments />
-          </Content>
-        </Layout>
       </Route>
       <Route path='/vizality/dashboard/updates' exact>
         <Layout>

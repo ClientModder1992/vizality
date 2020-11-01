@@ -97,12 +97,6 @@ module.exports = class ContextMenu extends React.PureComponent {
               action={() => vizality.api.router.navigate('/dashboard/documentation/test')}
             />
           </Menu.MenuItem>
-          <Menu.MenuItem
-            id={'experiments'}
-            label={'Experiments'}
-            icon={() => <Icon name='Experiment' width='100%' height='100%' />}
-            action={() => vizality.api.router.navigate('/dashboard/experiments')}
-          />
           <Menu.MenuSeparator/>
           <Menu.MenuItem
             id={'updates'}
