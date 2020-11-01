@@ -6,7 +6,7 @@ let transparency = false;
 let settings = {};
 
 try {
-  settings = require(join(__dirname, '..', '..', 'settings', 'vz-settings.json'));
+  settings = require(join(__dirname, '..', '..', 'settings', 'settings.json'));
 
   transparency = settings.transparentWindow;
   ({ experimentalWebPlatform } = settings);

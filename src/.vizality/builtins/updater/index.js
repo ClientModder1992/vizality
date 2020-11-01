@@ -9,13 +9,13 @@ const { getModule, getModuleByDisplayName } = require('@webpack');
 const { joinClassNames } = require('@util');
 const { Directories } = require('@constants');
 const { Confirm } = require('@components');
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 
-module.exports = class Updater extends Plugin {
+module.exports = class Updater extends Builtin {
   constructor () {
     super();
     this.changelog = {
@@ -180,7 +180,7 @@ module.exports = class Updater extends Plugin {
             look: 'ghost',
             onClick: () => {
               const settingsModule = getModule('open', 'saveAccountChanges');
-              settingsModule.open('vz-updater');
+              settingsModule.open('updater');
             }
           } ]
         });

@@ -6,12 +6,7 @@ module.exports = {
     let result = {};
 
     if (vizality.manager.plugins.has(args[0])) {
-      if (args[0] === 'vz-commands') {
-        result = {
-          title: 'Error',
-          description: `Plugin "${args[0]}" is already disabled.`
-        };
-      } else if (!vizality.manager.plugins.isEnabled(args[0])) {
+      if (!vizality.manager.plugins.isEnabled(args[0])) {
         result = {
           title: 'Error',
           description: `Plugin "${args[0]}" is already disabled.`

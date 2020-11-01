@@ -4,14 +4,14 @@ const { open: openModal } = require('vizality/modal');
 const { Clickable, Tooltip } = require('@components');
 const { HTTP } = require('@constants');
 const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 const { React } = require('@react');
 const { get } = require('@http');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');
 
-module.exports = class Badges extends Plugin {
+module.exports = class Badges extends Builtin {
   constructor () {
     super();
     this.guildBadges = {};

@@ -2,12 +2,12 @@ const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } =
 const { getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
 const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@components');
 const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 const { React } = require('@react');
 
 const SdkWindow = require('./components/SdkWindow');
 
-module.exports = class SDK extends Plugin {
+module.exports = class SDK extends Builtin {
   constructor () {
     super();
     // @todo: Figure out how to use this for plugins like Titlebar and Main Navigation.
@@ -80,7 +80,6 @@ module.exports = class SDK extends Plugin {
   }
 
   async _openSdk () {
-    console.log('???')
     const popoutModule = getModule('setAlwaysOnTop', 'open');
     popoutModule.open('DISCORD_VIZALITY_SANDBOX', (key) =>
       React.createElement(PopoutWindow, {

@@ -10,7 +10,7 @@ const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
-const Updates = require('@root/addons/plugins/vz-updater/components/Settings');
+const Updates = require('@builtins/updater/components/Settings');
 const Plugins = require('@builtins/addon-manager/components/manage/Plugins');
 const Themes = require('@builtins/addon-manager/components/manage/Themes');
 // const Settings = vizality.api.settings.tabs['vz-settings'].render;

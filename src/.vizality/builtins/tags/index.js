@@ -1,10 +1,10 @@
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 
 const commands = require('./commands');
 
 const TAG_ARGUMENT_REGEX = /\$\$(@|\d+)/g;
 
-module.exports = class Tags extends Plugin {
+module.exports = class Tags extends Builtin {
   onStart () {
     this.registerMain();
     this.registerTags();

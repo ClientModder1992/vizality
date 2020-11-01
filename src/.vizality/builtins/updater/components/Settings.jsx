@@ -20,7 +20,7 @@ module.exports = React.memo(() => {
   const [ pluginsRevealed, setPluginsRevealed ] = useState();
 
   // eslint-disable-next-line consistent-this
-  const _this = vizality.manager.plugins.get('vz-updater');
+  const _this = vizality.manager.builtins.get('updater');
 
   const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable';
   const time = getModule('momentProperties');

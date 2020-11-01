@@ -35,7 +35,7 @@ if (preload) {
 // Debug logging
 let debugLogs;
 try {
-  const settings = require(join(Directories.SETTINGS, 'vz-settings.json'));
+  const settings = require(join(Directories.SETTINGS, 'settings.json'));
   // eslint-disable-next-line prefer-destructuring
   debugLogs = settings.debugLogs;
 } finally {
@@ -89,7 +89,7 @@ try {
 
 // Overlay devtools
 vizality.once('initialized', () => {
-  if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('vz-settings', 'openOverlayDevTools', false)) {
+  if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('settings', 'openOverlayDevTools', false)) {
     VizalityNative.openDevTools({}, true);
   }
 });

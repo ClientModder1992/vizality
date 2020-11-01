@@ -108,7 +108,7 @@ module.exports = class Vizality extends Updatable {
 
     // Start
     await this.start();
-    this.git = await this.manager.plugins.get('vz-updater').getGitInfo();
+    this.git = await this.manager.builtins.get('updater').getGitInfo();
 
     // Used in src/preload/main
     this.emit('initialized');
@@ -126,7 +126,7 @@ module.exports = class Vizality extends Updatable {
 
     // APIs
     await this.manager.apis.initialize();
-    this.settings = vizality.api.settings.buildCategoryObject('vz-settings');
+    this.settings = vizality.api.settings.buildCategoryObject('settings');
     this.emit('settingsReady');
 
     // @todo: Make this and removeDiscordLogs settings options
@@ -264,7 +264,7 @@ module.exports = class Vizality extends Updatable {
     const success = await super._update(force);
     if (success) {
       await exec('npm install --only=prod', { cwd: this.entityPath });
-      const updater = this.manager.plugins.get('vz-updater');
+      const updater = this.manager.builtins.get('updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
         vizality.api.notices.sendToast('vizality-updater', {

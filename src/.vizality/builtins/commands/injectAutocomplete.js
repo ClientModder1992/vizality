@@ -10,7 +10,7 @@ const Title = require('./components/Title');
 
 module.exports = async function injectAutocomplete () {
   this.classes = {
-    ...await getModule([ 'channelTextArea', 'inner' ])
+    ...await getModule('channelTextArea', 'inner')
   };
 
   function renderHeader (value, formatHeader, customHeader) {
@@ -39,7 +39,7 @@ module.exports = async function injectAutocomplete () {
     );
   }
 
-  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = await getModule([ 'AUTOCOMPLETE_OPTIONS' ]);
+  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = await getModule('AUTOCOMPLETE_OPTIONS');
 
   AutocompleteTypes.VIZALITY_AUTOCOMPLETE = {
     autoSelect: true,

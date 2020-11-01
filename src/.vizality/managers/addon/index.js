@@ -185,7 +185,7 @@ module.exports = class AddonManager {
     missing[this._type] = [];
 
     const isOverlay = (/overlay/).test(location.pathname);
-    readdirSync(this._dir).sort(this._sortPlugins).forEach(filename =>/*!this.isInstalled(filename) &&*/ this.mount(filename));
+    readdirSync(this._dir).forEach(filename =>/*!this.isInstalled(filename) &&*/ this.mount(filename));
     for (const plugin of [ ...this[this._type].values() ]) {
       if (vizality.settings.get('disabledPlugins', []).includes(plugin.entityID)) {
         continue;
@@ -213,13 +213,6 @@ module.exports = class AddonManager {
 
   terminate () {
     return this._bulkUnload([ ...vizality.manager.plugins.keys ]);
-  }
-
-  _sortPlugins (pluginA, pluginB) {
-    const priority = [ 'vz-updater', 'vz-settings', 'vz-commands', 'vz-dnt' ];
-    const priorityA = priority.indexOf(pluginA);
-    const priorityB = priority.indexOf(pluginB);
-    return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));
   }
 
   async _bulkUnload (plugins) {

@@ -7,7 +7,7 @@ const Icons = require('./Icons');
 module.exports = class Update extends React.PureComponent {
   constructor () {
     super();
-    this.plugin = vizality.manager.plugins.get('vz-updater');
+    this.plugin = vizality.manager.builtins.get('updater');
   }
 
   render () {

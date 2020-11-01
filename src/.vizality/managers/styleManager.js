@@ -86,7 +86,7 @@ class StyleManager {
       if (!this.__settings) {
         this.__settings = {};
         try {
-          this.__settings = require(join(Directories.SETTINGS, 'vz-settings.json'));
+          this.__settings = require(join(Directories.SETTINGS, 'settings.json'));
         } catch (err) {
           // @todo: Handled this.
         }

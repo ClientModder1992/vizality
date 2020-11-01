@@ -5,13 +5,13 @@ const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement }
 const { getModule, getModuleByDisplayName } = require('@webpack');
 const { Guild, Directories } = require('@constants');
 const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { Builtin } = require('@entities');
 const { React } = require('@react');
 
 const AnnouncementContainer = require('./components/AnnouncementContainer');
 const ToastContainer = require('./components/ToastContainer');
 
-module.exports = class Notices extends Plugin {
+module.exports = class Notices extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this._patchAnnouncements();

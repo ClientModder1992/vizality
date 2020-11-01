@@ -1,9 +1,6 @@
-/// Sets the `width` and `height` of the element in one statement.
-///
+/// Sets the "width" and/or "height" properties of the element in one statement.
 /// @argument {number (with unit) | string} $width
-///
 /// @argument {number (with unit) | string} $height [$width]
-///
 /// @example scss
 ///   .first-element {
 ///     @include size(2em);
@@ -25,8 +22,6 @@
 ///     width: auto;
 ///     height: 10em;
 ///   }
-///
-/// @require {function} _is-size
 @mixin size(
   $width,
   $height: $width

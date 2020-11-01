@@ -20,7 +20,8 @@ module.exports = () => {
       const userId = res.props.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i, '');
       res.props.onClick = (e) => {
         e.preventDefault();
-        getModule('open', 'fetchProfile').open(userId).catch(err => err.body.message);
+        // @todo: Maybe have the catch return an error modal or something instead.
+        getModule('open', 'fetchProfile').open(userId).catch(() => null);
       };
     }
 

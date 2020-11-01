@@ -6,8 +6,6 @@ package-lock.json
 addons/plugins/*
 !addons/plugins/.exists
 !addons/plugins/vz-*
-addons/plugins/vz-react-dev-tools/rdt.crx
-addons/plugins/vz-react-dev-tools/react-dev-tools/*
 
 addons/themes/*
 !addons/themes/.exists
