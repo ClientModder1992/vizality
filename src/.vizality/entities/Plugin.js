@@ -126,16 +126,18 @@ module.exports = class Plugin extends Updatable {
 
   /** @private */
   async _watchFiles () {
+    const _this = this;
     this._watchers = watch(this.entityPath, {
       recursive: true,
       filter (f, skip) {
-        // skip .git file updates
-        if ((/\/.git/).test(f)) return skip;
+        // skip node_modules
+        if ((/\/node_modules/).test(f)) return skip;
+        // skip .git folder
+        if ((/\.git/).test(f)) return skip;
+        // Don't do anything if it's a Sass/CSS file or the manifest file
+        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return;
+        vizality.manager.plugins.remount(_this.entityID);
       }
-    }, (evt, file) => {
-      // Don't do anything if it's a Sass/CSS file or the manifest file
-      if (win32.basename(file) === 'manifest.json' || extname(file) === '.scss' || extname(file) === '.css') return;
-      vizality.manager.plugins.remount(this.entityID);
     });
   }
 
