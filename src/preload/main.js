@@ -9,7 +9,7 @@ const { join } = require('path');
 require('../ipc/renderer');
 
 // Initialize Vizality
-const Vizality = require('../.vizality');
+const Vizality = require('../core');
 global.vizality = new Vizality();
 
 // https://github.com/electron/electron/issues/9047

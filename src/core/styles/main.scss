@@ -33,6 +33,7 @@
 /*
  * This is needed to hide initial toasts from view until the
  * the styles can be loaded from the 'notices' builtin plugin.
+ * @todo: Compile toast SCSS to CSS and remove this.
  */
 .vizality-toast {
   display: none;

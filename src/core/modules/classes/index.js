@@ -41,5 +41,5 @@ const SassClassFolder = join(Directories.LIB, 'sass', 'classes');
 if (!existsSync(SassClassFolder)) {
   _generateSassClasses();
 } else {
-  log(_module, _submodule, null, `Directory 'src\\.vizality\\libraries\\sass\\classes' already exists. Skipping file generation...`);
+  log(_module, _submodule, null, `Directory 'src\\core\\libraries\\sass\\classes' already exists. Skipping file generation...`);
 }

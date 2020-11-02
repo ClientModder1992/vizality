@@ -5,22 +5,22 @@
     "paths": {
       "@root/*": [ "./../*" ],
       "@src/*": [ "./*" ],
-      "vizality/*": [ "./.vizality/modules/*"],
-      "@classes": [ "./.vizality/modules/classes" ],
-      "@compilers": [ "./.vizality/compilers" ],
-      "@components": [ "./.vizality/modules/components" ],
-      "@constants": [ "./.vizality/modules/constants" ],
-      "@discord": [ "./.vizality/modules/discord" ],
-      "@entities": [ "./.vizality/entities" ],
-      "@http": [ "./.vizality/modules/http" ],
-      "@i18n": [ "./.vizality/modules/i18n" ],
-      "@builtins": [ "./.vizality/builtins"],
-      "@modules": [ "./.vizality/modules"],
-      "@patcher": [ "./.vizality/modules/patcher" ],
-      "@react": [ "./.vizality/modules/react" ],
-      "@typedefs": [ "./.vizality/typedefs" ],
-      "@util": [ "./.vizality/modules/util" ],
-      "@webpack": [ "./.vizality/modules/webpack" ]
+      "vizality/*": [ "./core/modules/*"],
+      "@classes": [ "./core/modules/classes" ],
+      "@compilers": [ "./core/compilers" ],
+      "@components": [ "./core/modules/components" ],
+      "@constants": [ "./core/modules/constants" ],
+      "@discord": [ "./core/modules/discord" ],
+      "@entities": [ "./core/entities" ],
+      "@http": [ "./core/modules/http" ],
+      "@i18n": [ "./core/modules/i18n" ],
+      "@builtins": [ "./core/builtins"],
+      "@modules": [ "./core/modules"],
+      "@patcher": [ "./core/modules/patcher" ],
+      "@react": [ "./core/modules/react" ],
+      "@typedefs": [ "./core/typedefs" ],
+      "@util": [ "./core/modules/util" ],
+      "@webpack": [ "./core/modules/webpack" ]
     }
   }
 }

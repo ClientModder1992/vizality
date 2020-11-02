@@ -21,10 +21,10 @@ require('fs')
  *console.log(moduleName);
  *console.log(filename);
  * /*
- * Using lastIndexOf '.vizality' here to make sure
+ * Using lastIndexOf 'core' here to make sure
  * we don't run into same directory name problems
  *
- *const moduleIndex = pathArray.lastIndexOf('.vizality') + 1;
+ *const moduleIndex = pathArray.lastIndexOf('core') + 1;
  *const mdl = pathArray[moduleIndex];
  *const submoduleIndex = moduleIndex + 1;
  *

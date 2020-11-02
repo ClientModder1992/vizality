@@ -61,5 +61,5 @@
  * me for cross-file types. In order for it to work, I also had to add the path to the
  * typedef file to jsconfig.json.
  * ----------------
- * File location: ./src/.vizality/typedef/index.js
+ * File location: ./src/core/typedefs/index.js
   */

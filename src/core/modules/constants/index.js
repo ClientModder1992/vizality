@@ -15,16 +15,15 @@ const constants = module.exports = Object.freeze({
   Repositories: Object.freeze({
     ORG: 'vizality',
     get VIZALITY () { return `${constants.Repositories.ORG}/vizality`; },
-    get COMMUNITY () { return `${constants.Repositories.ORG}/vizality-community`; },
-    get DOCS () { return `${constants.Repositories.ORG}/vizality-docs`; },
-    get I18N () { return `${constants.Repositories.ORG}/vizality-i18n`; }
+    get COMMUNITY () { return `vizality-community`; },
+    get DOCS () { return `${constants.Repositories.ORG}/docs`; }
   }),
 
   // Directories
   Directories: Object.freeze({
     ROOT: join(__dirname, '..', '..', '..', '..'),
     get SRC () { return join(constants.Directories.ROOT, 'src'); },
-    get VIZALITY () { return join(constants.Directories.SRC, '.vizality'); },
+    get VIZALITY () { return join(constants.Directories.SRC, 'core'); },
     // ---
     get SETTINGS () { return join(constants.Directories.ROOT, 'settings'); },
     get CACHE () { return join(constants.Directories.ROOT, '.cache'); },
@@ -33,8 +32,6 @@ const constants = module.exports = Object.freeze({
     get ADDONS () { return join(constants.Directories.ROOT, 'addons'); },
     get PLUGINS () { return join(constants.Directories.ADDONS, 'plugins'); },
     get BUILTINS () { return join(constants.Directories.VIZALITY, 'builtins'); },
-    get BUNDLED () { return join(constants.Directories.PLUGINS, '.bundled'); },
-    get CORE () { return join(constants.Directories.PLUGINS, '.core'); },
     get THEMES () { return join(constants.Directories.ADDONS, 'themes'); },
     // ---
     get API () { return join(constants.Directories.VIZALITY, 'api'); },
