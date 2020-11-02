@@ -1,5 +1,11 @@
+@use '../lib/sass' as *;
+
+@use 'colors';
+@use 'icons';
+@use 'logos';
 @use 'base';
 @use 'components';
+
 
 .vz-hasNoGuildIcon {
   background-image: url('https://i.imgur.com/Fa13xn9.png');
