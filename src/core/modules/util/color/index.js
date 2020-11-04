@@ -6,15 +6,10 @@
  * @version 0.0.1
  */
 
-const { error } = require('../logger');
-
 /**
  * @todo Add: isType, assertType, isHex, isHsl, isInt, isRgb, assertHex, assertHsl, assertInt, assertRgb
  * @todo Make these work with 8-digit hex numbers, rgba, and hsla.
  */
-
-const _module = 'Module';
-const _submodule = 'Util:Color';
 
 const color = module.exports = {
   _hex2hsl (color) {
@@ -513,9 +508,6 @@ const color = module.exports = {
     if (ex.hex.test(color)) { return 'hex'; }
     if (ex.hsl.test(color)) { return 'hsl'; }
     if (Number.isInteger(parseInt(color))) { return 'int'; }
-
-    // @todo Proper error message
-    return error(_module, `${_submodule}:getType`, null, 'Color type is not valid. Valid types are "hex", "int", "rgb", and "hsl".');
   },
 
   toHex (input) {

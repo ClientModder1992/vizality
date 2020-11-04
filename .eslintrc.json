@@ -3,7 +3,6 @@
     "vizality": true,
     "webpackJsonp": true,
     "DiscordNative": false,
-    "VizalityNative": false,
     "GLOBAL_ENV": true
   },
   "parserOptions": {

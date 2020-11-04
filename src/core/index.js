@@ -1,5 +1,5 @@
-const { getModule, getModuleByPrototypes, initialize } = require('@webpack');
 const { sleep, logger: { log, warn, error } } = require('@util');
+const { getModule, initialize } = require('@webpack');
 const { HTTP, Directories } = require('@constants');
 const { jsx: JsxCompiler } = require('@compilers');
 const { Updatable } = require('@entities');
@@ -66,6 +66,14 @@ const currentWebContents = require('electron').remote.getCurrentWebContents();
 module.exports = class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
+
+    /*
+     * Copy over the VizalityNative to vizality.native and then delete
+     * VizalityNative, so that we are staying consistent and only have
+     * one top level global variable.
+     */
+    this.native = global.VizalityNative;
+    delete global.VizalityNative;
 
     this.api = {};
     this.modules = {};
@@ -157,7 +165,7 @@ module.exports = class Vizality extends Updatable {
      *   });
      */
 
-     // Builtins
+    // Builtins
     await this.manager.builtins.load();
 
     // Themes

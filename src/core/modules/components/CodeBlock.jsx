@@ -84,7 +84,6 @@ module.exports = React.memo(function VizalityCodeBlock ({
    */
   /** @private **/
   function renderCode (language, content) {
-    console.log(content);
     return (
       <>
         {language && !contentIsRaw && highlight(language, content, true)

@@ -258,7 +258,7 @@ class StyleManager {
               text: 'Open Developer Tools',
               color: 'green',
               look: 'ghost',
-              onClick: () => VizalityNative.openDevTools()
+              onClick: () => vizality.native.openDevTools()
             }
           ]
         });
@@ -273,7 +273,7 @@ class StyleManager {
               text: 'Open Developer Tools',
               color: 'green',
               look: 'ghost',
-              onClick: () => VizalityNative.openDevTools()
+              onClick: () => vizality.native.openDevTools()
             }
           ]
         });

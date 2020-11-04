@@ -12,7 +12,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   const clearDiscordCache = () => {
     setDiscordCacheCleared(true);
-    VizalityNative.clearCache().then(() => {
+    vizality.native.clearCache().then(() => {
       setTimeout(() => {
         setDiscordCacheCleared(false);
       }, 2500);

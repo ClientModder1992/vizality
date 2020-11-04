@@ -110,7 +110,7 @@ module.exports = class SplashScreen extends React.PureComponent {
       }
     };
 
-    // this._window = VizalityNative.openBrowserWindow(windowSettings);
+    // this._window = vizality.native.openBrowserWindow(windowSettings);
     this._window = new BrowserWindow(windowSettings);
     this._window.loadURL(splashIndex);
     this._window.webContents.openDevTools({ mode: 'detach' });

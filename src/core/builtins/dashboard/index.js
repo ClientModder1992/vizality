@@ -13,7 +13,7 @@ const Routes = require('./routes/Routes');
 module.exports = class Dashboard extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
-    this.injectGuildsButton();
+    // this.injectGuildsButton();
     this.injectChannels();
 
     vizality.api.router.registerRoute({
@@ -71,40 +71,74 @@ module.exports = class Dashboard extends Builtin {
     forceUpdateElement(`.${containerDefault}`, true);
   }
 
-  async injectGuildsButton () {
-    return void 0;
-    const { listItemTooltip } = getModule('listItemTooltip');
-    const guildClasses = getModule('tutorialContainer');
-    const guildElement = (await waitForElement(`.${guildClasses.tutorialContainer.split(' ')[0]}`)).parentElement;
-    const instance = getOwnerInstance(guildElement);
+  // async injectGuildsButton () {
+  //   return void 0;
+  //   const { listItemTooltip } = getModule('listItemTooltip');
+  //   const guildClasses = getModule('tutorialContainer');
+  //   const guildElement = (await waitForElement(`.${guildClasses.tutorialContainer.split(' ')[0]}`)).parentElement;
+  //   const instance = getOwnerInstance(guildElement);
 
-    patch('vz-dashboard-guilds-button', instance, 'render', (_, res) => {
-      console.log(res.props);
-      const VizalityGuildButton = React.createElement('div', {
-        class: 'listItem-2P_4kh vizality-dashboard-guild-button',
-        onClick: async () => vizality.api.router.navigate('/dashboard')
-      }, React.createElement(Tooltip, {
-        text: 'Vizality Dashboard',
-        position: 'right',
-        tooltipClassName: listItemTooltip
-      }, React.createElement('div', {
-        className: 'pill-31IEus wrapper-sa6paO'
-      }, React.createElement('span', {
-        className: 'item-2hkk8m'
-      })), React.createElement('div', {
-        className: 'vizality-dashboard-guild-icon-wrapper'
-      }, React.createElement(Icon, {
-        class: 'vizality-dashboard-guild-icon',
-        name: 'Vizality',
-        width: '30px',
-        height: '30px'
-      }))));
+  //   patch('vz-dashboard-guilds-button', instance, 'render', (_, res) => {
+  //     console.log(res.props);
+  //     const VizalityGuildButton = React.createElement('div', {
+  //       class: 'listItem-2P_4kh vizality-dashboard-guild-button',
+  //       onClick: async () => vizality.api.router.navigate('/dashboard')
+  //     }, React.createElement(Tooltip, {
+  //       text: 'Vizality Dashboard',
+  //       position: 'right',
+  //       tooltipClassName: listItemTooltip
+  //     }, React.createElement('div', {
+  //       className: 'pill-31IEus wrapper-sa6paO'
+  //     }, React.createElement('span', {
+  //       className: 'item-2hkk8m'
+  //     })), React.createElement('div', {
+  //       className: 'vizality-dashboard-guild-icon-wrapper'
+  //     }, React.createElement(Icon, {
+  //       class: 'vizality-dashboard-guild-icon',
+  //       name: 'Vizality',
+  //       width: '30px',
+  //       height: '30px'
+  //     }))));
 
-      res.props.children[1].props.children.splice(1, 0, VizalityGuildButton);
+  //     res.props.children[1].props.children.splice(1, 0, VizalityGuildButton);
 
-      return res;
-    });
+  //     return res;
+  //   });
 
-    setImmediate(() => forceUpdateElement(`.${guildElement.className.split(' ')[0]}`, true));
-  }
+  // async injectGuildsButton () {
+  //   const { listItemTooltip } = getModule('listItemTooltip');
+  //   const guildClasses = getModule('tutorialContainer');
+  //   const guildElement = (await waitForElement(`.${guildClasses.tutorialContainer.split(' ')[0]}`)).parentElement;
+  //   const instance = getOwnerInstance(guildElement);
+
+  //   patch('vz-dashboard-guilds-button', instance, 'render', function (_, res) {
+  //     console.log(this);
+  //     console.log(res);
+      // const VizalityGuildButton = React.createElement('div', {
+      //   class: 'listItem-2P_4kh vizality-dashboard-guild-button',
+      //   onClick: async () => vizality.api.router.navigate('/dashboard')
+      // }, React.createElement(Tooltip, {
+      //   text: 'Vizality Dashboard',
+      //   position: 'right',
+      //   tooltipClassName: listItemTooltip
+      // }, React.createElement('div', {
+      //   className: 'pill-31IEus wrapper-sa6paO'
+      // }, React.createElement('span', {
+      //   className: 'item-2hkk8m'
+      // })), React.createElement('div', {
+      //   className: 'vizality-dashboard-guild-icon-wrapper'
+      // }, React.createElement(Icon, {
+      //   class: 'vizality-dashboard-guild-icon',
+      //   name: 'Vizality',
+      //   width: '30px',
+      //   height: '30px'
+      // }))));
+
+      // res.props.children[1].props.children.splice(1, 0, VizalityGuildButton);
+
+  //     return res;
+  //   });
+
+  //   setImmediate(() => forceUpdateElement(`.${guildElement.className.split(' ')[0]}`, true));
+  // }
 };

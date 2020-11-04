@@ -90,6 +90,6 @@ try {
 // Overlay devtools
 vizality.once('initialized', () => {
   if (window.__OVERLAY__ && vizality.api.settings.store.getSetting('settings', 'openOverlayDevTools', false)) {
-    VizalityNative.openDevTools({}, true);
+    vizality.native.openDevTools({}, true);
   }
 });
