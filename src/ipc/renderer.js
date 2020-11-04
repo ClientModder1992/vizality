@@ -3,7 +3,7 @@
 const { ipcRenderer } = require('electron');
 
 if (!ipcRenderer) {
-  throw new Error('Don\'t require stuff you shouldn\'t silly.');
+  throw new Error('Don\'t require stuff you shouldn\'t, silly.');
 }
 
 global.VizalityNative = {

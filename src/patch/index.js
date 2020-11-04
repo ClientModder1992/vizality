@@ -48,18 +48,4 @@ const discordPackage = require(join(discordPath, 'package.json'));
 electron.app.setAppPath(discordPath);
 electron.app.name = discordPackage.name;
 
-/**
- * Bandaid fix for Windows users involving DevTools extensions.
- * @see {@link https://github.com/electron/electron/issues/19468}
- */
-if (process.platform === 'win32') {
-  setImmediate(() => { // The app name apparently doesn't get set instantly...
-    const devToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
-
-    if (existsSync(devToolsExtensions)) {
-      unlinkSync(devToolsExtensions);
-    }
-  });
-}
-
 Module._load(join(discordPath, discordPackage.main), null, true);

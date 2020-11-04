@@ -1,7 +1,10 @@
 const { existsSync, promises: { readFile } } = require('fs');
 const { ipcMain, BrowserWindow } = require('electron');
-const { join, dirname } = require('path');
+const { relative, join, dirname } = require('path');
 const sass = require('sass');
+
+const VIZALITY_REGEX = new RegExp('@vizality\\/(\\/[^\'"]{1,})?', 'ig');
+const BASE_DIR = `${join(__dirname, '..', 'core', 'lib')}\\`;
 
 if (!ipcMain) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
@@ -34,6 +37,8 @@ function clearCache (e) {
 function compileSass (_, file) {
   return new Promise((resolve, reject) => {
     readFile(file, 'utf8').then(rawScss => {
+      const relativePath = relative(file, BASE_DIR);
+      rawScss = rawScss.replace(VIZALITY_REGEX, join(relativePath, '$1'));
       sass.render({
         data: rawScss,
         importer: (url, prev) => {
@@ -41,7 +46,6 @@ function compileSass (_, file) {
           if (existsSync(url)) {
             return { file: url };
           }
-
           const prevFile = prev === 'stdin' ? file : prev.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com/i, '');
           return {
             file: join(dirname(decodeURI(prevFile)), url).replace(/\\/g, '/')
