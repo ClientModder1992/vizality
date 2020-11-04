@@ -10,7 +10,8 @@ const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
-const Updates = require('@builtins/updater/components/Settings');
+const Updater = require('@builtins/updater/components/Settings');
+const Snippets = require('@builtins/snippet-manager/components/CustomCSS');
 const Plugins = require('@builtins/addon-manager/components/manage/Plugins');
 const Themes = require('@builtins/addon-manager/components/manage/Themes');
 // const Settings = vizality.api.settings.tabs['vz-settings'].render;
@@ -74,6 +75,7 @@ module.exports = () => {
             subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
             icon='Scissors'
           >
+            <Snippets />
           </Content>
         </Layout>
       </Route>
@@ -119,14 +121,14 @@ module.exports = () => {
       <Route path='/vizality/dashboard/documentation/components/test' exact>
         <Test />
       </Route>
-      <Route path='/vizality/dashboard/updates' exact>
+      <Route path='/vizality/dashboard/updater' exact>
         <Layout>
           <Content
-            heading='Updates'
+            heading='Updater'
             subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
             icon='CloudDownload'
           >
-            <Updates />
+            <Updater />
           </Content>
         </Layout>
       </Route>

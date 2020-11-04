@@ -15,22 +15,13 @@ const CustomCSS = require('./components/CustomCSS');
 
 module.exports = class Snippets extends Builtin {
   async onStart () {
-    vizality.api.settings.registerSettings('Snippets', {
-      category: 'snippet-manager',
-      label: () => 'Snippets',
-      render: (props) => React.createElement(CustomCSS, {
-        openPopout: () => this._openCustomCSSPopout(),
-        ...props
-      })
-    });
-
-    vizality.api.settings.registerSettings('Snippets', {
-      category: 'snippet-manager',
-      label: () => 'Snippets',
-      render: (props) => React.createElement(CustomCSS, {
-        openPopout: () => this._openCustomCSSPopout(),
-        ...props
-      })
+    vizality.api.settings.registerDashboardItem({
+      id: 'snippets',
+      path: 'snippets',
+      header: 'Snippets',
+      subtext: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
+      icon: 'Wrench',
+      render: CustomCSS
     });
 
     this.snippets = {};
@@ -42,7 +33,7 @@ module.exports = class Snippets extends Builtin {
     await this._loadCustomCSS();
 
     this._injectSnippetsButton();
-    this.injectStyles('snippets/css/main.scss');
+    this.injectStyles('snippets/main.scss');
     this.injectStyles('styles/main.scss');
   }
 

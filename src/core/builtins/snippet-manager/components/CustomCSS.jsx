@@ -1,102 +1,37 @@
-const { AdvancedScrollerThin, AsyncComponent, Clickable, FormTitle, Tooltip, settings: { SwitchItem, SliderInput } } = require('@components');
-const { Flux, getModule } = require('@webpack');
+const { AdvancedScrollerThin, Clickable, FormTitle, Tooltip, Icon, settings: { SwitchItem, SliderInput } } = require('@components');
+const { React, React: { useState } } = require('@react');
+const { getModule } = require('@webpack');
 const { Messages } = require('@i18n');
-const { React } = require('@react');
 
 const CodeMirror = require('./CodeMirror');
 
-class CustomCSS extends React.PureComponent {
-  constructor () {
-    super();
-    this.state = {
-      cmSettings: false,
-      cm: null
-    };
-    this.ref = React.createRef();
-    this._handleCodeMirrorUpdate = global._.debounce(this._handleCodeMirrorUpdate.bind(this), 300);
-    this._saveResizeHeight = global._.debounce(this._saveResizeHeight.bind(this), 500);
-    this._handleResizeBegin = this._handleResizeBegin.bind(this);
-    this._handleResizeEnd = this._handleResizeEnd.bind(this);
-    this._handleResizeMove = this._handleResizeMove.bind(this);
-  }
+module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
+  const [ cm, setCM ] = useState(null);
+  const [ cmSettings, setCMSettings ] = useState(false);
+  const [ popout, setPopout ] = useState(false);
+  const [ guestWindow, getGuestWindow ] = useState(Boolean(getModule('getWindow').getWindow('DISCORD_VIZALITY_QUICKCSS')));
+  const [ windowOnTop, getWindowOnTop ] = useState(Boolean(getModule('getWindow').getIsAlwaysOnTop('DISCORD_VIZALITY_QUICKCSS')));
 
-  componentWillUnmount () { // Just to be sure
-    window.removeEventListener('mousemove', this._handleResizeMove);
-    window.removeEventListener('mouseup', this._handleResizeEnd);
-  }
+  const _handleCodeMirrorUpdate = (cm) => {
+    // noinspection JSIgnoredPromiseFromCall
+    vizality.manager.builtins.get('snippet-manager')._saveCustomCSS(cm.getValue());
+  };
 
-  render () {
-    return (
-      <div
-        className={[ 'vizality-quickcss', this.props.popout && 'popout', !this.props.popout && this.props.guestWindow && 'popped-out' ].filter(Boolean).join(' ')}
-        style={{ '--editor-height': `${this.props.getSetting('cm-height', 350)}px` }}
-        ref={this.ref}
-      >
-        {!this.props.popout && this.props.guestWindow
-          ? <div className='vizality-quickcss-popped'>{Messages.VIZALITY_QUICKCSS_POPPED_OUT}</div>
-          : <>
-            <div className='vizality-quickcss-header'>
-              <Tooltip text={Messages.SETTINGS} position='right'>
-                <Clickable onClick={() => this.setState({ cmSettings: true })} className='button'>
-                  <Icon name='Gear' />
-                </Clickable>
-              </Tooltip>
-              <div>
-                {this.props.popout &&
-                <Tooltip
-                  text={this.props.windowOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}
-                  position='left'
-                >
-                  <Clickable
-                    onClick={() => {
-                      const popoutModule = getModule('setAlwaysOnTop', 'open');
-                      popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_CUSTOMCSS', !this.props.windowOnTop);
-                    }}
-                    className='button'
-                  >
-                    {this.props.windowOnTop ? <Icon name='UnpinLayer' /> : <Icon name='PinLayer' />}
-                  </Clickable>
-                </Tooltip>}
-                <Tooltip text={this.props.popout ? Messages.CLOSE_WINDOW : Messages.POPOUT_PLAYER} position='left'>
-                  <Clickable
-                    onClick={() => this.props.popout
-                      ? getModule('setAlwaysOnTop', 'open').close('DISCORD_VIZALITY_CUSTOMCSS')
-                      : this.props.openPopout()}
-                    className='button'
-                  >
-                    {this.props.popout ? <Icon name='Close' /> : <Icon name='Launcher' />}
-                  </Clickable>
-                </Tooltip>
-              </div>
-            </div>
-            <div className='vizality-quickcss-editor'>
-              {this.state.cmSettings && this.renderSettings()}
-              <CodeMirror
-                popout={this.props.popout}
-                onReady={this.setupCodeMirror.bind(this)}
-                getSetting={this.props.getSetting}
-              />
-            </div>
-            <div className='vizality-quickcss-footer'>
-              <span>{Messages.VIZALITY_QUICKCSS_AUTOCOMPLETE}</span>
-              <span>CodeMirror v{require('codemirror').version}</span>
-            </div>
-            {!this.props.popout && <div className='vizality-quickcss-resizer' onMouseDown={this._handleResizeBegin}/>}
-          </>}
-      </div>
-    );
-  }
+  const setupCodeMirror = (cm) => {
+    cm.on('change', _handleCodeMirrorUpdate);
+    cm.setValue(vizality.manager.builtins.get('snippet-manager')._customCSS);
+    setTimeout(() => cm.refresh(), 100);
+    setCM(cm);
+  };
 
-  renderSettings () {
-    const { getSetting, updateSetting, toggleSetting } = this.props;
-
+  const renderSettings = () => {
     return (
       <AdvancedScrollerThin className='vizality-quickcss-editor-settings' theme='themeGhostHairline-DBD-2d' fade>
         <FormTitle tag='h2'>{Messages.VIZALITY_QUICKCSS_SETTINGS}</FormTitle>
         <div className='close-wrapper'>
           <Tooltip text={Messages.CLOSE} position='left'>
-            <Clickable onClick={() => this.setState({ cmSettings: false })} className='close'>
-              <Close/>
+            <Clickable onClick={() => setCMSettings(false)} className='close'>
+              <Icon name='Close' />
             </Clickable>
           </Tooltip>
         </div>
@@ -105,7 +40,7 @@ class CustomCSS extends React.PureComponent {
             value={getSetting('cm-lineNumbers', true)}
             onChange={v => {
               toggleSetting('cm-lineNumbers', true);
-              this.state.cm.setOption('lineNumbers', v.target.checked);
+              cm.setOption('lineNumbers', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_LINES}
@@ -115,9 +50,9 @@ class CustomCSS extends React.PureComponent {
             onChange={v => {
               toggleSetting('cm-codeFolding', true);
               if (!v.target.checked) {
-                this.state.cm.execCommand('unfoldAll');
+                cm.execCommand('unfoldAll');
               }
-              this.state.cm.setOption('foldGutter', v.target.checked);
+              cm.setOption('foldGutter', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_FOLDING}
@@ -127,7 +62,7 @@ class CustomCSS extends React.PureComponent {
             note={Messages.VIZALITY_QUICKCSS_SETTINGS_MATCH_BRACKETS_DESC}
             onChange={v => {
               toggleSetting('cm-matchBrackets', true);
-              this.state.cm.setOption('matchBrackets', v.target.checked);
+              cm.setOption('matchBrackets', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_MATCH_BRACKETS}
@@ -137,7 +72,7 @@ class CustomCSS extends React.PureComponent {
             note={Messages.VIZALITY_QUICKCSS_SETTINGS_CLOSE_BRACKETS_DESC}
             onChange={v => {
               toggleSetting('cm-closeBrackets', true);
-              this.state.cm.setOption('autoCloseBrackets', v.target.checked);
+              cm.setOption('autoCloseBrackets', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_CLOSE_BRACKETS}
@@ -146,7 +81,7 @@ class CustomCSS extends React.PureComponent {
             value={getSetting('cm-wrap', false)}
             onChange={v => {
               toggleSetting('cm-wrap', false);
-              this.state.cm.setOption('lineWrapping', v.target.checked);
+              cm.setOption('lineWrapping', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_WRAP}
@@ -155,14 +90,14 @@ class CustomCSS extends React.PureComponent {
             value={getSetting('cm-tabs', false)}
             onChange={v => {
               toggleSetting('cm-tabs', false);
-              this.state.cm.setOption('indentWithTabs', v.target.checked);
+              cm.setOption('indentWithTabs', v.target.checked);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_TABS}
           </SwitchItem>
           <SliderInput
-            disabled={this.props.popout}
-            note={this.props.popout && Messages.VIZALITY_QUICKCSS_SETTINGS_INDENT_WARNING}
+            disabled={popout}
+            note={popout && Messages.VIZALITY_QUICKCSS_SETTINGS_INDENT_WARNING}
             stickToMarkers
             initialValue={4}
             markers={[ 2, 4, 8 ]}
@@ -170,8 +105,8 @@ class CustomCSS extends React.PureComponent {
             defaultValue={getSetting('cm-indentSize', 2)}
             onValueChange={v => {
               updateSetting('cm-indentSize', v);
-              this.state.cm.setOption('tabSize', v);
-              this.state.cm.setOption('indentUnit', v);
+              cm.setOption('tabSize', v);
+              cm.setOption('indentUnit', v);
             }}
           >
             {Messages.VIZALITY_QUICKCSS_SETTINGS_INDENT}
@@ -179,48 +114,64 @@ class CustomCSS extends React.PureComponent {
         </div>
       </AdvancedScrollerThin>
     );
-  }
+  };
 
-  setupCodeMirror (cm) {
-    cm.on('change', this._handleCodeMirrorUpdate);
-    cm.setValue(vizality.manager.builtins.get('snippet-manager')._customCSS);
-    if (this.props.popout) {
-      setTimeout(() => cm.refresh(), 100);
-    }
-    this.setState({ cm });
-  }
-
-  _handleCodeMirrorUpdate (cm) {
-    // noinspection JSIgnoredPromiseFromCall
-    vizality.manager.builtins.get('snippet-manager')._saveCustomCSS(cm.getValue());
-  }
-
-  _handleResizeBegin () {
-    window.addEventListener('mousemove', this._handleResizeMove);
-    window.addEventListener('mouseup', this._handleResizeEnd);
-  }
-
-  _handleResizeEnd () {
-    window.removeEventListener('mousemove', this._handleResizeMove);
-    window.removeEventListener('mouseup', this._handleResizeEnd);
-  }
-
-  _handleResizeMove (e) {
-    const height = e.clientY - this.ref.current.getBoundingClientRect().y;
-    this.ref.current.setAttribute('style', `--editor-height: ${height}px`);
-    this._saveResizeHeight(height);
-  }
-
-  _saveResizeHeight (height) {
-    this.props.updateSetting('cm-height', height);
-  }
-}
-
-module.exports = AsyncComponent.from((() => {
-  const windowStore = getModule('getWindow');
-  return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
-    guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOMCSS'),
-    windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_CUSTOMCSS'),
-    ...vizality.api.settings._fluxProps('snippet-manager')
-  }))(CustomCSS);
-})());
+  return (
+    <div
+      className={[ 'vizality-quickcss', popout && 'popout', !popout && guestWindow && 'popped-out' ].filter(Boolean).join(' ')}
+      style={{ '--editor-height': `${getSetting('cm-height', 350)}px` }}
+    >
+      {!popout && guestWindow
+        ? <div className='vizality-quickcss-popped'>{Messages.VIZALITY_QUICKCSS_POPPED_OUT}</div>
+        : <>
+          <div className='vizality-quickcss-header'>
+            <Tooltip text={Messages.SETTINGS} position='right'>
+              <Clickable onClick={() => setCMSettings(true)} className='button'>
+                <Icon name='Gear' />
+              </Clickable>
+            </Tooltip>
+            <div>
+              {popout &&
+              <Tooltip
+                text={windowOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}
+                position='left'
+              >
+                <Clickable
+                  onClick={() => {
+                    const popoutModule = getModule('setAlwaysOnTop', 'open');
+                    popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_CUSTOMCSS', !windowOnTop);
+                  }}
+                  className='button'
+                >
+                  {windowOnTop ? <Icon name='UnpinLayer' /> : <Icon name='PinLayer' />}
+                </Clickable>
+              </Tooltip>}
+              <Tooltip text={popout ? Messages.CLOSE_WINDOW : Messages.POPOUT_PLAYER} position='left'>
+                <Clickable
+                  onClick={() => popout
+                    ? getModule('setAlwaysOnTop', 'open').close('DISCORD_VIZALITY_CUSTOMCSS')
+                    : console.log('open popout')}
+                  className='button'
+                >
+                  {popout ? <Icon name='Close' /> : <Icon name='Activity' />}
+                </Clickable>
+              </Tooltip>
+            </div>
+          </div>
+          <div className='vizality-quickcss-editor'>
+            {cmSettings && renderSettings()}
+            <CodeMirror
+              popout={popout}
+              onReady={setupCodeMirror.bind(this)}
+              getSetting={getSetting}
+            />
+          </div>
+          <div className='vizality-quickcss-footer'>
+            <span>{Messages.VIZALITY_QUICKCSS_AUTOCOMPLETE}</span>
+            <span>CodeMirror v{require('codemirror').version}</span>
+          </div>
+          {!popout && <div className='vizality-quickcss-resizer' />}
+        </>}
+    </div>
+  );
+});
