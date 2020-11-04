@@ -121,7 +121,7 @@ module.exports = () => {
       <Route path='/vizality/dashboard/documentation/components/test' exact>
         <Test />
       </Route>
-      <Route path='/vizality/dashboard/updater' exact>
+      {/* <Route path='/vizality/dashboard/updater' exact>
         <Layout>
           <Content
             heading='Updater'
@@ -131,7 +131,7 @@ module.exports = () => {
             <Updater />
           </Content>
         </Layout>
-      </Route>
+      </Route> */}
       <Route path='/vizality/dashboard/changelog' exact>
         <Layout>
           <Content

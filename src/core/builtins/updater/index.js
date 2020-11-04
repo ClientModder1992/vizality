@@ -13,6 +13,8 @@ const { Builtin } = require('@entities');
 const { Messages } = require('@i18n');
 const { React } = require('@react');
 
+const Settings = require('./components/Settings');
+
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 
 module.exports = class Updater extends Builtin {
@@ -37,6 +39,15 @@ module.exports = class Updater extends Builtin {
     vizality.api.actions.registerAction({
       name: 'openLatestChangelog',
       action: this.openLatestChangelog.bind(this)
+    });
+
+    vizality.api.settings.registerDashboardItem({
+      id: this.entityID,
+      path: 'updater',
+      heading: 'Updater',
+      subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
+      icon: 'Wrench',
+      render: Settings
     });
 
     let minutes = Number(this.settings.get('interval', 15));

@@ -5,7 +5,7 @@ const { Builtin } = require('@entities');
 const { React } = require('@react');
 
 const ContextMenu = require('./components/ContextMenu');
-const CoreSettings = require('./components/Settings');
+const _Settings = require('./components/Settings');
 
 module.exports = class Settings extends Builtin {
   onStart () {
@@ -18,12 +18,12 @@ module.exports = class Settings extends Builtin {
     // });
 
     vizality.api.settings.registerDashboardItem({
-      id: 'settings',
+      id: this.entityID,
       path: 'settings',
-      header: 'Settings',
-      subtext: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
+      heading: 'Settings',
+      subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'Wrench',
-      render: CoreSettings
+      render: _Settings
     });
 
     this.patchSettingsComponent();

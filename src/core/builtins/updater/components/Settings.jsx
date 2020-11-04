@@ -12,7 +12,7 @@ const { getModule } = require('@webpack');
 const Update = require('./Update');
 const Icons = require('./Icons');
 
-module.exports = React.memo(() => {
+module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ opened, setOpened ] = useState(false);
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const [ debugInfoOpened, setDebugInfoOpened ] = useState();
@@ -25,17 +25,17 @@ module.exports = React.memo(() => {
   const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable';
   const time = getModule('momentProperties');
   // @todo: Make this be in its own store
-  const awaitingReload = _this.settings.get('awaiting_reload', false);
-  const updating = _this.settings.get('updating', false);
-  const checking = _this.settings.get('checking', false);
-  const disabled = _this.settings.get('disabled', false);
-  const paused = _this.settings.get('paused', false);
-  const failed = _this.settings.get('failed', false);
+  const awaitingReload = getSetting('awaiting_reload', false);
+  const updating = getSetting('updating', false);
+  const checking = getSetting('checking', false);
+  const disabled = getSetting('disabled', false);
+  const paused = getSetting('paused', false);
+  const failed = getSetting('failed', false);
 
-  const updates = _this.settings.get('updates', []);
-  const disabledEntities = _this.settings.get('entities_disabled', []);
-  const checkingProgress = _this.settings.get('checking_progress', [ 0, 0 ]);
-  const last = time(_this.settings.get('last_check', false)).calendar();
+  const updates = getSetting('updates', []);
+  const disabledEntities = getSetting('entities_disabled', []);
+  const checkingProgress = getSetting('checking_progress', [ 0, 0 ]);
+  const last = time(getSetting('last_check', false)).calendar();
 
   let icon, title;
   if (disabled) {
@@ -129,7 +129,7 @@ module.exports = React.memo(() => {
       Messages.VIZALITY_UPDATES_PAUSE,
       Messages.VIZALITY_UPDATES_PAUSE_MODAL,
       Messages.VIZALITY_UPDATES_PAUSE,
-      () => _this.settings.set('paused', true)
+      () => updateSetting('paused', true)
     );
   };
 
@@ -248,7 +248,7 @@ module.exports = React.memo(() => {
               </a>
             </div>
             <div className='column'>Branch:&#10;{vizality.git.branch}</div>
-            <div className='column'>{`Latest:\n${!_this.settings.get('updates', []).find(update => update.id === 'vizality')}`}</div>
+            <div className='column'>{`Latest:\n${!getSetting('updates', []).find(update => update.id === 'vizality')}`}</div>
           </div>
 
           <b>Listings</b>
@@ -318,8 +318,8 @@ module.exports = React.memo(() => {
             size={Button.Sizes.SMALL}
             color={Button.Colors.GREEN}
             onClick={() => {
-              _this.settings.set('paused', false);
-              _this.settings.set('disabled', false);
+              updateSetting('paused', false);
+              updateSetting('disabled', false);
             }}
           >
             {disabled ? Messages.VIZALITY_UPDATES_ENABLE : Messages.VIZALITY_UPDATES_RESUME}
@@ -348,7 +348,7 @@ module.exports = React.memo(() => {
             <Button
               size={Button.Sizes.SMALL}
               color={Button.Colors.RED}
-              onClick={() => askDisableUpdates(true, () => _this.settings.set('disabled', true))}
+              onClick={() => askDisableUpdates(true, () => updateSetting('disabled', true))}
             >
               {Messages.VIZALITY_UPDATES_DISABLE}
             </Button>
@@ -388,16 +388,16 @@ module.exports = React.memo(() => {
       <FormTitle className='vizality-updater-ft'>{Messages.OPTIONS}</FormTitle>
       {!disabled && <>
         <SwitchItem
-          value={_this.settings.get('automatic', false)}
-          onChange={() => _this.settings.set('automatic')}
+          value={getSetting('automatic', false)}
+          onChange={() => toggleSetting('automatic')}
           note={Messages.VIZALITY_UPDATES_OPTS_AUTO_DESC}
         >
           {Messages.VIZALITY_UPDATES_OPTS_AUTO}
         </SwitchItem>
         <TextInput
           note={Messages.VIZALITY_UPDATES_OPTS_INTERVAL_DESC}
-          onChange={val => _this.settings.set('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
-          defaultValue={_this.settings.get('interval', 15)}
+          onChange={val => updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
+          defaultValue={getSetting('interval', 15)}
           required={true}
         >
           {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}

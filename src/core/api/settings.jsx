@@ -64,20 +64,23 @@ module.exports = class SettingsAPI extends API {
     }
   }
 
-  registerDashboardSettings (props) {
+  registerAddonSettings (props) {
     try {
-      this.tabs[props.id] = props;
-      this.tabs[props.id].render = this.connectStores(props.id)(props.render);
+      const { id, render } = props;
 
-      const Render = this.connectStores(props.id)(props.render);
+      this.tabs[id] = props;
+      this.tabs[id].settings = this.connectStores(id)(render);
+
+      const Render = this.tabs[id].settings;
 
       vizality.api.router.registerRoute({
-        path: `/dashboard/plugins/${props.id}`,
-        render: () => React.createElement(Layout, null,
-          React.createElement(Content, {
-            heading: props.id
-          }, React.createElement(Render, null))
-        ),
+        path: `/dashboard/plugins/${id}`,
+        render: () =>
+          <Layout>
+            <Content heading='Settings' className='poo'>
+              <Render />
+            </Content>
+          </Layout>,
         sidebar: Sidebar
       });
     } catch (err) {
@@ -85,21 +88,23 @@ module.exports = class SettingsAPI extends API {
     }
   }
 
-  /** @private */
   registerDashboardItem (props) {
     try {
-      this.tabs[props.id] = props;
-      this.tabs[props.id].render = this.connectStores(props.id)(props.render);
+      const { id, path, heading, subheading, icon, render } = props;
+
+      this.tabs[id] = props;
+      this.tabs[id].render = this.connectStores(id)(render);
+
+      const Render = this.tabs[id].render;
 
       vizality.api.router.registerRoute({
-        path: `/dashboard/${this.tabs[props.id].path}`,
-        render: () => React.createElement(Layout, null,
-          React.createElement(Content, {
-            heading: props.header,
-            subheading: props.subtext,
-            icon: props.icon
-          }, React.createElement(this.tabs[props.id].render, null))
-        ),
+        path: `/dashboard/${path}`,
+        render: () =>
+          <Layout>
+            <Content heading={heading} subheading={subheading} icon={icon} className='poo'>
+              <Render />
+            </Content>
+          </Layout>,
         sidebar: Sidebar
       });
     } catch (err) {

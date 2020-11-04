@@ -13,7 +13,7 @@ class APIManager {
   mount (api) {
     try {
       const APIClass = require(join(this.dir, api));
-      api = api.replace(/\.js$/, '');
+      api = api.replace(/\.js(x)?$/, '');
       vizality.api[api] = new APIClass();
       this.apis.push(api);
     } catch (e) {
