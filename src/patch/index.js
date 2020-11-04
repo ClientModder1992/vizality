@@ -1,5 +1,4 @@
 const PatchedBrowserWindow = require('./browserWindow');
-const { existsSync, unlinkSync } = require('fs');
 const { join, dirname } = require('path');
 const electron = require('electron');
 const Module = require('module');
@@ -26,6 +25,7 @@ delete require.cache[electronPath].exports;
 require.cache[electronPath].exports = electronExports;
 
 electron.app.once('ready', () => {
+  // @todo Possibly add whitelists instead of just disabling CSP.
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     Object.keys(responseHeaders)
       .filter(k => (/^content-security-policy/i).test(k) || (/^x-frame-options/i).test(k))
@@ -35,9 +35,9 @@ electron.app.once('ready', () => {
   });
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
-    if (details.url.startsWith('https://discordapp.com/vizality')) {
+    if (new RegExp(/^https:\/\/discord(app)?\.com\/vizality\//).test(details.url)) {
       // It should get restored to the vizality url later.
-      done({ redirectURL: 'https://discordapp.com/app' });
+      done({ redirectURL: 'https://discord.com/app' });
     } else {
       done({});
     }

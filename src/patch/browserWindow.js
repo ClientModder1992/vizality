@@ -32,6 +32,7 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
       // opts.webPreferences.nodeIntegration = true;
+      // @todo Get rid of this.
       opts.webPreferences.contextIsolation = false;
 
       if (transparency) {
