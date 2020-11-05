@@ -1,12 +1,12 @@
 const { promises: { unlink }, existsSync } = require('fs');
 const { join } = require('path');
 
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@util');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { Guild, Directories } = require('@constants');
-const { patch, unpatch } = require('@patcher');
-const { Builtin } = require('@entities');
-const { React } = require('@react');
+const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { Guild, Directories } = require('@vizality/constants');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Builtin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 const AnnouncementContainer = require('./components/AnnouncementContainer');
 const ToastContainer = require('./components/ToastContainer');

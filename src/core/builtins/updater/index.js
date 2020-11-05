@@ -4,14 +4,15 @@ const cp = require('child_process');
 const { join } = require('path');
 const exec = promisify(cp.exec);
 
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
-const { Directories } = require('@constants');
-const { Confirm } = require('@components');
-const { Builtin } = require('@entities');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { Directories } = require('@vizality/constants');
+const { joinClassNames } = require('@vizality/util');
+const { Confirm } = require('@vizality/components');
+const { Builtin } = require('@vizality/entities');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
+
+const { open: openModal, close: closeModal } = require('@vizality/modal');
 
 const Settings = require('./components/Settings');
 

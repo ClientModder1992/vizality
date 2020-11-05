@@ -1,10 +1,11 @@
-const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@components');
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { file: { removeDirRecursive } } = require('@util');
-const { React, React: { useState } } = require('@react');
-const { Directories } = require('@constants');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
+const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@vizality/components');
+const { file: { removeDirRecursive } } = require('@vizality/util');
+const { React, React: { useState } } = require('@vizality/react');
+const { Directories } = require('@vizality/constants');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+
+const { open: openModal, close: closeModal } = require('@vizality/modal');
 
 module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);

@@ -1,5 +1,5 @@
-const { getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE_COLORS } } = require('@webpack');
-const { React } = require('@react');
+const { getModule, getModuleByDisplayName, constants: { DEFAULT_ROLE_COLOR, ROLE_COLORS } } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const AsyncComponent = require('../AsyncComponent');
 const ColorPicker = require('../ColorPicker');

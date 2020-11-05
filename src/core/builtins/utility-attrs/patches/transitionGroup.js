@@ -1,6 +1,6 @@
-const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('@util');
-const { getModuleByDisplayName, getModule } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('@vizality/util');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 /*
  * Modifies The TransitionGroup component. We are checking for and modifying

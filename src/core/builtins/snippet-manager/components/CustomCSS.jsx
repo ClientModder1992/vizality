@@ -1,7 +1,7 @@
-const { AdvancedScrollerThin, Clickable, FormTitle, Tooltip, Icon, settings: { SwitchItem, SliderInput } } = require('@components');
-const { React, React: { useState } } = require('@react');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
+const { AdvancedScrollerThin, Clickable, FormTitle, Tooltip, Icon, settings: { SwitchItem, SliderInput } } = require('@vizality/components');
+const { React, React: { useState } } = require('@vizality/react');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
 
 const CodeMirror = require('./CodeMirror');
 

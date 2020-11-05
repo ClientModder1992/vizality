@@ -1,7 +1,7 @@
-const { React, React: { useState } } = require('@react');
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { Icon } = require('@components');
+const { React, React: { useState } } = require('@vizality/react');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { Icon } = require('@vizality/components');
 
 module.exports = React.memo(({ type, heading, sections }) => {
   const [ collapsed, setCollapsed ] = useState(false);

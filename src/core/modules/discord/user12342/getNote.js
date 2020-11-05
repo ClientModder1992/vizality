@@ -1,5 +1,5 @@
-const { logger: { error } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { error } } = require('@vizality/til');
+const { getModule } = require('@vizality/webpack');
 
 /**
  * Gets the user's note contents.

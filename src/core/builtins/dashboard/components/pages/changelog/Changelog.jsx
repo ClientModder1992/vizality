@@ -1,8 +1,8 @@
 const { join } = require('path');
 
-const { Directories } = require('@constants');
-const { Markdown } = require('@components');
-const { React } = require('@react');
+const { Directories } = require('@vizality/constants');
+const { Markdown } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 

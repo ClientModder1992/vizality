@@ -1,4 +1,4 @@
-const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@util');
+const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@vizality/util');
 
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',

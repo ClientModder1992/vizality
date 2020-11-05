@@ -1,11 +1,11 @@
-const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@util');
-const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@webpack');
-const { Tooltip, Icon } = require('@components');
-const { patch, unpatch } = require('@patcher');
-const { Channels } = require('@constants');
-const { Builtin } = require('@entities');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { dom: { waitForElement }, react: { getOwnerInstance, forceUpdateElement } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName, FluxDispatcher } = require('@vizality/webpack');
+const { Tooltip, Icon } = require('@vizality/components');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Channels } = require('@vizality/constants');
+const { Builtin } = require('@vizality/entities');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const Sidebar = require('./components/parts/sidebar/Sidebar');
 const Routes = require('./routes/Routes');

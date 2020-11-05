@@ -1,5 +1,5 @@
-const { modal } = require('@webpack');
-const { React } = require('@react');
+const { modal } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 module.exports = {
   /**

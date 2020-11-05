@@ -1,8 +1,8 @@
-const { Directories } = require('@constants');
-const { API } = require('@entities');
-
 const { remote: { globalShortcut } } = require('electron');
 const { join } = require('path');
+
+const { Directories } = require('@vizality/constants');
+const { API } = require('@vizality/entities');
 
 const localShortcut = require(join(Directories.MODULES, '.keybindutils', 'localShortcut'));
 

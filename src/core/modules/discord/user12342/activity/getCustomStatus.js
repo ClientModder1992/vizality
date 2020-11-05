@@ -1,4 +1,4 @@
-const { logger: { error } } = require('@util');
+const { logger: { error } } = require('@vizality/util');
 
 const getActivitiesByType = require('./getActivitiesByType');
 const getCurrentUserId = require('../getCurrentUserId');

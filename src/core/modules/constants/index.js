@@ -70,7 +70,6 @@ const constants = module.exports = Object.freeze({
     MESSAGE_LINK: `https?://(?:canary\.|ptb\.)?discord(?:app)?\.com/channels/(?:@me|\d{17,19}/)?\d{17,19}/\d{17,19}`,
     ASSET_LINK: '(?:(?:https?:\/\/)(?:canary\.|ptb\.)?discord(app)?\.com)?\/assets\/(?:[0-9]\.)?[a-zA-Z0-9]{20,32}\.?[a-z]{2,5}',
     EMOJI: '(:|<:|<a:)((\w{1,64}:\d{17,18})|(\w{1,64}))(:|>)'
-
   }),
 
   // Errors

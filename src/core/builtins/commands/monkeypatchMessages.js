@@ -1,5 +1,5 @@
-const { getModule, channels: { getChannelId } } = require('@webpack');
-const { HTTP } = require('@constants');
+const { getModule, channels: { getChannelId } } = require('@vizality/webpack');
+const { HTTP } = require('@vizality/constants');
 
 module.exports = async function monkeypatchMessages () {
   const messages = await getModule('sendMessage', 'editMessage');

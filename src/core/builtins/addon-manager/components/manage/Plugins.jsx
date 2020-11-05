@@ -1,8 +1,8 @@
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { Confirm, TabBar } = require('@components');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { open: openModal, close: closeModal } = require('@vizality/modal');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { Confirm, TabBar } = require('@vizality/components');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const BaseProduct = require('../parts/BaseProduct');
 const Base = require('./Base');

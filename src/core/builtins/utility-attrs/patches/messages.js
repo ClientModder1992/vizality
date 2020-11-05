@@ -1,6 +1,6 @@
-const { react : { findInReactTree }, joinClassNames } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
+const { react : { findInReactTree }, joinClassNames } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => {
   const Message = getModule(m => m.default && m.default.displayName === 'Message');

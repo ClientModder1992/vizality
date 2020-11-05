@@ -1,4 +1,4 @@
-const { React } = require('@react');
+const { React } = require('@vizality/react');
 
 const Announcement = require('./Announcement');
 

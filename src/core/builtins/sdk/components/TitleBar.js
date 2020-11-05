@@ -1,8 +1,7 @@
-const { AsyncComponent } = require('@components');
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { AsyncComponent } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
 
-const TitleBar = AsyncComponent.from((async () => {
+module.exports = AsyncComponent.from((async () => {
   const titleBar = getModule(m => typeof m === 'function' && m.toString().includes('PlatformTypes.WINDOWS') && m.toString().includes('PlatformTypes.OSX'));
   const windows = titleBar({ type: 'WINDOWS' }).type;
   return (props) => {
@@ -12,5 +11,3 @@ const TitleBar = AsyncComponent.from((async () => {
     return res;
   };
 })());
-
-module.exports = TitleBar;

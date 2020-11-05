@@ -1,8 +1,8 @@
 const { remote: { getCurrentWebContents } } = require('electron');
 
-const { getModule } = require('@webpack');
-const { Icon } = require('@components');
-const { React } = require('@react');
+const { getModule } = require('@vizality/webpack');
+const { Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 module.exports = class Titlebar extends React.PureComponent {
   render () {

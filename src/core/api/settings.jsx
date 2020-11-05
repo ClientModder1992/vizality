@@ -1,14 +1,14 @@
-const { logger: { error } } = require('@util');
-const { API } = require('@entities');
-const { Flux } = require('@webpack');
-const { React } = require('@react');
+const { logger: { error } } = require('@vizality/util');
+const { API } = require('@vizality/entities');
+const { Flux } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const actions = require('./settingsStore/actions');
 const store = require('./settingsStore/store');
 
-const Sidebar = require('@builtins/dashboard/components/parts/sidebar/Sidebar');
-const Content = require('@builtins/dashboard/components/parts/Content');
-const Layout = require('@builtins/dashboard/components/parts/Layout');
+const Sidebar = require('@vizality/builtins/dashboard/components/parts/sidebar/Sidebar');
+const Content = require('@vizality/builtins/dashboard/components/parts/Content');
+const Layout = require('@vizality/builtins/dashboard/components/parts/Layout');
 
 const _module = 'API';
 const _submodule = 'Settings';

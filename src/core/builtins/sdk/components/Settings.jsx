@@ -1,6 +1,6 @@
-const { settings: { SwitchItem } } = require('@components');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { settings: { SwitchItem } } = require('@vizality/components');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 class Settings extends React.PureComponent {
   render () {

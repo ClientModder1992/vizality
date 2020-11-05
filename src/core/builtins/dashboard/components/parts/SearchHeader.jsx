@@ -1,5 +1,5 @@
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const SearchBar = require('./SearchBar');
 

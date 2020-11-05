@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
-const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@util');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { joinClassNames, react : { findInReactTree, forceUpdateElement } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 /*
  * Attempt at patching lazy loading...

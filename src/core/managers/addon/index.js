@@ -1,7 +1,7 @@
-const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase }, logger: { log, warn, error } } = require('@util');
-
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
+
+const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase }, logger: { log, warn, error } } = require('@vizality/util');
 
 const _module = 'AddonManager';
 

@@ -1,9 +1,9 @@
-const { typing, getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { getOwnerInstance } } = require('@util');
-const { AdvancedScrollerThin } = require('@components');
-const { patch } = require('@patcher');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { typing, getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { react: { getOwnerInstance } } = require('@vizality/util');
+const { AdvancedScrollerThin } = require('@vizality/components');
+const { patch } = require('@vizality/patcher');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const Command = require('./components/Command');
 const Title = require('./components/Title');

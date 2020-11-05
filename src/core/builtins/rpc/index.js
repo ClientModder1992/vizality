@@ -1,8 +1,8 @@
 /* eslint-disable no-unreachable */
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
-const { Builtin } = require('@entities');
-const { HTTP } = require('@constants');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
+const { Builtin } = require('@vizality/entities');
+const { HTTP } = require('@vizality/constants');
 
 module.exports = class RPC extends Builtin {
   async onStart () {

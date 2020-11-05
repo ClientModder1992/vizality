@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
-const { getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 module.exports = async () => {
   return void 0;

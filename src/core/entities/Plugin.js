@@ -1,10 +1,10 @@
-const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@util');
-const { resolveCompiler } = require('@compilers');
-const { Directories } = require('@constants');
+const { join, win32, extname } = require('path');
+const { existsSync } = require('fs');
 const watch = require('node-watch');
 
-const { existsSync, readdirSync } = require('fs');
-const { join, win32, extname, dirname } = require('path');
+const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
+const { resolveCompiler } = require('@vizality/compilers');
+const { Directories } = require('@vizality/constants');
 
 const Updatable = require('./Updatable');
 

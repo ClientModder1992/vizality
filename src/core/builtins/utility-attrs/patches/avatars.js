@@ -1,7 +1,7 @@
-const { react: { forceUpdateElement } } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { react: { forceUpdateElement } } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 module.exports = async () => {
   const Avatar = await getModule('AnimatedAvatar', true);

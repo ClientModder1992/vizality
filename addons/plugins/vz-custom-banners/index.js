@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
-const { getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Plugin } = require('@vizality/entities');
 
 module.exports = class CustomBanners extends Plugin {
   onStart () {

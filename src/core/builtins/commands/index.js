@@ -1,9 +1,9 @@
-const { Builtin } = require('@entities');
-const { unpatch } = require('@patcher');
+const { Builtin } = require('@vizality/entities');
+const { unpatch } = require('@vizality/patcher');
 
-const commands = require('./commands');
 const monkeypatchMessages = require('./monkeypatchMessages');
 const injectAutocomplete = require('./injectAutocomplete');
+const commands = require('./commands');
 
 module.exports = class Commands extends Builtin {
   onStart () {

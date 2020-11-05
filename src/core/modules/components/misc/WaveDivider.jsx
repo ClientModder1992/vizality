@@ -1,5 +1,5 @@
 /* eslint-disable prefer-arrow-callback */
-const { React } = require('@react');
+const { React } = require('@vizality/react');
 
 function VizalityWaveDivider (props) {
   return <div class='vz-wave-divider' style={{ color: props.color }}>

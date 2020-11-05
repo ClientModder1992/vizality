@@ -1,6 +1,6 @@
-const { getModuleByDisplayName, getModule } = require('@webpack');
-const { AsyncComponent, Icon } = require('@components');
-const { React } = require('@react');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+const { AsyncComponent, Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 const AccountPanel = AsyncComponent.from(getModuleByDisplayName('AccountConnected', true));
 

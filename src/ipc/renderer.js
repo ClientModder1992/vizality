@@ -43,21 +43,20 @@ global.VizalityNative = {
 if (!window.__SPLASH__) {
   window.require = module => {
     switch (module) {
-      case '@classes':
-      case '@components':
-      case '@constants':
-      case '@discord':
-      case '@http':
-      case '@i18n':
-      case '@patcher':
-      case '@react':
-      case '@util':
-      case '@webpack':
-      case 'vizality':
+      case '@vizality/classes':
+      case '@vizality/components':
+      case '@vizality/constants':
+      case '@vizality/discord':
+      case '@vizality/http':
+      case '@vizality/i18n':
+      case '@vizality/patcher':
+      case '@vizality/react':
+      case '@vizality/util':
+      case '@vizality/webpack':
       case 'electron':
         return require(module);
       default:
-        // @todo Use @constants.ErrorTypes
+        // @todo Use @vizality/constants.ErrorTypes
         throw new Error('Unknown module.');
     }
   };

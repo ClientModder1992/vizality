@@ -1,11 +1,9 @@
 /* eslint-disable no-use-before-define */
-const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
-const { getModule, contextMenu: { closeContextMenu } } = require('@webpack');
-const { React, React: { useState } } = require('@react');
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
+const { getModule, contextMenu: { closeContextMenu } } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 module.exports = React.memo(props => {
-  let elements = {};
-
   const renderButton = (item, ctx) => {
     const { MenuItem } = getModule('MenuGroup');
     return (

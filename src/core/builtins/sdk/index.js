@@ -1,9 +1,9 @@
-const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@util');
-const { getModule, getModuleByDisplayName, contextMenu } = require('@webpack');
-const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@components');
-const { patch, unpatch } = require('@patcher');
-const { Builtin } = require('@entities');
-const { React } = require('@react');
+const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName, contextMenu } = require('@vizality/webpack');
+const { PopoutWindow, Tooltip, ContextMenu, Icon } = require('@vizality/components');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Builtin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 const SdkWindow = require('./components/SdkWindow');
 

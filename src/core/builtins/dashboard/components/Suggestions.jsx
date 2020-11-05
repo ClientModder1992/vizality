@@ -1,10 +1,10 @@
 const { shell: { openExternal } } = require('electron');
 
-const { Clickable, ErrorState } = require('@components');
-const { getModule } = require('@webpack');
-const { HTTP } = require('@constants');
-const { React } = require('@react');
-const { get } = require('@http');
+const { Clickable, ErrorState } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
+const { HTTP } = require('@vizality/constants');
+const { React } = require('@vizality/react');
+const { get } = require('@vizality/http');
 
 const CardsContainer = require('./parts/CardsContainer');
 const Layout = require('./parts/Layout');

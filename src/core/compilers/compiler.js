@@ -4,7 +4,7 @@ const watch = require('node-watch');
 const Events = require('events');
 const { join } = require('path');
 
-const { Directories } = require('@constants');
+const { Directories } = require('@vizality/constants');
 
 // @todo: Schedule a cache cleanup?
 

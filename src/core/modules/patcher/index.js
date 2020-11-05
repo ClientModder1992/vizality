@@ -2,7 +2,7 @@
 
 const { randomBytes } = require('crypto');
 
-const { logger : { error } } = require('@util');
+const { logger : { error } } = require('@vizality/util');
 
 const _module = 'Module';
 const _submodule = 'Patcher';

@@ -1,4 +1,4 @@
-const { ROOT_FOLDER } = require('@constants');
+const { ROOT_FOLDER } = require('@vizality/constants');
 
 const { readdirSync } = require('fs');
 const { resolve } = require('path');

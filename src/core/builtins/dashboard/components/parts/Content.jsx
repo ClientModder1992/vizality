@@ -1,7 +1,7 @@
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { Icon } = require('@components');
-const { React } = require('@react');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 module.exports = React.memo(({ icon, heading, subheading, className, hasPadding, hasBackground, children }) => {
   const { base } = getModule('base');

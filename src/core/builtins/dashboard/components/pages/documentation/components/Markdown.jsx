@@ -1,5 +1,5 @@
-const { Markdown } = require('@components');
-const { React } = require('@react');
+const { Markdown } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 const Section = require('../../../parts/Section');
 const Content = require('../../../parts/Content');

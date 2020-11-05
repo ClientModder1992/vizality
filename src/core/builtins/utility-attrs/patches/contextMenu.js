@@ -1,5 +1,5 @@
-const { getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 module.exports = () => {
   const ContextMenu = getModuleByDisplayName('FluxContainer(ContextMenus)');

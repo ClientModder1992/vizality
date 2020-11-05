@@ -1,8 +1,8 @@
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { forceUpdateElement } } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { Plugin } = require('@entities');
-const { React } = require('@react');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { react: { forceUpdateElement } } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Plugin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 const Settings = require('./components/Settings');
 const MainNav = require('./components/MainNav');

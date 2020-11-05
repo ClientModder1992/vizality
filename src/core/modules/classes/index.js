@@ -1,16 +1,15 @@
-require('fs')
-  .readdirSync(__dirname)
+const { existsSync, readdirSync } = require('fs');
+const { join } = require('path');
+
+readdirSync(__dirname)
   .filter(file => file !== 'index.js')
   .forEach(filename => {
     const moduleName = filename.split('.')[0];
     exports[moduleName] = require(`${__dirname}/${filename}`);
   });
 
-const { Directories } = require('@constants');
-const { logger: { log }, object: { removeEmptyProperties } } = require('@util');
-
-const { join } = require('path');
-const { existsSync } = require('fs');
+const { logger: { log }, object: { removeEmptyProperties } } = require('@vizality/util');
+const { Directories } = require('@vizality/constants');
 
 const _checkForUndefined = require('./_checkForUndefined');
 const _generateSassClasses = require('./_generateSassClasses');

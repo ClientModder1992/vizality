@@ -1,7 +1,7 @@
-const { AdvancedScrollerThin } = require('@components');
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { AdvancedScrollerThin } = require('@vizality/components');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const Item = require('./Item');
 

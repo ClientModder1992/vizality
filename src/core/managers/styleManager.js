@@ -1,11 +1,11 @@
 /* @todo: Use logger. */
-const { dom: { createElement }, logger: { error, log, warn } } = require('@util');
-const { resolveCompiler } = require('@compilers');
-const { Directories } = require('@constants');
-const { Theme } = require('@entities');
+const { dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
+const { resolveCompiler } = require('@vizality/compilers');
+const { Directories } = require('@vizality/constants');
+const { Theme } = require('@vizality/entities');
 
 const { join } = require('path');
-const { promises: { readFile, lstat }, readdirSync, existsSync } = require('fs');
+const { promises: { lstat }, readdirSync, existsSync } = require('fs');
 
 const fileRegex = /\.((s?c|le)ss|styl)$/;
 

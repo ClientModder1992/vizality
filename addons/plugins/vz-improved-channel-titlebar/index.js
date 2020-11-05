@@ -1,9 +1,9 @@
-const { getModuleByDisplayName, getModule } = require('@webpack');
-const { react : { findInReactTree } } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { _proxyContext } = require('@i18n');
-const { Plugin } = require('@entities');
-const { React } = require('@react');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+const { react : { findInReactTree } } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { _proxyContext } = require('@vizality/i18n');
+const { Plugin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 module.exports = class ChannelTitlebar extends Plugin {
   constructor () {

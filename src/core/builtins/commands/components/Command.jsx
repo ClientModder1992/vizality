@@ -1,6 +1,6 @@
-const { getModuleByDisplayName } = require('@webpack');
-const { Text } = require('@components');
-const { React } = require('@react');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { Text } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 const Autocomplete = getModuleByDisplayName('Autocomplete');
 

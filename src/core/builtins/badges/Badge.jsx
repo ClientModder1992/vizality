@@ -1,8 +1,8 @@
-const { Clickable, Tooltip, Badge } = require('@components');
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { Clickable, Tooltip, Badge } = require('@vizality/components');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 module.exports = ({ badge, onClick, location }) => {
   this.badgeWrapperClass = {};

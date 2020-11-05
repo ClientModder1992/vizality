@@ -1,5 +1,5 @@
-const { logger: { log, warn, error } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { log, warn, error } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 const _module = 'Module';
 const _submodule = `Discord:User:Activity`;

@@ -1,4 +1,4 @@
-const { logger: { log, error } } = require('@util');
+const { logger: { log, error } } = require('@vizality/util');
 
 const Events = require('events');
 

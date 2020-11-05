@@ -1,5 +1,5 @@
-const { getModuleByDisplayName, getModule } = require('@webpack');
-const { React } = require('@react');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');

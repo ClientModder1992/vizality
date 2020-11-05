@@ -1,4 +1,4 @@
-const { React } = require('@react');
+const { React } = require('@vizality/react');
 
 const Section = require('../parts/Section');
 const Content = require('../parts/Content');

@@ -1,4 +1,4 @@
-const { React } = require('@react');
+const { React } = require('@vizality/react');
 
 class Settings extends React.Component {
   render () {

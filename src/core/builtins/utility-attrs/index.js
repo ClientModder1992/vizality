@@ -1,6 +1,6 @@
 const { remote } = require('electron');
 
-const { Builtin } = require('@entities');
+const { Builtin } = require('@vizality/entities');
 
 const patches = require('./patches');
 

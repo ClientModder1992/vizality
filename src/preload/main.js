@@ -1,12 +1,11 @@
-require('module-alias/register');
-
-const { Directories } = require('@constants');
-
 const { existsSync, mkdirSync, open, write } = require('fs');
 const { ipcRenderer, contextBridge } = require('electron');
 const { join } = require('path');
 
+require('module-alias/register');
 require('../ipc/renderer');
+
+const { Directories } = require('@vizality/constants');
 
 // Initialize Vizality
 const Vizality = require('../core');

@@ -1,4 +1,4 @@
-const { API } = require('@entities');
+const { API } = require('@vizality/entities');
 
 /**
  * @typedef VizalityChatCommand

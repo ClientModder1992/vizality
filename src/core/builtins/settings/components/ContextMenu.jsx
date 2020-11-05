@@ -1,5 +1,5 @@
-const { Menu, Icon } = require('@components');
-const { React } = require('@react');
+const { Menu, Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 module.exports = class ContextMenu extends React.PureComponent {
   render () {

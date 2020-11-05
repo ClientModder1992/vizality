@@ -1,5 +1,5 @@
-const { logger: { warn }, string: { toHeaderCase } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { warn }, string: { toHeaderCase } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 const getSections = require('./getSections');
 

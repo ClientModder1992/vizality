@@ -17,24 +17,13 @@
     "url": "https://github.com/vizality/vizality/issues"
   },
   "_moduleAliases": {
-    "@root": ".",
-    "@src": "src",
-    "vizality": "src/core/modules",
-    "@classes": "src/core/modules/classes",
-    "@components": "src/core/modules/components",
-    "@constants": "src/core/modules/constants",
-    "@discord": "src/core/modules/discord",
-    "@http": "src/core/modules/http",
-    "@i18n": "src/core/modules/i18n",
-    "@builtins": "src/core/builtins",
-    "@modules": "src/core/modules",
-    "@patcher": "src/core/modules/patcher",
-    "@react": "src/core/modules/react",
-    "@typedefs": "src/core/typedefs",
-    "@compilers": "src/core/compilers",
-    "@entities": "src/core/entities",
-    "@util": "src/core/modules/util",
-    "@webpack": "src/core/modules/webpack"
+    "@vizality/root": ".",
+    "@vizality/src": "src",
+    "@vizality": "src/core/modules",
+    "@vizality/builtins": "src/core/builtins",
+    "@vizality/typedefs": "src/core/typedefs",
+    "@vizality/compilers": "src/core/compilers",
+    "@vizality/entities": "src/core/entities"
   },
   "dependencies": {
     "base64-img": "^1.0.4",

@@ -1,4 +1,4 @@
-const { logger: { error }, object: { isEmpty } } = require('@util');
+const { logger: { error }, object: { isEmpty } } = require('@vizality/util');
 
 const getGuild = require('../getGuild');
 

@@ -1,7 +1,7 @@
-const { Button, Icon, misc: { WaveDivider } } = require('@components');
-const { React, React: { useState, useEffect } } = require('@react');
-const { getModule } = require('@webpack');
-const { Guild } = require('@constants');
+const { Button, Icon, misc: { WaveDivider } } = require('@vizality/components');
+const { React, React: { useState, useEffect } } = require('@vizality/react');
+const { getModule } = require('@vizality/webpack');
+const { Guild } = require('@vizality/constants');
 
 module.exports = React.memo(() => {
   const [ hasJoinedDiscord, setHasJoined ] = useState();

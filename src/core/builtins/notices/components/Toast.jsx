@@ -1,7 +1,7 @@
-const { AsyncComponent, Button, Tooltip, Icon } = require('@components');
-const { getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
-const { React } = require('@react');
+const { AsyncComponent, Button, Tooltip, Icon } = require('@vizality/components');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
+const { React } = require('@vizality/react');
 
 const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
 

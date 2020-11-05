@@ -1,5 +1,5 @@
-const { Button, Icon } = require('@components');
-const { React } = require('@react');
+const { Button, Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 const Card = React.memo(({ icon, header, description, buttonText, path }) => {
   return (

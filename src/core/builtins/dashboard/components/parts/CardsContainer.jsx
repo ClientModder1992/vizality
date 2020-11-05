@@ -1,5 +1,5 @@
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const COUNTS = [ [ 1696, 20 ], [ 1432, 16 ], [ 1168, 12 ], [ 0, 8 ] ]; // yoinked from Discord's source code
 

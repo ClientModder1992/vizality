@@ -1,5 +1,5 @@
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { React } = require('@react');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 module.exports = class AsyncComponent extends React.PureComponent {
   constructor (props) {

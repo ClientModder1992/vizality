@@ -1,4 +1,4 @@
-const { React } = require('@react');
+const { React } = require('@vizality/react');
 
 const AsyncComponent = require('./AsyncComponent');
 const Switch = AsyncComponent.fromDisplayName('Switch');
@@ -9,7 +9,7 @@ module.exports = React.memo(props => {
     const fn = props.onChange;
     props.onChange = (checked) => fn({ target: { checked } });
   }
-  
+
   if (props.checked === void 0) {
     props.checked = props.value;
   }

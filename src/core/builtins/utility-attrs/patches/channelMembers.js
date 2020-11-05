@@ -1,6 +1,6 @@
-const { react: { forceUpdateElement }, joinClassNames } = require('@util');
-const { getModuleByDisplayName, getModule } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { react: { forceUpdateElement }, joinClassNames } = require('@vizality/util');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 module.exports = () => {
   const MemberListItem = getModuleByDisplayName('MemberListItem');

@@ -1,9 +1,9 @@
-const { logger: { log, warn } } = require('@util');
+const { logger: { log, warn } } = require('@vizality/util');
+
+const module = 'Module';
+const submodule = 'Discord:settings:getSettingInfo';
 
 const getSettingInfo = (setting) => {
-  const module = 'Module';
-  const submodule = 'Discord:settings:getSettingInfo';
-
   const SETTINGS_INFO = {
     afkTimeout: [
       'The number of seconds Discord will wait for activity before sending mobile push notifications.',

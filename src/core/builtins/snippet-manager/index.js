@@ -1,14 +1,14 @@
 const { promises: { writeFile, readFile, readdir }, existsSync, unlink } = require('fs');
 const { join } = require('path');
 
-const { react : { findInReactTree } } = require('@util');
-const { PopoutWindow } = require('@components');
-const { patch, unpatch } = require('@patcher');
-const { Channels } = require('@constants');
-const { getModule } = require('@webpack');
-const { Builtin } = require('@entities');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { react : { findInReactTree } } = require('@vizality/util');
+const { PopoutWindow } = require('@vizality/components');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Channels } = require('@vizality/constants');
+const { getModule } = require('@vizality/webpack');
+const { Builtin } = require('@vizality/entities');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const SnippetButton = require('./components/SnippetButton');
 const CustomCSS = require('./components/CustomCSS');

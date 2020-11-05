@@ -1,9 +1,9 @@
-const { joinClassNames } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
-const { Plugin } = require('@entities');
-const { Icon } = require('@components');
-const { React } = require('@react');
+const { joinClassNames } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
+const { Plugin } = require('@vizality/entities');
+const { Icon } = require('@vizality/components');
+const { React } = require('@vizality/react');
 
 module.exports = class ContextMenuIcons extends Plugin {
   onStart () {

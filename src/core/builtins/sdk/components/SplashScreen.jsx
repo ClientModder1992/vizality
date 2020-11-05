@@ -1,10 +1,10 @@
 const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
-const { join, dirname } = require('path');
+const { join } = require('path');
 
-const { Flex, Button } = require('@components');
-const { Directories } = require('@constants');
-const { React } = require('@react');
+const { Flex, Button } = require('@vizality/components');
+const { Directories } = require('@vizality/constants');
+const { React } = require('@vizality/react');
 
 const SplashStages = Object.freeze({
   CHECKING_FOR_UPDATES: 'CHECKING_FOR_UPDATES',

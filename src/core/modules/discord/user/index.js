@@ -1,7 +1,7 @@
-const { string: { isUrl }, logger: { error } } = require('@util');
-const { getModule } = require('@webpack');
+const { string: { isUrl }, logger: { error } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 // eslint-disable-next-line no-unused-vars
-const __typings__ = require('@typedefs');
+const __typings__ = require('@vizality/typedefs');
 
 const Constants = require('../module/constants');
 

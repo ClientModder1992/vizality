@@ -1,5 +1,5 @@
-const { logger: { error } } = require('@util');
-const { API } = require('@entities');
+const { logger: { error } } = require('@vizality/util');
+const { API } = require('@vizality/entities');
 
 const _module = 'Module';
 const _submodule = 'API:Actions';

@@ -1,6 +1,6 @@
-const { getModule, i18n } = require('@webpack');
-const { Directories } = require('@constants');
-const { API } = require('@entities');
+const { getModule, i18n } = require('@vizality/webpack');
+const { Directories } = require('@vizality/constants');
+const { API } = require('@vizality/entities');
 
 const strings = require(Directories.LANGUAGES);
 

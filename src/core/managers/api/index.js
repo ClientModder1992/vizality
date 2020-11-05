@@ -1,8 +1,8 @@
-const { logger: { error } } = require('@util');
-const { Directories } = require('@constants');
-
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
+
+const { logger: { error } } = require('@vizality/util');
+const { Directories } = require('@vizality/constants');
 
 class APIManager {
   constructor () {

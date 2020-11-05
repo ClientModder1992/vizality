@@ -1,6 +1,6 @@
-const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
-const { getModule, contextMenu: { closeContextMenu } } = require('@webpack');
-const { React } = require('@react');
+const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
+const { getModule, contextMenu: { closeContextMenu } } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 module.exports = class ContextMenu extends React.PureComponent {
   constructor (props) {

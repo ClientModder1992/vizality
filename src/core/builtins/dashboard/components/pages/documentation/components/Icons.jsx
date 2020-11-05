@@ -1,9 +1,9 @@
-const { Icon, CodeBlock, ComponentPreview } = require('@components');
-const { React, React: { useState, useEffect } } = require('@react');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { Icon, CodeBlock, ComponentPreview } = require('@vizality/components');
+const { React, React: { useState, useEffect } } = require('@vizality/react');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
 
-// @todo Remember to use @component later when you add this.
+// @todo Remember to use @vizality/component later when you add this.
 const TextInput = getModuleByDisplayName('TextInput');
 
 const Section = require('../../../parts/Section');
@@ -65,11 +65,11 @@ module.exports = React.memo(() => {
     return (
       <>
         <CodeBlock language='js' header='JSX' content={
-          `const { Icon } = require('@components');\n\n` +
+          `const { Icon } = require('@vizality/components');\n\n` +
           `<Icon name='${selectedIcon}' />`}
         />
         <CodeBlock language='js' header='React' content={
-          `const { Icon } = require('@components');\n\n` +
+          `const { Icon } = require('@vizality/components');\n\n` +
           `React.createElement(Icon, {\n` +
           `  name: '${selectedIcon}'\n` +
           `});`}

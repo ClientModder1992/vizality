@@ -1,6 +1,6 @@
-const { joinClassNames } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
+const { patch, unpatch } = require('@vizality/patcher');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 module.exports = () => {
   const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));

@@ -1,6 +1,6 @@
-const { FormTitle, Icon } = require('@components');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { FormTitle, Icon } = require('@vizality/components');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const Permissions = {
   keypresses: {

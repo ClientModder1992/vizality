@@ -1,6 +1,7 @@
-const { ImageCarouselModal, Image } = require('@components');
-const { open: openModal } = require('vizality/modal');
-const { React } = require('@react');
+const { ImageCarouselModal, Image } = require('@vizality/components');
+const { React } = require('@vizality/react');
+
+const { open: openModal } = require('@vizality/modal');
 
 const Layout = require('../../parts/Layout');
 

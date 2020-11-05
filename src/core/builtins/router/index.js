@@ -1,8 +1,8 @@
-const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@util');
-const { getModule, getModules, getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
-const { Builtin } = require('@entities');
-const { React } = require('@react');
+const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
+const { getModule, getModules, getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Builtin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 module.exports = class Router extends Builtin {
   async onStart () {

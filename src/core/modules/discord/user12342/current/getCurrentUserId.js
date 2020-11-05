@@ -1,5 +1,5 @@
-const { logger: { error } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { error } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 
 /**

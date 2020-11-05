@@ -1,8 +1,8 @@
 const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
 const { join } = require('path');
 
-const { Flux, FluxDispatcher } = require('@webpack');
-const { Directories } = require('@constants');
+const { Flux, FluxDispatcher } = require('@vizality/webpack');
+const { Directories } = require('@vizality/constants');
 
 const ActionTypes = require('./constants');
 

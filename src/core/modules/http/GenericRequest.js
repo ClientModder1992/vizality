@@ -2,13 +2,13 @@
  * Forked from DevYukine's http module and Snekfetch
  */
 
-const { logger : { log } } = require('@util');
-const { Repositories } = require('@constants');
-
 const querystring = require('querystring');
 const https = require('https');
 const http = require('http');
 const url = require('url');
+
+const { Repositories } = require('@vizality/constants');
+const { logger : { log } } = require('@vizality/util');
 
 /**
  * @typedef HTTPResponse

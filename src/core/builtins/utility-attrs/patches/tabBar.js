@@ -1,6 +1,6 @@
-const { joinClassNames, string: { toCamelCase } } = require('@util');
-const { getModuleByDisplayName } = require('@webpack');
-const { patch, unpatch } = require('@patcher');
+const { joinClassNames, string: { toCamelCase } } = require('@vizality/util');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
 
 /*
  * Modifies The TabBar component, which is used in various places throughout

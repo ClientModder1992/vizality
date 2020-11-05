@@ -1,8 +1,8 @@
-const { Flux, getModule } = require('@webpack');
-const { Tooltip, HeaderBar, Clickable, Icon, AdvancedScrollerThin } = require('@components');
-const { joinClassNames } = require('@util');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { Tooltip, HeaderBar, Clickable, Icon, AdvancedScrollerThin } = require('@vizality/components');
+const { Flux, getModule } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');

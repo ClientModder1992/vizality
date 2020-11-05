@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
 
 /*
  * This module does nothing currently. It is just here for future reference in the event context

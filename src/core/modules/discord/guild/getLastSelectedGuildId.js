@@ -1,4 +1,4 @@
-const { getModule } = require('@webpack');
+const { getModule } = require('@vizality/webpack');
 
 /**
  * Gets the server ID of the last selected server.

@@ -1,13 +1,14 @@
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
 
-const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@components');
-const { open: openModal, close: closeModal } = require('vizality/modal');
-const { Messages, chosenLocale: currentLocale } = require('@i18n');
-const { Repositories, Directories } = require('@constants');
-const { React, React: { useState } } = require('@react');
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
+const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@vizality/components');
+const { Messages, chosenLocale: currentLocale } = require('@vizality/i18n');
+const { Repositories, Directories } = require('@vizality/constants');
+const { React, React: { useState } } = require('@vizality/react');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+
+const { open: openModal, close: closeModal } = require('@vizality/modal');
 
 const Update = require('./Update');
 const Icons = require('./Icons');

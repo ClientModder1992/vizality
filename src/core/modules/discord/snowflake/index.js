@@ -1,11 +1,11 @@
-/* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
-const { logger: { error } } = require('@util');
-
 /*
  * @todo Long is only used here. It may be worth adding that particular section
  * from Long, rather than including the entire module, as it is over 170 kb. 💀
  */
 const Long = require('long');
+
+/* eslint-disable jsdoc/require-returns *//* eslint-disable jsdoc/require-param */
+const { logger: { error } } = require('@vizality/util');
 
 // Discord epoch (2015-01-01T00:00:00.000Z)
 const EPOCH = 1420070400000;

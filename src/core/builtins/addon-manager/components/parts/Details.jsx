@@ -1,7 +1,8 @@
-const { Tooltip, Icon, Clickable } = require('@components');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
-const { open: openModal } = require('vizality/modal');
+const { Tooltip, Icon, Clickable } = require('@vizality/components');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
+
+const { open: openModal } = require('@vizality/modal');
 
 const LicenseModal = require('../modals/License');
 const licenses = require('../../licenses');

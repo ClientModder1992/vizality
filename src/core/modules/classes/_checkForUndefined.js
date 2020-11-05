@@ -1,4 +1,4 @@
-const { logger: { warn } } = require('@util');
+const { logger: { warn } } = require('@vizality/util');
 
 const classes = require('../classes');
 

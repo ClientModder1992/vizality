@@ -1,9 +1,9 @@
 const { clipboard } = require('electron');
 
-const { React, React: { useState } } = require('@react');
-const { getModuleByDisplayName } = require('@webpack');
-const { Messages } = require('@i18n');
-const { sleep } = require('@util');
+const { React, React: { useState } } = require('@vizality/react');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { sleep } = require('@vizality/util');
 
 const AsyncComponent = require('../AsyncComponent');
 const FormItem = require('./FormItem');

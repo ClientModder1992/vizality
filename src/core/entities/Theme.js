@@ -1,5 +1,5 @@
-const { dom: { createElement }, logger: { error, log, warn } } = require('@util');
-const { resolveCompiler } = require('@compilers');
+const { dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
+const { resolveCompiler } = require('@vizality/compilers');
 
 const Updatable = require('./Updatable');
 

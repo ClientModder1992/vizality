@@ -1,12 +1,13 @@
-const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@util');
-const { getModule, getModules, getModuleByDisplayName } = require('@webpack');
-const { open: openModal } = require('vizality/modal');
-const { Clickable, Tooltip } = require('@components');
-const { HTTP } = require('@constants');
-const { patch, unpatch } = require('@patcher');
-const { Builtin } = require('@entities');
-const { React } = require('@react');
-const { get } = require('@http');
+const { dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance } } = require('@vizality/util');
+const { getModule, getModules, getModuleByDisplayName } = require('@vizality/webpack');
+const { Clickable, Tooltip } = require('@vizality/components');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Builtin } = require('@vizality/entities');
+const { HTTP } = require('@vizality/constants');
+const { React } = require('@vizality/react');
+const { get } = require('@vizality/http');
+
+const { open: openModal } = require('@vizality/modal');
 
 const DonateModal = require('./DonateModal');
 const BadgesComponent = require('./Badges');

@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { react: { forceUpdateElement } } = require('@util');
-const { patch, unpatch } = require('@patcher');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { react: { forceUpdateElement } } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
 
 /*
  * @note This module does nothing currently. It is just here for future reference in the event the

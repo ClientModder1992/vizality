@@ -1,6 +1,6 @@
 /* eslint-disable brace-style */
-const { string: { assertString, isUrl } } = require('@utilities');
-const { getModule } = require('@webpack');
+const { string: { assertString, isUrl } } = require('@vizality/utilities');
+const { getModule } = require('@vizality/webpack');
 
 // const Constants = require('../module/constants');
 // @todo Don't foreget to change this back.

@@ -1,12 +1,12 @@
-const { logger: { warn } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { warn } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 const getSettingInfo = require('./getSettingInfo');
 
-const getSetting = (setting) => {
-  const module = 'Module';
-  const submodule = 'Discord:settings:getSetting';
+const _module = 'Module';
+const _submodule = 'Discord:settings:getSetting';
 
+module.exports = (setting) => {
   if (!setting) return getSettingInfo();
 
   const settings = getModule('renderEmbeds', 'renderReactions', 'renderSpoilers');
@@ -64,8 +64,6 @@ const getSetting = (setting) => {
     case 'showSpoilers':
       return settings.renderSpoilers;
     default:
-      return settings[setting] || moreSettings[setting] || warn(module, submodule, null, `'${setting}' is not an available setting.`);
+      return settings[setting] || moreSettings[setting] || warn(_module, _submodule, null, `'${setting}' is not an available setting.`);
   }
 };
-
-module.exports = getSetting;

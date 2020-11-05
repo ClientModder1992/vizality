@@ -1,8 +1,8 @@
-const { getModuleByDisplayName, getModule } = require('@webpack');
-// const { AsyncComponent } = require('@components');
-const { patch, unpatch } = require('@patcher');
-const { Builtin } = require('@entities');
-const { React } = require('@react');
+const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
+// const { AsyncComponent } = require('@vizality/components');
+const { patch, unpatch } = require('@vizality/patcher');
+const { Builtin } = require('@vizality/entities');
+const { React } = require('@vizality/react');
 
 const ContextMenu = require('./components/ContextMenu');
 const _Settings = require('./components/Settings');

@@ -1,8 +1,9 @@
-const { close: closeModal } = require('vizality/modal');
-const { Modal, Button } = require('@components');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { Modal, Button } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
+
+const { close: closeModal } = require('@vizality/modal');
 
 const Header = require('./Header');
 

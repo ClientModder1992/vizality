@@ -1,8 +1,8 @@
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
-const { Plugin } = require('@entities');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
+const { Plugin } = require('@vizality/entities');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const PersonPlay = getModule(m => m.id && m.keys().includes('./Activity'))('./PersonPlay').default;
 

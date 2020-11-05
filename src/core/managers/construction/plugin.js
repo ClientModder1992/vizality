@@ -1,7 +1,7 @@
-const { PLUGINS_FOLDER } = require('@constants');
-
-const { resolve } = require('path');
 const { readdirSync } = require('fs');
+const { resolve } = require('path');
+
+const { PLUGINS_FOLDER } = require('@vizality/constants');
 
 const AddonManager = require('./addon');
 

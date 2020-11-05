@@ -1,6 +1,6 @@
-const { settings: { TextInput, SwitchItem, Category, RadioGroup } } = require('@components');
-const { getModuleByDisplayName } = require('@webpack');
-const { React } = require('@react');
+const { settings: { TextInput, SwitchItem, Category, RadioGroup } } = require('@vizality/components');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 let classes = {
   initialized: false,

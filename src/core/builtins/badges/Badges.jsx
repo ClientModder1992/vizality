@@ -1,11 +1,12 @@
 const { shell: { openExternal } } = require('electron');
 
-const { Guild, Repositories, HTTP } = require('@constants');
-const { getModule, constants: { Routes } } = require('@webpack');
-const { Clickable, Tooltip } = require('@components');
-const { open: openModal } = require('vizality/modal');
-const { React } = require('@react');
-const { get } = require('@http');
+const { getModule, constants: { Routes } } = require('@vizality/webpack');
+const { Guild, Repositories, HTTP } = require('@vizality/constants');
+const { Clickable, Tooltip } = require('@vizality/components');
+const { React } = require('@vizality/react');
+const { get } = require('@vizality/http');
+
+const { open: openModal } = require('@vizality/modal');
 
 const DonateModal = require('./DonateModal');
 const Badge = require('./Badge');

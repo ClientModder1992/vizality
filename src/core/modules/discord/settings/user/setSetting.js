@@ -1,5 +1,5 @@
-const { logger: { warn } } = require('@util');
-const { getModule } = require('@webpack');
+const { logger: { warn } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 const setSetting = async (setting, value, sync = true) => {
   const module = 'Module';

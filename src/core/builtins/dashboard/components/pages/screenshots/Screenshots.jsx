@@ -1,10 +1,12 @@
+// @todo Work on implementing this without the module
 const imageToBase64 = require('base64-img');
-const { readdirSync } = require('fs');
 const { join, extname } = require('path');
+const { readdirSync } = require('fs');
 
-const { React, React: { useState, useEffect } } = require('@react');
-const { open: openModal } = require('vizality/modal');
-const { ImageModal, Image } = require('@components');
+const { React, React: { useState, useEffect } } = require('@vizality/react');
+const { ImageModal, Image } = require('@vizality/components');
+
+const { open: openModal } = require('@vizality/modal');
 
 module.exports = React.memo(() => {
   const [ images, setImages ] = useState([]);

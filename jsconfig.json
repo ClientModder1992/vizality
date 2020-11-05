@@ -3,24 +3,14 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "@root/*": [ "./../*" ],
-      "@src/*": [ "./*" ],
-      "vizality/*": [ "./core/modules/*"],
-      "@classes": [ "./core/modules/classes" ],
-      "@compilers": [ "./core/compilers" ],
-      "@components": [ "./core/modules/components" ],
-      "@constants": [ "./core/modules/constants" ],
-      "@discord": [ "./core/modules/discord" ],
-      "@entities": [ "./core/entities" ],
-      "@http": [ "./core/modules/http" ],
-      "@i18n": [ "./core/modules/i18n" ],
-      "@builtins": [ "./core/builtins"],
-      "@modules": [ "./core/modules"],
-      "@patcher": [ "./core/modules/patcher" ],
-      "@react": [ "./core/modules/react" ],
-      "@typedefs": [ "./core/typedefs" ],
-      "@util": [ "./core/modules/util" ],
-      "@webpack": [ "./core/modules/webpack" ]
+      "@vizality/root/*": [ "./../*" ],
+      "@vizality/src/*": [ "./*" ],
+      "@vizality/*": [ "./core/modules/*"],
+      "@vizality/compilers": [ "./core/compilers" ],
+      "@vizality/entities": [ "./core/entities" ],
+      "@vizality/builtins": [ "./core/builtins"],
+      "@vizality/modules": [ "./core/modules"],
+      "@vizality/typedefs": [ "./core/typedefs" ]
     }
   }
 }

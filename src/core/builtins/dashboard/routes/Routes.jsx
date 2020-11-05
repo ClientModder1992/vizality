@@ -1,4 +1,4 @@
-const { React, Router: { Route, Switch, Redirect } } = require('@react');
+const { React, Router: { Route, Switch, Redirect } } = require('@vizality/react');
 
 const Markdown = require('../components/pages/documentation/components/Markdown');
 const Icons = require('../components/pages/documentation/components/Icons');
@@ -10,10 +10,10 @@ const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
-const Updater = require('@builtins/updater/components/Settings');
-const Snippets = require('@builtins/snippet-manager/components/CustomCSS');
-const Plugins = require('@builtins/addon-manager/components/manage/Plugins');
-const Themes = require('@builtins/addon-manager/components/manage/Themes');
+const Plugins = require('@vizality/builtins/addon-manager/components/manage/Plugins');
+const Themes = require('@vizality/builtins/addon-manager/components/manage/Themes');
+const Snippets = require('@vizality/builtins/snippet-manager/components/CustomCSS');
+const Updater = require('@vizality/builtins/updater/components/Settings');
 // const Settings = vizality.api.settings.tabs['vz-settings'].render;
 
 module.exports = () => {

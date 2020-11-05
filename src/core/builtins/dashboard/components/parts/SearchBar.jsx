@@ -1,7 +1,7 @@
-const { Clickable, Icon } = require('@components');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { Clickable, Icon } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 module.exports = React.memo(({ placeholder, onSearch }) => {
   const { size12 } = getModule('size12');

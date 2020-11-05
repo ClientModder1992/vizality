@@ -1,10 +1,10 @@
 /* eslint-disable prefer-arrow-callback */
 const { clipboard } = require('electron');
 
-const { React, React: { useState } } = require('@react');
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
+const { React, React: { useState } } = require('@vizality/react');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
 
 const Button = getModule(m => m.DropdownSizes);
 

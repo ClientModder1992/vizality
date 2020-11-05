@@ -1,4 +1,4 @@
-const { getModule } = require('@webpack');
+const { getModule } = require('@vizality/webpack');
 
 /**
  * Gets all of the cached guild objects.

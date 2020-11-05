@@ -1,13 +1,13 @@
-const { sleep, logger: { log, warn, error } } = require('@util');
-const { getModule, initialize } = require('@webpack');
-const { HTTP, Directories } = require('@constants');
-const { jsx: JsxCompiler } = require('@compilers');
-const { Updatable } = require('@entities');
-
-const { join } = require('path');
 const { promisify } = require('util');
 const cp = require('child_process');
+const { join } = require('path');
 const exec = promisify(cp.exec);
+
+const { sleep, logger: { log, warn, error } } = require('@vizality/util');
+const { getModule, initialize } = require('@vizality/webpack');
+const { HTTP, Directories } = require('@vizality/constants');
+const { jsx: JsxCompiler } = require('@vizality/compilers');
+const { Updatable } = require('@vizality/entities');
 
 const AddonManager = require('./managers/addon');
 const StyleManager = require('./managers/styleManager');
@@ -16,7 +16,7 @@ const APIManager = require('./managers/api');
 const FluxModule = async () => {
   const Flux = getModule('Store', 'PersistedStore');
   Flux.connectStoresAsync = (stores, fn) => (Component) =>
-    require('@components').AsyncComponent.from((async () => {
+    require('@vizality/components').AsyncComponent.from((async () => {
       const awaitedStores = await Promise.all(stores);
       console.log('Remember to add these to settings (darkSiderbar, etc.)', awaitedStores);
       return Flux.connectStores(awaitedStores, (props) => fn(awaitedStores, props))(Component);
@@ -149,12 +149,12 @@ module.exports = class Vizality extends Updatable {
     const modules = [ 'webpack', 'classes', 'constants', 'discord', 'util' ];
 
     for (const mdl of modules) {
-      const Mdl = require(`@${mdl}`);
+      const Mdl = require(`@vizality/${mdl}`);
       Object.assign(this.modules, { [mdl]: Mdl });
     }
 
     /*
-     * const Webpack = require('@webpack');
+     * const Webpack = require('@vizality/webpack');
      * Object.getOwnPropertyNames(Webpack)
      *   .forEach(e => {
      *     if (!e.indexOf('get') || !e.indexOf('find') || !e.indexOf('_')) {
@@ -197,7 +197,7 @@ module.exports = class Vizality extends Updatable {
     })();
 
     // This needs to be here, after the Webpack modules have been initialized
-    const { route: { getCurrentRoute } } = require('@discord');
+    const { route: { getCurrentRoute } } = require('@vizality/discord');
 
     document.documentElement.setAttribute('vz-route', getCurrentRoute());
 

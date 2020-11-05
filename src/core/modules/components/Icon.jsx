@@ -1,7 +1,7 @@
 /* eslint-disable prefer-arrow-callback */
-const { joinClassNames, string: { toKebabCase }, logger: { warn, error } } = require('@util');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { React } = require('@react');
+const { joinClassNames, string: { toKebabCase }, logger: { warn, error } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const { TooltipContainer } = getModule('TooltipContainer');
 const { updateAvailable } = getModule('updateAvailable');

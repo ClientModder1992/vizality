@@ -1,4 +1,4 @@
-const { Builtin } = require('@entities');
+const { Builtin } = require('@vizality/entities');
 
 const commands = require('./commands');
 

@@ -2,11 +2,11 @@
 
 const { shell } = require('electron');
 
-const { settings: { TextInput }, ContextMenu, Divider, Icon } = require('@components');
-const { string: { toHeaderCase, toPlural } } = require('@util');
-const { getModule, contextMenu } = require('@webpack');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { settings: { TextInput }, ContextMenu, Divider, Icon } = require('@vizality/components');
+const { string: { toHeaderCase, toPlural } } = require('@vizality/util');
+const { getModule, contextMenu } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 module.exports = class Base extends React.PureComponent {
   constructor () {

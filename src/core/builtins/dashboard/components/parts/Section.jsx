@@ -1,6 +1,6 @@
-const { joinClassNames } = require('@util');
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { joinClassNames } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 const Header = React.memo(({ heading, subheading }) => {
   const { base } = getModule('base');

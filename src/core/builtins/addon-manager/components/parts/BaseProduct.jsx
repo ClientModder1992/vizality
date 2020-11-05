@@ -1,7 +1,7 @@
-const { Card, Tooltip, Button, Clickable, Divider, Icon, Switch } = require('@components');
-const { getModule } = require('@webpack');
-const { Messages } = require('@i18n');
-const { React } = require('@react');
+const { Card, Tooltip, Button, Clickable, Divider, Icon, Switch } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
+const { Messages } = require('@vizality/i18n');
+const { React } = require('@vizality/react');
 
 const Permissions = require('./Permissions');
 const Details = require('./Details');
@@ -48,7 +48,7 @@ module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSe
     );
   };
 
-  // @todo: Consider making this an @discord utility function
+  // @todo: Consider making this an @vizality/discord utility function
   const goToDiscord = (code) => {
     const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
     inviteStore.acceptInviteAndTransitionToInviteChannel(code);

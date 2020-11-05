@@ -1,5 +1,5 @@
-const { object: { excludeProperties } } = require('@util');
-const { getModule } = require('@webpack');
+const { object: { excludeProperties } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 
 const attachments = require('./attachments');
 

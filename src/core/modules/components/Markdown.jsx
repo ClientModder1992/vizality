@@ -3,11 +3,12 @@ const { existsSync, promises: { readFile } } = require('fs');
 const { shell: { openExternal } } = require('electron');
 const Markdown = require('react-markdown');
 
-const { joinClassNames, string: { toKebabCase } } = require('@util');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { React, React: { useState } } = require('@react');
-const { open: openModal } = require('vizality/modal');
-const { Icon, CodeBlock } = require('@components');
+const { joinClassNames, string: { toKebabCase } } = require('@vizality/util');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { React, React: { useState } } = require('@vizality/react');
+const { Icon, CodeBlock } = require('@vizality/components');
+
+const { open: openModal } = require('@vizality/modal');
 
 module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
   const [ markdown, setMarkdown ] = useState();

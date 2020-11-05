@@ -1,6 +1,6 @@
-const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@util');
-const { patch, unpatch } = require('@patcher');
-const { getModule } = require('@webpack');
+const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
+const { patch, unpatch } = require('@vizality/patcher');
+const { getModule } = require('@vizality/webpack');
 
 // @test Set `this.props.isUnavailable` to true to test an unavailable channel
 

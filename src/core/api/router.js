@@ -1,12 +1,12 @@
-const { logger: { error } } = require('@util');
-const { getModule } = require('@webpack');
-const { API } = require('@entities');
+const { logger: { error } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
+const { API } = require('@vizality/entities');
+
+const Sidebar = require('@vizality/builtins/dashboard/components/parts/sidebar/Sidebar');
+const Routes = require('@vizality/builtins/dashboard/routes/Routes');
 
 const _module = 'API';
 const _submodule = 'Router';
-
-const Sidebar = require('@builtins/dashboard/components/parts/sidebar/Sidebar');
-const Routes = require('@builtins/dashboard/routes/Routes');
 
 /**
  * @typedef VizalityRoute

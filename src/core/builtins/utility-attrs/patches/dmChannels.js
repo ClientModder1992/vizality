@@ -1,6 +1,6 @@
-const { getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
-const { patch, unpatch } = require('@patcher');
+const { getModuleByDisplayName } = require('@vizality/webpack');
+const { patch, unpatch } = require('@vizality/patcher');
+const { joinClassNames } = require('@vizality/util');
 
 module.exports = async () => {
   const PrivateChannel = await getModuleByDisplayName('PrivateChannel', true);

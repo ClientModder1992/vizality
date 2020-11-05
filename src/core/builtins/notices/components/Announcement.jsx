@@ -1,6 +1,6 @@
-const { Clickable } = require('@components');
-const { getModule } = require('@webpack');
-const { React } = require('@react');
+const { Clickable } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
+const { React } = require('@vizality/react');
 
 let classesCache = null;
 

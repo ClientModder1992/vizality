@@ -1,7 +1,7 @@
 /* eslint-disable prefer-arrow-callback */
-const { React, React: { useState, useEffect } } = require('@react');
-const { getModule, getModuleByDisplayName } = require('@webpack');
-const { joinClassNames } = require('@util');
+const { React, React: { useState, useEffect } } = require('@vizality/react');
+const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
 
 const TabBar = getModuleByDisplayName('TabBar');
 const Icon = require('./Icon');
