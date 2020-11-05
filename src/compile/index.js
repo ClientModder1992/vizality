@@ -5,7 +5,7 @@ const { render } = require('sass');
 const { join } = require('path');
 
 // Command was initiated from
-let args = process.argv.slice(2);
+const args = process.argv.slice(2);
 
 // Check if they provided at least 1 argument
 if (args.length < 1) {
@@ -13,7 +13,10 @@ if (args.length < 1) {
 }
 
 // Use array destructuring here to set args[0] to args[1] if only 1 argument is provided
-if (args.length === 1) [ , args ] = args;
+if (args.length === 1) {
+  const output = args.toString();
+  args[1] = `${output.substring(0, output.length - 5)}.css`;
+}
 
 // Directory the command was initiated from
 const dir = process.env.INIT_CWD;

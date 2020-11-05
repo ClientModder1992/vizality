@@ -3,6 +3,7 @@ const { patch, unpatch } = require('@vizality/patcher');
 const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => {
+  return () => void 0;
   const guildClasses = getModule('blobContainer');
   const guildElement = (await waitForElement(`.${guildClasses.blobContainer.split(' ')[0]}`)).parentElement;
   const instance = getOwnerInstance(guildElement);

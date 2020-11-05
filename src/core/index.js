@@ -127,10 +127,8 @@ module.exports = class Vizality extends Updatable {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
     // console.clear();
 
-    const startupBanner = `${HTTP.IMAGES}/console-startup-banner.gif`;
-
     // Startup banner
-    console.log('%c ', `background: url(${startupBanner}) no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ', `background: url('${HTTP.IMAGES}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
 
     // APIs
     await this.manager.apis.initialize();

@@ -109,7 +109,7 @@ module.exports = React.memo(function VizalityCodeBlock ({
             {showLineNumbers && <div className='vz-code-block-line-numbers'/>}
             {showCopyButton && <Button
               className={joinClassNames('vz-code-block-copy-button', { 'vz-is-copied': copyText === Messages.COPIED })}
-              color={copyText === Messages.COPY ? Button.Colors.BRAND : Button.Colors.GREEN}
+              color={copyText === Messages.COPY ? null : Button.Colors.GREEN}
               look={Button.Looks.FILLED}
               size={Button.Sizes.SMALL}
               onClick={handleCodeCopy}>
