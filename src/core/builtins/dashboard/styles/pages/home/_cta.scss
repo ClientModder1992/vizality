@@ -1,4 +1,4 @@
-@use '../../../../../lib/sass' as *;
+@use '@vizality/sass' as *;
 
 // @todo Fix him at varying resolutions and rename class
 .vz-home-cta {
@@ -27,7 +27,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    // Fix a bug with a line showing through behind the wave divider when hovering
+    // Fixes a rendering bug with a line showing through behind the wave divider when hovering
     // over the feature cards that utilize transforms.
     height: calc(100% - 1px);
     background: url(https://i.imgur.com/fIIzj3q.png);

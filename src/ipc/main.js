@@ -1,27 +1,24 @@
-const {
-  existsSync,
-  promises: { readFile },
-  createWriteStream,
-} = require('fs');
+const { existsSync, createWriteStream, promises: { readFile } } = require('fs');
 const { ipcMain, BrowserWindow } = require('electron');
 const { relative, join, dirname } = require('path');
+// Defining path here so path.resolve doesn't overlap with resolve below
 const path = require('path');
 const sass = require('sass');
 
-const VIZALITY_REGEX = new RegExp("@vizality\\/([^'\"]{1,})?", 'ig');
+const VIZALITY_REGEX = new RegExp('@vizality\\/([^\'"]{1,})?', 'ig');
 const BASE_DIR = `${join(__dirname, '..', '..')}\\`;
 const LIB_DIR = `${join(__dirname, '..', 'core', 'lib')}\\`;
 
 if (!ipcMain) {
-  throw new Error("Don't require stuff you shouldn't silly.");
+  throw new Error('Don\'t require stuff you shouldn\'t silly.');
 }
 
-function openDevTools(e, opts, externalWindow) {
+function openDevTools (e, opts, externalWindow) {
   e.sender.openDevTools(opts);
   if (externalWindow) {
     if (externalWindow) {
       let devToolsWindow = new BrowserWindow({
-        webContents: e.sender.devToolsWebContents,
+        webContents: e.sender.devToolsWebContents
       });
       devToolsWindow.on('ready-to-show', () => devToolsWindow.show());
       devToolsWindow.on('close', () => {
@@ -32,11 +29,11 @@ function openDevTools(e, opts, externalWindow) {
   }
 }
 
-function closeDevTools(e) {
+function closeDevTools (e) {
   e.sender.closeDevTools();
 }
 
-function clearCache(e) {
+function clearCache (e) {
   return new Promise((resolve) => {
     e.sender.session.clearCache(() => resolve(null));
   });
@@ -44,11 +41,12 @@ function clearCache(e) {
 
 const logger = createWriteStream(join(BASE_DIR, 'main.log'), {
   flags: 'a',
-  encoding: 'utf8',
+  encoding: 'utf8'
 });
 
 /* EXPERIMENTAL */
-function logToFile(str) {
+// eslint-disable-next-line no-unused-vars
+function logToFile (str) {
   logger.write(`${new Date().toISOString()} | INFO | ${str}\n`, (err) => {
     if (err) {
       console.error(err);
@@ -56,24 +54,18 @@ function logToFile(str) {
   });
 }
 
-function compileSass(_, file) {
+function compileSass (_, file) {
   return new Promise((resolve, reject) => {
     readFile(file, 'utf8').then((rawScss) => {
       const relativePath = relative(file, LIB_DIR);
       const absolutePath = path.resolve(join(file, relativePath));
-      const fixedScss = rawScss.replace(
-        VIZALITY_REGEX,
-        `${join(absolutePath, '$1').replace(/\\/g, '/')}/`
-      );
+      const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
       sass.render(
         {
           data: fixedScss,
           importer: (url, prev) => {
             if (VIZALITY_REGEX.test(url)) {
-              url = url.replace(
-                VIZALITY_REGEX,
-                `${join(absolutePath, '$1').replace(/\\/g, '/')}/`
-              );
+              url = url.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
             }
             url = url.replace('file:///', '');
             if (existsSync(url)) {
@@ -82,14 +74,11 @@ function compileSass(_, file) {
             const prevFile =
               prev === 'stdin'
                 ? file
-                : prev.replace(
-                    /https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com/i,
-                    ''
-                  );
+                : prev.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com/i, '');
             return {
-              file: join(dirname(decodeURI(prevFile)), url).replace(/\\/g, '/'),
+              file: join(dirname(decodeURI(prevFile)), url).replace(/\\/g, '/')
             };
-          },
+          }
         },
         (err, compiled) => {
           if (err) {
@@ -102,7 +91,7 @@ function compileSass(_, file) {
   });
 }
 
-ipcMain.on('VIZALITY_GET_PRELOAD', (e) => (e.returnValue = e.sender._preload));
+ipcMain.on('VIZALITY_GET_PRELOAD', e => e.returnValue = e.sender._preload);
 ipcMain.handle('VIZALITY_OPEN_DEVTOOLS', openDevTools);
 ipcMain.handle('VIZALITY_CLOSE_DEVTOOLS', closeDevTools);
 ipcMain.handle('VIZALITY_CACHE_CLEAR', clearCache);

@@ -2,6 +2,5 @@
   "name": "Dashboard",
   "version": "0.0.1",
   "description": "Vizality's dashboard for handling the various custom routes and sections created by Vizality.",
-  "author": "Vizality",
-  "color": "#fff"
+  "author": "Vizality"
 }
