@@ -47,7 +47,7 @@ const logger = module.exports = {
         submodule: '#17181c'
       },
       plugin: {
-        module: '#1e2963',
+        module: '#000',
         submodule: '#782049'
       },
       theme: {

@@ -6,7 +6,7 @@ const i18n = require('./i18n');
 module.exports = class AddonsManager extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
-    vizality.api.i18n.loadAllStrings(i18n);
+    vizality.api.i18n.injectAllStrings(i18n);
     Object.values(commands).forEach(cmd => vizality.api.commands.registerCommand(cmd));
   }
 

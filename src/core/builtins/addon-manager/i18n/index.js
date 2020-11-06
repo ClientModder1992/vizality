@@ -7,4 +7,4 @@ require('fs')
   });
 
 const licenses = require('./licenses');
-vizality.api.i18n.loadAllStrings(licenses);
+vizality.api.i18n.injectAllStrings(licenses);

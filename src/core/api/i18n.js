@@ -9,7 +9,7 @@ module.exports = class I18nAPI extends API {
     super();
     this.messages = {};
     this.locale = null;
-    this.loadAllStrings(strings);
+    this.injectAllStrings(strings);
   }
 
   async onStart () {
@@ -38,11 +38,11 @@ module.exports = class I18nAPI extends API {
     });
   }
 
-  loadAllStrings (strings) {
-    Object.keys(strings).forEach(locale => this.loadStrings(locale, strings[locale]));
+  injectAllStrings (strings) {
+    Object.keys(strings).forEach(locale => this.injectStrings(locale, strings[locale]));
   }
 
-  loadStrings (locale, strings) {
+  injectStrings (locale, strings) {
     if (!this.messages[locale]) {
       this.messages[locale] = strings;
     } else {
