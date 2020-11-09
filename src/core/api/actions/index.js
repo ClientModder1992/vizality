@@ -6,7 +6,7 @@ const _submodule = 'API:Actions';
 
 /**
  * @typedef VizalityActions
- * @property {String} name Action name
+ * @property {string} name Action name
  * @property {Function} action The action to be performed
  */
 

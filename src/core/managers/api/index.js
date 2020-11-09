@@ -4,7 +4,7 @@ const { join } = require('path');
 const { logger: { error } } = require('@vizality/util');
 const { Directories } = require('@vizality/constants');
 
-class APIManager {
+module.exports = class APIManager {
   constructor () {
     this.dir = Directories.API;
     this.apis = [];
@@ -13,7 +13,6 @@ class APIManager {
   mount (api) {
     try {
       const APIClass = require(join(this.dir, api));
-      api = api.replace(/\.js(x)?$/, '');
       vizality.api[api] = new APIClass();
       this.apis.push(api);
     } catch (e) {
@@ -37,10 +36,8 @@ class APIManager {
   async initialize () {
     this.apis = [];
     readdirSync(this.dir)
-      .filter(f => statSync(join(this.dir, f)).isFile())
-      .forEach(filename => this.mount(filename));
+      .filter(f => statSync(join(this.dir, f)).isDirectory())
+      .forEach(dirname => this.mount(dirname));
     await this.start();
   }
-}
-
-module.exports = APIManager;
+};

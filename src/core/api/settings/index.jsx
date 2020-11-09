@@ -3,8 +3,8 @@ const { API } = require('@vizality/entities');
 const { Flux } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 
-const actions = require('./settingsStore/actions');
-const store = require('./settingsStore/store');
+const actions = require('./store/actions');
+const store = require('./store/store');
 
 const Sidebar = require('@vizality/builtins/dashboard/components/parts/sidebar/Sidebar');
 const Content = require('@vizality/builtins/dashboard/components/parts/Content');
