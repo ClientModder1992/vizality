@@ -1,6 +1,6 @@
-# Preface
+# Acknowledgements
 
-This project is not the work of a single person. It contains Node packages and code from many members of the Discord modding community and even Javascript community in general. I try to make citations in the code to give credit where credit is due as much as possible---indicating the author, license type, and usually a link to the original source---but I am sure I've missed some people as well. Still, this is a thank to all of those people whose code and ideas have contributed to the creation of Vizality and making Discord a better place.
+This project is not the work of a single person. It contains Node packages and code from many members of the Discord modding community over time and even the JavaScript community in general. I try to make citations in the code to give credit where credit is due as much as possible---indicating the author, license type, and usually a link to the original source---but I am sure I've missed some people as well. Still, this is a thank to all of those people whose code and ideas have contributed to the creation of Vizality.
 
 ## Notable Mentions
 
@@ -14,7 +14,7 @@ _Developer of [discord.js](https://discord.js.org/)_
 
 His work on discord.js has been a helpful learning tool for me, and while mostly not directly related to manipulating Discord's internals like a client mod does, it helped spark ideas and tools to provide and code structures.
 
-**[Bowser](https://github.com/Bowser65) & [Aetheryx](https://github.com/aetheryx)**<br>
+**[Aetheryx](https://github.com/aetheryx)** & **[Bowser](https://github.com/Bowser65)**<br>
 _Developers of [Powercord](https://powercord.dev/)_
 
 It's no secret that there is plenty of bad blood between me and the Powercord community--- Bowser and Aetheryx in particular. I don't always agree with their personalities or choices in the modding department, but they are skilled developers and much of Vizality's base code is attributed to them. Regardless, without their work on Powercord, Vizality would not be around today, and I thank them for their work and dedication to the community.
@@ -23,11 +23,9 @@ It's no secret that there is plenty of bad blood between me and the Powercord co
 
 - Special thanks to anyone that has donated anything, pledged on Patreon, and everyone that has joined our [Discord server](https://discord.gg/42B8AC9) and been very supportive along the way towards creating a better Discord experience for everyone.
 
-- [Lighty](https://github.com/1Lighty) for listening to my code ramblings and offering an insightful eye (sometimes). Also helped spark some ideas in the structuring of VIzality. His code work has also been an inspiration.
+- BetterDiscord, EnhancedDiscord, DiscordInjections, Lightcord, and obviously Powercord, have all been a source of inspiration as we all ultimately have striven towards the same, or at least similar, goal of making the Discord experience more enjoyable. Let's keep the community fresh and keep coming up with new ideas amd implementations.
 
-- BetterDiscord, EnhancedDiscord, DiscordInjections, and Lightcord have all been a source of inspiration as we all ultimately have striven towards the same goal. Let's keep the community fresh and keep coming up with new ideas amd implementations.
-
-- Discord, because without you none of this would be possible. But really, trying to build and keep up with your updates has certainly been a ride.
+- Discord, because without you, none of this would be possible. But really, trying to build and keep up with your updates has certainly been a ride.
 
 ## Copyright Addendum
 

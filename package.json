@@ -1,20 +1,42 @@
 {
   "name": "vizality",
-  "author": "vizality",
   "version": "0.0.1",
+  "author": {
+    "name": "Dustin Perolio",
+    "email": "dustin.perolio@gmail.com",
+    "url": "https://dperolio.com"
+  },
   "description": "A robust @discord client mod focused on design and user customizability",
-  "license": "GPL-3.0",
   "homepage": "https://vizality.com",
+  "license": "GPL-3.0",  
+  "funding": [
+    {
+      "type" : "paypal",
+      "url" : "http://paypal.me/vizality"
+    },
+    {
+      "type" : "patreon",
+      "url" : "https://www.patreon.com/vizality"
+    },
+    {
+      "type" : "github sponsors",
+      "url" : "https://github.com/sponsors/dperolio"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vizality/vizality.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vizality/vizality/issues",
+    "email": "contact@vizality.com"
+  },
   "main": "index.js",
   "scripts": {
     "compile-sass": "node src/compile",
     "lint": "eslint --ext js --ext jsx src",
     "inject": "node src/inject inject",
     "uninject": "node src/inject uninject"
-  },
-  "repository": "https://github.com/vizality/vizality.git",
-  "bugs": {
-    "url": "https://github.com/vizality/vizality/issues"
   },
   "_moduleAliases": {
     "@vizality/root": ".",
