@@ -5,7 +5,7 @@ const { getModule } = require('@vizality/webpack');
 module.exports = () => {
   const CallTile = getModule(m => m.default && m.default.displayName === 'CallTile');
 
-  patch('vz-utility-attrs-privateCall', CallTile, 'default', ([ props ], res) => {
+  patch('vz-attributes-privateCall', CallTile, 'default', ([ props ], res) => {
     if (!props | !props.participant || !res.props) return res;
 
     const { participant } = props;
@@ -25,5 +25,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-privateCall');
+  return () => unpatch('vz-attributes-privateCall');
 };

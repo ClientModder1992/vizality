@@ -4,7 +4,7 @@ const { patch, unpatch } = require('@vizality/patcher');
 module.exports = () => {
   const ContextMenu = getModuleByDisplayName('FluxContainer(ContextMenus)');
 
-  patch('vz-utility-attrs-contextMenu', ContextMenu.prototype, 'render', (_, res) => {
+  patch('vz-attributes-contextMenu', ContextMenu.prototype, 'render', (_, res) => {
     if (!res.props) return res;
 
     res.props.isOpen
@@ -14,5 +14,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-contextMenu');
+  return () => unpatch('vz-attributes-contextMenu');
 };

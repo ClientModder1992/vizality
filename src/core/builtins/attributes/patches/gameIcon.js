@@ -5,7 +5,7 @@ const { getModule } = require('@vizality/webpack');
 module.exports = () => {
   const GameIcon = getModule(m => m.default && m.default.displayName === 'GameIcon');
 
-  patch('vz-utility-attrs-gameIcon', GameIcon, 'default', ([ props ], res) => {
+  patch('vz-attributes-gameIcon', GameIcon, 'default', ([ props ], res) => {
     if (!props) return res;
 
     const { game } = props;
@@ -18,5 +18,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-gameIcon');
+  return () => unpatch('vz-attributes-gameIcon');
 };

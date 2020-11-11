@@ -5,7 +5,7 @@ const { getModule } = require('@vizality/webpack');
 module.exports = () => {
   const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));
 
-  patch('vz-utility-attrs-folders', GuildFolder.default, 'type', (args, res) => {
+  patch('vz-attributes-folders', GuildFolder.default, 'type', (args, res) => {
     const { folderName, unread, selected, expanded, audio, video, screenshare, badge: mentions } = args[0];
 
     res.props.className = joinClassNames(
@@ -27,5 +27,5 @@ module.exports = () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-folders');
+  return () => unpatch('vz-attributes-folders');
 };

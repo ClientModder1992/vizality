@@ -5,7 +5,7 @@ const { patch, unpatch } = require('@vizality/patcher');
 module.exports = () => {
   const MemberListItem = getModuleByDisplayName('MemberListItem');
 
-  patch('vz-utility-attrs-members', MemberListItem.prototype, 'render', function (_, res) {
+  patch('vz-attributes-members', MemberListItem.prototype, 'render', function (_, res) {
     if (!this || !this.props || !this.props.user) return res;
 
     const { user } = this.props;
@@ -25,7 +25,7 @@ module.exports = () => {
   const MembersGroup = getModule(m => m.default && m.default.displayName === 'ListSectionItem');
   const membersGroupClasses = getModule('membersGroup').membersGroup;
 
-  patch('vz-utility-attrs-member-groups', MembersGroup, 'default', (_, res) => {
+  patch('vz-attributes-member-groups', MembersGroup, 'default', (_, res) => {
     if (!res.props ||
         !res.props.className ||
         !res.props.children ||
@@ -44,7 +44,7 @@ module.exports = () => {
   setImmediate(() => forceUpdateElement(`.${membersGroupClasses}`));
 
   return async () => {
-    unpatch('vz-utility-attrs-members');
-    unpatch('vz-utility-attrs-member-groups');
+    unpatch('vz-attributes-members');
+    unpatch('vz-attributes-member-groups');
   };
 };

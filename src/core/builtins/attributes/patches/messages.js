@@ -8,7 +8,7 @@ module.exports = async () => {
   const memberModule = getModule('getMember');
   const guildModule = getModule('getGuild');
 
-  patch('vz-utility-attrs-messages', Message, 'default', (_, res) => {
+  patch('vz-attributes-messages', Message, 'default', (_, res) => {
     const msg = findInReactTree(res, n => n.message);
 
     if (!msg) {
@@ -38,5 +38,5 @@ module.exports = async () => {
     return res;
   });
 
-  return async () => unpatch('vz-utility-attrs-messages');
+  return async () => unpatch('vz-attributes-messages');
 };

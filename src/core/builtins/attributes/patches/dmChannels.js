@@ -5,7 +5,7 @@ const { joinClassNames } = require('@vizality/util');
 module.exports = async () => {
   const PrivateChannel = await getModuleByDisplayName('PrivateChannel', true);
 
-  patch('vz-utility-attrs-dmChannels', PrivateChannel.prototype, 'render', (_, res) => {
+  patch('vz-attributes-dmChannels', PrivateChannel.prototype, 'render', (_, res) => {
     const { props } = res;
 
     props['vz-user-name'] = props.name.props.children;
@@ -27,5 +27,5 @@ module.exports = async () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-dmChannels');
+  return () => unpatch('vz-attributes-dmChannels');
 };

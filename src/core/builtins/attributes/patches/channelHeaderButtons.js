@@ -9,7 +9,7 @@ module.exports = async () => {
 
   if (!instance) return;
 
-  patch('vz-utility-attrs-channelHeaderButtons', instance.__proto__, 'render', (_, res) => {
+  patch('vz-attributes-channelHeaderButtons', instance.__proto__, 'render', (_, res) => {
     if (!res.props.className ||
         !res.props.className.split(' ').includes(channelHeaderButtonClasses.iconWrapper) ||
         !res.props['aria-label']) {
@@ -61,5 +61,5 @@ module.exports = async () => {
 
   setImmediate(() => forceUpdateElement(`.${channelHeaderButtonClasses.iconWrapper}`, true));
 
-  return () => unpatch('vz-utility-attrs-channelHeaderButtons');
+  return () => unpatch('vz-attributes-channelHeaderButtons');
 };

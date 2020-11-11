@@ -8,7 +8,7 @@ module.exports = async () => {
 
   const Popout = getModuleByDisplayName('Popout');
 
-  patch('vz-utility-attrs-popout', Popout.prototype, 'render', (_, res) => {
+  patch('vz-attributes-popout', Popout.prototype, 'render', (_, res) => {
     if (!res.props) return res;
 
     if (res.props.shouldShow) document.documentElement.setAttribute('vz-popout-active', '');
@@ -24,5 +24,5 @@ module.exports = async () => {
     return res;
   });
 
-  return async () => unpatch('vz-utility-attrs-popout');
+  return async () => unpatch('vz-attributes-popout');
 };

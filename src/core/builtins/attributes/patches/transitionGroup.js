@@ -11,7 +11,7 @@ module.exports = async () => {
   const TransitionGroup = getModuleByDisplayName('TransitionGroup');
   const { contentRegion } = getModule('contentRegion');
 
-  patch('vz-utility-attrs-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
+  patch('vz-attributes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
     if (!res.props || res.props.className !== contentRegion || !res.props.className.includes(contentRegion)) {
       return res;
     }
@@ -23,5 +23,5 @@ module.exports = async () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-transitionGroup');
+  return () => unpatch('vz-attributes-transitionGroup');
 };

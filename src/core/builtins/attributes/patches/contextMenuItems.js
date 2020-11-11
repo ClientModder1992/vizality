@@ -14,9 +14,9 @@ module.exports = () => {
   /* eslint-disable no-unreachable */
   const MenuItem = getModule(m => m.default && m.default.displayName === 'MenuItem');
 
-  patch('vz-utility-attrs-contextMenuItems', MenuItem, 'default', ([ props ], res) => {
+  patch('vz-attributes-contextMenuItems', MenuItem, 'default', ([ props ], res) => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-contextMenuItems');
+  return () => unpatch('vz-attributes-contextMenuItems');
 };

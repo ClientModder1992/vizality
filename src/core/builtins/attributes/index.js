@@ -4,7 +4,7 @@ const { Builtin } = require('@vizality/entities');
 
 const patches = require('./patches');
 
-module.exports = class UtilityClasses extends Builtin {
+module.exports = class Attributes extends Builtin {
   onStart () {
     this.callbacks = [];
 

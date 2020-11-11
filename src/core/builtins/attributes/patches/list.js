@@ -12,7 +12,7 @@ module.exports = async () => {
 
   const List  = getModuleByDisplayName('List');
 
-  patch('vz-improved-navigation-dmChannels', List.prototype, 'renderRow', (args, res) => {
+  patch('vz-attributes-dmChannels', List.prototype, 'renderRow', (args, res) => {
     // const props = findInReactTree(res, n => n.id);
 
     // if (!props.id || props.id !== 'private-channels') return res;
@@ -50,5 +50,5 @@ module.exports = async () => {
    * });
    */
 
-  return async () => unpatch('vz-improved-navigation-dmChannels');
+  return async () => unpatch('vz-attributes-dmChannels');
 };

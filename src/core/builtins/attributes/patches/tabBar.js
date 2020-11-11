@@ -11,7 +11,7 @@ const { patch, unpatch } = require('@vizality/patcher');
 module.exports = async () => {
   const TabBar = getModuleByDisplayName('TabBar');
 
-  patch('vz-utility-attrs-tabBar', TabBar.prototype, 'render', function (_, res) {
+  patch('vz-attributes-tabBar', TabBar.prototype, 'render', function (_, res) {
     if (!res.props || !res.props.children) return res;
 
     /*
@@ -35,5 +35,5 @@ module.exports = async () => {
     return res;
   });
 
-  return () => unpatch('vz-utility-attrs-tabBar');
+  return () => unpatch('vz-attributes-tabBar');
 };

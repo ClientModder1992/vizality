@@ -10,13 +10,10 @@ const Home = require('../components/pages/home/Home');
 const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
-const Plugins = require('@vizality/builtins/addon-manager/components/manage/Plugins');
-const Themes = require('@vizality/builtins/addon-manager/components/manage/Themes');
+const AddonList = require('@vizality/builtins/addon-manager/components/addons/List');
 const Snippets = require('@vizality/builtins/snippet-manager/components/CustomCSS');
-const Updater = require('@vizality/builtins/updater/components/Settings');
-// const Settings = vizality.api.settings.tabs['vz-settings'].render;
 
-module.exports = () => {
+module.exports = React.memo(() => {
   return (
     <>
       <Switch>
@@ -43,12 +40,20 @@ module.exports = () => {
             subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
             icon='Plugin'
           >
-            <Plugins />
+            <AddonList type='plugin' />
           </Content>
         </Layout>
       </Route>
       <Route path='/vizality/dashboard/plugins/discover' exact>
-        <Plugins tab='DISCOVER' />
+        <Layout>
+          <Content
+            heading='Plugins'
+            subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
+            icon='Plugin'
+          >
+            <AddonList type='plugin' tab='DISCOVER' />
+          </Content>
+        </Layout>
       </Route>
       {/* <Route path='/vizality/dashboard/themes' exact>
         <Layout isFullWidth>
@@ -64,7 +69,7 @@ module.exports = () => {
             subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
             icon='Theme'
           >
-            <Plugins />
+            <AddonList type='theme' />
           </Content>
         </Layout>
       </Route>
@@ -145,4 +150,4 @@ module.exports = () => {
       </Route>
     </>
   );
-};
+});

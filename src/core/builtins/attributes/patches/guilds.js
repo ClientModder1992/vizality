@@ -8,7 +8,7 @@ module.exports = async () => {
   const guildElement = (await waitForElement(`.${guildClasses.blobContainer.split(' ')[0]}`)).parentElement;
   const instance = getOwnerInstance(guildElement);
 
-  patch('vz-utility-attrs-guild', instance.__proto__, 'render', function (_, res) {
+  patch('vz-attributes-guild', instance.__proto__, 'render', function (_, res) {
     if (!res) return _; // Needed for guilds with outages
     if (!this || !this.props) return res;
 
@@ -31,5 +31,5 @@ module.exports = async () => {
   });
 
   setImmediate(() => forceUpdateElement(`.${guildElement.className.split(' ')[0]}`, true));
-  return () => unpatch('vz-utility-attrs-guild');
+  return () => unpatch('vz-attributes-guild');
 };

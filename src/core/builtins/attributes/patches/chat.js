@@ -8,7 +8,7 @@ module.exports = async () => {
   const { chat } = getModule('chat');
   const instance = getOwnerInstance(await waitForElement(`.${chat.split(' ')[0]}`));
 
-  patch('vz-utility-attrs-chat', instance.__proto__, 'render', function (_, res) {
+  patch('vz-attributes-chat', instance.__proto__, 'render', function (_, res) {
     if (!this || !this.props || !this.props.channel) return res;
 
     const { channel } = this.props;
@@ -54,5 +54,5 @@ module.exports = async () => {
 
   setImmediate(() => instance.forceUpdate());
 
-  return () => unpatch('vz-utility-attrs-chat');
+  return () => unpatch('vz-attributes-chat');
 };

@@ -12,11 +12,11 @@ module.exports = () => {
   return () => void 0;
 
   const GuildHeader = getModuleByDisplayName('GuildHeader');
-  patch('vz-utility-attrs-guildHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
+  patch('vz-attributes-guildHeader', GuildHeader.prototype, 'renderHeader', (_, res) => {
     return res;
   });
 
   const className = getModule('iconBackgroundTierNone', 'container').header.split(' ')[0];
   setImmediate(() => forceUpdateElement(`.${className}`));
-  return () => unpatch('vz-utility-attrs-guildHeader');
+  return () => unpatch('vz-attributes-guildHeader');
 };

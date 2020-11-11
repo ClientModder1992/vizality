@@ -5,7 +5,7 @@ const { React } = require('@vizality/react');
 
 module.exports = async () => {
   const Avatar = await getModule('AnimatedAvatar', true);
-  patch('vz-utility-attrs-avatar', Avatar, 'default', (args, res) => {
+  patch('vz-attributes-avatar', Avatar, 'default', (args, res) => {
     const avatar = args[0].src || void 0;
     if (avatar && avatar.includes('/avatars')) {
       [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
@@ -15,7 +15,7 @@ module.exports = async () => {
   });
 
   // Re-render using patched component
-  patch('vz-utility-attrs-animated-avatar', Avatar.AnimatedAvatar, 'type', (_, res) =>
+  patch('vz-attributes-animated-avatar', Avatar.AnimatedAvatar, 'type', (_, res) =>
     React.createElement(Avatar.default, { ...res.props }));
 
   Avatar.default.Sizes = Avatar.Sizes;
@@ -30,7 +30,7 @@ module.exports = async () => {
   }
 
   return () => {
-    unpatch('vz-utility-attrs-avatar');
-    unpatch('vz-utility-attrs-animated-avatar');
+    unpatch('vz-attributes-avatar');
+    unpatch('vz-attributes-animated-avatar');
   };
 };
