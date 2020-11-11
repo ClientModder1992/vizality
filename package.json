@@ -8,19 +8,19 @@
   },
   "description": "A robust @discord client mod focused on design and user customizability",
   "homepage": "https://vizality.com",
-  "license": "GPL-3.0",  
+  "license": "GPL-3.0",
   "funding": [
     {
-      "type" : "paypal",
-      "url" : "http://paypal.me/vizality"
+      "type": "paypal",
+      "url": "http://paypal.me/vizality"
     },
     {
-      "type" : "patreon",
-      "url" : "https://www.patreon.com/vizality"
+      "type": "patreon",
+      "url": "https://www.patreon.com/vizality"
     },
     {
-      "type" : "github sponsors",
-      "url" : "https://github.com/sponsors/dperolio"
+      "type": "github sponsors",
+      "url": "https://github.com/sponsors/dperolio"
     }
   ],
   "repository": {

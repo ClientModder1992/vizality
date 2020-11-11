@@ -32,7 +32,7 @@ module.exports = class Base extends React.PureComponent {
 
   renderHeader () {
     return (
-      <span>{Messages.VIZALITY_ENTITIES_INSTALLED.format({ entityType: toHeaderCase(this.state.key) })}</span>
+      <span>{Messages.VIZALITY_ADDONS_INSTALLED.format({ type: toHeaderCase(this.state.key) })}</span>
     );
   }
 
@@ -67,9 +67,9 @@ module.exports = class Base extends React.PureComponent {
         <TextInput
           value={this.state.search}
           onChange={search => this.setState({ search })}
-          placeholder={Messages.VIZALITY_ENTITIES_FILTER_PLACEHOLDER}
+          placeholder={Messages.VIZALITY_ADDONS_FILTER_PLACEHOLDER}
         >
-          {Messages.VIZALITY_ENTITIES_FILTER.format({ entityType: this.state.key })}
+          {Messages.VIZALITY_ADDONS_FILTER.format({ type: this.state.key })}
         </TextInput>
       </div>
     );
@@ -90,14 +90,14 @@ module.exports = class Base extends React.PureComponent {
         itemGroups: [ [
           {
             type: 'button',
-            name: Messages.VIZALITY_ENTITIES_OPEN_FOLDER.format({ entityType: toHeaderCase(this.state.key) }),
+            name: Messages.VIZALITY_ADDONS_OPEN_FOLDER.format({ type: toHeaderCase(this.state.key) }),
             onClick: () => {
               shell.openItem(eval(`${toPlural(this.state.key).toUpperCase()}_FOLDER`));
             }
           },
           {
             type: 'button',
-            name: Messages.VIZALITY_ENTITIES_LOAD_MISSING.format({ entityType: toHeaderCase(this.state.key) }),
+            name: Messages.VIZALITY_ADDONS_LOAD_MISSING.format({ type: toHeaderCase(this.state.key) }),
             onClick: () => this.fetchMissing(this.state.key)
           }
         ] ]
@@ -111,15 +111,15 @@ module.exports = class Base extends React.PureComponent {
     const missingEntities = vizality.manager[toPlural(type)].start(true);
     const missingEntitiesList = missingEntities.length
       ? React.createElement('div', null,
-        Messages.VIZALITY_MISSING_ENTITIES_RETRIEVED.format({ entity: type, count: missingEntities.length }),
+        Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ type, count: missingEntities.length }),
         React.createElement('ul', null, missingEntities.map(entity =>
           React.createElement('li', null, `– ${entity}`))
         )
       )
-      : Messages.VIZALITY_MISSING_ENTITIES_NONE;
+      : Messages.VIZALITY_MISSING_ADDONS_NONE;
 
     vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
-      header: Messages.VIZALITY_MISSING_ENTITIES_FOUND.format({ entity: type, count: missingEntities.length }),
+      header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingEntities.length }),
       content: missingEntitiesList,
       type: missingEntities.length > 0 && 'success',
       icon: type,
