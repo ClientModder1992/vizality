@@ -1,7 +1,6 @@
 /* eslint-disable no-extra-boolean-cast *//* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
 
 const pluralize = require('pluralize');
-
 const { isType, assertType } = require('../type');
 
 /**
@@ -10,7 +9,7 @@ const { isType, assertType } = require('../type');
  * @memberof util
  * @version 0.0.1
  */
-const string = module.exports = {
+module.exports = {
   isSingular (string) {
     return pluralize.isSingular(string);
   },
@@ -176,12 +175,8 @@ const string = module.exports = {
       .toLowerCase().trim();
   },
 
-  // @todo Find a better version.
   toKebabCase (string) {
-    return string
-      .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-      .map(x => x.toLowerCase())
-      .join('-');
+    return global._.kebabCase(string);
   },
 
   /**

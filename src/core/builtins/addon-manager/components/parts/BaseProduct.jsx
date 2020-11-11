@@ -11,11 +11,9 @@ module.exports = React.memo(({ product, isEnabled, onToggle, onUninstall, goToSe
     return (
       <div className='vizality-entity-header'>
         <h4>{product.name}</h4>
-        <Tooltip text={isEnabled ? Messages.DISABLE : Messages.ENABLE} position='top'>
-          <div>
-            <Switch value={isEnabled} onChange={v => onToggle(v.target.checked)} />
-          </div>
-        </Tooltip>
+        <div>
+          <Switch value={isEnabled} onChange={v => onToggle(v.target.checked)} />
+        </div>
       </div>
     );
   };

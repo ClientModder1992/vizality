@@ -5,19 +5,19 @@ const { React } = require('@vizality/react');
 const Permissions = {
   keypresses: {
     icon: React.memo(({ svgSize }) => <Icon name='Keyboard' width={svgSize} height={svgSize}/>),
-    text: () => Messages.VIZALITY_ENTITIES_PERMISSIONS_KEYPRESSES
+    text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_KEYPRESSES
   },
   use_eud: {
     icon: React.memo(({ svgSize }) => <Icon name='PersonShield' width={svgSize} height={svgSize}/>),
-    text: () => Messages.VIZALITY_ENTITIES_PERMISSIONS_USE_EUD
+    text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_USE_EUD
   },
   filesystem: {
     icon: React.memo(({ svgSize }) => <Icon name='Copy' width={svgSize} height={svgSize}/>),
-    text: () => Messages.VIZALITY_ENTITIES_PERMISSIONS_FS
+    text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_FS
   },
   ext_api: {
     icon: React.memo(({ svgSize }) => <Icon name='ImportExport' width={svgSize} height={svgSize}/>),
-    text: () => Messages.VIZALITY_ENTITIES_PERMISSIONS_API
+    text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_API
   }
 };
 

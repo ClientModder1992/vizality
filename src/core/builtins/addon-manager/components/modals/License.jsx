@@ -12,20 +12,20 @@ module.exports = React.memo(({ spdx, license: { name, url, permissions, conditio
   return (
     <Modal className='vizality-entity-license-modal'>
       <Modal.Content>
-        <p className='vizality-entity-license-modal-description'>{Messages[`VIZALITY_ENTITIES_LICENSE_DESC_${spdx}`]}</p>
+        <p className='vizality-entity-license-modal-description'>{Messages[`VIZALITY_ADDONS_LICENSE_DESC_${spdx}`]}</p>
         <Card className='vizality-entity-license-modal-card'>
-          {Messages.VIZALITY_ENTITIES_LICENSE_DISCLAIMER.format({ url })}
+          {Messages.VIZALITY_ADDONS_LICENSE_DISCLAIMER.format({ url })}
         </Card>
         {[ 'permissions', 'limitations', 'conditions' ].map(type =>
           <div key={type} className={`vizality-entity-license-modal-data ${type}`}>
-            <FormTitle tag='h4'>{Messages[`VIZALITY_ENTITIES_LICENSE_${type.toUpperCase()}`]}</FormTitle>
+            <FormTitle tag='h4'>{Messages[`VIZALITY_ADDONS_LICENSE_${type.toUpperCase()}`]}</FormTitle>
             {data[type].map(perm => <div key={perm} className='vizality-entity-license-modal-entry'>
-              <span>{Messages[`VIZALITY_ENTITIES_LICENSE_${perm}_NAME`]}</span>
+              <span>{Messages[`VIZALITY_ADDONS_LICENSE_${perm}_NAME`]}</span>
               <div>{perm === 'PATENT_USE'
                 ? type === 'permissions'
-                  ? Messages.VIZALITY_ENTITIES_LICENSE_PATENT_USE_DESC_ALLOWED
-                  : Messages.VIZALITY_ENTITIES_LICENSE_PATENT_USE_DESC_FORBIDDEN
-                : Messages[`VIZALITY_ENTITIES_LICENSE_${perm}_DESC`]}</div>
+                  ? Messages.VIZALITY_ADDONS_LICENSE_PATENT_USE_DESC_ALLOWED
+                  : Messages.VIZALITY_ADDONS_LICENSE_PATENT_USE_DESC_FORBIDDEN
+                : Messages[`VIZALITY_ADDONS_LICENSE_${perm}_DESC`]}</div>
             </div>)}
           </div>
         )}

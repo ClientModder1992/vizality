@@ -24,7 +24,7 @@ module.exports = React.memo(({ author, version, description, license, svgSize })
           <span>{author}</span>
         </div>
         <div className='vizality-entity-version'>
-          <Tooltip text={Messages.VIZALITY_ENTITIES_VERSION} position='top'>
+          <Tooltip text={Messages.VIZALITY_ADDONS_VERSION} position='top'>
             <Icon name='StoreTag' width={svgSize} height={svgSize}/>
           </Tooltip>
           <span>v{version}</span>
@@ -34,7 +34,7 @@ module.exports = React.memo(({ author, version, description, license, svgSize })
           </Tooltip>}
         </div>
         <div className='license'>
-          <Tooltip text={Messages.VIZALITY_ENTITIES_LICENSE} position='top'>
+          <Tooltip text={Messages.VIZALITY_ADDONS_LICENSE} position='top'>
             <Icon name='Scale' width={svgSize} height={svgSize}/>
           </Tooltip>
           <span>{license}</span>
