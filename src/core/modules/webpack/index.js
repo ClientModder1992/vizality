@@ -172,7 +172,7 @@ const webpack = module.exports = {
     }
 
     if (typeof filter[0] === 'function') {
-      ([ filter ] = filter); // Thanks Lighty, I still don't understand this syntax.
+      [ filter ] = filter;
     }
 
     return webpack._getModule(filter, retry, forever);

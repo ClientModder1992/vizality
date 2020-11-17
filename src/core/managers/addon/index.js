@@ -155,7 +155,7 @@ module.exports = class AddonManager {
     }
 
     if (!addon._ready) {
-      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${plugin})`);
+      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${addon})`);
     }
 
     vizality.settings.set('disabledPlugins', [

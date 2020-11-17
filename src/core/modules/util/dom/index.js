@@ -12,7 +12,7 @@ const dom = module.exports = {
   createElement (type, props) {
     const element = document.createElement(type);
     for (const prop in props) {
-      if ([ 'style', 'href' ].includes(prop) || prop.startsWith('data-')) {
+      if ([ 'style', 'href' ].includes(prop) || prop.startsWith('vz-')) {
         element.setAttribute(prop, props[prop]);
       } else {
         element[prop] = props[prop];

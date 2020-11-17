@@ -3,6 +3,8 @@ const { joinClassNames } = require('@vizality/util');
 const { getModule } = require('@vizality/webpack');
 
 module.exports = () => {
+  return () => void 0;
+
   const GuildFolder = getModule(m => m.default && m.default.type && m.default.type.toString().includes('defaultFolderName'));
 
   patch('vz-attributes-folders', GuildFolder.default, 'type', (args, res) => {

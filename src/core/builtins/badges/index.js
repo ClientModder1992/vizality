@@ -19,6 +19,7 @@ module.exports = class Badges extends Builtin {
   }
 
   onStart () {
+    return void 0;
     this.classes = {
       ...getModule('headerInfo', 'nameTag'),
       ...getModules([ 'modal', 'inner' ])[1],

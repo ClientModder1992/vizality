@@ -40,8 +40,8 @@ class StyleManager {
         const id = Math.random().toString(36).slice(2);
         const compiler = resolveCompiler(resolvedPath);
         const style = createElement('style', {
-          id: 'vizality-styles-base',
-          'vz-style': true
+          id: 'vizality-core-styles',
+          'vz-style': ''
         });
 
         document.head.appendChild(style);

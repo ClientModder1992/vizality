@@ -47,7 +47,7 @@ module.exports = class Updater extends Builtin {
       path: 'updater',
       heading: 'Updater',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
-      icon: 'Wrench',
+      icon: 'CloudDownload',
       render: Settings
     });
 
@@ -205,20 +205,24 @@ module.exports = class Updater extends Builtin {
     const { colorStandard } = getModule('colorStandard');
 
     openModal(() =>
-      React.createElement(Confirm, {
-        red: true,
-        header: Messages.SUPPRESS_EMBED_TITLE,
-        confirmText: Messages.VIZALITY_UPDATES_FORCE,
-        cancelText: Messages.CANCEL,
-        onConfirm: () => {
+      <Confirm
+        red={true}
+        header={Messages.SUPPRESS_EMBED_TITLE}
+        confirmText={Messages.VIZALITY_UPDATES_FORCE}
+        cancelText={Messages.CANCEL}
+        onConfirm={() => {
           if (callback) {
             // eslint-disable-next-line callback-return
             callback();
           }
           this.doUpdate(true);
-        },
-        onCancel: closeModal
-      }, React.createElement('div', { className: colorStandard }, Messages.VIZALITY_UPDATES_FORCE_MODAL))
+        }}
+        onCancel={closeModal}
+      >
+        <div className={colorStandard}>
+          {Messages.VIZALITY_UPDATES_FORCE_MODAL}
+        </div>
+      </Confirm>
     );
   }
 
@@ -286,9 +290,7 @@ module.exports = class Updater extends Builtin {
   async openLatestChangelog () {
     const changelogObject = await this.formatChangelog();
     const ChangeLog = await this._getChangeLogsComponent();
-    openModal(() => React.createElement(ChangeLog, {
-      changeLog: changelogObject
-    }));
+    openModal(() => <ChangeLog changeLog={changelogObject} />);
   }
 
   async _getChangeLogsComponent () {
@@ -318,11 +320,7 @@ module.exports = class Updater extends Builtin {
             return null;
           }
 
-          return React.createElement('img', {
-            src: _this.changelog.image,
-            className: video,
-            alt: ''
-          });
+          return <img src={_this.changelog.image} className={video} alt={''} />;
         }
 
         renderFooter () {
@@ -330,13 +328,16 @@ module.exports = class Updater extends Builtin {
           const { colorStandard } = getModule('colorStandard');
           const footer = super.renderFooter();
           footer.props.children =
-            React.createElement('div', {
-              className: joinClassNames('vz-changelog-modal-footer', colorStandard)
-            }, 'Missed an update? ',
-            React.createElement('a', {
-              className: joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover),
-              onClick: () => vizality.api.router.navigate('/dashboard/changelog')
-            }, 'Check out our full changelog history.'));
+            <div className={joinClassNames('vz-changelog-modal-footer', colorStandard)}>
+              Missed an update?
+              <a
+                className={joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover)}
+                onClick={() => vizality.api.router.navigate('/dashboard/changelog')}
+              >
+                Check out our full changelog history.
+              </a>
+            </div>;
+
           return footer;
         }
       }
