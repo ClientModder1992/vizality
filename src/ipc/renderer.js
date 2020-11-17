@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 const { ipcRenderer } = require('electron');
 
 if (!ipcRenderer) {
@@ -10,7 +9,7 @@ global.VizalityNative = {
   /**
    * Open DevTools for the current window
    * @param {object} opts Options to pass to Electron
-   * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not.
+   * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not
    */
   openDevTools (opts, externalWindow) {
     return ipcRenderer.invoke('VIZALITY_OPEN_DEVTOOLS', opts, externalWindow);
