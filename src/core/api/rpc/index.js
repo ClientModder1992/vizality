@@ -16,7 +16,7 @@ const { API } = require('@vizality/entities');
  * @property {Object.<String, function(String): Boolean>} scopes RPC Scopes
  * @property {Object.<String, DiscordRpcEvent>} scopes RPC Scopes
  */
-class RpcAPI extends API {
+module.exports = class RpcAPI extends API {
   constructor () {
     super();
 
@@ -75,6 +75,4 @@ class RpcAPI extends API {
       this.emit('eventRemoved', name);
     }
   }
-}
-
-module.exports = RpcAPI;
+};

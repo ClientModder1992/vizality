@@ -101,7 +101,7 @@ module.exports = class SettingsAPI extends API {
         path: `/dashboard/${path}`,
         render: () =>
           <Layout>
-            <Content heading={heading} subheading={subheading} icon={icon} className='poo'>
+            <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${id}`}>
               <Render />
             </Content>
           </Layout>,

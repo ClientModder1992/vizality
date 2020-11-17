@@ -40,7 +40,7 @@ const { API } = require('@vizality/entities');
  * @property {object.<string, VizalityToast>} toasts
  * @property {object.<string, VizalityAnnouncement>} announcements
  */
-class NoticesAPI extends API {
+module.exports = class NoticesAPI extends API {
   constructor () {
     super();
 
@@ -119,6 +119,4 @@ class NoticesAPI extends API {
     this.emit('toastClosing', id);
     setTimeout(() => delete this.toasts[id], 500);
   }
-}
-
-module.exports = NoticesAPI;
+};
