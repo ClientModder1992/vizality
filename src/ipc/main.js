@@ -96,3 +96,4 @@ ipcMain.handle('VIZALITY_OPEN_DEVTOOLS', openDevTools);
 ipcMain.handle('VIZALITY_CLOSE_DEVTOOLS', closeDevTools);
 ipcMain.handle('VIZALITY_CACHE_CLEAR', clearCache);
 ipcMain.handle('VIZALITY_COMPILE_SASS', compileSass);
+ipcMain.handle('VIZALITY_WINDOW_IS_MAXIMIZED', e => BrowserWindow.fromWebContents(e.sender).isMaximized());

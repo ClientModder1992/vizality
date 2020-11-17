@@ -82,7 +82,7 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
             text={auxillaryIconTooltipText || 'Open'}
             className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-launcher'
           >
-            <Clickable onClick={() => eval(launch)}>
+            <Clickable onClick={launch}>
               <Icon name='Launch' width={18} height={18} className='vizality-dashboard-sidebar-auxillary-icon' />
             </Clickable>
           </Tooltip>}

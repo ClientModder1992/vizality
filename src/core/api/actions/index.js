@@ -64,6 +64,6 @@ module.exports = class ActionsAPI extends API {
    * @returns {void}
    */
   async invoke (name) {
-    return eval(this.actions.find(r => r.name === name).action());
+    return this.actions.find(r => r.name === name).action();
   }
 };

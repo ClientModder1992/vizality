@@ -29,6 +29,7 @@ module.exports = React.memo(() =>
     <Item icon='Theme' label='Themes' path='/themes' />
     {/* CSS, JS, Custom CSS, Custom JS */}
     <Item icon='Scissors' label='Snippets' path='/snippets' />
+    <Item icon='Compose' label='Quick Code' path='/quick-code' />
     <Item icon='Settings' label='Theme Editor' path='/form' />
     <Separator />
     {/* Addon Guidelines, Publish an Addon, Get Verified */}
@@ -46,7 +47,7 @@ module.exports = React.memo(() =>
     <Separator />
     <Item icon='CloudDownload' label='Updates' path='/updater' />
     <Item icon='ClockReverse' label='Changelog' path='/changelog'
-      launch={`vizality.api.actions.invoke('openLatestChangelog')`}
+      launch={() => vizality.api.actions.invoke('openLatestChangelog')}
       auxillaryIconTooltipText='Open Latest Update'
     />
   </AdvancedScrollerThin>

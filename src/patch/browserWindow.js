@@ -55,6 +55,9 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       configurable: true
     });
 
+    win.on('maximize', () => win.webContents.send('VIZALITY_WINDOW_MAXIMIZE'));
+    win.on('unmaximize', () => win.webContents.send('VIZALITY_WINDOW_UNMAXIMIZE'));
+
     win.webContents._preload = originalPreload;
     return win;
   }
