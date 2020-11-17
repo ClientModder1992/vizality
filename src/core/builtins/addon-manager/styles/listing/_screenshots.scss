@@ -1,0 +1,18 @@
+.vz-addon-screenshots {
+  &-grid-wrapper {
+    column-count: 3;
+    column-gap: 15px;
+    column-width: 400px;
+  }
+  .vz-image-wrapper {
+    width: 100%;
+    margin: 0 0 15px;
+    max-height: none;
+    max-width: none;
+    img {
+      max-height: none;
+      max-width: none;
+      width: 100%;
+    }
+  }
+}

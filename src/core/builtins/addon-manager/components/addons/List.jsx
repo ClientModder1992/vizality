@@ -1,40 +1,43 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
 const { shell } = require('electron');
 
-const { settings: { TextInput }, ContextMenu, Divider, Icon, TabBar, Confirm } = require('@vizality/components');
+const { settings: { TextInput }, ContextMenu, Divider, Icon, TabBar, Confirm, Card } = require('@vizality/components');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { string: { toHeaderCase, toPlural } } = require('@vizality/util');
-const { React, React: { useState } } = require('@vizality/react');
+const { React, React: { useState, useCallback } } = require('@vizality/react');
 const { Messages } = require('@vizality/i18n');
 
-const BaseProduct = require('../parts/BaseProduct');
+const Addon = require('../addon/Addon');
 
 module.exports = React.memo(({ type, tab, search }) => {
-  const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
+  const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
   const [ searchText, setSearchText ] = useState(search || '');
+  const [ , updateState ] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
   const { colorStandard } = getModule('colorStandard');
 
-  const renderSearch = () => {
-    return (
-      <div className='vizality-entities-manage-search'>
-        {/* @todo: Figure out how to use SearchBar component instead */}
-        <TextInput
-          value={searchText}
-          onChange={search => setSearchText(search)}
-          placeholder={Messages.VIZALITY_ADDONS_FILTER_PLACEHOLDER}
-        >
-          {Messages.VIZALITY_ADDONS_FILTER.format({ type })}
-        </TextInput>
-      </div>
-    );
-  };
+  // const renderSearch = () => {
+  //   return (
+  //     <div className='vizality-entities-manage-search'>
+  //       {/* @todo: Figure out how to use SearchBar component instead */}
+  //       <TextInput
+  //         value={searchText}
+  //         onChange={search => setSearchText(search)}
+  //         placeholder={Messages.VIZALITY_ADDONS_FILTER_PLACEHOLDER}
+  //       >
+  //         {Messages.VIZALITY_ADDONS_FILTER.format({ type })}
+  //       </TextInput>
+  //     </div>
+  //   );
+  // };
 
   const renderItem = item => {
     return (
-      <BaseProduct
-        product={item.manifest}
+      <Addon
+        manifest={item.manifest}
+        addonId={item.entityID}
         isEnabled={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
         onToggle={async v => _toggle(item.entityID, v)}
         onUninstall={() => _uninstall(item.entityID)}
@@ -44,7 +47,7 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   const renderButtons = () => {
     return (
-      <div className='vizality-entities-manage-buttons'>
+      <div className='vz-addons-list-more-button'>
         <Icon name='OverflowMenu'
           onClick={e => openOverflowMenu(e)}
           onContextMenu={e => openOverflowMenu(e)}
@@ -132,47 +135,61 @@ module.exports = React.memo(({ type, tab, search }) => {
     return _sortItems([ ...vizality.manager[toPlural(type)].values ]);
   };
 
+  const renderPlaceholders = () => {
+    const placeholders = [];
+    for (let i = 0; i < 8; i++) {
+      placeholders.push(<Card className='vz-addon-card vz-addon-card-placeholder' />);
+    }
+
+    return placeholders;
+  };
+
   const renderBody = () => {
     const items = getItems();
     return (
-      <div className='vizality-entities-manage-items'>
-        {renderSearch()}
+      <div className='vz-addons-list-items'>
+        {/* {renderSearch()} */}
         {items.length === 0
-          ? <div className='vizality-entities-manage-items-empty'>
+          ? <div className='vz-addons-list-empty'>
             <div className={getModule('emptyStateImage', 'emptyStateSubtext').emptyStateImage}/>
             <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
             <p>{Messages.SEARCH_NO_RESULTS}</p>
           </div>
-          : items.map(item => renderItem(item))}
+          : <>
+            {items.map(item => renderItem(item))}
+            {renderPlaceholders()}
+          </>}
       </div>
     );
   };
 
-  const renderTabs = () => {
+  const renderStickyBar = () => {
     const { item } = getModule('item', 'topPill');
     const { Types } = getModuleByDisplayName('TabBar');
     return (
       <>
-        <div className='vizality-entities-manage-tabs'>
-          <TabBar
-            selectedItem={currentTab}
-            onItemSelect={tab => setCurrentTab(tab)}
-            type={Types.TOP_PILL}
-          >
-            <TabBar.Item className={item} selectedItem={currentTab} id='INSTALLED'>
-              {Messages.VIZALITY_INSTALLED}
-            </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={currentTab} id='DISCOVER'>
-              {Messages.DISCOVER}
-            </TabBar.Item>
-          </TabBar>
-          {renderButtons()}
+        <div className='vz-addons-list-sticky-bar'>
+          <div className='vz-addons-list-sticky-bar-inner'>
+            <TabBar
+              selectedItem={currentTab}
+              onItemSelect={tab => setCurrentTab(tab)}
+              type={Types.TOP_PILL}
+            >
+              <TabBar.Item className={item} selectedItem={currentTab} id='installed'>
+                {Messages.VIZALITY_INSTALLED}
+              </TabBar.Item>
+              <TabBar.Item className={item} selectedItem={currentTab} id='discover'>
+                {Messages.DISCOVER}
+              </TabBar.Item>
+            </TabBar>
+            {renderButtons()}
+          </div>
         </div>
       </>
     );
   };
 
-  const _toggle = (addonId, enabled) => {
+  const _toggle = async (addonId, enabled) => {
     let fn;
     let addons;
     if (enabled) {
@@ -186,6 +203,7 @@ module.exports = React.memo(({ type, tab, search }) => {
     const apply = async () => {
       for (const addon of addons) {
         await fn(addon);
+        forceUpdate();
       }
     };
 
@@ -207,7 +225,7 @@ module.exports = React.memo(({ type, tab, search }) => {
         cancelText={Messages.CANCEL}
         onConfirm={async () => {
           await apply();
-          // this.forceUpdate();
+          forceUpdate();
           closeModal();
         }}
         onCancel={closeModal}
@@ -235,7 +253,7 @@ module.exports = React.memo(({ type, tab, search }) => {
           for (const addon of addons) {
             await vizality.manager[toPlural(type)].uninstall(addon);
           }
-          // this.forceUpdate();
+          forceUpdate();
           closeModal();
         }}
       >
@@ -249,15 +267,25 @@ module.exports = React.memo(({ type, tab, search }) => {
     ));
   };
 
-  return (
-    <>
-      {renderTabs()}
-      <div className={`vizality-entities-manage ${colorStandard}`}>
-        <div className='vizality-entities-manage-header'>
-          <span>{Messages[`VIZALITY_ADDONS_${currentTab}`].format({ type: toHeaderCase(type) })}</span>
+  const renderHeader = () => {
+    return (
+      <>
+        <div className='vz-addons-list-active-filters' {...{ [type]: true }}>
+          <span>{Messages[`VIZALITY_ADDONS_${currentTab.toUpperCase()}`].format({ type: toHeaderCase(type) })}</span>
         </div>
         <Divider/>
-        {renderBody()}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <div className={`vz-addons-list ${colorStandard}`}>
+        {renderStickyBar()}
+        <div className='vz-addons-list-inner'>
+          {renderHeader()}
+          {renderBody()}
+        </div>
       </div>
     </>
   );

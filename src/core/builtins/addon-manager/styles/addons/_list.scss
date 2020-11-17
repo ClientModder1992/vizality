@@ -1,0 +1,9 @@
+.vz-addons-list {
+  &-items {
+    display: flex;
+    flex-flow: row wrap;
+    opacity: 0;
+    margin: 0 -10px; // Negative margins to counteract vz-addon-card margin
+    animation: fadeShortSlideInFromBottom 0.5s forwards;
+  }
+}
