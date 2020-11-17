@@ -1,7 +1,5 @@
-// @todo Work on implementing this without the module
-const imageToBase64 = require('base64-img');
+const { readdirSync, readFileSync } = require('fs');
 const { join, extname } = require('path');
-const { readdirSync } = require('fs');
 
 const { React, React: { useState, useEffect } } = require('@vizality/react');
 const { ImageModal, Image } = require('@vizality/components');
@@ -11,31 +9,37 @@ const { open: openModal } = require('@vizality/modal');
 module.exports = React.memo(() => {
   const [ images, setImages ] = useState([]);
 
-  const convertScreenshotsToBase64 = async () => {
-    readdirSync(join(__dirname, 'screenshots'))
-      .filter(file => extname(file) === '.png' || extname(file) === '.jpg' || extname(file) === '.jpeg' || extname(file) === '.webp' || extname(file) === '.gif')
-      .forEach(file => {
+  const convertImagesToBlobs = () => {
+    const validExtensions = [ '.png', '.jpg', '.jpeg', '.webp', '.gif' ];
+    const newImages = readdirSync(join(__dirname, 'screenshots'))
+      .filter(file => validExtensions.indexOf(extname(file) !== -1))
+      .map(file => {
         const image = join(__dirname, 'screenshots', file);
-        const img = imageToBase64.base64Sync(image);
-        setImages(images => [ ...images, img ]);
+        const buffer = readFileSync(image);
+        const ext = extname(file).slice(1);
+        const blob = new Blob([ buffer ], { type: `image/${ext}` });
+        return URL.createObjectURL(blob);
       });
+    setImages(newImages);
   };
 
   useEffect(() => {
-    convertScreenshotsToBase64();
+    convertImagesToBlobs();
   }, []);
 
+  useEffect(() => {
+    return () => images.forEach(url => URL.revokeObjectURL(url));
+  }, [ images ]);
+
   return (
-    <>
-      {images.map(image =>
+    <div className='vz-addon-screenshots-grid-wrapper'>
+      {images.map(url =>
         <Image
           className='vz-image-wrapper'
-          src={image}
-          onClick={() => {
-            openModal(() => <ImageModal className='vz-image-modal' src={image} />);
-          }}
+          src={url}
+          onClick={() => openModal(() => <ImageModal className='vz-image-modal' src={url} />)}
         />
       )}
-    </>
+    </div>
   );
 });

@@ -48,7 +48,6 @@
     "@vizality/entities": "src/core/entities"
   },
   "dependencies": {
-    "base64-img": "^1.0.4",
     "codemirror": "^5.57.0",
     "electron-devtools-installer": "^3.1.1",
     "long": "^4.0.0",

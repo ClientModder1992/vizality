@@ -1,51 +1,58 @@
+const { readdirSync, readFileSync } = require('fs');
+const { join, extname } = require('path');
+
+const { React, React: { useState, useEffect } } = require('@vizality/react');
 const { ImageCarouselModal, Image } = require('@vizality/components');
-const { React } = require('@vizality/react');
+const { joinClassNames } = require('@vizality/util');
 
 const { open: openModal } = require('@vizality/modal');
 
-const Layout = require('../../parts/Layout');
-
 module.exports = React.memo(() => {
-  const Carousel = () => {
-    return React.createElement(ImageCarouselModal, {
-      className: 'vizality-image-modal',
-      items: [
-        {
-          src: 'https://wallpapercave.com/wp/wp2618282.png'
-        },
-        {
-          src: 'https://wallpapercave.com/wp/wp3102477.jpg'
-        },
-        {
-          src: 'https://wallpapercave.com/wp/wp5998347.jpg'
-        },
-        {
-          src: 'https://wallpapercave.com/wp/wp3102479.jpg'
-        },
-        {
-          src: 'https://wallpapercave.com/wp/wp5102679.jpg'
-        }
-      ]
-    });
+  const [ images, setImages ] = useState([]);
+
+  const convertImagesToBlobs = () => {
+    const validExtensions = [ '.png', '.jpg', '.jpeg', '.webp', '.gif' ];
+    const newImages = readdirSync(join(__dirname, 'screenshots'))
+      .filter(file => validExtensions.indexOf(extname(file) !== -1))
+      .map(file => {
+        const image = join(__dirname, 'screenshots', file);
+        const buffer = readFileSync(image);
+        const ext = extname(file).slice(1);
+        const blob = new Blob([ buffer ], { type: `image/${ext}` });
+        return URL.createObjectURL(blob);
+      });
+    setImages(newImages);
   };
 
-  const images = [
-    'https://wallpapercave.com/wp/wp2618282.png',
-    'https://wallpapercave.com/wp/wp3102477.jpg',
-    'https://wallpapercave.com/wp/wp5998347.jpg',
-    'https://wallpapercave.com/wp/wp3102479.jpg',
-    'https://wallpapercave.com/wp/wp5102679.jpg'
-  ];
+  useEffect(() => {
+    convertImagesToBlobs();
+  }, []);
+
+  useEffect(() => {
+    return () => images.forEach(url => URL.revokeObjectURL(url));
+  }, [ images ]);
+
+  const Carousel = (items, startsWith) => {
+    return <ImageCarouselModal
+      className={joinClassNames('vz-image-modal', 'vz-modal-image-carousel')}
+      items={[ ...items.map(item => {
+        return {
+          src: item
+        };
+      }) ]}
+      startWith={startsWith}
+    />;
+  };
 
   return (
-    <Layout>
-      <div className='vizality-dashboard-addon-screenshots'>
-        {images.map(image => <Image
-          className='vizality-image'
+    <div className='vz-addon-screenshots-grid-wrapper'>
+      {images.map((image, index) =>
+        <Image
+          className='vz-image-wrapper'
           src={image}
-          onClick={() => openModal(() => Carousel())}
-        />)}
-      </div>
-    </Layout>
+          onClick={() => openModal(() => Carousel(images, index))}
+        />
+      )}
+    </div>
   );
 });
