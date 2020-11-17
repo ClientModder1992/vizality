@@ -1,4 +1,4 @@
-const { joinClassNames, react: { findInReactTree }, string: { toCamelCase } } = require('@vizality/util');
+const { react: { findInReactTree }, string: { toKebabCase } } = require('@vizality/util');
 const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
 const { patch, unpatch } = require('@vizality/patcher');
 
@@ -18,7 +18,9 @@ module.exports = async () => {
 
     const { section } = findInReactTree(res, c => c.section);
 
-    res.props.className = joinClassNames(res.props.className, { [`vz-${toCamelCase(section)}Section`]: section });
+    console.log(section);
+
+    res.props['vz-section'] = toKebabCase(section);
 
     return res;
   });
