@@ -1,4 +1,4 @@
-const PatchedBrowserWindow = require('./browserWindow');
+const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 const { join, dirname } = require('path');
 const electron = require('electron');
 const Module = require('module');
@@ -6,8 +6,9 @@ const Module = require('module');
 require('../update');
 require('../ipc/main');
 
-const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
+const PatchedBrowserWindow = require('./browserWindow');
+const electronPath = require.resolve('electron');
 
 // Restore the classic path; The updater relies on it and it makes Discord go corrupt
 require.main.filename = join(discordPath, 'app_bootstrap/index.js');
@@ -25,6 +26,9 @@ delete require.cache[electronPath].exports;
 require.cache[electronPath].exports = electronExports;
 
 electron.app.once('ready', () => {
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
   // @todo Possibly add whitelists instead of just disabling CSP.
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     Object.keys(responseHeaders)
