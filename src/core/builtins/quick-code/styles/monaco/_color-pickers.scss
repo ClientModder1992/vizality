@@ -1,0 +1,40 @@
+@use '@vizality/sass' as *;
+
+.colorpicker-header {
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.colorpicker-widget {
+  margin: 10px 2px;
+  overflow: visible;
+}
+
+.colorpicker-body {
+  padding: 10px 0;
+  .saturation-box {
+    width: 100%;
+  }
+  .saturation-wrap {
+    border-radius: 3px;
+  }
+  .opacity-strip {
+    margin-left: 10px;
+  }
+  .hue-strip {
+    border-radius: 3px;
+    margin-left: 10px;
+  }
+  .strip {
+    .overlay {
+      border-radius: 3px;
+    }
+  }
+  .slider,
+  .saturation-selection {
+    background: color('white');
+    border-radius: 1000px;
+    border: none;
+    box-shadow: var('elevation-low');
+  }
+}

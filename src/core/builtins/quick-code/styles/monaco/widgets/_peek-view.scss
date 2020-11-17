@@ -1,0 +1,22 @@
+@use '@vizality/sass' as *;
+
+.monaco-editor {
+  .zone-widget {
+    padding: 0 20px;
+    box-sizing: border-box;
+    .zone-widget-container {
+      background: rgb(244, 135, 113); // #7289da
+      border-radius: 3px;
+      padding: 5px 15px;
+      *:not(.slider) {
+        background: none !important;
+        color: color('white') !important;
+      }
+    }
+  }
+  .peekview-widget {
+    .head {
+      padding: 0;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@use '@vizality/sass' as *;
+
+:root {
+  --vz-editor-scrollbar-thumb-background: #{color('black', .3)};
+  --vz-editor-scrollbar-thumb-border-radius: 4px;
+  --vz-editor-scrollbar-thumb-size: 8px;
+}
+
+.monaco-scrollable-element {
+  > .invisible.fade,
+  > .visible {
+    transition: none;
+  }
+  > .scrollbar {
+    // Vertical only
+    &.vertical {
+      > .slider {
+        width: var('vz-editor-scrollbar-thumb-size') !important;
+        min-height: 40px;
+        // Overview ruler width - scrollbar width - 4px for spacing
+        margin-left: calc(14px - 8px - 4px);
+      }
+    }
+    // Horizontal only
+    &.horizontal {
+      > .slider {
+        height: var('vz-editor-scrollbar-thumb-size') !important;
+        min-width: 40px;
+      }
+    }
+    // Both vertical and horizontal
+    > .slider {
+      border-radius: var('vz-editor-scrollbar-thumb-border-radius');
+      background-color: var('vz-editor-scrollbar-thumb-background') !important;
+    }
+  }
+}

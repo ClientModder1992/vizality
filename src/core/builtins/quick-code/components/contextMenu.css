@@ -1,0 +1,34 @@
+.monaco-scrollable-element {
+  box-shadow: var(--vz-editor-context-menu-box-shadow) !important;
+  padding: 6px 8px;
+  min-width: 188px;
+  max-width: 320px;
+  max-height: calc(100vh - 32px);
+}
+
+.monaco-menu .monaco-action-bar {
+  color: var(--vz-editor-context-menu-color) !important;
+  background: var(--vz-editor-context-menu-background) !important;
+  box-shadow: var(--vz-editor-context-menu-border-radius) !important;
+}
+
+.monaco-menu .monaco-action-bar.vertical .action-item {
+  border: none !important;
+}
+
+.monaco-menu .monaco-action-bar.vertical .action-label:not(.separator),
+.monaco-menu .monaco-action-bar.vertical .keybinding {
+  padding: 0;
+}
+
+.monaco-menu .monaco-action-bar.vertical .action-menu-item {
+  height: auto;
+  padding: var(--vz-editor-context-menu-item-padding) !important;
+  color: var(--vz-editor-context-menu-item-color) !important;
+}
+
+.monaco-menu .monaco-action-bar.vertical .action-label.separator {
+  border-bottom-width: var(--vz-editor-context-menu-divider-height) !important;
+  border-bottom-style: var(--vz-editor-context-menu-divider-style) !important;
+  border-bottom-color: var(--vz-editor-context-menu-divider-color) !important;
+}
