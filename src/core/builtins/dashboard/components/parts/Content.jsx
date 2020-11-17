@@ -1,6 +1,6 @@
 const { joinClassNames } = require('@vizality/util');
 const { getModule } = require('@vizality/webpack');
-const { Icon } = require('@vizality/components');
+const { Icon, Divider } = require('@vizality/components');
 const { React } = require('@vizality/react');
 
 module.exports = React.memo(({ icon, heading, subheading, className, hasPadding, hasBackground, children }) => {
@@ -20,9 +20,12 @@ module.exports = React.memo(({ icon, heading, subheading, className, hasPadding,
           </div>}
           <h1 className={`vizality-dashboard-content-header ${base} ${content}`}>{heading}</h1>
         </div>
-        {subheading && <h4 className={`vizality-dashboard-content-header-subtext ${h1} ${headerSubtext}`}>
-          {subheading}
-        </h4>}
+        {subheading && <>
+          <h4 className={`vizality-dashboard-content-header-subtext ${h1} ${headerSubtext}`}>
+            {subheading}
+          </h4>
+          <Divider />
+        </>}
       </div>}
       {children}
     </div>

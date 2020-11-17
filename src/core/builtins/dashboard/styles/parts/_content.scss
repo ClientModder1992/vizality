@@ -2,11 +2,14 @@
 
 .vizality-dashboard-content {
   &-header {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 1.3;
     display: flex;
     z-index: 1;
+    &-subtext {
+      margin-top: 15px;
+    }
     &-background {
       position: absolute;
       width: 100%;
@@ -52,9 +55,10 @@
       align-items: center;
     }
     &-icon-wrapper {
-      @include size(36px);
-      margin-right: 16px;
+      @include size(24px);
+      margin-right: 10px;
       z-index: 1;
+      color: var('header-secondary');
     }
   }
   &.vz-hasBackground {
