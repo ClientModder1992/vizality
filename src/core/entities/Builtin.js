@@ -65,9 +65,10 @@ module.exports = class Builtin extends Updatable {
    * document head. Style element (and styles) are automatically removed on
    * plugin disable/unload.
    * @param {string} path Stylesheet path. Either absolute or relative to the plugin root
+   * @param {boolean} suppress Whether or not to suppress errors in console
    * @returns {void}
    */
-  injectStyles (path) {
+  injectStyles (path, suppress = false) {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
@@ -82,12 +83,27 @@ module.exports = class Builtin extends Updatable {
     const compiler = resolveCompiler(resolvedPath);
     const style = createElement('style', {
       id: `style-${this.entityID}-${id}`,
-      'vz-style': true,
-      'vz-plugin': true
+      'vz-style': '',
+      'vz-plugin': ''
     });
 
     document.head.appendChild(style);
-    const compile = async () => (style.innerHTML = await compiler.compile());
+    const compile = async () => {
+      let compiled;
+      if (suppress) {
+        try {
+          compiled = await compiler.compile();
+        } catch (err) {
+          // Fail silently
+        } finally {
+          style.innerHTML = compiled || '';
+        }
+      } else {
+        compiled = await compiler.compile();
+        style.innerHTML = compiled;
+      }
+    };
+
     this.styles[id] = {
       compiler,
       compile
