@@ -22,6 +22,7 @@ const fetchByProp = async (prop, propName) => {
 // Add some util components
 Object.assign(exports, {
   Button: AsyncComponent.from(getModule(m => m.DropdownSizes, true)),
+  Anchor: AsyncComponent.from(getModuleByDisplayName('Anchor', true)),
   LazyImageZoomable: AsyncComponent.from(getModuleByDisplayName('LazyImageZoomable', true)),
   Image: AsyncComponent.from(getModuleByDisplayName('Image', true)),
   Video: AsyncComponent.from(getModuleByDisplayName('Video', true)),
