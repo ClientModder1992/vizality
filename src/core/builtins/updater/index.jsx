@@ -38,8 +38,8 @@ module.exports = class Updater extends Builtin {
     this.injectStyles('styles/main.scss');
 
     vizality.api.actions.registerAction({
-      name: 'openLatestChangelog',
-      action: this.openLatestChangelog.bind(this)
+      action: 'openLatestChangelog',
+      executor: this.openLatestChangelog.bind(this)
     });
 
     vizality.api.settings.registerDashboardItem({
@@ -288,9 +288,10 @@ module.exports = class Updater extends Builtin {
 
   // Change Log
   async openLatestChangelog () {
+    const { openModal: openNewModal } = getModule('openModal', 'closeModal');
     const changelogObject = await this.formatChangelog();
     const ChangeLog = await this._getChangeLogsComponent();
-    openModal(() => <ChangeLog changeLog={changelogObject} />);
+    openNewModal(props => <ChangeLog changeLog={changelogObject} {...props} />);
   }
 
   async _getChangeLogsComponent () {
@@ -301,10 +302,13 @@ module.exports = class Updater extends Builtin {
 
       class ChangeLog extends DiscordChangeLog {
         constructor (props) {
-          props.onScroll = () => void 0;
-          props.track = () => void 0;
           super(props);
 
+          this.onClose = props.onClose;
+          this.onCloseRequest = props.onClose;
+          this.close = this.close.bind(this);
+          this.handleScroll = () => void 0;
+          this.track = () => void 0;
           this.oldRenderHeader = this.renderHeader;
           this.renderHeader = this.renderNewHeader.bind(this);
         }
@@ -339,6 +343,11 @@ module.exports = class Updater extends Builtin {
             </div>;
 
           return footer;
+        }
+
+        close () {
+          super.close();
+          this.onClose();
         }
       }
 
