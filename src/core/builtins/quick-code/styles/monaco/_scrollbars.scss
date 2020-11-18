@@ -16,16 +16,12 @@
     &.vertical {
       > .slider {
         width: var('vz-editor-scrollbar-thumb-size') !important;
-        min-height: 40px;
-        // Overview ruler width - scrollbar width - 4px for spacing
-        margin-left: calc(14px - 8px - 4px);
       }
     }
     // Horizontal only
     &.horizontal {
       > .slider {
         height: var('vz-editor-scrollbar-thumb-size') !important;
-        min-width: 40px;
       }
     }
     // Both vertical and horizontal

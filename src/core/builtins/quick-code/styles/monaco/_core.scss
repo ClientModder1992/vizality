@@ -8,20 +8,20 @@
   --vz-editor-context-menu-box-shadow: var(--elevation-high);
   --vz-editor-context-menu-background: var(--background-floating);
   --vz-editor-context-menu-border-radius: 4px;
+  --vz-editor-context-menu-font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  --vz-editor-context-menu-item-color: orange;
+  --vz-editor-context-menu-item-color: var(--interactive-normal);
   --vz-editor-context-menu-item-padding: 8px 12px;
+  --vz-editor-context-menu-item-border-radius: 2px;
 
-  --vz-editor-context-menu-item-divider-height: 1px;
-  --vz-editor-context-menu-item-divider-style: solid;
-  --vz-editor-context-menu-item-divider-color: #000;
+  --vz-editor-context-menu-separator-height: 1px;
+  --vz-editor-context-menu-separator-style: solid;
+  --vz-editor-context-menu-separator-color: var(--background-modifier-accent);
 
-  --vz-editor-line-numbers-color: var('text-muted');
-}
+  --vz-editor-context-menu-item-focus-background: #7289da;
+  --vz-editor-context-menu-item-focus-color: #{color('white')};
 
-// Outermost wrapper
-.vz-editor-wrapper {
-  flex: 1;
+  --vz-editor-line-numbers-color: var(--text-muted);
 }
 
 .vz-editor {
@@ -70,4 +70,8 @@
 .decorationsOverviewRuler {
   opacity: .5 !important;
   right: 4px !important;
+}
+
+.monaco-scrollable-element>.scrollbar {
+  height: 100% !important;
 }

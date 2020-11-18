@@ -1,32 +1,19 @@
 /* eslint-disable no-unused-vars */
-const { promises: { readFile, writeFile }, watch, statSync, writeFileSync, readFileSync } = require('fs');
-const EventEmitter = require('events');
+const { promises: { readFile }, watch, writeFileSync, readFileSync } = require('fs');
 const { join } = require('path');
-
-const events = new EventEmitter();
 
 const { default: Editor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
 const { React, React: { useEffect, useState, useRef } } = require('@vizality/react');
+const { dom: { getElementDimensions }, dom: { injectShadowStyles } } = require('@vizality/util');
 const { joinClassNames } = require('@vizality/util');
 const { Spinner } = require('@vizality/components');
-
-const injectShadowStyles = (shadowRootElement, insertBeforeSelector, styles) => {
-  const root = shadowRootElement.shadowRoot;
-
-  if (root !== null) {
-    const styleElements = root.querySelectorAll('style');
-
-    if (!Array.from(styleElements).some(el => el.innerHTML === styles)) {
-      const newStyleTag = document.createElement('style');
-      newStyleTag.innerHTML = styles;
-      root.insertBefore(newStyleTag, root.querySelector(insertBeforeSelector));
-    }
-  }
-};
 
 module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ , setIsEditorReady ] = useState(false);
   const [ value, setValue ] = useState(getSetting('custom-css', ''));
+  // const [ width, setWidth ] = useState(null);
+  // const [ height, setHeight ] = useState(null);
+
   let editor = useRef();
   let model = useRef();
   const valueGetter = useRef();
@@ -68,6 +55,19 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     setIsEditorReady(true);
     valueGetter.current = _valueGetter;
     editor = _editor;
+
+    // const page = document.querySelector('.vizality-dashboard');
+    // const content = document.querySelector('.vizality-dashboard-content');
+    // const header = document.querySelector('.vizality-dashboard-content-header-wrapper');
+
+    // const rObserver = new ResizeObserver(entries => {
+    //   setWidth(`${getElementDimensions(content).width}px`);
+    //   setHeight(`${getElementDimensions(page).height - getElementDimensions(header).height - 80}px`);
+    // });
+
+    // // Observe one or multiple elements
+    // rObserver.observe(document.body);
+
     model = editor.getModel();
 
     model.updateOptions({ insertSpaces: true, tabSize: 2 });
@@ -79,6 +79,13 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   useEffect(() => {
     _watchFiles();
+
+    // const page = document.querySelector('.vizality-dashboard');
+    // const content = document.querySelector('.vizality-dashboard-content');
+    // const header = document.querySelector('.vizality-dashboard-content-header-wrapper');
+
+    // setWidth(`${getElementDimensions(content).width}px`);
+    // setHeight(`${getElementDimensions(page).height - getElementDimensions(header).height - 80}px`);
   });
 
   return (
