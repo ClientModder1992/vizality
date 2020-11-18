@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
-
 const { assertType, isType } = require('../type');
 
 /**
@@ -27,5 +26,9 @@ const array = module.exports = {
    */
   assertArray (input) {
     if (assertType(input, 'Array')) return;
+  },
+
+  getRandomArrayItem (array) {
+    return array[Math.floor(Math.random() * array.length)];
   }
 };

@@ -26,5 +26,33 @@ const dom = module.exports = {
     // @todo: Consider reworking this code... As it stands, if the element doesn't exist, it just keeps running forever...
     while (!(element = document.querySelector(querySelector))) await sleep(1);
     return element;
+  },
+
+  getElementDimensions (node) {
+    const widthList = [ 'margin-right', 'margin-left', 'border-right', 'border-left', 'padding-right', 'padding-left', 'width' ];
+    const heightList = [ 'margin-top', 'margin-bottom', 'border-top', 'border-bottom', 'padding-top', 'padding-bottom', 'height' ];
+    const style = window.getComputedStyle(node);
+    const width = widthList
+      .map(k => parseInt(style.getPropertyValue(k)))
+      .reduce((prev, cur) => prev + cur);
+    const height = heightList
+      .map(k => parseInt(style.getPropertyValue(k)))
+      .reduce((prev, cur) => prev + cur);
+
+    return { width, height };
+  },
+
+  injectShadowStyles (shadowRootElement, insertBeforeSelector, styles) {
+    const root = shadowRootElement.shadowRoot;
+
+    if (root !== null) {
+      const styleElements = root.querySelectorAll('style');
+
+      if (!Array.from(styleElements).some(el => el.innerHTML === styles)) {
+        const newStyleTag = document.createElement('style');
+        newStyleTag.innerHTML = styles;
+        root.insertBefore(newStyleTag, root.querySelector(insertBeforeSelector));
+      }
+    }
   }
 };

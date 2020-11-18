@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-
-const { promises: { readdir, lstat, unlink, rmdir } } = require('fs');
-const { existsSync } = require('fs');
+const { promises: { readdir, lstat, unlink, rmdir }, existsSync, lstatSync, readFileSync, readdirSync } = require('fs');
+const { dirname, extname, join } = require('path');
 
 /**
  * @module util.file
@@ -9,7 +7,7 @@ const { existsSync } = require('fs');
  * @memberof util
  * @version 0.0.1
  */
-const file = module.exports = {
+module.exports = {
   async removeDirRecursive (directory) {
     if (existsSync(directory)) {
       const files = await readdir(directory);
@@ -35,5 +33,34 @@ const file = module.exports = {
       };
       img.src = image;
     });
+  },
+
+  async getObjectURL (path, allowedExtensions = [ '.png', '.jpg', '.jpeg', '.webp', '.gif' ]) {
+    if (typeof allowedExtensions === 'string' || allowedExtensions instanceof String) {
+      allowedExtensions = allowedExtensions.split();
+    }
+
+    const URLs = [];
+    const isDir = existsSync(path) && lstatSync(path).isDirectory();
+    const isFile = existsSync(path) && lstatSync(path).isFile();
+
+    const getURL = (file) => {
+      const buffer = readFileSync(file);
+      const ext = extname(file).slice(1);
+      const blob = new Blob([ buffer ], { type: `image/${ext}` });
+      return URLs.push(URL.createObjectURL(blob));
+    };
+
+    if (isDir) {
+      readdirSync(path)
+        .filter(file => allowedExtensions.indexOf(extname(file) !== -1))
+        .map(file => getURL(join(path, file)));
+    } else {
+      if (isFile) {
+        getURL(path);
+      }
+    }
+
+    return URLs;
   }
 };
