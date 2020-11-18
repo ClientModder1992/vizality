@@ -26,12 +26,10 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       // Overlay
       originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-      // opts.webPreferences.nodeIntegration = true;
     } else if (opts.webPreferences && opts.webPreferences.preload) {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-      // opts.webPreferences.nodeIntegration = true;
       // @todo Get rid of this.
       opts.webPreferences.contextIsolation = false;
 
@@ -46,8 +44,6 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       }
     }
 
-    // @todo Get rid of this.
-    opts.webPreferences.enableRemoteModule = true;
     const win = new BrowserWindow(opts);
     const originalLoadUrl = win.loadURL.bind(win);
     Object.defineProperty(win, 'loadURL', {

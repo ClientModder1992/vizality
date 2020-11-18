@@ -28,9 +28,9 @@ module.exports = class ActionsAPI extends API {
    */
   registerAction (action) {
     try {
-      if (this.actions.find(r => r.name === name)) throw new Error(`Action "${name}" is already registered!`);
-      if (!action.action) throw new Error(`"action" property must be specified!`);
-      if (typeof action.action !== 'function') throw new Error(`"action" property value must be a function!`);
+      if (this.actions.find(r => r.action === name)) throw new Error(`Action "${name}" is already registered!`);
+      if (!action.executor) throw new Error(`"action" property must be specified!`);
+      if (typeof action.executor !== 'function') throw new Error(`"action" property value must be a function!`);
 
       this.actions.push(action);
       this.emit('actionAdded', action);
@@ -47,8 +47,8 @@ module.exports = class ActionsAPI extends API {
    */
   unregisterAction (name) {
     try {
-      if (this.actions.find(r => r.name === name)) {
-        this.actions = this.actions.filter(r => r.name !== name);
+      if (this.actions.find(r => r.action === name)) {
+        this.actions = this.actions.filter(r => r.action !== name);
         this.emit('routeRemoved', name);
       } else {
         throw new Error(`Action "${name}" is not registered, so it cannot be unregistered!`);
@@ -64,6 +64,6 @@ module.exports = class ActionsAPI extends API {
    * @returns {void}
    */
   async invoke (name) {
-    return this.actions.find(r => r.name === name).action();
+    return this.actions.find(r => r.action === name).executor();
   }
 };

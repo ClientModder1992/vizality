@@ -105,8 +105,7 @@ module.exports = class SplashScreen extends React.PureComponent {
       center: true,
       show: true,
       webPreferences: {
-        preload: join(Directories.SRC, 'preload', 'splash.js'),
-        nodeIntegration: true
+        preload: join(Directories.SRC, 'preload', 'splash.js')
       }
     };
 
