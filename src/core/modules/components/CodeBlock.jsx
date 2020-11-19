@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow-callback */
 const { clipboard } = require('electron');
 
 const { React, React: { useState } } = require('@vizality/react');
@@ -25,6 +24,7 @@ const Button = getModule(m => m.DropdownSizes);
  * />
  * ```
  */
+// eslint-disable-next-line prefer-arrow-callback
 module.exports = React.memo(function VizalityCodeBlock ({
   language,
   header,

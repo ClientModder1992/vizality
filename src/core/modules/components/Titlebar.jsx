@@ -2,7 +2,9 @@
 const { getModule } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 
-module.exports = React.memo(function VizalityTitlebar ({ type, windowKey, themeOverride, ...props }) {
+module.exports = React.memo(function VizalityTitlebar (props) {
+  let { type, windowKey } = props;
+
   if (!type) {
     const OS = DiscordNative.process.platform;
     switch (true) {
@@ -17,5 +19,5 @@ module.exports = React.memo(function VizalityTitlebar ({ type, windowKey, themeO
 
   const Titlebar = mdl({ type }).type;
 
-  return <Titlebar type={type} windowKey={windowKey} themeOverride={themeOverride} {...props} />;
+  return <Titlebar className='vz-titlebar' type={type} windowKey={windowKey} {...props} />;
 });

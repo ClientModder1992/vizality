@@ -4,7 +4,7 @@ const AsyncComponent = require('./AsyncComponent');
 
 module.exports = AsyncComponent.from((async () => {
   const DiscordPopoutWindow = getModule(m => m.DecoratedComponent && m.DecoratedComponent.render);
-  class PopoutWindow extends DiscordPopoutWindow {
+  class PopupWindow extends DiscordPopoutWindow {
     constructor (props) {
       if (!props.withTitleBar) {
         // Enforce it
@@ -17,11 +17,17 @@ module.exports = AsyncComponent.from((async () => {
       const instance = this.getDecoratedComponentInstance();
       const { guestWindow } = instance.props;
 
-      document.querySelectorAll('style[vz-style]').forEach(style => {
+      document.querySelectorAll('style').forEach(style => {
         guestWindow.document.head.innerHTML += style.outerHTML;
+      });
+
+      document.querySelectorAll('link').forEach(stylesheet => {
+        console.log(stylesheet);
+        if (stylesheet.href.startsWith('/assets/')) return;
+        guestWindow.document.head.innerHTML += stylesheet.outerHTML;
       });
     }
   }
 
-  return PopoutWindow;
+  return PopupWindow;
 })());

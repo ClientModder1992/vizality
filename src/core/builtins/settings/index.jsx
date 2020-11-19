@@ -1,13 +1,12 @@
 const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
-// const { AsyncComponent } = require('@vizality/components');
 const { patch, unpatch } = require('@vizality/patcher');
 const { Builtin } = require('@vizality/entities');
 const { React } = require('@vizality/react');
 
 const ContextMenu = require('./components/ContextMenu');
-const _Settings = require('./components/Settings');
+const Settings = require('./components/Settings');
 
-module.exports = class Settings extends Builtin {
+module.exports = class CoreSettings extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
 
@@ -23,7 +22,7 @@ module.exports = class Settings extends Builtin {
       heading: 'Settings',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'Wrench',
-      render: _Settings
+      render: props => <Settings {...props} />
     });
 
     this.patchSettingsComponent();
@@ -64,10 +63,10 @@ module.exports = class Settings extends Builtin {
             res.props.children.push(
               Object.assign({}, res.props.children[0], {
                 props: Object.assign({}, res.props.children[0].props, {
-                  children: [ 'Vizality', ' ', React.createElement('span', {
-                    className: res.props.children[0].props.children[4].props.className,
-                    children: [ vizality.git.branch, ' (', latestCommitHash, ')' ]
-                  }) ]
+                  children: [ 'Vizality', ' ',
+                    <span className={res.props.children[0].props.children[4].props.className}>
+                      {`${vizality.git.branch} (${latestCommitHash})`}
+                    </span> ]
                 })
               })
             );
