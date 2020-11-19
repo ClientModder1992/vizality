@@ -2,17 +2,16 @@
 const { promises: { readFile }, watch, writeFileSync, readFileSync } = require('fs');
 const { join } = require('path');
 
-const { default: Editor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
+const { default: MonacoEditor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
 const { React, React: { useEffect, useState, useRef } } = require('@vizality/react');
-const { dom: { getElementDimensions }, dom: { injectShadowStyles } } = require('@vizality/util');
+const { AsyncComponent, Spinner } = require('@vizality/components');
+const { dom: { injectShadowStyles } } = require('@vizality/util');
+const { Flux, getModule } = require('@vizality/webpack');
 const { joinClassNames } = require('@vizality/util');
-const { Spinner } = require('@vizality/components');
 
-module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
+const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ , setIsEditorReady ] = useState(false);
   const [ value, setValue ] = useState(getSetting('custom-css', ''));
-  // const [ width, setWidth ] = useState(null);
-  // const [ height, setHeight ] = useState(null);
 
   let editor = useRef();
   let model = useRef();
@@ -29,7 +28,6 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   const _watchFiles = async () => {
     if (QuickCode.watcher) return;
-    console.log('Starting to watch content.');
     QuickCode.watcher = watch(customCSSFile, { persistent: false }, async (eventType, filename) => {
       if (!eventType || !filename) return;
       const val = readFileSync(customCSSFile).toString();
@@ -56,18 +54,6 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     valueGetter.current = _valueGetter;
     editor = _editor;
 
-    // const page = document.querySelector('.vizality-dashboard');
-    // const content = document.querySelector('.vizality-dashboard-content');
-    // const header = document.querySelector('.vizality-dashboard-content-header-wrapper');
-
-    // const rObserver = new ResizeObserver(entries => {
-    //   setWidth(`${getElementDimensions(content).width}px`);
-    //   setHeight(`${getElementDimensions(page).height - getElementDimensions(header).height - 80}px`);
-    // });
-
-    // // Observe one or multiple elements
-    // rObserver.observe(document.body);
-
     model = editor.getModel();
 
     model.updateOptions({ insertSpaces: true, tabSize: 2 });
@@ -79,18 +65,11 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   useEffect(() => {
     _watchFiles();
-
-    // const page = document.querySelector('.vizality-dashboard');
-    // const content = document.querySelector('.vizality-dashboard-content');
-    // const header = document.querySelector('.vizality-dashboard-content-header-wrapper');
-
-    // setWidth(`${getElementDimensions(content).width}px`);
-    // setHeight(`${getElementDimensions(page).height - getElementDimensions(header).height - 80}px`);
   });
 
   return (
     <>
-      <Editor
+      <MonacoEditor
         height='100%'
         width='100%'
         wrapperClassName='vz-editor-wrapper'
@@ -111,3 +90,13 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     </>
   );
 });
+
+module.exports = AsyncComponent.from((async () => {
+  const windowStore = await getModule('getWindow');
+  return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
+    guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOM_CSS'),
+    windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_CUSTOM_CSS'),
+    ...vizality.api.settings._fluxProps('quick-code')
+  }))(Editor);
+})());
+
