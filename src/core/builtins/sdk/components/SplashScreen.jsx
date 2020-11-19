@@ -1,4 +1,4 @@
-const { remote: { BrowserWindow } } = require('electron');
+// const { remote: { BrowserWindow } } = require('electron');
 const { format: formatUrl } = require('url');
 const { join } = require('path');
 

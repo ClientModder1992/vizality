@@ -1,6 +1,6 @@
 const { dom: { waitForElement }, joinClassNames, react: { getOwnerInstance } } = require('@vizality/util');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@vizality/webpack');
-const { PopupWindow, Tooltip, ContextMenu, Icon } = require('@vizality/components');
+const { Tooltip, ContextMenu, Icon } = require('@vizality/components');
 const { patch, unpatch } = require('@vizality/patcher');
 const { Builtin } = require('@vizality/entities');
 const { React } = require('@vizality/react');
@@ -81,13 +81,16 @@ module.exports = class SDK extends Builtin {
 
   async _openSdk () {
     const popoutModule = getModule('setAlwaysOnTop', 'open');
-    popoutModule.open('DISCORD_VIZALITY_SANDBOX', (key) =>
-      React.createElement(PopupWindow, {
-        windowKey: key,
-        title: 'SDK'
-      }, React.createElement(SdkWindow))
-    );
-    popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_SANDBOX', true);
+    const id = 'DISCORD_VIZALITY_SANDBOX';
+
+    vizality.api.popup.openWindow({
+      id,
+      title: 'SDK',
+      titlebarType: 'OSX',
+      render: props => <SdkWindow {...props} />
+    });
+
+    popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_SANDBOX', false);
   }
 
   _storeListener () {

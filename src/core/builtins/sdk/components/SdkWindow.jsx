@@ -6,7 +6,6 @@ const { React } = require('@vizality/react');
 
 const SplashScreen = require('./SplashScreen');
 const Settings = require('./Settings');
-const TitleBar = require('./TitleBar');
 const ForceUI = require('./ForceUI');
 
 class SdkWindow extends React.PureComponent {
@@ -20,10 +19,9 @@ class SdkWindow extends React.PureComponent {
 
     return (
       <>
-        <TitleBar type='WINDOWS' windowKey={'DISCORD_VIZALITY_SANDBOX'} themeOverride={this.props.theme} />
         {this.renderHeaderBar()}
         <div className={`vizality-sdk ${colorStandard}`}>
-          <AdvancedScrollerThin className='powercord-sdk-container'>
+          <AdvancedScrollerThin className='vizality-sdk-container'>
             <ForceUI />
             <SplashScreen />
             <Settings />
@@ -55,7 +53,7 @@ class SdkWindow extends React.PureComponent {
           className={joinClassNames(headerBarClasses.iconWrapper, headerBarClasses.clickable)}
           onClick={async () => {
             if (!id) {
-              // Consider this is the always on top thing
+              // Consider this as the always on top Discord module utility thing
               const popoutModule = getModule('setAlwaysOnTop', 'open');
               return popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_SANDBOX', !this.props.windowOnTop);
             }

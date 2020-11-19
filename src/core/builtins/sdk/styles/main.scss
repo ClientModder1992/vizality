@@ -1,27 +1,10 @@
-.vizality-sdk, .vizality-sdk * {
-  box-sizing: border-box;
-}
+@use '@vizality/sass' as *;
 
 .vizality-sdk {
-  width: 100%;
-  margin-top: 22px;
-  height: calc(100% - 22px);
+  @include size(100%);
   background-color: var(--background-primary);
-
-  &-title {
-    background-color: var(--background-tertiary);
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    margin-top: 0;
-    padding-top: 4px;
-  }
-
   &-header {
-    top: 22px;
     box-shadow: var(--elevation-low);
-
     .children-19S4PO {
       div:first-child {
         margin-left: 8px;
@@ -32,16 +15,13 @@
       }
     }
   }
-
   &-container {
-    padding: 20px;
+    padding: 20px !important;
   }
-
   .category {
     &:not(:first-child) {
       margin-top: 46px;
     }
-
     h2 {
       font-size: 22px;
       font-weight: bold;
@@ -49,23 +29,18 @@
       padding-bottom: 16px;
       border-bottom: thin solid var(--background-modifier-accent);
     }
-
     p {
       margin-bottom: 24px;
     }
-
     .description-3_Ncsb {
       white-space: pre-line;
-
       strong strong {
         color: #f04747;
       }
     }
   }
-
   .splash-buttons button {
     margin-bottom: 8px;
-
     &:not(:last-child) {
       margin-right: 8px;
     }
