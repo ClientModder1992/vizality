@@ -4,31 +4,39 @@ const { getModule } = require('@vizality/webpack');
 const { Events } = require('@vizality/constants');
 const { API } = require('@vizality/entities');
 
-const PopupIframeContent = React.memo(props => {
+const PopupContent = React.memo(props => {
   const [ loading, setLoading ] = useState(true);
-  const { url, windowKey, themeOverride, titlebarType } = props;
+  const { url, windowKey, titlebarType, titlebar } = props;
 
   const sandbox = 'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts';
 
   useEffect(() => {
     return () => {
-      this.emit(Events.VIZALITY_POPUP_WINDOW_CLOSE, props.windowKey);
+      /*
+       * @todo Fix this. Not sure how to set it when it's not apart of the class
+       * that extends API.
+       * events.emit(Events.VIZALITY_POPUP_WINDOW_CLOSE, props.windowKey);
+       */
       delete vizality.api.popup.windows[props.windowKey];
     };
   }, []);
 
   return (
-    <div className='vz-popup-window'>
-      <Titlebar type={titlebarType} windowKey={windowKey} themeOverride={themeOverride} focused={true} />
-      {loading && <Spinner className='vz-popup-window-spinner' />}
+    <div className='vz-popup-window' vz-titlebar={titlebar ? '' : null}>
+      {titlebar && <Titlebar type={titlebarType} windowKey={windowKey} focused={true} />}
+      {loading && url && <Spinner className='vz-popup-window-spinner' />}
       <div className='vz-popup-window-content-wrapper'>
-        <iframe
-          src={url}
-          onLoad={() => setLoading(false)}
-          className='vz-popup-window-content'
-          allowtransparency={true}
-          sandbox={sandbox}
-        />
+        {url
+          ? <iframe
+            src={url}
+            onLoad={() => setLoading(false)}
+            className='vz-popup-window-content'
+            allowtransparency={true}
+            sandbox={sandbox}
+          />
+          : <>
+            {props.children}
+          </>}
       </div>
     </div>
   );
@@ -52,8 +60,19 @@ module.exports = class PopupAPI extends API {
     options.width = options.width || 800;
     options.height = options.height || 600;
 
-    const { id, title, url, titlebarType } = props;
+    const { id } = props;
     const { width, height } = options;
+    let Render;
+
+    // Show a titlebar if they don't specify titlebar={false}
+    console.log(props.titlebar);
+    if (typeof props.titlebar === 'undefined' || props.titlebar === null) {
+      props.titlebar = true;
+    }
+
+    // Let url override render
+    if (props.url) props.render = null;
+    if (props.render) Render = props.render;
 
     const y = global.top.outerHeight / 2 + global.top.screenY - (height / 2);
     const x = global.top.outerWidth / 2 + global.top.screenX - (width / 2);
@@ -62,17 +81,22 @@ module.exports = class PopupAPI extends API {
     options.left = x;
 
     if (this.windows[id]) {
-      return this.error(`Popup window with ID "${id}" is already used by another plugin.`);
+      return this.error(`Popup window with ID "${props.id}" is already used by another plugin.`);
     }
 
     this.windows[id] = props;
 
-    return new Promise(resolve => {
+    // eslint-disable-next-line no-unused-vars
+    return new Promise(_resolve => {
       const popoutModule = getModule('setAlwaysOnTop', 'open');
       popoutModule.open(id, key => {
-        return <PopupWindow windowKey={key} title={title}>
-          <PopupIframeContent titlebarType={titlebarType} url={url} windowKey={key} resolve={resolve} />
-        </PopupWindow>;
+        return (
+          <PopupWindow windowKey={key} {...props}>
+            <PopupContent windowKey={key} {...props}>
+              {props.render && !props.url && <Render {...props} />}
+            </PopupContent>
+          </PopupWindow>
+        );
       }, options);
 
       this.emit(Events.VIZALITY_POPUP_WINDOW_OPEN, id);

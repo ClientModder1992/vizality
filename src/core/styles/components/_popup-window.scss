@@ -7,8 +7,11 @@
   left: 0;
   top: 0;
   background-color: var('background-tertiary');
+  display: flex;
+  flex-flow: column;
   .titleBar-AC4pGV {
     width: 100%;
+    position: relative;
   }
   &-spinner {
     @include size(100%);
@@ -20,10 +23,11 @@
     animation: fadeIn .2s forwards;
   }
   &-content-wrapper { 
-    @include size(100%, calc(100% - 22px));
+    @include size(100%);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-flow: column;
     z-index: 1;
     left: 0;
     top: 0;
@@ -34,13 +38,6 @@
     @include size(100%);
     border: 0;
     z-index: 0;
-  }
-  .typeMacOS-3EmCyP {
-    position: relative;
-    ~ #{$base}-content-wrapper { 
-      // OSX titlebar height
-      height: calc(100% - 32px);
-    }
   }
   .macButtons-2MuSAC {
     margin-top: 4px;

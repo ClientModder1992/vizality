@@ -102,7 +102,7 @@ module.exports = class SettingsAPI extends API {
         render: () =>
           <Layout>
             <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${id}`}>
-              <Render />
+              <Render {...props} />
             </Content>
           </Layout>,
         sidebar: Sidebar
