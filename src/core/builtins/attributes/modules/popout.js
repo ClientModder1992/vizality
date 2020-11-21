@@ -20,15 +20,6 @@ module.exports = async () => {
     //   return result(e);
     // };
 
-    res.ref = elem => {
-      if (elem && elem._reactInternalFiber) {
-        const container = findInTree(elem._reactInternalFiber.return, el => el.stateNode, { walkable: [ 'return' ] });
-        if (container.stateNode && container.stateNode.classList && container.stateNode.classList.contains('layer-v9HyYc')) {
-          console.log(container.stateNode);
-        }
-      }
-    };
-
     return res;
   });
 

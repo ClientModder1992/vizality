@@ -2,9 +2,9 @@
 
 .vizality-sdk {
   @include size(100%);
-  background-color: var(--background-primary);
+  background-color: var('background-primary');
   &-header {
-    box-shadow: var(--elevation-low);
+    box-shadow: var('elevation-low');
     .children-19S4PO {
       div:first-child {
         margin-left: 8px;
@@ -27,7 +27,7 @@
       font-weight: bold;
       margin-bottom: 16px;
       padding-bottom: 16px;
-      border-bottom: thin solid var(--background-modifier-accent);
+      border-bottom: thin solid var('background-modifier-accent');
     }
     p {
       margin-bottom: 24px;

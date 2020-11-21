@@ -1,5 +1,5 @@
-const { joinClassNames, string: { toCamelCase } } = require('@vizality/util');
 const { getModuleByDisplayName } = require('@vizality/webpack');
+const { string: { toKebabCase } } = require('@vizality/util');
 const { patch, unpatch } = require('@vizality/patcher');
 
 /*
@@ -14,22 +14,19 @@ module.exports = async () => {
   patch('vz-attributes-tabBar', TabBar.prototype, 'render', function (_, res) {
     if (!res.props || !res.props.children) return res;
 
-    /*
-     * We check if the item starts with vz- particularly for settings sidebar items
-     * for core plugins.
-     */
-    const selected = toCamelCase(this.props.selectedItem.startsWith('vz-') ? this.props.selectedItem.replace('vz-', '') : this.props.selectedItem);
-
-    res.props['vz-item-selected'] = `vz-${selected}Item`;
+    res.props['vz-item-selected'] = toKebabCase(this.props.selectedItem);
 
     const tabBarItems = res.props.children;
 
     for (const item of tabBarItems) {
       if (!item || !item.props || !item.props.id) continue;
 
-      const itemFormatted = toCamelCase(item.props.id.startsWith('vz-') ? item.props.id.replace('vz-', '') : item.props.id);
-
-      item.props.className = joinClassNames(item.props.className, `vz-${itemFormatted}Item`);
+      /*
+       * @todo It adds the prop, which you can see in RDT,
+       * but the DOM doesn't update. forceUpdateElement doesn't
+       * seem to help/.
+       */
+      item.props['vz-item'] = toKebabCase(item.props.id);
     }
 
     return res;

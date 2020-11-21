@@ -6,7 +6,7 @@
  * @param {string|object|Array} items Potential class names we're trying to join
  * @returns {string} String of class names joined together
  */
-const joinClassNames = module.exports = (...items) => {
+module.exports = (...items) => {
   const classes = [];
   for (const item of items) {
     if (!item) continue;

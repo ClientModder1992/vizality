@@ -42,7 +42,6 @@ module.exports = class SettingsAPI extends API {
     super();
     this.store = store;
     this.tabs = {};
-    this.toobs = [];
   }
 
   /**

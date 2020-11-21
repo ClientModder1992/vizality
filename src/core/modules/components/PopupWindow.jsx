@@ -22,7 +22,6 @@ module.exports = AsyncComponent.from((async () => {
       });
 
       document.querySelectorAll('link').forEach(stylesheet => {
-        console.log(stylesheet);
         if (stylesheet.href.startsWith('/assets/')) return;
         guestWindow.document.head.innerHTML += stylesheet.outerHTML;
       });

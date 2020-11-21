@@ -83,7 +83,7 @@ module.exports = class SDK extends Builtin {
     const popoutModule = getModule('setAlwaysOnTop', 'open');
     const id = 'DISCORD_VIZALITY_SANDBOX';
 
-    vizality.api.popup.openWindow({
+    vizality.api.popups.openWindow({
       id,
       title: 'SDK',
       titlebarType: 'OSX',
@@ -97,7 +97,9 @@ module.exports = class SDK extends Builtin {
     if (this.sdkEnabled !== vizality.settings.get('sdkEnabled')) {
       this.sdkEnabled = vizality.settings.get('sdkEnabled');
       const { title } = getModule('title', 'chatContent');
-      getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
+      if (document.querySelector(`.${title}`)) {
+        getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
+      }
     }
   }
 };

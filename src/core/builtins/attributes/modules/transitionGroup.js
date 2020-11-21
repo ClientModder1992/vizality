@@ -18,8 +18,6 @@ module.exports = async () => {
 
     const { section } = findInReactTree(res, c => c.section);
 
-    console.log(section);
-
     res.props['vz-section'] = toKebabCase(section);
 
     return res;

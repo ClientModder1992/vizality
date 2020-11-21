@@ -17,7 +17,7 @@ const PopupContent = React.memo(props => {
        * that extends API.
        * events.emit(Events.VIZALITY_POPUP_WINDOW_CLOSE, props.windowKey);
        */
-      delete vizality.api.popup.windows[props.windowKey];
+      delete vizality.api.popups.windows[props.windowKey];
     };
   }, []);
 
@@ -42,7 +42,7 @@ const PopupContent = React.memo(props => {
   );
 });
 
-module.exports = class PopupAPI extends API {
+module.exports = class PopupsAPI extends API {
   constructor () {
     super();
 
@@ -65,20 +65,18 @@ module.exports = class PopupAPI extends API {
     let Render;
 
     // Show a titlebar if they don't specify titlebar={false}
-    console.log(props.titlebar);
-    if (typeof props.titlebar === 'undefined' || props.titlebar === null) {
-      props.titlebar = true;
-    }
+    if (typeof props.titlebar === 'undefined' || props.titlebar === null) props.titlebar = true;
 
     // Let url override render
     if (props.url) props.render = null;
     if (props.render) Render = props.render;
 
+    // Center the popup window based on the user's screen size
     const y = global.top.outerHeight / 2 + global.top.screenY - (height / 2);
     const x = global.top.outerWidth / 2 + global.top.screenX - (width / 2);
 
-    options.top = y;
-    options.left = x;
+    options.top = options.top || y;
+    options.left = options.left || x;
 
     if (this.windows[id]) {
       return this.error(`Popup window with ID "${props.id}" is already used by another plugin.`);

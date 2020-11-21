@@ -54,6 +54,8 @@
     @include ellipsis(100%, inline-block);
     font-size: 18px;
     margin-right: 7px;
+    font-weight: 500;
+    color: var('header-primary');
   }
   &-authors {
     display: flex;
