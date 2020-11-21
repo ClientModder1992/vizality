@@ -1,0 +1,29 @@
+@use '@vizality/sass' as *;
+
+.monaco-editor {
+  .find-widget {
+    color: var('text-normal') !important;
+    box-shadow: var('elevation-medium') !important;
+    background: var('background-primary') !important;
+    border-radius: 5px;
+    transition: none !important;
+    &.visible {
+      animation: fadeShortSlideInFromTop .2s ease forwards;
+    }
+    &.no-results .matchesCount {
+      color: rgb(240 71 71) !important;
+    }
+    .monaco-inputbox>.wrapper {
+      background: var('background-tertiary') !important;
+      border-radius: 3px !important;
+      overflow: hidden;
+    }
+    .monaco-findInput .input {
+      color: var('header-primary') !important;
+      font-size: 14px;
+    }
+    .monaco-inputbox.synthetic-focus {
+      outline: none !important;
+    }
+  }
+}

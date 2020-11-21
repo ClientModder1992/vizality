@@ -5,7 +5,7 @@ const { getModule } = require('@vizality/webpack');
 const { Builtin } = require('@vizality/entities');
 const { React } = require('@vizality/react');
 
-const Editor = require('./components/Editor');
+const QuickCodePage = require('./components/QuickCode');
 
 module.exports = class QuickCode extends Builtin {
   async onStart () {
@@ -15,7 +15,7 @@ module.exports = class QuickCode extends Builtin {
       heading: 'Quick Code',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'Compose',
-      render: Editor
+      render: props => <QuickCodePage main={this} {...props} />
     });
 
     this.watcher = false;
@@ -33,10 +33,10 @@ module.exports = class QuickCode extends Builtin {
     const popoutModule = getModule('setAlwaysOnTop', 'open');
     const id = 'DISCORD_VIZALITY_CUSTOM_CSS';
 
-    vizality.api.popup.openWindow({
+    vizality.api.popups.openWindow({
+      id,
       title: 'Quick Code - CSS',
-      render: <Editor {...this.props} />,
-      id
+      render: <Editor {...this.props} />
     });
 
     popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_CUSTOM_CSS', false);

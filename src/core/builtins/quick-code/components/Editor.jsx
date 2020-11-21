@@ -2,14 +2,14 @@
 const { promises: { readFile }, watch, writeFileSync, readFileSync } = require('fs');
 const { join } = require('path');
 
-const { default: MonacoEditor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
+const { default: Editor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
 const { React, React: { useEffect, useState, useRef } } = require('@vizality/react');
-const { AsyncComponent, Spinner } = require('@vizality/components');
 const { dom: { injectShadowStyles } } = require('@vizality/util');
-const { Flux, getModule } = require('@vizality/webpack');
+const { Spinner } = require('@vizality/components');
 const { joinClassNames } = require('@vizality/util');
 
-const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
+module.exports = React.memo(props => {
+  const { main, getSetting, updateSetting } = props;
   const [ , setIsEditorReady ] = useState(false);
   const [ value, setValue ] = useState(getSetting('custom-css', ''));
 
@@ -17,8 +17,7 @@ const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   let model = useRef();
   const valueGetter = useRef();
 
-  const QuickCode = vizality.manager.builtins.get('quick-code');
-  const customCSSFile = QuickCode._customCSSFile;
+  const customCSSFile = main._customCSSFile;
 
   const _handleMonacoUpdate = async (ev, val) => {
     val = val.trim();
@@ -27,8 +26,8 @@ const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   const _watchFiles = async () => {
-    if (QuickCode.watcher) return;
-    QuickCode.watcher = watch(customCSSFile, { persistent: false }, async (eventType, filename) => {
+    if (main.watcher) return;
+    main.watcher = watch(customCSSFile, { persistent: false }, async (eventType, filename) => {
       if (!eventType || !filename) return;
       const val = readFileSync(customCSSFile).toString();
       if (val !== getSetting('custom-css')) updateSetting('custom-css', val);
@@ -69,7 +68,7 @@ const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   return (
     <>
-      <MonacoEditor
+      <Editor
         height='100%'
         width='100%'
         wrapperClassName='vz-editor-wrapper'
@@ -90,13 +89,3 @@ const Editor = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     </>
   );
 });
-
-module.exports = AsyncComponent.from((async () => {
-  const windowStore = await getModule('getWindow');
-  return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
-    guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOM_CSS'),
-    windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_CUSTOM_CSS'),
-    ...vizality.api.settings._fluxProps('quick-code')
-  }))(Editor);
-})());
-
