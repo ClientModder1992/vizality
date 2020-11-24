@@ -82,7 +82,7 @@ module.exports = class CoreSettings extends Builtin {
     const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
     patch('vz-settings-actions', SettingsContextMenu, 'default', (_, res) => {
       const items = res.props.children.find(child => Array.isArray(child));
-      items.push(ContextMenu.prototype.render());
+      items.push(ContextMenu.type().props.children[1]);
       return res;
     });
   }

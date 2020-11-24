@@ -55,7 +55,7 @@ module.exports = class PopupsAPI extends API {
    * @fires PopupAPI#popupWindowOpen
    */
   async openWindow (props, options = {}) {
-    props.id = props.id || `DISCORD_EXT_LINK_${(Math.random().toString(36) + Date.now()).substring(2, 7)}`;
+    props.id = props.id || `DISCORD_EXT_LINK_${(Math.random().toString(36) + Date.now()).substring(2, 6)}`;
     props.title = props.title || 'Discord Popup';
     options.width = options.width || 800;
     options.height = options.height || 600;

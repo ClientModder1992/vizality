@@ -2118,7 +2118,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   if (!Icon.Icons) Icon.Icons = Icons;
 
   if (!name) {
-    return error(_module, _submodule, null, `You must specify a 'name' property for an Icon component.`);
+    return error(_module, _submodule, null, `You must specify a "name" property for an Icon component.`);
   }
 
   const isClickable = Boolean(onClick || onContextMenu);
@@ -2128,7 +2128,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   else SVG = Icons[name];
 
   if (!SVG && !icon) {
-    return error(_module, _submodule, null, `Invalid 'name' ${name} specified. A full list of available icon names:`, Names);
+    return error(_module, _submodule, null, `Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, Names);
   }
 
   const render = () => {

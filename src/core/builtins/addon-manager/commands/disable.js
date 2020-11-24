@@ -47,8 +47,7 @@ module.exports = {
     return {
       commands:
         plugins
-          // @todo Consider adding !plugin.isInternal here once there are several non-core plugins available.
-          .filter(plugin => plugin && !plugin.isInternal && plugin.entityID.includes(args[0]))
+          .filter(plugin => plugin && plugin.entityID.includes(args[0]))
           .map(plugin => ({
             command: plugin.entityID,
             description: plugin.manifest.description

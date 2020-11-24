@@ -218,14 +218,14 @@ module.exports = class Plugin extends Updatable {
   }
 
   log (...data) {
-    log(this._module, this._submodule, this._submoduleColor, ...data);
+    log(this._module, this._submodule, null, ...data);
   }
 
   error (...data) {
-    error(this._module, this._submodule, this._submoduleColor, ...data);
+    error(this._module, this._submodule, null, ...data);
   }
 
   warn (...data) {
-    warn(this._module, this._submodule, this._submoduleColor, ...data);
+    warn(this._module, this._submodule, null, ...data);
   }
 };

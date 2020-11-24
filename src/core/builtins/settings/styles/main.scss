@@ -187,8 +187,7 @@
   }
 }
 
-
-[id^='user-settings-cog-vizality--'] {
+[id^='user-settings-cog-vizality--']:not([id^='user-settings-cog-vizality--plugins--']):not([id^='user-settings-cog-vizality--themes--']) {
   .label-22pbtT {
     order: 2;
   }
@@ -202,4 +201,9 @@
       order: 3;
     }
   }
+}
+
+// Plugins/Themes/Snippets search box
+.item-1tOPte > .container-cMG81i {
+  padding: 2px 6px;
 }
