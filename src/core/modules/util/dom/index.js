@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 const sleep = require('../sleep');
 
 /**
@@ -29,9 +28,15 @@ const dom = module.exports = {
   },
 
   getElementDimensions (node) {
-    const widthList = [ 'margin-right', 'margin-left', 'border-right', 'border-left', 'padding-right', 'padding-left', 'width' ];
-    const heightList = [ 'margin-top', 'margin-bottom', 'border-top', 'border-bottom', 'padding-top', 'padding-bottom', 'height' ];
+    let widthList = [ 'margin-right', 'margin-left', 'border-right', 'border-left', 'padding-right', 'padding-left', 'width' ];
+    let heightList = [ 'margin-top', 'margin-bottom', 'border-top', 'border-bottom', 'padding-top', 'padding-bottom', 'height' ];
     const style = window.getComputedStyle(node);
+
+    if (style.getPropertyValue('box-sizing') === 'border-box') {
+      widthList = [ 'margin-right', 'margin-left', 'width' ];
+      heightList = [ 'margin-top', 'margin-bottom', 'height' ];
+    }
+
     const width = widthList
       .map(k => parseInt(style.getPropertyValue(k)))
       .reduce((prev, cur) => prev + cur);
