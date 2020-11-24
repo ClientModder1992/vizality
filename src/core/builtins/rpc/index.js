@@ -41,7 +41,7 @@ module.exports = class RPC extends Builtin {
           code: 69,
           vizality: vizality.git,
           plugins: [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal).map(p => p.entityID),
-          themes: [ ...vizality.styleManager.themes.values() ].filter(t => t.isTheme).map(t => t.entityID)
+          themes: [ ...vizality.manager.themes.values ].filter(t => t.isTheme).map(t => t.entityID)
         });
 
         res.setHeader('Access-Control-Allow-Origin', '*');

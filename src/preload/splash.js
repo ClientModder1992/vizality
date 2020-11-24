@@ -8,8 +8,8 @@ require('../ipc/renderer');
  */
 const initialize = () => {
   document.documentElement.setAttribute('vizality', '');
-  const StyleManager = require('../core/managers/styleManager');
-  global.sm = new StyleManager();
+  const ThemeManager = require('../core/managers/addon/theme');
+  global.sm = new ThemeManager();
   global.sm.start();
 };
 

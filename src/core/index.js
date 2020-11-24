@@ -11,7 +11,9 @@ const { jsx: JsxCompiler } = require('@vizality/compilers');
 const { Updatable } = require('@vizality/entities');
 
 const AddonManager = require('./managers/addon');
-const StyleManager = require('./managers/styleManager');
+const ThemeManager = require('./managers/addon/theme');
+const BuiltinManager = require('./managers/addon/builtin');
+const PluginManager = require('./managers/addon/plugin');
 const APIManager = require('./managers/api');
 
 const FluxModule = async () => {
@@ -83,11 +85,10 @@ module.exports = class Vizality extends Updatable {
       revision: '???'
     };
 
-    this.styleManager = new StyleManager();
     this.manager.apis = new APIManager();
-    this.manager.themes = new AddonManager('themes', Directories.THEMES);
-    this.manager.builtins = new AddonManager('builtins', join(__dirname, 'builtins'));
-    this.manager.plugins = new AddonManager('plugins', Directories.PLUGINS);
+    this.manager.themes = new ThemeManager();
+    this.manager.builtins = new BuiltinManager();
+    this.manager.plugins = new PluginManager();
 
     this._initialized = false;
     this._originalLogFunc = {};

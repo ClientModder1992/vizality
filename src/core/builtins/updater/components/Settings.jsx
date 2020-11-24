@@ -163,9 +163,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
     const { manager: { apis: { apis } }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
-    const plugins = vizality.manager.plugins.getAll().filter(plugin =>
-      !vizality.manager.plugins.isInternal(plugin) && vizality.manager.plugins.isEnabled(plugin)
-    );
+    const plugins = vizality.manager.plugins.getAllEnabled();
 
     const experimentOverrides = Object.keys(getExperimentOverrides()).length;
     const availableExperiments = Object.keys(getRegisteredExperiments()).length;
@@ -225,11 +223,9 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
           <div className='row'>
             <div className='column'>Commands:&#10;{Object.keys(commands).length}</div>
             <div className='column'>Settings:&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
-            <div className='column'>Plugins:&#10;{vizality.manager.plugins.getAll()
-              .filter(plugin => vizality.manager.plugins.isEnabled(plugin)).length} / {vizality.manager.plugins.size}
+            <div className='column'>Plugins:&#10;{vizality.manager.plugins.getAllEnabled().length} / {vizality.manager.plugins.count}
             </div>
-            <div className='column'>Themes:&#10;{vizality.styleManager.getThemes()
-              .filter(theme => vizality.styleManager.isEnabled(theme)).length} / {vizality.styleManager.themes.size}
+            <div className='column'>Themes:&#10;{vizality.manager.themes.getAllEnabled().length} / {vizality.manager.themes.count}
             </div>
             <div className='column'>{`Settings Sync:\n${vizality.settings.get('settingsSync', false)}`}</div>
             <div className='column'>Cached Files:&#10;{cachedFiles}</div>
