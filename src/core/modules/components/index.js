@@ -25,6 +25,7 @@ Object.assign(exports, {
   Anchor: AsyncComponent.from(getModuleByDisplayName('Anchor', true)),
   LazyImageZoomable: AsyncComponent.from(getModuleByDisplayName('LazyImageZoomable', true)),
   Image: AsyncComponent.from(getModuleByDisplayName('Image', true)),
+  SearchBar: AsyncComponent.from(getModuleByDisplayName('SearchBar', true)),
   Video: AsyncComponent.from(getModuleByDisplayName('Video', true)),
   FormNotice: AsyncComponent.from(getModuleByDisplayName('FormNotice', true)),
   Card: AsyncComponent.from(getModuleByDisplayName('Card', true)),
