@@ -1,11 +1,11 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
 const { shell } = require('electron');
 
-const { settings: { TextInput }, ContextMenu, Divider, Icon, TabBar, Confirm, Card } = require('@vizality/components');
+const { settings: { TextInput }, ContextMenu, Divider, Icon, TabBar, Confirm, Card, StickyWrapper } = require('@vizality/components');
+const { string: { toHeaderCase, toPlural }, dom: { getElementDimensions } } = require('@vizality/util');
 const { getModule, getModuleByDisplayName, contextMenu } = require('@vizality/webpack');
+const { React, React: { useState, useReducer } } = require('@vizality/react');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
-const { string: { toHeaderCase, toPlural } } = require('@vizality/util');
-const { React, React: { useState, useCallback } } = require('@vizality/react');
 const { Messages } = require('@vizality/i18n');
 
 const Addon = require('../addon/Addon');
@@ -13,8 +13,7 @@ const Addon = require('../addon/Addon');
 module.exports = React.memo(({ type, tab, search }) => {
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
   const [ searchText, setSearchText ] = useState(search || '');
-  const [ , updateState ] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
+  const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   const { colorStandard } = getModule('colorStandard');
 
@@ -59,14 +58,14 @@ module.exports = React.memo(({ type, tab, search }) => {
   const fetchMissing = async type => {
     vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
 
-    const missingAddons = vizality.manager[toPlural(type)].start(true);
+    const missingAddons = vizality.manager[toPlural(type)].load(true);
     const missingAddonsList = missingAddons.length
-      ? React.createElement('div', null,
-        Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length }),
-        React.createElement('ul', null, missingAddons.map(entity =>
-          React.createElement('li', null, `– ${entity}`))
-        )
-      )
+      ? <>
+        <div>{Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length })}</div>
+        <ul>
+          {missingAddons.map(entity => <li>{`– ${entity}`}</li>)}
+        </ul>
+      </>
       : Messages.VIZALITY_MISSING_ADDONS_NONE;
 
     vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
@@ -84,11 +83,11 @@ module.exports = React.memo(({ type, tab, search }) => {
     });
   };
 
-  const openOverflowMenu = (e) => {
+  const openOverflowMenu = e => {
     contextMenu.openContextMenu(e, () =>
-      React.createElement(ContextMenu, {
-        width: '50px',
-        itemGroups: [ [
+      <ContextMenu
+        width='50px'
+        itemGroups={[ [
           {
             type: 'button',
             name: Messages.VIZALITY_ADDONS_OPEN_FOLDER.format({ type: toHeaderCase(type) }),
@@ -101,8 +100,8 @@ module.exports = React.memo(({ type, tab, search }) => {
             name: Messages.VIZALITY_ADDONS_LOAD_MISSING.format({ type: toHeaderCase(type) }),
             onClick: () => fetchMissing(type)
           }
-        ] ]
-      })
+        ] ]}
+      />
     );
   };
 
@@ -163,28 +162,41 @@ module.exports = React.memo(({ type, tab, search }) => {
     );
   };
 
+  const handleStickyChange = (status, element) => {
+    const dashboard = document.querySelector('.vizality-dashboard-layout');
+    if (status === 'stuck') {
+      if (!dashboard) return;
+      element.style.width = `${getElementDimensions(dashboard).width}px`;
+      element.style.marginLeft = `${(
+        parseInt(window.getComputedStyle(dashboard).marginLeft) +
+        parseInt(window.getComputedStyle(dashboard).paddingLeft)
+      ) * -1}px`;
+    } else {
+      element.style.removeProperty('width');
+      element.style.removeProperty('margin-left');
+    }
+  };
+
   const renderStickyBar = () => {
     const { item } = getModule('item', 'topPill');
     const { Types } = getModuleByDisplayName('TabBar');
     return (
       <>
-        <div className='vz-addons-list-sticky-bar'>
-          <div className='vz-addons-list-sticky-bar-inner'>
-            <TabBar
-              selectedItem={currentTab}
-              onItemSelect={tab => setCurrentTab(tab)}
-              type={Types.TOP_PILL}
-            >
-              <TabBar.Item className={item} selectedItem={currentTab} id='installed'>
-                {Messages.VIZALITY_INSTALLED}
-              </TabBar.Item>
-              <TabBar.Item className={item} selectedItem={currentTab} id='discover'>
-                {Messages.DISCOVER}
-              </TabBar.Item>
-            </TabBar>
-            {renderButtons()}
-          </div>
-        </div>
+        <StickyWrapper handleStickyChange={handleStickyChange} wrapperClassName='vz-addons-list-sticky-bar-wrapper' className='vz-addons-list-sticky-bar'>
+          <TabBar
+            selectedItem={currentTab}
+            onItemSelect={tab => setCurrentTab(tab)}
+            type={Types.TOP_PILL}
+          >
+            <TabBar.Item className={item} selectedItem={currentTab} id='installed'>
+              {Messages.VIZALITY_INSTALLED}
+            </TabBar.Item>
+            <TabBar.Item className={item} selectedItem={currentTab} id='discover'>
+              {Messages.DISCOVER}
+            </TabBar.Item>
+          </TabBar>
+          {renderButtons()}
+        </StickyWrapper>
       </>
     );
   };

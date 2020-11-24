@@ -1,6 +1,7 @@
 .vz-addons-list {
   &-items {
     display: flex;
+    justify-content: center;
     flex-flow: row wrap;
     opacity: 0;
     margin: 0 -10px; // Negative margins to counteract vz-addon-card margin

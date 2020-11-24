@@ -90,7 +90,7 @@
     margin-top: 4px;
   }
   &-description {
-    @include max-lines(3);
+    @include max-lines(2);
     flex: 1;
     width: 100%;
     line-height: 1.4;
