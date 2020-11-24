@@ -204,12 +204,30 @@ module.exports = React.memo(({ type, tab, search }) => {
   const _toggle = async (addonId, enabled) => {
     let fn;
     let addons;
-    if (enabled) {
+
+    // Plugins
+    if (enabled && type !== 'theme') {
       addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependencies);
       fn = vizality.manager[toPlural(type)].enable.bind(vizality.manager[toPlural(type)]);
     } else {
-      addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
-      fn = vizality.manager[toPlural(type)].disable.bind(vizality.manager[toPlural(type)]);
+      if (!enabled && type !== 'theme') {
+        addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
+        fn = vizality.manager[toPlural(type)].disable.bind(vizality.manager[toPlural(type)]);
+      }
+    }
+
+    // Themes
+    if (type === 'theme') {
+      addons = [ addonId ];
+      if (enabled) {
+        fn = vizality.manager[toPlural(type)].enable.bind(vizality.manager[toPlural(type)]);
+      } else {
+        fn = vizality.manager[toPlural(type)].disable.bind(vizality.manager[toPlural(type)]);
+      }
+    }
+
+    if (!addons.length) {
+      return console.log('error uhoh bad');
     }
 
     const apply = async () => {
