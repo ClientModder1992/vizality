@@ -32,7 +32,6 @@ module.exports = class APIManager {
     }
   }
 
-  // Start
   async initialize () {
     this.apis = [];
     readdirSync(this.dir)

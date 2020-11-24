@@ -30,15 +30,8 @@ module.exports = class AddonManager {
     return this[this._type].get(addonId);
   }
 
-  has (addonId) {
-    return this[this._type].has(addonId);
-  }
-
   getAll () {
-    return [
-      ...this[this._type].keys(),
-      ...this.getAllDisabled()
-    ];
+    return [ ...this[this._type].keys() ];
   }
 
   isInstalled (addonId) {
@@ -49,12 +42,9 @@ module.exports = class AddonManager {
     return !vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []).includes(addonId);
   }
 
-  isInternal (addonId) {
-    return false;
-  }
-
   getAllEnabled () {
-    return [ ...this[this._type].keys() ];
+    const addons = [ ...this[this._type].keys() ];
+    return addons.filter(addon => !this.getAllDisabled().includes(addon));
   }
 
   getAllDisabled () {
@@ -101,18 +91,18 @@ module.exports = class AddonManager {
     }
   }
 
-  async remount (pluginID) {
+  async remount (addonId) {
     try {
-      await this.unmount(pluginID);
+      await this.unmount(addonId);
     } catch (err) {
       // chhhh
     }
-    this.mount(pluginID);
-    this[this._type].get(pluginID)._load();
+    this.mount(addonId);
+    this[this._type].get(addonId)._load();
   }
 
-  async unmount (pluginID) {
-    const plugin = this.get(pluginID);
+  async unmount (addonId) {
+    const plugin = this.get(addonId);
     if (!plugin) {
       throw new Error(`Tried to unmount a non-installed ${toSingular(this._type)}: ${plugin}`);
     }
@@ -121,11 +111,11 @@ module.exports = class AddonManager {
     }
 
     Object.keys(require.cache).forEach(key => {
-      if (key.includes(pluginID)) {
+      if (key.includes(addonId)) {
         delete require.cache[key];
       }
     });
-    this[this._type].delete(pluginID);
+    this[this._type].delete(addonId);
   }
 
   enable (addonId) {
@@ -135,14 +125,12 @@ module.exports = class AddonManager {
       throw new Error(`Tried to enable a non-installed ${toSingular(this._type)}: (${addonId})`);
     }
 
-    if (addon._ready) {
+    if (this._type !== 'themes' && addon._ready) {
       return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${addonId})`);
     }
 
-    vizality.settings.set(
-      'disabledPlugins',
-      vizality.settings.get('disabledPlugins', []).filter(p => p !== addonId)
-    );
+    vizality.settings.set(`disabled${toHeaderCase(this._type)}`, vizality.settings.get(`disabled${toHeaderCase(this._type)}`, [])
+      .filter(addon => addon !== addonId));
 
     addon._load();
   }
@@ -151,17 +139,16 @@ module.exports = class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
+      console.log(addonId);
+      console.log(addon);
       throw new Error(`Tried to disable a non-installed ${toSingular(this._type)}: (${addonId})`);
     }
 
-    if (!addon._ready) {
+    if (this._type !== 'themes' && !addon._ready) {
       return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${addon})`);
     }
 
-    vizality.settings.set('disabledPlugins', [
-      ...vizality.settings.get('disabledPlugins', []),
-      addonId
-    ]);
+    vizality.settings.set(`disabled${toHeaderCase(this._type)}`, [ ...vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []), addonId ]);
 
     addon._unload();
   }
@@ -179,67 +166,63 @@ module.exports = class AddonManager {
     await removeDirRecursive(resolve(this._dir, addonId));
   }
 
-  // Start
-  load (sync = false) {
-    const missing = {};
-    missing[this._type] = [];
-
-    const isOverlay = (/overlay/).test(location.pathname);
-    readdirSync(this._dir).forEach(filename =>/*!this.isInstalled(filename) &&*/ this.mount(filename));
-    for (const plugin of [ ...this[this._type].values() ]) {
-      if (vizality.settings.get('disabledPlugins', []).includes(plugin.entityID)) {
-        continue;
-      }
-      if (
-        (plugin.manifest.appMode === 'overlay' && isOverlay) ||
-        (plugin.manifest.appMode === 'app' && !isOverlay) ||
-        plugin.manifest.appMode === 'both'
-      ) {
-        if (sync && !this.get(plugin.entityID)._ready) {
-          this.enable(plugin.entityID);
-          missing[this._type].push(plugin.entityID);
-        } else if (!sync) {
-          this.enable(plugin.entityID);
-        }
-      } else {
-        this[this._type].delete(plugin);
-      }
+  _handleError (errorType, args) {
+    if (window.__SPLASH__ || window.__OVERLAY__) {
+      return; // Consider an alternative logging method?
     }
 
-    if (sync) {
-      return missing[this._type];
+    switch (errorType) {
+      case ErrorTypes.NOT_A_DIRECTORY:
+        vizality.api.notices.sendToast('vz-styleManager-invalid-theme', {
+          header: `"${args[0]}" is a file`,
+          content: 'Make sure all of your theme files are in a subfolder.',
+          type: 'error',
+          buttons: [
+            /*
+             * {
+             *   text: 'Documentation',
+             *   color: 'green',
+             *   look: 'ghost',
+             *   onClick: () => console.log('yes')
+             * },
+             */
+          ]
+        });
+        break;
+      case ErrorTypes.MANIFEST_LOAD_FAILED:
+        vizality.api.notices.sendToast('sm-invalid-theme', {
+          header: `Failed to load manifest for "${args[0]}"`,
+          content: 'This is most likely due to a syntax error in the file. Check console for more details.',
+          type: 'error',
+          buttons: [
+            {
+              text: 'Open Developer Tools',
+              color: 'green',
+              look: 'ghost',
+              onClick: () => vizality.native.openDevTools()
+            }
+          ]
+        });
+        break;
+      case ErrorTypes.INVALID_MANIFEST:
+        vizality.api.notices.sendToast('sm-invalid-theme', {
+          header: `Invalid manifest for "${args[0]}"`,
+          content: 'Check the console for more details.',
+          type: 'error',
+          buttons: [
+            {
+              text: 'Open Developer Tools',
+              color: 'green',
+              look: 'ghost',
+              onClick: () => vizality.native.openDevTools()
+            }
+          ]
+        });
+        break;
     }
   }
 
-  terminate () {
-    return this._bulkUnload([ ...vizality.manager.plugins.keys ]);
-  }
-
-  async _bulkUnload (plugins) {
-    const nextPlugins = [];
-    for (const plugin of plugins) {
-      const deps = this.get(plugin).allDependencies;
-      if (deps.filter(dep => this.get(dep) && this.get(dep)._ready).length !== 0) {
-        nextPlugins.push(plugin);
-      } else {
-        await this.unmount(plugin);
-      }
-    }
-
-    if (nextPlugins.length !== 0) {
-      await this._bulkUnload(nextPlugins);
-    }
-  }
-
-  log (...data) {
-    log(_module, this._type, null, ...data);
-  }
-
-  warn (...data) {
-    warn(_module, this._type, null, ...data);
-  }
-
-  error (...data) {
-    error(_module, this._type, null, ...data);
-  }
+  log (...data) { log(_module, this._type, null, ...data); }
+  warn (...data) { warn(_module, this._type, null, ...data); }
+  error (...data) { error(_module, this._type, null, ...data); }
 };

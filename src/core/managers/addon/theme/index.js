@@ -1,5 +1,5 @@
 /* @todo: Use logger. */
-const { dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
+const { dom: { createElement } } = require('@vizality/util');
 const { resolveCompiler } = require('@vizality/compilers');
 const { Directories } = require('@vizality/constants');
 const { Theme } = require('@vizality/entities');
@@ -7,7 +7,7 @@ const { Theme } = require('@vizality/entities');
 const { join } = require('path');
 const { promises: { lstat }, readdirSync, existsSync } = require('fs');
 
-const fileRegex = /\.((s?c|le)ss|styl)$/;
+const fileRegex = /\.((s?c)ss)$/;
 
 const ErrorTypes = Object.freeze({
   NOT_A_DIRECTORY: 'NOT_A_DIRECTORY',
@@ -15,10 +15,15 @@ const ErrorTypes = Object.freeze({
   INVALID_MANIFEST: 'INVALID_MANIFEST'
 });
 
-class StyleManager {
-  constructor () {
-    this.themesDir = Directories.THEMES;
-    this.themes = new Map();
+
+const AddonManager = require('../../addon');
+
+module.exports = class ThemeManager extends AddonManager {
+  constructor (type, dir) {
+    type = 'themes';
+    dir = Directories.THEMES;
+
+    super(type, dir);
 
     if (!window.__SPLASH__) {
       /**
@@ -28,7 +33,7 @@ class StyleManager {
        * @returns {void}
        */
       const injectStyles = () => {
-        const path = '../styles/main.scss';
+        const path = '../../../styles/main.scss';
 
         // Assume it's a relative path and try resolving it
         const resolvedPath = join(__dirname, path);
@@ -61,86 +66,16 @@ class StyleManager {
         injectStyles();
       }
     }
-    /*
-     * if (!window.__SPLASH__) {
-     *   readFile(join(__dirname, '..', 'styles', 'main.css'), 'utf8').then(css => {
-     *     const appendStyle = () => {
-     *       const style = document.createElement('style');
-     *       style.id = 'vizality-main-css';
-     *       style.setAttribute('vz-style', '');
-     *       style.innerHTML = css;
-     *       document.head.appendChild(style);
-     *     };
-     *     if (document.readyState === 'loading') {
-     *       document.addEventListener('DOMContentLoaded', appendStyle);
-     *     } else {
-     *       appendStyle();
-     *     }
-     *   });
-     * }
-     */
-  }
-
-  get disabledThemes () {
-    if (window.__SPLASH__) {
-      if (!this.__settings) {
-        this.__settings = {};
-        try {
-          this.__settings = require(join(Directories.SETTINGS, 'settings.json'));
-        } catch (err) {
-          // @todo: Handled this.
-        }
-
-        return this.__settings.disabledThemes || [];
-      }
-    }
-    return vizality.settings.get('disabledThemes', []);
-  }
-
-  // Getters
-  get (themeID) {
-    return this.themes.get(themeID);
-  }
-
-  getThemes () {
-    return [ ...this.themes.keys() ];
-  }
-
-  isInstalled (theme) {
-    return this.themes.has(theme);
-  }
-
-  isEnabled (theme) {
-    return !this.disabledThemes.includes(theme);
-  }
-
-  enable (themeID) {
-    if (!this.get(themeID)) {
-      throw new Error(`Tried to enable a non installed theme (${themeID})`);
-    }
-
-    vizality.settings.set('disabledThemes', this.disabledThemes.filter(p => p !== themeID));
-    this.themes.get(themeID)._load();
-  }
-
-  disable (themeID) {
-    const plugin = this.get(themeID);
-    if (!plugin) {
-      throw new Error(`Tried to disable a non installed theme (${themeID})`);
-    }
-
-    vizality.settings.set('disabledThemes', [ ...this.disabledThemes, themeID ]);
-    this.themes.get(themeID)._unload();
   }
 
   async mount (themeID, filename) {
-    const stat = await lstat(join(this.themesDir, filename));
+    const stat = await lstat(join(this._dir, filename));
     if (stat.isFile()) {
       this._logError(ErrorTypes.NOT_A_DIRECTORY, [ themeID ]);
       return;
     }
 
-    const manifestFile = join(this.themesDir, filename, 'vizality_manifest.json');
+    const manifestFile = join(this._dir, filename, 'manifest.json');
     if (!existsSync(manifestFile)) {
       // Should we warn here?
       return;
@@ -172,7 +107,7 @@ class StyleManager {
       return console.warn('%c[Vizality:StyleManager]', 'color: #7289da', `Theme "${themeID}" is not meant to run on that environment - Skipping`);
     }
 
-    manifest.effectiveTheme = join(this.themesDir, filename, manifest.effectiveTheme);
+    manifest.effectiveTheme = join(this._dir, filename, manifest.effectiveTheme);
     this.themes.set(themeID, new Theme(themeID, manifest));
   }
 
@@ -186,10 +121,11 @@ class StyleManager {
     this.themes.delete(themeID);
   }
 
+
   // Start/Stop
   async load (sync = false) {
     const missingThemes = [];
-    const files = readdirSync(this.themesDir);
+    const files = readdirSync(this._dir);
     for (const filename of files) {
       if (filename.startsWith('.')) {
         console.debug('%c[Vizality:StyleManager]', 'color: #7289da', 'Ignoring dotfile', filename);
@@ -206,7 +142,7 @@ class StyleManager {
         }
       }
 
-      if (!this.disabledThemes.includes(themeID)) {
+      if (!this.getAllDisabled().includes(themeID)) {
         if (sync && !this.isInstalled(themeID)) {
           await this.mount(themeID, filename);
           missingThemes.push(themeID);
@@ -222,70 +158,8 @@ class StyleManager {
   }
 
   terminate () {
-    [ ...this.themes.values() ].forEach(t => t._unload());
+    return [ ...this.themes.values() ].forEach(t => t._unload());
   }
-
-  _logError (errorType, args) {
-    if (window.__SPLASH__ || window.__OVERLAY__) {
-      return; // Consider an alternative logging method?
-    }
-
-    switch (errorType) {
-      case ErrorTypes.NOT_A_DIRECTORY:
-        vizality.api.notices.sendToast('vz-styleManager-invalid-theme', {
-          header: `"${args[0]}" is a file`,
-          content: 'Make sure all of your theme files are in a subfolder.',
-          type: 'error',
-          buttons: [
-            /*
-             * {
-             *   text: 'Documentation',
-             *   color: 'green',
-             *   look: 'ghost',
-             *   onClick: () => console.log('yes')
-             * },
-             */
-          ]
-        });
-        break;
-      case ErrorTypes.MANIFEST_LOAD_FAILED:
-        vizality.api.notices.sendToast('sm-invalid-theme', {
-          header: `Failed to load manifest for "${args[0]}"`,
-          content: 'This is most likely due to a syntax error in the file. Check console for more details.',
-          type: 'error',
-          buttons: [
-            {
-              text: 'Open Developer Tools',
-              color: 'green',
-              look: 'ghost',
-              onClick: () => vizality.native.openDevTools()
-            }
-          ]
-        });
-        break;
-      case ErrorTypes.INVALID_MANIFEST:
-        vizality.api.notices.sendToast('sm-invalid-theme', {
-          header: `Invalid manifest for "${args[0]}"`,
-          content: 'Check the console for more details.',
-          type: 'error',
-          buttons: [
-            {
-              text: 'Open Developer Tools',
-              color: 'green',
-              look: 'ghost',
-              onClick: () => vizality.native.openDevTools()
-            }
-          ]
-        });
-        break;
-    }
-  }
-
-  /*
-   * --------------
-   * VALIDATOR HELL
-   * --------------
-   */
 
   _validateManifest (manifest) {
     const errors = [];
@@ -328,6 +202,4 @@ class StyleManager {
     }
     return errors;
   }
-}
-
-module.exports = StyleManager;
+};
