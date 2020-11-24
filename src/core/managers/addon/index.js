@@ -153,6 +153,16 @@ module.exports = class AddonManager {
     addon._unload();
   }
 
+  enableAll () {
+    const addons = this.getAllDisabled();
+    addons.forEach(addon => this.enable(addon));
+  }
+
+  disableAll () {
+    const addons = this.getAllEnabled();
+    addons.forEach(addon => this.disable(addon));
+  }
+
   async install (addonId) {
     throw new Error('no');
   }

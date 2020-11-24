@@ -1,17 +1,16 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
-const { shell } = require('electron');
-
-const { settings: { TextInput }, ContextMenu, Divider, Icon, TabBar, Confirm, Card, StickyWrapper } = require('@vizality/components');
+const { settings: { TextInput }, Divider, Icon, TabBar, Confirm, Card, StickyWrapper } = require('@vizality/components');
+const { getModule, getModuleByDisplayName, contextMenu: { openContextMenu } } = require('@vizality/webpack');
 const { string: { toHeaderCase, toPlural }, dom: { getElementDimensions } } = require('@vizality/util');
-const { getModule, getModuleByDisplayName, contextMenu } = require('@vizality/webpack');
 const { React, React: { useState, useReducer } } = require('@vizality/react');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { Messages } = require('@vizality/i18n');
 
+const OverflowMenu = require('./parts/OverflowMenu');
 const Addon = require('../addon/Addon');
 
 module.exports = React.memo(({ type, tab, search }) => {
-  const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
+  const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
   const [ searchText, setSearchText ] = useState(search || '');
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
@@ -32,6 +31,20 @@ module.exports = React.memo(({ type, tab, search }) => {
   //   );
   // };
 
+  /*
+   * Including these in this component so we can forceUpdate the switches.
+   * There's probably a better way to do it.
+   */
+  const enableAll = type => {
+    vizality.manager[toPlural(type)].enableAll();
+    forceUpdate();
+  };
+
+  const disableAll = type => {
+    vizality.manager[toPlural(type)].disableAll();
+    forceUpdate();
+  };
+
   const renderItem = item => {
     return (
       <Addon
@@ -47,7 +60,8 @@ module.exports = React.memo(({ type, tab, search }) => {
   const renderButtons = () => {
     return (
       <div className='vz-addons-list-more-button'>
-        <Icon name='OverflowMenu'
+        <Icon
+          name='OverflowMenu'
           onClick={e => openOverflowMenu(e)}
           onContextMenu={e => openOverflowMenu(e)}
         />
@@ -84,25 +98,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   };
 
   const openOverflowMenu = e => {
-    contextMenu.openContextMenu(e, () =>
-      <ContextMenu
-        width='50px'
-        itemGroups={[ [
-          {
-            type: 'button',
-            name: Messages.VIZALITY_ADDONS_OPEN_FOLDER.format({ type: toHeaderCase(type) }),
-            onClick: () => {
-              shell.openItem(eval(`${toPlural(type).toUpperCase()}_FOLDER`));
-            }
-          },
-          {
-            type: 'button',
-            name: Messages.VIZALITY_ADDONS_LOAD_MISSING.format({ type: toHeaderCase(type) }),
-            onClick: () => fetchMissing(type)
-          }
-        ] ]}
-      />
-    );
+    openContextMenu(e, () => <OverflowMenu type={type} actions={{ fetchMissing, enableAll, disableAll }} />);
   };
 
   const _sortItems = items => {
@@ -188,10 +184,10 @@ module.exports = React.memo(({ type, tab, search }) => {
             onItemSelect={tab => setCurrentTab(tab)}
             type={Types.TOP_PILL}
           >
-            <TabBar.Item className={item} selectedItem={currentTab} id='installed'>
+            <TabBar.Item className={item} selectedItem={currentTab} id='INSTALLED'>
               {Messages.VIZALITY_INSTALLED}
             </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={currentTab} id='discover'>
+            <TabBar.Item className={item} selectedItem={currentTab} id='DISCOVER'>
               {Messages.DISCOVER}
             </TabBar.Item>
           </TabBar>
@@ -226,6 +222,7 @@ module.exports = React.memo(({ type, tab, search }) => {
       }
     }
 
+    // @todo Handle this. Not sure how or when this would happen, though.
     if (!addons.length) {
       return console.log('error uhoh bad');
     }
@@ -301,7 +298,7 @@ module.exports = React.memo(({ type, tab, search }) => {
     return (
       <>
         <div className='vz-addons-list-active-filters' {...{ [type]: true }}>
-          <span>{Messages[`VIZALITY_ADDONS_${currentTab.toUpperCase()}`].format({ type: toHeaderCase(type) })}</span>
+          <span>{currentTab === 'INSTALLED' ? Messages.VIZALITY_INSTALLED : Messages.DISCOVER} {toHeaderCase(toPlural(type))}</span>
         </div>
         <Divider/>
       </>

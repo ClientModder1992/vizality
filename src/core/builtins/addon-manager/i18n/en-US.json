@@ -9,7 +9,6 @@
   "VIZALITY_ADDONS_ENABLE": "Enable {type}s",
   "VIZALITY_ADDONS_ENABLE_NOTE": "This will enable the following {type}s:",
   "VIZALITY_ADDONS_EXPLORE": "Explore {type} Store",
-  "VIZALITY_ADDONS_INSTALLED": "Installed {type}s",
   "VIZALITY_ADDONS_LOAD_MISSING": "Load Missing {type}s",
   "VIZALITY_ADDONS_OPEN_FOLDER": "Open {type}s Folder",
   "VIZALITY_ADDONS_FILTER": "Filter {type}s",
