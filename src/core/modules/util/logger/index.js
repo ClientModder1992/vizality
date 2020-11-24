@@ -44,15 +44,15 @@ const logger = module.exports = {
       },
       builtin: {
         module: '#267366',
-        submodule: '#17181c'
+        submodule: '#fff'
       },
       plugin: {
-        module: '#000',
-        submodule: '#782049'
+        module: '#594bda',
+        submodule: '#42ffa7'
       },
       theme: {
-        module: '#e23773',
-        submodule: '#568763'
+        module: '#F3523D',
+        submodule: '#b68aff'
       },
       discord: {
         module: '#7289DA',
