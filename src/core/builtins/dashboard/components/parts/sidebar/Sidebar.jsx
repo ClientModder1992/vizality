@@ -30,7 +30,7 @@ module.exports = React.memo(() =>
     {/* CSS, JS, Custom CSS, Custom JS */}
     <Item icon='Scissors' label='Snippets' path='/snippets' />
     <Item icon='Compose' label='Quick Code' path='/quick-code' />
-    <Item icon='Settings' label='Theme Editor' path='/form' />
+    <Item icon='Settings' label='Theme Editor' path='/form' disabled auxillaryIconTooltipText='Under Construction' />
     <Separator />
     {/* Addon Guidelines, Publish an Addon, Get Verified */}
     <Item icon='UnknownUser' label='Developers' path='/developers' />

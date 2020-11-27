@@ -1,10 +1,82 @@
+@use '@vizality/sass' as *;
+
 .vz-addons-list {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
   &-items {
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
     opacity: 0;
-    margin: 0 -10px; // Negative margins to counteract vz-addon-card margin
+    margin: 20px -10px 20px; // Negative left and right margins to counteract vz-addon-card margin
     animation: fadeShortSlideInFromBottom 0.5s forwards;
+  }
+  &-inner {
+    @include size(100%);
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: column;
+    flex: 1 0 auto;
+  }
+  &-search {
+    margin: 0 8px;
+    .icon-1S6UIr:not(.clear--Eywng).visible-3bFCH- {
+      color: var('text-muted');
+    }
+  }
+  &-search-options {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    .vz-icon-wrapper {
+      color: var('interactive-normal');
+      &:hover {
+        color: var('interactive-hover');
+      }
+    }
+  }
+  &-display-button {
+    // To prevent the SVG parts from triggering the popout onClick which would cause the popout
+    // to spawn slightly offset.
+    svg * {
+      pointer-events: none;
+    }
+  }
+  &-search-options-button {
+    cursor: pointer;
+    margin: 0 8px;
+    > div {
+      display: flex;
+    }
+  }
+  &-search-results-text-wrapper {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var('header-secondary');
+  }
+  &-search-results-matched {
+    color: var('header-primary');
+  }
+  &-empty {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+#vz-addons-list-display-menu {
+  min-width: 0;
+}
+
+#vz-addons-list-sort-filter-menu,
+#vz-addons-list-display-menu {
+  .label-22pbtT {
+    display: flex;
   }
 }

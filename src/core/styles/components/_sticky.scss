@@ -2,20 +2,27 @@
 
 .vz-sticky {
   display: flex;
-  padding: 15px 10px;
+  padding: 12px;
   justify-content: space-between;
+  align-items: center;
   &-wrapper {
+    @include size(100%);
     position: sticky;
     top: -1px;
     border-radius: 4px;
     background: var('background-secondary');
-    box-shadow: var('elevation-low');
     transition: width .3s ease, background-color .3s ease, border-radius .3s ease, margin .3s ease;
     z-index: 1;
-    width: 100%;
     &[vz-stuck] {
       border-radius: 0;
       background: var('background-primary');
+      box-shadow: var('elevation-low');
+    }
+  }
+  .topPill-30KHOu .item-PXvHYJ {
+    &.selected-3s45Ha {
+      background: #7289da;
+      color: color('white');
     }
   }
 }

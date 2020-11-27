@@ -1,75 +1,56 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
-const { settings: { TextInput }, Divider, Icon, TabBar, Confirm, Card, StickyWrapper } = require('@vizality/components');
-const { getModule, getModuleByDisplayName, contextMenu: { openContextMenu } } = require('@vizality/webpack');
-const { string: { toHeaderCase, toPlural }, dom: { getElementDimensions } } = require('@vizality/util');
-const { React, React: { useState, useReducer } } = require('@vizality/react');
+const { Confirm, Card, Spinner } = require('@vizality/components');
+const { string: { toPlural, toHeaderCase } } = require('@vizality/util');
+const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
+const { getModule } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { Messages } = require('@vizality/i18n');
 
-const OverflowMenu = require('./parts/OverflowMenu');
+const StickyBar = require('./parts/StickyBar');
 const Addon = require('../addon/Addon');
 
 module.exports = React.memo(({ type, tab, search }) => {
+  const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
-  const [ searchText, setSearchText ] = useState(search || '');
+  const [ query, setQuery ] = useState(search || '');
+  const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
-
   const { colorStandard } = getModule('colorStandard');
 
-  // const renderSearch = () => {
-  //   return (
-  //     <div className='vizality-entities-manage-search'>
-  //       {/* @todo: Figure out how to use SearchBar component instead */}
-  //       <TextInput
-  //         value={searchText}
-  //         onChange={search => setSearchText(search)}
-  //         placeholder={Messages.VIZALITY_ADDONS_FILTER_PLACEHOLDER}
-  //       >
-  //         {Messages.VIZALITY_ADDONS_FILTER.format({ type })}
-  //       </TextInput>
-  //     </div>
-  //   );
-  // };
+  const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
+  const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   /*
    * Including these in this component so we can forceUpdate the switches.
    * There's probably a better way to do it.
    */
-  const enableAll = type => {
+  const _enableAll = type => {
     vizality.manager[toPlural(type)].enableAll();
     forceUpdate();
   };
 
-  const disableAll = type => {
+  const _disableAll = type => {
     vizality.manager[toPlural(type)].disableAll();
     forceUpdate();
   };
 
-  const renderItem = item => {
-    return (
-      <Addon
-        manifest={item.manifest}
-        addonId={item.entityID}
-        isEnabled={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
-        onToggle={async v => _toggle(item.entityID, v)}
-        onUninstall={() => _uninstall(item.entityID)}
-      />
-    );
+  const _resetSearchOptions = () => {
+    return setQuery('');
   };
 
-  const renderButtons = () => {
-    return (
-      <div className='vz-addons-list-more-button'>
-        <Icon
-          name='OverflowMenu'
-          onClick={e => openOverflowMenu(e)}
-          onContextMenu={e => openOverflowMenu(e)}
-        />
-      </div>
-    );
+  const _handleQueryChange = (query) => {
+    return setQuery(query);
   };
 
-  const fetchMissing = async type => {
+  const _handleTabChange = (tab) => {
+    return setCurrentTab(tab);
+  };
+
+  const _fetchMissing = async type => {
     vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
 
     const missingAddons = vizality.manager[toPlural(type)].load(true);
@@ -86,7 +67,7 @@ module.exports = React.memo(({ type, tab, search }) => {
       header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length }),
       content: missingAddonsList,
       type: missingAddons.length > 0 && 'success',
-      icon: type,
+      icon: toHeaderCase(type),
       timeout: 5e3,
       buttons: [
         {
@@ -97,13 +78,9 @@ module.exports = React.memo(({ type, tab, search }) => {
     });
   };
 
-  const openOverflowMenu = e => {
-    openContextMenu(e, () => <OverflowMenu type={type} actions={{ fetchMissing, enableAll, disableAll }} />);
-  };
-
   const _sortItems = items => {
-    if (searchText && searchText !== '') {
-      const search = searchText.toLowerCase();
+    if (query && query !== '') {
+      const search = query.toLowerCase();
       items = items.filter(p =>
         p.manifest.name.toLowerCase().includes(search) ||
         p.manifest.author.toLowerCase().includes(search) ||
@@ -126,75 +103,8 @@ module.exports = React.memo(({ type, tab, search }) => {
     });
   };
 
-  const getItems = () => {
+  const _getItems = () => {
     return _sortItems([ ...vizality.manager[toPlural(type)].values ]);
-  };
-
-  const renderPlaceholders = () => {
-    const placeholders = [];
-    for (let i = 0; i < 8; i++) {
-      placeholders.push(<Card className='vz-addon-card vz-addon-card-placeholder' />);
-    }
-
-    return placeholders;
-  };
-
-  const renderBody = () => {
-    const items = getItems();
-    return (
-      <div className='vz-addons-list-items'>
-        {/* {renderSearch()} */}
-        {items.length === 0
-          ? <div className='vz-addons-list-empty'>
-            <div className={getModule('emptyStateImage', 'emptyStateSubtext').emptyStateImage}/>
-            <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
-            <p>{Messages.SEARCH_NO_RESULTS}</p>
-          </div>
-          : <>
-            {items.map(item => renderItem(item))}
-            {renderPlaceholders()}
-          </>}
-      </div>
-    );
-  };
-
-  const handleStickyChange = (status, element) => {
-    const dashboard = document.querySelector('.vizality-dashboard-layout');
-    if (status === 'stuck') {
-      if (!dashboard) return;
-      element.style.width = `${getElementDimensions(dashboard).width}px`;
-      element.style.marginLeft = `${(
-        parseInt(window.getComputedStyle(dashboard).marginLeft) +
-        parseInt(window.getComputedStyle(dashboard).paddingLeft)
-      ) * -1}px`;
-    } else {
-      element.style.removeProperty('width');
-      element.style.removeProperty('margin-left');
-    }
-  };
-
-  const renderStickyBar = () => {
-    const { item } = getModule('item', 'topPill');
-    const { Types } = getModuleByDisplayName('TabBar');
-    return (
-      <>
-        <StickyWrapper handleStickyChange={handleStickyChange} wrapperClassName='vz-addons-list-sticky-bar-wrapper' className='vz-addons-list-sticky-bar'>
-          <TabBar
-            selectedItem={currentTab}
-            onItemSelect={tab => setCurrentTab(tab)}
-            type={Types.TOP_PILL}
-          >
-            <TabBar.Item className={item} selectedItem={currentTab} id='INSTALLED'>
-              {Messages.VIZALITY_INSTALLED}
-            </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={currentTab} id='DISCOVER'>
-              {Messages.DISCOVER}
-            </TabBar.Item>
-          </TabBar>
-          {renderButtons()}
-        </StickyWrapper>
-      </>
-    );
   };
 
   const _toggle = async (addonId, enabled) => {
@@ -294,13 +204,55 @@ module.exports = React.memo(({ type, tab, search }) => {
     ));
   };
 
+  const renderItem = item => {
+    return (
+      <Addon
+        manifest={item.manifest}
+        addonId={item.entityID}
+        isEnabled={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
+        onToggle={async v => _toggle(item.entityID, v)}
+        onUninstall={() => _uninstall(item.entityID)}
+      />
+    );
+  };
+
+  const renderFillers = () => {
+    const placeholders = [];
+    for (let i = 0; i < 8; i++) {
+      placeholders.push(<Card className='vz-addon-card vz-addon-card-filler' />);
+    }
+    return placeholders;
+  };
+
+  const renderBody = () => {
+    const items = _getItems();
+    if (items.length !== resultsCount) setResultsCount(items.length);
+    return (
+      <div className='vz-addons-list-items'>
+        {items.length === 0
+          ? <div className='vz-addons-list-empty'>
+            <div className={getModule('emptyStateImage', 'emptyStateSubtext').emptyStateImage}/>
+            <p>{Messages.GIFT_CONFIRMATION_HEADER_FAIL}</p>
+            <p>{Messages.SEARCH_NO_RESULTS}</p>
+          </div>
+          : <>
+            {items.map(item => renderItem(item))}
+            {renderFillers()}
+          </>}
+      </div>
+    );
+  };
+
   const renderHeader = () => {
     return (
       <>
-        <div className='vz-addons-list-active-filters' {...{ [type]: true }}>
-          <span>{currentTab === 'INSTALLED' ? Messages.VIZALITY_INSTALLED : Messages.DISCOVER} {toHeaderCase(toPlural(type))}</span>
+        <div className='vz-addons-list-search-results-text-wrapper'>
+          <div className='vz-addons-list-search-results-text'>
+            <span className='vz-addons-list-search-results-count'>{resultsCount}</span> {toPlural(type)} found {query && query !== '' && <>
+              matching "<span className='vz-addons-list-search-results-matched'>{query}</span>"
+            </>}
+          </div>
         </div>
-        <Divider/>
       </>
     );
   };
@@ -308,10 +260,25 @@ module.exports = React.memo(({ type, tab, search }) => {
   return (
     <>
       <div className={`vz-addons-list ${colorStandard}`}>
-        {renderStickyBar()}
+        <StickyBar
+          type={type}
+          query={query}
+          tab={currentTab}
+          handleTabChange={_handleTabChange}
+          handleQueryChange={_handleQueryChange}
+          fetchMissing={_fetchMissing}
+          enableAll={_enableAll}
+          disableAll={_disableAll}
+          resetSearchOptions={_resetSearchOptions}
+        />
         <div className='vz-addons-list-inner'>
-          {renderHeader()}
-          {renderBody()}
+          {loading
+            ? <Spinner className='vz-addons-list-loading' />
+            : <>
+              {renderHeader()}
+              {renderBody()}
+            </>
+          }
         </div>
       </div>
     </>

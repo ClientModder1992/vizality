@@ -10,7 +10,7 @@
   min-width: 400px;
   margin: 10px;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.125s ease, background-color 0.125s ease, transform 0.125s ease;
   &:hover {
     transform: translateY(-1px) !important;
     background-color: var('background-tertiary');

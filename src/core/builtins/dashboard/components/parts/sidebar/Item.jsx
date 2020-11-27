@@ -90,7 +90,7 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
             text={auxillaryIconTooltipText}
             className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-warning'
           >
-            <Icon name='WarningCircle' width={18} height={18} className='vizality-dashboard-sidebar-auxillary-icon' />
+            {/* <Icon name='WarningCircle' width={18} height={18} className='vizality-dashboard-sidebar-auxillary-icon' /> */}
           </Tooltip>}
         </div>
       </Clickable>
