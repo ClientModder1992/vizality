@@ -1,6 +1,7 @@
 const { React, React: { useState, useReducer } } = require('@vizality/react');
 const { Menu, Icon, SearchBar } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
+const { Messages } = require('@vizality/i18n');
 
 module.exports = React.memo(() => {
   const [ pluginQuery, setPluginQuery ] = useState('');
@@ -111,7 +112,7 @@ module.exports = React.memo(() => {
               control={(_props, ref) => <SearchBar
                 ref={ref}
                 autofocus={true}
-                placeholder='Search'
+                placeholder={Messages.SEARCH}
                 query={pluginQuery}
                 onChange={e => {
                   setPluginQuery(e);
@@ -120,8 +121,9 @@ module.exports = React.memo(() => {
                 onClear={() => setPluginQuery('')}
               />}
             />
-            <Menu.MenuSeparator/>
-            {renderItems('plugins')}
+            <Menu.MenuGroup label='Plugins'>
+              {renderItems('plugins')}
+            </Menu.MenuGroup>
           </>}
         </Menu.MenuItem>
         <Menu.MenuItem
@@ -136,7 +138,7 @@ module.exports = React.memo(() => {
               control={(_props, ref) => <SearchBar
                 ref={ref}
                 autofocus={true}
-                placeholder='Search'
+                placeholder={Messages.SEARCH}
                 query={themeQuery}
                 onChange={e => {
                   setThemeQuery(e);
@@ -145,8 +147,9 @@ module.exports = React.memo(() => {
                 onClear={() => setThemeQuery('')}
               />}
             />
-            <Menu.MenuSeparator/>
-            {renderItems('themes')}
+            <Menu.MenuGroup label='Themes'>
+              {renderItems('themes')}
+            </Menu.MenuGroup>
           </>}
         </Menu.MenuItem>
         <Menu.MenuItem
