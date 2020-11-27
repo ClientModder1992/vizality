@@ -1,74 +1,47 @@
 const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
 const { React } = require('@vizality/react');
 
 const AsyncComponent = require('../AsyncComponent');
+const Icon = require('../Icon');
 
 const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
 const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 
-let classes = {
-  initialized: false,
-  flexClassName: '',
-  classMargins: {},
-  classDivider: '',
-  classDividerDef: '',
-  classDescription: '',
-  classesLabel: {}
-};
+module.exports = React.memo(props => {
+  const { name, description, children, opened, onChange } = props;
+  const Flex = getModuleByDisplayName('Flex');
+  const classes = {
+    flex: joinClassNames(Flex.Direction.VERTICAL, Flex.Justify.START, Flex.Align.STRETCH, Flex.Wrap.NO_WRAP),
+    divider: getModule(m => Object.keys(m).join('') === 'divider').divider,
+    dividerDefault: getModule('dividerDefault').dividerDefault,
+    description: getModule('formText', 'description').description,
+    labelRow: getModule('labelRow').labelRow,
+    title: getModule('labelRow').title
+  };
 
-module.exports = class Category extends React.PureComponent {
-  constructor (props) {
-    super(props);
-    this.state = { classes };
-  }
-
-  async componentDidMount () {
-    if (classes.initialized) {
-      return;
-    }
-
-    const Flex = getModuleByDisplayName('Flex');
-    classes = {
-      initialized: true,
-
-      flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: getModule('marginTop20'),
-      classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
-      classDividerDef: getModule('dividerDefault').dividerDefault,
-      classDescription: getModule('formText', 'description').description,
-      classesLabel: getModule('labelRow')
-    };
-
-    this.setState({ classes });
-  }
-
-  render () {
-    return (
-      <DFormItem className={`vizality-settings-item vizality-category ${classes.flexClassName} ${classes.classMargins.marginBottom20}`}>
-        <div className='vizality-settings-item-title' onClick={() => this.props.onChange(!this.props.opened)}>
-          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' className={this.props.opened ? 'opened' : ''}>
-            <path
-              fill='var(--header-primary)'
-              d='M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z' />
-          </svg>
-          <div>
-            <div className={classes.classesLabel.labelRow}>
-              <label class={classes.classesLabel.title}>
-                {this.props.name}
-              </label>
-            </div>
-            <FormText className={classes.classDescription}>
-              {this.props.description}
-            </FormText>
+  return (
+    <DFormItem className={joinClassNames('vz-c-settings-category', classes.flex)}>
+      <div
+        className={joinClassNames('vz-c-settings-category-title', 'vz-c-settings-title')}
+        onClick={() => onChange(!opened)}
+        vz-opened={opened ? '' : null}
+      >
+        <div className='vz-c-settings-category-title-inner'>
+          <div className={classes.labelRow}>
+            <label class={classes.title}>
+              {name}
+            </label>
           </div>
+          <FormText className={classes.description}>
+            {description}
+          </FormText>
         </div>
-        {this.props.opened
-          ? <div className='vizality-settings-item-inner'>
-            {this.props.children}
-          </div>
-          : <div className={`${classes.classDivider} ${classes.classDividerDef}`} />}
-
-      </DFormItem>
-    );
-  }
-};
+        <Icon className='vz-c-settings-category-title-icon-wrapper' name='RightCaret' width='18' height='18' />
+      </div>
+      {opened && <div className='vz-c-settings-category-inner'>
+        {children}
+      </div>}
+    </DFormItem>
+  );
+});

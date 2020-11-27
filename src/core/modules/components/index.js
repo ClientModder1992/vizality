@@ -23,6 +23,7 @@ const fetchByProp = async (prop, propName) => {
 Object.assign(exports, {
   Button: AsyncComponent.from(getModule(m => m.DropdownSizes, true)),
   Anchor: AsyncComponent.from(getModuleByDisplayName('Anchor', true)),
+  WebhookCard: AsyncComponent.from(getModuleByDisplayName('WebhookCard', true)),
   LazyImageZoomable: AsyncComponent.from(getModuleByDisplayName('LazyImageZoomable', true)),
   Image: AsyncComponent.from(getModuleByDisplayName('Image', true)),
   SearchBar: AsyncComponent.from(getModuleByDisplayName('SearchBar', true)),

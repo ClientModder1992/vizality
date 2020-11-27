@@ -1,0 +1,38 @@
+@use '@vizality/sass' as *;
+
+.vz-c-settings-category {
+  $base: &;
+  background: var('deprecated-card-editable-bg');
+  border: 1px solid var('background-secondary-alt');
+  border-radius: 4px;
+  margin-bottom: 40px;
+  &-title {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &[vz-opened] {
+      background: inherit;
+      border-bottom: 1px solid var('background-secondary-alt');
+      #{$base}-title-icon-wrapper {
+        transform: rotate3d(0, 0, 1, 90deg);
+      }
+    }
+    &,
+    & * {
+      cursor: pointer;
+    }
+    &-icon-wrapper {
+      transition: transform 0.2s;
+    }
+    &-inner {
+      padding-right: 30px;
+    }
+  }
+  &-inner {
+    padding: 30px;
+    > div:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}

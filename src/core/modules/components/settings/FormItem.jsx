@@ -4,7 +4,7 @@ const { React } = require('@vizality/react');
 const AsyncComponent = require('../AsyncComponent');
 const Divider = require('../Divider');
 
-const FormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
+const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
 const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
 
 module.exports = React.memo(props => {
@@ -15,7 +15,7 @@ module.exports = React.memo(props => {
   const noteClasses = [ description, props.noteHasMargin && margins.marginTop8 ].filter(Boolean).join(' ');
 
   return (
-    <FormItem
+    <DFormItem
       title={props.title}
       required={props.required}
       className={`${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP} ${margins.marginBottom20}`}
@@ -23,6 +23,6 @@ module.exports = React.memo(props => {
       {props.children}
       {props.note && <FormText className={noteClasses}>{props.note}</FormText>}
       <Divider/>
-    </FormItem>
+    </DFormItem>
   );
 });
