@@ -3,9 +3,12 @@ const { joinClassNames, string: { toKebabCase }, logger: { warn, error } } = req
 const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 
-const { TooltipContainer } = getModule('TooltipContainer');
+const AsyncComponent = require('./AsyncComponent');
+
+const TooltipContainer = AsyncComponent.from((() => getModule('TooltipContainer').TooltipContainer)());
+const Clickable = AsyncComponent.from(getModuleByDisplayName('Clickable', true));
+
 const { updateAvailable } = getModule('updateAvailable');
-const Clickable = getModuleByDisplayName('Clickable');
 const { right } = getModule('right');
 const { down } = getModule('down');
 
@@ -451,7 +454,7 @@ const Icons = {
     </svg>
   ),
 
-  CopyId: React.memo(props =>
+  CopyID: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' fillRule='evenodd' clipRule='evenodd' d='M5 2C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H19C20.6569 22 22 20.6569 22 19V5C22 3.34315 20.6569 2 19 2H5ZM8.79741 7.72V16H6.74541V7.72H8.79741ZM13.2097 7.72C16.0897 7.72 17.5897 9.388 17.5897 11.848C17.5897 14.308 16.0537 16 13.2577 16H10.3537V7.72H13.2097ZM13.1497 14.404C14.6137 14.404 15.5257 13.636 15.5257 11.86C15.5257 10.12 14.5537 9.316 13.1497 9.316H12.4057V14.404H13.1497Z' />
     </svg>
@@ -672,6 +675,12 @@ const Icons = {
     </svg>
   ),
 
+  Filter2: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 20 20' {...props}>
+      <path fill='currentColor' d='m1.669 0c-.727 0-1.268.266-1.524.75-.256.484-.171 1.081.239 1.682l6 8.337c.008.018.023.078.024.096l-.005 2.941c-.001.369.165.81.399 1.052l2.904 2.736c.21.219.422.33.63.33.36 0 .724-.357.724-1.154v-5.902c.001-.021.016-.08.023-.097l6.01-8.34c.41-.601.496-1.197.241-1.681-.255-.484-.796-.75-1.523-.75h-14.15' />
+    </svg>
+  ),
+
   FindFile: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' d='M20,19.59V8L14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,1.19-.4l-4.43-4.43A5,5,0,1,1,17,13a5,5,0,0,1-.83,2.75L20,19.59ZM9,13a3,3,0,1,0,3-3,3,3,0,0,0-3,3Z' />
@@ -744,29 +753,6 @@ const Icons = {
   Globe: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' fillRule='evenodd' d='M16.4770909,19 C18.0152727,16.936 18.9381818,14.531 19.1323636,12 L21.7527273,12 C21.3829091,15.056 19.3363636,17.65 16.4770909,19 Z M2.24618182,12 L4.86654545,12 C5.06072727,14.531 5.98363636,16.936 7.52181818,19 C4.66254545,17.65 2.616,15.056 2.24618182,12 Z M7.52181818,3 C5.98254545,5.064 5.06072727,7.469 4.86654545,10 L2.24618182,10 C2.616,6.944 4.66254545,4.35 7.52181818,3 Z M13.0909091,10 L13.0909091,2.369 C15.3294545,4.416 16.6930909,7.111 16.9505455,10 L13.0909091,10 Z M13.0909091,19.631 L13.0909091,12 L16.9505455,12 C16.6930909,14.889 15.3294545,17.584 13.0909091,19.631 Z M10.9090909,12 L10.9090909,19.631 C8.66945455,17.584 7.30581818,14.889 7.04836364,12 L10.9090909,12 Z M10.9090909,10 L7.04836364,10 C7.30581818,7.111 8.66945455,4.416 10.9090909,2.369 L10.9090909,10 Z M19.1323636,10 C18.9381818,7.469 18.0163636,5.064 16.4770909,3 C19.3363636,4.35 21.3829091,6.944 21.7527273,10 L19.1323636,10 Z M0,11 C0,17.075 5.37163636,22 12,22 C18.6272727,22 24,17.075 24,11 C24,4.925 18.6272727,0 12,0 C5.37163636,0 0,4.925 0,11 Z' transform='translate(0 1)' />
-    </svg>
-  ),
-
-  Grid: React.memo(props =>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
-      <rect fill='currentColor' x='4' y='4' width='7' height='7' rx='1'/>
-      <rect fill='currentColor' x='4' y='13' width='7' height='7' rx='1' />
-      <rect fill='currentColor' x='13' y='4' width='7' height='7' rx='1' />
-      <rect fill='currentColor' x='13' y='13' width='7' height='7' rx='1' />
-    </svg>
-  ),
-
-  GridSmall: React.memo(props =>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
-      <rect fill='currentColor' x='2' y='2' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='10' y='2' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='18' y='2' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='2' y='10' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='10' y='10' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='18' y='10' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='2' y='18' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='10' y='18' width='4' height='4' rx='2' />
-      <rect fill='currentColor' x='18' y='18' width='4' height='4' rx='2' />
     </svg>
   ),
 
@@ -924,6 +910,33 @@ const Icons = {
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' d='M10 5V3H5.375C4.06519 3 3 4.06519 3 5.375V18.625C3 19.936 4.06519 21 5.375 21H18.625C19.936 21 21 19.936 21 18.625V14H19V19H5V5H10Z' />
       <path fill='currentColor' d='M21 2.99902H14V4.99902H17.586L9.29297 13.292L10.707 14.706L19 6.41302V9.99902H21V2.99902Z' />
+    </svg>
+  ),
+
+  LayoutGrid: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
+      <rect fill='currentColor' x='4' y='4' width='7' height='7' rx='1'/>
+      <rect fill='currentColor' x='4' y='13' width='7' height='7' rx='1' />
+      <rect fill='currentColor' x='13' y='4' width='7' height='7' rx='1' />
+      <rect fill='currentColor' x='13' y='13' width='7' height='7' rx='1' />
+    </svg>
+  ),
+
+  LayoutGridSmall: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' {...props}>
+      <path d='M24.805 4.474 C 15.086 6.294,7.568 13.280,4.817 23.047 C 3.738 26.876,3.714 89.387,4.789 93.359 C 7.027 101.623,12.901 108.101,20.898 111.124 L 24.023 112.305 57.031 112.417 C 94.175 112.544,93.033 112.619,98.938 109.663 C 104.683 106.788,109.269 101.296,111.573 94.531 C 112.266 92.496,112.305 90.590,112.305 58.398 L 112.305 24.414 111.438 21.680 C 108.908 13.695,102.301 7.333,93.945 4.838 C 90.840 3.911,29.536 3.588,24.805 4.474 M167.176 4.311 C 159.266 5.507,152.023 10.818,148.468 18.027 C 145.611 23.823,145.664 23.000,145.788 59.509 L 145.898 91.992 146.985 95.201 C 149.550 102.775,155.154 108.408,162.955 111.258 L 165.820 112.305 200.000 112.305 L 234.180 112.305 237.045 111.258 C 244.846 108.408,250.450 102.775,253.015 95.201 L 254.102 91.992 254.212 59.509 C 254.336 23.000,254.389 23.823,251.532 18.027 C 248.552 11.984,243.275 7.463,236.523 5.168 L 233.398 4.106 201.367 4.045 C 183.750 4.012,168.364 4.132,167.176 4.311 M309.570 4.185 C 299.768 5.541,291.491 12.433,288.562 21.680 L 287.695 24.414 287.695 58.398 C 287.695 90.590,287.734 92.496,288.427 94.531 C 290.731 101.296,295.317 106.788,301.062 109.663 C 306.967 112.619,305.825 112.544,342.969 112.417 L 375.977 112.305 379.102 111.124 C 387.099 108.101,392.973 101.623,395.211 93.359 C 396.286 89.387,396.262 26.876,395.183 23.047 C 392.354 13.005,384.415 5.879,374.339 4.336 C 371.661 3.926,312.441 3.788,309.570 4.185 M23.828 146.311 C 14.868 148.235,7.289 155.613,4.789 164.844 C 3.726 168.768,3.737 231.294,4.801 235.156 C 7.226 243.962,13.517 250.456,22.266 253.187 L 25.195 254.102 58.398 254.102 L 91.602 254.102 95.041 252.974 C 102.801 250.431,108.770 244.513,111.436 236.719 C 112.620 233.258,113.027 170.418,111.898 165.318 C 109.829 155.964,102.073 148.266,92.723 146.285 C 88.847 145.464,27.665 145.487,23.828 146.311 M164.887 146.497 C 156.071 148.822,150.071 154.387,147.001 163.086 L 145.898 166.211 145.788 198.694 C 145.651 239.125,145.651 239.127,153.234 246.682 C 160.823 254.242,161.162 254.297,200.000 254.297 C 238.838 254.297,239.177 254.242,246.766 246.682 C 254.349 239.127,254.349 239.125,254.212 198.694 L 254.102 166.211 252.999 163.090 C 250.202 155.175,244.622 149.572,236.945 146.968 L 233.789 145.898 200.781 145.817 C 169.167 145.739,167.652 145.767,164.887 146.497 M307.097 146.302 C 297.901 148.298,290.151 156.056,288.102 165.318 C 286.973 170.418,287.380 233.258,288.564 236.719 C 291.230 244.513,297.199 250.431,304.959 252.974 L 308.398 254.102 341.602 254.102 L 374.805 254.102 377.734 253.187 C 386.483 250.456,392.774 243.962,395.199 235.156 C 396.263 231.294,396.274 168.768,395.211 164.844 C 392.685 155.518,385.096 148.197,375.977 146.289 C 372.070 145.471,310.870 145.483,307.097 146.302 M22.266 288.423 C 13.412 291.088,6.908 297.953,4.639 307.031 C 3.701 310.783,3.863 373.568,4.819 376.953 C 7.359 385.946,14.380 392.872,23.227 395.113 C 26.718 395.998,90.090 395.996,93.570 395.111 C 102.449 392.854,109.852 385.320,111.910 376.445 C 112.444 374.144,112.507 369.596,112.413 340.519 L 112.305 307.227 111.124 304.102 C 108.105 296.114,101.279 289.969,93.359 288.108 C 91.185 287.597,86.105 287.514,58.008 287.527 L 25.195 287.542 22.266 288.423 M164.844 288.114 C 155.519 290.554,148.188 298.224,146.312 307.503 C 145.399 312.019,145.401 371.204,146.315 375.700 C 148.075 384.363,154.681 391.859,162.939 394.564 L 165.820 395.508 200.000 395.508 L 234.180 395.508 237.061 394.564 C 245.319 391.859,251.925 384.363,253.685 375.700 C 254.599 371.204,254.601 312.019,253.688 307.503 C 251.795 298.140,244.411 290.480,234.977 288.090 C 231.590 287.232,168.131 287.253,164.844 288.114 M306.450 288.131 C 298.683 290.008,291.859 296.209,288.876 304.102 L 287.695 307.227 287.587 340.519 C 287.493 369.596,287.556 374.144,288.090 376.445 C 290.148 385.320,297.551 392.854,306.430 395.111 C 309.910 395.996,373.282 395.998,376.773 395.113 C 383.602 393.383,389.724 388.617,392.851 382.597 C 396.058 376.424,395.898 378.564,395.898 341.602 L 395.898 308.789 394.982 305.869 C 392.118 296.748,386.050 290.720,377.289 288.292 C 373.517 287.247,310.698 287.104,306.450 288.131' />
+    </svg>
+  ),
+
+  LayoutList: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' {...props}>
+      <path d='M19.597 33.802 C 10.599 35.755,3.101 43.079,0.770 52.191 C -0.288 56.329,-0.437 159.619,0.609 164.057 C 2.682 172.853,10.101 180.367,18.930 182.611 C 22.473 183.512,377.527 183.512,381.070 182.611 C 389.899 180.367,397.318 172.853,399.391 164.057 C 400.437 159.619,400.288 56.329,399.230 52.191 C 396.876 42.988,389.375 35.724,380.223 33.785 C 376.302 32.955,23.427 32.971,19.597 33.802 M22.070 216.684 C 12.251 218.054,3.992 224.933,1.062 234.180 L 0.195 236.914 0.195 291.602 L 0.195 346.289 1.062 349.023 C 3.532 356.819,9.587 362.894,17.459 365.474 L 20.898 366.602 200.000 366.602 L 379.102 366.602 382.541 365.474 C 390.413 362.894,396.468 356.819,398.938 349.023 L 399.805 346.289 399.805 291.602 L 399.805 236.914 398.938 234.180 C 396.410 226.199,389.853 219.882,381.445 217.325 C 379.251 216.658,26.764 216.029,22.070 216.684' />
+    </svg>
+  ),
+
+  LayoutTable: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' {...props}>
+      <path d='M18.950 13.131 C 11.045 15.042,3.992 21.567,1.271 29.487 L 0.195 32.617 0.195 58.203 C 0.195 83.545,0.204 83.815,1.062 86.523 C 3.494 94.202,9.434 100.235,17.245 102.962 L 20.508 104.102 44.315 104.219 C 64.737 104.320,68.570 104.249,71.268 103.720 C 81.072 101.801,89.153 93.880,91.205 84.180 C 92.081 80.039,92.067 36.848,91.188 32.503 C 89.295 23.140,81.911 15.480,72.477 13.090 C 69.110 12.237,22.500 12.272,18.950 13.131 M159.766 13.423 C 150.912 16.088,144.408 22.953,142.139 32.031 C 141.224 35.689,141.365 81.758,142.301 85.156 C 144.726 93.962,151.017 100.456,159.766 103.187 L 162.695 104.102 270.898 104.102 L 379.102 104.102 382.541 102.974 C 390.413 100.394,396.468 94.319,398.938 86.523 C 399.796 83.815,399.805 83.545,399.805 58.203 L 399.805 32.617 398.729 29.487 C 395.975 21.471,388.916 15.001,380.859 13.108 C 378.614 12.580,365.868 12.513,270.508 12.527 L 162.695 12.542 159.766 13.423 M22.070 154.174 C 12.248 155.624,4.221 162.239,1.066 171.484 C -0.103 174.910,-0.511 221.697,0.587 226.432 C 2.655 235.351,10.078 242.887,18.998 245.124 C 21.055 245.640,24.974 245.710,46.732 245.616 L 72.070 245.508 74.925 244.465 C 83.229 241.431,89.447 234.256,91.185 225.700 C 92.062 221.387,92.083 178.192,91.211 174.023 C 89.404 165.386,82.796 158.139,74.023 155.174 L 70.898 154.117 47.070 154.059 C 33.965 154.028,22.715 154.079,22.070 154.174 M162.305 154.479 C 152.604 156.278,145.069 163.278,142.317 173.047 C 141.220 176.939,141.222 223.071,142.319 226.953 C 144.859 235.946,151.880 242.872,160.727 245.113 C 164.266 246.010,377.543 246.008,381.070 245.111 C 389.955 242.853,397.352 235.321,399.413 226.432 C 400.511 221.697,400.103 174.910,398.934 171.484 C 396.214 163.516,389.731 157.340,381.445 154.827 C 378.369 153.894,167.267 153.559,162.305 154.479 M19.597 296.295 C 10.377 298.322,2.659 306.050,0.599 315.318 C -0.508 320.295,-0.112 366.928,1.063 370.029 C 4.437 378.935,11.124 385.016,19.615 386.900 C 22.103 387.452,25.558 387.517,47.070 387.418 L 71.680 387.305 74.545 386.258 C 82.346 383.408,87.950 377.775,90.515 370.201 L 91.602 366.992 91.602 341.602 L 91.602 316.211 90.499 313.090 C 87.702 305.175,82.122 299.572,74.445 296.968 L 71.289 295.898 46.680 295.825 C 26.884 295.766,21.586 295.858,19.597 296.295 M161.328 296.311 C 152.368 298.235,144.789 305.613,142.289 314.844 C 141.243 318.707,141.243 364.496,142.289 368.359 C 144.527 376.623,150.401 383.101,158.398 386.124 L 161.523 387.305 269.531 387.413 C 390.440 387.534,380.223 387.775,386.438 384.663 C 392.035 381.862,396.382 376.772,398.937 370.029 C 400.112 366.928,400.508 320.295,399.401 315.318 C 397.320 305.955,389.572 298.266,380.223 296.285 C 376.278 295.450,165.224 295.474,161.328 296.311 ' />
     </svg>
   ),
 
@@ -1225,7 +1238,7 @@ const Icons = {
   ),
 
   Pause: React.memo(props =>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 20 20' {...props}>
       <path fill='currentColor' d='M0,14 L4,14 L4,0 L0,0 L0,14 L0,14 Z M8,0 L8,14 L12,14 L12,0 L8,0 L8,0 Z' transform='translate(6 5)' />
     </svg>
   ),
@@ -1351,7 +1364,7 @@ const Icons = {
   ),
 
   Play: React.memo(props =>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 20 20' {...props}>
       <polygon fill='currentColor' points='0 0 0 14 11 7' transform='translate(7 5)' />
     </svg>
   ),
@@ -1493,7 +1506,7 @@ const Icons = {
   ),
 
   Refresh: React.memo(props =>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 16 16' {...props}>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 20 20' {...props}>
       <path fill='currentColor' d='M17.65,6.35 C16.2,4.9 14.21,4 12,4 C7.58,4 4.01,7.58 4.01,12 C4.01,16.42 7.58,20 12,20 C15.73,20 18.84,17.45 19.73,14 L17.65,14 C16.83,16.33 14.61,18 12,18 C8.69,18 6,15.31 6,12 C6,8.69 8.69,6 12,6 C13.66,6 15.14,6.69 16.22,7.78 L13,11 L20,11 L20,4 L17.65,6.35 L17.65,6.35 Z' />
     </svg>
   ),
@@ -2065,7 +2078,7 @@ const Names = Object.keys(Icons);
 /**
  * Automated warning system to let us know when Discord has added an icon to their batch, basically.
  */
-(() => {
+(async () => {
   // These are icons that aren't really icons, or that will cause Discord to crash.
   const blacklist = [ './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro',
     './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic',
@@ -2076,25 +2089,27 @@ const Names = Object.keys(Icons);
 
   /*
    * These are Discord's inherent icons I have purposely altered or removed for whatever reason.
-   * CopyID: Name changed to CopyId.
+   * -------------
    * EarlyAccess: Discord had this as an opened lock icon, for some reason... Renamed to Lock and removed.
    * EmojiActivityCategory: Very similar to Activity icon. Deemed redundant and removed.
    * PlatformBlizzard: Ugly at small size. Removed.
    * TemplateIcon: Ugly. Removed.
    * TrendingArrow: This is just a triangle. Deemed unnecessary and removed.
+   * Grid: Name changed to LayoutGrid.
+   * GridSmall: Removed due to design inconsistency; replacement is LayoutGridSmall.
    */
-  const knownAlterations = [ 'CopyID', 'EarlyAccess', 'EmojiActivityCategory', 'PlatformBlizzard', 'TemplateIcon', 'TrendingArrow' ];
+  const knownAlterations = [ './EarlyAccess', './EmojiActivityCategory', './PlatformBlizzard', './TemplateIcon', './TrendingArrow', './Grid', './GridSmall' ];
 
-  const registry = getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
+  const registry = await getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'), true);
 
   const DiscordIcons = registry.keys()
-    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k) && !knownAlterations)
+    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k) && !knownAlterations.includes(k))
     .map(m => m.substring(2));
 
   const missing = DiscordIcons.filter(icon => !Names.includes(icon));
 
   if (missing.length > 0) {
-    warn(_module, _submodule, null, `${missing.length} icons found to be missing: '${missing.join('', '')}'`);
+    warn(_module, _submodule, null, `${missing.length} icons found to be missing:`, missing);
   }
 })();
 
@@ -2103,6 +2118,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   icon,
   width = '24',
   height = '24',
+  size,
   className,
   iconClassName,
   color = 'currentColor',
@@ -2117,8 +2133,13 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   if (!Icon.Names) Icon.Names = Names;
   if (!Icon.Icons) Icon.Icons = Icons;
 
+  if (size) {
+    width = size;
+    height = size;
+  }
+
   if (!name) {
-    return error(_module, _submodule, null, `You must specify a "name" property for an Icon component.`);
+    return error(_module, _submodule, null, `You must specify a 'name' property for an Icon component.`);
   }
 
   const isClickable = Boolean(onClick || onContextMenu);
@@ -2142,7 +2163,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
             <TooltipContainer
               text={tooltip}
               color={tooltipColor}
-              tooltipPosition={tooltipPosition}
+              position={tooltipPosition}
             >
               <Clickable
                 className={joinClassNames(className, 'vz-icon-wrapper')}
@@ -2166,7 +2187,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
             className={joinClassNames(className, 'vz-icon-wrapper')}
             text={tooltip}
             color={tooltipColor}
-            tooltipPosition={tooltipPosition}
+            position={tooltipPosition}
           >
             <SVG
               className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
