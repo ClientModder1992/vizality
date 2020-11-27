@@ -13,7 +13,7 @@ module.exports = class Theme extends Updatable {
 
     this.module = 'Theme';
     this.submodule = this.manifest.name;
-    this.submoduleColor = this.manifest.color || null;
+    this.submoduleColor = null;
   }
 
   _load () {
@@ -47,14 +47,14 @@ module.exports = class Theme extends Updatable {
   }
 
   log (...data) {
-    log(this.module, this.submodule, this.submoduleColor, ...data);
+    log(this.module, this.submodule, null, ...data);
   }
 
   error (...data) {
-    error(this.module, this.submodule, this.submoduleColor, ...data);
+    error(this.module, this.submodule, null, ...data);
   }
 
   warn (...data) {
-    warn(this.module, this.submodule, this.submoduleColor, ...data);
+    warn(this.module, this.submodule, null, ...data);
   }
 };

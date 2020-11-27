@@ -4,7 +4,7 @@ const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
 const { joinClassNames } = require('@vizality/util');
 
 const TabBar = getModuleByDisplayName('TabBar');
-const Icon = require('./Icon');
+// const Icon = require('./Icon');
 
 module.exports = React.memo(function VizalityComponentPreview ({
   previewTabChildren,
