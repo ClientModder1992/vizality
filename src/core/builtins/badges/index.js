@@ -78,7 +78,7 @@ module.exports = class Badges extends Builtin {
       classes.modal, classes.headerInfo, classes.nameTag
     ].join(' '))).parentElement);
 
-    const UserProfileBody = instance._reactInternalFiber.return.type;
+    const UserProfileBody = instance._reactInternals.return.type;
     patch('vz-badges-users', UserProfileBody.prototype, 'renderBadges', function (_, res) {
       const badges = React.createElement(BadgesComponent, {
         key: 'vizality',

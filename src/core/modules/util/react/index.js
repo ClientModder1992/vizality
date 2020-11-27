@@ -82,7 +82,7 @@ const react = module.exports = {
   },
 
   getReactInstance (node) {
-    return node[Object.keys(node).find(key => key.startsWith('__reactInternalInstance'))];
+    return node[Object.keys(node).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
   },
 
   getOwnerInstance (node) {

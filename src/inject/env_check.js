@@ -39,9 +39,10 @@ module.exports = () => {
         installDeps();
         break;
       }
-      const expectedFrom = `${dependency}@${dependencies[dependency]}`;
       const depPackage = require(join(depPath, 'package.json'));
-      if (expectedFrom !== depPackage._from) {
+      const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ''));
+      const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ''));
+      if (installedVerInt < expectedVerInt) {
         installDeps();
         break;
       }
