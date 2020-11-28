@@ -10,23 +10,23 @@ module.exports = React.memo(props => {
       <Menu.MenuGroup>
         <Menu.MenuItem
           id='display-table'
-          label={<Icon name='LayoutTable' width='18px' height='18px' />}
+          label={<Icon name='LayoutTable' size='18px' />}
           checked={true}
           action={() => void 0}
         />
         <Menu.MenuItem
           id='display-grid-small'
-          label={<Icon name='LayoutGridSmall' width='18px' height='18px' />}
+          label={<Icon name='LayoutGridSmall' size='18px' />}
           action={() => void 0}
         />
         <Menu.MenuItem
           id='display-grid'
-          label={<Icon name='LayoutGrid' width='18px' height='18px' />}
+          label={<Icon name='LayoutGrid' size='18px' viewBox='4 4 16 16' />}
           action={() => void 0}
         />
         <Menu.MenuItem
           id='display-list'
-          label={<Icon name='LayoutList' width='18px' height='18px' />}
+          label={<Icon name='LayoutList' size='18px' />}
           action={() => void 0}
         />
       </Menu.MenuGroup>

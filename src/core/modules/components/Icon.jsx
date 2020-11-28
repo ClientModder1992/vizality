@@ -320,6 +320,12 @@ const Icons = {
     </svg>
   ),
 
+  Pause2: React.memo(props =>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 20 20' {...props}>
+      <path fill='currentColor' d='M0,14 L4,14 L4,0 L0,0 L0,14 L0,14 Z M8,0 L8,14 L12,14 L12,0 L8,0 L8,0 Z' transform='translate(6 5)' />
+    </svg>
+  ),
+
   PayoutHistory: React.memo(props =>
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' {...props}>
       <path fill='currentColor' d='M14,18H2V8H18v2h2V5a2,2,0,0,0-2-2H17V0H15V5H14V3H7V0H5V5H4V3H2A2,2,0,0,0,0,5V18a2,2,0,0,0,2,2H14Z' />
@@ -540,7 +546,7 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   }
 
   if (!SVG && !icon) {
-    return error(_module, _submodule, null, `Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, Names);
+    return error(_module, _submodule, null, `Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, Icon.Names);
   }
 
   const render = () => {

@@ -1,48 +1,77 @@
 const { Icon, CodeBlock, ComponentPreview } = require('@vizality/components');
-const { React, React: { useState, useEffect } } = require('@vizality/react');
 const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
+const { React, React: { useState } } = require('@vizality/react');
 const { joinClassNames } = require('@vizality/util');
 
 // @todo Remember to use @vizality/component later when you add this.
 const TextInput = getModuleByDisplayName('TextInput');
 
+const AsideNav = require('../../../parts/AsideNav');
 const Section = require('../../../parts/Section');
 const Content = require('../../../parts/Content');
 const Layout = require('../../../parts/Layout');
-const AsideNav = require('../../../parts/AsideNav');
 
 module.exports = React.memo(() => {
-  const Icons = Icon.Names;
   const [ selectedIcon, setSelectedIcon ] = useState('');
-  const [ iconList, setIconList ] = useState(Icons);
-  const [ search, setSearch ] = useState('');
-  const [ hasSearchResults, setHasSearchResults ] = useState(typeof search === 'string');
+  const [ query, setQuery ] = useState('');
+  const [ hasSearchResults ] = useState(true);
   const { marginBottom20 } = getModule('marginBottom20');
   const { weightMedium } = getModule('weightMedium');
   const { size20 } = getModule('size24');
 
-  useEffect(() => {
-    const iconList = Icons.map(name => {
-      if (!search || (search && name.toLowerCase().includes(search.toLowerCase()))) {
-        return <Icon name={name} tooltip={name} className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': name === selectedIcon })} iconClassName='vz-docs-components-icons-icon' onClick={() => { name === selectedIcon ? setSelectedIcon('') : setSelectedIcon(name); }} />;
-      }
-      return false;
-    });
-    setIconList(iconList);
-  }, [ search, selectedIcon ]);
+  const _sortItems = icons => {
+    if (query && query !== '') {
+      const search = query.toLowerCase();
+      icons = icons.filter(icon => icon.toLowerCase().includes(search));
+    }
+
+    return icons.sort();
+  };
+
+  const _getItems = () => {
+    return _sortItems(Icon.Names);
+  };
+
+  const renderIcon = icon => {
+    return (
+      <Icon
+        name={icon}
+        tooltip={icon}
+        className={joinClassNames('vz-docs-components-icons-icon-wrapper', { 'vz-is-active': icon === selectedIcon })} iconClassName='vz-docs-components-icons-icon'
+        onClick={() => { icon === selectedIcon ? setSelectedIcon('') : setSelectedIcon(icon); }}
+      />
+    );
+  };
+
+  const renderPreviewTab = () => {
+    const items = _getItems();
+    return (
+      <>
+        {!items.length
+          ? <div className='vz-component-preview-no-results'>
+            <div className='vz-component-preview-no-results-image' />
+            <div className={`vz-component-preview-no-results-text ${marginBottom20}`}>
+              {`There were no icons found matching "${query}"`}
+            </div>
+          </div>
+          : <>
+            {items.map(icon => renderIcon(icon))}
+          </>}
+      </>
+    );
+  };
 
   const renderSearch = () => {
     return (
       <div className='vz-component-preview-search'>
         <TextInput
-          size={TextInput.Sizes.MINI}
           className='vz-component-preview-search-input-wrapper'
-          value={search}
-          onChange={search => {
-            setSearch(search);
-            setHasSearchResults(Icons.filter(f => f.toLowerCase().includes(search)).length > 0);
+          size={TextInput.Sizes.MINI}
+          placeholder='Filter'
+          value={query}
+          onChange={query => {
+            setQuery(query);
           }}
-          placeholder='Search icons...'
         />
       </div>
     );
@@ -74,21 +103,6 @@ module.exports = React.memo(() => {
           `  name: '${selectedIcon}'\n` +
           `});`}
         />
-      </>
-    );
-  };
-
-  const renderPreviewTab = () => {
-    return (
-      <>
-        {iconList}
-        {!hasSearchResults && <div className='vz-component-preview-no-results'>
-          <div className='vz-component-preview-no-results-image' />
-          <div className={`vz-component-preview-no-results-text ${marginBottom20}`}>
-            {/* @i18n */}
-            {`There were no icons found matching '${search}'`}
-          </div>
-        </div>}
       </>
     );
   };

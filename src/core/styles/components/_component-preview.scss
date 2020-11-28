@@ -79,6 +79,7 @@
     flex: 1;
     display: flex;
     justify-content: space-around;
+    animation: fadeShortSlideInFromBottom 0.5s forwards;
     /* Fix for last row of flex container */
     &::after {
       content: '';

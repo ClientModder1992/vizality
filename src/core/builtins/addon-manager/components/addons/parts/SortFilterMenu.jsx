@@ -8,7 +8,7 @@ module.exports = React.memo(props => {
   const Stars = (count) => {
     return (
       <>
-        {Array.from(Array(count), () => <Icon name='Star' width='18px' height='18px' />)}
+        {Array.from(Array(count), () => <Icon name='Star' size='18px' />)}
       </>
     );
   };
