@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
 const { Confirm, Card, Spinner } = require('@vizality/components');
-const { string: { toPlural, toHeaderCase } } = require('@vizality/util');
+const { string: { toPlural, toHeaderCase }, joinClassNames } = require('@vizality/util');
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { getModule } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
@@ -259,7 +259,7 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   return (
     <>
-      <div className={`vz-addons-list ${colorStandard}`}>
+      <div className={joinClassNames('vz-addons-list', colorStandard)} vz-display-type={getSetting('addon-list-display', 'grid')}>
         <StickyBar
           type={type}
           query={query}
@@ -270,6 +270,8 @@ module.exports = React.memo(({ type, tab, search }) => {
           enableAll={_enableAll}
           disableAll={_disableAll}
           resetSearchOptions={_resetSearchOptions}
+          getSetting={getSetting}
+          updateSetting={updateSetting}
         />
         <div className='vz-addons-list-inner'>
           {loading

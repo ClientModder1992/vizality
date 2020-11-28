@@ -57,7 +57,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeShortSlideInFromTop .5s forwards;
+    animation: fadeShortSlideInFromTop .3s forwards;
     &-icon-wrapper {
       width: 200px;
       flex: 1 0 auto;
@@ -85,7 +85,7 @@
       stroke: #fff;
       path {
         stroke-dasharray: 150;
-        animation: strokeSVG 1s ease-in forwards, fillSVG .5s .5s ease-in forwards;
+        animation: strokeSVG .5s ease-in forwards, fillSVG .25s .25s ease-in forwards;
         stroke-width: 10;
       }
     }

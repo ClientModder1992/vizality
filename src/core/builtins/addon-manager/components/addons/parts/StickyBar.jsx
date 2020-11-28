@@ -1,5 +1,5 @@
 const { StickyWrapper, TabBar, Icon, SearchBar } = require('@vizality/components');
-const { dom: { getElementDimensions } } = require('@vizality/util');
+const { dom: { getElementDimensions }, string: { toHeaderCase } } = require('@vizality/util');
 const { React, React: { useState } } = require('@vizality/react');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
@@ -14,11 +14,17 @@ module.exports = React.memo(props => {
     query,
     tab,
     handleTabChange,
-    handleQueryChange
+    handleQueryChange,
+    getSetting
   } = props;
 
   const [ sticky, setSticky ] = useState(null);
+  const [ display, setDisplay ] = useState(`Layout${toHeaderCase(getSetting('addon-list-display', 'grid')).replace(' ', '')}`);
   const PopoutDispatcher = getModule('openPopout');
+
+  const _handleDisplay = (display) => {
+    return setDisplay(`Layout${toHeaderCase(display).replace(' ', '')}`);
+  };
 
   const _handleStickyChange = (status, element) => {
     setSticky(status);
@@ -59,7 +65,7 @@ module.exports = React.memo(props => {
   const renderDisplayMenu = e => {
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-display-menu',
-      render: ({ onClose }) => <DisplayMenu onClose={onClose} {...props} />,
+      render: ({ onClose }) => <DisplayMenu onClose={onClose} handleDisplay={_handleDisplay} {...props} />,
       closeOnScroll: true,
       shadow: false,
       position: 'bottom'
@@ -129,7 +135,7 @@ module.exports = React.memo(props => {
             <Icon
               tooltip='Display'
               tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
-              name='Grid'
+              name={display}
               onClick={e => renderDisplayMenu(e)}
             />
           </div>

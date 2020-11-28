@@ -10,7 +10,7 @@
     flex-flow: row wrap;
     opacity: 0;
     margin: 20px -10px 20px; // Negative left and right margins to counteract vz-addon-card margin
-    animation: fadeShortSlideInFromBottom 0.5s forwards;
+    animation: fadeShortSlideInFromBottom 0.3s forwards;
   }
   &-inner {
     @include size(100%);
