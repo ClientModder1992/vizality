@@ -22,6 +22,8 @@ const fetchByProp = async (prop, propName) => {
 // Add some util components
 Object.assign(exports, {
   Button: AsyncComponent.from(getModule(m => m.DropdownSizes, true)),
+  Table: AsyncComponent.from(getModuleByDisplayName('Table', true)),
+  ShinyButton: AsyncComponent.from(getModuleByDisplayName('ShinyButton', true)),
   Anchor: AsyncComponent.from(getModuleByDisplayName('Anchor', true)),
   WebhookCard: AsyncComponent.from(getModuleByDisplayName('WebhookCard', true)),
   LazyImageZoomable: AsyncComponent.from(getModuleByDisplayName('LazyImageZoomable', true)),

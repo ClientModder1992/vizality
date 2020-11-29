@@ -107,7 +107,11 @@ module.exports = React.memo(() => {
           <ErrorTest />
         </Route>
         <Route path='/vizality/dashboard/documentation/components/test' exact>
-          <Test />
+          <Layout>
+            <Content heading='Table Testing'>
+              <Test />
+            </Content>
+          </Layout>
         </Route>
         {/* <Route path='/vizality/dashboard/updater' exact>
           <Layout>
