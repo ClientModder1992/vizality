@@ -7,8 +7,8 @@ module.exports = () => {
 
   patch('vz-attributes-userPopout', UserPopout, 'default', (_, res) => {
     res.ref = elem => {
-      if (elem && elem._reactInternals) {
-        const container = findInTree(elem._reactInternals.return, el => el.stateNode, { walkable: [ 'return' ] });
+      if (elem && elem._reactInternalFiber) {
+        const container = findInTree(elem._reactInternalFiber.return, el => el.stateNode, { walkable: [ 'return' ] });
         container.stateNode.children[0].setAttribute('vz-user-id', res.props.user.id);
         container.stateNode.parentElement.setAttribute('vz-popout', 'user');
       }

@@ -61,7 +61,7 @@ module.exports = class Router extends Builtin {
     const { panels } = await getModule('panels', true);
     const instance = getOwnerInstance(await waitForElement(`.${panels}`));
 
-    patch('vz-router-sidebar', instance._reactInternals.type.prototype, 'render', (_, res) => {
+    patch('vz-router-sidebar', instance._reactInternalFiber.type.prototype, 'render', (_, res) => {
       const renderer = res.props.children;
 
       res.props.children = (props) => {
@@ -86,7 +86,7 @@ module.exports = class Router extends Builtin {
     // Views
     const { app } = getModules([ 'app' ]).find(m => Object.keys(m).length === 1);
     const viewsInstance = getOwnerInstance(await waitForElement(`.${app}`));
-    findInTree(viewsInstance._reactInternals, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
+    findInTree(viewsInstance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
 
     // Routes
     const { container } = await getModule('container', 'downloadProgressCircle', true);
