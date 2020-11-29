@@ -3,7 +3,7 @@ const { Messages } = require('@vizality/i18n');
 const { React } = require('@vizality/react');
 
 module.exports = React.memo(props => {
-  const { onClose, updateSetting, handleDisplay } = props;
+  const { onClose, handleDisplayChange } = props;
 
   return (
     <Menu.Menu navId='vz-addons-list-display-menu' onClose={onClose}>
@@ -11,34 +11,22 @@ module.exports = React.memo(props => {
         <Menu.MenuItem
           id='display-table'
           label={<Icon name='LayoutTable' size='24px' />}
-          action={() => {
-            handleDisplay('table');
-            updateSetting('addon-list-display', 'table');
-          }}
+          action={() => handleDisplayChange('table')}
         />
         <Menu.MenuItem
           id='display-grid-small'
           label={<Icon name='LayoutGridSmall' size='24px' />}
-          action={() => {
-            handleDisplay('grid-small');
-            updateSetting('addon-list-display', 'grid-small');
-          }}
+          action={() => handleDisplayChange('grid-small')}
         />
         <Menu.MenuItem
           id='display-grid'
           label={<Icon name='LayoutGrid' size='24px' />}
-          action={() => {
-            handleDisplay('grid');
-            updateSetting('addon-list-display', 'grid');
-          }}
+          action={() => handleDisplayChange('grid')}
         />
         <Menu.MenuItem
           id='display-list'
           label={<Icon name='LayoutList' size='24px' />}
-          action={() => {
-            handleDisplay('list');
-            updateSetting('addon-list-display', 'list');
-          }}
+          action={() => handleDisplayChange('list')}
         />
       </Menu.MenuGroup>
     </Menu.Menu>

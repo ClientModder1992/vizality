@@ -2,23 +2,25 @@
 const { Confirm, Card, Spinner } = require('@vizality/components');
 const { string: { toPlural, toHeaderCase }, joinClassNames } = require('@vizality/util');
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
-const { getModule } = require('@vizality/webpack');
+const { getModule, contextMenu } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { Messages } = require('@vizality/i18n');
 
+const AddonCard = require('../addon/AddonCard');
 const StickyBar = require('./parts/StickyBar');
-const Addon = require('../addon/Addon');
 
 module.exports = React.memo(({ type, tab, search }) => {
+  const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
+  const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
+
   const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
   const [ query, setQuery ] = useState(search || '');
+  const [ display, setDisplay ] = useState(getSetting('addon-list-display', 'grid'));
+  const [ previewImages, setShowPreviewImages ] = useState(getSetting('addon-list-show-preview-images', false));
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const { colorStandard } = getModule('colorStandard');
-
-  const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
-  const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
 
   useEffect(() => {
     setLoading(false);
@@ -40,6 +42,16 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   const _resetSearchOptions = () => {
     return setQuery('');
+  };
+
+  const _handleShowPreviewImages = (bool) => {
+    updateSetting('addon-list-show-preview-images', bool);
+    return setShowPreviewImages(bool);
+  };
+
+  const _handleDisplayChange = (display) => {
+    updateSetting('addon-list-display', display);
+    return setDisplay(display);
   };
 
   const _handleQueryChange = (query) => {
@@ -206,12 +218,15 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   const renderItem = item => {
     return (
-      <Addon
+      <AddonCard
+        displayType={display}
+        type={type}
         manifest={item.manifest}
         addonId={item.entityID}
         isEnabled={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
         onToggle={async v => _toggle(item.entityID, v)}
         onUninstall={() => _uninstall(item.entityID)}
+        showPreviewImages={previewImages}
       />
     );
   };
@@ -259,19 +274,23 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   return (
     <>
-      <div className={joinClassNames('vz-addons-list', colorStandard)} vz-display-type={getSetting('addon-list-display', 'grid')}>
+      <div className={joinClassNames('vz-addons-list', colorStandard)} vz-display={display} vz-previews={previewImages ? '' : null}>
         <StickyBar
           type={type}
           query={query}
           tab={currentTab}
+          display={display}
           handleTabChange={_handleTabChange}
           handleQueryChange={_handleQueryChange}
+          handleDisplayChange={_handleDisplayChange}
           fetchMissing={_fetchMissing}
           enableAll={_enableAll}
           disableAll={_disableAll}
           resetSearchOptions={_resetSearchOptions}
           getSetting={getSetting}
           updateSetting={updateSetting}
+          showPreviewImages={previewImages}
+          handleShowPreviewImages={_handleShowPreviewImages}
         />
         <div className='vz-addons-list-inner'>
           {loading

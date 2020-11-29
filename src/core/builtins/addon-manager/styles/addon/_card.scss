@@ -1,0 +1,245 @@
+@use '@vizality/sass' as *;
+
+.vz-addon-card {
+  $base: &;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  min-width: 400px;
+  margin: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.125s ease, background-color 0.125s ease, transform 0.125s ease;
+  flex: 1;
+  &:hover {
+    transform: translate3d(0, -1px, 0) !important;
+    background-color: var('background-tertiary');
+    box-shadow: var('elevation-high');
+  }
+  &-header-wrapper {
+    display: flex;
+    flex: 1;
+  }
+  &-preview-wrapper {
+    width: 100%;
+    border-radius: 4px;
+    margin: 0 0 20px 0;
+    backface-visibility: hidden;
+    position: relative;
+    &:hover {
+      #{$base}-preview-previous,
+      #{$base}-preview-next {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        color: var('header-primary');
+      }
+    }
+  }
+  &-content-wrapper {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+  }
+  &-content {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1;
+    overflow: hidden;
+  }
+  &-preview {
+    padding-top: 56.25%;
+    position: relative;
+    overflow: hidden;
+    &-img {
+      @include size(100%);
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 4px;
+    }
+  }
+  &-preview-previous,
+  &-preview-next {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: -10px;
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+    transition: transform .2s ease, opacity .2s ease;
+    &-icon-wrapper {
+      background: var('background-floating');
+      box-shadow: var('elevation-high');
+      border-radius: 50%;
+      padding: 15px;
+    }
+  }
+  &-preview-next {
+    left: unset;
+    right: -10px;
+  }
+  &-metadata {
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    flex: 1 1 auto;
+    margin-right: 20px;
+    justify-content: center;
+  }
+  &-header {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  &-icon {
+    @include size(50px);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 12px;
+    flex: 0 0 auto;
+    &-img {
+      @include size(100%);
+    }
+  }
+  &-name-version {
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  &-name {
+    @include ellipsis(100%, inline-block);
+    font-size: 18px;
+    margin-right: 7px;
+    font-weight: 500;
+    color: var('header-primary');
+  }
+  &-authors {
+    display: flex;
+  }
+  &-author {
+    @include ellipsis(100%);
+    width: fit-content;
+    font-size: 14px;
+    margin-top: 2px;
+    color: var('interactive-normal');
+    line-height: 1.5;
+    & + & {
+      &::before {
+        content: ', ';
+        color: var('interactive-normal');
+      }
+    }
+    &[vz-author-id] {
+      &:hover {
+        color: var('header-primary');
+      }
+    }
+  }
+  &-version {
+    font-size: 14px;
+    color: var('interactive-normal');
+    margin-bottom: 1px;
+  }
+  &-toggle-wrapper {
+    display: flex;
+    flex: 0 0 auto;
+  }
+  &-description {
+    @include max-lines(2);
+    width: 100%;
+    line-height: 1.4;
+  }
+  &-tags {
+    display: flex;
+    margin-top: 20px;
+  }
+  &-tag {
+    border-radius: 1000px;
+    background: var('background-primary');
+    padding: 5px 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+    min-width: 30px;
+    text-align: center;
+    & + #{$base}-tag {
+      margin-left: 10px
+    }
+  }
+  &-footer-wrapper {
+    margin-top: 20px;
+    border-top: 1px solid var('background-modifier-accent');
+  }
+  &-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex: 0;
+    width: 100%;
+    &-rating-wrapper,
+    &-downloads-wrapper,
+    &-last-updated-wrapper {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 500;
+      > div {
+        display: flex;
+        align-items: center;
+      }
+      .vz-icon-wrapper {
+        margin-right: 3px;
+      }
+    }
+    &-rating-wrapper,
+    &-downloads-wrapper {
+      margin-right: 15px;
+    }
+    &-section-left,
+    &-section-right {
+      display: flex;
+      align-items: center;
+      > div {
+        > div {
+          display: flex;
+        }
+      }
+    }
+    &-section-right {
+      > div {
+        margin-left: 10px;
+      }
+    }
+    &-section-left {
+      > div {
+        margin-right: 20px;
+      }
+    }
+  }
+  // Hack to fix trailing items in the flexbox not sizing correctly
+  // with the rest of the items
+  &:empty {
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: transparent;
+    background-color: transparent;
+  }
+}
+
+.vz-addons-list {
+  $base: &;
+  &[vz-previews] {
+    .vz-addon-card {
+      &-header-wrapper {
+        flex-flow: column;
+        flex: auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@use '@vizality/sass' as *;
+
+.vz-addons-list {
+  $base: &;
+  &[vz-display='list'] {
+    .vz-addon-card {
+      flex: 1 100%;
+      &-preview-wrapper {
+        max-width: 400px;
+        margin: 0 20px 0 0;
+      }
+    }
+    &[vz-previews] {
+      .vz-addon-card {
+        &-header-wrapper {
+          flex-flow: row;
+          flex: 1;
+        }
+        &-content-wrapper {
+          padding: 10px 0;
+        }
+      }
+    }
+  }
+}

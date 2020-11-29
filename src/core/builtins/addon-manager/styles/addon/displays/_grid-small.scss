@@ -1,0 +1,16 @@
+@use '@vizality/sass' as *;
+
+.vz-addons-list {
+  $base: &;
+  &[vz-display='grid-small'] {
+    .vz-addon-card {
+      min-width: 256px;
+      &-icon {
+        @include size(100%);
+        display: flex;
+        flex: 1;
+        margin: 0 0 20px 0;
+      }
+    }
+  }
+}

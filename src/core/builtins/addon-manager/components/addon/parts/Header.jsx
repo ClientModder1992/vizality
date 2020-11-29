@@ -1,8 +1,12 @@
+const { Icon, Switch } = require('@vizality/components');
 const { React, React: { useReducer } } = require('@vizality/react');
-const { Switch } = require('@vizality/components');
 const { getModule } = require('@vizality/webpack');
+const { joinClassNames } = require('@vizality/util');
 
-module.exports = React.memo(({ manifest, isEnabled, onToggle }) => {
+const Description = require('./Description');
+const Permissions = require('./Permissions');
+
+module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showPreviewImages, displayType }) => {
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const authors = [].concat(manifest.author);
   const authorIds = [].concat(manifest.authorId);
@@ -21,49 +25,251 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle }) => {
     'https://extensions-discovery-images.twitch.tv/qcxdzgqw0sd1u50wqtwodjfd5dmkxz/1.0.0/logob0d92bd7-06d2-442a-b260-e70aacf6d09e'
   ];
 
+  const renderTableCard = () => {
+    const { colorDanger } = getModule('colorDanger');
+
+    return (
+      <div className='vz-addon-card-header-wrapper'>
+        <div className='vz-addon-card-content-wrapper'>
+          <div className='vz-addon-card-content'>
+            <div className='vz-addon-card-header'>
+              <div className='vz-addon-card-icon'>
+                <img className='vz-addon-card-icon-img' src={tempAvatars[Math.floor(Math.random() * tempAvatars.length)]} />
+              </div>
+              <div className='vz-addon-card-metadata'>
+                <div className='vz-addon-card-name-version'>
+                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <span className='vz-addon-card-version'>{manifest.version}</span>
+                </div>
+                <div className='vz-addon-card-authors'>
+                  {authors.length && authors.map((author, i) =>
+                    <div
+                      className='vz-addon-card-author'
+                      vz-author-id={authorIds.length && authorIds[i] ? authorIds[i] : null}
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (!authorIds.length || !authorIds[i]) return;
+                        // @todo This doesn't work, fix it.
+                        return Promise.all(getModule('getUser').getUser(authorIds[i]))
+                          .then(() => getModule('open', 'fetchProfile').open(authorIds[i]))
+                          .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+                            header: 'User Not Found',
+                            content: `We were unable to locate that user.`,
+                            type: 'error'
+                          }));
+                      }}
+                    >
+                      {author}
+                    </div>)
+                  }
+                </div>
+              </div>
+              <div className='vz-addon-card-details'>
+                <div className='vz-addon-card-detail-wrapper'>
+                  <div className='vz-addon-card-detail-label'>Rating</div>
+                  <div className='vz-addon-card-detail-value-wrapper'>
+                    <Icon
+                      className='vz-addon-card-detail-value-icon-wrapper vz-addon-card-rating-icon-wrapper'
+                      iconClassName='vz-addon-card-rating-icon'
+                      name='Star'
+                      size='14'
+                    />
+                    <div className='vz-addon-card-detail-value vz-addon-card-detail-rating-number'>5</div>
+                  </div>
+                </div>
+                <div className='vz-addon-card-detail-wrapper'>
+                  <div className='vz-addon-card-detail-label'>Downloads</div>
+                  <div className='vz-addon-card-detail-value-wrapper'>
+                    <Icon
+                      className='vz-addon-card-detail-value-icon-wrapper vz-addon-card-rating-icon-wrapper'
+                      iconClassName='vz-addon-card-rating-icon'
+                      name='Download'
+                      size='14'
+                    />
+                    <div className='vz-addon-card-detail-value vz-addon-card-detail-downloads-count'>123,663</div>
+                  </div>
+                </div>
+                <div className='vz-addon-card-detail-wrapper'>
+                  <div className='vz-addon-card-detail-label'>Last Updated</div>
+                  <div className='vz-addon-card-detail-value-wrapper'>
+                    <Icon
+                      className='vz-addon-card-detail-value-icon-wrapper vz-addon-card-rating-icon-wrapper'
+                      iconClassName='vz-addon-card-rating-icon'
+                      name='ClockReverse'
+                      size='14'
+                    />
+                    <div className='vz-addon-card-detail-value vz-addon-card-detail-updated-date'>11/26/2020</div>
+                  </div>
+                </div>
+              </div>
+              <div className='vz-addon-card-actions'>
+                {onUninstall &&
+                  <div className={joinClassNames('vz-addon-card-uninstall', colorDanger)}>
+                    <Icon
+                      className='vz-addon-card-uninstall-button-wrapper'
+                      iconClassName='vz-addon-card-uninstall-button'
+                      name='Trash'
+                      tooltip='Uninstall'
+                      onClick={e => {
+                        e.stopPropagation();
+                        onUninstall();
+                      }}
+                    />
+                  </div>
+                }
+                <div className='vz-addon-card-settings'>
+                  <Icon
+                    className='vz-addon-card-settings-button-wrapper'
+                    iconClassName='vz-addon-card-settings-button'
+                    name='Gear'
+                    tooltip='Settings'
+                    onClick={() => void 0}
+                  />
+                </div>
+                <div className='vz-addon-card-toggle-wrapper'>
+                  <Switch
+                    className='vz-addon-card-toggle'
+                    value={isEnabled}
+                    onChange={v => {
+                      onToggle(v.target.checked);
+                      forceUpdate();
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderGridSmallCard = () => {
+    return (
+      <div className='vz-addon-card-header-wrapper'>
+        <div className='vz-addon-card-content-wrapper'>
+          <div className='vz-addon-card-content'>
+            <div className='vz-addon-card-icon'>
+              <img className='vz-addon-card-icon-img' src={tempAvatars[Math.floor(Math.random() * tempAvatars.length)]} />
+            </div>
+            <div className='vz-addon-card-header'>
+              <div className='vz-addon-card-metadata'>
+                <div className='vz-addon-card-name-version'>
+                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <span className='vz-addon-card-version'>{manifest.version}</span>
+                </div>
+                <div className='vz-addon-card-authors'>
+                  {authors.length && authors.map((author, i) =>
+                    <div
+                      className='vz-addon-card-author'
+                      vz-author-id={authorIds.length && authorIds[i] ? authorIds[i] : null}
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (!authorIds.length || !authorIds[i]) return;
+                        // @todo This doesn't work, fix it.
+                        return Promise.all(getModule('getUser').getUser(authorIds[i]))
+                          .then(() => getModule('open', 'fetchProfile').open(authorIds[i]))
+                          .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+                            header: 'User Not Found',
+                            content: `We were unable to locate that user.`,
+                            type: 'error'
+                          }));
+                      }}
+                    >
+                      {author}
+                    </div>)
+                  }
+                </div>
+              </div>
+            </div>
+            <Description description={manifest.description} />
+            <Permissions permissions={manifest.permissions} />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderCard = () => {
+    return (
+      <div className='vz-addon-card-header-wrapper'>
+        {showPreviewImages && <div className='vz-addon-card-preview-wrapper'>
+          <div className='vz-addon-card-preview-previous'>
+            <Icon
+              name='LeftCaret'
+              size='18px'
+              className='vz-addon-card-preview-previous-icon-wrapper'
+              iconClassName='vz-addon-card-preview-previous-icon'
+            />
+          </div>
+          <div className='vz-addon-card-preview-next'>
+            <Icon
+              name='RightCaret'
+              size='18px'
+              className='vz-addon-card-preview-next-icon-wrapper'
+              iconClassName='vz-addon-card-preview-next-icon'
+            />
+          </div>
+          <div className='vz-addon-card-preview'>
+            <img className='vz-addon-card-preview-img' src='https://twitchcord.com/images/preview-1.jpg' />
+          </div>
+        </div>}
+        <div className='vz-addon-card-content-wrapper'>
+          <div className='vz-addon-card-content'>
+            <div className='vz-addon-card-header'>
+              <div className='vz-addon-card-icon'>
+                <img className='vz-addon-card-icon-img' src={tempAvatars[Math.floor(Math.random() * tempAvatars.length)]} />
+              </div>
+              <div className='vz-addon-card-metadata'>
+                <div className='vz-addon-card-name-version'>
+                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <span className='vz-addon-card-version'>{manifest.version}</span>
+                </div>
+                <div className='vz-addon-card-authors'>
+                  {authors.length && authors.map((author, i) =>
+                    <div
+                      className='vz-addon-card-author'
+                      vz-author-id={authorIds.length && authorIds[i] ? authorIds[i] : null}
+                      onClick={async e => {
+                        e.stopPropagation();
+                        if (!authorIds.length || !authorIds[i]) return;
+                        // @todo This doesn't work, fix it.
+                        return Promise.all(getModule('getUser').getUser(authorIds[i]))
+                          .then(() => getModule('open', 'fetchProfile').open(authorIds[i]))
+                          .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+                            header: 'User Not Found',
+                            content: `We were unable to locate that user.`,
+                            type: 'error'
+                          }));
+                      }}
+                    >
+                      {author}
+                    </div>)
+                  }
+                </div>
+              </div>
+            </div>
+            <Description description={manifest.description} />
+            {displayType === 'list' && showPreviewImages && <div className='vz-addon-card-tags'>
+              <span className='vz-addon-card-tag'>Pie</span>
+              <span className='vz-addon-card-tag'>Lazers</span>
+              <span className='vz-addon-card-tag'>Cool</span>
+              <span className='vz-addon-card-tag'>Pizza</span>
+            </div>}
+            <Permissions permissions={manifest.permissions} />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className='vz-addon-card-header'>
-      <div className='vz-addon-card-icon'>
-        <img className='vz-addon-card-icon-img' src={tempAvatars[Math.floor(Math.random() * tempAvatars.length)]} />
-      </div>
-      <div className='vz-addon-card-metadata'>
-        <div className='vz-addon-card-name-author'>
-          <div className='vz-addon-card-name'>{manifest.name}</div>
-          <span className='vz-addon-card-version'>{manifest.version}</span>
-        </div>
-        <div className='vz-addon-card-authors'>
-          {authors.length && authors.map((author, i) =>
-            <div
-              className='vz-addon-card-author'
-              vz-author-id={authorIds.length && authorIds[i] ? authorIds[i] : null}
-              onClick={async (e) => {
-                e.stopPropagation();
-                if (!authorIds.length || !authorIds[i]) return;
-                // @todo This doesn't work, fix it.
-                return Promise.all(getModule('getUser').getUser(authorIds[i]))
-                  .then(() => getModule('open', 'fetchProfile').open(authorIds[i]))
-                  .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
-                    header: 'User Not Found',
-                    content: `We were unable to locate that user.`,
-                    type: 'error'
-                  }));
-              }}
-            >
-              {author}
-            </div>)
-          }
-        </div>
-      </div>
-      <div className='vz-addon-card-toggle-wrapper'>
-        <Switch
-          className='vz-addon-card-toggle'
-          value={isEnabled}
-          onChange={v => {
-            onToggle(v.target.checked);
-            forceUpdate();
-          }}
-        />
-      </div>
-    </div>
+    <>
+      {displayType === 'table'
+        ? renderTableCard()
+        : displayType === 'grid-small'
+          ? renderGridSmallCard()
+          : renderCard()}
+    </>
   );
 });

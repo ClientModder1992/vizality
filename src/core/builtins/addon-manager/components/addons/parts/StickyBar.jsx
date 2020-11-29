@@ -10,20 +10,13 @@ const DisplayMenu = require('./DisplayMenu');
 const TagsMenu = require('./TagsMenu');
 
 module.exports = React.memo(props => {
-  const {
-    query,
-    tab,
-    handleTabChange,
-    handleQueryChange,
-    getSetting
-  } = props;
+  const { query, tab, display, handleTabChange, handleQueryChange, handleDisplayChange } = props;
 
   const [ sticky, setSticky ] = useState(null);
-  const [ display, setDisplay ] = useState(`Layout${toHeaderCase(getSetting('addon-list-display', 'grid')).replace(' ', '')}`);
   const PopoutDispatcher = getModule('openPopout');
 
-  const _handleDisplay = (display) => {
-    return setDisplay(`Layout${toHeaderCase(display).replace(' ', '')}`);
+  const formatDisplayIconName = (display) => {
+    return `Layout${toHeaderCase(display).replace(' ', '')}`;
   };
 
   const _handleStickyChange = (status, element) => {
@@ -42,13 +35,18 @@ module.exports = React.memo(props => {
     }
   };
 
+  const popoutConfig = {
+    animationType: 0,
+    closeOnScroll: false,
+    shadow: false,
+    position: 'bottom'
+  };
+
   const renderSortFilterMenu = e => {
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-sort-filter-menu',
       render: ({ onClose }) => <SortFilterMenu onClose={onClose} {...props} />,
-      closeOnScroll: true,
-      shadow: false,
-      position: 'bottom'
+      ...popoutConfig
     }, 'vz-addons-list-sort-filter-menu');
   };
 
@@ -56,19 +54,15 @@ module.exports = React.memo(props => {
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-tags-menu',
       render: ({ onClose }) => <TagsMenu onClose={onClose} {...props} />,
-      closeOnScroll: true,
-      shadow: false,
-      position: 'bottom'
+      ...popoutConfig
     }, 'vz-addons-list-tags-menu');
   };
 
   const renderDisplayMenu = e => {
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-display-menu',
-      render: ({ onClose }) => <DisplayMenu onClose={onClose} handleDisplay={_handleDisplay} {...props} />,
-      closeOnScroll: true,
-      shadow: false,
-      position: 'bottom'
+      render: ({ onClose }) => <DisplayMenu onClose={onClose} handleDisplayChange={handleDisplayChange} {...props} />,
+      ...popoutConfig
     }, 'vz-addons-list-display-menu');
   };
 
@@ -76,10 +70,8 @@ module.exports = React.memo(props => {
     // openContextMenu(e, () => <OverflowMenu type={type} actions={{ fetchMissing, enableAll, disableAll }} />);
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-overflow-menu',
-      render: ({ onClose }) => <OverflowMenu onClose={onClose} {...props} />,
-      closeOnScroll: true,
-      shadow: false,
-      position: 'bottom'
+      render: ({ onClose }) => <OverflowMenu onClose={onClose} displayType={display} {...props} />,
+      ...popoutConfig
     }, 'vz-addons-list-overflow-menu');
   };
 
@@ -135,7 +127,7 @@ module.exports = React.memo(props => {
             <Icon
               tooltip='Display'
               tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
-              name={display}
+              name={formatDisplayIconName(display)}
               onClick={e => renderDisplayMenu(e)}
             />
           </div>
