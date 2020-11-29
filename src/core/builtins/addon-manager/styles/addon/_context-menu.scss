@@ -1,0 +1,22 @@
+@use '@vizality/sass' as *;
+
+.vz-addon-context-menu {
+  &-header {
+    .groupLabel-2t5iuZ {
+      margin-bottom: 10px;
+      justify-content: flex-start;
+    }
+    &-addon-icon {
+      @include size(24px);
+      margin-right: 10px;
+      background-size: contain;
+      border-radius: 3px;
+    }
+    &-addon-name {
+      text-transform: capitalize;
+      color: var('header-primary');
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+}
