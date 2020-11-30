@@ -7,7 +7,7 @@ module.exports = React.memo(({ onUninstall, displayType, isEnabled, onToggle }) 
 
   return (
     <>
-      {displayType !== 'table' && <div className='vz-addon-card-footer-wrapper'>
+      <div className='vz-addon-card-footer-wrapper'>
         <div className='vz-addon-card-footer'>
           <div className='vz-addon-card-footer-section-left'>
             {onUninstall &&
@@ -93,7 +93,7 @@ module.exports = React.memo(({ onUninstall, displayType, isEnabled, onToggle }) 
             </div>
           </div>
         </div>
-      </div>}
+      </div>
     </>
   );
 });

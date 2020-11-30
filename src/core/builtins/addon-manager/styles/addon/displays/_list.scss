@@ -6,8 +6,9 @@
     .vz-addon-card {
       flex: 1 100%;
       &-preview-wrapper {
-        max-width: 400px;
-        margin: 0 20px 0 0;
+        max-width: 420px;
+        border: none;
+        border-right: 1px solid var('background-tertiary');
       }
     }
     &[vz-previews] {
@@ -17,7 +18,14 @@
           flex: 1;
         }
         &-content-wrapper {
-          padding: 10px 0;
+          flex-direction: column;
+        }
+        &-preview-img {
+          border-radius: 5px 0 0 5px;
+        }
+        &-preview {
+          height: 100%;
+          padding: 0;
         }
       }
     }

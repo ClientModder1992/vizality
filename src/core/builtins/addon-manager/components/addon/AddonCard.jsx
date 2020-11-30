@@ -2,22 +2,16 @@ const { Card } = require('@vizality/components');
 const { React } = require('@vizality/react');
 const { contextMenu: { openContextMenu } } = require('@vizality/webpack');
 
-const Header = require('./parts/Header');
-const Footer = require('./parts/Footer');
+const CardInner = require('./parts/CardInner');
 
 const AddonContextMenu = require('./AddonContextMenu');
 
-module.exports = React.memo(({ manifest, addonId, isEnabled, onToggle, onUninstall, type, displayType, showPreviewImages }) => {
+module.exports = React.memo(props => {
+  const { type, addonId } = props;
+
   const handleContextMenu = e => {
     return openContextMenu(e, () =>
-      <AddonContextMenu
-        manifest={manifest}
-        isEnabled={isEnabled}
-        onUninstall={onUninstall}
-        type={type}
-        addonId={addonId}
-        onToggle={onToggle}
-      />
+      <AddonContextMenu {...props} />
     );
   };
 
@@ -27,18 +21,10 @@ module.exports = React.memo(({ manifest, addonId, isEnabled, onToggle, onUninsta
       onContextMenu={e => handleContextMenu(e)}
       onClick={e => {
         if (e.target.matches('input')) return;
-        vizality.api.router.navigate(`/dashboard/${type}/${addonId}`);
+        vizality.api.router.navigate(`/${type}/${addonId}`);
       }}
     >
-      <Header
-        manifest={manifest}
-        isEnabled={isEnabled}
-        onToggle={onToggle}
-        onUninstall={onUninstall}
-        displayType={displayType}
-        showPreviewImages={showPreviewImages}
-      />
-      <Footer onUninstall={onUninstall} isEnabled={isEnabled} displayType={displayType} />
+      <CardInner {...props} />
     </Card>
   );
 });

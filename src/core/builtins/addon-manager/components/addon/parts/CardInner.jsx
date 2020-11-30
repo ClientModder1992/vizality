@@ -1,12 +1,14 @@
-const { Icon, Switch } = require('@vizality/components');
+const { Icon, Switch, Tooltip } = require('@vizality/components');
 const { React, React: { useReducer } } = require('@vizality/react');
 const { getModule } = require('@vizality/webpack');
 const { joinClassNames } = require('@vizality/util');
 
 const Description = require('./Description');
 const Permissions = require('./Permissions');
+const Footer = require('./Footer');
 
-module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showPreviewImages, displayType }) => {
+module.exports = React.memo(props => {
+  const { manifest, isEnabled, onToggle, onUninstall, showPreviewImages, displayType } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const authors = [].concat(manifest.author);
   const authorIds = [].concat(manifest.authorId);
@@ -38,7 +40,11 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showP
               </div>
               <div className='vz-addon-card-metadata'>
                 <div className='vz-addon-card-name-version'>
-                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <div className='vz-addon-card-name'>
+                    <Tooltip text={manifest.name}>
+                      {manifest.name}
+                    </Tooltip>
+                  </div>
                   <span className='vz-addon-card-version'>{manifest.version}</span>
                 </div>
                 <div className='vz-addon-card-authors'>
@@ -155,7 +161,11 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showP
             <div className='vz-addon-card-header'>
               <div className='vz-addon-card-metadata'>
                 <div className='vz-addon-card-name-version'>
-                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <div className='vz-addon-card-name'>
+                    <Tooltip text={manifest.name}>
+                      {manifest.name}
+                    </Tooltip>
+                  </div>
                   <span className='vz-addon-card-version'>{manifest.version}</span>
                 </div>
                 <div className='vz-addon-card-authors'>
@@ -184,6 +194,7 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showP
             </div>
             <Description description={manifest.description} />
             <Permissions permissions={manifest.permissions} />
+            <Footer {...props} />
           </div>
         </div>
       </div>
@@ -222,7 +233,11 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showP
               </div>
               <div className='vz-addon-card-metadata'>
                 <div className='vz-addon-card-name-version'>
-                  <div className='vz-addon-card-name'>{manifest.name}</div>
+                  <div className='vz-addon-card-name'>
+                    <Tooltip text={manifest.name}>
+                      {manifest.name}
+                    </Tooltip>
+                  </div>
                   <span className='vz-addon-card-version'>{manifest.version}</span>
                 </div>
                 <div className='vz-addon-card-authors'>
@@ -250,13 +265,8 @@ module.exports = React.memo(({ manifest, isEnabled, onToggle, onUninstall, showP
               </div>
             </div>
             <Description description={manifest.description} />
-            {displayType === 'list' && showPreviewImages && <div className='vz-addon-card-tags'>
-              <span className='vz-addon-card-tag'>Pie</span>
-              <span className='vz-addon-card-tag'>Lazers</span>
-              <span className='vz-addon-card-tag'>Cool</span>
-              <span className='vz-addon-card-tag'>Pizza</span>
-            </div>}
             <Permissions permissions={manifest.permissions} />
+            <Footer {...props} />
           </div>
         </div>
       </div>

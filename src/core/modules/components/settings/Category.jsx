@@ -21,7 +21,7 @@ module.exports = React.memo(props => {
   };
 
   return (
-    <DFormItem className={joinClassNames('vz-c-settings-category', classes.flex)}>
+    <DFormItem className={joinClassNames('vz-c-settings-item vz-c-settings-category', classes.flex)}>
       <div
         className={joinClassNames('vz-c-settings-category-title', 'vz-c-settings-title')}
         onClick={() => onChange(!opened)}

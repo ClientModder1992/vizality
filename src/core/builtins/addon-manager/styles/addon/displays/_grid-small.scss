@@ -6,10 +6,10 @@
     .vz-addon-card {
       min-width: 256px;
       &-icon {
-        @include size(100%);
+        @include size(100%, 0);
         display: flex;
-        flex: 1;
         margin: 0 0 20px 0;
+        padding-bottom: 100%;
       }
     }
   }
