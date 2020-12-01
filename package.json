@@ -50,6 +50,7 @@
   "dependencies": {
     "electron-devtools-installer": "^3.1.1",
     "long": "^4.0.0",
+    "mime-types": "^2.1.27",
     "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",
     "pluralize": "^8.0.0",

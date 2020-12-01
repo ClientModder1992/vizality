@@ -1,5 +1,6 @@
 const { promises: { readdir, lstat, unlink, rmdir }, existsSync, lstatSync, readFileSync, readdirSync } = require('fs');
-const { dirname, extname, join } = require('path');
+const { lookup: getMimeType } = require('mime-types');
+const { extname, join } = require('path');
 
 /**
  * @module util.file
@@ -47,7 +48,7 @@ module.exports = {
     const getURL = (file) => {
       const buffer = readFileSync(file);
       const ext = extname(file).slice(1);
-      const blob = new Blob([ buffer ], { type: `image/${ext}` });
+      const blob = new Blob([ buffer ], { type: getMimeType(ext) });
       return URLs.push(URL.createObjectURL(blob));
     };
 
