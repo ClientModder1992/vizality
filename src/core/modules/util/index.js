@@ -13,6 +13,5 @@ module.exports = {
   security: require('./security'),
   string: require('./string'),
   time: require('./time'),
-  type: require('./type'),
   window: require('./window')
 };

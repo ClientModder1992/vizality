@@ -1,7 +1,4 @@
-/* eslint-disable no-extra-boolean-cast *//* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
-
 const pluralize = require('pluralize');
-const { isType, assertType } = require('../type');
 
 /**
  * @module util.string
@@ -9,7 +6,7 @@ const { isType, assertType } = require('../type');
  * @memberof util
  * @version 0.0.1
  */
-module.exports = {
+const String = module.exports = {
   isSingular (string) {
     return pluralize.isSingular(string);
   },
@@ -67,16 +64,7 @@ module.exports = {
    * toCamelCase('I am a CAMEL CASE string.')
    */
   toCamelCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
-      .replace(/[^A-Za-z0-9]+/g, '$')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}$${b}`;
-      })
-      .toLowerCase().trim()
-      .replace(/(\$)(\w)/g, (m, a, b) => {
-        return b.toUpperCase();
-      });
+    return global._.camelCase(string);
   },
 
   /**
@@ -88,34 +76,31 @@ module.exports = {
    * toDotCase('I am a DOT CASE string.')
    */
   toDotCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}_${b.toLowerCase()}`;
-      })
-      .replace(/[^A-Za-z0-9]+|_+/g, '.')
-      .toLowerCase().trim();
+    return global._.lowerCase(string).replace(/ /g, '.');
   },
 
   /**
-   * Converts a string to header case.
+   * Converts a string to title case.
    * @param {*} string String to convert
-   * @returns {string} String in header case
+   * @returns {string} String in title case
    * @example
-   * // returns `I Am A Header Case String`
-   * toHeaderCase('I am a HEADER CASE string.')
+   * // returns `I Am A Title Case String`
+   * toTitleCase('I am a TITLE CASE string.')
    */
-  toHeaderCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}_${b.toLowerCase()}`;
-      })
-      .replace(/[^A-Za-z0-9]+|_+/g, ' ')
-      .toLowerCase().trim()
-      .replace(/( ?)(\w+)( ?)/g, (m, a, b, c) => {
-        return a + b.charAt(0).toUpperCase() + b.slice(1) + c;
-      });
+  toTitleCase (string) {
+    return global._.startCase(global._.camelCase(string));
+  },
+
+  /**
+   * Converts a string to sentence case.
+   * @param {*} string String to convert
+   * @returns {string} String in sentence case
+   * @example
+   * // returns `I am a sentence case string`
+   * toSentenceCase('i am a SENTENCE CASE string.')
+   */
+  toSentenceCase (string) {
+    return global._.upperFirst(global._.lowerCase(string));
   },
 
   /**
@@ -127,16 +112,7 @@ module.exports = {
    * toPascalCase('I am a PASCAL CASE string.')
    */
   toPascalCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '$')
-      .replace(/[^A-Za-z0-9]+/g, '$')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}$${b}`;
-      })
-      .toLowerCase().trim()
-      .replace(/(\$)(\w?)/g, (m, a, b) => {
-        return b.toUpperCase();
-      });
+    return global._.startCase(global._.camelCase(string)).replace(/ /g, '');
   },
 
   /**
@@ -148,13 +124,7 @@ module.exports = {
    * toPathCase('I am a PATH CASE string.')
    */
   toPathCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}_${b.toLowerCase()}`;
-      })
-      .replace(/[^A-Za-z0-9]+|_+/g, '/')
-      .toLowerCase().trim();
+    return global._.lowerCase(string).replace(/ /g, '/');
   },
 
   /**
@@ -166,15 +136,17 @@ module.exports = {
    * toSnakeCase('I am a SNAKE CASE string.')
    */
   toSnakeCase (string) {
-    return string
-      .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '')
-      .replace(/([a-z])([A-Z])/g, (m, a, b) => {
-        return `${a}_${b.toLowerCase()}`;
-      })
-      .replace(/[^A-Za-z0-9]+|_+/g, '_')
-      .toLowerCase().trim();
+    return global._.snakeCase(string);
   },
 
+  /**
+   * Converts a string to kebab case.
+   * @param {*} string String to convert
+   * @returns {string} String in kebab case
+   * @example
+   * // returns `i-am-a-kebab-case-string`
+   * toKebabCase('i am a keBab CASE string.')
+   */
   toKebabCase (string) {
     return global._.kebabCase(string);
   },
@@ -182,11 +154,10 @@ module.exports = {
   /**
    * Checks if the input is a string.
    * @param {*} input Argument input
-   * @param {boolean} [throwError=false] Whether or not it should throw an error
    * @returns {boolean} Whether or not the input is a string
    */
-  isString (input, throwError = false) {
-    return isType(input, 'Array', throwError);
+  isString (input) {
+    return global._.isString(input);
   },
 
   /**
@@ -196,6 +167,8 @@ module.exports = {
    * @throws {TypeError} Throw an error if the input is not a string
    */
   assertString (input) {
-    if (assertType(input, 'String')) return;
+    if (!String.isString(input)) {
+      return new TypeError(`Input must be a string, but received type of ${typeof input}.`);
+    }
   }
 };

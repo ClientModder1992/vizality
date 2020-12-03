@@ -1,21 +1,17 @@
-/* eslint-disable no-useless-return *//* eslint-disable no-unused-vars */
-const { assertType, isType } = require('../type');
-
 /**
  * @module util.array
  * @namespace util.array
  * @memberof util
  * @version 0.0.1
  */
-const array = module.exports = {
+const Array = module.exports = {
   /**
    * Checks if the input is an array.
    * @param {*} input Argument input
-   * @param {boolean} [throwError=false] Whether or not it should throw an error
    * @returns {boolean} Whether or not the input is an array
    */
-  isArray (input, throwError = false) {
-    return isType(input, 'Array', throwError);
+  isArray (input) {
+    return global._.isArray(input);
   },
 
   /**
@@ -25,10 +21,12 @@ const array = module.exports = {
    * @throws {TypeError} Throw an error if the input is not an array
    */
   assertArray (input) {
-    if (assertType(input, 'Array')) return;
+    if (!Array.isArray(input)) {
+      return new TypeError(`Input must be an array, but received type of ${typeof input}.`);
+    }
   },
 
   getRandomArrayItem (array) {
-    return array[Math.floor(Math.random() * array.length)];
+    return global._.sample(array);
   }
 };
