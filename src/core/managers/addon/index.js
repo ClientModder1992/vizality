@@ -1,7 +1,7 @@
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
 
-const { file: { removeDirRecursive }, string: { toSingular, toHeaderCase }, logger: { log, warn, error } } = require('@vizality/util');
+const { file: { removeDirRecursive }, string: { toSingular, toTitleCase }, logger: { log, warn, error } } = require('@vizality/util');
 
 const _module = 'AddonManager';
 
@@ -39,7 +39,7 @@ module.exports = class AddonManager {
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []).includes(addonId);
+    return !vizality.settings.get(`disabled${toTitleCase(this._type)}`, []).includes(addonId);
   }
 
   getAllEnabled () {
@@ -48,7 +48,7 @@ module.exports = class AddonManager {
   }
 
   getAllDisabled () {
-    return vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []);
+    return vizality.settings.get(`disabled${toTitleCase(this._type)}`, []);
   }
 
   // Mount/load/enable/install shit
@@ -61,11 +61,11 @@ module.exports = class AddonManager {
         optionalDependencies: []
       }, require(resolve(this._dir, pluginID, 'manifest.json')));
     } catch (err) {
-      return this.error(`${toSingular(toHeaderCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toTitleCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toHeaderCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toTitleCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     try {
@@ -74,13 +74,13 @@ module.exports = class AddonManager {
         entityID: {
           get: () => pluginID,
           set: () => {
-            throw new Error(`${toHeaderCase(this._type)} cannot update their ID at runtime!`);
+            throw new Error(`${toTitleCase(this._type)} cannot update their ID at runtime!`);
           }
         },
         manifest: {
           get: () => manifest,
           set: () => {
-            throw new Error(`${toHeaderCase(this._type)} cannot update manifest at runtime!`);
+            throw new Error(`${toTitleCase(this._type)} cannot update manifest at runtime!`);
           }
         }
       });
@@ -129,7 +129,7 @@ module.exports = class AddonManager {
       return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${addonId})`);
     }
 
-    vizality.settings.set(`disabled${toHeaderCase(this._type)}`, vizality.settings.get(`disabled${toHeaderCase(this._type)}`, [])
+    vizality.settings.set(`disabled${toTitleCase(this._type)}`, vizality.settings.get(`disabled${toTitleCase(this._type)}`, [])
       .filter(addon => addon !== addonId));
 
     addon._load();
@@ -148,7 +148,7 @@ module.exports = class AddonManager {
       return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${addon})`);
     }
 
-    vizality.settings.set(`disabled${toHeaderCase(this._type)}`, [ ...vizality.settings.get(`disabled${toHeaderCase(this._type)}`, []), addonId ]);
+    vizality.settings.set(`disabled${toTitleCase(this._type)}`, [ ...vizality.settings.get(`disabled${toTitleCase(this._type)}`, []), addonId ]);
 
     addon._unload();
   }

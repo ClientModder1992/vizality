@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
 const { Confirm, Card, Spinner } = require('@vizality/components');
-const { string: { toPlural, toHeaderCase }, joinClassNames } = require('@vizality/util');
+const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { getModule, contextMenu } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
@@ -79,7 +79,7 @@ module.exports = React.memo(({ type, tab, search }) => {
       header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length }),
       content: missingAddonsList,
       type: missingAddons.length > 0 && 'success',
-      icon: toHeaderCase(type),
+      icon: toTitleCase(type),
       timeout: 5e3,
       buttons: [
         {

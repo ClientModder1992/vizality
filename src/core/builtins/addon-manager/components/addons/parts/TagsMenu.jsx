@@ -1,5 +1,5 @@
 const { React, React: { useState, useReducer } } = require('@vizality/react');
-const { string: { toHeaderCase } } = require('@vizality/util');
+const { string: { toTitleCase } } = require('@vizality/util');
 const { Menu, SearchBar } = require('@vizality/components');
 const { Messages } = require('@vizality/i18n');
 
@@ -30,7 +30,7 @@ module.exports = React.memo(props => {
     return (
       <Menu.MenuCheckboxItem
         id={`tag-${item}`}
-        label={toHeaderCase(item)}
+        label={toTitleCase(item)}
         checked={false}
         action={() => {
           void 0;

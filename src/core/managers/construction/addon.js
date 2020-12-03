@@ -1,4 +1,4 @@
-const { string: { toPlural, toHeaderCase }, fil: { removeDirRecursive } } = require('@vizality/util');
+const { string: { toPlural, toTitleCase }, fil: { removeDirRecursive } } = require('@vizality/util');
 
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',
@@ -36,7 +36,7 @@ class AddonManager {
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toHeaderCase(type)}`, []).includes(addon);
+    return !vizality.settings.get(`disabled${toTitleCase(type)}`, []).includes(addon);
   }
 
   isCore (addonId) {
@@ -59,8 +59,8 @@ class AddonManager {
     }
   
     vizality.settings.set(
-      `disabled${toHeaderCase(type)}`,
-      vizality.settings.get(`disabled${toHeaderCase(type)}`, []).filter(p => p !== addonId)
+      `disabled${toTitleCase(type)}`,
+      vizality.settings.get(`disabled${toTitleCase(type)}`, []).filter(p => p !== addonId)
     );
   
     addon._load();
@@ -78,8 +78,8 @@ class AddonManager {
     }
   
     vizality.settings.set(
-      `disabled${toHeaderCase(type)}`,
-      [ ...vizality.settings.get(`disabled${toHeaderCase(type)}`, []), addonId ]
+      `disabled${toTitleCase(type)}`,
+      [ ...vizality.settings.get(`disabled${toTitleCase(type)}`, []), addonId ]
     );
   
     addon._unload();

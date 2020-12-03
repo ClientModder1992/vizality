@@ -1,5 +1,5 @@
 const { StickyWrapper, TabBar, Icon, SearchBar } = require('@vizality/components');
-const { dom: { getElementDimensions }, string: { toHeaderCase } } = require('@vizality/util');
+const { dom: { getElementDimensions }, string: { toTitleCase } } = require('@vizality/util');
 const { React, React: { useState } } = require('@vizality/react');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
@@ -16,7 +16,7 @@ module.exports = React.memo(props => {
   const PopoutDispatcher = getModule('openPopout');
 
   const formatDisplayIconName = (display) => {
-    return `Layout${toHeaderCase(display).replace(' ', '')}`;
+    return `Layout${toTitleCase(display).replace(' ', '')}`;
   };
 
   const _handleStickyChange = (status, element) => {
