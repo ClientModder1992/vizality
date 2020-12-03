@@ -22,13 +22,13 @@ module.exports = class Attributes extends Builtin {
     // @todo Move these to Vizality startup and do this for all settings on startup
     if (vizality.settings.get('transparentWindow')) {
       const attrs = root.getAttribute('vz-settings');
-      root.setAttribute('vz-settings', [ attrs, 'transparent-window' ].filter(Boolean).join(', '));
+      root.setAttribute('vz-settings', [ attrs, 'transparentWindow' ].filter(Boolean).join(', '));
     }
 
     // @todo Move these to Vizality startup and do this for all settings on startup
     if (vizality.settings.get('experimentalWebPlatform')) {
       const attrs = root.getAttribute('vz-settings');
-      root.setAttribute('vz-settings', [ attrs, 'experimental-web-platform' ].filter(Boolean).join(', '));
+      root.setAttribute('vz-settings', [ attrs, 'experimentalWebPlatform' ].filter(Boolean).join(', '));
     }
 
     root.setAttribute('vizality', '');

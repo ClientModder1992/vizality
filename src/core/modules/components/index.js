@@ -56,6 +56,9 @@ Object.assign(exports, {
 getModuleByDisplayName('FormNotice', true, true).then(FormNotice => {
   [ 'Types' ].forEach(prop => exports.FormNotice[prop] = FormNotice[prop]);
 });
+getModuleByDisplayName('Spinner', true, true).then(Spinner => {
+  [ 'Type' ].forEach(prop => exports.Spinner[prop] = Spinner[prop]);
+});
 getModule(m => m.DropdownSizes, true, true).then(Button => {
   [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => exports.Button[prop] = Button[prop]);
 });
