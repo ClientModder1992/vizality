@@ -1,5 +1,5 @@
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
-const { join, dirname } = require('path');
+const { join, dirname, normalize } = require('path');
 const electron = require('electron');
 const Module = require('module');
 
@@ -46,6 +46,20 @@ electron.app.once('ready', () => {
       done({});
     }
   });
+
+  function registerProtocol (name, folder) {
+    electron.protocol.registerFileProtocol(name, (request, cb) => {
+      // https://security.stackexchange.com/a/123723
+      const url = normalize(request.url.replace(`${name}://`, '')).replace(/^(\.\.(\/|\\|$))+/, '');
+      if (folder === 'builtins') {
+        return cb({ path: join(__dirname, '..', 'core', 'builtins', folder, url) });
+      }
+      return cb({ path: join(__dirname, '..', '..', 'addons', folder, url) });
+    });
+  }
+  registerProtocol('vz-plugin', 'plugins');
+  registerProtocol('vz-theme', 'themes');
+  registerProtocol('vz-builtin', 'builtins');
 });
 
 const discordPackage = require(join(discordPath, 'package.json'));

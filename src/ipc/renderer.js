@@ -5,6 +5,7 @@ if (!ipcRenderer) {
   throw new Error('Don\'t require stuff you shouldn\'t, silly.');
 }
 
+// Name doesn't really matter here, because we get rid of it on startup
 global.VizalityNative = {
   /**
    * Open DevTools for the current window

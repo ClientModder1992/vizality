@@ -1,8 +1,6 @@
 const { existsSync, createWriteStream, promises: { readFile } } = require('fs');
+const { relative, join, dirname, resolve } = require('path');
 const { ipcMain, BrowserWindow } = require('electron');
-const { relative, join, dirname } = require('path');
-// Defining path here so path.resolve doesn't overlap with resolve below
-const path = require('path');
 const sass = require('sass');
 
 const VIZALITY_REGEX = new RegExp('@vizality\\/([^\'"]{1,})?', 'ig');
@@ -55,10 +53,10 @@ function logToFile (str) {
 }
 
 function compileSass (_, file) {
-  return new Promise((resolve, reject) => {
+  return new Promise((res, reject) => {
     readFile(file, 'utf8').then((rawScss) => {
       const relativePath = relative(file, LIB_DIR);
-      const absolutePath = path.resolve(join(file, relativePath));
+      const absolutePath = resolve(join(file, relativePath));
       const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
       sass.render(
         {
@@ -84,7 +82,7 @@ function compileSass (_, file) {
           if (err) {
             return reject(err);
           }
-          resolve(compiled.css.toString());
+          res(compiled.css.toString());
         }
       );
     });
