@@ -6,7 +6,7 @@ const { getModule, contextMenu } = require('@vizality/webpack');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { Messages } = require('@vizality/i18n');
 
-const AddonCard = require('../addon/AddonCard');
+const Addon = require('../addon/Addon');
 const StickyBar = require('./parts/StickyBar');
 
 module.exports = React.memo(({ type, tab, search }) => {
@@ -218,7 +218,7 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   const renderItem = item => {
     return (
-      <AddonCard
+      <Addon
         displayType={display}
         type={type}
         manifest={item.manifest}

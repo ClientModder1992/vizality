@@ -115,6 +115,16 @@
       @include size(100%);
       position: absolute;
     }
+    &-spinner {
+      @include size(100%);
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      border: 0;
+      background: var('background-tertiary');
+    }
   }
   &-name-version {
     display: flex;

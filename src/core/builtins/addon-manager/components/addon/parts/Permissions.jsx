@@ -4,30 +4,31 @@ const { React } = require('@vizality/react');
 
 const Permissions = {
   keypresses: {
-    icon: React.memo(({ svgSize }) => <Icon name='Keyboard' width={svgSize} height={svgSize}/>),
+    icon: React.memo(({ size }) => <Icon name='Keyboard' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_KEYPRESSES
   },
   use_eud: {
-    icon: React.memo(({ svgSize }) => <Icon name='PersonShield' width={svgSize} height={svgSize}/>),
+    icon: React.memo(({ size }) => <Icon name='PersonShield' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_USE_EUD
   },
   filesystem: {
-    icon: React.memo(({ svgSize }) => <Icon name='Copy' width={svgSize} height={svgSize}/>),
+    icon: React.memo(({ size }) => <Icon name='Copy' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_FS
   },
   ext_api: {
-    icon: React.memo(({ svgSize }) => <Icon name='ImportExport' width={svgSize} height={svgSize}/>),
+    icon: React.memo(({ size }) => <Icon name='ImportExport' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_API
   }
 };
 
-const Perm = React.memo(({ permissions, svgSize }) => {
+const Perm = React.memo(props => {
+  const { permissions, size } = props;
   return (
     <div className='vz-addon-card-permissions'>
       <FormTitle>{Messages.PERMISSIONS}</FormTitle>
       {Object.keys(Permissions).map(perm => permissions.includes(perm) &&
         <div className='vz-addon-card-permission'>
-          {React.createElement(Permissions[perm].icon, { svgSize })} {Permissions[perm].text()}
+          {React.createElement(Permissions[perm].icon, { size })} {Permissions[perm].text()}
         </div>)}
     </div>
   );
@@ -41,7 +42,7 @@ module.exports = React.memo(({ permissions }) => {
   return (
     <>
       <Divider />
-      <Perm svgSize={22} permissions={permissions} />
+      <Perm size={22} permissions={permissions} />
     </>
   );
 });

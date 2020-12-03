@@ -2,9 +2,8 @@ const { Card } = require('@vizality/components');
 const { React } = require('@vizality/react');
 const { contextMenu: { openContextMenu } } = require('@vizality/webpack');
 
-const CardInner = require('./parts/CardInner');
-
 const AddonContextMenu = require('./AddonContextMenu');
+const Inner = require('./parts/Inner');
 
 module.exports = React.memo(props => {
   const { type, addonId } = props;
@@ -24,7 +23,7 @@ module.exports = React.memo(props => {
         vizality.api.router.navigate(`/${type}/${addonId}`);
       }}
     >
-      <CardInner {...props} />
+      <Inner {...props} />
     </Card>
   );
 });

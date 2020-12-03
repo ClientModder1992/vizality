@@ -1,15 +1,16 @@
 const { contextMenu: { closeContextMenu } } = require('@vizality/webpack');
-const { Menu, Icon } = require('@vizality/components');
+const { Menu } = require('@vizality/components');
 const { Messages } = require('@vizality/i18n');
-const { React, React: { useReducer } } = require('@vizality/react');
-const { string: { toHeaderCase, toPlural } } = require('@vizality/util');
+const { React } = require('@vizality/react');
 
-const AddonContextHeader = React.memo(({ manifest }) => {
+const AddonContextHeader = React.memo(props => {
+  const { manifest, type, addonId } = props;
+
   return (
     <>
       <div
         className='vz-addon-context-menu-header-addon-icon'
-        style={{ backgroundImage: 'url(https://extensions-discovery-images.twitch.tv/wi08ebtatdc7oj83wtl9uxwz807l8b/1.1.92/logo659f7669-7978-4c89-9824-0fc19d37ef93)' }}
+        style={{ backgroundImage: `url(vz-${type}://${addonId}/${manifest.icon})` }}
       />
       <div className='vz-addon-context-menu-header-addon-name'>
         {manifest.name}
@@ -18,11 +19,13 @@ const AddonContextHeader = React.memo(({ manifest }) => {
   );
 });
 
-module.exports = React.memo(({ manifest, onUninstall, isEnabled, type, onToggle, addonId }) => {
+module.exports = React.memo(props => {
+  const { manifest, onUninstall, isEnabled, type, onToggle, addonId } = props;
+
   return (
     <Menu.Menu navId='vz-addon-context-menu' onClose={closeContextMenu}>
       <Menu.MenuGroup
-        label={<AddonContextHeader manifest={manifest} />}
+        label={<AddonContextHeader manifest={manifest} addonId={addonId} type={type} />}
         aria-label='vz-addon-context-menu-header'
         className='vz-addon-context-menu-header'
       >
