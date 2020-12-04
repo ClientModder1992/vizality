@@ -45,17 +45,18 @@
     "@vizality/builtins": "src/core/builtins",
     "@vizality/typedefs": "src/core/typedefs",
     "@vizality/compilers": "src/core/compilers",
-    "@vizality/entities": "src/core/entities"
+    "@vizality/entities": "src/core/entities",
+    "react": "src/core/modules/react/react",
+    "react-dom": "src/core/modules/react/reactdom"
   },
   "dependencies": {
+    "@monaco-editor/react": "^3.7.1",
     "electron-devtools-installer": "^3.1.1",
     "long": "^4.0.0",
     "mime-types": "^2.1.27",
     "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",
     "pluralize": "^8.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-markdown": "^4.3.1",
     "sass": "^1.26.10",
     "sucrase": "^3.15.0",
@@ -63,7 +64,7 @@
   },
   "devDependencies": {
     "eslint": "^7.13.0",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-jsdoc": "^30.4.0"
+    "eslint-plugin-jsdoc": "^30.4.0",
+    "eslint-plugin-react": "^7.20.6"
   }
 }

@@ -2,7 +2,7 @@
 const { promises: { readFile }, watch, writeFileSync, readFileSync } = require('fs');
 const { join } = require('path');
 
-const { default: Editor } = require('@vizality/builtins/snippet-manager/node_modules/@monaco-editor/react');
+const { default: Editor } = require('@monaco-editor/react');
 const { React, React: { useEffect, useState, useRef } } = require('@vizality/react');
 const { dom: { injectShadowStyles } } = require('@vizality/util');
 const { Spinner } = require('@vizality/components');
