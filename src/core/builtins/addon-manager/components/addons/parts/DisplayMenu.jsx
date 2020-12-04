@@ -12,19 +12,19 @@ module.exports = React.memo(props => {
         <Menu.MenuItem
           id='compact'
           label='Compact'
-          icon={() => <Icon name='LayoutTable' size='18px' />}
+          icon={() => <Icon name='LayoutCompact' size='18px' />}
           action={() => handleDisplayChange('compact')}
         />
         <Menu.MenuItem
           id='cover'
           label='Cover'
-          icon={() => <Icon name='LayoutGridSmall' size='18px' />}
+          icon={() => <Icon name='LayoutCover' size='18px' />}
           action={() => handleDisplayChange('cover')}
         />
         <Menu.MenuItem
           id='card'
           label='Card'
-          icon={() => <Icon name='LayoutGrid' size='18px' />}
+          icon={() => <Icon name='LayoutCard' size='18px' />}
           action={() => handleDisplayChange('card')}
         />
         <Menu.MenuItem
