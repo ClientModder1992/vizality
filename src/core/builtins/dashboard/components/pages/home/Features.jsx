@@ -47,7 +47,7 @@ module.exports = React.memo(() => {
         <Card
           icon='UnknownUser'
           header='Become a Developer'
-          description='Find out what it takes to start making your own plugins and themes. Come check out the guidelines and all the info you need to become a developer.'
+          description='Find out what it takes to start making your own plugins and themes. Come check out the guidelines and all the info you need to become an addon developer for Vizality.'
           buttonText='Learn How'
           path='/dashboard/developers'
         />

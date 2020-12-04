@@ -70,17 +70,6 @@
   }
 }
 
-#vz-addons-list-display-menu {
-  min-width: 0;
-}
-
-#vz-addons-list-sort-filter-menu,
-#vz-addons-list-display-menu {
-  .label-22pbtT {
-    display: flex;
-  }
-}
-
 @media only screen and (max-width: 1050px) {
   .vz-addons-list-search-options-button:not(.vz-addons-list-more-button) {
     display: none;

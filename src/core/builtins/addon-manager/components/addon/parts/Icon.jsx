@@ -1,5 +1,5 @@
-const { React, React: { useState } } = require('@vizality/react');
 const { array: { getRandomArrayItem }, joinClassNames } = require('@vizality/util');
+const { React, React: { useState } } = require('@vizality/react');
 const { Spinner } = require('@vizality/components');
 const Constants = require('@vizality/constants');
 

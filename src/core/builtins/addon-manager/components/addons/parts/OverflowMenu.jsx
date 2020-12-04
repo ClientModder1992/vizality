@@ -1,14 +1,13 @@
 const { shell } = require('electron');
 
+const { React } = require('@vizality/react');
 const { string: { toPlural } } = require('@vizality/util');
 const { Directories } = require('@vizality/constants');
 const { Menu, Icon } = require('@vizality/components');
 const { Messages } = require('@vizality/i18n');
-const { React, React: { useReducer, useState } } = require('@vizality/react');
 
 module.exports = React.memo(props => {
-  const { type, showPreviewImages, resetSearchOptions, handleShowPreviewImages, fetchMissing, enableAll, disableAll, onClose, displayType } = props;
-  const [ previewImages, setShowPreviewImages ] = useState(showPreviewImages);
+  const { type, resetSearchOptions, fetchMissing, enableAll, disableAll, onClose } = props;
 
   return (
     <Menu.Menu navId='vz-addons-list-overflow-menu' onClose={onClose}>
@@ -42,17 +41,6 @@ module.exports = React.memo(props => {
         label='Disable All'
         icon={() => <Icon name='Pause2' size='18px' />}
         action={() => disableAll(type)}
-      />
-      <Menu.MenuSeparator />
-      <Menu.MenuCheckboxItem
-        id='show-preview-images'
-        label='Show Preview Images'
-        disabled={displayType === 'table' || displayType === 'grid-small'}
-        checked={previewImages}
-        action={() => {
-          setShowPreviewImages(!previewImages);
-          handleShowPreviewImages(!previewImages);
-        }}
       />
     </Menu.Menu>
   );

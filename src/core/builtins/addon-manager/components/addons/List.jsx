@@ -219,7 +219,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   const renderItem = item => {
     return (
       <Addon
-        displayType={display}
+        display={display}
         type={type}
         manifest={item.manifest}
         addonId={item.entityID}
