@@ -49,7 +49,6 @@ electron.app.once('ready', () => {
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
     if (urlRegex.test(details.url)) {
       // It should get restored to the vizality url later.
-      console.log(details.url.match(urlRegex))
       done({ redirectURL: `${details.url.match(urlRegex)[1]}/app` });
     } else {
       done({});
