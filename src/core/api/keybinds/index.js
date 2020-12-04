@@ -1,10 +1,10 @@
-const { remote: { globalShortcut } } = require('electron');
+// const { remote: { globalShortcut } } = require('electron');
 const { join } = require('path');
 
 const { Directories } = require('@vizality/constants');
 const { API } = require('@vizality/entities');
 
-const localShortcut = require(join(Directories.MODULES, '.keybindutils', 'localShortcut'));
+// const localShortcut = require(join(Directories.MODULES, '.keybindutils', 'localShortcut'));
 
 /* @todo: Convert errors to logger. */
 
@@ -32,6 +32,7 @@ module.exports = class KeybindsAPI extends API {
    * @param {VizalityKeybind} keybind Keybind
    */
   registerKeybind (id, keybind) {
+    return void 0;
     if (this.keybinds[id]) {
       throw new Error(`Keybind ${id} is already registered!`);
     }
@@ -45,6 +46,7 @@ module.exports = class KeybindsAPI extends API {
    * @param {string} newBind New keybind to bind
    */
   changeBind (id, newBind) {
+    return void 0;
     if (!this.keybinds[id]) {
       throw new Error(`Keybind ${id} is not registered!`);
     }
@@ -59,6 +61,7 @@ module.exports = class KeybindsAPI extends API {
    * @param {string} id Keybind to unregister
    */
   unregisterKeybind (id) {
+    return void 0;
     if (this.keybinds[id]) {
       this._unregister(this.keybinds[id]);
       delete this.keybinds[id];
@@ -67,6 +70,7 @@ module.exports = class KeybindsAPI extends API {
 
   /** @private */
   _register (keybind) {
+    return void 0;
     try {
       if (keybind.isGlobal) {
         globalShortcut.register(keybind.keybind, keybind.executor);
@@ -80,6 +84,7 @@ module.exports = class KeybindsAPI extends API {
 
   /** @private */
   _unregister (keybind) {
+    return void 0;
     try {
       if (keybind.isGlobal) {
         globalShortcut.unregister(keybind.keybind);
