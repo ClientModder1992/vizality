@@ -13,19 +13,19 @@ module.exports = React.memo(props => {
           id='compact'
           label='Compact'
           icon={() => <Icon name='LayoutTable' size='18px' />}
-          action={() => handleDisplayChange('table')}
+          action={() => handleDisplayChange('compact')}
         />
         <Menu.MenuItem
           id='cover'
           label='Cover'
           icon={() => <Icon name='LayoutGridSmall' size='18px' />}
-          action={() => handleDisplayChange('grid-small')}
+          action={() => handleDisplayChange('cover')}
         />
         <Menu.MenuItem
           id='card'
           label='Card'
           icon={() => <Icon name='LayoutGrid' size='18px' />}
-          action={() => handleDisplayChange('grid')}
+          action={() => handleDisplayChange('card')}
         />
         <Menu.MenuItem
           id='list'
@@ -36,8 +36,8 @@ module.exports = React.memo(props => {
       </Menu.MenuGroup>
       <Menu.MenuSeparator />
       <Menu.MenuCheckboxItem
-        id='show-preview-images'
-        label='Show Preview Images'
+        id='show-previews'
+        label='Show Previews'
         disabled={display === 'compact' || display === 'cover'}
         checked={previewImages}
         action={() => {

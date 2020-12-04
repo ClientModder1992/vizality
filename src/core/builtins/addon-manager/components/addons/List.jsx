@@ -16,7 +16,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
   const [ query, setQuery ] = useState(search || '');
-  const [ display, setDisplay ] = useState(getSetting('addon-list-display', 'grid'));
+  const [ display, setDisplay ] = useState(getSetting('list-display', 'card'));
   const [ previewImages, setShowPreviewImages ] = useState(getSetting('addon-list-show-preview-images', false));
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
@@ -50,7 +50,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   };
 
   const _handleDisplayChange = (display) => {
-    updateSetting('addon-list-display', display);
+    updateSetting('list-display', display);
     return setDisplay(display);
   };
 
