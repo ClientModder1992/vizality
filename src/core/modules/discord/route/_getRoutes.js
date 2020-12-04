@@ -1,5 +1,6 @@
 const Routes = require('../module/routes');
 
+// With how this is set up, always go from specific to more generic
 const _getRoutes = () => {
   const routes = {
     discover: Routes.GUILD_DISCOVERY,
@@ -8,7 +9,14 @@ const _getRoutes = () => {
     friends: Routes.FRIENDS,
     guild: '/channels/',
     library: Routes.APPLICATION_LIBRARY,
-    nitro: Routes.APPLICATION_STORE
+    nitro: Routes.APPLICATION_STORE,
+    'vz-installed-plugins': '/vizality/dashboard/plugins/installed',
+    'vz-discover-plugins': '/vizality/dashboard/plugins/discover',
+    'vz-plugin': '/vizality/dashboard/plugins/',
+    'vz-installed-themes': '/vizality/dashboard/themes/installed',
+    'vz-discover-themes': '/vizality/dashboard/themes/discover',
+    'vz-theme': '/vizality/dashboard/themes/',
+    'vz-dashboard': '/vizality/dashboard'
   };
 
   return routes;

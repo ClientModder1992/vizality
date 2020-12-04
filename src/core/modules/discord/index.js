@@ -7,11 +7,11 @@
  * @version 0.0.1
  */
 const user = require('./user');
+const route = require('./route');
 const snowflake = require('./snowflake');
 
-const discord = {
+module.exports = {
   user,
-  snowflake
+  snowflake,
+  route
 };
-
-module.exports = discord;

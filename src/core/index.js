@@ -1,7 +1,5 @@
-const { ipcRenderer } = require('electron');
 const { promisify } = require('util');
 const cp = require('child_process');
-const { join } = require('path');
 const exec = promisify(cp.exec);
 
 const { sleep, logger: { log, warn, error } } = require('@vizality/util');
@@ -195,14 +193,9 @@ module.exports = class Vizality extends Updatable {
     })();
 
     // This needs to be here, after the Webpack modules have been initialized
-    // const { route: { getCurrentRoute } } = require('@vizality/discord');
-
-    // document.documentElement.setAttribute('vz-route', getCurrentRoute());
-
-    getModule('transitionTo').getHistory().listen(e => {
-      console.log(e);
-      const routes = [ 'pie', 'poop', 'lol', 'okay' ];
-      document.documentElement.setAttribute('vz-route', routes[Math.floor(Math.random() * routes.length)]);
+    getModule('transitionTo').getHistory().listen(() => {
+      const { route: { getCurrentRoute } } = require('@vizality/discord');
+      document.documentElement.setAttribute('vz-route', getCurrentRoute());
     });
   }
 
