@@ -7,7 +7,7 @@ const nodeModulesPath = join(rootPath, 'node_modules');
 
 function installDeps () {
   console.log('\x1b[1m\x1b[34mACTION: \x1b[0mInstalling dependencies...');
-  execSync('npm install --only=prod', {
+  execSync('npm install --only=prod --legacy-peer-deps', {
     cwd: rootPath,
     stdio: [ null, null, null ]
   });

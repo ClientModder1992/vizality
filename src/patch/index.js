@@ -44,10 +44,13 @@ electron.app.once('ready', () => {
     done({ responseHeaders });
   });
 
+  const urlRegex = /^(https:\/\/(?:canary|ptb)?.?discord(app)?\.com)\/vizality\//
+
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
-    if (new RegExp(/^https:\/\/discord(app)?\.com\/vizality\//).test(details.url)) {
+    if (urlRegex.test(details.url)) {
       // It should get restored to the vizality url later.
-      done({ redirectURL: 'https://discord.com/app' });
+      console.log(details.url.match(urlRegex))
+      done({ redirectURL: `${details.url.match(urlRegex)[1]}/app` });
     } else {
       done({});
     }
