@@ -10,7 +10,7 @@ const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
 const PatchedBrowserWindow = require('./browserWindow');
 const electronPath = require.resolve('electron');
 
-// Restore the classic path; The updater relies on it and it makes Discord go corrupt
+// Restore the classic path; the updater relies on it and it makes Discord go corrupt
 require.main.filename = join(discordPath, 'app_bootstrap/index.js');
 
 const electronExports = new Proxy(electron, {
@@ -24,6 +24,12 @@ const electronExports = new Proxy(electron, {
 
 delete require.cache[electronPath].exports;
 require.cache[electronPath].exports = electronExports;
+
+electron.protocol.registerSchemesAsPrivileged([
+  { scheme: 'vz-plugin', privileges: { standard: true, secure: true } },
+  { scheme: 'vz-theme', privileges: { standard: true, secure: true } },
+  { scheme: 'vz-builtin', privileges: { standard: true, secure: true } }
+]);
 
 electron.app.once('ready', () => {
   installExtension(REACT_DEVELOPER_TOOLS)
@@ -47,7 +53,7 @@ electron.app.once('ready', () => {
     }
   });
 
-  function registerProtocol (name, folder) {
+  const registerProtocol = (name, folder) => {
     electron.protocol.registerFileProtocol(name, (request, cb) => {
       // https://security.stackexchange.com/a/123723
       const url = normalize(request.url.replace(`${name}://`, '')).replace(/^(\.\.(\/|\\|$))+/, '');
@@ -56,7 +62,8 @@ electron.app.once('ready', () => {
       }
       return cb({ path: join(__dirname, '..', '..', 'addons', folder, url) });
     });
-  }
+  };
+
   registerProtocol('vz-plugin', 'plugins');
   registerProtocol('vz-theme', 'themes');
   registerProtocol('vz-builtin', 'builtins');

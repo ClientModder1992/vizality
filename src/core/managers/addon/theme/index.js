@@ -77,7 +77,7 @@ module.exports = class ThemeManager extends AddonManager {
 
     const manifestFile = join(this._dir, filename, 'manifest.json');
     if (!existsSync(manifestFile)) {
-      // Should we warn here?
+      // Add an error here
       return;
     }
 
@@ -123,39 +123,39 @@ module.exports = class ThemeManager extends AddonManager {
 
 
   // Start/Stop
-  async load (sync = false) {
-    const missingThemes = [];
-    const files = readdirSync(this._dir);
-    for (const filename of files) {
-      if (filename.startsWith('.')) {
-        console.debug('%c[Vizality:StyleManager]', 'color: #7289da', 'Ignoring dotfile', filename);
-        continue;
-      }
+  // async load (sync = false) {
+  //   const missingThemes = [];
+  //   const files = readdirSync(this._dir);
+  //   for (const filename of files) {
+  //     if (filename.startsWith('.')) {
+  //       console.debug('%c[Vizality:StyleManager]', 'color: #7289da', 'Ignoring dotfile', filename);
+  //       continue;
+  //     }
 
-      const themeID = filename.split('.').shift();
-      if (!sync) {
-        await this.mount(themeID, filename);
+  //     const addonId = filename.split('.').shift();
+  //     if (!sync) {
+  //       await this.mount(addonId, filename);
 
-        // if theme didn't mounted
-        if (!this.themes.get(themeID)) {
-          continue;
-        }
-      }
+  //       // if theme didn't mounted
+  //       if (!this[this._type].get(addonId)) {
+  //         continue;
+  //       }
+  //     }
 
-      if (!this.getAllDisabled().includes(themeID)) {
-        if (sync && !this.isInstalled(themeID)) {
-          await this.mount(themeID, filename);
-          missingThemes.push(themeID);
-        }
+  //     if (!this.getAllDisabled().includes(addonId)) {
+  //       if (sync && !this.isInstalled(addonId)) {
+  //         await this.mount(addonId, filename);
+  //         missingThemes.push(addonId);
+  //       }
 
-        this.themes.get(themeID)._load();
-      }
-    }
+  //       this[this._type].get(addonId)._load();
+  //     }
+  //   }
 
-    if (sync) {
-      return missingThemes;
-    }
-  }
+  //   if (sync) {
+  //     return missingThemes;
+  //   }
+  // }
 
   terminate () {
     return [ ...this.themes.values() ].forEach(t => t._unload());

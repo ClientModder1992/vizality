@@ -118,6 +118,41 @@ module.exports = class AddonManager {
     this[this._type].delete(addonId);
   }
 
+  // Start/Stop
+  async load (sync = false) {
+    const missingThemes = [];
+    const files = readdirSync(this._dir);
+    for (const filename of files) {
+      if (filename.startsWith('.')) {
+        console.debug('%c[Vizality:AddonManager]', 'color: #7289da', 'Ignoring dotfile', filename);
+        continue;
+      }
+
+      const addonId = filename.split('.').shift();
+      if (!sync) {
+        await this.mount(addonId, filename);
+
+        // if theme didn't mounted
+        if (!this[this._type].get(addonId)) {
+          continue;
+        }
+      }
+
+      if (!this.getAllDisabled().includes(addonId)) {
+        if (sync && !this.isInstalled(addonId)) {
+          await this.mount(addonId, filename);
+          missingThemes.push(addonId);
+        }
+
+        this[this._type].get(addonId)._load();
+      }
+    }
+
+    if (sync) {
+      return missingThemes;
+    }
+  }
+
   enable (addonId) {
     const addon = this.get(addonId);
 
@@ -232,7 +267,7 @@ module.exports = class AddonManager {
     }
   }
 
-  log (...data) { log(_module, this._type, null, ...data); }
-  warn (...data) { warn(_module, this._type, null, ...data); }
-  error (...data) { error(_module, this._type, null, ...data); }
+  log (...data) { log(_module, toSingular(this._type), null, ...data); }
+  warn (...data) { warn(_module, toSingular(this._type), null, ...data); }
+  error (...data) { error(_module, toSingular(this._type), null, ...data); }
 };
