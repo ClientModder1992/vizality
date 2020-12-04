@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
-const { Confirm, Card, Spinner } = require('@vizality/components');
-const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
-const { getModule, contextMenu } = require('@vizality/webpack');
+const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
+const { Confirm, Spinner, Card } = require('@vizality/components');
+const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
-const Addon = require('../addon/Addon');
 const StickyBar = require('./parts/StickyBar');
+const Addon = require('../addon/Addon');
 
 module.exports = React.memo(({ type, tab, search }) => {
   const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
@@ -231,10 +231,16 @@ module.exports = React.memo(({ type, tab, search }) => {
     );
   };
 
+  /*
+   * The only purpose of this is to add filler addon items to correct the
+   * last flex row of the list.
+   */
   const renderFillers = () => {
     const placeholders = [];
     for (let i = 0; i < 8; i++) {
-      placeholders.push(<Card className='vz-addon-card vz-addon-card-filler' />);
+      placeholders.push(
+        <Card className='vz-addon-card vz-addon-card-filler' />
+      );
     }
     return placeholders;
   };

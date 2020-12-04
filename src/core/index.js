@@ -14,26 +14,6 @@ const BuiltinManager = require('./managers/addon/builtin');
 const PluginManager = require('./managers/addon/plugin');
 const APIManager = require('./managers/api');
 
-const FluxModule = async () => {
-  const Flux = getModule('Store', 'PersistedStore');
-  Flux.connectStoresAsync = (stores, fn) => (Component) =>
-    require('@vizality/components').AsyncComponent.from((async () => {
-      const awaitedStores = await Promise.all(stores);
-      console.log('Remember to add these to settings (darkSiderbar, etc.)', awaitedStores);
-      return Flux.connectStores(awaitedStores, (props) => fn(awaitedStores, props))(Component);
-    })());
-};
-
-const JsxCompilerModule = async () => {
-  require.extensions['.jsx'] = (module, filename) => {
-    const compiler = new JsxCompiler(filename);
-    const compiled = compiler.compile();
-    module._compile(compiled, filename);
-  };
-};
-
-const modules = [ FluxModule, JsxCompilerModule ];
-
 /**
  * @typedef VizalityAPI
  * @property {CommandsAPI} commands
@@ -110,6 +90,27 @@ module.exports = class Vizality extends Updatable {
 
     // Webpack & Modules
     await initialize();
+
+    const FluxModule = async () => {
+      const Flux = getModule('Store', 'PersistedStore');
+      Flux.connectStoresAsync = (stores, fn) => (Component) =>
+        require('@vizality/components').AsyncComponent.from((async () => {
+          const awaitedStores = await Promise.all(stores);
+          console.log('Remember to add these to settings (darkSiderbar, etc.)', awaitedStores);
+          return Flux.connectStores(awaitedStores, (props) => fn(awaitedStores, props))(Component);
+        })());
+    };
+
+    const JsxCompilerModule = async () => {
+      require.extensions['.jsx'] = (module, filename) => {
+        const compiler = new JsxCompiler(filename);
+        const compiled = compiler.compile();
+        module._compile(compiled, filename);
+      };
+    };
+
+    const modules = [ FluxModule, JsxCompilerModule ];
+
     await Promise.all(modules.map(mdl => mdl()));
 
     // Start
