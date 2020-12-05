@@ -3,7 +3,7 @@ const { join, dirname, normalize } = require('path');
 const electron = require('electron');
 const Module = require('module');
 
-require('../update');
+// require('../update');
 require('../ipc/main');
 
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');

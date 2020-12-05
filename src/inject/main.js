@@ -1,5 +1,5 @@
 const { promises: { mkdir, writeFile, unlink, rmdir, access } } = require('fs');
-const { join, sep } = require('path');
+const { join, resolve, sep } = require('path');
 
 const exists = (path) =>
   access(path)
