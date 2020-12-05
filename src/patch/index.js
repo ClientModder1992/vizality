@@ -14,7 +14,7 @@ if (process.platform === 'win32') {
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 const Module = require('module');
 
-// require('../update');
+require('../update');
 require('../ipc/main');
 
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
