@@ -4,11 +4,11 @@ require('./env_check')();
 
 const { promises: { writeFile } } = require('fs');
 const { join } = require('path');
-const main = require('./main');
+const main = require('./main.js');
 
 let platformModule;
 try {
-  platformModule = require(`./${process.platform}`);
+  platformModule = require(`./${process.platform}.js`);
 } catch (err) {
   if (err.code === 'MODULE_NOT_FOUND') {
     console.log(`\x1b[1m\x1b[31mERROR: \x1b[0mUnsupported platform '${process.platform}'`);
