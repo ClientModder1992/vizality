@@ -7,7 +7,8 @@ if (process.platform === 'win32') {
   const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
   try {
     unlinkSync(DevToolsExtensions);
-  } catch {
+  } catch (err) {
+    // Do nothing
   }
 }
 

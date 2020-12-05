@@ -137,7 +137,7 @@ module.exports = class Updater extends Builtin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'primary',
             look: 'link',
-            onClick: () => vizality.api.router.navigate('/dashboard/updates')
+            onClick: () => vizality.api.router.navigate('/dashboard/updater')
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',

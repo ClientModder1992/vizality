@@ -226,10 +226,10 @@ module.exports = React.memo(() => {
         </Menu.MenuItem>
         <Menu.MenuSeparator/>
         <Menu.MenuItem
-          id='updates'
-          label='Updates'
+          id='updater'
+          label='Updater'
           icon={() => <Icon name='CloudDownload' width='100%' height='100%' />}
-          action={() => vizality.api.router.navigate('/dashboard/updates')}
+          action={() => vizality.api.router.navigate('/dashboard/updater')}
         />
         <Menu.MenuItem
           id='changelog'

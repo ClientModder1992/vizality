@@ -45,7 +45,7 @@ module.exports = React.memo(() =>
       <SubItem label='Test' path='/documentation/components/test' />
     </Item>
     <Separator />
-    <Item icon='CloudDownload' label='Updates' path='/updater' />
+    <Item icon='CloudDownload' label='Updater' path='/updater' />
     <Item icon='ClockReverse' label='Changelog' path='/changelog'
       launch={() => vizality.api.actions.invoke('openLatestChangelog')}
       auxillaryIconTooltipText='Open Latest Update'
