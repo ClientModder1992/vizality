@@ -1,25 +1,24 @@
-const { promises: { mkdir, writeFile, existsSync } } = require('fs');
+const { promises: { mkdir, writeFile, unlink, rmdir, access } } = require('fs');
 const { join, sep } = require('path');
 
-const { removeDirRecursive } = require('../core/modules/util/file');
+const exists = (path) =>
+  access(path)
+    .then(() => true)
+    .catch(() => false);
 
 exports.inject = async ({ getAppDir }) => {
   const appDir = await getAppDir();
-  if (existsSync(appDir)) {
-    /*
-     * @todo Verify if there is nothing in discord_desktop_core as well
-     * @todo Prompt to automatically uninject and continue
-     */
-    console.log('Looks like you already have an injector in place. Try unplugging ("npm run uninject") and try again.', '\n');
-    console.log(`\x1b[1m\x1b[33mWARNING: \x1b[0mIf you already have BetterDiscord or another client mod injected, Vizality cannot run along with it!`);
+  if (await exists(appDir)) {
+    console.log('\x1b[1m\x1b[31mERROR: \x1b[0mLooks like you already have an injector in place. Try uninjecting (`npm run uninject`) and try again.');
     return false;
   }
 
   await mkdir(appDir);
+
   await Promise.all([
     writeFile(
       join(appDir, 'index.js'),
-      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../src/patcher.js\`)`
+      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../patch\`)`
     ),
     writeFile(
       join(appDir, 'package.json'),
@@ -36,11 +35,16 @@ exports.inject = async ({ getAppDir }) => {
 exports.uninject = async ({ getAppDir }) => {
   const appDir = await getAppDir();
 
-  if (!existsSync(appDir)) {
-    console.log('There is nothing to uninject. You are already running Discord without modifications.');
+  if (!(await exists(appDir))) {
+    console.log('\x1b[1m\x1b[33mWARNING: \x1b[0mThere is nothing to uninject.');
     return false;
   }
 
-  await removeDirRecursive(appDir);
+  await Promise.all([
+    unlink(join(appDir, 'package.json')),
+    unlink(join(appDir, 'index.js'))
+  ]);
+
+  await rmdir(appDir);
   return true;
 };
