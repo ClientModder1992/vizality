@@ -2,7 +2,7 @@
 
 .vz-addons-list {
   $base: &;
-  &[vz-display='grid-small'] {
+  &[vz-display='cover'] {
     .vz-addon-card {
       min-width: 256px;
       &-icon {

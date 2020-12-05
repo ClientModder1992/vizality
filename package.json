@@ -35,8 +35,8 @@
   "scripts": {
     "compile-sass": "node src/compile",
     "lint": "eslint --ext js --ext jsx src",
-    "inject": "node src/inject inject",
-    "uninject": "node src/inject uninject"
+    "inject": "node src/inject inject --no-exit-codes",
+    "uninject": "node src/inject uninject --no-exit-codes"
   },
   "_moduleAliases": {
     "@vizality/root": ".",

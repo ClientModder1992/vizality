@@ -2,7 +2,7 @@
 
 .vz-addons-list {
   $base: &;
-  &[vz-display='table'] {
+  &[vz-display='compact'] {
     #{$base}-items {
       margin: 20px -10px 0;
     }
