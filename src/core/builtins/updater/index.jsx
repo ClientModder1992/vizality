@@ -105,7 +105,7 @@ module.exports = class Updater extends Builtin {
           const shouldUpdate = await entity._checkForUpdates();
           if (shouldUpdate) {
             const commits = await entity._getUpdateCommits();
-            if (skipped[entity.updateIdentifier] === commits[0].id) {
+            if (commits[0] && skipped[entity.updateIdentifier] === commits[0].id) {
               return;
             }
             updates.push({
