@@ -1,6 +1,6 @@
 const { join } = require('path');
 
-const { inject } = require('../injectors/main');
+const { inject } = require('../inject/main');
 
 const applicableEnvs = [ 'win32', 'darwin' ];
 
