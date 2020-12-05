@@ -1,9 +1,20 @@
-const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+const { unlinkSync } = require('fs')
 const { join, dirname, normalize } = require('path');
 const electron = require('electron');
+
+// https://github.com/electron/electron/issues/19468#issuecomment-549593139
+if (process.platform === 'win32') {
+  const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions')
+  try {
+    unlinkSync(DevToolsExtensions)
+  } catch {
+  }
+}
+
+const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 const Module = require('module');
 
-// require('../update');
+require('../update');
 require('../ipc/main');
 
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
