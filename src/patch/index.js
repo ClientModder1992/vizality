@@ -1,12 +1,12 @@
-const { unlinkSync } = require('fs')
 const { join, dirname, normalize } = require('path');
+const { unlinkSync } = require('fs');
 const electron = require('electron');
 
 // https://github.com/electron/electron/issues/19468#issuecomment-549593139
 if (process.platform === 'win32') {
-  const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions')
+  const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
   try {
-    unlinkSync(DevToolsExtensions)
+    unlinkSync(DevToolsExtensions);
   } catch {
   }
 }
@@ -22,7 +22,7 @@ const PatchedBrowserWindow = require('./browserWindow');
 const electronPath = require.resolve('electron');
 
 // Restore the classic path; the updater relies on it and it makes Discord go corrupt
-require.main.filename = join(discordPath, 'app_bootstrap/index.js');
+require.main.filename = join(discordPath, 'app_bootstrap', 'index.js');
 
 const electronExports = new Proxy(electron, {
   get (target, prop) {
@@ -55,7 +55,7 @@ electron.app.once('ready', () => {
     done({ responseHeaders });
   });
 
-  const urlRegex = /^(https:\/\/(?:canary|ptb)?.?discord(app)?\.com)\/vizality\//
+  const urlRegex = /^(https:\/\/(?:canary|ptb)?.?discord(app)?\.com)\/vizality\//;
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
     if (urlRegex.test(details.url)) {
