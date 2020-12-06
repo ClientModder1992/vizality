@@ -7,30 +7,27 @@ const { patch, unpatch } = require('@vizality/patcher');
  * Discord (settings sidebar, friends list tabs, user profile tabs). This adds
  * classes to those items to make them more easy / consistent to target.
  */
-
 module.exports = async () => {
   const TabBar = getModuleByDisplayName('TabBar');
 
-  patch('vz-attributes-tabBar', TabBar.prototype, 'render', function (_, res) {
+  patch('builtin-attributes-tabBar', TabBar.prototype, 'render', function (_, res) {
     if (!res.props || !res.props.children) return res;
 
     res.props['vz-item-selected'] = toKebabCase(this.props.selectedItem);
 
-    const tabBarItems = res.props.children;
+    return res;
+  });
 
-    for (const item of tabBarItems) {
-      if (!item || !item.props || !item.props.id) continue;
+  patch('builtin-attributes-tabBar-items', TabBar.Item.prototype, 'render', function (_, res) {
+    if (!res.props || !res.props.children) return res;
 
-      /*
-       * @todo It adds the prop, which you can see in RDT,
-       * but the DOM doesn't update. forceUpdateElement doesn't
-       * seem to help/.
-       */
-      item.props['vz-item'] = toKebabCase(item.props.id);
-    }
+    res.props['vz-item-id'] = toKebabCase(this.props.id);
 
     return res;
   });
 
-  return () => unpatch('vz-attributes-tabBar');
+  return () => {
+    unpatch('builtin-attributes-tabBar');
+    unpatch('builtin-attributes-tabBar-items');
+  };
 };
