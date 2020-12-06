@@ -42,6 +42,7 @@ Object.assign(exports, {
   Tooltip: AsyncComponent.from((() => getModule('TooltipContainer').TooltipContainer)()),
   Helmet: AsyncComponent.from((() => getModule('HelmetProvider').Helmet)()),
   HelmetProvider: AsyncComponent.from((() => getModule('HelmetProvider').HelmetProvider)()),
+  HelpMessage: AsyncComponent.from(getModuleByDisplayName('HelpMessage', true)),
   Confirm: AsyncComponent.from(getModuleByDisplayName('ConfirmModal', true)),
   Modal: AsyncComponent.from(getModuleByDisplayName('DeprecatedModal', true)),
   ImageCarouselModal: AsyncComponent.from(getModuleByDisplayName('componentDispatchSubscriber(ModalCarousel)', true)),
@@ -58,6 +59,9 @@ getModuleByDisplayName('FormNotice', true, true).then(FormNotice => {
 });
 getModuleByDisplayName('Spinner', true, true).then(Spinner => {
   [ 'Type' ].forEach(prop => exports.Spinner[prop] = Spinner[prop]);
+});
+getModule('HelpMessageTypes', true, true).then(HelpMessage => {
+  [ 'HelpMessageTypes', 'HelpMessageFontSizes' ].forEach(prop => exports.HelpMessage[prop] = HelpMessage[prop]);
 });
 getModule(m => m.DropdownSizes, true, true).then(Button => {
   [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => exports.Button[prop] = Button[prop]);

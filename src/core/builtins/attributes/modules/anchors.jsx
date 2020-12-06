@@ -3,6 +3,7 @@ const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => {
   const Anchor = getModule(m => m.default && m.default.displayName === 'Anchor');
+
   patch('vz-attributes-anchors', Anchor, 'default', (_, res) => {
     if (!res.props || !res.props.href) return res;
 
@@ -12,6 +13,15 @@ module.exports = async () => {
       res.props.onClick = e => {
         e.preventDefault();
         vizality.api.router.navigate(route);
+      };
+    }
+
+    // Make Vizality routes open in the app
+    if (new RegExp(/vizality:\/\//i).test(res.props.href)) {
+      const route = res.props.href.replace(/vizality:\/\//i, '');
+      res.props.onClick = e => {
+        e.preventDefault();
+        vizality.api.router.navigate(`/dashboard/${route}`);
       };
     }
 

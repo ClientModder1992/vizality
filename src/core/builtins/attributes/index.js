@@ -10,7 +10,7 @@ module.exports = class Attributes extends Builtin {
     this.callbacks = [];
 
     Object.values(modules).forEach(async mdl => {
-      const callback = typeof await mdl();
+      const callback = await mdl();
       if (typeof callback === 'function') {
         this.callbacks.push(callback);
       }
