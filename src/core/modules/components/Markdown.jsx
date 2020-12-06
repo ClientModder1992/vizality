@@ -113,11 +113,11 @@ module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
     },
 
     code: ({ language, value }) => {
-      return <CodeBlock language={language} content={value} />;
+      return <CodeBlock language={language} content={value} className='vz-markdown-code' />;
     },
 
     inlineCode: ({ children }) => {
-      return <code className='vz-markdown-code--inline inline'>{children}</code>;
+      return <code className='vz-markdown-code-inline'>{children}</code>;
     },
 
     image: ({ alt, src }) => {
@@ -163,7 +163,7 @@ module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
     heading: ({ level, children }) => {
       const sizes = [ null, size32, size24, size20, size16, size14, size12 ];
       const text = toKebabCase(children.reduce(flatten, ''));
-      const slug = `vz-markdown-header:${generateId(text)}`;
+      const slug = `vz-markdown-header--${generateId(text)}`;
 
       return React.createElement(`h${level}`, {
         className: joinClassNames('vz-markdown-header', `vz-markdown-header-h${level}`, sizes[level], base),
