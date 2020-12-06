@@ -52,8 +52,8 @@ module.exports = class CommandsAPI extends API {
   registerCommand (command) {
     // @todo: remove this once there's a proper implemention (if any) for fetching the command origin.
     const stackTrace = (new Error()).stack;
-    const [ , origin ] = stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.plugins._dir)}.([-\\w]+)`)) ||
-      stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.builtins._dir)}.([-\\w]+)`));
+    const [ , origin ] = stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
+      stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`));
 
     if (typeof command === 'string') {
       console.error('no');

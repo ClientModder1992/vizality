@@ -69,13 +69,13 @@ module.exports = class ThemeManager extends AddonManager {
   }
 
   async mount (themeID, filename) {
-    const stat = await lstat(join(this._dir, filename));
+    const stat = await lstat(join(this.dir, filename));
     if (stat.isFile()) {
       this._logError(ErrorTypes.NOT_A_DIRECTORY, [ themeID ]);
       return;
     }
 
-    const manifestFile = join(this._dir, filename, 'manifest.json');
+    const manifestFile = join(this.dir, filename, 'manifest.json');
     if (!existsSync(manifestFile)) {
       // Add an error here
       return;
@@ -107,7 +107,7 @@ module.exports = class ThemeManager extends AddonManager {
       return console.warn('%c[Vizality:StyleManager]', 'color: #7289da', `Theme "${themeID}" is not meant to run on that environment - Skipping`);
     }
 
-    manifest.effectiveTheme = join(this._dir, filename, manifest.effectiveTheme);
+    manifest.effectiveTheme = join(this.dir, filename, manifest.effectiveTheme);
     this.themes.set(themeID, new Theme(themeID, manifest));
   }
 
@@ -125,7 +125,7 @@ module.exports = class ThemeManager extends AddonManager {
   // Start/Stop
   // async load (sync = false) {
   //   const missingThemes = [];
-  //   const files = readdirSync(this._dir);
+  //   const files = readdirSync(this.dir);
   //   for (const filename of files) {
   //     if (filename.startsWith('.')) {
   //       console.debug('%c[Vizality:StyleManager]', 'color: #7289da', 'Ignoring dotfile', filename);
@@ -137,7 +137,7 @@ module.exports = class ThemeManager extends AddonManager {
   //       await this.mount(addonId, filename);
 
   //       // if theme didn't mounted
-  //       if (!this[this._type].get(addonId)) {
+  //       if (!this[this.type].get(addonId)) {
   //         continue;
   //       }
   //     }
@@ -148,7 +148,7 @@ module.exports = class ThemeManager extends AddonManager {
   //         missingThemes.push(addonId);
   //       }
 
-  //       this[this._type].get(addonId)._load();
+  //       this[this.type].get(addonId)._load();
   //     }
   //   }
 

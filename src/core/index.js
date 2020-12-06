@@ -265,7 +265,7 @@ module.exports = class Vizality extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success) {
-      await exec('npm install --only=prod', { cwd: this.entityPath });
+      await exec('npm install --only=prod', { cwd: this.addonPath });
       const updater = this.manager.builtins.get('updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {

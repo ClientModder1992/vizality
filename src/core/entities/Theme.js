@@ -6,7 +6,7 @@ const Updatable = require('./Updatable');
 module.exports = class Theme extends Updatable {
   constructor (themeID, manifest) {
     const themeManager = typeof vizality !== 'undefined' ? vizality.manager.themes : global.sm;
-    super(themeManager._dir, themeID);
+    super(themeManager.dir, themeID);
     this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;

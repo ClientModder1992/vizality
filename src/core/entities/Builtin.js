@@ -17,7 +17,7 @@ const Updatable = require('./Updatable');
  */
 module.exports = class Builtin extends Updatable {
   constructor () {
-    super(vizality.manager.builtins._dir);
+    super(vizality.manager.builtins.dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
     this._ready = false;
@@ -138,7 +138,7 @@ module.exports = class Builtin extends Updatable {
   /** @private */
   async _watchFiles () {
     const _this = this;
-    this._watchers = watch(this.entityPath, {
+    this._watchers = watch(this.addonPath, {
       recursive: true,
       filter (f, skip) {
         // skip node_modules

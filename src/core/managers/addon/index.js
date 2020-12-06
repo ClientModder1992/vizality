@@ -3,52 +3,52 @@ const { resolve } = require('path');
 
 const { file: { removeDirRecursive }, string: { toSingular, toTitleCase }, logger: { log, warn, error } } = require('@vizality/util');
 
-const _module = 'AddonManager';
+const _module = 'Manager';
 
 module.exports = class AddonManager {
   constructor (type, dir) {
-    this._dir = dir;
-    this._type = type;
-    this._requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
+    this.dir = dir;
+    this.type = type;
+    this.requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
 
     this[type] = new Map();
   }
 
   get count () {
-    return this[this._type].size;
+    return this[this.type].size;
   }
 
   get values () {
-    return this[this._type].values();
+    return this[this.type].values();
   }
 
   get keys () {
-    return this[this._type].keys();
+    return this[this.type].keys();
   }
 
   get (addonId) {
-    return this[this._type].get(addonId);
+    return this[this.type].get(addonId);
   }
 
   getAll () {
-    return [ ...this[this._type].keys() ];
+    return [ ...this[this.type].keys() ];
   }
 
   isInstalled (addonId) {
-    return this[this._type].has(addonId);
+    return this[this.type].has(addonId);
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toTitleCase(this._type)}`, []).includes(addonId);
+    return !vizality.settings.get(`disabled${toTitleCase(this.type)}`, []).includes(addonId);
   }
 
   getAllEnabled () {
-    const addons = [ ...this[this._type].keys() ];
+    const addons = [ ...this[this.type].keys() ];
     return addons.filter(addon => !this.getAllDisabled().includes(addon));
   }
 
   getAllDisabled () {
-    return vizality.settings.get(`disabled${toTitleCase(this._type)}`, []);
+    return vizality.settings.get(`disabled${toTitleCase(this.type)}`, []);
   }
 
   // Mount/load/enable/install shit
@@ -59,33 +59,33 @@ module.exports = class AddonManager {
         appMode: 'app',
         dependencies: [],
         optionalDependencies: []
-      }, require(resolve(this._dir, pluginID, 'manifest.json')));
+      }, require(resolve(this.dir, pluginID, 'manifest.json')));
     } catch (err) {
-      return this.error(`${toSingular(toTitleCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toTitleCase(this.type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
-    if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toTitleCase(this._type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+    if (!this.requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
+      return this.error(`${toSingular(toTitleCase(this.type))} ${pluginID} doesn't have a valid manifest - Skipping`);
     }
 
     try {
-      const PluginClass = require(resolve(this._dir, pluginID));
+      const PluginClass = require(resolve(this.dir, pluginID));
       Object.defineProperties(PluginClass.prototype, {
         addonId: {
           get: () => pluginID,
           set: () => {
-            throw new Error(`${toTitleCase(this._type)} cannot update their ID at runtime!`);
+            throw new Error(`${toTitleCase(this.type)} cannot update their ID at runtime!`);
           }
         },
         manifest: {
           get: () => manifest,
           set: () => {
-            throw new Error(`${toTitleCase(this._type)} cannot update manifest at runtime!`);
+            throw new Error(`${toTitleCase(this.type)} cannot update manifest at runtime!`);
           }
         }
       });
 
-      this[this._type].set(pluginID, new PluginClass());
+      this[this.type].set(pluginID, new PluginClass());
     } catch (err) {
       this.error(`An error occurred while initializing "${pluginID}"!`, err);
     }
@@ -98,13 +98,13 @@ module.exports = class AddonManager {
       // chhhh
     }
     this.mount(addonId);
-    this[this._type].get(addonId)._load();
+    this[this.type].get(addonId)._load();
   }
 
   async unmount (addonId) {
     const plugin = this.get(addonId);
     if (!plugin) {
-      throw new Error(`Tried to unmount a non-installed ${toSingular(this._type)}: ${plugin}`);
+      throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${plugin}`);
     }
     if (plugin._ready) {
       await plugin._unload();
@@ -115,13 +115,13 @@ module.exports = class AddonManager {
         delete require.cache[key];
       }
     });
-    this[this._type].delete(addonId);
+    this[this.type].delete(addonId);
   }
 
   // Start/Stop
   async load (sync = false) {
     const missingThemes = [];
-    const files = readdirSync(this._dir);
+    const files = readdirSync(this.dir);
     for (const filename of files) {
       if (filename.startsWith('.')) {
         console.debug('%c[Vizality:AddonManager]', 'color: #7289da', 'Ignoring dotfile', filename);
@@ -133,7 +133,7 @@ module.exports = class AddonManager {
         await this.mount(addonId, filename);
 
         // if theme didn't mounted
-        if (!this[this._type].get(addonId)) {
+        if (!this[this.type].get(addonId)) {
           continue;
         }
       }
@@ -144,7 +144,7 @@ module.exports = class AddonManager {
           missingThemes.push(addonId);
         }
 
-        this[this._type].get(addonId)._load();
+        this[this.type].get(addonId)._load();
       }
     }
 
@@ -157,14 +157,14 @@ module.exports = class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this._type)}: (${addonId})`);
+      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: (${addonId})`);
     }
 
-    if (this._type !== 'themes' && addon._ready) {
-      return this.error(`Tried to load an already-loaded ${toSingular(this._type)}: (${addonId})`);
+    if (this.type !== 'themes' && addon._ready) {
+      return this.error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
     }
 
-    vizality.settings.set(`disabled${toTitleCase(this._type)}`, vizality.settings.get(`disabled${toTitleCase(this._type)}`, [])
+    vizality.settings.set(`disabled${toTitleCase(this.type)}`, vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
       .filter(addon => addon !== addonId));
 
     addon._load();
@@ -176,14 +176,14 @@ module.exports = class AddonManager {
     if (!addon) {
       console.log(addonId);
       console.log(addon);
-      throw new Error(`Tried to disable a non-installed ${toSingular(this._type)}: (${addonId})`);
+      throw new Error(`Tried to disable a non-installed ${toSingular(this.type)}: (${addonId})`);
     }
 
-    if (this._type !== 'themes' && !addon._ready) {
-      return this.error(`Tried to unload a non-loaded ${toSingular(this._type)}: (${addon})`);
+    if (this.type !== 'themes' && !addon._ready) {
+      return this.error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
     }
 
-    vizality.settings.set(`disabled${toTitleCase(this._type)}`, [ ...vizality.settings.get(`disabled${toTitleCase(this._type)}`, []), addonId ]);
+    vizality.settings.set(`disabled${toTitleCase(this.type)}`, [ ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []), addonId ]);
 
     addon._unload();
   }
@@ -204,7 +204,7 @@ module.exports = class AddonManager {
 
   async uninstall (addonId) {
     await this.unmount(addonId);
-    await removeDirRecursive(resolve(this._dir, addonId));
+    await removeDirRecursive(resolve(this.dir, addonId));
   }
 
   _handleError (errorType, args) {
@@ -263,7 +263,7 @@ module.exports = class AddonManager {
     }
   }
 
-  log (...data) { log(_module, toSingular(this._type), null, ...data); }
-  warn (...data) { warn(_module, toSingular(this._type), null, ...data); }
-  error (...data) { error(_module, toSingular(this._type), null, ...data); }
+  log (...data) { log(_module, toSingular(this.type), null, ...data); }
+  warn (...data) { warn(_module, toSingular(this.type), null, ...data); }
+  error (...data) { error(_module, toSingular(this.type), null, ...data); }
 };
