@@ -20,7 +20,7 @@ module.exports = class Theme extends Updatable {
     if (!this.applied) {
       this.applied = true;
       const style = createElement('style', {
-        id: `theme-${this.entityID}`,
+        id: `theme-${this.addonId}`,
         'vz-style': true,
         'vz-theme': true
       });
@@ -41,7 +41,7 @@ module.exports = class Theme extends Updatable {
     if (this.applied) {
       this.applied = false;
       this.compiler.off('src-update', this._doCompile);
-      document.getElementById(`theme-${this.entityID}`).remove();
+      document.getElementById(`theme-${this.addonId}`).remove();
       this.compiler.disableWatcher();
     }
   }

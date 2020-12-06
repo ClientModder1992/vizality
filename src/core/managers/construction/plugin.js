@@ -33,7 +33,7 @@ class Plugin extends AddonManager {
     try {
       const PluginClass = require(resolve(this.dir, pluginId));
       Object.defineProperties(PluginClass.prototype, {
-        entityID: {
+        addonId: {
           get: () => pluginId,
           set: () => {
             throw new Error('Plugins cannot update their ID at runtime!');
@@ -69,7 +69,7 @@ class Plugin extends AddonManager {
     const isOverlay = (/overlay/).test(location.pathname);
     readdirSync(this.dir).sort(this._sortPlugins).forEach(filename => !this.isInstalled(filename) && this.mount(filename));
     for (const plugin of [ ...this.plugins.values() ]) {
-      if (vizality.settings.get('disabledPlugins', []).includes(plugin.entityID)) {
+      if (vizality.settings.get('disabledPlugins', []).includes(plugin.addonId)) {
         continue;
       }
       if (
@@ -77,11 +77,11 @@ class Plugin extends AddonManager {
         (plugin.manifest.appMode === 'app' && !isOverlay) ||
         plugin.manifest.appMode === 'both'
       ) {
-        if (sync && !this.get(plugin.entityID).ready) {
-          this.load(plugin.entityID);
-          missingPlugins.push(plugin.entityID);
+        if (sync && !this.get(plugin.addonId).ready) {
+          this.load(plugin.addonId);
+          missingPlugins.push(plugin.addonId);
         } else if (!sync) {
-          this.load(plugin.entityID);
+          this.load(plugin.addonId);
         }
       } else {
         this.plugins.delete(plugin);

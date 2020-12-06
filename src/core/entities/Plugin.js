@@ -18,7 +18,7 @@ const Updatable = require('./Updatable');
 module.exports = class Plugin extends Updatable {
   constructor () {
     super(vizality.manager.plugins._dir);
-    this.settings = vizality.api.settings.buildCategoryObject(this.entityID);
+    this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
     this._ready = false;
     this._watcherEnabled = true;
@@ -26,11 +26,6 @@ module.exports = class Plugin extends Updatable {
     this._module = 'Plugin';
     this._submodule = this.constructor.name;
     this._submoduleColor = this.manifest.color || null;
-  }
-
-  // Getters
-  get isInternal () {
-    return this.entityID.startsWith('vz-');
   }
 
   get dependencies () {
@@ -56,8 +51,8 @@ module.exports = class Plugin extends Updatable {
   }
 
   get dependents () {
-    const dependents = [ ...vizality.manager.plugins.values ].filter(p => p.manifest.dependencies.includes(this.entityID));
-    return [ ...new Set(dependents.map(d => d.entityID).concat(...dependents.map(d => d.dependents))) ];
+    const dependents = [ ...vizality.manager.plugins.values ].filter(p => p.manifest.dependencies.includes(this.addonId));
+    return [ ...new Set(dependents.map(d => d.addonId).concat(...dependents.map(d => d.dependents))) ];
   }
 
   /**
@@ -72,7 +67,7 @@ module.exports = class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(Directories.PLUGINS, this.entityID, path);
+      resolvedPath = join(Directories.PLUGINS, this.addonId, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
@@ -82,7 +77,7 @@ module.exports = class Plugin extends Updatable {
     const id = Math.random().toString(36).slice(2);
     const compiler = resolveCompiler(resolvedPath);
     const style = createElement('style', {
-      id: `style-${this.entityID}-${id}`,
+      id: `style-${this.addonId}-${id}`,
       'vz-style': '',
       'vz-plugin': ''
     });
@@ -118,7 +113,7 @@ module.exports = class Plugin extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      await vizality.manager.plugins.remount(this.entityID);
+      await vizality.manager.plugins.remount(this.addonId);
     }
     return success;
   }
@@ -152,7 +147,7 @@ module.exports = class Plugin extends Updatable {
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
         if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return;
-        vizality.manager.plugins.remount(_this.entityID);
+        vizality.manager.plugins.remount(_this.addonId);
       }
     });
   }
@@ -198,7 +193,7 @@ module.exports = class Plugin extends Updatable {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`style-${this.entityID}-${id}`).remove();
+        document.getElementById(`style-${this.addonId}-${id}`).remove();
       }
 
       this.styles = {};

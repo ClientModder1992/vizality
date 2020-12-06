@@ -16,7 +16,7 @@ module.exports = async () => {
       };
     }
 
-    // Make Vizality routes open in the app
+    // Make Vizality protocol links open in the app
     if (new RegExp(/vizality:\/\//i).test(res.props.href)) {
       const route = res.props.href.replace(/vizality:\/\//i, '');
       res.props.onClick = e => {

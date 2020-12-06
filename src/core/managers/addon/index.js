@@ -71,7 +71,7 @@ module.exports = class AddonManager {
     try {
       const PluginClass = require(resolve(this._dir, pluginID));
       Object.defineProperties(PluginClass.prototype, {
-        entityID: {
+        addonId: {
           get: () => pluginID,
           set: () => {
             throw new Error(`${toTitleCase(this._type)} cannot update their ID at runtime!`);
@@ -203,10 +203,6 @@ module.exports = class AddonManager {
   }
 
   async uninstall (addonId) {
-    if (this.isInternal(addonId)) {
-      throw new Error(`You cannot uninstall an internal ${toSingular(this._type)}. (Tried to uninstall: ${addonId})`);
-    }
-
     await this.unmount(addonId);
     await removeDirRecursive(resolve(this._dir, addonId));
   }

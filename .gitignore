@@ -5,7 +5,6 @@ package-lock.json
 
 addons/plugins/*
 !addons/plugins/.exists
-!addons/plugins/vz-*
 
 addons/themes/*
 !addons/themes/.exists
@@ -16,7 +15,6 @@ settings/*.json
 *.nogit.*
 
 debug.log
+main.log
 
 addons/plugins/vz-snippets/snippets/*
-
-main.log

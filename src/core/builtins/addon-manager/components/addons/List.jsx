@@ -190,7 +190,11 @@ module.exports = React.memo(({ type, tab, search }) => {
   };
 
   const _uninstall = (addonId) => {
+    console.log('???');
+    console.log(addonId);
     const addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
+    console.log(addons);
+    console.log(type);
     openModal(() => (
       <Confirm
         red
@@ -222,10 +226,10 @@ module.exports = React.memo(({ type, tab, search }) => {
         display={display}
         type={type}
         manifest={item.manifest}
-        addonId={item.entityID}
-        isEnabled={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
-        onToggle={async v => _toggle(item.entityID, v)}
-        onUninstall={() => _uninstall(item.entityID)}
+        addonId={item.addonId}
+        isEnabled={vizality.manager[toPlural(type)].isEnabled(item.addonId)}
+        onToggle={async v => _toggle(item.addonId, v)}
+        onUninstall={() => _uninstall(item.addonId)}
         showPreviewImages={previewImages}
       />
     );

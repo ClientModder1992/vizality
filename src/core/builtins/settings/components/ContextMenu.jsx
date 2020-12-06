@@ -62,13 +62,13 @@ module.exports = React.memo(() => {
   const renderContextItem = (item, type) => {
     return (
       <Menu.MenuCheckboxItem
-        id={item.entityID}
+        id={item.addonId}
         label={item.manifest.name}
-        checked={vizality.manager[toPlural(type)].isEnabled(item.entityID)}
+        checked={vizality.manager[toPlural(type)].isEnabled(item.addonId)}
         action={() => {
-          vizality.manager[toPlural(type)].isEnabled(item.entityID)
-            ? vizality.manager[toPlural(type)].disable(item.entityID)
-            : vizality.manager[toPlural(type)].enable(item.entityID);
+          vizality.manager[toPlural(type)].isEnabled(item.addonId)
+            ? vizality.manager[toPlural(type)].disable(item.addonId)
+            : vizality.manager[toPlural(type)].enable(item.addonId);
           forceUpdate();
         }}
       />

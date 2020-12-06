@@ -47,9 +47,9 @@ module.exports = {
     return {
       commands:
         plugins
-          .filter(plugin => plugin && plugin.entityID.includes(args[0]))
+          .filter(plugin => plugin && plugin.addonId.includes(args[0]))
           .map(plugin => ({
-            command: plugin.entityID,
+            command: plugin.addonId,
             description: plugin.manifest.description
           })),
       header: 'Vizality Plugin List'

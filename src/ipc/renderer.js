@@ -53,6 +53,7 @@ if (!window.__SPLASH__) {
       case '@vizality/react':
       case '@vizality/util':
       case '@vizality/webpack':
+      case '@vizality/modal':
       case 'electron':
         return require(module);
       default:

@@ -40,8 +40,8 @@ module.exports = class RPC extends Builtin {
         const data = JSON.stringify({
           code: 69,
           vizality: vizality.git,
-          plugins: [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal).map(p => p.entityID),
-          themes: [ ...vizality.manager.themes.values ].filter(t => t.isTheme).map(t => t.entityID)
+          plugins: [ ...vizality.manager.plugins.values ].filter(p => !p.isInternal).map(p => p.addonId),
+          themes: [ ...vizality.manager.themes.values ].filter(t => t.isTheme).map(t => t.addonId)
         });
 
         res.setHeader('Access-Control-Allow-Origin', '*');

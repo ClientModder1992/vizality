@@ -6,21 +6,21 @@ const { join } = require('path');
 const exec = promisify(cp.exec);
 
 /**
- * @property {string} entityID
+ * @property {string} addonId
  * @property {string} entityPath
  * @property {string} updateIdentifier
  */
 module.exports = class Updatable extends Events {
-  constructor (basePath, entityID, updateIdentifier) {
+  constructor (basePath, addonId, updateIdentifier) {
     super();
     this.basePath = basePath;
-    if (!this.entityID) {
+    if (!this.addonId) {
       // It might be pre-defined by plugin manager
-      this.entityID = entityID;
+      this.addonId = addonId;
     }
-    this.entityPath = join(this.basePath, this.entityID);
+    this.entityPath = join(this.basePath, this.addonId);
     if (!updateIdentifier) {
-      updateIdentifier = `${this.basePath.split(/[\\/]/).pop()}_${this.entityID}`;
+      updateIdentifier = `${this.basePath.split(/[\\/]/).pop()}_${this.addonId}`;
     }
     this.updateIdentifier = updateIdentifier;
   }
@@ -33,7 +33,7 @@ module.exports = class Updatable extends Events {
    * @returns {boolean} Whether this can be updated or not
    */
   isUpdatable () {
-    return existsSync(join(this.basePath, this.entityID, '.git'));
+    return existsSync(join(this.basePath, this.addonId, '.git'));
   }
 
   async _checkForUpdates () {
