@@ -21,7 +21,7 @@ module.exports = React.memo(props => {
 
   const _handleStickyChange = (status, element) => {
     setSticky(status);
-    const dashboard = document.querySelector('.vizality-dashboard-layout');
+    const dashboard = document.querySelector('.vz-dashboard-layout');
     if (status === 'stuck') {
       if (!dashboard) return;
       element.style.width = `${getElementDimensions(dashboard).width}px`;

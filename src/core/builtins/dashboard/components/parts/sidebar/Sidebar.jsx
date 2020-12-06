@@ -7,11 +7,11 @@ const Item = require('./Item');
 
 const Header = React.memo(({ children }) => {
   const { header } = getModule('header', 'item', 'separator');
-  return <h2 className={joinClassNames('vizality-dashboard-sidebar-header', header)}>{children}</h2>;
+  return <h2 className={joinClassNames('vz-dashboard-sidebar-header', header)}>{children}</h2>;
 });
 
 const Separator = React.memo(props =>
-  <div className='vizality-dashboard-sidebar-separator' {...props}></div>
+  <div className='vz-dashboard-sidebar-separator' {...props}></div>
 );
 
 const SubItem = React.memo(({ label, path, action, launch }) =>
@@ -19,7 +19,7 @@ const SubItem = React.memo(({ label, path, action, launch }) =>
 );
 
 module.exports = React.memo(() =>
-  <AdvancedScrollerThin className='vizality-dashboard-sidebar'>
+  <AdvancedScrollerThin className='vz-dashboard-sidebar'>
     <Header>Vizality Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />
     <Item icon='Wrench' label='Settings' path='/settings' />

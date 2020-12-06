@@ -3,7 +3,7 @@ const { getModule } = require('@vizality/webpack');
 const { Icon, Divider } = require('@vizality/components');
 const { React } = require('@vizality/react');
 
-module.exports = React.memo(({ icon, heading, subheading, className, hasPadding, hasBackground, children }) => {
+module.exports = React.memo(({ icon, heading, subheading, className, children }) => {
   const { base } = getModule('base');
   const { content } = getModule('wrappedLayout');
   const { marginBottom20 } = getModule('marginBottom20');
@@ -11,17 +11,16 @@ module.exports = React.memo(({ icon, heading, subheading, className, hasPadding,
   const { headerSubtext } = getModule('headerSubtext');
 
   return (
-    <div className={joinClassNames('vizality-dashboard-content', className, { 'vz-hasPadding': hasPadding, 'vz-hasBackground': hasBackground })}>
-      {heading && <div className={`vizality-dashboard-content-header-wrapper ${marginBottom20}`}>
-        <div className='vizality-dashboard-content-header-inner-wrapper'>
-          {hasBackground && <div className='vizality-dashboard-content-header-background' />}
-          {icon && <div className='vizality-dashboard-content-header-icon-wrapper'>
-            <Icon className='vizality-dashboard-content-header-icon' name={icon} width={'100%'} height={'100%'} />
+    <div className={joinClassNames('vz-dashboard-content', className)}>
+      {heading && <div className={`vz-dashboard-content-header-wrapper ${marginBottom20}`}>
+        <div className='vz-dashboard-content-header-inner-wrapper'>
+          {icon && <div className='vz-dashboard-content-header-icon-wrapper'>
+            <Icon className='vz-dashboard-content-header-icon' name={icon} width={'100%'} height={'100%'} />
           </div>}
-          <h1 className={`vizality-dashboard-content-header ${base} ${content}`}>{heading}</h1>
+          <h1 className={`vz-dashboard-content-header ${base} ${content}`}>{heading}</h1>
         </div>
         {subheading && <>
-          <h4 className={`vizality-dashboard-content-header-subtext ${h1} ${headerSubtext}`}>
+          <h4 className={`vz-dashboard-content-header-subtext ${h1} ${headerSubtext}`}>
             {subheading}
           </h4>
           <Divider />

@@ -1,6 +1,6 @@
 @use '@vizality/sass' as *;
 
-.vizality-dashboard-content {
+.vz-dashboard-content {
   &-header {
     font-size: 30px;
     font-weight: 700;
@@ -63,20 +63,20 @@
     }
   }
   &.vz-hasBackground {
-    .vizality-dashboard-content-header-inner-wrapper {
+    .vz-dashboard-content-header-inner-wrapper {
       min-height: 200px;
       position: relative;
       padding: 40px;
       box-sizing: border-box;
     }
-    .vizality-dashboard-content-header-wrapper {
+    .vz-dashboard-content-header-wrapper {
       margin: 0;
     }
-    .vizality-dashboard-content-header-icon-wrapper {
+    .vz-dashboard-content-header-icon-wrapper {
       @include size(60px);
       position: relative;
     }
-    .vizality-dashboard-content-header-icon {
+    .vz-dashboard-content-header-icon {
       position: absolute;
       top: 50%;
       left: 50%;

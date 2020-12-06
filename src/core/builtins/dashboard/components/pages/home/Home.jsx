@@ -8,12 +8,12 @@ const CTA = require('./CTA');
 
 module.exports = React.memo(() => {
   return (
-    <Layout className='vizality-dashboard-page-home' isFullWidth>
+    <Layout className='vz-dashboard-home'>
       <Content>
-        <Section className='cta'>
+        <Section className='vz-dashboard-home-section-cta'>
           <CTA />
         </Section>
-        <Section className='features' hasPadding>
+        <Section className='vz-dashboard-home-section-features'>
           <Features />
         </Section>
       </Content>

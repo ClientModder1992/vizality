@@ -1,2 +1,14 @@
+@use '@vizality/sass' as *;
+
 @use 'cta';
 @use 'features';
+ 
+.vz-dashboard-home {
+  &.vz-dashboard-layout {
+    padding: 0;
+    max-width: 100%;
+  }
+  .vz-wave-divider {
+    color: var('background-primary');
+  }
+}

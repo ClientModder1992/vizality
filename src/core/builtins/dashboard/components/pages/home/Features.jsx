@@ -3,18 +3,18 @@ const { React } = require('@vizality/react');
 
 const Card = React.memo(({ icon, header, description, buttonText, path }) => {
   return (
-    <div className='vizality-dashboard-page-home-features-card-wrapper'>
-      <div className='vizality-dashboard-page-home-features-card'>
-        <Icon name={icon} className='vz-home-features-icon-wrapper' iconClassName='vz-home-features-icon' width={'100%'} height={'100%'} />
-        <div className='vizality-dashboard-page-home-features-card-header'>
+    <div className='vz-dashboard-home-features-card-wrapper'>
+      <div className='vz-dashboard-home-features-card'>
+        <Icon name={icon} className='vz-dashboard-home-features-icon-wrapper' iconClassName='vz-dashboard-home-features-icon' width={'100%'} height={'100%'} />
+        <div className='vz-dashboard-home-features-card-header'>
           {header}
         </div>
-        <div className='vizality-dashboard-page-home-features-card-body'>
+        <div className='vz-dashboard-home-features-card-body'>
           {description}
         </div>
-        <div className='vizality-dashboard-page-home-features-card-footer'>
+        <div className='vz-dashboard-home-features-card-footer'>
           <Button
-            className='vizality-dashboard-page-home-features-button'
+            className='vz-dashboard-home-features-button'
             onClick={() => vizality.api.router.navigate(path)}
             size={Button.Sizes.LARGE}
           >
@@ -28,8 +28,8 @@ const Card = React.memo(({ icon, header, description, buttonText, path }) => {
 
 module.exports = React.memo(() => {
   return (
-    <div className='vizality-dashboard-page-home-features'>
-      <div className='vizality-dashboard-page-home-features-inner-wrapper'>
+    <div className='vz-dashboard-home-features-wrapper'>
+      <div className='vz-dashboard-home-features'>
         <Card
           icon='Plugin'
           header='Discover Plugins'

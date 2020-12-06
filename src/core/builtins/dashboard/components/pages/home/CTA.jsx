@@ -6,7 +6,7 @@ const { Guild } = require('@vizality/constants');
 module.exports = React.memo(() => {
   const [ hasJoinedDiscord, setHasJoined ] = useState();
   const { getCurrentUser } = getModule('getCurrentUser');
-  const currentUserName = getCurrentUser().username;
+  const { username } = getCurrentUser();
   const guilds = getModule('getGuild', 'getGuilds').getGuilds();
 
   useEffect(() => {
@@ -14,23 +14,23 @@ module.exports = React.memo(() => {
   }, [ hasJoinedDiscord ]);
 
   return (
-    <div className='vz-home-cta'>
-      <div className='vz-home-cta-overlay-background'>
-        <div className='vz-home-cta-background' />
+    <div className='vz-dashboard-home-cta'>
+      <div className='vz-dashboard-home-cta-overlay-background'>
+        <div className='vz-dashboard-home-cta-background' />
       </div>
-      <div className='vz-home-cta-content'>
-        <Icon className='vz-home-cta-content-icon-wrapper' iconClassName='vz-home-cta-content-icon' name='Vizality' width='100%' height='100%' />
-        <div className='vz-home-cta-content-header-wrapper'>
-          <h1 className='vz-home-cta-content-header'>Welcome, {currentUserName}!</h1>
-          <h3 className='vz-home-cta-content-subtext'>
+      <div className='vz-dashboard-home-cta-content'>
+        <Icon className='vz-dashboard-home-cta-content-icon-wrapper' iconClassName='vz-dashboard-home-cta-content-icon' name='Vizality' width='100%' height='100%' />
+        <div className='vz-dashboard-home-cta-content-header-wrapper'>
+          <h1 className='vz-dashboard-home-cta-content-header'>Welcome, {username}!</h1>
+          <h3 className='vz-dashboard-home-cta-content-subtext'>
             You've made the right choice. The power of customization is now at your fingertips. Check out the features below to learn how to harness your newfound power.
             {!hasJoinedDiscord && <>
               Make sure you check out the Discord server, we'd love to have you!
             </>}
           </h3>
-          {!hasJoinedDiscord && <div className='vz-home-cta-content-buttons-wrapper'>
+          {!hasJoinedDiscord && <div className='vz-dashboard-home-cta-content-buttons-wrapper'>
             <Button
-              className='vz-home-cta-content-button'
+              className='vz-dashboard-home-cta-content-button'
               onClick={() => {
                 const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
                 const pop = getModule('popLayer');
@@ -46,8 +46,8 @@ module.exports = React.memo(() => {
           </div>}
         </div>
       </div>
-      <Icon className='vz-home-cta-icon-wrapper' name='PersonWaving' width='100%' height='100%' />
-      <WaveDivider color='var(--background-primary)' />
+      <Icon className='vz-dashboard-home-cta-icon-wrapper' name='PersonWaving' width='100%' height='100%' />
+      <WaveDivider />
     </div>
   );
 });

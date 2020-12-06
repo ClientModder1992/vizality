@@ -20,11 +20,11 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
           if (disabled) return;
           // @todo Make this... not so bad.
           // eslint-disable-next-line consistent-this
-          const _this = e.target.closest('.vizality-dashboard-sidebar-item');
+          const _this = e.target.closest('.vz-dashboard-sidebar-item');
           if (_this &&
-            (e.target === _this.querySelector('.vizality-dashboard-sidebar-auxillary-icon') ||
-            _this.querySelector('.vizality-dashboard-sidebar-auxillary-icon') &&
-            _this.querySelector('.vizality-dashboard-sidebar-auxillary-icon').contains(e.target))) {
+            (e.target === _this.querySelector('.vz-dashboard-sidebar-auxillary-icon') ||
+            _this.querySelector('.vz-dashboard-sidebar-auxillary-icon') &&
+            _this.querySelector('.vz-dashboard-sidebar-auxillary-icon').contains(e.target))) {
             return;
           }
 
@@ -44,8 +44,8 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
           expandable,
           disabled,
           expanded: isSubItemSelected && !subItem && expandable,
-          'vizality-dashboard-sidebar-item': !subItem,
-          'vizality-dashboard-sidebar-subitem': subItem,
+          'vz-dashboard-sidebar-item': !subItem,
+          'vz-dashboard-sidebar-subitem': subItem,
           'subitem-is-selected': isSubItemSelected,
           [`${selectedCategoryItem} ${selectedClass}`]: (selected && !isSubItemSelected) || (selected && isSubItemSelected && subItem) || (selected && isSubItemSelected && !expandable),
           [`${clickable}`]: !selected || isSubItemSelected
@@ -55,14 +55,14 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
         )}
       >
         <div className={joinClassNames({
-          'vizality-dashboard-sidebar-item-inner': !subItem,
-          'vizality-dashboard-sidebar-subitem-inner': subItem
+          'vz-dashboard-sidebar-item-inner': !subItem,
+          'vz-dashboard-sidebar-subitem-inner': subItem
         },
         layout,
         wrappedLayout,
         itemInner
         )}>
-          {icon && <div className={`vizality-dashboard-sidebar-item-icon-wrapper ${avatar}`}>
+          {icon && <div className={`vz-dashboard-sidebar-item-icon-wrapper ${avatar}`}>
             {icon === 'Scissors'
               /*
                * Just a small adjustment to make the Scissors icon appear about the same size
@@ -73,28 +73,28 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
           </div>}
           <div className={content}>{label}</div>
           {expandable && <Clickable
-            className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-collapser'
-            onClick={(e) => e.target.closest('.vizality-dashboard-sidebar-item').classList.toggle('expanded')}
+            className='vz-dashboard-sidebar-auxillary-icon-wrapper vz-dashboard-sidebar-collapser'
+            onClick={(e) => e.target.closest('.vz-dashboard-sidebar-item').classList.toggle('expanded')}
           >
-            <Icon name='RightCaret' width='18' height='18' className='vizality-dashboard-sidebar-auxillary-icon' />
+            <Icon name='RightCaret' width='18' height='18' className='vz-dashboard-sidebar-auxillary-icon' />
           </Clickable>}
           {launch && <Tooltip
             text={auxillaryIconTooltipText || 'Open'}
-            className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-launcher'
+            className='vz-dashboard-sidebar-auxillary-icon-wrapper vz-dashboard-sidebar-launcher'
           >
             <Clickable onClick={launch}>
-              <Icon name='Launch' width={18} height={18} className='vizality-dashboard-sidebar-auxillary-icon' />
+              <Icon name='Launch' width={18} height={18} className='vz-dashboard-sidebar-auxillary-icon' />
             </Clickable>
           </Tooltip>}
           {disabled && <Tooltip
             text={auxillaryIconTooltipText}
-            className='vizality-dashboard-sidebar-auxillary-icon-wrapper vizality-dashboard-sidebar-warning'
+            className='vz-dashboard-sidebar-auxillary-icon-wrapper vz-dashboard-sidebar-warning'
           >
-            {/* <Icon name='WarningCircle' width={18} height={18} className='vizality-dashboard-sidebar-auxillary-icon' /> */}
+            {/* <Icon name='WarningCircle' width={18} height={18} className='vz-dashboard-sidebar-auxillary-icon' /> */}
           </Tooltip>}
         </div>
       </Clickable>
-      {expandable && children && <div className='vizality-dashboard-sidebar-subitems'>
+      {expandable && children && <div className='vz-dashboard-sidebar-subitems'>
         {children}
       </div>}
     </>

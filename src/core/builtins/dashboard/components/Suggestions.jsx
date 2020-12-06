@@ -59,7 +59,7 @@ module.exports = React.memo(
         <CardsContainer loading={suggestions.state !== States.LOADED}>
           {filteredSuggestions && filteredSuggestions.map(s => (
             <Clickable key={s.id} className={card} onClick={() => openExternal(`https://github.com/powercord-community/suggestions/issues/${s.id}`)}>
-              <div className='vizality-dashboard-suggestion'>
+              <div className='vz-dashboard-suggestion'>
                 <div className={title}>
                   <div className={`${colorHeaderPrimary} ${size16} ${guildName}`}>{s.title}</div>
                 </div>
