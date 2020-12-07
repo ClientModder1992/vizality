@@ -1,7 +1,7 @@
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
 
-const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem }, Clickable, Button, FormNotice, FormTitle, Tooltip } = require('@vizality/components');
+const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem, FormTitle }, Clickable, Button, FormNotice, Tooltip } = require('@vizality/components');
 const { Messages, chosenLocale: currentLocale } = require('@vizality/i18n');
 const { Repositories, Directories } = require('@vizality/constants');
 const { React, React: { useState } } = require('@vizality/react');
@@ -34,7 +34,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   const failed = getSetting('failed', false);
 
   const updates = getSetting('updates', []);
-  const disabledEntities = getSetting('entities_disabled', []);
+  const disabledAddons = getSetting('addons_disabled', []);
   const checkingProgress = getSetting('checking_progress', [ 0, 0 ]);
   const last = time(getSetting('last_check', false)).calendar();
 
@@ -61,8 +61,6 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
     icon = <Icons.UpToDate/>;
     title = Messages.VIZALITY_UPDATES_UP_TO_DATE;
   }
-
-  const { colorStandard } = getModule('colorStandard');
 
   const _renderFormNotice = (title, body) => {
     return <FormNotice
@@ -250,7 +248,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
           <b>Listings</b>
           <div className='row'>
-            {createPathReveal('Vizality Path', vizality.basePath)}
+            {createPathReveal('Vizality Path', vizality.baseDir)}
             {createPathReveal('Discord Path', discordPath)}
             <div className='full-column'>Experiments:&#10;{experimentOverrides ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
             <div className='full-column'>
@@ -275,83 +273,102 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   return (
-    <div className={`vizality-updater ${colorStandard}`}>
+    <>
       {awaitingReload
         ? renderReload()
         : isUnsupported && renderUnsupported()}
-      <div className='top-section'>
-        <div className='icon'>{icon}</div>
-        <div className='status'>
-          <h3>{title}</h3>
-          {!disabled && !updating && (!checking || checkingProgress[1] > 0) && <div>
-            {paused
-              ? Messages.VIZALITY_UPDATES_PAUSED_RESUME
-              : checking
-                ? Messages.VIZALITY_UPDATES_CHECKING_STATUS.format({
-                  checked: checkingProgress[0],
-                  total: checkingProgress[1]
-                })
-                : Messages.VIZALITY_UPDATES_LAST_CHECKED.format({ date: last })}
-          </div>}
+      <div className='vz-builtin-updater-top-section'>
+        <div className='vz-builtin-updater-top-section-header'>
+          <div className='vz-builtin-updater-top-section-icon'>
+            {icon}
+          </div>
+          <div className='vz-builtin-updater-top-section-status'>
+            <h3 className='vz-builtin-updater-top-section-title'>
+              {title}
+            </h3>
+            {!disabled && !updating && (!checking || checkingProgress[1] > 0) && <div className='vz-builtin-updater-top-section-subtitle'>
+              {paused
+                ? Messages.VIZALITY_UPDATES_PAUSED_RESUME
+                : checking
+                  ? Messages.VIZALITY_UPDATES_CHECKING_STATUS.format({
+                    checked: checkingProgress[0],
+                    total: checkingProgress[1]
+                  })
+                  : Messages.VIZALITY_UPDATES_LAST_CHECKED.format({ date: last })}
+            </div>}
+          </div>
+          <div className='vz-builtin-updater-top-section-about'>
+            <div className='vz-builtin-updater-top-section-about-column'>
+              <span className='vz-builtin-updater-top-section-about-title'>
+                {Messages.VIZALITY_UPDATES_UPSTREAM}
+              </span>
+              <span className='vz-builtin-updater-top-section-about-title'>
+                {Messages.VIZALITY_UPDATES_REVISION}
+              </span>
+              <span className='vz-builtin-updater-top-section-about-title'>
+                {Messages.VIZALITY_UPDATES_BRANCH}
+              </span>
+            </div>
+            <div className='vz-builtin-updater-top-section-about-column'>
+              <span className='vz-builtin-updater-top-section-about-value'>
+                {vizality.git.upstream.replace(Repositories.VIZALITY, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}
+              </span>
+              <span className='vz-builtin-updater-top-section-about-value'>
+                {vizality.git.revision.substring(0, 7)}
+              </span>
+              <span className='vz-builtin-updater-top-section-about-value'>
+                {vizality.git.branch}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="about">
-          <div>
-            <span>{Messages.VIZALITY_UPDATES_UPSTREAM}</span>
-            <span>{vizality.git.upstream.replace(Repositories.VIZALITY, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}</span>
-          </div>
-          <div>
-            <span>{Messages.VIZALITY_UPDATES_REVISION}</span>
-            <span>{vizality.git.revision.substring(0, 7)}</span>
-          </div>
-          <div>
-            <span>{Messages.VIZALITY_UPDATES_BRANCH}</span>
-            <span>{vizality.git.branch}</span>
-          </div>
+        <div className='vz-builtin-updater-top-section-footer'>
+          {disabled || paused
+            ? <Button
+              size={Button.Sizes.SMALL}
+              color={Button.Colors.GREEN}
+              onClick={() => {
+                updateSetting('paused', false);
+                updateSetting('disabled', false);
+              }}
+            >
+              {disabled ? Messages.VIZALITY_UPDATES_ENABLE : Messages.VIZALITY_UPDATES_RESUME}
+            </Button>
+            : (!checking && !updating && <>
+              {updates.length > 0 && <Button
+                size={Button.Sizes.SMALL}
+                color={failed ? Button.Colors.RED : Button.Colors.GREEN}
+                onClick={() => failed ? _this.askForce() : _this.doUpdate()}
+              >
+                {failed ? Messages.VIZALITY_UPDATES_FORCE : Messages.VIZALITY_UPDATES_UPDATE}
+              </Button>}
+              <Button
+                size={Button.Sizes.SMALL}
+                onClick={() => _this.checkForUpdates(true)}
+              >
+                {Messages.VIZALITY_UPDATES_CHECK}
+              </Button>
+              <Button
+                size={Button.Sizes.SMALL}
+                color={Button.Colors.YELLOW}
+                onClick={() => askPauseUpdates()}
+              >
+                {Messages.VIZALITY_UPDATES_PAUSE}
+              </Button>
+              <Button
+                size={Button.Sizes.SMALL}
+                color={Button.Colors.RED}
+                onClick={() => askDisableUpdates(true, () => updateSetting('disabled', true))}
+              >
+                {Messages.VIZALITY_UPDATES_DISABLE}
+              </Button>
+            </>)}
         </div>
       </div>
-      <div className='buttons'>
-        {disabled || paused
-          ? <Button
-            size={Button.Sizes.SMALL}
-            color={Button.Colors.GREEN}
-            onClick={() => {
-              updateSetting('paused', false);
-              updateSetting('disabled', false);
-            }}
-          >
-            {disabled ? Messages.VIZALITY_UPDATES_ENABLE : Messages.VIZALITY_UPDATES_RESUME}
-          </Button>
-          : (!checking && !updating && <>
-            {updates.length > 0 && <Button
-              size={Button.Sizes.SMALL}
-              color={failed ? Button.Colors.RED : Button.Colors.GREEN}
-              onClick={() => failed ? _this.askForce() : _this.doUpdate()}
-            >
-              {failed ? Messages.VIZALITY_UPDATES_FORCE : Messages.VIZALITY_UPDATES_UPDATE}
-            </Button>}
-            <Button
-              size={Button.Sizes.SMALL}
-              onClick={() => _this.checkForUpdates(true)}
-            >
-              {Messages.VIZALITY_UPDATES_CHECK}
-            </Button>
-            <Button
-              size={Button.Sizes.SMALL}
-              color={Button.Colors.YELLOW}
-              onClick={() => askPauseUpdates()}
-            >
-              {Messages.VIZALITY_UPDATES_PAUSE}
-            </Button>
-            <Button
-              size={Button.Sizes.SMALL}
-              color={Button.Colors.RED}
-              onClick={() => askDisableUpdates(true, () => updateSetting('disabled', true))}
-            >
-              {Messages.VIZALITY_UPDATES_DISABLE}
-            </Button>
-          </>)}
-      </div>
-      {!disabled && !paused && !checking && updates.length > 0 && <div className='updates'>
+      {!disabled && !paused && !checking && updates.length > 0 && <div className='vz-builtin-updater-updates'>
+        <FormTitle className='vz-builtin-updater-updates-title'>
+          Pending Updates
+        </FormTitle>
         {updates.map(update => <Update
           {...update}
           key={update.id}
@@ -360,61 +377,50 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
           onDisable={() => askDisableUpdates(false, () => _this.disableUpdates(update))}
         />)}
       </div>}
-
-      {disabledEntities.length > 0 && <Category
+      {disabledAddons.length > 0 && <Category
         name={Messages.VIZALITY_UPDATES_DISABLED_SECTION}
+        description={Messages.VIZALITY_UPDATES_DISABLED_SECTION_DESC}
         opened={opened}
         onChange={() => setOpened(!opened)}
       >
-        {disabledEntities.map(entity => <div key={entity.id} className='update'>
-          <div className='title'>
-            <div className='icon'>
-              <Tooltip text={entity.icon} position='left'>
-                {React.createElement(Icons[entity.icon])}
-              </Tooltip>
-            </div>
-            <div className='name'>{entity.name}</div>
-            <div className='actions'>
-              <Button color={Button.Colors.GREEN} onClick={() => _this.enableUpdates(entity.id)}>
-                {Messages.VIZALITY_UPDATES_ENABLE}
-              </Button>
-            </div>
-          </div>
-        </div>)}
+        {disabledAddons.map(addon => <Update
+          {...addon}
+          disabled={true}
+          key={addon.id}
+          updating={updating}
+          onEnableUpdates={() => _this.enableUpdates(addon.id)}
+        />)}
       </Category>}
-      <FormTitle className='vizality-updater-ft'>{Messages.OPTIONS}</FormTitle>
-      {!disabled && <>
-        <SwitchItem
-          value={getSetting('automatic', false)}
-          onChange={() => toggleSetting('automatic')}
-          note={Messages.VIZALITY_UPDATES_OPTS_AUTO_DESC}
-        >
-          {Messages.VIZALITY_UPDATES_OPTS_AUTO}
-        </SwitchItem>
-        <TextInput
-          note={Messages.VIZALITY_UPDATES_OPTS_INTERVAL_DESC}
-          onChange={val => updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
-          defaultValue={getSetting('interval', 15)}
-          required={true}
-        >
-          {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}
-        </TextInput>
-        <ButtonItem
-          note={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS_DESC}
-          button={Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS}
-          onClick={() => _this.openLatestChangelog()}
-        >
-          {Messages.VIZALITY_UPDATES_OPTS_CHANGE_LOGS}
-        </ButtonItem>
-        <Category
-          name={Messages.VIZALITY_UPDATES_OPTS_DEBUG}
-          description={Messages.VIZALITY_UPDATES_OPTS_DEBUG_DESC}
-          opened={debugInfoOpened}
-          onChange={() => setDebugInfoOpened(!debugInfoOpened)}
-        >
-          {renderDebugInfo(time)}
-        </Category>
-      </>}
-    </div>
+      <div className='vz-builtin-updater-options'>
+        <FormTitle className='vz-builtin-updater-options-title'>
+          {Messages.OPTIONS}
+        </FormTitle>
+        {!disabled && <>
+          <SwitchItem
+            value={getSetting('automatic', false)}
+            onChange={() => toggleSetting('automatic')}
+            note={Messages.VIZALITY_UPDATES_OPTS_AUTO_DESC}
+          >
+            {Messages.VIZALITY_UPDATES_OPTS_AUTO}
+          </SwitchItem>
+          <TextInput
+            note={Messages.VIZALITY_UPDATES_OPTS_INTERVAL_DESC}
+            onChange={val => updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
+            defaultValue={getSetting('interval', 15)}
+            required={true}
+          >
+            {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}
+          </TextInput>
+          <Category
+            name={Messages.VIZALITY_UPDATES_OPTS_DEBUG}
+            description={Messages.VIZALITY_UPDATES_OPTS_DEBUG_DESC}
+            opened={debugInfoOpened}
+            onChange={() => setDebugInfoOpened(!debugInfoOpened)}
+          >
+            {renderDebugInfo(time)}
+          </Category>
+        </>}
+      </div>
+    </>
   );
 });

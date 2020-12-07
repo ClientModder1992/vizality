@@ -39,11 +39,11 @@ module.exports = class Updater extends Builtin {
 
     vizality.api.actions.registerAction({
       action: 'openLatestChangelog',
-      executor: this.openLatestChangelog.bind(this)
+      executor: () => this.openLatestChangelog()
     });
 
     vizality.api.settings.registerDashboardItem({
-      id: this.entityID,
+      id: this.addonId,
       path: 'updater',
       heading: 'Updater',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
@@ -83,42 +83,42 @@ module.exports = class Updater extends Builtin {
 
     this.settings.set('checking', true);
     this.settings.set('checking_progress', [ 0, 0 ]);
-    const disabled = this.settings.get('entities_disabled', []).map(e => e.id);
-    const skipped = this.settings.get('entities_skipped', []);
+    const disabled = this.settings.get('addons_disabled', []).map(e => e.id);
+    const skipped = this.settings.get('addons_skipped', []);
     const plugins = [ ...vizality.manager.plugins.values ];
     const themes = [ ...vizality.manager.themes.values ].filter(t => t.isTheme);
 
-    const entities = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());
+    const addons = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());
     if (!disabled.includes(vizality.updateIdentifier)) {
-      entities.push(vizality);
+      addons.push(vizality);
     }
 
     let done = 0;
     const updates = [];
-    const entitiesLength = entities.length;
-    const parallel = allConcurrent ? entitiesLength : this.settings.get('concurrency', 2);
+    const addonsLength = addons.length;
+    const parallel = allConcurrent ? addonsLength : this.settings.get('concurrency', 2);
     await Promise.all(Array(parallel).fill(null).map(async () => {
-      let entity;
-      while ((entity = entities.shift())) {
-        const repo = await entity.getGitRepo();
+      let addon;
+      while ((addon = addons.shift())) {
+        const repo = await addon.getGitRepo();
         if (repo) {
-          const shouldUpdate = await entity._checkForUpdates();
+          const shouldUpdate = await addon._checkForUpdates();
           if (shouldUpdate) {
-            const commits = await entity._getUpdateCommits();
-            if (commits[0] && skipped[entity.updateIdentifier] === commits[0].id) {
+            const commits = await addon._getUpdateCommits();
+            if (commits[0] && skipped[addon.updateIdentifier] === commits[0].id) {
               return;
             }
             updates.push({
-              id: entity.updateIdentifier,
-              name: entity.constructor.name,
-              icon: entity.__proto__.__proto__.constructor.name.replace('Updatable', 'Vizality'),
+              manifest: addon.manifest,
+              addonId: addon.addonId,
+              id: addon.updateIdentifier,
               commits,
               repo
             });
           }
         }
         done++;
-        this.settings.set('checking_progress', [ done, entitiesLength ]);
+        this.settings.set('checking_progress', [ done, addonsLength ]);
       }
     }));
 
@@ -135,8 +135,7 @@ module.exports = class Updater extends Builtin {
           icon: 'UpdateAvailable',
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
-            color: 'primary',
-            look: 'link',
+            color: 'grey',
             onClick: () => vizality.api.router.navigate('/dashboard/updater')
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
@@ -228,27 +227,27 @@ module.exports = class Updater extends Builtin {
 
   // UTILS
   skipUpdate (id, commit) {
-    this.settings.set('entities_skipped', {
-      ...this.settings.get('entities_skipped', {}),
+    this.settings.set('addons_skipped', {
+      ...this.settings.get('addons_skipped', {}),
       [id]: commit
     });
     this._removeUpdate(id);
   }
 
-  disableUpdates (entity) {
-    this.settings.set('entities_disabled', [
-      ...this.settings.get('entities_disabled', []),
+  disableUpdates (addon) {
+    this.settings.set('addons_disabled', [
+      ...this.settings.get('addons_disabled', []),
       {
-        id: entity.id,
-        name: entity.name,
-        icon: entity.icon
+        id: addon.id,
+        name: addon.name,
+        icon: addon.icon
       }
     ]);
-    this._removeUpdate(entity.id);
+    this._removeUpdate(addon.id);
   }
 
   enableUpdates (id) {
-    this.settings.set('entities_disabled', this.settings.get('entities_disabled', []).filter(d => d.id !== id));
+    this.settings.set('addons_disabled', this.settings.get('addons_disabled', []).filter(d => d.id !== id));
   }
 
   _removeUpdate (id) {
@@ -304,9 +303,9 @@ module.exports = class Updater extends Builtin {
         constructor (props) {
           super(props);
 
+          this.close = this.close.bind(this);
           this.onClose = props.onClose;
           this.onCloseRequest = props.onClose;
-          this.close = this.close.bind(this);
           this.handleScroll = () => void 0;
           this.track = () => void 0;
           this.oldRenderHeader = this.renderHeader;
@@ -346,7 +345,6 @@ module.exports = class Updater extends Builtin {
         }
 
         close () {
-          super.close();
           this.onClose();
         }
       }

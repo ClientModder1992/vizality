@@ -1,46 +1,97 @@
-const { Button } = require('@vizality/components');
+const { React, Router: { Link } } = require('@vizality/react');
+const { Button, Tooltip } = require('@vizality/components');
+const { string: { toPlural } } = require('@vizality/util');
+const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
 
-const Icons = require('./Icons');
+module.exports = React.memo(props => {
+  let { manifest, addonId, id, repo, commits, updating, onSkip, onDisable, disabled, onEnableUpdates } = props;
 
-module.exports = class Update extends React.PureComponent {
-  constructor () {
-    super();
-    this.plugin = vizality.manager.builtins.get('updater');
+  const type = id.split(/_(.+)/)[0].slice(0, -1);
+
+  // If no manifest, i.e. getting a disabled update addon manifest and addonId are not sent as props
+  if (!manifest) {
+    [ , addonId ] = id.split(/_(.+)/);
+    ({ manifest } = vizality.manager[`${type}s`].get(addonId));
   }
 
-  render () {
-    const { name, icon, repo, commits, updating, onSkip, onDisable } = this.props;
-    return <div className='update'>
-      <div className='title'>
-        <div className='icon'>
-          {React.createElement(Icons[icon])}
+  // @todo Use Discord module for this after it's set up.
+  const openProfile = (userId) => {
+    getModule('getUser').getUser(userId).then(() => getModule('open', 'fetchProfile').open(userId))
+      .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+        header: 'User Not Found',
+        content: `We were unable to locate that user.`,
+        type: 'error'
+      }));
+  };
+
+  return (
+    <div className='vz-builtin-updater-update'>
+      <div className='vz-builtin-updater-update-inner'>
+        <div className='vz-builtin-updater-update-icon-wrapper'>
+          <img
+            className='vz-builtin-updater-update-icon'
+            src={`vz-${type}://${addonId}/${manifest.icon}`}
+          />
         </div>
-        <div className='name'>{name}</div>
-        <div className='actions'>
-          {updating
-            ? <Button color={Button.Colors.GREEN} disabled>
-              {Messages.VIZALITY_UPDATES_UPDATING_ITEM}
+        <div className='vz-builtin-updater-update-metadata'>
+          <Link to={`/vizality/dashboard/${toPlural(type)}/${addonId}`} className='vz-builtin-updater-update-name'>
+            {manifest.name}
+          </Link>
+          <div
+            className='vz-builtin-updater-update-author'
+            onClick={() => openProfile(manifest.authorId)}
+            vz-author-id={manifest.authorId}
+          >
+            {manifest.author}
+          </div>
+          {disabled
+            ? <div className='vz-builtin-updater-update-summary'>
+              <div className='vz-builtin-updater-update-description'>
+                {manifest.description}
+              </div>
+            </div>
+            : <div className='vz-builtin-updater-update-summary'>
+              {commits.map(commit => {
+                return (
+                  <div key={commit.id} className='vz-builtin-updater-update-summary-inner'>
+                    <a
+                      className='vz-builtin-updater-update-summary-commit'
+                      href={`https://github.com/${repo}/commit/${commit.id}`}
+                      target='_blank'
+                    >
+                      <Tooltip text={commit.id}>
+                        <code>{commit.id.substring(0, 7)}</code>
+                      </Tooltip>
+                    </a>
+                    <span className='vz-builtin-updater-update-summary-message'>{commit.message}</span>
+                    <span className='vz-builtin-updater-update-summary-author'>—{commit.author}</span>
+                  </div>
+                );
+              })}
+            </div>
+          }
+        </div>
+        <div className='vz-builtin-updater-update-actions'>
+          {disabled
+            ? <Button size={Button.Sizes.SMALL} color={Button.Colors.GREEN} onClick={onEnableUpdates}>
+              {Messages.VIZALITY_UPDATES_ENABLE}
             </Button>
-            : <>
-              <Button look={Button.Looks.OUTLINED} color={Button.Colors.RED} onClick={onSkip}>
-                {Messages.VIZALITY_UPDATES_SKIP}
+            : updating
+              ? <Button size={Button.Sizes.SMALL} color={Button.Colors.GREEN} disabled>
+                {Messages.VIZALITY_UPDATES_UPDATING_ITEM}
               </Button>
-              <Button color={Button.Colors.RED} onClick={onDisable}>
-                {Messages.VIZALITY_UPDATES_DISABLE}
-              </Button>
-            </>}
+              : <>
+                <Button size={Button.Sizes.SMALL} color={Button.Colors.BRAND} onClick={onDisable}>
+                  {Messages.VIZALITY_UPDATES_DISABLE}
+                </Button>
+                <Button size={Button.Sizes.SMALL} color={Button.Colors.GREY} onClick={onSkip}>
+                  {Messages.VIZALITY_UPDATES_SKIP}
+                </Button>
+              </>
+          }
         </div>
       </div>
-      <div className='summary'>
-        {commits.map(commit => <div key={commit.id}>
-          <a href={`https://github.com/${repo}/commit/${commit.id}`} target='_blank'>
-            <code>{commit.id.substring(0, 7)}</code>
-          </a>
-          <span>{commit.message} - {commit.author}</span>
-        </div>)}
-      </div>
-    </div>;
-  }
-};
+    </div>
+  );
+});
