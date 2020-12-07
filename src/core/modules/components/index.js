@@ -38,6 +38,7 @@ Object.assign(exports, {
   HeaderBar: AsyncComponent.from(getModuleByDisplayName('HeaderBar', true)),
   TabBar: AsyncComponent.from(getModuleByDisplayName('TabBar', true)),
   Text: AsyncComponent.from(getModuleByDisplayName('Text', true)),
+  KeyboardShortcut: AsyncComponent.from(getModuleByDisplayName('KeyboardShortcut', true)),
   Flex: AsyncComponent.from(getModuleByDisplayName('Flex', true)),
   Tooltip: AsyncComponent.from((() => getModule('TooltipContainer').TooltipContainer)()),
   Helmet: AsyncComponent.from((() => getModule('HelmetProvider').Helmet)()),
