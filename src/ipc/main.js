@@ -90,7 +90,7 @@ function compileSass (_, file) {
 }
 
 ipcMain.on('VIZALITY_GET_PRELOAD', e => e.returnValue = e.sender._preload);
-ipcMain.on('VIZALITY_GET_HISTORY', e => e.returnValue = e.sender.history);
+ipcMain.on('VIZALITY_GET_HISTORY', e => e.returnValue = BrowserWindow.fromWebContents(e.sender).history);
 ipcMain.handle('VIZALITY_OPEN_DEVTOOLS', openDevTools);
 ipcMain.handle('VIZALITY_CLOSE_DEVTOOLS', closeDevTools);
 ipcMain.handle('VIZALITY_CACHE_CLEAR', clearCache);
