@@ -28,3 +28,5 @@ You can reach out to us on our Discord support server [here](https://discord.gg/
 
 ## Misc
 *to be announced*
+
+Fix Updater test
