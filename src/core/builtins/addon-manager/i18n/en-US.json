@@ -18,7 +18,7 @@
   "VIZALITY_ADDONS_PERMISSIONS_FS": "Read and write files on your computer",
   "VIZALITY_ADDONS_PERMISSIONS_KEYPRESSES": "Listen to keypresses",
   "VIZALITY_ADDONS_PERMISSIONS_USE_EUD": "Collect and use your data",
-  "VIZALITY_ADDONS_UNINSTALL": "Uninstall {count, plural, =1 {type} other {type}s}",
+  "VIZALITY_ADDONS_UNINSTALL": "Uninstall {count, plural, =1 {{type}} other {{type}s}}",
   "VIZALITY_ADDONS_UNINSTALL_SURE": "Are you sure you want to uninstall {count, plural, =1 {this {type}} other {these {type}s}}?",
   "VIZALITY_ADDONS_VERSION": "Version"
 }

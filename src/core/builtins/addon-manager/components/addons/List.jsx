@@ -2,7 +2,7 @@
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
-const { Confirm, Spinner, Card } = require('@vizality/components');
+const { Confirm, Spinner, Card, Text } = require('@vizality/components');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
@@ -146,7 +146,7 @@ module.exports = React.memo(({ type, tab, search }) => {
 
     // @todo Handle this. Not sure how or when this would happen, though.
     if (!addons.length) {
-      return console.log('error uhoh bad');
+      return console.log('Error, uhoh bad.');
     }
 
     const apply = async () => {
@@ -179,27 +179,23 @@ module.exports = React.memo(({ type, tab, search }) => {
         }}
         onCancel={closeModal}
       >
-        <div className='vizality-entity-modal'>
+        <Text>
           <span>{note}</span>
           <ul>
             {addons.map(p => <li key={p.id}>{vizality.manager[toPlural(type)].get(p).manifest.name}</li>)}
           </ul>
-        </div>
+        </Text>
       </Confirm>
     ));
   };
 
   const _uninstall = (addonId) => {
-    console.log('???');
-    console.log(addonId);
     const addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
-    console.log(addons);
-    console.log(type);
     openModal(() => (
       <Confirm
         red
-        header={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type, count: addons.length })}
-        confirmText={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type, count: addons.length })}
+        header={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type: toTitleCase(type), count: addons.length })}
+        confirmText={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type: toTitleCase(type), count: addons.length })}
         cancelText={Messages.CANCEL}
         onCancel={closeModal}
         onConfirm={async () => {
@@ -210,12 +206,12 @@ module.exports = React.memo(({ type, tab, search }) => {
           closeModal();
         }}
       >
-        <div className='vizality-entity-modal'>
+        <Text>
           <span>{Messages.VIZALITY_ADDONS_UNINSTALL_SURE.format({ type, count: addons.length })}</span>
-          <ul>
-            {addons.map(p => <li key={p.id}>{vizality.manager[toPlural(type)].get(p).manifest.name}</li>)}
+          <ul className='vz-uninstall-modal-ul'>
+            {addons.map(p => <li className='vz-uninstall-modal-li' key={p.id}>{vizality.manager[toPlural(type)].get(p).manifest.name}</li>)}
           </ul>
-        </div>
+        </Text>
       </Confirm>
     ));
   };

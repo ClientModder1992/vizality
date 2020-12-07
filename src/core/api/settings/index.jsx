@@ -73,7 +73,7 @@ module.exports = class SettingsAPI extends API {
       const Render = this.tabs[id].settings;
 
       vizality.api.router.registerRoute({
-        path: `/plugin/${id}`,
+        path: `/dashboard/plugins/${id}`,
         render: () =>
           <Layout>
             <Content heading='Settings' className='poo'>
