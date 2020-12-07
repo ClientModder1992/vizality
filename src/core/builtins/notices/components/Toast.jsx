@@ -55,61 +55,66 @@ module.exports = class Toast extends React.PureComponent {
       <div id={this.props.id}
         className={joinClassNames(
           this.props.className,
-          'vizality-toast', {
-            'vz-isClosing': this.props.closing,
+          'vz-toast', {
             [`vz-is${this.props.position}`]: this.props.position,
             'vz-isBottomRight': !this.props.position
           })}
-        onClick={() => {
-          clearTimeout(this.state.timeout);
-          vizality.api.notices.closeToast(this.props.id);
-        }}
         vz-toast-type={this.props.type || 'info'}
         style={this.props.style}
       >
-        <div className='vizality-toast-contents'>
+        <div className='vz-toast-inner'>
+          <Icon
+            name='Close'
+            size='18px'
+            className='vz-toast-close-wrapper'
+            iconClassName='vz-toast-close'
+            onClick={() => {
+              clearTimeout(this.state.timeout);
+              vizality.api.notices.closeToast(this.props.id);
+            }}
+          />
           {this.props.header && this.renderHeader()}
-          {this.props.content && this.renderContent()}
+          {this.renderFooter()}
         </div>
-        {this.renderFooter()}
         {this.state.timeout && !this.props.hideProgressBar && this.renderProgress()}
       </div>
     );
   }
 
   renderHeader () {
-    return <div className='vizality-toast-header'>
+    return <div className='vz-toast-header'>
       {this.props.icon && (
         <Tooltip
-          className='vizality-toast-extra'
+          className='vz-toast-header-extra'
           text={`${this.props.type
             ? this.props.type.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase())
             : this.props.header}`}
           position='left'
         >
           {this.props.image
-            ? <img src={this.props.image} alt='' className={joinClassNames('vizality-toast-image', this.props.imageClassName)} />
-            : <Icon /*wrapperClassName='vizality-toast-icon-wrapper' className='vizality-toast-icon'*/ name={this.props.icon} />}
+            ? <img src={this.props.image} alt='' className={joinClassNames('vz-toast-image', this.props.imageClassName)} />
+            : <Icon size={this.props.iconSize || '40px'} className='vz-toast-icon-wrapper' iconClassName='vz-toast-icon' name={this.props.icon} />}
         </Tooltip>
       )}
-      {this.props.header}
+      <div className='vz-toast-header-content'>
+        <div className='vz-toast-header-title'>
+          {this.props.header}
+        </div>
+        {this.props.content && this.renderContent()}
+      </div>
     </div>;
   }
 
   renderContent () {
-    return <div className='vizality-toast-message'>
+    return <div className='vz-toast-header-message'>
       {this.props.content}
     </div>;
   }
 
   renderFooter () {
-    return <div className='vizality-toast-footer'>
-      <div className='vizality-toast-pro-tip'>
-        {/* @i18n: Do this. */}
-        Click to dismiss
-      </div>
+    return <div className='vz-toast-footer'>
       {this.props.buttons && Array.isArray(this.props.buttons) && (
-        <div className='vizality-toast-buttons'>
+        <div className='vz-toast-buttons'>
           {this.props.buttons.map((button, i) => {
             const btnProps = {};
             [ 'size', 'look', 'color' ].forEach(prop => {

@@ -1,6 +1,6 @@
 @use '@vizality/sass' as *;
 
-.vizality-toast {
+.vz-toast {
   box-shadow: var(--elevation-high);
   background: var(--background-floating);
   border-radius: 4px;
@@ -12,9 +12,8 @@
   min-width: 340px;
   z-index: 999;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
   overflow: hidden;
-  cursor: pointer;
   flex-flow: column wrap;
   &.vz-isTopRight {
     top: 25px;
@@ -41,35 +40,37 @@
       box-sizing: border-box;
     }
   }
-  &-contents {
-    display: flex;
-    border-radius: 0 0 5px 5px;
-    text-align: left;
-    flex-direction: column;
-    width: 100%;
-    overflow: hidden;
-  }
   &-header {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    align-items: center;
     font-weight: 600;
     font-size: 16px;
     line-height: 1.5;
     color: var(--header-primary);
+    display: flex;
+    align-items: center;
+    &-text {
+      @include max-lines(2);
+    }
   }
-  &-message {
+  &-close-wrapper {
+    color: var(--text-muted);
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    &:hover {
+      color: var(--header-primary);
+    }
+  }
+  &-header-content {
+    padding-right: 26px;
+  }
+  &-header-title {
+    @include max-lines(2);
+  }
+  &-header-message {
     font-size: 14px;
     line-height: 1.5;
-    margin-top: 4px;
-  }
-  &-pro-tip {
-    margin-top: 7px;
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--text-muted);
+    color: var(--header-secondary);
   }
   &-buttons {
     display: flex;
@@ -90,6 +91,17 @@
       }
     }
   }
+  &-header-extra {
+    margin-right: 10px;
+    align-self: flex-start;
+    flex: 1 0 auto;
+  }
+  &-footer {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
   // @todo: Don't use obfuscated class.
   .progress-2XXRYo {
     position: absolute;
@@ -101,20 +113,5 @@
   // @todo: Don't use obfuscated class.
   .progressBar-3u8FBM {
     border-radius: 0;
-  }
-  &-extra {
-    display: inline-block;
-    vertical-align: text-bottom;
-    margin-right: 7px;
-    opacity: 0.7;
-  }
-  &-icon-wrapper {
-    @include size(20px);
-  }
-  &-footer {
-    width: 100%;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
   }
 }

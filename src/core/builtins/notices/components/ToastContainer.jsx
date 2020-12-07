@@ -25,7 +25,7 @@ module.exports = class ToastContainer extends React.PureComponent {
 
   render () {
     const toast = Object.keys(vizality.api.notices.toasts).pop();
-    return <div className='vizality-toast-container'>
+    return <div className='vz-toast-container'>
       {toast && <Toast
         closing={this.state.closing === toast} id={toast}
         {...vizality.api.notices.toasts[toast]}
