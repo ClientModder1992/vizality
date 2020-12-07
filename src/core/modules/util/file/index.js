@@ -8,7 +8,7 @@ const { extname, join } = require('path');
  * @memberof util
  * @version 0.0.1
  */
-module.exports = {
+const File = module.exports = {
   async removeDirRecursive (directory) {
     if (existsSync(directory)) {
       const files = await readdir(directory);
@@ -17,7 +17,7 @@ module.exports = {
         const stat = await lstat(currentPath);
 
         if (stat.isDirectory()) {
-          await this.removeDirRecursive(currentPath);
+          await File.removeDirRecursive(currentPath);
         } else {
           await unlink(currentPath);
         }

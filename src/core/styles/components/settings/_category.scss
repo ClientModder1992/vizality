@@ -5,7 +5,7 @@
   background: var('deprecated-card-editable-bg');
   border: 1px solid var('background-secondary-alt');
   border-radius: 4px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   &-title {
     padding: 15px;
     display: flex;
@@ -30,7 +30,7 @@
     }
   }
   &-inner {
-    padding: 30px;
+    padding: 20px;
     > div:last-of-type {
       margin-bottom: 0;
     }

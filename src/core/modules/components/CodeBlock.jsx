@@ -25,18 +25,20 @@ const Button = getModule(m => m.DropdownSizes);
  * ```
  */
 // eslint-disable-next-line prefer-arrow-callback
-module.exports = React.memo(function VizalityCodeBlock ({
-  language,
-  header,
-  content,
-  theme,
-  showHeader = true,
-  showLineNumbers = true,
-  showCopyButton = true,
-  contentIsRaw = false,
-  hasWrapper = true,
-  className
-}) {
+module.exports = React.memo(function VizalityCodeBlock (props) {
+  let {
+    language,
+    header,
+    content,
+    theme,
+    showHeader = true,
+    showLineNumbers = true,
+    showCopyButton = true,
+    contentIsRaw = false,
+    hasWrapper = true,
+    className
+  } = props;
+
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const { markup } = getModule('markup');
   const { marginBottom20 } = getModule('marginBottom20');
