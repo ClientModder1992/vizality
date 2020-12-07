@@ -1,7 +1,7 @@
 const { React, React: { useReducer } } = require('@vizality/react');
 const { Icon, Switch, Tooltip } = require('@vizality/components');
 const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
+const { getModule, constants } = require('@vizality/webpack');
 
 const AddonIcon = require('../Icon');
 
@@ -11,6 +11,19 @@ module.exports = React.memo(props => {
   const authors = [].concat(manifest.author);
   const authorIds = [].concat(manifest.authorId);
   const { colorDanger } = getModule('colorDanger');
+
+  // @todo Use Discord module for this after it's set up.
+  const openProfile = (userId) => {
+    const { dirtyDispatch } = getModule('dirtyDispatch');
+    const { getUser } = getModule('getUser');
+
+    getUser(userId).then(() => dirtyDispatch({ type: constants.ActionTypes.USER_PROFILE_MODAL_OPEN, userId }))
+      .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+        header: 'User Not Found',
+        content: `We were unable to locate that user.`,
+        type: 'error'
+      }));
+  };
 
   return (
     <div className='vz-addon-card-header-wrapper'>
@@ -35,14 +48,7 @@ module.exports = React.memo(props => {
                     onClick={async (e) => {
                       e.stopPropagation();
                       if (!authorIds.length || !authorIds[i]) return;
-                      // @todo This doesn't work, fix it.
-                      return Promise.all(getModule('getUser').getUser(authorIds[i]))
-                        .then(() => getModule('open', 'fetchProfile').open(authorIds[i]))
-                        .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
-                          header: 'User Not Found',
-                          content: `We were unable to locate that user.`,
-                          type: 'error'
-                        }));
+                      openProfile(authorIds[i]);
                     }}
                   >
                     {author}

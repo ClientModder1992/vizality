@@ -1,7 +1,7 @@
 const { React, Router: { Link } } = require('@vizality/react');
 const { Button, Tooltip } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
+const { getModule, constants } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
 module.exports = React.memo(props => {
@@ -17,7 +17,10 @@ module.exports = React.memo(props => {
 
   // @todo Use Discord module for this after it's set up.
   const openProfile = (userId) => {
-    getModule('getUser').getUser(userId).then(() => getModule('open', 'fetchProfile').open(userId))
+    const { dirtyDispatch } = getModule('dirtyDispatch');
+    const { getUser } = getModule('getUser');
+
+    getUser(userId).then(() => dirtyDispatch({ type: constants.ActionTypes.USER_PROFILE_MODAL_OPEN, userId }))
       .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
         header: 'User Not Found',
         content: `We were unable to locate that user.`,
