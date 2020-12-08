@@ -147,7 +147,7 @@ module.exports = class Builtin extends Updatable {
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
         if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return;
-        vizality.manager.plugins.remount(_this.addonId);
+        vizality.manager.builtins.remount(_this.addonId);
       }
     });
   }
