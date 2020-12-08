@@ -14,14 +14,14 @@ global.VizalityNative = {
      * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not
      */
     openDevTools (opts, externalWindow) {
-      return ipcRenderer.invoke('VIZALITY_OPEN_DEVTOOLS', opts, externalWindow);
+      return ipcRenderer.invoke('VIZALITY_APP_OPEN_DEVTOOLS', opts, externalWindow);
     },
 
     /**
      * Closes DevTools for the current window
      */
     closeDevTools () {
-      return ipcRenderer.invoke('VIZALITY_CLOSE_DEVTOOLS');
+      return ipcRenderer.invoke('VIZALITY_APP_CLOSE_DEVTOOLS');
     },
 
     /**
@@ -29,7 +29,7 @@ global.VizalityNative = {
      * @returns {Promise<void>}
      */
     clearCache () {
-      return ipcRenderer.invoke('VIZALITY_CACHE_CLEAR');
+      return ipcRenderer.invoke('VIZALITY_APP_CACHE_CLEAR');
     },
 
     openBrowserWindow (opts) {
@@ -37,7 +37,7 @@ global.VizalityNative = {
     },
 
     getHistory () {
-      return ipcRenderer.invoke('VIZALITY_GET_HISTORY');
+      return ipcRenderer.invoke('VIZALITY_APP_HISTORY');
     }
   },
 
