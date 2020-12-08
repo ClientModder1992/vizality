@@ -8,20 +8,20 @@ const { patch, unpatch } = require('@vizality/patcher');
  */
 
 module.exports = async () => {
-  const TransitionGroup = getModuleByDisplayName('TransitionGroup');
-  const { contentRegion } = getModule('contentRegion');
+  // const TransitionGroup = getModuleByDisplayName('TransitionGroup');
+  // const { contentRegion } = getModule('contentRegion');
 
-  patch('vz-attributes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
-    if (!res.props || res.props.className !== contentRegion || !res.props.className.includes(contentRegion)) {
-      return res;
-    }
+  // patch('vz-attributes-transitionGroup', TransitionGroup.prototype, 'render', (_, res) => {
+  //   if (!res.props || res.props.className !== contentRegion || !res.props.className.includes(contentRegion)) {
+  //     return res;
+  //   }
 
-    const { section } = findInReactTree(res, c => c.section);
+  //   const { section } = findInReactTree(res, c => c.section);
 
-    res.props['vz-section'] = toKebabCase(section);
+  //   res.props['vz-section'] = toKebabCase(section);
 
-    return res;
-  });
+  //   return res;
+  // });
 
-  return () => unpatch('vz-attributes-transitionGroup');
+  // return () => unpatch('vz-attributes-transitionGroup');
 };
