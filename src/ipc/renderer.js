@@ -7,32 +7,38 @@ if (!ipcRenderer) {
 
 // Name doesn't really matter here, because we get rid of it on startup
 global.VizalityNative = {
-  /**
-   * Open DevTools for the current window
-   * @param {object} opts Options to pass to Electron
-   * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not
-   */
-  openDevTools (opts, externalWindow) {
-    return ipcRenderer.invoke('VIZALITY_OPEN_DEVTOOLS', opts, externalWindow);
-  },
+  app: {
+    /**
+     * Open DevTools for the current window
+     * @param {object} opts Options to pass to Electron
+     * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not
+     */
+    openDevTools (opts, externalWindow) {
+      return ipcRenderer.invoke('VIZALITY_OPEN_DEVTOOLS', opts, externalWindow);
+    },
 
-  /**
-   * Closes DevTools for the current window
-   */
-  closeDevTools () {
-    return ipcRenderer.invoke('VIZALITY_CLOSE_DEVTOOLS');
-  },
+    /**
+     * Closes DevTools for the current window
+     */
+    closeDevTools () {
+      return ipcRenderer.invoke('VIZALITY_CLOSE_DEVTOOLS');
+    },
 
-  /**
-   * Clears Chromium's cache
-   * @returns {Promise<void>}
-   */
-  clearCache () {
-    return ipcRenderer.invoke('VIZALITY_CACHE_CLEAR');
-  },
+    /**
+     * Clears Chromium's cache
+     * @returns {Promise<void>}
+     */
+    clearCache () {
+      return ipcRenderer.invoke('VIZALITY_CACHE_CLEAR');
+    },
 
-  openBrowserWindow (opts) {
-    throw new Error('Not implemented');
+    openBrowserWindow (opts) {
+      throw new Error('Not implemented');
+    },
+
+    getHistory () {
+      return ipcRenderer.invoke('VIZALITY_GET_HISTORY');
+    }
   },
 
   __compileSass (file) {

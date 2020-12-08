@@ -52,6 +52,10 @@ function logToFile (str) {
   });
 }
 
+function getHistory (e) {
+  return e.sender.history;
+}
+
 function compileSass (_, file) {
   return new Promise((res, reject) => {
     readFile(file, 'utf8').then((rawScss) => {
@@ -90,9 +94,9 @@ function compileSass (_, file) {
 }
 
 ipcMain.on('VIZALITY_GET_PRELOAD', e => e.returnValue = e.sender._preload);
-ipcMain.on('VIZALITY_GET_HISTORY', e => e.returnValue = BrowserWindow.fromWebContents(e.sender).history);
-ipcMain.handle('VIZALITY_OPEN_DEVTOOLS', openDevTools);
-ipcMain.handle('VIZALITY_CLOSE_DEVTOOLS', closeDevTools);
-ipcMain.handle('VIZALITY_CACHE_CLEAR', clearCache);
-ipcMain.handle('VIZALITY_COMPILE_SASS', compileSass);
+ipcMain.handle('VIZALITY_APP_HISTORY', getHistory);
+ipcMain.handle('VIZALITY_APP_OPEN_DEVTOOLS', openDevTools);
+ipcMain.handle('VIZALITY_APP_CLOSE_DEVTOOLS', closeDevTools);
+ipcMain.handle('VIZALITY_APP_CACHE_CLEAR', clearCache);
 ipcMain.handle('VIZALITY_WINDOW_IS_MAXIMIZED', e => BrowserWindow.fromWebContents(e.sender).isMaximized());
+ipcMain.handle('VIZALITY_COMPILE_SASS', compileSass);
