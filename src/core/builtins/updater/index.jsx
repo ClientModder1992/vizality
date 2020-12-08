@@ -136,7 +136,10 @@ module.exports = class Updater extends Builtin {
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'grey',
-            onClick: () => vizality.api.router.navigate('/dashboard/updater')
+            onClick: () => {
+              vizality.api.notices.closeToast('vizality-updater');
+              vizality.api.router.navigate('updater');
+            }
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',
@@ -338,7 +341,7 @@ module.exports = class Updater extends Builtin {
               Missed an update?
               <a
                 className={joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover)}
-                onClick={() => vizality.api.router.navigate('/dashboard/changelog')}
+                onClick={() => vizality.api.router.navigate('changelog')}
               >
                 Check out our full changelog history.
               </a>

@@ -107,7 +107,31 @@ module.exports = class RouterAPI extends API {
       // Pop all modals
       popAll();
       // Go to route
-      transitionTo(`/vizality${path}`);
+      if (!path.startsWith('/')) {
+        const { Routes } = getModule('Routes');
+
+        switch (path) {
+          case 'home': path = '/channels/@me'; break;
+          case 'discover': path = Routes.GUILD_DISCOVERY; break;
+          case 'friends': path = Routes.FRIENDS; break;
+          case 'library': path = Routes.APPLICATION_LIBRARY; break;
+          case 'nitro': path = Routes.APPLICATION_STORE; break;
+
+          case 'dashboard': path = '/vizality/dashboard'; break;
+          case 'settings': path = '/vizality/dashboard/settings'; break;
+          case 'plugins': path = '/vizality/dashboard/plugins'; break;
+          case 'themes': path = '/vizality/dashboard/themes'; break;
+          case 'snippets': path = '/vizality/dashboard/snippets'; break;
+          case 'quick-code': path = '/vizality/dashboard/quick-code'; break;
+          case 'developers': path = '/vizality/dashboard/developers'; break;
+          case 'documentation': path = '/vizality/dashboard/documentation'; break;
+          case 'updater': path = '/vizality/dashboard/updater'; break;
+          case 'changelog': path = '/vizality/dashboard/changelog'; break;
+          default: path = '/channels/@me';
+        }
+      }
+
+      transitionTo(path);
     } catch (err) {
       return error(_module, `${_submodule}:navigate`, null, err);
     }

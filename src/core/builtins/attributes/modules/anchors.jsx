@@ -1,5 +1,5 @@
 const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
+const { getModule, constants } = require('@vizality/webpack');
 
 module.exports = async () => {
   const Anchor = getModule(m => m.default && m.default.displayName === 'Anchor');
@@ -21,7 +21,7 @@ module.exports = async () => {
       const route = res.props.href.replace(/vizality:\/\//i, '');
       res.props.onClick = e => {
         e.preventDefault();
-        vizality.api.router.navigate(`/dashboard/${route}`);
+        vizality.api.router.navigate(`/vizality/dashboard/${route}`);
       };
     }
 
@@ -30,12 +30,14 @@ module.exports = async () => {
       const userId = res.props.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i, '');
       res.props.onClick = e => {
         e.preventDefault();
-        // @todo This doesn't work, fix it.
-        Promise.all(() => getModule('open', 'fetchProfile').open(userId))
-          .catch(() => vizality.api.notices.sendToast(`some-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+        // @todo Use Discord module for this after it's set up.
+        getModule('getUser').getUser(userId)
+          .then(() => getModule('dirtyDispatch').dirtyDispatch({ type: constants.ActionTypes.USER_PROFILE_MODAL_OPEN, userId }))
+          .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
             header: 'User Not Found',
-            content: `We were unable to locate that user.`,
-            type: 'error'
+            type: 'User Not Found',
+            content: 'That user was unable to be located.',
+            icon: 'PersonRemove'
           }));
       };
     }

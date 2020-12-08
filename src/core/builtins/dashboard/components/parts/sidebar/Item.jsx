@@ -30,10 +30,10 @@ module.exports = React.memo(({ icon, label, path, action, launch, expandable, su
 
           if (path) {
             if (action) {
-              vizality.api.router.navigate(`/dashboard${path}`);
+              vizality.api.router.navigate(fullPath);
               return eval(action);
             }
-            vizality.api.router.navigate(`/dashboard${path}`);
+            vizality.api.router.navigate(fullPath);
           } else {
             if (action) {
               return eval(action);

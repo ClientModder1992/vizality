@@ -35,28 +35,28 @@ module.exports = React.memo(() => {
           header='Discover Plugins'
           description='Explore our vast collection of official plugins. Plugins can add just about any new feature you can imagine to Discord.'
           buttonText='Browse Plugins'
-          path='/dashboard/plugins/discover'
+          path='/vizality/dashboard/plugins/discover'
         />
         <Card
           icon='Theme'
           header='Discover Themes'
           description='Explore our vast collection of official themes. Themes can change just small portions of the app or they can be full-blown redesigns.'
           buttonText='Browse Themes'
-          path='/dashboard/themes/discover'
+          path='/vizality/dashboard/themes/discover'
         />
         <Card
           icon='UnknownUser'
           header='Become a Developer'
           description='Find out what it takes to start making your own plugins and themes. Come check out the guidelines and all the info you need to become an addon developer for Vizality.'
           buttonText='Learn How'
-          path='/dashboard/developers'
+          path='/vizality/dashboard/developers'
         />
         <Card
           icon='Science'
           header='Read the Docs'
           description='Read about all the building blocks and tools we provide to make building plugins and themes easier for you.'
           buttonText='Start Reading'
-          path='/dashboard/documentation'
+          path='/vizality/dashboard/documentation'
         />
       </div>
     </div>

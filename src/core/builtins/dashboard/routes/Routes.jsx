@@ -12,7 +12,6 @@ const Layout = require('../components/parts/Layout');
 const Test = require('../components/pages/Test');
 
 const AddonList = require('@vizality/builtins/addon-manager/components/addons/List');
-const Snippets = require('@vizality/builtins/snippet-manager/components/CustomCSS');
 
 module.exports = React.memo(() => {
   return (
