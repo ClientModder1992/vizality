@@ -140,7 +140,10 @@ module.exports = class Updater extends Builtin {
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',
-            onClick: () => this.doUpdate()
+            onClick: () => {
+              vizality.api.notices.closeToast('vizality-updater');
+              this.doUpdate();
+            }
           } ]
         });
       }

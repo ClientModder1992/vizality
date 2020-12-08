@@ -203,6 +203,7 @@ module.exports = class Vizality extends Updatable {
     const router = getModule('transitionTo');
 
     // This needs to be here, after the Webpack modules have been initialized
+    router.getHistory().listen(() => {
       const { route: { getCurrentRoute } } = require('@vizality/discord');
       document.documentElement.setAttribute('vz-route', getCurrentRoute());
     });
