@@ -1,19 +1,20 @@
-const { join, dirname, normalize } = require('path');
-const { unlinkSync } = require('fs');
-const electron = require('electron');
-
-// https://github.com/electron/electron/issues/19468#issuecomment-549593139
-if (process.platform === 'win32') {
-  const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
-  try {
-    unlinkSync(DevToolsExtensions);
-  } catch (err) {
-    // Do nothing
-  }
-}
-
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+const { join, dirname, normalize } = require('path');
+const electron = require('electron');
 const Module = require('module');
+
+/*
+ * This /should/ be fixed now, but leaving this here temporarily just in case.
+ * https://github.com/electron/electron/issues/19468#issuecomment-549593139
+ * if (process.platform === 'win32') {
+ *   const DevToolsExtensions = join(electron.app.getPath('userData'), 'DevTools Extensions');
+ *   try {
+ *     unlinkSync(DevToolsExtensions);
+ *   } catch (err) {
+ *     // Do nothing
+ *   }
+ * }
+ */
 
 require('../update');
 require('../ipc/main');
