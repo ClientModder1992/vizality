@@ -1,13 +1,15 @@
 const { contextMenu: { openContextMenu } } = require('@vizality/webpack');
 const { string: { toPlural } } = require('@vizality/util');
-const { Card } = require('@vizality/components');
 const { React } = require('@vizality/react');
 
 const AddonContextMenu = require('./AddonContextMenu');
-const Inner = require('./parts/Inner');
+const Compact = require('./displays/Compact');
+const Cover = require('./displays/Cover');
+const List = require('./displays/List');
+const Card = require('./displays/Card');
 
 module.exports = React.memo(props => {
-  const { type, addonId } = props;
+  const { type, addonId, display } = props;
 
   const handleContextMenu = e => {
     return openContextMenu(e, () =>
@@ -16,15 +18,22 @@ module.exports = React.memo(props => {
   };
 
   return (
-    <Card
+    <div
       className='vz-addon-card'
       onContextMenu={e => handleContextMenu(e)}
       onClick={e => {
         if (e.target.matches('input')) return;
-        vizality.api.router.navigate(`/dashboard/${toPlural(type)}/${addonId}`);
+        vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`);
       }}
     >
-      <Inner {...props} />
-    </Card>
+      {display === 'compact'
+        ? <Compact {...props} />
+        : display === 'cover'
+          ? <Cover {...props} />
+          : display === 'list'
+            ? <List {...props} />
+            : <Card {...props} />
+      }
+    </div>
   );
 });
