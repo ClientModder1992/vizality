@@ -12,6 +12,8 @@ module.exports = class Toast extends React.PureComponent {
       timeout: null,
       progress: 100
     };
+
+    this.props.type = this.props.type || 'info';
   }
 
   componentDidMount () {
@@ -56,10 +58,11 @@ module.exports = class Toast extends React.PureComponent {
         className={joinClassNames(
           this.props.className,
           'vz-toast', {
+            'vz-isClosing': this.props.closing,
             [`vz-is${this.props.position}`]: this.props.position,
             'vz-isBottomRight': !this.props.position
           })}
-        vz-toast-type={this.props.type || 'info'}
+        vz-toast-type={this.props.type}
         style={this.props.style}
       >
         <div className='vz-toast-inner'>
@@ -93,7 +96,8 @@ module.exports = class Toast extends React.PureComponent {
         >
           {this.props.image
             ? <img src={this.props.image} alt='' className={joinClassNames('vz-toast-image', this.props.imageClassName)} />
-            : <Icon size={this.props.iconSize || '40px'} className='vz-toast-icon-wrapper' iconClassName='vz-toast-icon' name={this.props.icon} />}
+            : <Icon size={this.props.iconSize || '40px'} className='vz-toast-icon-wrapper' iconClassName='vz-toast-icon' name={this.props.icon} />
+          }
         </Tooltip>
       )}
       <div className='vz-toast-header-content'>
@@ -112,41 +116,47 @@ module.exports = class Toast extends React.PureComponent {
   }
 
   renderFooter () {
-    return <div className='vz-toast-footer'>
-      {this.props.buttons && Array.isArray(this.props.buttons) && (
-        <div className='vz-toast-buttons'>
-          {this.props.buttons.map((button, i) => {
-            const btnProps = {};
-            [ 'size', 'look', 'color' ].forEach(prop => {
-              if (button[prop]) {
-                const value = button[prop].includes('-')
-                  ? button[prop]
-                  : Button[`${prop.charAt(0).toUpperCase() + prop.slice(1)}s`][button[prop].toUpperCase()];
-                if (value) {
-                  btnProps[prop] = value;
-                }
-              }
-            });
+    return (
+      <>
+        {this.props.buttons &&
+          <div className='vz-toast-footer'>
+            {Array.isArray(this.props.buttons) && (
+              <div className='vz-toast-buttons'>
+                {this.props.buttons.map((button, i) => {
+                  const btnProps = {};
+                  [ 'size', 'look', 'color' ].forEach(prop => {
+                    if (button[prop]) {
+                      const value = button[prop].includes('-')
+                        ? button[prop]
+                        : Button[`${prop.charAt(0).toUpperCase() + prop.slice(1)}s`][button[prop].toUpperCase()];
+                      if (value) {
+                        btnProps[prop] = value;
+                      }
+                    }
+                  });
 
-            if (!btnProps.size) {
-              btnProps.size = Button.Sizes.SMALL;
-            }
+                  if (!btnProps.size) {
+                    btnProps.size = Button.Sizes.SMALL;
+                  }
 
-            return <Button
-              key={i}
-              {...btnProps}
-              onClick={() => {
-                if (button.onClick) {
-                  button.onClick();
-                }
-              }}
-            >
-              {button.text}
-            </Button>;
-          })}
-        </div>
-      )}
-    </div>;
+                  return <Button
+                    key={i}
+                    {...btnProps}
+                    onClick={() => {
+                      if (button.onClick) {
+                        button.onClick();
+                      }
+                    }}
+                  >
+                    {button.text}
+                  </Button>;
+                })}
+              </div>
+            )}
+          </div>
+        }
+      </>
+    );
   }
 
   renderProgress () {

@@ -11,10 +11,9 @@
   max-width: 540px;
   min-width: 340px;
   z-index: 999;
-  align-items: center;
+  align-items: flex-start;
   padding: 16px;
   overflow: hidden;
-  flex-flow: column wrap;
   &.vz-isTopRight {
     top: 25px;
     right: 25px;
@@ -78,7 +77,6 @@
     > button {
       flex: 0 1 auto;
       white-space: nowrap;
-      // @todo: Don't use obfuscated class.
       &.lookGhost-2Fn_0- {
         transition: transform .17s ease, background-color .17s ease, color .17s ease, opacity .17s ease;
         opacity: .8;
@@ -91,10 +89,15 @@
       }
     }
   }
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
   &-header-extra {
-    margin-right: 10px;
+    margin: 5px 12px 0 0;
     align-self: flex-start;
-    flex: 1 0 auto;
+    display: flex;
   }
   &-footer {
     width: 100%;
