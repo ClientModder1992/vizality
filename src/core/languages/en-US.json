@@ -60,6 +60,8 @@
   "VIZALITY_SETTINGS_NO_CLYDE_DESC": "Replaces [Clyde]({discordiaUrl}) in Vizality commands with a mixed range of avatars and usernames selected by plug-in developers - fallbacks to \"Vizality\" by default.",
   "VIZALITY_SETTINGS_OVERLAY": "Overlay DevTools",
   "VIZALITY_SETTINGS_OVERLAY_DESC": "Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.",
+  "VIZALITY_SETTINGS_KEEP_TOKEN": "Keep Token Stored",
+  "VIZALITY_SETTINGS_KEEP_TOKEN_DESC": "Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts.",
   "VIZALITY_SETTINGS_RESTART": "This setting requires you to restart Discord to take effect. Do you want to restart Discord now?",
   "VIZALITY_SETTINGS_SYNC": "Settings Sync",
   "VIZALITY_SETTINGS_SYNC_DESC": "Sync all of your Vizality settings between devices. Requires a Vizality account!",

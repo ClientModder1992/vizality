@@ -117,6 +117,13 @@ module.exports = class Vizality extends Updatable {
     await this.start();
     this.git = await this.manager.builtins.get('updater').getGitInfo();
 
+    // Token manipulation stuff
+    if (this.settings.get('hideToken', true)) {
+      const tokenModule = await require('@vizality/webpack').getModule('hideToken');
+      tokenModule.hideToken = () => void 0;
+      setImmediate(() => tokenModule.showToken()); // just to be sure
+    }
+
     // Used in src/preload/main
     this.emit('initialized');
   }
@@ -124,7 +131,7 @@ module.exports = class Vizality extends Updatable {
   // Startup
   async start () {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
-    // console.clear();
+    console.clear();
 
     // Startup banner
     console.log('%c ', `background: url('${HTTP.IMAGES}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
@@ -185,7 +192,7 @@ module.exports = class Vizality extends Updatable {
       return new Promise(resolve => {
         const checkForGuilds = () => {
           if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
-            return resolve(vizality.api.router.navigate('/dashboard'));
+            return resolve(vizality.api.router.navigate('dashboard'));
           }
           setTimeout(checkForGuilds, 100);
         };
@@ -193,8 +200,9 @@ module.exports = class Vizality extends Updatable {
       });
     })();
 
+    const router = getModule('transitionTo');
+
     // This needs to be here, after the Webpack modules have been initialized
-    getModule('transitionTo').getHistory().listen(() => {
       const { route: { getCurrentRoute } } = require('@vizality/discord');
       document.documentElement.setAttribute('vz-route', getCurrentRoute());
     });

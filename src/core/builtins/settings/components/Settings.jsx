@@ -88,6 +88,13 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
           {Messages.VIZALITY_SETTINGS_OVERLAY}
         </SwitchItem>
         <SwitchItem
+          note={Messages.VIZALITY_SETTINGS_KEEP_TOKEN_DESC}
+          value={getSetting('hideToken', true)}
+          onChange={() => toggleSetting('hideToken', true)}
+        >
+          {Messages.VIZALITY_SETTINGS_KEEP_TOKEN}
+        </SwitchItem>
+        <SwitchItem
           disabled={!!window.GlasscordApi}
           note={window.GlasscordApi
             ? Messages.VIZALITY_SETTINGS_TRANSPARENT_GLASSCORD.format({ glasscordCfgUrl: 'https://github.com/AryToNeX/Glasscord#how-do-i-use-it' })
