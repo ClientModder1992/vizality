@@ -12,131 +12,26 @@
     border-radius: 4px;
     padding: 20px;
     white-space: pre-line;
+    max-height: 20vh;
+    overflow: auto;
   }
   &-error-stack::first-line {
     font-weight: 600;
     color: var(--header-primary);
   }
   &-scene {
-    width: 100%;
-  }
-  &-flying-wumpus {
-    width: 300px;
-    height: auto;
-    animation-timing-function: ease-in-out;
-    animation: vz-error-boundary-wumpus-soaring 4s forwards infinite;
-    &-wrapper {
-      width: 300px;
-      margin: 0 auto;
-      z-index: 1;
-      position: relative;
-      margin-right: 300px;
-      animation: vz-error-boundary-wumpus-scoping 2s alternate infinite;
-      animation-timing-function: linear;
-    }
-  }
-  &-clouds {
-    position: absolute;
-    transform: translate3d(0, -130px, 0);
-    height: 420px;
-    width: 110%;
-  }
-  &-cloud {
-    position: absolute;
-    top: 20%;
-    width: 300px;
-    right: 0;
-    opacity: 1;
-    animation-name: vz-error-boundary-cloud-movement;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-duration: 8s;
-    &.vz-is-front {
-      z-index: 9;
-    }
-    &.vz-is-distant {
-      z-index: 1;
-    }
-    &.vz-is-smaller {
-      margin-right: 400px;
-      width: 100px;
-      margin-top: 50px;
-    }
-    &.vz-is-small {
-      margin-right: 200px;
-      width: 150px;
-    }
-    &.vz-is-big {
-      width: 500px;
-      margin-top: 50px;
-      margin-right: 150px;
-    }
-    &.vz-is-massive {
-      width: 600px;
-      margin-top: 20px;
-      margin-right: 0px;
-    }
-    &.vz-is-slow {
-      animation-duration: 9.2s;
-    }
-    &.vz-is-slower {
-      animation-duration: 11.2s;
-    }
-    &.vz-is-slowest {
-      animation-duration: 13.5s;
-    }
-    &.vz-is-super-slow {
-      animation-duration: 20.5s;
+    position: fixed;
+    bottom: 0;
+    left: 312px;
+    max-height: 40vh;
+    .panningAnimation-38NjY9 {
+      bottom: 0;
     }
   }
 }
 
-@keyframes vz-error-boundary-wumpus-scoping {
-  0% {
-    transform: translate3d(0, 100px, 0);
-  }
-  50% {
-    transform: translate3d(0, 140px, 0);
-  }
-  100% {
-    transform: translate3d(20px, 80px, 0);
-  }
-}
-
-@keyframes vz-error-boundary-wumpus-soaring {
-  0% {
-    transform: rotate(0deg);
-  }
-  40% {
-    transform: rotate(15deg);
-  }
-  50% {
-    transform: rotate(15deg);
-  }
-  60% {
-    transform: rotate(-10deg);
-  }
-  70% {
-    transform: rotate(-10deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes vz-error-boundary-cloud-movement {
-  0% {
-    opacity: 0.1;
-    transform: translateX(300px);
-  }
-  10% {
-    opacity: 0.7;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-1000px);
+@media screen and (max-height: 700px) {
+  .vz-error-boundary-scene {
+    display: none;
   }
 }
