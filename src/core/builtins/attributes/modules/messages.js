@@ -1,39 +1,43 @@
-const { react : { findInReactTree }, joinClassNames } = require('@vizality/util');
+const { react : { findInReactTree } } = require('@vizality/util');
 const { patch, unpatch } = require('@vizality/patcher');
 const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => {
-  const Message = getModule(m => m.default && m.default.displayName === 'Message');
-  const currentUserId = getModule('getId').getId();
+  const Message = getModule(m => m.default?.displayName === 'Message');
   const memberModule = getModule('getMember');
   const guildModule = getModule('getGuild');
 
   patch('vz-attributes-messages', Message, 'default', (_, res) => {
-    const msg = findInReactTree(res, n => n.message);
+    const props = findInReactTree(res, n => n.message);
 
-    if (!msg) {
-      if (findInReactTree(res, n => n.className && !n.className.startsWith('blockedSystemMessage'))) {
-        res.props.children.props.className = joinClassNames(res.props.children.props.className, 'vz-isBlockedMessage');
-      }
-      return res;
-    }
+    // Blocked messages
+    if (!props) return res;
 
-    const { message, channel } = msg;
+    const { message, channel } = props;
 
-    res.props.children.props['vz-message-type'] = message.type;
-    res.props.children.props['vz-author-id'] = message.author.id;
+    if (!message || !channel) return res;
 
-    res.props.children.props.className = joinClassNames(
-      res.props.children.props.className, {
-        'vz-isBotUser': message.author.bot,
-        'vz-isCurrentUser': (message.author.id === currentUserId && message.type === 0),
-        'vz-isGuildOwner': (channel && channel.guild_id && message.author.id === guildModule.getGuild(channel.guild_id) && message.type === 0),
-        'vz-isGuildMember': (channel && channel.guild_id && memberModule.getMember(channel.guild_id, message.author.id) && message.type === 0),
-        'vz-hasAttachments': message.attachments.length,
-        'vz-hasEmbeds': message.embeds.length,
-        'vz-isMentioned': message.mentioned,
-        'vz-isSystemMessage': (message.type && message.type === 6)
-      });
+    // User-related
+    res.props.children.props['vz-self'] = Boolean(message.author?.email) && '';
+    res.props.children.props['vz-author-id'] = message.author?.id;
+    res.props.children.props['vz-bot'] = Boolean(message.author?.bot) && '';
+    res.props.children.props['vz-system'] = Boolean(message.type && message.type === 6) && '';
+    res.props.children.props['vz-mentioned'] = Boolean(message.mentioned) && '';
+    res.props.children.props['vz-member'] = Boolean(
+      channel.guild_id &&
+      memberModule.getMember(channel.guild_id, message.author.id) &&
+      message.type === 0
+    ) && '';
+    res.props.children.props['vz-owner'] = Boolean(
+      channel.guild_id &&
+      message.author?.id === guildModule.getGuild(channel.guild_id) &&
+      message.type === 0
+    ) && '';
+    // Message-related
+    res.props.children.props['vz-message-id'] = message.id;
+    res.props.children.props['vz-blocked'] = Boolean(message.blocked) && '';
+    res.props.children.props['vz-embeds'] = Boolean(message.embeds.length) && '';
+    res.props.children.props['vz-attachments'] = Boolean(message.attachments.length) && '';
 
     return res;
   });

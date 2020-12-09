@@ -10,24 +10,24 @@ const { patch, unpatch } = require('@vizality/patcher');
 module.exports = async () => {
   const TabBar = getModuleByDisplayName('TabBar');
 
-  patch('builtin-attributes-tabBar', TabBar.prototype, 'render', function (_, res) {
-    if (!res.props || !res.props.children) return res;
+  patch('vz-attributes-tab-bar', TabBar.prototype, 'render', function (_, res) {
+    if (!res.props?.children) return res;
 
-    res.props['vz-item-selected'] = toKebabCase(this.props.selectedItem);
+    res.props['vz-item-selected'] = toKebabCase(this.props?.selectedItem);
 
     return res;
   });
 
-  patch('builtin-attributes-tabBar-items', TabBar.Item.prototype, 'render', function (_, res) {
-    if (!res.props || !res.props.children) return res;
+  patch('vz-attributes-tab-bar-items', TabBar.Item?.prototype, 'render', function (_, res) {
+    if (!res.props?.children) return res;
 
-    res.props['vz-item-id'] = toKebabCase(this.props.id);
+    res.props['vz-item'] = toKebabCase(this.props?.id);
 
     return res;
   });
 
   return () => {
-    unpatch('builtin-attributes-tabBar');
-    unpatch('builtin-attributes-tabBar-items');
+    unpatch('vz-attributes-tab-bar');
+    unpatch('vz-attributes-tab-bar-items');
   };
 };

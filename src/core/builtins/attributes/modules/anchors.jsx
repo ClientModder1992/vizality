@@ -1,15 +1,15 @@
 const { patch, unpatch } = require('@vizality/patcher');
-const { getModule, constants } = require('@vizality/webpack');
+const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => {
-  const Anchor = getModule(m => m.default && m.default.displayName === 'Anchor');
+  const Anchor = getModule(m => m.default?.displayName === 'Anchor');
 
   patch('vz-attributes-anchors', Anchor, 'default', (_, res) => {
-    if (!res.props || !res.props.href) return res;
+    if (!res.props?.href) return res;
 
     // Make Vizality routes open in the app
-    if (new RegExp(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/vizality/i).test(res.props.href)) {
-      const route = res.props.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/vizality/i, '');
+    if (new RegExp(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/vizality/i).test(res.props?.href)) {
+      const route = res.props?.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/vizality/i, '');
       res.props.onClick = e => {
         e.preventDefault();
         vizality.api.router.navigate(`/vizality/${route}`);
@@ -17,8 +17,8 @@ module.exports = async () => {
     }
 
     // Make Vizality protocol links open in the app
-    if (new RegExp(/vizality:\/\//i).test(res.props.href)) {
-      const route = res.props.href.replace(/vizality:\/\//i, '');
+    if (new RegExp(/vizality:\/\//i).test(res.props?.href)) {
+      const route = res.props?.href.replace(/vizality:\/\//i, '');
       res.props.onClick = e => {
         e.preventDefault();
         vizality.api.router.navigate(`/vizality/dashboard/${route}`);
@@ -26,8 +26,8 @@ module.exports = async () => {
     }
 
     // Make user links open in user profile modals in the app
-    if (new RegExp(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i).test(res.props.href)) {
-      const userId = res.props.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i, '');
+    if (new RegExp(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i).test(res.props?.href)) {
+      const userId = res.props?.href.replace(/https?:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/users\//i, '');
       res.props.onClick = e => {
         e.preventDefault();
         // @todo Use Discord module for this after it's set up.

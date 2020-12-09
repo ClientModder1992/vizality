@@ -1,7 +1,22 @@
-require('fs')
-  .readdirSync(__dirname)
-  .filter(file => file !== 'index.js')
-  .forEach(filename => {
-    const moduleName = filename.split('.')[0];
-    exports[moduleName] = require(`${__dirname}/${filename}`);
-  });
+module.exports = {
+  blockedMessagesGroup: require('./blockedMessagesGroup'),
+  channelHeaderButtons: require('./channelHeaderButtons'),
+  channelMembers: require('./channelMembers'),
+  chat: require('./chat'),
+  contextMenus: require('./contextMenus'),
+  contextMenuItems: require('./contextMenuItems'),
+  folders: require('./folders'),
+  gameIcons: require('./gameIcons'),
+  guilds: require('./guilds'),
+  imageCarouselModal: require('./imageCarouselModal'),
+  list: require('./list'),
+  membersListRoleHeaders: require('./membersListRoleHeaders'),
+  messages: require('./messages'),
+  privateCall: require('./privateCall'),
+  privateChannels: require('./privateChannels'),
+  roles: require('./roles'),
+  tabBar: require('./tabBar'),
+  transitionGroup: require('./transitionGroup'),
+  userPopout: require('./userPopout'),
+  useProfile: require('./userProfile')
+}
