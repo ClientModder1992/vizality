@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 const { Regexes } = require('@vizality/constants');
 const { Builtin } = require('@vizality/entities');
 
