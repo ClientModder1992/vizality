@@ -15,7 +15,7 @@ module.exports = React.memo(props => {
   // @todo Use Discord module for this after it's set up.
   const openProfile = (userId) => {
     getModule('getUser').getUser(userId)
-      .then(() => getModule('dirtyDispatch').dirtyDispatch({ type: constants.ActionTypes.USER_PROFILE_MODAL_OPEN, userId }))
+      .then(() => getModule('open', 'fetchProfile').open(userId))
       .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
         header: 'User Not Found',
         type: 'User Not Found',
