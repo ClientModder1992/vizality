@@ -3,7 +3,7 @@ const { shell } = require('electron');
 const { React } = require('@vizality/react');
 const { string: { toPlural } } = require('@vizality/util');
 const { Directories } = require('@vizality/constants');
-const { Menu, Icon } = require('@vizality/components');
+const { Menu } = require('@vizality/components');
 const { Messages } = require('@vizality/i18n');
 
 module.exports = React.memo(props => {
@@ -14,7 +14,6 @@ module.exports = React.memo(props => {
       <Menu.MenuItem
         id='open-folder'
         label='Show in File Explorer'
-        icon={() => <Icon name='Folder' size='16px' />}
         action={() => shell.openItem(Directories[toPlural(type).toUpperCase()])}
       />
       <Menu.MenuItem

@@ -68,6 +68,21 @@
       margin-bottom: 20px;
     }
   }
+  &-sticky-bar {
+    display: flex;
+    padding: 12px;
+    justify-content: space-between;
+    align-items: center;
+    &-wrapper {
+      @include size(100%);
+      position: sticky;
+      top: -1px;
+      border-radius: 4px;
+      background: var('background-secondary');
+      transition: width .3s ease, background-color .3s ease, border-radius .3s ease, margin .3s ease;
+      z-index: 1;
+    }
+  }
 }
 
 @media only screen and (max-width: 1050px) {

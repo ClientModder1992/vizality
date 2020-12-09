@@ -1,15 +1,13 @@
 const { contextMenu: { openContextMenu } } = require('@vizality/webpack');
 const { string: { toPlural } } = require('@vizality/util');
 const { React } = require('@vizality/react');
+// const { Card } = require('@vizality/components');
 
 const AddonContextMenu = require('./AddonContextMenu');
-const Compact = require('./displays/Compact');
-const Cover = require('./displays/Cover');
-const List = require('./displays/List');
-const Card = require('./displays/Card');
+const Inner = require('./parts/Inner');
 
 module.exports = React.memo(props => {
-  const { type, addonId, display } = props;
+  const { type, addonId } = props;
 
   const handleContextMenu = e => {
     return openContextMenu(e, () =>
@@ -26,14 +24,7 @@ module.exports = React.memo(props => {
         vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`);
       }}
     >
-      {display === 'compact'
-        ? <Compact {...props} />
-        : display === 'cover'
-          ? <Cover {...props} />
-          : display === 'list'
-            ? <List {...props} />
-            : <Card {...props} />
-      }
+      <Inner {...props} />
     </div>
   );
 });
