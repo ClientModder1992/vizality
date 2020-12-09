@@ -1,4 +1,6 @@
 module.exports = {
+  anchors: require('./anchors'),
+  avatars: require('./avatars'),
   blockedMessagesGroup: require('./blockedMessagesGroup'),
   channelHeaderButtons: require('./channelHeaderButtons'),
   channelMembers: require('./channelMembers'),
@@ -19,4 +21,5 @@ module.exports = {
   transitionGroup: require('./transitionGroup'),
   userPopout: require('./userPopout'),
   useProfile: require('./userProfile')
-}
+};
+

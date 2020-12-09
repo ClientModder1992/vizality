@@ -111,14 +111,15 @@ module.exports = class KeybindsAPI extends API {
     const os = DiscordNative.process.platform;
     const { keyToCode } = getModule('keyToCode');
 
-    switch (key) {
-      case 'rctrl': key = 'right ctrl'; break;
-      case 'ralt': key = 'right alt'; break;
-      case 'rshift': key = 'right shift'; break;
-      case 'ctrl': if (os === 'linux') key = 'left ctrl'; break;
-      case 'alt': if (os === 'linux') key = 'left alt'; break;
-      case 'shift': if (os === 'linux') key = 'left shift'; break;
+    if (os === 'linux') {
+      if (key === 'ctrl') key = 'left ctrl';
+      if (key === 'alt') key = 'left alt';
+      if (key === 'shift') key = 'left shift';
     }
+
+    if (key === 'rctrl') key = 'right ctrl';
+    if (key === 'ralt') key = 'right alt';
+    if (key === 'rshift') key = 'right shift';
 
     return keyToCode(key);
   }
