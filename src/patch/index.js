@@ -16,7 +16,6 @@ const Module = require('module');
  * }
  */
 
-require('../update');
 require('../ipc/main');
 
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
@@ -25,6 +24,22 @@ const electronPath = require.resolve('electron');
 
 // Restore the classic path; the updater relies on it and it makes Discord go corrupt
 require.main.filename = join(discordPath, 'app_bootstrap', 'index.js');
+
+let _patched = false;
+const appSetAppUserModelId = electron.app.setAppUserModelId;
+function setAppUserModelId (...args) {
+  /*
+   * Once this has been called, we can assume squirrelUpdate is safe to require
+   * as everything that needs to be initialized has been initialized.
+   */
+  appSetAppUserModelId.apply(this, args);
+  if (!_patched) {
+    _patched = true;
+    require('../update/win32');
+  }
+}
+
+electron.app.setAppUserModelId = setAppUserModelId;
 
 const electronExports = new Proxy(electron, {
   get (target, prop) {

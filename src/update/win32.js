@@ -2,10 +2,8 @@ const { join } = require('path');
 
 const { inject } = require('../inject/main');
 
-const applicableEnvs = [ 'win32', 'darwin' ];
-
-if (applicableEnvs.includes(process.platform)) {
-  console.log('[Vizality] Detected an installation sensitive to host updates. Injecting into the updater.');
+if (process.platform === 'win32') { // Should be the only possible case, but we never know
+  console.log('[Vizality] Injecting into Squirrel update script.');
   const injector = require(`../inject/${process.platform}`);
   console.log('injector', injector);
   let squirrelUpdateScript = join(require.main.filename, '..', 'squirrelUpdate.js');
