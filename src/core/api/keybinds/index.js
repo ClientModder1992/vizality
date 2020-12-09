@@ -133,6 +133,6 @@ module.exports = class KeybindsAPI extends API {
       keysHolder.push([ 0, key ]);
     });
 
-    return keys;
+    return keysHolder;
   }
 };
