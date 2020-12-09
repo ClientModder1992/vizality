@@ -12,8 +12,6 @@ module.exports = class Toast extends React.PureComponent {
       timeout: null,
       progress: 100
     };
-
-    this.props.type = this.props.type || 'info';
   }
 
   componentDidMount () {
@@ -31,28 +29,6 @@ module.exports = class Toast extends React.PureComponent {
   }
 
   render () {
-    if (!this.props.icon && this.props.type) {
-      switch (this.props.type) {
-        case 'err':
-        case 'error':
-        case 'danger':
-          this.props.icon = 'Activity';
-          break;
-        case 'info':
-        case 'information':
-          this.props.icon = 'Activity';
-          break;
-        case 'success':
-          this.props.icon = 'Activity';
-          break;
-        case 'warn':
-        case 'warning':
-        case 'caution':
-          this.props.icon = 'Activity';
-          break;
-      }
-    }
-
     return (
       <div id={this.props.id}
         className={joinClassNames(
@@ -62,7 +38,6 @@ module.exports = class Toast extends React.PureComponent {
             [`vz-is${this.props.position}`]: this.props.position,
             'vz-isBottomRight': !this.props.position
           })}
-        vz-toast-type={this.props.type}
         style={this.props.style}
       >
         <div className='vz-toast-inner'>
@@ -86,20 +61,26 @@ module.exports = class Toast extends React.PureComponent {
 
   renderHeader () {
     return <div className='vz-toast-header'>
-      {this.props.icon && (
-        <Tooltip
-          className='vz-toast-header-extra'
-          text={`${this.props.type
-            ? this.props.type.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase())
-            : this.props.header}`}
-          position='left'
-        >
-          {this.props.image
-            ? <img src={this.props.image} alt='' className={joinClassNames('vz-toast-image', this.props.imageClassName)} />
-            : <Icon size={this.props.iconSize || '40px'} className='vz-toast-icon-wrapper' iconClassName='vz-toast-icon' name={this.props.icon} />
-          }
-        </Tooltip>
-      )}
+      <Tooltip
+        className='vz-toast-header-extra'
+        text={this.props.tooltip || null}
+        position='left'
+      >
+        {this.props.image &&
+          <img
+            src={this.props.image}
+            className={joinClassNames('vz-toast-image', this.props.imageClassName)}
+          />
+        }
+        {this.props.icon &&
+          <Icon
+            size={this.props.iconSize || '40px'}
+            className='vz-toast-icon-wrapper'
+            iconClassName='vz-toast-icon'
+            name={this.props.icon}
+          />
+        }
+      </Tooltip>
       <div className='vz-toast-header-content'>
         <div className='vz-toast-header-title'>
           {this.props.header}
