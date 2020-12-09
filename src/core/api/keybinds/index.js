@@ -113,11 +113,11 @@ module.exports = class KeybindsAPI extends API {
 
     switch (key) {
       case 'rctrl': key = 'right ctrl'; break;
-      case 'ralt': key = 'right ctrl'; break;
-      case 'rshift': key = 'right ctrl'; break;
+      case 'ralt': key = 'right alt'; break;
+      case 'rshift': key = 'right shift'; break;
       case 'ctrl': if (os === 'linux') key = 'left ctrl'; break;
-      case 'alt': if (os === 'linux') key = 'left ctrl'; break;
-      case 'shift': if (os === 'linux') key = 'left ctrl'; break;
+      case 'alt': if (os === 'linux') key = 'left alt'; break;
+      case 'shift': if (os === 'linux') key = 'left shift'; break;
     }
 
     return keyToCode(key);
