@@ -10,11 +10,11 @@ const _submodule = 'Keybinds';
  * @property {string} id Keybind ID
  * @property {string} shortcut Keyboard shortcut
  * @property {Function} executor Executor action
- * @property {object} options Keybind options
- * @property {boolean} options.blurred
- * @property {boolean} options.focused
- * @property {boolean} options.keydown
- * @property {boolean} options.keyup
+ * @property {object} [options] Keybind options
+ * @property {boolean} [options.blurred=false]
+ * @property {boolean} [options.focused=true]
+ * @property {boolean} [options.keydown=false]
+ * @property {boolean} [options.keyup=true]
  */
 
 /**
@@ -37,7 +37,7 @@ module.exports = class KeybindsAPI extends API {
 
       keybind.eventId = Math.floor(100000 + Math.random() * 900000);
       keybind.options = keybind.options || {
-        blurred: true,
+        blurred: false,
         focused: true,
         keydown: false,
         keyup: true
@@ -109,80 +109,28 @@ module.exports = class KeybindsAPI extends API {
   /** @private */
   _getVirtualKeyCode (key) {
     const os = DiscordNative.process.platform;
+    const { keyToCode } = getModule('keyToCode');
+
     switch (key) {
-      case 'mod': {
-        switch (os) {
-          case 'win32': return 162;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'ctrl': {
-        switch (os) {
-          case 'win32': return 162;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'rctrl': {
-        switch (os) {
-          case 'win32': return 163;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'alt': {
-        switch (os) {
-          case 'win32': return 164;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'ralt': {
-        switch (os) {
-          case 'win32': return 165;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'shift': {
-        switch (os) {
-          case 'win32': return 160;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
-      case 'rshift': {
-        switch (os) {
-          case 'win32': return 161;
-          case 'linux': return 666;
-          case 'darwin': return 666;
-        }
-        break;
-      }
+      case 'rctrl': key = 'right ctrl'; break;
+      case 'ralt': key = 'right ctrl'; break;
+      case 'rshift': key = 'right ctrl'; break;
+      case 'ctrl': if (os === 'linux') key = 'left ctrl'; break;
+      case 'alt': if (os === 'linux') key = 'left ctrl'; break;
+      case 'shift': if (os === 'linux') key = 'left ctrl'; break;
     }
+
+    return keyToCode(key);
   }
 
   /** @private */
   _shortcutToKeyCode (shortcut) {
     /** @see {@link https://github.com/ianstormtaylor/is-hotkey} **/
-    const { toKeyCode } = getModule('toKeyCode');
-    const keys = [];
-    const modifiers = [ 'mod', 'ctrl', 'rctrl', 'alt', 'ralt', 'shift', 'rshift' ];
-    const shortcuts = shortcut.split('+');
-    shortcuts.forEach(s => {
-      if (modifiers.includes(s)) {
-        s = this._getVirtualKeyCode(s);
-      } else {
-        s = toKeyCode(s);
-      }
-      keys.push([ 0, s ]);
+    const keysHolder = [];
+    const keys = shortcut.split('+');
+    keys.forEach(key => {
+      key = this._getVirtualKeyCode(key);
+      keysHolder.push([ 0, key ]);
     });
 
     return keys;
