@@ -7,8 +7,8 @@ module.exports = {
    * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
-  get (url) {
-    return new GenericRequest('GET', url);
+  get (url, headers) {
+    return new GenericRequest('GET', url, headers);
   },
 
   /**
@@ -16,8 +16,8 @@ module.exports = {
    * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
-  post (url) {
-    return new GenericRequest('POST', url);
+  post (url, headers) {
+    return new GenericRequest('POST', url, headers);
   },
 
   /**
@@ -25,8 +25,8 @@ module.exports = {
    * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
-  put (url) {
-    return new GenericRequest('PUT', url);
+  put (url, headers) {
+    return new GenericRequest('PUT', url, headers);
   },
 
   /**
@@ -34,7 +34,16 @@ module.exports = {
    * @param {string} url URL to call
    * @returns {GenericRequest} Created request
    */
-  del (url) {
-    return new GenericRequest('DELETE', url);
+  del (url, headers) {
+    return new GenericRequest('DELETE', url, headers);
+  },
+
+  /**
+   * Creates a HEAD request
+   * @param {string} url URL to call
+   * @returns {GenericRequest} Created request
+   */
+  head (url) {
+    return new GenericRequest('HEAD', url);
   }
 };

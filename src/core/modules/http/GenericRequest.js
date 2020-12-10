@@ -21,7 +21,7 @@ const { logger : { log } } = require('@vizality/util');
  */
 
 class HTTPError extends Error {
-  constructor (message, res) {
+  constructor (message, res, headers) {
     super(message);
     Object.assign(this, res);
     this.name = this.constructor.name;
@@ -29,7 +29,7 @@ class HTTPError extends Error {
 }
 
 module.exports = class GenericRequest {
-  constructor (method, uri) {
+  constructor (method, uri, headers) {
     this.module = 'HTTP';
     this.submodule = this.constructor.name;
 
@@ -37,7 +37,7 @@ module.exports = class GenericRequest {
       method,
       uri,
       query: {},
-      headers: {
+      headers: headers || {
         'User-Agent': `Vizality (https://github.com/${Repositories.VIZALITY})`
       }
     };
