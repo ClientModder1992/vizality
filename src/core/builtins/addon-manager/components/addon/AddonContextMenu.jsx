@@ -1,31 +1,26 @@
 const { contextMenu: { closeContextMenu } } = require('@vizality/webpack');
-const { Menu } = require('@vizality/components');
+const { Menu, LazyImage } = require('@vizality/components');
 const { Messages } = require('@vizality/i18n');
 const { React } = require('@vizality/react');
 
-const AddonContextHeader = React.memo(props => {
-  const { manifest, type, addonId } = props;
-
-  return (
-    <>
-      <div
-        className='vz-addon-context-menu-header-addon-icon'
-        style={{ backgroundImage: `url(vz-${type}://${addonId}/${manifest.icon})` }}
-      />
-      <div className='vz-addon-context-menu-header-addon-name'>
-        {manifest.name}
-      </div>
-    </>
-  );
-});
-
 module.exports = React.memo(props => {
-  const { manifest, onUninstall, isEnabled, type, onToggle, addonId } = props;
+  const { manifest, onUninstall, isEnabled, onToggle } = props;
 
   return (
     <Menu.Menu navId='vz-addon-context-menu' onClose={closeContextMenu}>
       <Menu.MenuGroup
-        label={<AddonContextHeader manifest={manifest} addonId={addonId} type={type} />}
+        label={<>
+          <div className='vz-addon-context-menu-header-addon-icon'>
+            <LazyImage
+              className='vz-addon-context-menu-header-addon-icon-image-wrapper'
+              imageClassName='vz-addon-context-menu-header-addon-icon-img'
+              src={manifest.icon}
+            />
+          </div>
+          <div className='vz-addon-context-menu-header-addon-name'>
+            {manifest.name}
+          </div>
+        </>}
         aria-label='vz-addon-context-menu-header'
         className='vz-addon-context-menu-header'
       >

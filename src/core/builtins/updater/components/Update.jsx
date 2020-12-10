@@ -1,7 +1,7 @@
 const { React, Router: { Link } } = require('@vizality/react');
-const { Button, Tooltip } = require('@vizality/components');
+const { Button, Tooltip, Anchor } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
-const { getModule, constants } = require('@vizality/webpack');
+const { constants } = require('@vizality/webpack');
 const { HTTP } = require('@vizality/constants');
 const { Messages } = require('@vizality/i18n');
 
@@ -16,18 +16,6 @@ module.exports = React.memo(props => {
     ({ manifest } = vizality.manager[`${type}s`].get(addonId));
   }
 
-  // @todo Use Discord module for this after it's set up.
-  const openProfile = (userId) => {
-    getModule('getUser').getUser(userId)
-      .then(() => getModule('open', 'fetchProfile').open(userId))
-      .catch(() => vizality.api.notices.sendToast(`open-user-profile-random-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
-        header: 'User Not Found',
-        type: 'User Not Found',
-        content: 'That user was unable to be located.',
-        icon: 'PersonRemove'
-      }));
-  };
-
   return (
     <div className='vz-builtin-updater-update'>
       <div className='vz-builtin-updater-update-inner'>
@@ -39,7 +27,7 @@ module.exports = React.memo(props => {
             />
             : <img
               className='vz-builtin-updater-update-icon'
-              src={`vz-${type}://${addonId}/${manifest.icon}`}
+              src={manifest.icon}
             />
           }
         </div>
@@ -48,13 +36,13 @@ module.exports = React.memo(props => {
             <div className='vz-builtin-updater-update-name'>
               Vizality
             </div>
-            <div
+            <Anchor
               className='vz-builtin-updater-update-author'
-              onClick={() => openProfile('97549189629636608')}
               vz-author-id='97549189629636608'
+              href={`${window.location.origin}${constants.Endpoints.USERS}/97549189629636608`}
             >
               dperolio
-            </div>
+            </Anchor>
             {disabled
               ? <div className='vz-builtin-updater-update-summary' />
               : <div className='vz-builtin-updater-update-summary'>
@@ -82,13 +70,13 @@ module.exports = React.memo(props => {
             <Link to={`/vizality/dashboard/${toPlural(type)}/${addonId}`} className='vz-builtin-updater-update-name'>
               {manifest.name}
             </Link>
-            <div
+            <Anchor
               className='vz-builtin-updater-update-author'
-              onClick={() => openProfile(manifest.authorId)}
               vz-author-id={manifest.authorId}
+              href={`${window.location.origin}${constants.Endpoints.USERS}/${manifest.authorId}`}
             >
-              {manifest.author}
-            </div>
+              {manifest.authorId}
+            </Anchor>
             {disabled
               ? <div className='vz-builtin-updater-update-summary'>
                 <div className='vz-builtin-updater-update-description'>

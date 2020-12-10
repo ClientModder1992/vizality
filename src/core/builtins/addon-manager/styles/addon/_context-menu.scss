@@ -7,10 +7,13 @@
       justify-content: flex-start;
     }
     &-addon-icon {
-      @include size(24px);
-      margin-right: 10px;
-      background-size: contain;
-      border-radius: 3px;
+      &-image-wrapper {
+        @include size(24px);
+        margin-right: 10px;
+      }
+      &-img {
+        @include size(100%);
+      }
     }
     &-addon-name {
       text-transform: capitalize;
