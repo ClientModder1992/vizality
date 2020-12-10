@@ -3,9 +3,8 @@ const { HTTP } = require('@vizality/constants');
 
 module.exports = async function monkeypatchMessages () {
   const messages = await getModule('sendMessage', 'editMessage');
-
-  const { BOT_AVATARS } = getModule('BOT_AVATARS');
   const { createBotMessage } = getModule('createBotMessage');
+  const { BOT_AVATARS } = getModule('BOT_AVATARS');
 
   // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
   BOT_AVATARS.vizality = `${HTTP.IMAGES}/logo.png`;
@@ -22,6 +21,7 @@ module.exports = async function monkeypatchMessages () {
     }
 
     const result = await command.executor(args, this);
+
     if (!result) {
       return;
     }
@@ -32,8 +32,27 @@ module.exports = async function monkeypatchMessages () {
       const receivedMessage = createBotMessage(getChannelId(), '');
 
       if (vizality.settings.get('replaceClyde', true)) {
-        receivedMessage.author.username = result.username || 'Vizality';
-        receivedMessage.author.avatar = 'vizality';
+        const plugin = vizality.manager.plugins.get(command.origin);
+        const username = command.username ||
+        (plugin && plugin.manifest.name) ||
+        'Vizality';
+
+        let botAvatarName = 'vizality';
+
+        if (plugin) {
+          BOT_AVATARS[plugin.addonId] = command.avatar || plugin.manifest.icon;
+          botAvatarName = plugin.addonId;
+        }
+
+        const avatar = command.avatar ||
+        (vizality.manager.plugins.get(command.origin) &&
+         vizality.manager.plugins.get(command.origin).manifest.icon) ||
+        `${HTTP.IMAGES}/logo.png`;
+
+        BOT_AVATARS[botAvatarName] = avatar;
+
+        receivedMessage.author.username = username;
+        receivedMessage.author.avatar = botAvatarName;
 
         if (result.avatar_url) {
           BOT_AVATARS[result.username] = result.avatar_url;
@@ -47,7 +66,13 @@ module.exports = async function monkeypatchMessages () {
         receivedMessage.embeds.push(result.result);
       }
 
-      return (messages.receiveMessage(receivedMessage.channel_id, receivedMessage), delete BOT_AVATARS[result.avatar_url]);
+      return (
+        messages.receiveMessage(receivedMessage.channel_id, receivedMessage),
+        delete BOT_AVATARS[result.avatar_url],
+        // Restore the "default" Vizality username and avatar to Clyde if the setting is enabled
+        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeUsername', 'Vizality'),
+        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeAvatar', `${HTTP.IMAGES}/logo.png`)
+      );
     }
 
     return sendMessage(id, message, ...params);
