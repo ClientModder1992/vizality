@@ -1,4 +1,4 @@
-const { Confirm, settings: { TextInput, SwitchItem, ButtonItem, Category } } = require('@vizality/components');
+const { settings: { TextInput, SwitchItem, ButtonItem, Category }, Icon, Confirm } = require('@vizality/components');
 const { file: { removeDirRecursive } } = require('@vizality/util');
 const { React, React: { useState } } = require('@vizality/react');
 const { Directories } = require('@vizality/constants');
@@ -56,7 +56,19 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
       >
         {Messages.VIZALITY_COMMAND_PREFIX}
       </TextInput>
-
+      <SwitchItem
+        note={Messages.VIZALITY_SETTINGS_NO_CLYDE_DESC.format({ discordiaUrl: 'https://discordia.me/clyde', apiUrl:  `${window.location.origin}/vizality/dashboard/documentation` })}
+        value={getSetting('replaceClyde', true)}
+        onChange={() => toggleSetting('replaceClyde', true)}
+      >
+        <Icon
+          className='vz-settings-eradicate-clyde-icon-wrapper'
+          iconClassName='vz-settings-eradicate-clyde-icon'
+          name='Robot'
+          size='20px'
+        />
+        {Messages.VIZALITY_SETTINGS_NO_CLYDE}
+      </SwitchItem>
       <Category
         name={Messages.ADVANCED_SETTINGS}
         description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}

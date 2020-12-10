@@ -1,4 +1,9 @@
-@use 'keybinds';
+.vz-settings {
+  &-eradicate-clyde-icon-wrapper {
+    vertical-align: sub;
+    margin-right: 4px;
+  }
+}
 
 .vizality-account {
   padding: 20px;
