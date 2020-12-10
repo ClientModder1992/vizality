@@ -1,7 +1,8 @@
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
 
-const { file: { removeDirRecursive }, string: { toSingular, toTitleCase }, logger: { log, warn, error } } = require('@vizality/util');
+const { file: { removeDirRecursive }, string: { toSingular, toTitleCase, toHash }, logger: { log, warn, error } } = require('@vizality/util');
+const { Avatars } = require('@vizality/constants');
 
 const _module = 'Manager';
 
@@ -52,27 +53,27 @@ module.exports = class AddonManager {
   }
 
   // Mount/load/enable/install shit
-  mount (pluginID) {
+  mount (addonId) {
     let manifest;
     try {
       manifest = Object.assign({
         appMode: 'app',
         dependencies: [],
         optionalDependencies: []
-      }, require(resolve(this.dir, pluginID, 'manifest.json')));
+      }, require(resolve(this.dir, addonId, 'manifest.json')));
     } catch (err) {
-      return this.error(`${toSingular(toTitleCase(this.type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest - Skipping`);
     }
 
     if (!this.requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toTitleCase(this.type))} ${pluginID} doesn't have a valid manifest - Skipping`);
+      return this.error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest - Skipping`);
     }
 
     try {
-      const PluginClass = require(resolve(this.dir, pluginID));
-      Object.defineProperties(PluginClass.prototype, {
+      const AddonClass = require(resolve(this.dir, addonId));
+      Object.defineProperties(AddonClass.prototype, {
         addonId: {
-          get: () => pluginID,
+          get: () => addonId,
           set: () => {
             throw new Error(`${toTitleCase(this.type)} cannot update their ID at runtime!`);
           }
@@ -85,9 +86,26 @@ module.exports = class AddonManager {
         }
       });
 
-      this[this.type].set(pluginID, new PluginClass());
+      this._setIcon(manifest, addonId);
+
+      this[this.type].set(addonId, new AddonClass());
     } catch (err) {
-      this.error(`An error occurred while initializing "${pluginID}"!`, err);
+      this.error(`An error occurred while initializing "${addonId}"!`, err);
+    }
+  }
+
+  _setIcon (manifest, addonId) {
+    if (manifest.icon) {
+      manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
+    } else {
+      const addonIdHash = toHash(addonId);
+      let iconIdentifier;
+      if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
+      if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
+      if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
+      if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
+      if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
+      manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
     }
   }
 
