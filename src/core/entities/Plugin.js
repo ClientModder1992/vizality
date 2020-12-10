@@ -142,11 +142,11 @@ module.exports = class Plugin extends Updatable {
       recursive: true,
       filter (f, skip) {
         // skip node_modules
-        if ((/\/node_modules/).test(f)) return skip;
+        if ((/\\node_modules/).test(f)) return skip;
         // skip .git folder
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
-        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return;
+        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return skip;
         vizality.manager.plugins.remount(_this.addonId);
       }
     });

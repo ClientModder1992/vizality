@@ -142,7 +142,7 @@ module.exports = class Builtin extends Updatable {
       recursive: true,
       filter (f, skip) {
         // skip node_modules
-        if ((/\/node_modules/).test(f)) return skip;
+        if ((/\\node_modules/).test(f)) return skip;
         // skip .git folder
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
