@@ -69,7 +69,7 @@ const webpack = module.exports = {
 
     // Wait until webpack is ready
     while (!window.webpackJsonp) {
-      await sleep(1);
+      await sleep(1e3);
     }
 
     // Extract values from webpack

@@ -86,7 +86,6 @@ module.exports = class Vizality extends Updatable {
     if (isOverlay) { // eh
       // await sleep(250);
     }
-    await sleep(1e3);
 
     // Webpack & Modules
     await initialize();
@@ -185,20 +184,20 @@ module.exports = class Vizality extends Updatable {
      *
      * @returns {*}
      */
-    (() => {
-      const { wrapper } = getModule('wrapper', 'unreadMentionsBar');
-      const { listItem } = getModule('guildsError', 'selected');
-      const { blobContainer } = getModule('blobContainer');
-      return new Promise(resolve => {
-        const checkForGuilds = () => {
-          if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
-            return resolve(vizality.api.router.navigate('dashboard'));
-          }
-          setTimeout(checkForGuilds, 100);
-        };
-        setTimeout(checkForGuilds, 100);
-      });
-    })();
+    // (() => {
+    //   const { wrapper } = getModule('wrapper', 'unreadMentionsBar');
+    //   const { listItem } = getModule('guildsError', 'selected');
+    //   const { blobContainer } = getModule('blobContainer');
+    //   return new Promise(resolve => {
+    //     const checkForGuilds = () => {
+    //       if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
+    //         return resolve(vizality.api.router.navigate('dashboard'));
+    //       }
+    //       setTimeout(checkForGuilds, 100);
+    //     };
+    //     setTimeout(checkForGuilds, 100);
+    //   });
+    // })();
 
     const router = getModule('transitionTo');
 
