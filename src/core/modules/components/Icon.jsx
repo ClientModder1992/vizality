@@ -521,23 +521,24 @@ const Icons = {
   )
 };
 
-const Icon = module.exports = React.memo(function VizalityIcon ({
-  name,
-  icon,
-  width = '24',
-  height = '24',
-  size,
-  className,
-  iconClassName,
-  color = 'currentColor',
-  tooltip,
-  tooltipColor = 'black',
-  tooltipPosition = 'top',
-  onClick,
-  onContextMenu,
-  hasWrapper = true,
-  ...props
-}) {
+const Icon = module.exports = React.memo(props => {
+  let {
+    name,
+    icon,
+    width = '24',
+    height = '24',
+    size,
+    className,
+    iconClassName,
+    color = 'currentColor',
+    tooltip,
+    tooltipColor = 'black',
+    tooltipPosition = 'top',
+    onClick,
+    onContextMenu,
+    rawSVG = false
+  } = props;
+
   if (size) {
     width = size;
     height = size;
@@ -581,11 +582,11 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
   }
 
   const render = () => {
-    // hasWrapper
-    if (hasWrapper) {
-      // hasWrapper and tooltip
+    // !rawSVG
+    if (!rawSVG) {
+      // !rawSVG and tooltip
       if (tooltip) {
-        // hasWrapper and tooltip and clickable
+        // !rawSVG and tooltip and clickable
         if (isClickable) {
           return (
             <TooltipContainer
@@ -599,17 +600,17 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
                 onContextMenu={onContextMenu}
               >
                 <SVG
+                  {...props}
                   className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
                   width={width}
                   height={height}
                   color={color}
-                  {...props}
                 />
               </Clickable>
             </TooltipContainer>
           );
         }
-        // hasWrapper and tooltip and !clickable
+        // !rawSVG and tooltip and !clickable
         return (
           <TooltipContainer
             className={joinClassNames(className, 'vz-icon-wrapper')}
@@ -618,16 +619,16 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
             position={tooltipPosition}
           >
             <SVG
+              {...props}
               className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
               width={width}
               height={height}
               color={color}
-              {...props}
             />
           </TooltipContainer>
         );
       }
-      // hasWrapper and !tooltip and clickable
+      // !rawSVG and !tooltip and clickable
       if (isClickable) {
         return (
           <Clickable
@@ -636,36 +637,36 @@ const Icon = module.exports = React.memo(function VizalityIcon ({
             onContextMenu={onContextMenu}
           >
             <SVG
+              {...props}
               className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
               width={width}
               height={height}
               color={color}
-              {...props}
             />
           </Clickable>
         );
       }
-      // hasWrapper and !tooltip and !clickable
+      // !rawSVG and !tooltip and !clickable
       return (
         <div className={joinClassNames(className, 'vz-icon-wrapper')}>
           <SVG
+            {...props}
             className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
             width={width}
             height={height}
             color={color}
-            {...props}
           />
         </div>
       );
     }
-    // !hasWrapper
+    // rawSVG
     return <SVG
+      {...props}
       name={name}
       className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
       width={width}
       height={height}
       color={color}
-      {...props}
     />;
   };
 

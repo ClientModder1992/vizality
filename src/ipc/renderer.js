@@ -49,7 +49,6 @@ global.VizalityNative = {
 if (!window.__SPLASH__) {
   window.require = module => {
     switch (module) {
-      case '@vizality/classes':
       case '@vizality/components':
       case '@vizality/constants':
       case '@vizality/discord':
@@ -60,11 +59,10 @@ if (!window.__SPLASH__) {
       case '@vizality/util':
       case '@vizality/webpack':
       case '@vizality/modal':
-      case 'electron':
         return require(module);
       default:
         // @todo Use @vizality/constants.ErrorTypes
-        throw new Error('Unknown module.');
+        throw new Error('Module is not whitelisted and cannot be used in this scope.');
     }
   };
 }

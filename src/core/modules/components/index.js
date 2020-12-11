@@ -11,7 +11,7 @@ require('fs')
   });
 
 /*
- * @todo: Possibly provide this as a utility, because Discord is starting to love
+ * @todo Possibly provide this as a utility, because Discord is starting to love
  * using this pattern. Maybe as a part of AsyncComponent?
  */
 const fetchByProp = async (prop, propName) => {
@@ -23,12 +23,14 @@ const fetchByProp = async (prop, propName) => {
 Object.assign(exports, {
   Button: AsyncComponent.from(getModule(m => m.DropdownSizes, true)),
   Table: AsyncComponent.from(getModuleByDisplayName('Table', true)),
+  HoverRoll: AsyncComponent.from(getModuleByDisplayName('HoverRoll', true)), // https://i.imgur.com/73wadZr.gif
   ShinyButton: AsyncComponent.from(getModuleByDisplayName('ShinyButton', true)),
   Anchor: AsyncComponent.from(getModuleByDisplayName('Anchor', true)),
   WebhookCard: AsyncComponent.from(getModuleByDisplayName('WebhookCard', true)),
   LazyImageZoomable: AsyncComponent.from(getModuleByDisplayName('LazyImageZoomable', true)),
   LazyImage: AsyncComponent.from(getModuleByDisplayName('LazyImage', true)),
   Image: AsyncComponent.from(getModuleByDisplayName('Image', true)),
+  TextInput: AsyncComponent.from(getModuleByDisplayName('TextInput', true)),
   SearchBar: AsyncComponent.from(getModuleByDisplayName('SearchBar', true)),
   Video: AsyncComponent.from(getModuleByDisplayName('Video', true)),
   FormNotice: AsyncComponent.from(getModuleByDisplayName('FormNotice', true)),
@@ -73,6 +75,12 @@ getModuleByDisplayName('Card', true, true).then(Card => {
 });
 getModuleByDisplayName('TabBar', true, true).then(TabBar => {
   [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => exports.TabBar[prop] = TabBar[prop]);
+});
+getModuleByDisplayName('SearchBar', true, true).then(SearchBar => {
+  [ 'Sizes' ].forEach(prop => exports.SearchBar[prop] = SearchBar[prop]);
+});
+getModuleByDisplayName('TextInput', true, true).then(TextInput => {
+  [ 'Sizes' ].forEach(prop => exports.TextInput[prop] = TextInput[prop]);
 });
 getModuleByDisplayName('Text', true, true).then(Text => {
   [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => exports.Text[prop] = Text[prop]);
