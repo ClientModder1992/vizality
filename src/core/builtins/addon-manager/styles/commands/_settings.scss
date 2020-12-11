@@ -1,0 +1,20 @@
+@use '@vizality/sass' as *;
+
+.vz-addon-manager-command {
+  &-addon-settings {
+    &-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    &-image-wrapper {
+      @include size(30px);
+      margin-right: 12px;
+      border-radius: 50%;
+    }
+    &-img {
+      @include size(100%);
+    }
+  }
+}

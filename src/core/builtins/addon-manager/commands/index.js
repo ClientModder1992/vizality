@@ -1,5 +1,6 @@
 module.exports = {
   disable: require('./disable'),
   enable: require('./enable'),
-  plugins: require('./plugins')
+  plugins: require('./plugins'),
+  settings: require('./settings')
 };
