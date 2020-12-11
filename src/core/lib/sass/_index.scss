@@ -1,13 +1,10 @@
 /*
- * This is the file that Plugin/Theme devs should import in their Sass files
- * to take advantage of our functions, mixins, classes, etc.
- * To include it, simply put the following at the top of your SCSS project file:
- * @use '../../libs/sass' as *
- *
- * @note: You may need to correct the '../../' portion to be correct for your relative path.
+ * This is the file that plugin/theme developers should import in their SCSS files
+ * to take advantage of our functions, mixins, etc.
+ * -----
+ * To use it, simply add the following to the top of your SCSS files:
+ * @use '@vizality' as *;
  */
 
- 
 @forward 'functions';
 @forward 'mixins';
-@forward 'keyframes';
