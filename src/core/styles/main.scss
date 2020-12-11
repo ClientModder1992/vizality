@@ -1,4 +1,4 @@
-@use '@vizality/sass' as *;
+@use '@vizality' as *;
 
 @use 'keyframes';
 @use 'colors';
@@ -19,22 +19,10 @@
   display: none;
 }
 
-.vz-hasNoUserAvatar {
-
-}
-
-.vz-hasNoGroupIcon {
-
-}
-
-.vz-hasNoSplashImage {
-
-}
-
 /*
  * This is needed to hide initial toasts from view until the
  * the styles can be loaded from the 'notices' builtin plugin.
- * @todo: Compile toast SCSS to CSS and remove this.
+ * @todo Compile toast SCSS to CSS and remove this.
  */
 .vz-toast {
   display: none;

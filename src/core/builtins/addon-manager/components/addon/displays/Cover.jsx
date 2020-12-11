@@ -1,4 +1,4 @@
-const { Tooltip } = require('@vizality/components');
+const { Tooltip, Anchor } = require('@vizality/components');
 const { constants } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 

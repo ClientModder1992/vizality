@@ -3,9 +3,9 @@ const { relative, join, dirname, resolve } = require('path');
 const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 
-const VIZALITY_REGEX = new RegExp('@vizality\\/([^\'"]{1,})?', 'ig');
+const VIZALITY_REGEX = new RegExp('@vizality([^\'"]{1,})?', 'ig');
 const BASE_DIR = `${join(__dirname, '..', '..')}\\`;
-const LIB_DIR = `${join(__dirname, '..', 'core', 'lib')}\\`;
+const LIB_DIR = `${join(__dirname, '..', 'core', 'lib', 'sass')}\\`;
 
 if (!ipcMain) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');

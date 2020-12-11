@@ -10,12 +10,6 @@ module.exports = class CoreSettings extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
 
-    // vizality.api.settings.registerSettings('vz-settings', {
-    //   category: 'vz-settings',
-    //   label: () => 'Settings',
-    //   render: CoreSettings
-    // });
-
     vizality.api.settings.registerDashboardItem({
       id: this.addonId,
       path: 'settings',

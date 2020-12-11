@@ -50,7 +50,6 @@ module.exports = React.memo(props => {
   };
 
   const renderOverflowMenu = e => {
-    // openContextMenu(e, () => <OverflowMenu type={type} actions={{ fetchMissing, enableAll, disableAll }} />);
     PopoutDispatcher.openPopout(e.target, {
       'vz-popout': 'vz-addons-list-overflow-menu',
       render: ({ onClose }) => <OverflowMenu onClose={onClose} display={display} {...props} />,
