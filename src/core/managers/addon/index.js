@@ -52,7 +52,7 @@ module.exports = class AddonManager {
     return vizality.settings.get(`disabled${toTitleCase(this.type)}`, []);
   }
 
-  // Mount/load/enable/install shit
+  // Mount/load/enable/install
   mount (addonId) {
     let manifest;
     try {
@@ -91,21 +91,6 @@ module.exports = class AddonManager {
       this[this.type].set(addonId, new AddonClass());
     } catch (err) {
       this.error(`An error occurred while initializing "${addonId}"!`, err);
-    }
-  }
-
-  _setIcon (manifest, addonId) {
-    if (manifest.icon) {
-      manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
-    } else {
-      const addonIdHash = toHash(addonId);
-      let iconIdentifier;
-      if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
-      if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
-      if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
-      if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
-      if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
-      manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
     }
   }
 
@@ -278,6 +263,21 @@ module.exports = class AddonManager {
           ]
         });
         break;
+    }
+  }
+
+  _setIcon (manifest, addonId) {
+    if (manifest.icon) {
+      manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
+    } else {
+      const addonIdHash = toHash(addonId);
+      let iconIdentifier;
+      if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
+      if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
+      if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
+      if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
+      if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
+      manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
     }
   }
 

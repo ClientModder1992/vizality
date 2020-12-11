@@ -13,7 +13,7 @@ class Plugin extends AddonManager {
     this.dir = PLUGINS_FOLDER;
   }
 
-  // Mount/load/enable/install shit
+  // Mount/load/enable/install
   mount (pluginId) {
     let manifest;
     try {

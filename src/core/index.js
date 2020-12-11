@@ -140,7 +140,7 @@ module.exports = class Vizality extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject('settings');
     this.emit('settingsReady');
 
-    // @todo: Make this and removeDiscordLogs settings options
+    // @todo Make this and removeDiscordLogs settings options
 
     // Patch Discord's console logs
     // this.patchDiscordLogs();
@@ -149,24 +149,12 @@ module.exports = class Vizality extends Updatable {
     this.removeDiscordLogs();
 
     // Setting up the modules for the global vizality object
-    const modules = [ 'webpack', 'classes', 'constants', 'discord', 'util' ];
+    const modules = [ 'components', 'constants', 'discord', 'http', 'i18n', 'patcher', 'react', 'util', 'webpack' ];
 
     for (const mdl of modules) {
       const Mdl = require(`@vizality/${mdl}`);
       Object.assign(this.modules, { [mdl]: Mdl });
     }
-
-    /*
-     * const Webpack = require('@vizality/webpack');
-     * Object.getOwnPropertyNames(Webpack)
-     *   .forEach(e => {
-     *     if (!e.indexOf('get') || !e.indexOf('find') || !e.indexOf('_')) {
-     *       Modules.webpack[e] = Webpack[e];
-     *     } else {
-     *       Modules.webpack.modules[e] = Webpack[e];
-     *     }
-     *   });
-     */
 
     // Builtins
     await this.manager.builtins.load();
