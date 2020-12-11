@@ -1,14 +1,14 @@
+const { react: { findInReactTree } } = require('@vizality/util');
 const { patch, unpatch } = require('@vizality/patcher');
 const { getModule } = require('@vizality/webpack');
 const { Regexes } = require('@vizality/constants');
-const { react: { findInReactTree } } = require('@vizality/util');
 
 module.exports = async () => {
   const Anchor = getModule(m => m.default?.displayName === 'Anchor');
   const { anchor } = getModule('anchor', 'anchorUnderlineOnHover');
   const discordRegex = new RegExp(`${Regexes.DISCORD}`, 'i');
   const vizalityRegex = new RegExp(`${Regexes.DISCORD}/vizality`, 'i');
-  const vizalityProtocolRegex = new RegExp(/vizality:\/\//i);
+  const vizalityProtocolRegex = new RegExp('^(vizality://)', 'i');
   const userRegex = new RegExp(`${Regexes.DISCORD}/users/`, 'i');
 
   patch('vz-attributes-anchors', Anchor, 'default', (_, res) => {
