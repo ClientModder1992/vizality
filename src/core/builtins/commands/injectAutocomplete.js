@@ -34,9 +34,13 @@ module.exports = async function injectAutocomplete () {
     }, formatCommand(command, index))));
 
     return React.createElement(React.Fragment, {}, renderHeader(value, formatHeader, customHeader), results.length > 10
-      ? React.createElement(AdvancedScrollerThin, { style: { height: '360px' } }, results)
+      ? React.createElement(AdvancedScrollerThin, { style: { height: '337px' } }, results)
       : results
     );
+  }
+
+  function getMatchingCommand (c) {
+    return [ c.command.toLowerCase(), ...(c.aliases?.map(alias => alias.toLowerCase()) || []) ];
   }
 
   const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = await getModule('AUTOCOMPLETE_OPTIONS');
@@ -44,10 +48,9 @@ module.exports = async function injectAutocomplete () {
   AutocompleteTypes.VIZALITY_AUTOCOMPLETE = {
     autoSelect: true,
     getSentinel: () => vizality.api.commands.prefix,
-    matches: (_channel, prefix, value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api.commands.prefix &&
-      vizality.api.commands.filter(c => c.autocomplete).find(c => [ c.command, ...(c.aliases || []) ].includes(value.split(' ')[0])),
+    matches: (_channel, prefix, value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api.commands.prefix && vizality.api.commands.filter(c => c.autocomplete).find(c => (getMatchingCommand(c)).includes(value.split(' ')[0])),
     queryResults: (_channel, value) => {
-      const currentCommand = vizality.api.commands.find(c => [ c.command, ...(c.aliases || []) ].includes(value.split(' ')[0]));
+      const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
       if (!currentCommand) {
         return false;
       }
@@ -61,7 +64,7 @@ module.exports = async function injectAutocomplete () {
         return autocompleteRows;
       }
     },
-    renderResults: (_channel, value, selected, onHover, onClick, _state, autocomplete) => {
+    renderResults: (_channel, value, selected, onHover, onClick, _state, _props, autocomplete) => {
       if (autocomplete && autocomplete.commands) {
         const { commands } = autocomplete;
         const customHeader = Array.isArray(commands.__header) ? commands.__header : [ commands.__header ];
@@ -103,9 +106,9 @@ module.exports = async function injectAutocomplete () {
     getSentinel: () => vizality.api.commands.prefix,
     matches: (_channel, prefix, _value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api.commands.prefix,
     queryResults: (_channel, value) => ({
-      commands: vizality.api.commands.filter(c => [ c.command, ...(c.aliases || []) ].some(commandName => commandName.includes(value)))
+      commands: vizality.api.commands.filter(c => (getMatchingCommand(c)).some(commandName => commandName.includes(value)))
     }),
-    renderResults: (_channel, value, selected, onHover, onClick, _state, autocomplete) => {
+    renderResults: (_channel, value, selected, onHover, onClick, _state, _props, autocomplete) => {
       if (autocomplete && autocomplete.commands) {
         return renderCommandResults(value, selected, autocomplete.commands, onHover, onClick, c => ({
           key: `vizality-${c.command}`,
@@ -124,7 +127,7 @@ module.exports = async function injectAutocomplete () {
 
   const _this = this;
   const ChannelEditorContainer = await getModuleByDisplayName('ChannelEditorContainer');
-  patch('vz-commands-textArea', ChannelEditorContainer.prototype, 'render', function (args, res) {
+  patch('vz-commands-textArea', ChannelEditorContainer.prototype, 'render', function (_, res) {
     _this.instance = this;
     return res;
   });
@@ -133,7 +136,7 @@ module.exports = async function injectAutocomplete () {
   typing.startTyping = (startTyping => (channel) => setImmediate(() => {
     if (this.instance && this.instance.props) {
       const { textValue } = this.instance.props;
-      const currentCommand = vizality.api.commands.find(c => [ c.command, ...(c.aliases || []) ].includes(textValue.slice(vizality.api.commands.prefix.length).split(' ')[0]));
+      const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(textValue.slice(vizality.api.commands.prefix.length).split(' ')[0]));
       if (textValue.startsWith(vizality.api.commands.prefix) && (!currentCommand || (currentCommand && !currentCommand.showTyping))) {
         return typing.stopTyping(channel);
       }
@@ -142,7 +145,7 @@ module.exports = async function injectAutocomplete () {
   }))(this.oldStartTyping = typing.startTyping);
 
   const PlainTextArea = await getModuleByDisplayName('PlainTextArea');
-  patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_args, res) {
+  patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.props;
     if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(value)) {
       return {
@@ -154,7 +157,7 @@ module.exports = async function injectAutocomplete () {
   });
 
   const SlateChannelTextArea = await getModuleByDisplayName('SlateChannelTextArea');
-  patch('vz-commands-slateAutocomplete', SlateChannelTextArea.prototype, 'getCurrentWord', function (_args, res) {
+  patch('vz-commands-slateAutocomplete', SlateChannelTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.editorRef;
     const { selection, document } = value;
     if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(document.text)) {

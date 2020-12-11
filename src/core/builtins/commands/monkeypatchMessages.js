@@ -15,7 +15,7 @@ module.exports = async function monkeypatchMessages () {
     }
 
     const [ cmd, ...args ] = message.content.slice(vizality.api.commands.prefix.length).split(' ');
-    const command = vizality.api.commands.find(c => [ c.command, ...(c.aliases || []) ].includes(cmd.toLowerCase()));
+    const command = vizality.api.commands.find(c => [ c.command.toLowerCase(), ...(c.aliases?.map(alias => alias.toLowerCase()) || []) ].includes(cmd.toLowerCase()));
     if (!command) {
       return sendMessage(id, message, ...params);
     }
