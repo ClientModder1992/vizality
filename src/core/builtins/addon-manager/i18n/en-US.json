@@ -1,5 +1,5 @@
 {
-  "VIZALITY_MISSING_ADDONS_FOUND": "{count, plural, =0 {No} other {{count}}} missing {count, plural, =1 {{type} was} other {{type}s were}} found",
+  "VIZALITY_MISSING_ADDONS_FOUND": "{count, plural, =0 {{No}} other {{count}}} missing {count, plural, =1 {{type} was} other {{type}s were}} found",
   "VIZALITY_MISSING_ADDONS_RETRIEVED": "The following {count, plural, one {{type} was} other {{type}s were}} retrieved:",
   "VIZALITY_MISSING_ADDONS_NONE": "Everything seems to check out at the moment.",
 

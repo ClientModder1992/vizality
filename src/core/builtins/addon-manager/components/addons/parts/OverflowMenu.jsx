@@ -14,7 +14,7 @@ module.exports = React.memo(props => {
       <Menu.MenuItem
         id='open-folder'
         label='Show in File Explorer'
-        action={() => shell.openItem(Directories[toPlural(type).toUpperCase()])}
+        action={() => shell.openPath(Directories[toPlural(type).toUpperCase()])}
       />
       <Menu.MenuItem
         id='refresh-list'
