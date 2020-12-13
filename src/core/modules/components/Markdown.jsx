@@ -4,31 +4,40 @@ const { shell: { openExternal } } = require('electron');
 const Markdown = require('react-markdown');
 
 const { joinClassNames, string: { toKebabCase } } = require('@vizality/util');
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React, React: { useState } } = require('@vizality/react');
-const { Icon, CodeBlock } = require('@vizality/components');
+const { React, React: { useState, useEffect } } = require('@vizality/react');
+const { getModule } = require('@vizality/webpack');
 
 const { open: openModal } = require('@vizality/modal');
 
-module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
+const CodeBlock = require('./CodeBlock');
+const Icon = require('./Icon');
+
+const AsyncComponent = require('./AsyncComponent');
+const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
+const ImageModal = AsyncComponent.fromDisplayName('ImageModal');
+const Anchor = AsyncComponent.fromDisplayName('Anchor');
+
+module.exports = React.memo(({ source, className }) => {
   const [ markdown, setMarkdown ] = useState();
   const { base } = getModule('base');
   const { size32, size24, size20, size16, size14, size12 } = getModule('size32');
   const { anchor, anchorUnderlineOnHover } = getModule('anchorUnderlineOnHover');
   const { imageWrapper } = getModule('imageWrapper');
-  const ImageModal = getModuleByDisplayName('ImageModal');
 
-  // This would probably better be done as a hook with useEffect, but meh.
-  (async () => {
-    if (markdown) return;
-    if (existsSync(source)) {
+  useEffect(() => {
+    const getSource = async () => {
       const md = await readFile(source, 'utf-8');
+      console.log('2', md);
       // For Vizality Changelog
       setMarkdown(md.replace(/{(fixed|added|improved|progress)( marginTop)?}/g, '').replace(/(# Changelog)/, '').trim());
+    };
+
+    if (existsSync(source)) {
+      getSource();
     } else {
       setMarkdown(source.trim());
     }
-  })();
+  }, [ markdown ]);
 
   const flatten = (text, child) => {
     return typeof child === 'string'
@@ -82,17 +91,25 @@ module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
 
     link: ({ href, children }) => {
       return <>
-        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}>
+        <Anchor
+          href={href}
+          onClick={() => openExternal(href)}
+          className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}
+        >
           {children}
-        </a>
+        </Anchor>
       </>;
     },
 
     linkReference: ({ href, children }) => {
       return <>
-        <a href={href} onClick={() => openExternal(href)} className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}>
+        <Anchor
+          href={href}
+          onClick={() => openExternal(href)}
+          className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}
+        >
           {children}
-        </a>
+        </Anchor>
       </>;
     },
 
@@ -121,20 +138,20 @@ module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
     },
 
     image: ({ alt, src }) => {
-      return <img
+      return <LazyImageZoomable
         className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
+        onClick={() => openModal(() => <ImageModal src={src} />)}
       />;
     },
 
     imageReference: ({ alt, src }) => {
-      return <img
+      return <LazyImageZoomable
         className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => openModal(() => <ImageModal className='vizality-image-modal' src={src} />)}
+        onClick={() => openModal(() => <ImageModal src={src} />)}
       />;
     },
 
@@ -164,20 +181,16 @@ module.exports = React.memo(function VizalityMarkdown ({ source, className }) {
       const sizes = [ null, size32, size24, size20, size16, size14, size12 ];
       const text = toKebabCase(children.reduce(flatten, ''));
       const slug = `vz-markdown-header--${generateId(text)}`;
+      const Header = `h${level}`;
 
-      return React.createElement(`h${level}`, {
-        className: joinClassNames('vz-markdown-header', `vz-markdown-header-h${level}`, sizes[level], base),
-        id: slug
-      }, React.createElement('a', {
-        className: 'vz-markdown-anchor',
-        href: `#${slug}`
-      }, React.createElement(Icon, {
-        className: 'vz-markdown-anchor-icon',
-        name: 'Link',
-        width: '16px',
-        height: '16px'
-      })),
-      children);
+      return (
+        <Header id={slug} className={joinClassNames('vz-markdown-header', `vz-markdown-header-h${level}`, sizes[level], base)}>
+          <Anchor className='vz-markdown-anchor' href={`#${slug}`}>
+            <Icon name='Link' className='vz-markdown-anchor-icon' iconClassName='vz-markdown-anchor-icon' size='16px' />
+          </Anchor>
+          {children}
+        </Header>
+      );
     }
   };
   return <Markdown source={markdown} renderers={renderers} />;

@@ -38,14 +38,14 @@ module.exports = class AsyncComponent extends React.PureComponent {
   }
 
   static fromDisplayName (displayName, fallback) {
-    return AsyncComponent.from(getModuleByDisplayName(displayName), fallback);
+    return AsyncComponent.from(getModuleByDisplayName(displayName, true), fallback);
   }
 
-  static fromModule (filter, fallback) {
-    return AsyncComponent.from(getModule(filter), fallback);
+  static fromProps (filter, fallback) {
+    return AsyncComponent.from(getModule(filter, true), fallback);
   }
 
-  static fromModuleProp (filter, prop, fallback) {
-    return AsyncComponent.from((async () => (await getModule(filter))[prop])(), fallback);
+  static fetchFromProps (filter, prop, fallback) {
+    return AsyncComponent.from((async () => (await getModule(filter, true))[prop || filter])(), fallback);
   }
 };
