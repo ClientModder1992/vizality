@@ -22,7 +22,7 @@ module.exports = class Updater extends Builtin {
   constructor () {
     super();
     this.changelog = {
-      image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
+      image: 'vz-plugin://better-code-blocks/assets/icon.png',
       footer: 'Missed an update? [Check out our previous change logs](https://google.com)',
       id: 'updates-2019-02-15'
     };
@@ -302,7 +302,7 @@ module.exports = class Updater extends Builtin {
   async _getChangeLogsComponent () {
     if (!this._ChangeLog) {
       const _this = this;
-      const { video } = getModule('video', 'added');
+      const { video, image } = getModule('video', 'image', 'added');
       const DiscordChangeLog = getModuleByDisplayName('ChangelogStandardTemplate');
 
       class ChangeLog extends DiscordChangeLog {
@@ -329,7 +329,7 @@ module.exports = class Updater extends Builtin {
             return null;
           }
 
-          return <img src={_this.changelog.image} className={video} alt={''} />;
+          return <img src={_this.changelog.image} className={joinClassNames(image, video)} />;
         }
 
         renderFooter () {

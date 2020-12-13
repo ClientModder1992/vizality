@@ -4,6 +4,8 @@ const { Regexes } = require('@vizality/constants');
 const { Builtin } = require('@vizality/entities');
 const { Icon } = require('@vizality/components');
 const { React } = require('@vizality/react');
+const { react: { getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
+
 
 const Sidebar = require('./components/parts/sidebar/Sidebar');
 const Routes = require('./routes/Routes');
@@ -12,6 +14,7 @@ module.exports = class Dashboard extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this.patchTabs();
+    // this.injectGuildHomeButton();
 
     vizality.api.router.registerRoute({
       path: '/dashboard',
@@ -67,6 +70,30 @@ module.exports = class Dashboard extends Builtin {
       return res;
     });
   }
+
+  // async injectGuildHomeButton () {
+  //   const guildClasses = getModule('tutorialContainer');
+  //   const guildElement = (await waitForElement(`.${guildClasses.tutorialContainer.split(' ')[0]}`)).parentElement;
+  //   const instance = getOwnerInstance(guildElement);
+
+  //   patch('vz-dashboard-guilds-button', instance, 'render', (_, res) => {
+  //     const ogRef = res.ref;
+  //     const ogChildren = res.props.children;
+
+  //     res.props.children = elem => {
+  //       const r = ogChildren(elem);
+  //       console.log(elem);
+  //       const tee = [ elem.ref.current.children[1].children[1] ];
+  //       tee.splice(1, 0, <div class='pie'>Hi lol</div>);
+  //       return r;
+  //     };
+  //     // res.props.children[1].props.children.splice(1, 0, <div class='pie' />);
+
+  //     // pie.splice(1, 0, <div class='pie' />);
+
+  //     return res;
+  //   });
+  // }
 
   async leaveDashboard () {
     if (window.location.pathname.startsWith('/vizality/dashboard')) {

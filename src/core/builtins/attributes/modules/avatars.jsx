@@ -3,10 +3,11 @@ const { patch, unpatch } = require('@vizality/patcher');
 const { getModule } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 
-module.exports = async () => {
-  const AvatarMdl = await getModule('AnimatedAvatar', true);
+module.exports = () => {
+  const AvatarModule = getModule('AnimatedAvatar', true);
+  const Avatar = AvatarModule.default;
 
-  patch('vz-attributes-avatars', AvatarMdl, 'default', (args, res) => {
+  patch('vz-attributes-avatars', AvatarModule, 'default', (args, res) => {
     const avatar = args[0].src || void 0;
     if (avatar && avatar.includes('/avatars')) {
       [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
@@ -16,8 +17,7 @@ module.exports = async () => {
   });
 
   // Re-render using patched component
-  patch('vz-attributes-animated-avatars', AvatarMdl.AnimatedAvatar, 'type', (_, res) => {
-    const Avatar = AvatarMdl.default;
+  patch('vz-attributes-animated-avatars', AvatarModule.AnimatedAvatar, 'type', (_, res) => {
     return <Avatar {...res.props} />;
   });
 
