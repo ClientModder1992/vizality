@@ -5,7 +5,7 @@ module.exports = {
   executor (args) {
     let result = {};
 
-    if (vizality.manager.plugins.has(args[0])) {
+    if (vizality.manager.plugins.isInstalled(args[0])) {
       if (vizality.manager.plugins.isEnabled(args[0])) {
         result = {
           title: 'Error',

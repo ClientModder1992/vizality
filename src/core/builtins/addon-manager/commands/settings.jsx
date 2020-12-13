@@ -3,12 +3,12 @@ const { React } = require('@vizality/react');
 
 module.exports = {
   command: 'settings',
-  description: 'Shows the settings options for a plugin.',
-  usage: '{c} [ plugin ID ]',
+  description: 'Shows the settings options for a currently installed and enabled plugin.',
+  usage: '{c} [addonId]',
   async executor (args) {
     let result = {};
 
-    if (vizality.manager.plugins.plugins.has(args[0])) {
+    if (vizality.manager.plugins.isInstalled(args[0])) {
       if (!vizality.manager.plugins.isEnabled(args[0])) {
         result = {
           title: 'Error',
@@ -20,7 +20,7 @@ module.exports = {
         const plugin = vizality.manager.plugins.get(args[0]);
 
         result = {
-          color: parseInt(plugin.manifest.color.replace(/^#/, ''), 16) || null,
+          color: parseInt(plugin.manifest.color && plugin.manifest.color.replace(/^#/, ''), 16) || null,
           provider: {
             name: <>
               <FormTitle tag='h2' className='vz-addon-manager-command-addon-settings-header'>
