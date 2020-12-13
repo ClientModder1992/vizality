@@ -23,7 +23,7 @@ module.exports = React.memo(props => {
           {id === 'vizality'
             ? <img
               className='vz-builtin-updater-update-icon'
-              src={`${HTTP.IMAGES}/logo.png`}
+              src={`${HTTP.ASSETS}/logo.png`}
             />
             : <img
               className='vz-builtin-updater-update-icon'

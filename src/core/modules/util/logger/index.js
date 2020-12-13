@@ -80,7 +80,7 @@ const logger = module.exports = {
 
     const baseBadgeStyles = `border-radius: 2px; text-align: center; display: inline-block; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase; font-size: 10px; font-weight: 600; line-height: 14px; margin-right: 3px; padding: 1px 4px;`;
 
-    const badgeStyles = `background-image: url('${HTTP.IMAGES}/console-icon.png'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 2px; padding: 2px 14px 5px 0; text-align: center; margin: 0 4px 1px 0; display: inline-block;`;
+    const badgeStyles = `background-image: url('${HTTP.ASSETS}/console-icon.png'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 2px; padding: 2px 14px 5px 0; text-align: center; margin: 0 4px 1px 0; display: inline-block;`;
 
     const moduleStyles =
       `${baseBadgeStyles}

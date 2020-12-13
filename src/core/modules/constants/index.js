@@ -3,12 +3,12 @@ const { join } = require('path');
 const Constants = module.exports = Object.freeze({
   // Vizality
   HTTP: Object.freeze({
+    CDN: 'https://cdn.vizality.com',
     WEBSITE: 'https://vizality.com',
     TRELLO: 'https://trello.com/vizality',
-    get API () { return `${Constants.HTTP.WEBSITE}/app/api`; },
-    get DOCS () { return `${Constants.HTTP.API}/docs`; },
-    get ASSETS () { return `${Constants.HTTP.WEBSITE}/app/assets`; },
-    get IMAGES () { return `${Constants.HTTP.ASSETS}/images`; }
+    get API () { return `${Constants.HTTP.WEBSITE}/api`; },
+    get DOCS () { return `${Constants.HTTP.WEBSITE}/docs`; },
+    get ASSETS () { return `${Constants.HTTP.CDN}/assets`; }
   }),
 
   // GitHub
@@ -83,19 +83,17 @@ const Constants = module.exports = Object.freeze({
   // Avatars
   Avatars: Object.freeze({
     // Theme icons
-    get DEFAULT_THEME_1 () { return `${Constants.HTTP.IMAGES}/client/default-theme-1.png`; },
-    get DEFAULT_THEME_2 () { return `${Constants.HTTP.IMAGES}/client/default-theme-2.png`; },
-    get DEFAULT_THEME_3 () { return `${Constants.HTTP.IMAGES}/client/default-theme-3.png`; },
-    get DEFAULT_THEME_4 () { return `${Constants.HTTP.IMAGES}/client/default-theme-4.png`; },
-    get DEFAULT_THEME_5 () { return `${Constants.HTTP.IMAGES}/client/default-theme-5.png`; },
+    get DEFAULT_THEME_1 () { return `${Constants.HTTP.ASSETS}/default-theme-1.png`; },
+    get DEFAULT_THEME_2 () { return `${Constants.HTTP.ASSETS}/default-theme-2.png`; },
+    get DEFAULT_THEME_3 () { return `${Constants.HTTP.ASSETS}/default-theme-3.png`; },
+    get DEFAULT_THEME_4 () { return `${Constants.HTTP.ASSETS}/default-theme-4.png`; },
+    get DEFAULT_THEME_5 () { return `${Constants.HTTP.ASSETS}/default-theme-5.png`; },
     // Plugin icons
-    get DEFAULT_PLUGIN_1 () { return `${Constants.HTTP.IMAGES}/client/default-plugin-1.png`; },
-    get DEFAULT_PLUGIN_2 () { return `${Constants.HTTP.IMAGES}/client/default-plugin-2.png`; },
-    get DEFAULT_PLUGIN_3 () { return `${Constants.HTTP.IMAGES}/client/default-plugin-3.png`; },
-    get DEFAULT_PLUGIN_4 () { return `${Constants.HTTP.IMAGES}/client/default-plugin-4.png`; },
-    get DEFAULT_PLUGIN_5 () { return `${Constants.HTTP.IMAGES}/client/default-plugin-5.png`; },
-    // Error icon
-    get ERROR () { return `${Constants.HTTP.IMAGES}/client/uhoh.png`; }
+    get DEFAULT_PLUGIN_1 () { return `${Constants.HTTP.ASSETS}/default-plugin-1.png`; },
+    get DEFAULT_PLUGIN_2 () { return `${Constants.HTTP.ASSETS}/default-plugin-2.png`; },
+    get DEFAULT_PLUGIN_3 () { return `${Constants.HTTP.ASSETS}/default-plugin-3.png`; },
+    get DEFAULT_PLUGIN_4 () { return `${Constants.HTTP.ASSETS}/default-plugin-4.png`; },
+    get DEFAULT_PLUGIN_5 () { return `${Constants.HTTP.ASSETS}/default-plugin-5.png`; }
   }),
 
   // Errors

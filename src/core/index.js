@@ -133,7 +133,7 @@ module.exports = class Vizality extends Updatable {
     console.clear();
 
     // Startup banner
-    console.log('%c ', `background: url('${HTTP.IMAGES}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ', `background: url('${HTTP.ASSETS}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
 
     // APIs
     await this.manager.apis.initialize();

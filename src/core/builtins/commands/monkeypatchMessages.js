@@ -7,7 +7,7 @@ module.exports = async function monkeypatchMessages () {
   const { BOT_AVATARS } = getModule('BOT_AVATARS');
 
   // Create a new `BOT_AVATARS` key called 'vizality' which we'll later use to replace Clyde.
-  BOT_AVATARS.vizality = `${HTTP.IMAGES}/logo.png`;
+  BOT_AVATARS.vizality = `${HTTP.ASSETS}/logo.png`;
 
   messages.sendMessage = (sendMessage => async (id, message, ...params) => {
     if (!message.content.startsWith(vizality.api.commands.prefix)) {
@@ -47,7 +47,7 @@ module.exports = async function monkeypatchMessages () {
         const avatar = command.avatar ||
         (vizality.manager.plugins.get(command.origin) &&
          vizality.manager.plugins.get(command.origin).manifest.icon) ||
-        `${HTTP.IMAGES}/logo.png`;
+        `${HTTP.ASSETS}/logo.png`;
 
         BOT_AVATARS[botAvatarName] = avatar;
 
@@ -71,7 +71,7 @@ module.exports = async function monkeypatchMessages () {
         delete BOT_AVATARS[result.avatar_url],
         // Restore the "default" Vizality username and avatar to Clyde if the setting is enabled
         vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeUsername', 'Vizality'),
-        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeAvatar', `${HTTP.IMAGES}/logo.png`)
+        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeAvatar', `${HTTP.ASSETS}/logo.png`)
       );
     }
 
