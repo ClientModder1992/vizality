@@ -86,7 +86,7 @@ electron.app.once('ready', () => {
   const registerProtocol = (name, folder) => {
     electron.protocol.registerFileProtocol(name, (request, cb) => {
       // https://security.stackexchange.com/a/123723
-      const url = normalize(request.url.replace(`${name}://`, '')).replace(/^(\.\.(\/|\\|$))+/, '');
+      const [ url ] = normalize(request.url.replace(`${name}://`, '')).replace(/^(\.\.(\/|\\|$))+/, '').split('?');
       if (folder === 'builtins') {
         return cb({ path: join(__dirname, '..', 'core', 'builtins', folder, url) });
       }
