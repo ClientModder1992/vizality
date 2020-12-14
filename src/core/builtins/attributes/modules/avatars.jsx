@@ -4,7 +4,7 @@ const { getModule } = require('@vizality/webpack');
 const { React } = require('@vizality/react');
 
 module.exports = () => {
-  const AvatarModule = getModule('AnimatedAvatar', true);
+  const AvatarModule = getModule('AnimatedAvatar');
   const Avatar = AvatarModule.default;
 
   patch('vz-attributes-avatars', AvatarModule, 'default', (args, res) => {

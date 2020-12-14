@@ -91,19 +91,16 @@ module.exports = React.memo(() => {
         <Menu.MenuItem
           id='home'
           label='Home'
-          icon={() => <Icon name='Home' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('dashboard')}
         />
         <Menu.MenuItem
           id='settings'
           label='Settings'
-          icon={() => <Icon name='Wrench' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('settings')}
         />
         <Menu.MenuItem
           id='plugins'
           label='Plugins'
-          icon={() => <Icon name='Plugin' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('plugins')}
         >
           {plugins.length && <>
@@ -129,7 +126,6 @@ module.exports = React.memo(() => {
         <Menu.MenuItem
           id='themes'
           label='Themes'
-          icon={() => <Icon name='Theme' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('themes')}
         >
           {themes.length && <>
@@ -155,32 +151,27 @@ module.exports = React.memo(() => {
         <Menu.MenuItem
           id='snippets'
           label='Snippets'
-          icon={() => <Icon name='Scissors' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('snippets')}
         />
         <Menu.MenuItem
           id='quick-code'
           label='Quick Code'
-          icon={() => <Icon name='Compose' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('quick-code')}
         />
         <Menu.MenuItem
           id='theme-editor'
           label='Theme Editor'
-          icon={() => <Icon name='Settings' width='100%' height='100%' />}
           disabled={true}
         />
         <Menu.MenuSeparator/>
         <Menu.MenuItem
           id='developers'
           label='Developers'
-          icon={() => <Icon name='UnknownUser' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('developers')}
         />
         <Menu.MenuItem
           id='documentation'
           label='Documentation'
-          icon={() => <Icon name='Science' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('documentation')}
         >
           <Menu.MenuItem
@@ -228,13 +219,11 @@ module.exports = React.memo(() => {
         <Menu.MenuItem
           id='updater'
           label='Updater'
-          icon={() => <Icon name='CloudDownload' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('updater')}
         />
         <Menu.MenuItem
           id='changelog'
           label='Changelog'
-          icon={() => <Icon name='ClockReverse' width='100%' height='100%' />}
           action={() => vizality.api.router.navigate('changelog')}
         />
       </Menu.MenuItem>

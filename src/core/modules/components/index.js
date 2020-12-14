@@ -51,8 +51,10 @@ Object.assign(exports, {
   Modal: AsyncComponent.fromDisplayName('DeprecatedModal'),
   ImageCarouselModal: AsyncComponent.fromDisplayName('componentDispatchSubscriber(ModalCarousel)'),
   ImageModal: AsyncComponent.fromDisplayName('ImageModal'),
+  ApplicationStoreListingCarousel: AsyncComponent.fromDisplayName('ApplicationStoreListingCarousel'),
   // -----
   Avatar: AsyncComponent.fetchFromProps('AnimatedAvatar', 'default'),
+  CarouselWithPreview: AsyncComponent.fetchFromProps('CarouselWithPreview'),
   Tooltip: AsyncComponent.fetchFromProps('TooltipContainer'),
   Helmet: AsyncComponent.fetchFromProps('HelmetProvider', 'Helmet'),
   HelmetProvider: AsyncComponent.fetchFromProps('HelmetProvider'),
@@ -106,6 +108,10 @@ getModuleByDisplayName('Flex', true, true).then(Flex =>
 
 getModule('AnimatedAvatar', true, true).then(Avatar =>
   [ 'Sizes' ].forEach(prop => exports.Avatar[prop] = Avatar[prop])
+);
+
+getModule('CarouselWithPreview', true, true).then(CarouselWithPreview =>
+  [ 'Alignment' ].forEach(prop => exports.CarouselWithPreview[prop] = CarouselWithPreview[prop])
 );
 
 getModule('MenuGroup', true, true).then(Menu => {

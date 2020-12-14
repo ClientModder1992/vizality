@@ -167,26 +167,6 @@ module.exports = class Vizality extends Updatable {
 
     this._initialized = true;
 
-    /**
-     *
-     *
-     * @returns {*}
-     */
-    // (() => {
-    //   const { wrapper } = getModule('wrapper', 'unreadMentionsBar');
-    //   const { listItem } = getModule('guildsError', 'selected');
-    //   const { blobContainer } = getModule('blobContainer');
-    //   return new Promise(resolve => {
-    //     const checkForGuilds = () => {
-    //       if (document.querySelectorAll(`.${wrapper} .${listItem} .${blobContainer}`).length > 0) {
-    //         return resolve(vizality.api.router.navigate('dashboard'));
-    //       }
-    //       setTimeout(checkForGuilds, 100);
-    //     };
-    //     setTimeout(checkForGuilds, 100);
-    //   });
-    // })();
-
     const router = getModule('transitionTo');
 
     // This needs to be here, after the Webpack modules have been initialized
