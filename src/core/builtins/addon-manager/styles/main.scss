@@ -3,8 +3,18 @@
 @use 'listing';
 @use 'commands';
 
-.vz-uninstall-modal-ul {
-  list-style: unset;
-  font-weight: 600;
-  padding: 20px;
+.vz-addon-uninstall-modal {
+  &-ul {
+    list-style: unset;
+    font-weight: 600;
+    padding: 10px;
+  }
+  &-li {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+  }
+  &-icon {
+    margin-right: 7px;
+  }
 }

@@ -2,7 +2,7 @@
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
-const { Confirm, Spinner, Card, Text } = require('@vizality/components');
+const { Confirm, Spinner, Card, Text, LazyImage } = require('@vizality/components');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
@@ -190,7 +190,13 @@ module.exports = React.memo(({ type, tab, search }) => {
   };
 
   const _uninstall = (addonId) => {
-    const addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
+    let addons;
+
+    // Themes
+    if (type === 'theme') addons = [ addonId ];
+    // Plugins
+    else addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
+
     openModal(() => (
       <Confirm
         red
@@ -208,8 +214,26 @@ module.exports = React.memo(({ type, tab, search }) => {
       >
         <Text>
           <span>{Messages.VIZALITY_ADDONS_UNINSTALL_SURE.format({ type, count: addons.length })}</span>
-          <ul className='vz-uninstall-modal-ul'>
-            {addons.map(p => <li className='vz-uninstall-modal-li' key={p.id}>{vizality.manager[toPlural(type)].get(p).manifest.name}</li>)}
+          <ul className='vz-addon-uninstall-modal-ul'>
+            {addons.map(p => {
+              const addon = vizality.manager[toPlural(type)].get(p);
+              return (
+                <li className='vz-addon-uninstall-modal-li' vz-addon-id={p} key={p.id}>
+                  <div className='vz-addon-uninstall-modal-icon'>
+                    <LazyImage
+                      className='vz-addon-uninstall-modal-icon-image-wrapper'
+                      imageClassName='vz-addon-uninstall-modal-icon-img'
+                      src={addon.manifest.icon}
+                      width='20'
+                      height='20'
+                    />
+                  </div>
+                  <div className='vz-addon-uninstall-modal-name'>
+                    {addon.manifest.name}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </Text>
       </Confirm>
