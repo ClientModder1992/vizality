@@ -1,16 +1,14 @@
-const { Tooltip, Anchor } = require('@vizality/components');
-const { constants } = require('@vizality/webpack');
+const { Tooltip } = require('@vizality/components');
 const { React } = require('@vizality/react');
 
 const Description = require('../parts/Description');
 const Permissions = require('../parts/Permissions');
 const AddonIcon = require('../parts/Icon');
 const Footer = require('../parts/Footer');
+const Author = require('../parts/Author');
 
 module.exports = React.memo(props => {
   const { manifest } = props;
-  const authors = [].concat(manifest.author);
-  const authorIds = [].concat(manifest.authorId);
 
   return (
     <div className='vz-addon-card-header-wrapper'>
@@ -27,17 +25,7 @@ module.exports = React.memo(props => {
                 </div>
                 <span className='vz-addon-card-version'>{manifest.version}</span>
               </div>
-              <div className='vz-addon-card-authors'>
-                {authors.length && authors.map((author, i) =>
-                  <Anchor
-                    className='vz-addon-card-author'
-                    vz-author-id={authorIds.length && authorIds[i] ? authorIds[i] : null}
-                    href={`${window.location.origin}${constants.Endpoints.USERS}/${authorIds[i]}`}
-                  >
-                    {author}
-                  </Anchor>)
-                }
-              </div>
+              <Author manifest={manifest} />
             </div>
           </div>
           <Description description={manifest.description} />

@@ -26,25 +26,25 @@ module.exports = React.memo(props => {
         <Menu.MenuRadioItem
           id='sort-top-rated'
           group='sort'
-          label='Top Rated'
+          label='Rating'
           action={() => void 0}
         />
         <Menu.MenuRadioItem
           id='sort-recently-added'
           group='sort'
-          label='Recently Added'
+          label='Published Date'
           action={() => void 0}
         />
         <Menu.MenuRadioItem
           id='sort-most-reviewed'
           group='sort'
-          label='Most Reviewed'
+          label='Review Count'
           action={() => void 0}
         />
         <Menu.MenuRadioItem
           id='sort-most-downloaded'
           group='sort'
-          label='Most Downloaded'
+          label='Installs'
           action={() => void 0}
         />
       </Menu.MenuGroup>

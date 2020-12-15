@@ -1,10 +1,14 @@
 const { React, React: { useReducer } } = require('@vizality/react');
 const { Icon, Switch, Button } = require('@vizality/components');
+const { string: { toPlural } } = require('@vizality/util');
 const { Messages } = require('@vizality/i18n');
 
 module.exports = React.memo(props => {
-  const { onUninstall, isEnabled, onToggle } = props;
+  const { onUninstall, isEnabled, onToggle, type, addonId } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
+
+  const isInstalled = vizality.manager[toPlural(type)].isInstalled(addonId);
+  const hasSettings = vizality.api.settings.tabs[addonId];
 
   return (
     <div className='vz-addon-card-footer-wrapper'>
@@ -25,17 +29,30 @@ module.exports = React.memo(props => {
               </Button>
             </div>
           }
+          {/* <div className='vz-addon-card-tags'>
+            <div className='vz-addon-card-tag'>
+              Pie
+            </div>
+            <div className='vz-addon-card-tag'>
+              Lazer Beams
+            </div>
+            <div className='vz-addon-card-tag'>
+              Stuff
+            </div>
+          </div> */}
         </div>
         <div className='vz-addon-card-footer-section-right'>
-          <div className='vz-addon-card-settings'>
-            <Icon
-              wrapperClassName='vz-addon-card-settings-button-wrapper'
-              className='vz-addon-card-settings-button'
-              name='Gear'
-              tooltip='Settings'
-              onClick={() => void 0}
-            />
-          </div>
+          {isInstalled && hasSettings &&
+            <div className='vz-addon-card-settings'>
+              <Icon
+                wrapperClassName='vz-addon-card-settings-button-wrapper'
+                className='vz-addon-card-settings-button'
+                name='Gear'
+                tooltip='Settings'
+                onClick={() => vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`)}
+              />
+            </div>
+          }
           <div className='vz-addon-card-toggle-wrapper'>
             <Switch
               className='vz-addon-card-toggle'

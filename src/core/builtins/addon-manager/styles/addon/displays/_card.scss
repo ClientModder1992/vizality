@@ -1,10 +1,10 @@
 @use '@vizality' as *;
 
-// Grid (default) view
+// Card (default) view
 
 .vz-addon-card {
   $base: &;
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-flow: column;
@@ -13,28 +13,27 @@
   cursor: pointer;
   transition: box-shadow 0.125s ease, background-color 0.125s ease, transform 0.125s ease;
   flex: 1;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-secondary-alt);
+  border-radius: 8px;
+  // Hack to fix trailing items in the flexbox not sizing correctly
+  // with the rest of the items
+  &.vz-addon-card-filler {
+    border: none !important;
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: transparent;
+  }
   &:hover {
-    transform: translate3d(0, -1px, 0) !important;
-    background-color: var('background-tertiary');
-    box-shadow: var('elevation-high');
+    background-color: var(--background-tertiary);
+    box-shadow: var(--elevation-high);
   }
   &-header-wrapper {
     display: flex;
     flex: 1;
-  }
-  &-preview-wrapper {
-    width: 100%;
-    backface-visibility: hidden;
-    position: relative;
-    border-bottom: 1px solid var('background-tertiary');
-    &:hover {
-      #{$base}-preview-previous,
-      #{$base}-preview-next {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-        color: var('header-primary');
-      }
-    }
   }
   &-content-wrapper {
     @include size(100%);
@@ -47,49 +46,6 @@
     flex-flow: column wrap;
     flex: 1;
     overflow: hidden;
-  }
-  &-preview {
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    &-img {
-      @include size(100%);
-      position: absolute;
-      top: 0;
-      left: 0;
-      border-radius: 5px 5px 0 0;
-      object-fit: cover;
-      object-position: center;
-    }
-  }
-  &-preview-previous,
-  &-preview-next {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    z-index: 1;
-    top: 0;
-    bottom: 0;
-    left: -10px;
-    opacity: 0;
-    transform: translate3d(0, -10px, 0);
-    transition: transform .2s ease, opacity .2s ease;
-    &-icon-wrapper {
-      background: var('background-floating');
-      box-shadow: var('elevation-high');
-      border-radius: 50%;
-      padding: 15px;
-      opacity: .8;
-      transition: opacity .2s ease-in-out;
-      &:hover {
-        color: var('header-primary');
-        opacity: 1;
-      }
-    }
-  }
-  &-preview-next {
-    left: unset;
-    right: -10px;
   }
   &-metadata {
     overflow: hidden;
@@ -106,7 +62,6 @@
   }
   &-icon {
     @include size(50px);
-    border-radius: 4px;
     overflow: hidden;
     margin-right: 12px;
     flex: 0 0 auto;
@@ -134,7 +89,7 @@
       text-overflow: ellipsis;
     }
   }
-  &-authors {
+  &-author-wrapper {
     display: flex;
   }
   &-author {
@@ -171,23 +126,28 @@
     line-height: 1.4;
     flex: 1;
   }
-  &-tags {
-    display: flex;
-    margin-top: 20px;
-  }
-  &-tag {
-    border-radius: 1000px;
-    background: var('background-primary');
-    padding: 5px 10px;
-    font-size: 10px;
-    text-transform: uppercase;
-    font-weight: 500;
-    min-width: 30px;
-    text-align: center;
-    & + #{$base}-tag {
-      margin-left: 10px
-    }
-  }
+  // &-tags {
+  //   display: flex;
+  //   height: 100%;
+  // }
+  // &-tag {
+  //   border-radius: 1000px;
+  //   background: var('background-primary');
+  //   padding: 0 10px;
+  //   font-size: 10px;
+  //   text-transform: uppercase;
+  //   font-weight: 500;
+  //   min-width: 30px;
+  //   text-align: center;
+  //   height: 100%;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   position: relative;
+  //   & + #{$base}-tag {
+  //     margin-left: 10px
+  //   }
+  // }
   &-footer-wrapper {
     margin-top: 20px;
     border-top: 1px solid var('background-modifier-accent');
@@ -229,7 +189,7 @@
     }
     &-section-right {
       > div {
-        margin-left: 10px;
+        margin-left: 12px;
       }
     }
     &-section-left {
@@ -237,17 +197,6 @@
         margin-right: 20px;
       }
     }
-  }
-  // Hack to fix trailing items in the flexbox not sizing correctly
-  // with the rest of the items
-  &:empty {
-    height: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-color: transparent;
-    background-color: transparent;
   }
 }
 

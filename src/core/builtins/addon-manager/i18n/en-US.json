@@ -1,5 +1,5 @@
 {
-  "VIZALITY_MISSING_ADDONS_FOUND": "{count, plural, =0 {{No}} other {{count}}} missing {count, plural, =1 {{type} was} other {{type}s were}} found",
+  "VIZALITY_MISSING_ADDONS_FOUND": "{count, plural, =0 {No} other {{count}}} missing {count, plural, =1 {{type} was} other {{type}s were}} found",
   "VIZALITY_MISSING_ADDONS_RETRIEVED": "The following {count, plural, one {{type} was} other {{type}s were}} retrieved:",
   "VIZALITY_MISSING_ADDONS_NONE": "Everything seems to check out at the moment.",
 
@@ -18,7 +18,7 @@
   "VIZALITY_ADDONS_PERMISSIONS_FS": "Read and write files on your computer",
   "VIZALITY_ADDONS_PERMISSIONS_KEYPRESSES": "Listen to keypresses",
   "VIZALITY_ADDONS_PERMISSIONS_USE_EUD": "Collect and use your data",
-  "VIZALITY_ADDONS_UNINSTALL": "Uninstall {count, plural, =1, other {{type}s}}",
+  "VIZALITY_ADDONS_UNINSTALL": "Uninstall {count, plural, =1 {{type}} other {{type}s}}",
   "VIZALITY_ADDONS_UNINSTALL_SURE": "Are you sure you want to uninstall {count, plural, =1 {this {type}} other {these {type}s}}?",
   "VIZALITY_ADDONS_VERSION": "Version"
 }

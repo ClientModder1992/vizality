@@ -2,7 +2,7 @@
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
-const { Confirm, Spinner, Card, Text, LazyImage } = require('@vizality/components');
+const { Confirm, Spinner, Text, LazyImage } = require('@vizality/components');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
@@ -76,7 +76,7 @@ module.exports = React.memo(({ type, tab, search }) => {
       : Messages.VIZALITY_MISSING_ADDONS_NONE;
 
     vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
-      header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length }),
+      header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length || 0 }),
       content: missingAddonsList,
       type: missingAddons.length > 0 && 'success',
       icon: toTitleCase(type),
@@ -263,7 +263,7 @@ module.exports = React.memo(({ type, tab, search }) => {
     const placeholders = [];
     for (let i = 0; i < 8; i++) {
       placeholders.push(
-        <Card className='vz-addon-card vz-addon-card-filler' />
+        <div className='vz-addon-card vz-addon-card-filler' />
       );
     }
     return placeholders;
@@ -304,7 +304,13 @@ module.exports = React.memo(({ type, tab, search }) => {
 
   return (
     <>
-      <div className={joinClassNames('vz-addons-list', colorStandard)} vz-display={display} vz-previews={previewImages ? '' : null}>
+      <div
+        className={joinClassNames('vz-addons-list', colorStandard)}
+        vz-display={display}
+        vz-previews={previewImages ? '' : null}
+        vz-plugins={type === 'plugin' ? '' : null}
+        vz-themes={type === 'theme' ? '' : null}
+      >
         <StickyBar
           type={type}
           query={query}
