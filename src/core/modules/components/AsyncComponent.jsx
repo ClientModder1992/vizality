@@ -29,11 +29,7 @@ module.exports = class AsyncComponent extends React.PureComponent {
    */
   static from (promise, fallback) {
     return React.memo(props =>
-      React.createElement(AsyncComponent, {
-        _provider: () => promise,
-        _fallback: fallback,
-        ...props
-      })
+      <AsyncComponent _provider={() => promise} _fallback={fallback} {...props} />
     );
   }
 

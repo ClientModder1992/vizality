@@ -1,5 +1,6 @@
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
+// const Vibrant = require('node-vibrant');
 
 const { file: { removeDirRecursive }, string: { toSingular, toTitleCase, toHash }, logger: { log, warn, error } } = require('@vizality/util');
 const { Avatars } = require('@vizality/constants');
@@ -87,6 +88,7 @@ module.exports = class AddonManager {
       });
 
       this._setIcon(manifest, addonId);
+      // this._setColor(manifest);
 
       this[this.type].set(addonId, new AddonClass());
     } catch (err) {
@@ -268,18 +270,37 @@ module.exports = class AddonManager {
 
   _setIcon (manifest, addonId) {
     if (manifest.icon) {
-      manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
-    } else {
-      const addonIdHash = toHash(addonId);
-      let iconIdentifier;
-      if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
-      if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
-      if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
-      if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
-      if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
-      manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
+      return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
     }
+
+    const addonIdHash = toHash(addonId);
+    let iconIdentifier;
+    if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
+    if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
+    if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
+    if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
+    if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
+    return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
   }
+
+  // _setColor (manifest) {
+  //   if (!manifest.icon) return;
+
+  //   if (!manifest.color) {
+  //     let img, path;
+  //     if (manifest.icon.startsWith('vz-')) {
+  //       img = manifest.icon.replace(`vz-${toSingular(this.type)}://`, '');
+  //       path = resolve(this.dir, img);
+  //     }
+
+  //     path = path || manifest.icon;
+
+  //     Vibrant.from(path).getPalette().then(palette => {
+  //       console.log(palette);
+  //       manifest.color = palette.DarkVibrant.hex;
+  //     });
+  //   }
+  // }
 
   log (...data) { log(_module, toSingular(this.type), null, ...data); }
   warn (...data) { warn(_module, toSingular(this.type), null, ...data); }

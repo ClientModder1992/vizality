@@ -2,7 +2,10 @@ const { getModule, getModuleByDisplayName, modal } = require('@vizality/webpack'
 
 const AsyncComponent = require('./AsyncComponent');
 
+// Add some util components
 Object.assign(exports, {
+  // Files
+  AsyncComponent: require('./AsyncComponent'),
   CodeBlock: require('./CodeBlock'),
   ColorPicker: require('./ColorPicker'),
   ComponentPreview: require('./ComponentPreview'),
@@ -16,13 +19,9 @@ Object.assign(exports, {
   StickyWrapper: require('./StickyWrapper'),
   Switch: require('./Switch'),
   Titlebar: require('./Titlebar'),
-  AsyncComponent: require('./AsyncComponent'),
   misc: require('./misc'),
-  settings: require('./settings')
-});
-
-// Add some util components
-Object.assign(exports, {
+  settings: require('./settings'),
+  // -----
   Button: AsyncComponent.fromProps(m => m.DropdownSizes),
   // -----
   Table: AsyncComponent.fromDisplayName('Table'),
@@ -65,54 +64,43 @@ Object.assign(exports, {
   Menu: () => null
 });
 
+
 // Re-export module properties
 getModuleByDisplayName('FormNotice', true, true).then(FormNotice =>
-  [ 'Types' ].forEach(prop => exports.FormNotice[prop] = FormNotice[prop])
-);
+  [ 'Types' ].forEach(prop => exports.FormNotice[prop] = FormNotice[prop]));
 
 getModuleByDisplayName('Spinner', true, true).then(Spinner =>
-  [ 'Type' ].forEach(prop => exports.Spinner[prop] = Spinner[prop])
-);
+  [ 'Type' ].forEach(prop => exports.Spinner[prop] = Spinner[prop]));
 
 getModule(m => m.DropdownSizes, true, true).then(Button =>
-  [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => exports.Button[prop] = Button[prop])
-);
+  [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => exports.Button[prop] = Button[prop]));
 
 getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar =>
-  [ 'Icon', 'Title', 'Divider' ].forEach(prop => exports.HeaderBar[prop] = HeaderBar[prop])
-);
+  [ 'Icon', 'Title', 'Divider' ].forEach(prop => exports.HeaderBar[prop] = HeaderBar[prop]));
 
 getModuleByDisplayName('Card', true, true).then(Card =>
-  [ 'Types' ].forEach(prop => exports.Card[prop] = Card[prop])
-);
+  [ 'Types' ].forEach(prop => exports.Card[prop] = Card[prop]));
 
 getModuleByDisplayName('TabBar', true, true).then(TabBar =>
-  [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => exports.TabBar[prop] = TabBar[prop])
-);
+  [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => exports.TabBar[prop] = TabBar[prop]));
 
 getModuleByDisplayName('SearchBar', true, true).then(SearchBar =>
-  [ 'Sizes' ].forEach(prop => exports.SearchBar[prop] = SearchBar[prop])
-);
+  [ 'Sizes' ].forEach(prop => exports.SearchBar[prop] = SearchBar[prop]));
 
 getModuleByDisplayName('TextInput', true, true).then(TextInput =>
-  [ 'Sizes' ].forEach(prop => exports.TextInput[prop] = TextInput[prop])
-);
+  [ 'Sizes' ].forEach(prop => exports.TextInput[prop] = TextInput[prop]));
 
 getModuleByDisplayName('Text', true, true).then(Text =>
-  [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => exports.Text[prop] = Text[prop])
-);
+  [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => exports.Text[prop] = Text[prop]));
 
 getModuleByDisplayName('Flex', true, true).then(Flex =>
-  [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => exports.Flex[prop] = Flex[prop])
-);
+  [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => exports.Flex[prop] = Flex[prop]));
 
 getModule('AnimatedAvatar', true, true).then(Avatar =>
-  [ 'Sizes' ].forEach(prop => exports.Avatar[prop] = Avatar[prop])
-);
+  [ 'Sizes' ].forEach(prop => exports.Avatar[prop] = Avatar[prop]));
 
 getModule('CarouselWithPreview', true, true).then(CarouselWithPreview =>
-  [ 'Alignment' ].forEach(prop => exports.CarouselWithPreview[prop] = CarouselWithPreview[prop])
-);
+  [ 'Alignment' ].forEach(prop => exports.CarouselWithPreview[prop] = CarouselWithPreview[prop]));
 
 getModule('MenuGroup', true, true).then(Menu => {
   [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
@@ -121,7 +109,6 @@ getModule('MenuGroup', true, true).then(Menu => {
 });
 
 getModuleByDisplayName('DeprecatedModal', true, true).then(Modal =>
-  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop])
-);
+  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => exports.Modal[prop] = Modal[prop]));
 
 exports.Confirm.defaultProps = { transitionState: 1, onClose: modal.pop };

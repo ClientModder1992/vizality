@@ -27,7 +27,6 @@ module.exports = React.memo(({ source, className }) => {
   useEffect(() => {
     const getSource = async () => {
       const md = await readFile(source, 'utf-8');
-      console.log('2', md);
       // For Vizality Changelog
       setMarkdown(md.replace(/{(fixed|added|improved|progress)( marginTop)?}/g, '').replace(/(# Changelog)/, '').trim());
     };
