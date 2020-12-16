@@ -6,8 +6,9 @@
     .vz-addon-card {
       flex: 1 100%;
       &-previews-wrapper {
-        max-width: 420px;
-        border: none;
+        width: 100%;
+        max-width: 500px;
+        margin: 16px;
       }
       &-content-wrapper {
         padding: 7px;
@@ -16,14 +17,8 @@
     &:not([vz-previews]) {
       .vz-addon-card {
         &-icon {
-          @include size(unset);
-          margin-right: 6px;
-        }
-        &-icon-img {
-          height: 180px;
-          display: flex;
-          position: relative;
-          width: auto;
+          @include size(180px);
+          margin-right: 10px;
         }
       }
     }
@@ -34,30 +29,20 @@
           flex-flow: row;
           flex: 1;
         }
+        // .carousel-22Gq5X {
+        //   height: 100%;
+        // }
+        &-previews-empty,
         .outer-s4sY2_ {
-          height: 100%;
-          padding: 0 !important;
-        }
-        .smallCarousel-2e0IQc {
           height: 100%;
         }
         .smallCarousel-2e0IQc,
         .smallCarouselItem-1rfKEJ {
-          border-radius: 8px 0 0 8px;
-        }
-        &-previews-empty {
-          border-radius: 8px 0 0 8px;
+          height: 100%;
         }
         &-content-wrapper {
           flex-direction: column;
-          padding: 16px;
-        }
-        &-preview-img {
-          border-radius: 5px 0 0 5px;
-        }
-        &-preview {
-          height: 100%;
-          padding: 0;
+          padding: 24px 16px 24px 0;
         }
       }
     }

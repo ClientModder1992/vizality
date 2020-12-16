@@ -83,7 +83,7 @@
     font-size: 18px;
     margin-right: 7px;
     font-weight: 500;
-    color: var('header-primary');
+    color: var(--header-primary);
     > div {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -97,28 +97,36 @@
     width: fit-content;
     font-size: 14px;
     margin-top: 2px;
-    color: var('interactive-normal');
+    color: var(--interactive-normal);
     line-height: 1.5;
+    text-decoration: none !important;
     & + & {
       &::before {
         content: ', ';
-        color: var('interactive-normal');
+        color: var(--interactive-normal);
       }
     }
     &[vz-author-id] {
       &:hover {
-        color: var('header-primary');
+        color: var(--header-primary);
+        text-decoration: underline !important;
       }
     }
   }
   &-version {
     font-size: 14px;
-    color: var('interactive-normal');
+    color: var(--interactive-normal);
     margin-bottom: 1px;
+    margin-right: 7px;
   }
   &-toggle-wrapper {
     display: flex;
     flex: 0 0 auto;
+  }
+  &-show-previews-button {
+    &-icon * {
+      pointer-events: none;
+    }
   }
   &-description {
     @include max-lines(2);

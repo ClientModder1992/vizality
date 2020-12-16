@@ -26,7 +26,9 @@ module.exports = React.memo(props => {
                     {manifest.name}
                   </Tooltip>
                 </div>
-                <span className='vz-addon-card-version'>{manifest.version}</span>
+                <span className='vz-addon-card-version'>
+                  {manifest.version}
+                </span>
               </div>
               <Author manifest={manifest} />
             </div>

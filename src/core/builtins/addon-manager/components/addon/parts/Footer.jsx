@@ -3,8 +3,10 @@ const { Icon, Switch, Button } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
 const { Messages } = require('@vizality/i18n');
 
+const PreviewsButton = require('./PreviewsButton');
+
 module.exports = React.memo(props => {
-  const { onUninstall, isEnabled, onToggle, type, addonId } = props;
+  const { onUninstall, isEnabled, onToggle, type, addonId, showPreviewImages, hasPreviewImages, displayType } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   const isInstalled = vizality.manager[toPlural(type)].isInstalled(addonId);
@@ -42,11 +44,12 @@ module.exports = React.memo(props => {
           </div> */}
         </div>
         <div className='vz-addon-card-footer-section-right'>
+          {!showPreviewImages && hasPreviewImages && displayType !== 'cover' && <PreviewsButton {...props} />}
           {isInstalled && hasSettings &&
-            <div className='vz-addon-card-settings'>
+            <div className='vz-addon-card-settings-button'>
               <Icon
-                wrapperClassName='vz-addon-card-settings-button-wrapper'
-                className='vz-addon-card-settings-button'
+                className='vz-addon-card-settings-button-icon-wrapper'
+                iconClassName='vz-addon-card-settings-button-icon'
                 name='Gear'
                 tooltip='Settings'
                 onClick={() => vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`)}

@@ -3,9 +3,14 @@
 [vz-previews] {
   .vz-addon-card {
     &-previews-wrapper {
-      width: 100%;
-      backface-visibility: hidden;
-      position: relative;
+      margin: 16px 16px 0;
+      // max-width: 100%; */
+      // backface-visibility: hidden; */
+      // position: relative; */
+      // height: auto;
+      * {
+        box-sizing: border-box;
+      }
     }
     &-previews-inner {
       height: 100%;
@@ -17,10 +22,11 @@
     }
     &-previews-empty {
       background: var(--background-secondary-alt);
-      padding-top: 56.25%;
+      border: 1px solid var(--background-tertiary);
+      padding-top: 42.55%;
       position: relative;
       overflow: hidden;
-      border-radius: 8px 8px 0 0;
+      border-radius: 8px;
       &::after {
         content: '';
         position: absolute;
@@ -64,22 +70,23 @@
     }
     .outer-s4sY2_ {
       overflow: hidden;
+      padding-top: 42.55% !important; // Cinemascope aspect ratio
     }
     .smallCarousel-2e0IQc {
-      overflow: visible;
       background: var(--background-secondary-alt);
+      border: 1px solid var(--background-tertiary);
       &,
       .smallCarouselItem-1rfKEJ {
-        border-radius: 8px 8px 0 0;
+        border-radius: 8px;
       }
     }
     .arrowHitboxPadding-2stwpJ {
       padding: 5px;
-      background: var(--background-secondary-alt);
-      box-shadow: var(--elevation-high);
+      background: var(--background-tertiary);
       margin: 5px;
-      opacity: .7;
+      opacity: 0.7;
       border-radius: 50%;
+      transition: opacity .2s, box-shadow .2s;
       svg {
         * {
           pointer-events: none;
@@ -87,6 +94,7 @@
       }
       &:hover {
         opacity: 1;
+        box-shadow: var(--elevation-high);
       }
     }
     .smallCarouselImage-2Qvg9S {

@@ -1,4 +1,7 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
+const { existsSync, lstatSync, readdirSync } = require('fs');
+const { join, extname } = require('path');
+
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
 const { open: openModal, close: closeModal } = require('@vizality/modal');
@@ -17,7 +20,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
   const [ query, setQuery ] = useState(search || '');
   const [ display, setDisplay ] = useState(getSetting('list-display', 'card'));
-  const [ previewImages, setShowPreviewImages ] = useState(getSetting('addon-list-show-preview-images', false));
+  const [ showPreviewImages, setShowPreviewImages ] = useState(getSetting('addon-list-show-preview-images', false));
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const { colorStandard } = getModule('colorStandard');
@@ -25,6 +28,32 @@ module.exports = React.memo(({ type, tab, search }) => {
   useEffect(() => {
     setLoading(false);
   }, []);
+
+  const _checkForPreviewImages = (addonId) => {
+    const addon = vizality.manager[toPlural(type)].get(addonId);
+    const screenshotsDir = join(addon.addonPath, 'screenshots');
+
+    const hasPreviewImages = existsSync(screenshotsDir) && lstatSync(screenshotsDir).isDirectory();
+
+    if (!hasPreviewImages) return false;
+
+    return true;
+  };
+
+  const _getPreviewImages = (addonId) => {
+    if (!_checkForPreviewImages(addonId)) return [];
+
+    const addon = vizality.manager[toPlural(type)].get(addonId);
+
+    const previewImages = [];
+    const validExtensions = [ '.png', '.gif', '.jpg', '.jpeg', '.webp' ];
+
+    readdirSync(join(addon.addonPath, 'screenshots'))
+      .filter(file => validExtensions.indexOf(extname(file).toLowerCase()) !== -1)
+      .map(file => previewImages.push(`vz-${type}://${addonId}/screenshots/${file}`));
+
+    return previewImages;
+  };
 
   /*
    * Including these in this component so we can forceUpdate the switches.
@@ -250,7 +279,9 @@ module.exports = React.memo(({ type, tab, search }) => {
         isEnabled={vizality.manager[toPlural(type)].isEnabled(item.addonId)}
         onToggle={async v => _toggle(item.addonId, v)}
         onUninstall={() => _uninstall(item.addonId)}
-        showPreviewImages={previewImages}
+        previewImages={_getPreviewImages(item.addonId)}
+        hasPreviewImages={_checkForPreviewImages(item.addonId)}
+        showPreviewImages={showPreviewImages}
       />
     );
   };
@@ -307,7 +338,7 @@ module.exports = React.memo(({ type, tab, search }) => {
       <div
         className={joinClassNames('vz-addons-list', colorStandard)}
         vz-display={display}
-        vz-previews={previewImages ? '' : null}
+        vz-previews={showPreviewImages ? '' : null}
         vz-plugins={type === 'plugin' ? '' : null}
         vz-themes={type === 'theme' ? '' : null}
       >
@@ -325,7 +356,7 @@ module.exports = React.memo(({ type, tab, search }) => {
           resetSearchOptions={_resetSearchOptions}
           getSetting={getSetting}
           updateSetting={updateSetting}
-          showPreviewImages={previewImages}
+          showPreviewImages={showPreviewImages}
           handleShowPreviewImages={_handleShowPreviewImages}
         />
         <div className='vz-addons-list-inner'>

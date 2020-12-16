@@ -1,11 +1,12 @@
 const { React, React: { useReducer } } = require('@vizality/react');
 const { Icon, Switch, Tooltip } = require('@vizality/components');
 
+const PreviewsButton = require('../parts/PreviewsButton');
 const AddonIcon = require('../parts/Icon');
 const Author = require('../parts/Author');
 
 module.exports = React.memo(props => {
-  const { manifest, isEnabled, onToggle, onUninstall } = props;
+  const { manifest, isEnabled, onToggle, onUninstall, hasPreviewImages } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   return (
@@ -21,7 +22,10 @@ module.exports = React.memo(props => {
                     {manifest.name}
                   </Tooltip>
                 </div>
-                <span className='vz-addon-card-version'>{manifest.version}</span>
+                <span className='vz-addon-card-version'>
+                  {manifest.version}
+                </span>
+                {hasPreviewImages && <PreviewsButton {...props} size='18px' />}
               </div>
               <Author manifest={manifest} />
             </div>
