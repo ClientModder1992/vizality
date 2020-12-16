@@ -59,6 +59,7 @@ if (!window.__SPLASH__) {
       case '@vizality/util':
       case '@vizality/webpack':
       case '@vizality/modal':
+      case '@vizality/modules':
         return require(module);
       default:
         // @todo Use @vizality/constants.ErrorTypes
