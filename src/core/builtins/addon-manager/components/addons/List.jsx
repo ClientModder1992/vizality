@@ -124,7 +124,8 @@ module.exports = React.memo(({ type, tab, search }) => {
       const search = query.toLowerCase();
       items = items.filter(p =>
         p.manifest.name.toLowerCase().includes(search) ||
-        p.manifest.author.toLowerCase().includes(search) ||
+        p.manifest.author.name?.toLowerCase().includes(search) ||
+        (typeof p.manifest.author === 'string' && p.manifest.author.toLowerCase().includes(search)) ||
         p.manifest.description.toLowerCase().includes(search)
       );
     }
