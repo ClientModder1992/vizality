@@ -21,6 +21,8 @@ module.exports = async () => {
     res.props.children.props['vz-self'] = Boolean(message.author?.email) && '';
     res.props.children.props['vz-author-id'] = message.author?.id;
     res.props.children.props['vz-bot'] = Boolean(message.author?.bot) && '';
+    res.props.children.props['vz-local'] = Boolean(message.author?.isLocalBot()) && '';
+    res.props.children.props['vz-webhook'] = Boolean(message.webhookId) && '';
     res.props.children.props['vz-system'] = Boolean(message.type && message.type === 6) && '';
     res.props.children.props['vz-mentioned'] = Boolean(message.mentioned) && '';
     res.props.children.props['vz-member'] = Boolean(
