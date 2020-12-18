@@ -52,6 +52,14 @@ const dom = module.exports = {
     return { width, height };
   },
 
+  setCssVariable (varName, value, element = document.body) {
+    return element.style.setProperty(`--${varName}`, value);
+  },
+
+  getCssVariable (varName, element = document.documentElement) {
+    return getComputedStyle(element).getPropertyValue(`--${varName}`);
+  },
+
   injectShadowStyles (shadowRootElement, insertBeforeSelector, styles) {
     const root = shadowRootElement.shadowRoot;
 
