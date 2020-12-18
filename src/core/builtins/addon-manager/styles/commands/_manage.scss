@@ -1,0 +1,54 @@
+@use '@vizality' as *;
+
+.vz-addon-manager-command-addon-manage-header {
+  margin: 0 10px 10px;
+}
+
+.vz-addons-list {
+  &.vz-addons-list-embed {
+    padding: 0 10px;
+    .vz-addon-card {
+      background: var(--background-secondary-alt);
+      &:hover {
+        background: var(--background-tertiary);
+      }
+      &-author {
+        color: var(--interactive-normal);
+        &[vz-user-id] {
+          &:hover {
+            color: var(--header-primary);
+          }
+        }
+      }
+    }
+    .vz-addons-list-search-options-button {
+      display: none;
+    }
+    .vz-addons-list-sticky-bar-wrapper {
+      background: none;
+      box-shadow: none;
+    }
+    .vz-addons-list-sticky-bar {
+      padding: 0;
+    }
+    .vz-addons-list-search {
+      margin: 0;
+      width: 100%;
+    }
+    .input-3Xdcic {
+      height: 30px;
+    }
+    .iconLayout-3OgqU3 {
+      @include size(32px);
+    }
+    .emptyStateImage-2MrSNs {
+      margin-top: 20px;
+    }
+    .vz-addons-list-empty {
+      padding: 20px;
+    }
+    .topPill-30KHOu {
+      display: none;
+    }
+  }
+}
