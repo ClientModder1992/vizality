@@ -1,8 +1,8 @@
 module.exports = {
   command: 'help',
   aliases: [ 'h' ],
-  description: 'Gives you a list of commands or information on a specific command.',
-  usage: '{c} [ commandName ]',
+  description: 'Gives you a list of subcommands or information on a specific command.',
+  usage: '{c} [command]',
   async executor ([ commandName ]) {
     let result;
 
@@ -62,7 +62,7 @@ module.exports = {
           commandName.includes(args[0])
         )
       ),
-      header: 'vizality command list'
+      header: 'Vizality Command List'
     };
   }
 };
