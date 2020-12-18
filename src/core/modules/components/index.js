@@ -19,6 +19,7 @@ Object.assign(exports, {
   StickyWrapper: require('./StickyWrapper'),
   Switch: require('./Switch'),
   Titlebar: require('./Titlebar'),
+  Anchor: require('./Anchor'),
   misc: require('./misc'),
   settings: require('./settings'),
   // -----
@@ -27,7 +28,7 @@ Object.assign(exports, {
   Table: AsyncComponent.fromDisplayName('Table'),
   HoverRoll: AsyncComponent.fromDisplayName('HoverRoll'), // https://i.imgur.com/73wadZr.gif
   ShinyButton: AsyncComponent.fromDisplayName('ShinyButton'),
-  Anchor: AsyncComponent.fromDisplayName('Anchor'),
+  // Anchor: AsyncComponent.fromDisplayName('Anchor'),
   WebhookCard: AsyncComponent.fromDisplayName('WebhookCard'),
   LazyImageZoomable: AsyncComponent.fromDisplayName('LazyImageZoomable'),
   LazyImage: AsyncComponent.fromDisplayName('LazyImage'),

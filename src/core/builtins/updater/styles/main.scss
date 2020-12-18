@@ -124,7 +124,7 @@
       margin-top: 2px;
       color: var(--interactive-normal);
       line-height: 1.5;
-      &[vz-author-id] {
+      &[vz-user-id] {
         cursor: pointer;
         &:hover {
           color: var(--header-primary);
