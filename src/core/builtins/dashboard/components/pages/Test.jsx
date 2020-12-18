@@ -1,6 +1,6 @@
 // const { Table } = require('@vizality/components');
 const { React, React: { useState, useEffect } } = require('@vizality/react');
-const { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel } = require('@vizality/components');
+const { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel, FormNotice } = require('@vizality/components');
 const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
 
 const { EmbedVideo } = getModule(m => m.EmbedVideo);
@@ -10,6 +10,12 @@ const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)
 module.exports = React.memo(() => {
   return (
     <>
+      <FormNotice
+        className='poo'
+        type={FormNotice.Types.WARNING}
+        title={'i like'}
+        body={'apple pie'}
+      />;
       <ApplicationStoreListingCarousel
         className='poog'
         autoplayInterval={8000}

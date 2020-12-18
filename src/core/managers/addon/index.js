@@ -1,6 +1,5 @@
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
-// const Vibrant = require('node-vibrant');
 
 const { file: { removeDirRecursive }, string: { toSingular, toTitleCase, toHash }, logger: { log, warn, error } } = require('@vizality/util');
 const { Avatars } = require('@vizality/constants');
@@ -207,7 +206,7 @@ module.exports = class AddonManager {
     throw new Error('no');
   }
 
-  async uninstall (addonId) {
+  async _uninstall (addonId) {
     await this.unmount(addonId);
     await removeDirRecursive(resolve(this.dir, addonId));
   }
@@ -282,25 +281,6 @@ module.exports = class AddonManager {
     if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
     return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
   }
-
-  // _setColor (manifest) {
-  //   if (!manifest.icon) return;
-
-  //   if (!manifest.color) {
-  //     let img, path;
-  //     if (manifest.icon.startsWith('vz-')) {
-  //       img = manifest.icon.replace(`vz-${toSingular(this.type)}://`, '');
-  //       path = resolve(this.dir, img);
-  //     }
-
-  //     path = path || manifest.icon;
-
-  //     Vibrant.from(path).getPalette().then(palette => {
-  //       console.log(palette);
-  //       manifest.color = palette.DarkVibrant.hex;
-  //     });
-  //   }
-  // }
 
   log (...data) { log(_module, toSingular(this.type), null, ...data); }
   warn (...data) { warn(_module, toSingular(this.type), null, ...data); }

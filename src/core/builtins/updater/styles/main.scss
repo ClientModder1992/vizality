@@ -1,6 +1,6 @@
 @use '@vizality' as *;
 
-.vz-builtin-updater {
+.vz-updater {
   &-top-section {
     display: flex;
     flex-direction: column;
@@ -10,6 +10,9 @@
       padding: 16px;
       border-radius: 8px 8px 0 0;
       display: flex;
+    }
+    &-form-notice {
+      margin: 0 0 20px;
     }
     &-title {
       font-size: 18px;
