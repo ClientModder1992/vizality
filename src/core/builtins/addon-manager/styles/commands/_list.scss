@@ -1,0 +1,13 @@
+@use '@vizality' as *;
+
+.vz-addon-manager-command-list-embed-table {
+  &-addon-image-wrapper {
+    margin-right: 10px;
+    flex: 0 0 auto;
+  }
+  .vz-embed-table-grid-row-inner {
+    > div {
+      @include ellipsis;
+    }
+  }
+}

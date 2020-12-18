@@ -1,26 +1,34 @@
+const { string: { toPlural, toTitleCase } } = require('@vizality/util');
 const { FormTitle, Anchor } = require('@vizality/components');
 const { React } = require('@vizality/react');
 
 module.exports = {
   command: 'settings',
-  description: 'Shows the settings options for a currently installed and enabled plugin.',
-  usage: '{c} [addonId]',
-  async executor (args) {
-    let result = {};
+  description: `Allows you to change an addon's settings directly in chat.`,
+  usage: '{c} <addon ID>',
+  async executor (args, type) {
+    let result;
 
-    if (vizality.manager.plugins.isInstalled(args[0])) {
-      if (!vizality.manager.plugins.isEnabled(args[0])) {
-        result = {
-          title: 'Error',
-          description: `Plugin "${args[0]}" is disabled.`
+    if (!args || !args.length) {
+      return {
+        send: false,
+        result: `You must specify a ${type} to manage its settings.`
+      };
+    }
+
+    if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
+      if (!vizality.manager[toPlural(type)].isEnabled(args[0])) {
+        return {
+          send: false,
+          result: `${toTitleCase(type)} \`${args[0]}\` is disabled.`
         };
       }
       if (vizality.api.settings.tabs[args[0]]?.settings) {
         const Settings = vizality.api.settings.tabs[args[0]]?.settings;
-        const plugin = vizality.manager.plugins.get(args[0]);
+        const addon = vizality.manager[toPlural(type)].get(args[0]);
 
         result = {
-          color: parseInt(plugin.manifest.color && plugin.manifest.color.replace(/^#/, ''), 16) || null,
+          color: type === 'plugin' ? 0x42ffa7 : 0xb68aff,
           provider: {
             name: <>
               <FormTitle tag='h2' className='vz-addon-manager-command-addon-settings-header'>
@@ -31,20 +39,22 @@ module.exports = {
           },
           footer: {
             text: <Anchor
-              href={`${window.location.origin}/vizality/dashboard/plugins/${args[0]}`}
+              href={`${window.location.origin}/vizality/dashboard/${toPlural(type)}/${args[0]}`}
               onClick={e => {
                 e.preventDefault();
-                vizality.api.router.navigate(`/vizality/dashboard/plugins/${args[0]}`);
+                vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${args[0]}`);
               }}
-            >{plugin.manifest.name}</Anchor>,
-            icon_url: plugin.manifest.icon
+            >
+              {addon.manifest.name}
+            </Anchor>,
+            icon_url: addon.manifest.icon
           }
         };
       }
     } else {
-      result = {
-        title: 'Error',
-        description: `Plugin "${args[0]}" is not installed.`
+      return {
+        send: false,
+        result: `${toTitleCase(type)} \`${args[0]}\` is not installed.`
       };
     }
 
@@ -56,23 +66,23 @@ module.exports = {
       }
     };
   },
-  autocomplete (args) {
-    const plugins =
-      vizality.manager.plugins.getAllEnabled()
+  autocomplete (args, _, type) {
+    const addons =
+      vizality.manager[toPlural(type)].getAllEnabled()
         .sort((a, b) => a - b)
-        .map(plugin => vizality.manager.plugins.get(plugin));
+        .map(plugin => vizality.manager[toPlural(type)].get(plugin));
 
     if (args.length > 1) return false;
 
     return {
       commands:
-        plugins
-          .filter(plugin => plugin && plugin.addonId.includes(args[0]) && vizality.api.settings.tabs[plugin.addonId]?.settings)
-          .map(plugin => ({
-            command: plugin.addonId,
-            description: plugin.manifest.description
+        addons
+          .filter(addon => addon && addon.addonId.includes(args[0]) && vizality.api.settings.tabs[addon.addonId]?.settings)
+          .map(addon => ({
+            command: addon.addonId,
+            description: addon.manifest.description
           })),
-      header: 'Vizality Plugin Settings'
+      header: `Vizality ${toTitleCase(type)} Settings`
     };
   }
 };

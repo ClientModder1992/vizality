@@ -1,44 +1,49 @@
+const { string: { toPlural, toTitleCase } } = require('@vizality/util');
+
 module.exports = {
   command: 'disable',
-  description: 'Disables a currently enabled plugin.',
-  usage: '{c} [ plugin ID ]',
-  executor (args) {
-    let result = {};
+  description: 'Disables a currently enabled addon, or disable all addons.',
+  usage: '{c} <addon ID>',
+  executor (args, type) {
+    let result;
 
-    if (vizality.manager.plugins.isInstalled(args[0])) {
-      if (!vizality.manager.plugins.isEnabled(args[0])) {
-        result = {
-          title: 'Error',
-          description: `Plugin "${args[0]}" is already disabled.`
-        };
+    if (!args || !args.length) {
+      return {
+        send: false,
+        result: `You must specify a ${type} to disable, or use \`all\` to disable all.`
+      };
+    }
+
+    if (args[0].toLowerCase() === 'all') {
+      vizality.manager[toPlural(type)].disableAll();
+      return {
+        send: false,
+        result: `All ${toPlural(type)} have been disabled.`
+      };
+    }
+
+    if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
+      if (!vizality.manager[toPlural(type)].isEnabled(args[0])) {
+        result = `${toTitleCase(type)} \`${args[0]}\` is already disabled.`;
       } else {
-        vizality.manager.plugins.disable(args[0]);
-        result = {
-          title: 'Success',
-          description: `Plugin "${args[0]}" has been disabled.`
-        };
+        vizality.manager[toPlural(type)].disable(args[0]);
+        result = `${toTitleCase(type)} \`${args[0]}\` has been disabled.`;
       }
     } else {
-      result = {
-        title: 'Error',
-        description: `Plugin "${args[0]}" is not installed.`
-      };
+      result = `${toTitleCase(type)} \`${args[0]}\` is not installed.`;
     }
 
     return {
       send: false,
-      result: {
-        ...result,
-        type: 'rich'
-      }
+      result
     };
   },
 
-  autocomplete (args) {
-    const plugins =
-      vizality.manager.plugins.getAllEnabled()
+  autocomplete (args, _, type) {
+    const addons =
+      vizality.manager[toPlural(type)].getAllEnabled()
         .sort((a, b) => a - b)
-        .map(plugin => vizality.manager.plugins.get(plugin));
+        .map(addon => vizality.manager[toPlural(type)].get(addon));
 
     if (args.length > 1) {
       return false;
@@ -46,13 +51,17 @@ module.exports = {
 
     return {
       commands:
-        plugins
-          .filter(plugin => plugin && plugin.addonId.includes(args[0]))
-          .map(plugin => ({
-            command: plugin.addonId,
-            description: plugin.manifest.description
-          })),
-      header: 'Vizality Plugin List'
+        addons
+          .filter(addon => addon && addon.addonId.includes(args[0]))
+          .map(addon => ({
+            command: addon.addonId,
+            description: addon.manifest.description
+          }))
+          .concat({
+            command: 'all',
+            description: `Disables all ${toPlural(type)}.`
+          }),
+      header: `Vizality Enabled ${toTitleCase(toPlural(type))}`
     };
   }
 };

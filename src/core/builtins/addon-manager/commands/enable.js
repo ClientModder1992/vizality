@@ -1,55 +1,56 @@
+const { string: { toPlural, toTitleCase } } = require('@vizality/util');
+
 module.exports = {
   command: 'enable',
-  description: 'Enabled a currently disabled plugin.',
-  usage: '{c} [ plugin ID ]',
-  executor (args) {
-    let result = {};
+  description: 'Enables a currently disabled addon, or enable all addons.',
+  usage: '{c} <addon ID>',
+  executor (args, type) {
+    let result;
 
-    if (vizality.manager.plugins.isInstalled(args[0])) {
-      if (vizality.manager.plugins.isEnabled(args[0])) {
-        result = {
-          title: 'Error',
-          description: `Plugin "${args[0]}" is already enabled.`
-        };
+    if (!args || !args.length) {
+      return {
+        send: false,
+        result: `You must specify a ${type} to enable, or use \`all\` to enable all.`
+      };
+    }
+
+    if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
+      if (vizality.manager[toPlural(type)].isEnabled(args[0])) {
+        result = `${toTitleCase(type)} \`${args[0]}\` is already enabled.`;
       } else {
-        vizality.manager.plugins.enable(args[0]);
-        result = {
-          title: 'Success',
-          description: `Plugin "${args[0]}" has been enabled.`
-        };
+        vizality.manager[toPlural(type)].enable(args[0]);
+        result = `${toTitleCase(type)} \`${args[0]}\` has been enabled.`;
       }
     } else {
-      result = {
-        title: 'Error',
-        description: `Plugin "${args[0]}" is not installed.`
-      };
+      result = `${toTitleCase(type)} \`${args[0]}\` is not installed.`;
     }
 
     return {
       send: false,
-      result: {
-        ...result,
-        type: 'rich'
-      }
+      result
     };
   },
-  autocomplete (args) {
-    const plugins =
-      vizality.manager.plugins.getAllDisabled()
+  autocomplete (args, _, type) {
+    const addons =
+      vizality.manager[toPlural(type)].getAllDisabled()
         .sort((a, b) => a - b)
-        .map(plugin => vizality.manager.plugins.get(plugin));
+        .map(addon => vizality.manager[toPlural(type)].get(addon));
 
     if (args.length > 1) return false;
 
     return {
       commands:
-        plugins
-          .filter(plugin => plugin && plugin.addonId.includes(args[0]))
-          .map(plugin => ({
-            command: plugin.addonId,
-            description: plugin.manifest.description
-          })),
-      header: 'Vizality Plugin List'
+        addons
+          .filter(addon => addon && addon.addonId.includes(args[0]))
+          .map(addon => ({
+            command: addon.addonId,
+            description: addon.manifest.description
+          }))
+          .concat({
+            command: 'all',
+            description: `Enables all ${toPlural(type)}.`
+          }),
+      header: `Vizality Disabled ${toTitleCase(toPlural(type))}`
     };
   }
 };
