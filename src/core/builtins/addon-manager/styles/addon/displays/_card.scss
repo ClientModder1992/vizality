@@ -100,6 +100,11 @@
     color: var(--interactive-normal);
     line-height: 1.5;
     text-decoration: none !important;
+    pointer-events: none;
+    &:hover {
+      color: var(--header-primary);
+      text-decoration: underline !important;
+    }
     & + & {
       &::before {
         content: ', ';
@@ -107,10 +112,7 @@
       }
     }
     &[vz-author-id] {
-      &:hover {
-        color: var(--header-primary);
-        text-decoration: underline !important;
-      }
+      pointer-events: all;
     }
   }
   &-version {
@@ -124,6 +126,7 @@
     flex: 0 0 auto;
   }
   &-show-previews-button {
+    display: flex;
     &-icon * {
       pointer-events: none;
     }

@@ -4,23 +4,23 @@ const { join, extname } = require('path');
 
 const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
 const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
-const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { Confirm, Spinner, Text, LazyImage } = require('@vizality/components');
+const { open: openModal, close: closeModal } = require('@vizality/modal');
 const { getModule } = require('@vizality/webpack');
 const { Messages } = require('@vizality/i18n');
 
 const StickyBar = require('./parts/StickyBar');
 const Addon = require('../addon/Addon');
 
-module.exports = React.memo(({ type, tab, search }) => {
+module.exports = React.memo(({ type, tab, search, displayType, limit, className }) => {
   const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
   const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
 
   const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
   const [ query, setQuery ] = useState(search || '');
-  const [ display, setDisplay ] = useState(getSetting('list-display', 'card'));
-  const [ showPreviewImages, setShowPreviewImages ] = useState(getSetting('addon-list-show-preview-images', false));
+  const [ display, setDisplay ] = useState(displayType || getSetting('listDisplay', 'card'));
+  const [ showPreviewImages, setShowPreviewImages ] = useState(getSetting('showPreviewImages', false));
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const { colorStandard } = getModule('colorStandard');
@@ -74,12 +74,12 @@ module.exports = React.memo(({ type, tab, search }) => {
   };
 
   const _handleShowPreviewImages = (bool) => {
-    updateSetting('addon-list-show-preview-images', bool);
+    updateSetting('showPreviewImages', bool);
     return setShowPreviewImages(bool);
   };
 
   const _handleDisplayChange = (display) => {
-    updateSetting('list-display', display);
+    updateSetting('listDisplay', display);
     return setDisplay(display);
   };
 
@@ -219,55 +219,8 @@ module.exports = React.memo(({ type, tab, search }) => {
     ));
   };
 
-  const _uninstall = (addonId) => {
-    let addons;
-
-    // Themes
-    if (type === 'theme') addons = [ addonId ];
-    // Plugins
-    else addons = [ addonId ].concat(vizality.manager[toPlural(type)].get(addonId).dependents);
-
-    openModal(() => (
-      <Confirm
-        red
-        header={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type: toTitleCase(type), count: addons.length })}
-        confirmText={Messages.VIZALITY_ADDONS_UNINSTALL.format({ type: toTitleCase(type), count: addons.length })}
-        cancelText={Messages.CANCEL}
-        onCancel={closeModal}
-        onConfirm={async () => {
-          for (const addon of addons) {
-            await vizality.manager[toPlural(type)].uninstall(addon);
-          }
-          forceUpdate();
-          closeModal();
-        }}
-      >
-        <Text>
-          <span>{Messages.VIZALITY_ADDONS_UNINSTALL_SURE.format({ type, count: addons.length })}</span>
-          <ul className='vz-addon-uninstall-modal-ul'>
-            {addons.map(p => {
-              const addon = vizality.manager[toPlural(type)].get(p);
-              return (
-                <li className='vz-addon-uninstall-modal-li' vz-addon-id={p} key={p.id}>
-                  <div className='vz-addon-uninstall-modal-icon'>
-                    <LazyImage
-                      className='vz-addon-uninstall-modal-icon-image-wrapper'
-                      imageClassName='vz-addon-uninstall-modal-icon-img'
-                      src={addon.manifest.icon}
-                      width='20'
-                      height='20'
-                    />
-                  </div>
-                  <div className='vz-addon-uninstall-modal-name'>
-                    {addon.manifest.name}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </Text>
-      </Confirm>
-    ));
+  const _uninstall = (addonId, type) => {
+    vizality.manager[toPlural(type)].uninstall(addonId);
   };
 
   const renderItem = item => {
@@ -279,7 +232,7 @@ module.exports = React.memo(({ type, tab, search }) => {
         addonId={item.addonId}
         isEnabled={vizality.manager[toPlural(type)].isEnabled(item.addonId)}
         onToggle={async v => _toggle(item.addonId, v)}
-        onUninstall={() => _uninstall(item.addonId)}
+        onUninstall={() => _uninstall(item.addonId, type)}
         previewImages={_getPreviewImages(item.addonId)}
         hasPreviewImages={_checkForPreviewImages(item.addonId)}
         showPreviewImages={showPreviewImages}
@@ -313,8 +266,14 @@ module.exports = React.memo(({ type, tab, search }) => {
             <p>{Messages.SEARCH_NO_RESULTS}</p>
           </div>
           : <>
-            {items.map(item => renderItem(item))}
-            {renderFillers()}
+            {!limit
+              ? items.map(item => renderItem(item))
+              : items.slice(0, limit).map(item => renderItem(item))
+            }
+            {!limit
+              ? renderFillers()
+              : null
+            }
           </>}
       </div>
     );
@@ -325,8 +284,8 @@ module.exports = React.memo(({ type, tab, search }) => {
       <>
         <div className='vz-addons-list-search-results-text-wrapper'>
           <div className='vz-addons-list-search-results-text'>
-            <span className='vz-addons-list-search-results-count'>{resultsCount}</span> {toPlural(type)} found {query && query !== '' && <>
-              matching "<span className='vz-addons-list-search-results-matched'>{query}</span>"
+            <span className='vz-addons-list-search-results-count'>{resultsCount}</span> {toPlural(type)} found{!query && limit && resultsCount > limit && `... Showing ${limit}.`} {query && query !== '' && <>
+              matching "<span className='vz-addons-list-search-results-matched'>{query}</span>"{limit && resultsCount > limit && `... Showing ${limit}.`}
             </>}
           </div>
         </div>
@@ -337,7 +296,7 @@ module.exports = React.memo(({ type, tab, search }) => {
   return (
     <>
       <div
-        className={joinClassNames('vz-addons-list', colorStandard)}
+        className={joinClassNames('vz-addons-list', className, colorStandard)}
         vz-display={display}
         vz-previews={showPreviewImages ? '' : null}
         vz-plugins={type === 'plugin' ? '' : null}
