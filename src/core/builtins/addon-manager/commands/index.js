@@ -1,5 +1,7 @@
 const commands = {
+  uninstall: require('./uninstall'),
   settings: require('./settings'),
+  install: require('./install'),
   disable: require('./disable'),
   enable: require('./enable'),
   manage: require('./manage'),
