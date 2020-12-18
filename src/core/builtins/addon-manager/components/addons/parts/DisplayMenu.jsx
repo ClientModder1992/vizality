@@ -14,24 +14,28 @@ module.exports = React.memo(props => {
           label='Compact'
           icon={() => <Icon name='LayoutCompact' size='18px' />}
           action={() => handleDisplayChange('compact')}
+          disabled={display === 'compact'}
         />
         <Menu.MenuItem
           id='cover'
           label='Cover'
           icon={() => <Icon name='LayoutCover' size='18px' />}
           action={() => handleDisplayChange('cover')}
+          disabled={display === 'cover'}
         />
         <Menu.MenuItem
           id='card'
           label='Card'
           icon={() => <Icon name='LayoutCard' size='18px' />}
           action={() => handleDisplayChange('card')}
+          disabled={display === 'card'}
         />
         <Menu.MenuItem
           id='list'
           label='List'
           icon={() => <Icon name='LayoutList' size='18px' />}
           action={() => handleDisplayChange('list')}
+          disabled={display === 'list'}
         />
       </Menu.MenuGroup>
       <Menu.MenuSeparator />

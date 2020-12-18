@@ -1,7 +1,7 @@
 const { readdirSync, existsSync } = require('fs');
 const { clipboard } = require('electron');
 
-const { Confirm, settings: { SwitchItem, TextInput, Category, ButtonItem, FormTitle }, Clickable, Button, FormNotice, Tooltip } = require('@vizality/components');
+const { Confirm, settings: { SwitchItem, TextInput, Category, FormTitle }, Clickable, Button, FormNotice } = require('@vizality/components');
 const { Messages, chosenLocale: currentLocale } = require('@vizality/i18n');
 const { Repositories, Directories } = require('@vizality/constants');
 const { React, React: { useState } } = require('@vizality/react');
@@ -64,6 +64,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   const _renderFormNotice = (title, body) => {
     return <FormNotice
+      className='vz-updater-form-notice'
       imageData={{
         width: 60,
         height: 60,
@@ -277,16 +278,16 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
       {awaitingReload
         ? renderReload()
         : isUnsupported && renderUnsupported()}
-      <div className='vz-builtin-updater-top-section'>
-        <div className='vz-builtin-updater-top-section-header'>
-          <div className='vz-builtin-updater-top-section-icon'>
+      <div className='vz-updater-top-section'>
+        <div className='vz-updater-top-section-header'>
+          <div className='vz-updater-top-section-icon'>
             {icon}
           </div>
-          <div className='vz-builtin-updater-top-section-status'>
-            <h3 className='vz-builtin-updater-top-section-title'>
+          <div className='vz-updater-top-section-status'>
+            <h3 className='vz-updater-top-section-title'>
               {title}
             </h3>
-            {!disabled && !updating && (!checking || checkingProgress[1] > 0) && <div className='vz-builtin-updater-top-section-subtitle'>
+            {!disabled && !updating && (!checking || checkingProgress[1] > 0) && <div className='vz-updater-top-section-subtitle'>
               {paused
                 ? Messages.VIZALITY_UPDATES_PAUSED_RESUME
                 : checking
@@ -297,32 +298,32 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
                   : Messages.VIZALITY_UPDATES_LAST_CHECKED.format({ date: last })}
             </div>}
           </div>
-          <div className='vz-builtin-updater-top-section-about'>
-            <div className='vz-builtin-updater-top-section-about-column'>
-              <span className='vz-builtin-updater-top-section-about-title'>
+          <div className='vz-updater-top-section-about'>
+            <div className='vz-updater-top-section-about-column'>
+              <span className='vz-updater-top-section-about-title'>
                 {Messages.VIZALITY_UPDATES_UPSTREAM}
               </span>
-              <span className='vz-builtin-updater-top-section-about-title'>
+              <span className='vz-updater-top-section-about-title'>
                 {Messages.VIZALITY_UPDATES_REVISION}
               </span>
-              <span className='vz-builtin-updater-top-section-about-title'>
+              <span className='vz-updater-top-section-about-title'>
                 {Messages.VIZALITY_UPDATES_BRANCH}
               </span>
             </div>
-            <div className='vz-builtin-updater-top-section-about-column'>
-              <span className='vz-builtin-updater-top-section-about-value'>
+            <div className='vz-updater-top-section-about-column'>
+              <span className='vz-updater-top-section-about-value'>
                 {vizality.git.upstream.replace(Repositories.VIZALITY, Messages.VIZALITY_UPDATES_UPSTREAM_OFFICIAL)}
               </span>
-              <span className='vz-builtin-updater-top-section-about-value'>
+              <span className='vz-updater-top-section-about-value'>
                 {vizality.git.revision.substring(0, 7)}
               </span>
-              <span className='vz-builtin-updater-top-section-about-value'>
+              <span className='vz-updater-top-section-about-value'>
                 {vizality.git.branch}
               </span>
             </div>
           </div>
         </div>
-        <div className='vz-builtin-updater-top-section-footer'>
+        <div className='vz-updater-top-section-footer'>
           {disabled || paused
             ? <Button
               size={Button.Sizes.SMALL}
@@ -365,8 +366,8 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
             </>)}
         </div>
       </div>
-      {!disabled && !paused && !checking && updates.length > 0 && <div className='vz-builtin-updater-updates'>
-        <FormTitle className='vz-builtin-updater-updates-title'>
+      {!disabled && !paused && !checking && updates.length > 0 && <div className='vz-updater-updates'>
+        <FormTitle className='vz-updater-updates-title'>
           Pending Updates
         </FormTitle>
         {updates.map(update => <Update
@@ -391,8 +392,8 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
           onEnableUpdates={() => _this.enableUpdates(addon.id)}
         />)}
       </Category>}
-      <div className='vz-builtin-updater-options'>
-        <FormTitle className='vz-builtin-updater-options-title'>
+      <div className='vz-updater-options'>
+        <FormTitle className='vz-updater-options-title'>
           {Messages.OPTIONS}
         </FormTitle>
         {!disabled && <>

@@ -38,8 +38,8 @@ module.exports = async () => {
     // Message-related
     res.props.children.props['vz-message-id'] = message.id;
     res.props.children.props['vz-blocked'] = Boolean(message.blocked) && '';
-    res.props.children.props['vz-embeds'] = Boolean(message.embeds.length) && '';
-    res.props.children.props['vz-attachments'] = Boolean(message.attachments.length) && '';
+    res.props.children.props['vz-embed'] = Boolean(message.embeds.length) && '';
+    res.props.children.props['vz-attachment'] = Boolean(message.attachments.length) && '';
 
     return res;
   });
