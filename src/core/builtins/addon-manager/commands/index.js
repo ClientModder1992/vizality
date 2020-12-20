@@ -4,6 +4,7 @@ const commands = {
   install: require('./install'),
   disable: require('./disable'),
   enable: require('./enable'),
+  reload: require('./reload'),
   manage: require('./manage'),
   list: require('./list')
 };

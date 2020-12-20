@@ -3,7 +3,7 @@ const { string: { toPlural, toTitleCase } } = require('@vizality/util');
 module.exports = {
   command: 'enable',
   description: 'Enables a currently disabled addon, or enable all addons.',
-  usage: '{c} <addon ID>',
+  usage: '{c} <addon ID | all>',
   executor (args, type) {
     let result;
 

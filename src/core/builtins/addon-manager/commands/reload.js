@@ -1,33 +1,33 @@
 const { string: { toPlural, toTitleCase } } = require('@vizality/util');
 
 module.exports = {
-  command: 'disable',
-  description: 'Disables a currently enabled addon, or disable all addons.',
+  command: 'reload',
+  description: 'Reloads a currently enabled addon, or reload all addons.',
   usage: '{c} <addon ID | all>',
-  executor (args, type) {
+  executor: async (args, type) => {
     let result;
 
     if (!args || !args.length) {
       return {
         send: false,
-        result: `You must specify a ${type} to disable, or use \`all\` to disable all.`
+        result: `You must specify a ${type} to reload, or use \`all\` to reload all.`
       };
     }
 
     if (args[0].toLowerCase() === 'all') {
-      vizality.manager[toPlural(type)].disableAll();
+      await vizality.manager[toPlural(type)].reloadAll();
       return {
         send: false,
-        result: `All ${toPlural(type)} have been disabled.`
+        result: `All ${toPlural(type)} have been reloaded.`
       };
     }
 
     if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
       if (!vizality.manager[toPlural(type)].isEnabled(args[0])) {
-        result = `${toTitleCase(type)} \`${args[0]}\` is already disabled.`;
+        result = `${toTitleCase(type)} \`${args[0]}\` is disabled.`;
       } else {
-        vizality.manager[toPlural(type)].disable(args[0]);
-        result = `${toTitleCase(type)} \`${args[0]}\` has been disabled.`;
+        await vizality.manager[toPlural(type)].reload(args[0]);
+        result = `${toTitleCase(type)} \`${args[0]}\` has been reloaded.`;
       }
     } else {
       result = `${toTitleCase(type)} \`${args[0]}\` is not installed.`;
@@ -59,7 +59,7 @@ module.exports = {
           }))
           .concat({
             command: 'all',
-            description: `Disables all ${toPlural(type)}.`
+            description: `Reloads all ${toPlural(type)}.`
           }),
       header: `Vizality Enabled ${toTitleCase(toPlural(type))}`
     };

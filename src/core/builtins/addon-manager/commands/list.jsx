@@ -6,7 +6,7 @@ const { React } = require('@vizality/react');
 module.exports = {
   command: 'list',
   description: 'Displays a list of currently installed addons.',
-  usage: '{c}',
+  usage: '{c} <all | enabled | disabled>',
   executor: async (args, type) => {
     let addons, result;
 
