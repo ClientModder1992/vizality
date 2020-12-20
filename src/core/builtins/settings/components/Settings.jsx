@@ -69,6 +69,16 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
         />
         {Messages.VIZALITY_SETTINGS_NO_CLYDE}
       </SwitchItem>
+      <SwitchItem
+        note='Eenables live reload for folder/file changes for plugins.'
+        value={getSetting('hotReload', true)}
+        onChange={async () => {
+          toggleSetting('hotReload', true);
+          await vizality.manager.plugins.reloadAll();
+        }}
+      >
+        Enable Hot Reload
+      </SwitchItem>
       <Category
         name={Messages.ADVANCED_SETTINGS}
         description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}

@@ -83,6 +83,7 @@ module.exports = class Plugin extends Updatable {
     });
 
     document.head.appendChild(style);
+
     const compile = async () => {
       let compiled;
       if (suppress) {
@@ -121,15 +122,15 @@ module.exports = class Plugin extends Updatable {
   /**
    * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
    */
-  enableWatcher () {
-    this._watcherEnabled = true;
+  async enableWatcher () {
+    this._watcherEnabled = vizality.settings.get('hotReload', false);
   }
 
   /**
    * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
    * was previously enabled.
    */
-  disableWatcher () {
+  async disableWatcher () {
     this._watcherEnabled = false;
     this._watchers.close();
     this._watchers = {};
@@ -147,7 +148,7 @@ module.exports = class Plugin extends Updatable {
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
         if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return skip;
-        vizality.manager.plugins.remount(_this.addonId);
+        vizality.manager.plugins.reload(_this.addonId);
       }
     });
   }
@@ -205,9 +206,8 @@ module.exports = class Plugin extends Updatable {
       this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
     } finally {
       this._ready = false;
-      // this._watcher.close();
-      if (this._watcherEnabled) {
-        this.disableWatcher();
+      if (this._watchers && this._watchers.isClosed && !this._watchers.isClosed()) {
+        await this.disableWatcher();
       }
     }
   }
