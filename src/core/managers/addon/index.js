@@ -106,12 +106,14 @@ module.exports = class AddonManager {
   }
 
   async unmount (addonId) {
-    const plugin = this.get(addonId);
-    if (!plugin) {
-      throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${plugin}`);
+    const addon = this.get(addonId);
+
+    if (!addon) {
+      throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
     }
-    if (plugin._ready) {
-      await plugin._unload();
+
+    if (addon._ready) {
+      await addon._unload();
     }
 
     Object.keys(require.cache).forEach(key => {
@@ -119,6 +121,7 @@ module.exports = class AddonManager {
         delete require.cache[key];
       }
     });
+
     this[this.type].delete(addonId);
   }
 
@@ -178,8 +181,6 @@ module.exports = class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      console.log(addonId);
-      console.log(addon);
       throw new Error(`Tried to disable a non-installed ${toSingular(this.type)}: (${addonId})`);
     }
 
@@ -190,6 +191,18 @@ module.exports = class AddonManager {
     vizality.settings.set(`disabled${toTitleCase(this.type)}`, [ ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []), addonId ]);
 
     addon._unload();
+  }
+
+  async reload (addonId) {
+    await this.disable(addonId);
+    await this.enable(addonId);
+  }
+
+  async reloadAll () {
+    const addons = this.getAllEnabled();
+    for (const addon of addons) {
+      await this.reload(addon);
+    }
   }
 
   enableAll () {
@@ -213,7 +226,7 @@ module.exports = class AddonManager {
 
   _handleError (errorType, args) {
     if (window.__SPLASH__ || window.__OVERLAY__) {
-      return; // Consider an alternative logging method?
+      return;
     }
 
     switch (errorType) {
@@ -267,6 +280,7 @@ module.exports = class AddonManager {
     }
   }
 
+  /** @private */
   _setIcon (manifest, addonId) {
     if (manifest.icon) {
       return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
