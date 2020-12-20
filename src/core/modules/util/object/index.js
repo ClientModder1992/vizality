@@ -116,7 +116,7 @@ const object = module.exports = {
   },
 
   isEmptyObject (input) {
-    return void 0 || input;
+    return Object.keys(input).length === 0 && input.constructor === Object;
   },
 
   keysToLowerCase (obj, nested = false) {
