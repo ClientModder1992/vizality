@@ -1,5 +1,5 @@
 const { React, React: { useState, useReducer } } = require('@vizality/react');
-const { Menu, Icon, SearchBar } = require('@vizality/components');
+const { Menu, SearchBar } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
 const { Messages } = require('@vizality/i18n');
 
@@ -25,7 +25,8 @@ module.exports = React.memo(() => {
         search = pluginQuery.toLowerCase();
         items = items.filter(item =>
           item.manifest.name.toLowerCase().includes(search) ||
-          item.manifest.author.toLowerCase().includes(search) ||
+          item.manifest.author.name?.toLowerCase().includes(search) ||
+          (typeof item.manifest.author === 'string' && item.manifest.author.toLowerCase().includes(search)) ||
           item.manifest.description.toLowerCase().includes(search)
         );
       }
@@ -34,7 +35,8 @@ module.exports = React.memo(() => {
         search = themeQuery.toLowerCase();
         items = items.filter(item =>
           item.manifest.name.toLowerCase().includes(search) ||
-          item.manifest.author.toLowerCase().includes(search) ||
+          item.manifest.author.name?.toLowerCase().includes(search) ||
+          (typeof item.manifest.author === 'string' && item.manifest.author.toLowerCase().includes(search)) ||
           item.manifest.description.toLowerCase().includes(search)
         );
       }
