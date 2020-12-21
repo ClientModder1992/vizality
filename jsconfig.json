@@ -7,6 +7,7 @@
       "@vizality/src/*": [ "./*" ],
       "@vizality/*": [ "./core/modules/*"],
       "@vizality/compilers": [ "./core/compilers" ],
+      "@vizality/core": [ "./core/entities" ],
       "@vizality/entities": [ "./core/entities" ],
       "@vizality/builtins": [ "./core/builtins"],
       "@vizality/modules": [ "./core/modules"],

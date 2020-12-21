@@ -46,9 +46,11 @@
     "@vizality/builtins": "src/core/builtins",
     "@vizality/typedefs": "src/core/typedefs",
     "@vizality/compilers": "src/core/compilers",
+    "@vizality/core": "src/core/entities",
     "@vizality/entities": "src/core/entities",
     "react": "src/core/modules/react/react",
-    "react-dom": "src/core/modules/react/reactdom"
+    "react-dom": "src/core/modules/react/reactdom",
+    "react-router": "src/core/modules/react/router"
   },
   "dependencies": {
     "@monaco-editor/react": "^3.7.1",
