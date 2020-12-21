@@ -1,7 +1,6 @@
 const { React, Router: { Link } } = require('@vizality/react');
 const { Button, Tooltip, Anchor } = require('@vizality/components');
 const { string: { toPlural } } = require('@vizality/util');
-const { constants } = require('@vizality/webpack');
 const { HTTP } = require('@vizality/constants');
 const { Messages } = require('@vizality/i18n');
 
@@ -17,40 +16,40 @@ module.exports = React.memo(props => {
   }
 
   return (
-    <div className='vz-builtin-updater-update'>
-      <div className='vz-builtin-updater-update-inner'>
-        <div className='vz-builtin-updater-update-icon-wrapper'>
+    <div className='vz-updater-update'>
+      <div className='vz-updater-update-inner'>
+        <div className='vz-updater-update-icon-wrapper'>
           {id === 'vizality'
             ? <img
-              className='vz-builtin-updater-update-icon'
+              className='vz-updater-update-icon'
               src={`${HTTP.ASSETS}/logo.png`}
             />
             : <img
-              className='vz-builtin-updater-update-icon'
+              className='vz-updater-update-icon'
               src={manifest.icon}
             />
           }
         </div>
         {id === 'vizality'
-          ? <div className='vz-builtin-updater-update-metadata'>
-            <div className='vz-builtin-updater-update-name'>
+          ? <div className='vz-updater-update-metadata'>
+            <div className='vz-updater-update-name'>
               Vizality
             </div>
             <Anchor
-              className='vz-builtin-updater-update-author'
-              vz-author-id='97549189629636608'
-              href={`${window.location.origin}${constants.Endpoints.USERS}/97549189629636608`}
+              type='user'
+              userId='97549189629636608'
+              className='vz-updater-update-author'
             >
               dperolio
             </Anchor>
             {disabled
-              ? <div className='vz-builtin-updater-update-summary' />
-              : <div className='vz-builtin-updater-update-summary'>
+              ? <div className='vz-updater-update-summary' />
+              : <div className='vz-updater-update-summary'>
                 {commits.map(commit => {
                   return (
-                    <div key={commit.id} className='vz-builtin-updater-update-summary-inner'>
+                    <div key={commit.id} className='vz-updater-update-summary-inner'>
                       <a
-                        className='vz-builtin-updater-update-summary-commit'
+                        className='vz-updater-update-summary-commit'
                         href={`https://github.com/${repo}/commit/${commit.id}`}
                         target='_blank'
                       >
@@ -58,37 +57,37 @@ module.exports = React.memo(props => {
                           <code>{commit.id.substring(0, 7)}</code>
                         </Tooltip>
                       </a>
-                      <span className='vz-builtin-updater-update-summary-message'>{commit.message}</span>
-                      <span className='vz-builtin-updater-update-summary-author'>—{commit.author}</span>
+                      <span className='vz-updater-update-summary-message'>{commit.message}</span>
+                      <span className='vz-updater-update-summary-author'>—{commit.author}</span>
                     </div>
                   );
                 })}
               </div>
             }
           </div>
-          : <div className='vz-builtin-updater-update-metadata'>
-            <Link to={`/vizality/dashboard/${toPlural(type)}/${addonId}`} className='vz-builtin-updater-update-name'>
+          : <div className='vz-updater-update-metadata'>
+            <Link to={`/vizality/dashboard/${toPlural(type)}/${addonId}`} className='vz-updater-update-name'>
               {manifest.name}
             </Link>
             <Anchor
-              className='vz-builtin-updater-update-author'
-              vz-author-id={manifest.authorId}
-              href={`${window.location.origin}${constants.Endpoints.USERS}/${manifest.authorId}`}
+              type='user'
+              userId={manifest.author.id}
+              className='vz-updater-update-author'
             >
-              {manifest.authorId}
+              {manifest.author.name || manifest.author}
             </Anchor>
             {disabled
-              ? <div className='vz-builtin-updater-update-summary'>
-                <div className='vz-builtin-updater-update-description'>
+              ? <div className='vz-updater-update-summary'>
+                <div className='vz-updater-update-description'>
                   {manifest.description}
                 </div>
               </div>
-              : <div className='vz-builtin-updater-update-summary'>
+              : <div className='vz-updater-update-summary'>
                 {commits.map(commit => {
                   return (
-                    <div key={commit.id} className='vz-builtin-updater-update-summary-inner'>
+                    <div key={commit.id} className='vz-updater-update-summary-inner'>
                       <a
-                        className='vz-builtin-updater-update-summary-commit'
+                        className='vz-updater-update-summary-commit'
                         href={`https://github.com/${repo}/commit/${commit.id}`}
                         target='_blank'
                       >
@@ -96,8 +95,8 @@ module.exports = React.memo(props => {
                           <code>{commit.id.substring(0, 7)}</code>
                         </Tooltip>
                       </a>
-                      <span className='vz-builtin-updater-update-summary-message'>{commit.message}</span>
-                      <span className='vz-builtin-updater-update-summary-author'>— {commit.author}</span>
+                      <span className='vz-updater-update-summary-message'>{commit.message}</span>
+                      <span className='vz-updater-update-summary-author'>— {commit.author}</span>
                     </div>
                   );
                 })}
@@ -105,7 +104,7 @@ module.exports = React.memo(props => {
             }
           </div>
         }
-        <div className='vz-builtin-updater-update-actions'>
+        <div className='vz-updater-update-actions'>
           {disabled
             ? <Button size={Button.Sizes.SMALL} color={Button.Colors.GREEN} onClick={onEnableUpdates}>
               {Messages.VIZALITY_UPDATES_ENABLE}
