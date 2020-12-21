@@ -86,7 +86,6 @@ module.exports = class SDK extends Builtin {
     vizality.api.popups.openWindow({
       id,
       title: 'SDK',
-      titlebarType: 'OSX',
       render: props => <SdkWindow {...props} />
     });
 

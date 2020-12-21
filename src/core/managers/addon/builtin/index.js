@@ -12,4 +12,8 @@ module.exports = class BuiltinManager extends AddonManager {
 
     super(type, dir);
   }
+
+  _setIcon () {
+    return void 0;
+  }
 };

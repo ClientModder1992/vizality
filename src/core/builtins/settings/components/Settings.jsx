@@ -71,9 +71,9 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
       </SwitchItem>
       <SwitchItem
         note='Eenables live reload for folder/file changes for plugins.'
-        value={getSetting('hotReload', true)}
+        value={getSetting('hotReload', false)}
         onChange={async () => {
-          toggleSetting('hotReload', true);
+          toggleSetting('hotReload', false);
           await vizality.manager.plugins.reloadAll();
         }}
       >
