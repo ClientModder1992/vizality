@@ -1,0 +1,9 @@
+{
+  "name": "Do Not Track",
+  "version": "1.0.0",
+  "description": "Blocks all requests to Discord analytics endpoints.",
+  "author": {
+    "name": "Zerebos",
+    "id": "249746236008169473"
+  }
+}

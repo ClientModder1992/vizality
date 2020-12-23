@@ -1,19 +1,20 @@
-const { React, Router: { Route, Switch, Redirect } } = require('@vizality/react');
+import React, { memo } from 'react';
+import { Route, Switch, Redirect } from 'react-router';
 
-const Markdown = require('../components/pages/documentation/components/Markdown');
-const Icons = require('../components/pages/documentation/components/Icons');
-const ImageCarouselModal = require('../components/pages/screenshots/ImageCarouselModal');
-const Screenshots = require('../components/pages/screenshots/Screenshots');
-const Changelog = require('../components/pages/changelog/Changelog');
-const ErrorTest = require('../components/pages/ErrorTest');
-const Content = require('../components/parts/Content');
-const Home = require('../components/pages/home/Home');
-const Layout = require('../components/parts/Layout');
-const Test = require('../components/pages/Test');
+import ImageCarouselModal from '../components/pages/screenshots/ImageCarouselModal';
+import Markdown from '../components/pages/documentation/components/Markdown';
+import Icons from '../components/pages/documentation/components/Icons';
+import Screenshots from '../components/pages/screenshots/Screenshots';
+import Changelog from '../components/pages/changelog/Changelog';
+import ErrorTest from '../components/pages/ErrorTest';
+import Content from '../components/parts/Content';
+import Home from '../components/pages/home/Home';
+import Layout from '../components/parts/Layout';
+import Test from '../components/pages/Test';
 
-const AddonList = require('@vizality/builtins/addon-manager/components/addons/List');
+import AddonList from '@vizality/builtins/addon-manager/components/addons/List';
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <>
       <Switch>

@@ -1,12 +1,12 @@
-const { join } = require('path');
+import React, { memo } from 'react';
+import { join } from 'path';
 
-const { Directories } = require('@vizality/constants');
-const { Markdown } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import { Directories } from '@vizality/constants';
+import { Markdown } from '@vizality/components';
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <Markdown source={Changelog} />
   );

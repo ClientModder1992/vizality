@@ -1,9 +1,10 @@
-const { Clickable, Icon, Tooltip } = require('@vizality/components');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ icon, label, path, action, launch, expandable, subItem, disabled, auxillaryIconTooltipText, children }) => {
+import { Clickable, Icon, Tooltip } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+
+export default memo(({ icon, label, path, action, launch, expandable, subItem, disabled, auxillaryIconTooltipText, children }) => {
   const { useLocation } = getModule('useLocation');
   const { categoryItem, selectedCategoryItem, itemInner } = getModule('discoverHeader');
   const { container, selected: selectedClass, clickable, wrappedLayout, layout, avatar, content } = getModule('wrappedLayout');

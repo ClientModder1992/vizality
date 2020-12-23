@@ -1,16 +1,15 @@
-const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
-const { Regexes } = require('@vizality/constants');
-const { Builtin } = require('@vizality/entities');
-const { Icon } = require('@vizality/components');
-const { React } = require('@vizality/react');
-const { react: { getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
+import React from 'react';
 
+import { patch, unpatch } from '@vizality/patcher';
+import { getModule } from '@vizality/webpack';
+import { Regexes } from '@vizality/constants';
+import { Icon } from '@vizality/components';
+import { Builtin } from '@vizality/core';
 
-const Sidebar = require('./components/parts/sidebar/Sidebar');
-const Routes = require('./routes/Routes');
+import Sidebar from './components/parts/sidebar/Sidebar';
+import Routes from './routes/Routes';
 
-module.exports = class Dashboard extends Builtin {
+export default class Dashboard extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this.patchTabs();
@@ -52,10 +51,12 @@ module.exports = class Dashboard extends Builtin {
 
     patch('vz-dashboard-private-channels-list-item', ConnectedPrivateChannelsList, 'default', (_, res) => {
       const selected = window.location.pathname === '/vizality/dashboard';
-      const index = res?.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
+      const index = res.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
+
       if (selected) {
         res.props?.children.forEach(c => c.props.selected = false);
       }
+
       res.props.children = [
         ...res.props.children.slice(0, index),
         () =>
@@ -67,6 +68,7 @@ module.exports = class Dashboard extends Builtin {
           />,
         ...res.props.children.slice(index)
       ];
+
       return res;
     });
   }
@@ -105,4 +107,4 @@ module.exports = class Dashboard extends Builtin {
       vizality.api.router.navigate(route);
     }
   }
-};
+}

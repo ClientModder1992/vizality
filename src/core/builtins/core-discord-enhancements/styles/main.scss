@@ -1,0 +1,64 @@
+@use '@vizality' as *;
+
+// @todo Don't forget to replace this image and move this to core Vizality styles.
+:root {
+  --vz-guild-empty-icon: url('https://cdn.discordapp.com/avatars/97549189629636608/42091c785e85fc5c20b9f1733d6b802a.png');
+}
+
+// Give label items with descriptions some breathing room
+// so they don't crowd directly under switches
+.note-1V3kyJ {
+  padding-right: 60px;
+}
+
+// You can still click group labels in context menus, but you shouldn't be.
+// able to
+.groupLabel-2t5iuZ {
+  pointer-events: none;
+}
+
+// Image carousel model tempfix since Discord broke them
+[vz-modal='image-carousel'] {
+  .inner-1ilYF7 {
+    pointer-events: none;
+  }
+}
+// Image carousel modal inner wrapper
+.wrapper-Dh-cqn {
+  // -100px to account for the next/previous arrows
+  @include size(calc(80vw - 100px), 80vh);
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: relative;
+}
+
+[vz-guild-icon] .label-22pbtT {
+  display: flex;
+  align-items: center;
+  &::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: var(--vz-guild-icon, var(--vz-guild-empty-icon)) no-repeat center / contain;
+    display: flex;
+    border-radius: var(--vz-guild-border-radius, 50%);
+    margin-right: 12px;
+  }
+}
+
+// Better spacing for SearchBar component
+// inside a context menu
+.item-1tOPte > .container-cMG81i {
+  padding: 2px 6px;
+}
+
+// Fixes height on embed footer text,
+// specifically useful for embeds that
+// input custom content into the footer
+// with React
+.embedFooterText-28V_Wb {
+  display: flex;
+}

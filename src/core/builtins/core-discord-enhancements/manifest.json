@@ -1,0 +1,9 @@
+{
+  "name": "Core Discord Enhancements",
+  "description": "Provides additional functionality and attempts to fix some styling deficiencies that Discord has.",
+  "version": "1.0.0",
+  "author": {
+    "name": "dperolio",
+    "id": "97549189629636608"
+  }
+}

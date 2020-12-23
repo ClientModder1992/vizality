@@ -1,9 +1,10 @@
-const { AdvancedScrollerAuto, ErrorBoundary } = require('@vizality/components');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ className, wrapperClassName, children }) => {
+import { AdvancedScrollerAuto, ErrorBoundary } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+
+export default memo(({ className, wrapperClassName, children }) => {
   const { pageWrapper } = getModule('pageWrapper');
   const { scroller } = getModule('headerContentWrapper');
   const { perksModal } = getModule('perksModal');
