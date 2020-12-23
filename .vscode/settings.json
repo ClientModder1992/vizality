@@ -85,19 +85,13 @@
     "editor.rulers": [
         {
             "column": 90,
-            "color": "rgb(255 255 255 / .03)"
+            "color": "#ffffff08"
         }
     ],
-    "files.exclude": {
+    "search.exclude": {
         "**/.cache": true,
         "**/node_modules": true,
         "**/package-lock.json": true
-    },
-    "search.exclude": {
-        "**/.cache": true
-    },
-    "files.watcherExclude": {
-        "**/.cache": true
     },
     "eslint.lintTask.enable": true,
     "eslint.alwaysShowStatus": true
