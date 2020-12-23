@@ -1,15 +1,13 @@
-/* eslint-disable no-unused-vars */
+import { getModule } from '../webpack';
 
-const { getModule } = require('../webpack');
+export const React = {
+  ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
+};
 
-module.exports = {
-  React: {
-    ...getModule('createRef', 'createElement', 'Component', 'PureComponent')
-  },
-  ReactDOM: {
-    ...getModule('render', 'createPortal')
-  },
-  Router: {
-    ...getModule('BrowserRouter', 'Router')
-  }
+export const ReactDOM = {
+  ...getModule('render', 'createPortal')
+};
+
+export const Router = {
+  ...getModule('BrowserRouter', 'Router')
 };

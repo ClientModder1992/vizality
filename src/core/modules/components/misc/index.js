@@ -1,3 +1,1 @@
-module.exports = {
-  WaveDivider: require('./WaveDivider')
-};
+export { default as WaveDivider } from './WaveDivider';

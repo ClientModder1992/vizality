@@ -1,10 +1,9 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
+import AsyncComponent from '../AsyncComponent';
 
-const DRegionSelect = AsyncComponent.from(getModuleByDisplayName('RegionSelector', true));
+const DRegionSelect = AsyncComponent.fromDisplayName('RegionSelector');
 
-module.exports = class RegionSelect extends React.PureComponent {
-
-};
+export default memo(props => {
+  return void 0;
+});

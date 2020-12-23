@@ -1,1 +1,1 @@
-module.exports = require('@vizality/react').ReactDOM
+module.exports = require('.').ReactDOM;

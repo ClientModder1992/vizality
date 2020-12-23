@@ -1,10 +1,10 @@
-const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
-const { join } = require('path');
+import { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
 
-const { Flux, FluxDispatcher } = require('@vizality/webpack');
-const { Directories } = require('@vizality/constants');
+import { Flux, FluxDispatcher } from '@vizality/webpack';
+import { Directories } from '@vizality/constants';
 
-const ActionTypes = require('./constants');
+import ActionTypes from './constants';
 
 if (!existsSync(Directories.SETTINGS)) {
   mkdirSync(Directories.SETTINGS);
@@ -110,7 +110,7 @@ class SettingsStore extends Flux.Store {
   }
 }
 
-module.exports = new SettingsStore(FluxDispatcher, {
+export default new SettingsStore(FluxDispatcher, {
   [ActionTypes.UPDATE_SETTINGS]: ({ category, settings }) => updateSettings(category, settings),
   [ActionTypes.TOGGLE_SETTING]: ({ category, setting, defaultValue }) => toggleSetting(category, setting, defaultValue),
   [ActionTypes.UPDATE_SETTING]: ({ category, setting, value }) => updateSetting(category, setting, value),

@@ -1,8 +1,8 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
+import { getModuleByDisplayName } from '@vizality/webpack';
 
-const AsyncComponent = require('./AsyncComponent');
+import AsyncComponent from './AsyncComponent';
 
-module.exports = AsyncComponent.from(
+export default AsyncComponent.from(
   (async () => {
     const DecoratedGuildSettingsRoles = await getModuleByDisplayName('FluxContainer(GuildSettingsRoles)');
     const GuildSettingsRoles = DecoratedGuildSettingsRoles.prototype.render.call({ memoizedGetStateFromStores: () => void 0 }).type;

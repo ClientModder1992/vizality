@@ -11,7 +11,7 @@ module.exports = class JSX extends Compiler {
   _compile () {
     const jsx = readFileSync(this.file, 'utf8');
     return sucrase.transform(jsx, {
-      transforms: [ 'jsx' ],
+      transforms: [ 'jsx', 'imports' ],
       filePath: this.file
     }).code;
   }

@@ -1,9 +1,12 @@
-const { contextMenu: { closeContextMenu } } = require('@vizality/webpack');
-const { Menu, LazyImage } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(props => {
+import { Menu, LazyImage } from '@vizality/components';
+import { contextMenu } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
+
+const { closeContextMenu } = contextMenu;
+
+export default memo(props => {
   const { manifest, onUninstall, isEnabled, onToggle } = props;
 
   return (

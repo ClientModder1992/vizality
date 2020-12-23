@@ -1,78 +1,53 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util';
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
-const Tooltip = AsyncComponent.from(getModuleByDisplayName('Tooltip', true));
+import { FormItem, FormText, Tooltip, Button } from '..';
 
-let classes = {
-  initialized: false,
-  flexClassName: '',
-  classMargins: {},
-  classDivider: '',
-  classDividerDef: '',
-  classesLabel: {}
-};
+export default memo(props => {
+  const { note, children, tooltipText, tooltipPosition, success, color, disabled, onClick, button } = props;
 
-module.exports = class ButtonItem extends React.PureComponent {
-  constructor () {
-    super();
-    this.state = { classes };
-  }
+  const Flex = getModuleByDisplayName('Flex');
+  const flex = joinClassNames(Flex.Direction.VERTICAL, Flex.Justify.START, Flex.Align.STRETCH, Flex.Wrap.NO_WRAP);
+  const { marginBottom20 } = getModule('marginTop20');
+  const { divider } = getModule(m => Object.keys(m).join('') === 'divider');
+  const { dividerDefault } = getModule('dividerDefault');
+  const { description } = getModule('formText', 'description');
+  const { labelRow, title } = getModule('labelRow');
 
-  async componentWillMount () {
-    if (classes.initialized) return;
-
-    const Flex = getModuleByDisplayName('Flex');
-    classes = {
-      initialized: true,
-
-      flexClassName: `${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`,
-      classMargins: getModule('marginTop20'),
-      classDivider: getModule(m => Object.keys(m).join('') === 'divider').divider,
-      classDividerDef: getModule('dividerDefault').dividerDefault,
-      classDescription: getModule('formText', 'description').description,
-      classesLabel: getModule('labelRow')
-    };
-
-    this.setState({ classes });
-  }
-
-  render () {
-    const { Button } = require('..');
-    return <DFormItem
-      className={`vizality-settings-item vizality-button-item ${this.state.classes.flexClassName} ${this.state.classes.classMargins.marginBottom20}`}>
+  return (
+    <FormItem
+      className={joinClassNames('vizality-settings-item', 'vizality-button-item', flex, marginBottom20)}>
       <div className='vizality-settings-item-title'>
         <div>
-          <div className={this.state.classes.classesLabel.labelRow}>
-            <label class={this.state.classes.classesLabel.title}>
-              {this.props.children}
+          <div className={labelRow}>
+            <label class={title}>
+              {children}
             </label>
           </div>
-          <FormText className={this.state.classes.classDescription}>
-            {this.props.note}
+          <FormText className={description}>
+            {note}
           </FormText>
         </div>
         <Tooltip
-          text={this.props.tooltipText}
-          position={this.props.tooltipPosition}
-          shouldShow={Boolean(this.props.tooltipText)}
+          text={tooltipText}
+          position={tooltipPosition}
+          shouldShow={Boolean(tooltipText)}
         >
           {() => (
             <Button
-              color={this.props.success ? Button.Colors.GREEN : this.props.color || Button.Colors.BRAND}
-              disabled={this.props.disabled}
-              onClick={() => this.props.onClick()}
+              color={success ? Button.Colors.GREEN : color || Button.Colors.BRAND}
+              disabled={disabled}
+              onClick={onClick}
               style={{ marginLeft: 5 }}
             >
-              {this.props.button}
+              {button}
             </Button>
           )}
         </Tooltip>
       </div>
-      <div className={`${classes.classDivider} ${classes.classDividerDef}`} />
-    </DFormItem>;
-  }
-};
+      <div className={joinClassNames(divider, dividerDefault)} />
+    </FormItem>
+  );
+});

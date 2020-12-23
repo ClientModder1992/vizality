@@ -1,11 +1,12 @@
-const { React, React: { useReducer } } = require('@vizality/react');
-const { Icon, Switch, Button } = require('@vizality/components');
-const { string: { toPlural } } = require('@vizality/util');
-const { Messages } = require('@vizality/i18n');
+import React, { memo, useReducer } from 'react';
 
-const PreviewsButton = require('./PreviewsButton');
+import { Icon, Switch, Button } from '@vizality/components';
+import { toPlural } from '@vizality/util/string';
+import { Messages } from '@vizality/i18n';
 
-module.exports = React.memo(props => {
+import PreviewsButton from './PreviewsButton';
+
+export default memo(props => {
   const { onUninstall, isEnabled, onToggle, type, addonId, showPreviewImages, hasPreviewImages, displayType } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 

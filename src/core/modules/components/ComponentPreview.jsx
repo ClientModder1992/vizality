@@ -1,20 +1,15 @@
-/* eslint-disable prefer-arrow-callback */
-const { React, React: { useState, useEffect } } = require('@vizality/react');
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { joinClassNames } = require('@vizality/util');
+import React, { memo, useState, useEffect } from 'react';
 
-const TabBar = getModuleByDisplayName('TabBar');
-// const Icon = require('./Icon');
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-module.exports = React.memo(function VizalityComponentPreview ({
-  previewTabChildren,
-  codeTabChildren,
-  tabChildren,
-  aside,
-  selectedTab = 'PREVIEW'
-}) {
+import { TabBar } from '.';
+
+export default memo(props => {
+  const { previewTabChildren, codeTabChildren, tabChildren, aside, selectedTab = 'PREVIEW', type = TabBar.Types.TOP_PILL } = props;
+
   const [ tab, setTab ] = useState(selectedTab);
-  const { topPill, item } = getModule('topPill');
+  const { item } = getModule('topPill');
 
   useEffect(() => {
     if (!selectedTab || selectedTab === 'PREVIEW') setTab('PREVIEW');
@@ -28,7 +23,7 @@ module.exports = React.memo(function VizalityComponentPreview ({
           <TabBar
             selectedItem={tab}
             onItemSelect={tab => setTab(tab)}
-            type={topPill}
+            type={type}
             className='vz-component-preview-tabs'
           >
             <TabBar.Item

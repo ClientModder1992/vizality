@@ -1,11 +1,11 @@
-const { clipboard } = require('electron');
+import React, { memo, useState } from 'react';
+import { clipboard } from 'electron';
 
-const { React, React: { useState } } = require('@vizality/react');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { Messages } = require('@vizality/i18n');
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
 
-const Button = getModule(m => m.DropdownSizes);
+import { Button } from '.';
 
 /*
  * @todo Convert showHeader, showLineNumbers, showCopyButton, and theme into settings options and then
@@ -25,7 +25,7 @@ const Button = getModule(m => m.DropdownSizes);
  * ```
  */
 // eslint-disable-next-line prefer-arrow-callback
-module.exports = React.memo(function VizalityCodeBlock (props) {
+export default memo(props => {
   let {
     language,
     header,

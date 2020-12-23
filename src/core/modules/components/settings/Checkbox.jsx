@@ -1,12 +1,16 @@
-const { getModuleByDisplayName, getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const Divider = require('../Divider');
+import { getModuleByDisplayName, getModule } from '@vizality/webpack';
 
-const Checkbox = AsyncComponent.from(getModuleByDisplayName('Checkbox', true));
+import AsyncComponent from '../AsyncComponent';
+import { Divider } from '..';
 
-module.exports = React.memo(props => {
+const Checkbox = AsyncComponent.fromDisplayName('Checkbox');
+
+export default memo(props => {
+  // eslint-disable-next-line no-unused-vars
+  const { align, color, disabled, onChange, readOnly, reverse, shape, size, type, value } = props;
+
   const Flex = getModuleByDisplayName('Flex');
   const { marginBottom20 } = getModule('marginBottom20');
 

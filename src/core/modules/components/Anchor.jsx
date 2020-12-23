@@ -1,22 +1,24 @@
-const { string: { toPlural }, joinClassNames } = require('@vizality/util');
-const { React, React: { memo } } = require('@vizality/react');
-const { getModule, constants } = require('@vizality/webpack');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('./AsyncComponent');
+import { getModule, constants } from '@vizality/webpack';
+import { toPlural } from '@vizality/util/string';
+import { joinClassNames } from '@vizality/util';
 
-const DAnchor = AsyncComponent.fromDisplayName('Anchor');
+import AsyncComponent from './AsyncComponent';
 
-module.exports = memo(props => {
+const Anchor = AsyncComponent.fromDisplayName('Anchor');
+
+export default memo(props => {
   const { className, userId, children, type, addonId } = props;
 
   return (
     <>
       {!type
-        ? <DAnchor {...props}>
+        ? <Anchor {...props}>
           {children}
-        </DAnchor>
+        </Anchor>
         : type === 'user'
-          ? <DAnchor
+          ? <Anchor
             className={joinClassNames('vz-user-anchor', className)}
             vz-user-id={userId || null}
             href={userId && `${window.location.origin}${constants.Endpoints.USERS}/${userId}`}
@@ -28,9 +30,9 @@ module.exports = memo(props => {
             }}
           >
             {children}
-          </DAnchor>
+          </Anchor>
           : type === 'plugin' || type === 'theme'
-            ? <DAnchor
+            ? <Anchor
               className={joinClassNames('vz-addon-anchor', className)}
               vz-addon-id={addonId || null}
               onClick={e => {
@@ -41,7 +43,7 @@ module.exports = memo(props => {
               }}
             >
               {children}
-            </DAnchor>
+            </Anchor>
             : null
       }
     </>

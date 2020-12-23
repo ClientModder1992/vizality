@@ -1,14 +1,15 @@
-const { Tooltip } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Description = require('../parts/Description');
-const Permissions = require('../parts/Permissions');
-const Previews = require('../parts/Previews');
-const AddonIcon = require('../parts/Icon');
-const Footer = require('../parts/Footer');
-const Author = require('../parts/Author');
+import { Tooltip } from '@vizality/components';
 
-module.exports = React.memo(props => {
+import Description from '../parts/Description';
+import Permissions from '../parts/Permissions';
+import Previews from '../parts/Previews';
+import AddonIcon from '../parts/Icon';
+import Footer from '../parts/Footer';
+import Author from '../parts/Author';
+
+export default memo(props => {
   const { manifest, showPreviewImages } = props;
 
   return (

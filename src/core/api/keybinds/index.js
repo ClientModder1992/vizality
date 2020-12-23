@@ -1,6 +1,6 @@
-const { logger: { error } } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { API } = require('@vizality/entities');
+import { getModule } from '@vizality/webpack';
+import { error } from '@vizality/util';
+import { API } from '@vizality/core';
 
 const _module = 'API';
 const _submodule = 'Keybinds';
@@ -21,7 +21,7 @@ const _submodule = 'Keybinds';
  * Vizality Keybinds API
  * @property {object<VizalityKeybind>} keybinds Keybinds
  */
-module.exports = class KeybindsAPI extends API {
+export default class KeybindsAPI extends API {
   constructor () {
     super();
     this.keybinds = {};
@@ -136,4 +136,4 @@ module.exports = class KeybindsAPI extends API {
 
     return keysHolder;
   }
-};
+}

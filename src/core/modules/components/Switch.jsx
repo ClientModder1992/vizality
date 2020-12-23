@@ -1,9 +1,10 @@
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('./AsyncComponent');
+import AsyncComponent from './AsyncComponent';
+
 const Switch = AsyncComponent.fromDisplayName('Switch');
 
-module.exports = React.memo(props => {
+export default memo(props => {
   // Compatibility for legacy syntax
   if (props.onChange && !props.__newOnChange) {
     const fn = props.onChange;

@@ -1,8 +1,9 @@
-const { Menu, Icon } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(props => {
+import { Menu, Icon } from '@vizality/components';
+import { Messages } from '@vizality/i18n';
+
+export default memo(props => {
   const { onClose } = props;
 
   const Stars = (count) => {

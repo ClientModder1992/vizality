@@ -1,8 +1,9 @@
-const { promisify } = require('util');
-const { existsSync } = require('fs');
-const cp = require('child_process');
-const Events = require('events');
-const { join } = require('path');
+import { promisify } from 'util';
+import { existsSync } from 'fs';
+import cp from 'child_process';
+import Events from 'events';
+import { join } from 'path';
+
 const exec = promisify(cp.exec);
 
 /**
@@ -10,7 +11,7 @@ const exec = promisify(cp.exec);
  * @property {string} path
  * @property {string} updateIdentifier
  */
-module.exports = class Updatable extends Events {
+export default class Updatable extends Events {
   constructor (baseDir, addonId, updateIdentifier) {
     super();
     this.baseDir = baseDir;
@@ -103,4 +104,4 @@ module.exports = class Updatable extends Events {
         stdout.toString().split('\n').find(l => l.startsWith('*')).slice(2).trim()
       );
   }
-};
+}

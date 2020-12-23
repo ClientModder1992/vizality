@@ -1,9 +1,11 @@
-/* eslint-disable no-unused-vars *//* eslint-disable prefer-arrow-callback */
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(function VizalityTitlebar (props) {
-  let { type, windowKey } = props;
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+
+export default memo(props => {
+  let { type, windowKey, className } = props;
+  delete props.className;
 
   if (!type) {
     const OS = DiscordNative.process.platform;
@@ -19,5 +21,5 @@ module.exports = React.memo(function VizalityTitlebar (props) {
 
   const Titlebar = mdl({ type }).type;
 
-  return <Titlebar className='vz-titlebar' type={type} windowKey={windowKey} {...props} />;
+  return <Titlebar className={joinClassNames('vz-titlebar', className)} type={type} windowKey={windowKey} {...props} />;
 });

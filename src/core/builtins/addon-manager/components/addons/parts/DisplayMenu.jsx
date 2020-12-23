@@ -1,8 +1,9 @@
-const { React, React: { useState } } = require('@vizality/react');
-const { Menu, Icon } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
+import React, { memo, useState } from 'react';
 
-module.exports = React.memo(props => {
+import { Menu, Icon } from '@vizality/components';
+import { Messages } from '@vizality/i18n';
+
+export default memo(props => {
   const { onClose, handleDisplayChange, showPreviewImages, handleShowPreviewImages, display } = props;
   const [ previewImages, setShowPreviewImages ] = useState(showPreviewImages);
 

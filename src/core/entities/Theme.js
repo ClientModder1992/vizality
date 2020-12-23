@@ -1,9 +1,10 @@
-const { dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
-const { resolveCompiler } = require('@vizality/compilers');
+import { error, log, warn } from '@vizality/util/logger';
+import { resolveCompiler } from '@vizality/compilers';
+import { createElement } from '@vizality/util/dom';
 
-const Updatable = require('./Updatable');
+import Updatable from './Updatable';
 
-module.exports = class Theme extends Updatable {
+export default class Theme extends Updatable {
   constructor (themeID, manifest) {
     const themeManager = typeof vizality !== 'undefined' ? vizality.manager.themes : global.sm;
     super(themeManager.dir, themeID);
@@ -57,4 +58,4 @@ module.exports = class Theme extends Updatable {
   warn (...data) {
     warn(this.module, this.submodule, null, ...data);
   }
-};
+}

@@ -1,18 +1,17 @@
-const { promisify } = require('util');
-const cp = require('child_process');
+import { promisify } from 'util';
+import cp from 'child_process';
+
+import { initialize, getModule } from '@vizality/webpack';
+import { Directories, HTTP } from '@vizality/constants';
+import { Updatable } from '@vizality/entities';
+import { sleep } from '@vizality/util';
+
+import BuiltinManager from './managers/addon/builtin';
+import PluginManager from './managers/addon/plugin';
+import ThemeManager from './managers/addon/theme';
+import APIManager from './managers/api';
+
 const exec = promisify(cp.exec);
-
-const { sleep, logger: { log, warn, error } } = require('@vizality/util');
-const { getModule, initialize } = require('@vizality/webpack');
-const { HTTP, Directories } = require('@vizality/constants');
-const { jsx: JsxCompiler } = require('@vizality/compilers');
-const { Updatable } = require('@vizality/entities');
-
-const AddonManager = require('./managers/addon');
-const ThemeManager = require('./managers/addon/theme');
-const BuiltinManager = require('./managers/addon/builtin');
-const PluginManager = require('./managers/addon/plugin');
-const APIManager = require('./managers/api');
 
 /**
  * @typedef VizalityAPI
@@ -42,7 +41,7 @@ const APIManager = require('./managers/api');
  * @property {Git} git
  * @property {boolean} _initialized
  */
-module.exports = class Vizality extends Updatable {
+export default class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
 
@@ -64,9 +63,9 @@ module.exports = class Vizality extends Updatable {
     };
 
     this.manager.apis = new APIManager();
-    this.manager.themes = new ThemeManager();
     this.manager.builtins = new BuiltinManager();
     this.manager.plugins = new PluginManager();
+    this.manager.themes = new ThemeManager();
 
     this._initialized = false;
     this._originalLogFunc = {};
@@ -90,27 +89,15 @@ module.exports = class Vizality extends Updatable {
     // Webpack & Modules
     await initialize();
 
-    const FluxModule = async () => {
+    (async () => {
       const Flux = getModule('Store', 'PersistedStore');
-      Flux.connectStoresAsync = (stores, fn) => (Component) =>
+      Flux.connectStoresAsync = (stores, fn) => Component =>
         require('@vizality/components').AsyncComponent.from((async () => {
           const awaitedStores = await Promise.all(stores);
           console.log('Remember to add these to settings (darkSiderbar, etc.)', awaitedStores);
-          return Flux.connectStores(awaitedStores, (props) => fn(awaitedStores, props))(Component);
+          return Flux.connectStores(awaitedStores, props => fn(awaitedStores, props))(Component);
         })());
-    };
-
-    const JsxCompilerModule = async () => {
-      require.extensions['.jsx'] = (module, filename) => {
-        const compiler = new JsxCompiler(filename);
-        const compiled = compiler.compile();
-        module._compile(compiled, filename);
-      };
-    };
-
-    const modules = [ FluxModule, JsxCompilerModule ];
-
-    await Promise.all(modules.map(mdl => mdl()));
+    })();
 
     // Start
     await this.start();
@@ -265,4 +252,4 @@ module.exports = class Vizality extends Updatable {
     }
     return success;
   }
-};
+}

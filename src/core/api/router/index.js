@@ -1,9 +1,12 @@
-const { logger: { error } } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { API } = require('@vizality/entities');
+import { error } from '@vizality/util/logger';
+import { getModule } from '@vizality/webpack';
+import { API } from '@vizality/core';
 
-const Sidebar = require('@vizality/builtins/dashboard/components/parts/sidebar/Sidebar');
-const Routes = require('@vizality/builtins/dashboard/routes/Routes');
+import Sidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
+import Routes from '@vizality/builtins/dashboard/routes/Routes';
+
+console.log(Sidebar);
+console.log(Routes);
 
 const _module = 'API';
 const _submodule = 'Router';
@@ -19,7 +22,7 @@ const _submodule = 'Router';
  * Vizality custom router API
  * @property {VizalityRoute[]} routes Registered routes
  */
-module.exports = class RouterAPI extends API {
+export default class RouterAPI extends API {
   constructor () {
     super();
     this.routes = [];
@@ -49,6 +52,8 @@ module.exports = class RouterAPI extends API {
   /** @private */
   _reregisterDashboard () {
     if (!this.routes.find(r => r.path === '/dashboard')) return;
+    console.log('PIE', Routes);
+    console.log('CAkE', Sidebar);
     this.unregisterRoute('/dashboard');
     this.registerRoute({
       path: '/dashboard',
@@ -68,6 +73,15 @@ module.exports = class RouterAPI extends API {
       if (this.routes.find(r => r.path === route.path)) {
         throw new Error(`Route "${route.path}" is already registered!`);
       }
+
+      console.log('HMM', route.render);
+
+      // route.render = route.render.__esModule ? route.render.default : route.render;
+      // route.sidebar = route.sidebar.__esModule ? route.sidebar.default : route.sidebar;
+
+      console.log('PIZZA', route.render);
+      console.log('ICEC', route.sidebar);
+
       this.routes.push(route);
       if (this.routes[this.routes.length - 1].path !== '/dashboard') {
         this._reregisterDashboard();
@@ -136,4 +150,4 @@ module.exports = class RouterAPI extends API {
       return error(_module, `${_submodule}:navigate`, null, err);
     }
   }
-};
+}

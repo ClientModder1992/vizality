@@ -1,12 +1,14 @@
-const { join, win32, extname } = require('path');
-const { existsSync } = require('fs');
-const watch = require('node-watch');
+import { join, win32, extname } from 'path';
+import { existsSync } from 'fs';
+import watch from 'node-watch';
 
-const { sleep, dom: { createElement }, logger: { error, log, warn } } = require('@vizality/util');
-const { resolveCompiler } = require('@vizality/compilers');
-const { Directories } = require('@vizality/constants');
+import { error, log, warn } from '@vizality/util/logger';
+import { resolveCompiler } from '@vizality/compilers';
+import { createElement } from '@vizality/util/dom';
+import { Directories } from '@vizality/constants';
+import { sleep } from '@vizality/util';
 
-const Updatable = require('./Updatable');
+import Updatable from './Updatable';
 
 /**
  * Main class for Vizality plugins
@@ -15,7 +17,7 @@ const Updatable = require('./Updatable');
  * @property {object<string, Compiler>} styles Styles the plugin loaded
  * @abstract
  */
-module.exports = class Plugin extends Updatable {
+export default class Plugin extends Updatable {
   constructor () {
     super(vizality.manager.plugins.dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
@@ -223,4 +225,4 @@ module.exports = class Plugin extends Updatable {
   warn (...data) {
     warn(this._module, this._submodule, null, ...data);
   }
-};
+}

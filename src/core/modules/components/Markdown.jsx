@@ -1,23 +1,26 @@
-/* eslint-disable prefer-arrow-callback */
-const { existsSync, promises: { readFile } } = require('fs');
-const { shell: { openExternal } } = require('electron');
-const Markdown = require('react-markdown');
+import React, { memo, useState, useEffect } from 'react';
 
-const { joinClassNames, string: { toKebabCase } } = require('@vizality/util');
-const { React, React: { useState, useEffect } } = require('@vizality/react');
-const { getModule } = require('@vizality/webpack');
+import { existsSync, promises } from 'fs';
+import Markdown from 'react-markdown';
+import { shell } from 'electron';
 
-const { open: openModal } = require('@vizality/modal');
+import { toKebabCase } from '@vizality/util/string';
+import { open as openModal } from '@vizality/modal';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-const CodeBlock = require('./CodeBlock');
-const Icon = require('./Icon');
+import AsyncComponent from './AsyncComponent';
+import CodeBlock from './CodeBlock';
+import Icon from './Icon';
 
-const AsyncComponent = require('./AsyncComponent');
 const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 const ImageModal = AsyncComponent.fromDisplayName('ImageModal');
 const Anchor = AsyncComponent.fromDisplayName('Anchor');
 
-module.exports = React.memo(({ source, className }) => {
+const { readFile } = promises;
+const { openExternal } = shell;
+
+export default memo(({ source, className }) => {
   const [ markdown, setMarkdown ] = useState();
   const { base } = getModule('base');
   const { size32, size24, size20, size16, size14, size12 } = getModule('size32');

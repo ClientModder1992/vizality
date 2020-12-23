@@ -1,27 +1,30 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { joinClassNames } = require('@vizality/util');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const Divider = require('../Divider');
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util';
 
-const FormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
+import { Divider, FormItem, FormText } from '..';
 
-module.exports = React.memo(props => {
-  const { description } = getModule('formText', 'description');
+export default memo(props => {
+  const { title, required, note, noteHasMargin, children, className } = props;
+  delete props.className;
+
   const Flex = getModuleByDisplayName('Flex');
-  const margins = getModule('marginTop20');
-  const noteClasses = joinClassNames(description, { [margins.marginTop8]: props.noteHasMargin });
+  const { description } = getModule('formText', 'description');
+  const { marginBottom20, marginTop8 } = getModule('marginTop20');
 
   return (
     <FormItem
-      title={props.title}
-      required={props.required}
-      className={`${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP} ${margins.marginBottom20}`}
+      title={title}
+      required={required}
+      className={joinClassNames(className, Flex.Direction.VERTICAL, Flex.Justify.START, Flex.Align.STRETCH, Flex.Wrap.NO_WRAP, marginBottom20)}
     >
-      {props.children}
-      {props.note && <FormText className={noteClasses}>{props.note}</FormText>}
+      {children}
+      {note &&
+        <FormText className={joinClassNames(description, { [marginTop8]: noteHasMargin })}>
+          {note}
+        </FormText>
+      }
       <Divider/>
     </FormItem>
   );

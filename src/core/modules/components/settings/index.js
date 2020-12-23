@@ -1,53 +1,26 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
+import { getModuleByDisplayName } from '@vizality/webpack';
 
-const AsyncComponent = require('../AsyncComponent');
+import AsyncComponent from '../AsyncComponent';
 
-Object.assign(exports, {
-  ButtonItem: require('./ButtonItem'),
-  Category: require('./Category'),
-  Checkbox: require('./Checkbox'),
-  ColorPickerInput: require('./ColorPickerInput'),
-  CopyInput: require('./CopyInput'),
-  FormItem: require('./FormItem'),
-  FormTitle: require('./FormTitle'),
-  PermissionOverrideItem: require('./PermissionOverrideItem'),
-  RadioGroup: require('./RadioGroup'),
-  RegionSelector: require('./RegionSelector'),
-  SelectInput: require('./SelectInput'),
-  SliderInput: require('./SliderInput'),
-  TextArea: require('./TextArea'),
-  TextInput: require('./TextInput')
-});
+const SwitchItem = AsyncComponent.fromDisplayName('SwitchItem');
 
-// Add some util components
-Object.assign(exports, {
-  SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))
-});
+export { default as ButtonItem } from './ButtonItem';
+export { default as Category } from './Category';
+export { default as Checkbox } from './Checkbox';
+export { default as ColorPickerInput } from './ColorPickerInput';
+export { default as CopyInput } from './CopyInput';
+export { default as FormItem } from './FormItem';
+export { default as FormTitle } from './FormTitle';
+export { default as PermissionOverrideItem } from './PermissionOverrideItem';
+export { default as RadioGroup } from './RadioGroup';
+export { default as RegionSelector } from './RegionSelector';
+export { default as SelectInput } from './SelectInput';
+export { default as SliderInput } from './SliderInput';
+export { default as TextArea } from './TextArea';
+export { default as TextInput } from './TextInput';
+
+export { SwitchItem };
 
 // Re-export module properties
 getModuleByDisplayName('SwitchItem', true, true).then(SwitchItem =>
-  [ 'Sizes', 'Themes' ].forEach(prop => exports.SwitchItem[prop] = SwitchItem[prop])
-);
-
-// const { getModuleByDisplayName } = require('@vizality/webpack');
-
-// const AsyncComponent = require('../AsyncComponent');
-
-// require('fs')
-//   .readdirSync(__dirname)
-//   .filter(file => file !== 'index.js')
-//   .forEach(filename => {
-//     const moduleName = filename.split('.')[0];
-//     exports[moduleName] = require(`${__dirname}/${filename}`);
-//   });
-
-// // Add some util components
-// Object.assign(exports, {
-//   SwitchItem: AsyncComponent.from(getModuleByDisplayName('SwitchItem', true))
-// });
-
-// // Re-export module properties
-// (async () => {
-//   const SwitchItem = await getModuleByDisplayName('SwitchItem', true, true);
-//   [ 'Sizes', 'Themes' ].forEach(prop => exports.SwitchItem[prop] = SwitchItem[prop]);
-// })();
+  [ 'Sizes', 'Themes' ].forEach(prop => this.SwitchItem[prop] = SwitchItem[prop]));

@@ -1,47 +1,40 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo, useState, useEffect } from 'react';
 
-module.exports = class AsyncComponent extends React.PureComponent {
-  constructor (props) {
-    super(props);
-    this.state = {
-      Component: null
-    };
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+
+export default function AsyncComponent (props) {
+  const [ Component, setComponent ] = useState(null);
+
+  useEffect(() => {
+    setComponent(props._provider());
+  }, []);
+
+  if (Component) {
+    props = Object.assign({}, props, props._pass);
+    return <Component {...props} />;
   }
 
-  async componentDidMount () {
-    this.setState({
-      Component: await this.props._provider()
-    });
-  }
+  return props._fallback || null;
+}
 
-  render () {
-    const { Component } = this.state;
-    if (Component) {
-      return React.createElement(Component, Object.assign({}, this.props, this.props._pass));
-    }
-    return this.props._fallback || null;
-  }
+/**
+ * Creates an AsyncComponent from a promise
+ * @param {Promise} promise Promise of a React component
+ */
+AsyncComponent.from = (promise, fallback) => {
+  return memo(props =>
+    <AsyncComponent _provider={() => promise} _fallback={fallback} {...props} />
+  );
+};
 
-  /**
-   * Creates an AsyncComponent from a promise
-   * @param {Promise} promise Promise of a React component
-   */
-  static from (promise, fallback) {
-    return React.memo(props =>
-      <AsyncComponent _provider={() => promise} _fallback={fallback} {...props} />
-    );
-  }
+AsyncComponent.fromDisplayName = (displayName, fallback) => {
+  return AsyncComponent.from(getModuleByDisplayName(displayName, true), fallback);
+};
 
-  static fromDisplayName (displayName, fallback) {
-    return AsyncComponent.from(getModuleByDisplayName(displayName, true), fallback);
-  }
+AsyncComponent.fromProps = (filter, fallback) => {
+  return AsyncComponent.from(getModule(filter, true), fallback);
+};
 
-  static fromProps (filter, fallback) {
-    return AsyncComponent.from(getModule(filter, true), fallback);
-  }
-
-  static fetchFromProps (filter, prop, fallback) {
-    return AsyncComponent.from((async () => (await getModule(filter, true))[prop || filter])(), fallback);
-  }
+AsyncComponent.fetchFromProps = (filter, prop, fallback) => {
+  return AsyncComponent.from((async () => (await getModule(filter, true))[prop || filter])(), fallback);
 };

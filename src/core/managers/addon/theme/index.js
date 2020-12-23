@@ -1,13 +1,15 @@
-/* @todo: Use logger. */
-const { dom: { createElement } } = require('@vizality/util');
-const { resolveCompiler } = require('@vizality/compilers');
-const { Directories } = require('@vizality/constants');
-const { Theme } = require('@vizality/entities');
+import { promises, readdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
-const { join } = require('path');
-const { promises: { lstat }, readdirSync, existsSync } = require('fs');
+import { resolveCompiler } from '@vizality/compilers';
+import { createElement } from '@vizality/util/dom';
+import { Directories } from '@vizality/constants';
+import { Theme } from '@vizality/core';
+
+import AddonManager from '../../addon';
 
 const fileRegex = /\.((s?c)ss)$/;
+const { lstat } = promises;
 
 const ErrorTypes = Object.freeze({
   NOT_A_DIRECTORY: 'NOT_A_DIRECTORY',
@@ -15,10 +17,7 @@ const ErrorTypes = Object.freeze({
   INVALID_MANIFEST: 'INVALID_MANIFEST'
 });
 
-
-const AddonManager = require('../../addon');
-
-module.exports = class ThemeManager extends AddonManager {
+export default class ThemeManager extends AddonManager {
   constructor (type, dir) {
     type = 'themes';
     dir = Directories.THEMES;

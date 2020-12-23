@@ -1,18 +1,18 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const FormItem = require('./FormItem');
+import AsyncComponent from '../AsyncComponent';
+import { FormItem } from '.';
 
-const Input = AsyncComponent.from(getModuleByDisplayName('TextInput', true));
+const Input = AsyncComponent.fromDisplayName('TextInput');
 
-module.exports = React.memo(props => {
-  const { children: title, note, required } = props;
+export default memo(props => {
+  const { children: title, note, required, className } = props;
   delete props.children;
+  delete props.className;
 
   return (
     <FormItem title={title} note={note} required={required} noteHasMargin>
-      <Input {...props} />
+      <Input {...props} className={className} />
     </FormItem>
   );
 });

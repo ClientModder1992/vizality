@@ -1,5 +1,5 @@
-const { logger: { error } } = require('@vizality/util');
-const { API } = require('@vizality/entities');
+import { error } from '@vizality/util/logger';
+import { API } from '@vizality/core';
 
 const _module = 'Module';
 const _submodule = 'API:Actions';
@@ -14,7 +14,7 @@ const _submodule = 'API:Actions';
  * Vizality Actions API
  * @property {VizalityAction[]} actions Registered actions
  */
-module.exports = class ActionsAPI extends API {
+export default class ActionsAPI extends API {
   constructor () {
     super();
     this.actions = [];
@@ -66,4 +66,4 @@ module.exports = class ActionsAPI extends API {
   async invoke (name) {
     return this.actions.find(r => r.action === name).executor();
   }
-};
+}

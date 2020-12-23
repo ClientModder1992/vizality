@@ -1,11 +1,12 @@
-const { React, React: { useReducer } } = require('@vizality/react');
-const { Icon, Switch, Tooltip } = require('@vizality/components');
+import React, { memo, useReducer } from 'react';
 
-const PreviewsButton = require('../parts/PreviewsButton');
-const AddonIcon = require('../parts/Icon');
-const Author = require('../parts/Author');
+import { Icon, Switch, Tooltip } from '@vizality/components';
 
-module.exports = React.memo(props => {
+import PreviewsButton from '../parts/PreviewsButton';
+import AddonIcon from '../parts/Icon';
+import Author from '../parts/Author';
+
+export default memo(props => {
   const { manifest, isEnabled, onToggle, onUninstall, hasPreviewImages } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 

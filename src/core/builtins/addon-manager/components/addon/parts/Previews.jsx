@@ -1,13 +1,13 @@
-const { React, React: { useEffect, useState } } = require('@vizality/react');
-const { ApplicationStoreListingCarousel } = require('@vizality/components');
+import React, { memo, useEffect, useState } from 'react';
 
-module.exports = React.memo(props => {
+import { ApplicationStoreListingCarousel } from '@vizality/components';
+
+export default memo(props => {
   const { hasPreviewImages, previewImages } = props;
   const [ previews, setPreviews ] = useState([]);
 
   const getPreviewImages = () => {
     const previewImgs = [];
-    // eslint-disable-next-line array-callback-return
     previewImages.forEach(image => {
       previewImgs.push({
         src: image,

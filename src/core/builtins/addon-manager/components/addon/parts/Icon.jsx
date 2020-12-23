@@ -1,9 +1,8 @@
-const { LazyImage } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(props => {
-  const { manifest } = props;
+import { LazyImage } from '@vizality/components';
 
+export default memo(({ manifest }) => {
   return (
     <div className='vz-addon-card-icon'>
       <LazyImage

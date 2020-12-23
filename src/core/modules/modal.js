@@ -1,16 +1,17 @@
-const { modal } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React from 'react';
 
-module.exports = {
+import { modal } from '@vizality/webpack';
+
+export default {
   /**
-   * Opens a new modal
-   * @param {React.Component|function(): React.Element} Component
+   * Opens a new modal.
+   * @param {React.Component|function(): React.Element} Component Modal component to show
    */
-  open: (Component) => {
+  open: Component => {
     modal.push(
       class VizalityModal extends React.Component {
         render () {
-          return React.createElement(Component);
+          return <Component />;
         }
       }
     );

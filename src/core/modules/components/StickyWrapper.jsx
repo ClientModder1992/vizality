@@ -1,7 +1,8 @@
-const { React, React: { useEffect, useRef } } = require('@vizality/react');
-const { joinClassNames } = require('@vizality/util');
+import React, { memo, useEffect, useRef } from 'react';
 
-module.exports = React.memo(props => {
+import { joinClassNames } from '@vizality/util';
+
+export default memo(props => {
   const { className, wrapperClassName, children, handleStickyChange } = props;
   const sticky = useRef(null);
 

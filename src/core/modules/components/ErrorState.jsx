@@ -1,10 +1,13 @@
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Icon = require('./Icon');
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-module.exports = React.memo(props => {
+import { Icon } from '.';
+
+export default memo(props => {
+  const { children } = props;
+
   const { error, backgroundRed, icon, text } = getModule('error', 'backgroundRed');
   const { marginBottom20 } = getModule('marginBottom20');
 
@@ -12,7 +15,7 @@ module.exports = React.memo(props => {
     <div className={joinClassNames(error, backgroundRed, marginBottom20)}>
       <Icon className={icon} name='WarningCircle' />
       <div className={text}>
-        {props.children}
+        {children}
       </div>
     </div>
   );

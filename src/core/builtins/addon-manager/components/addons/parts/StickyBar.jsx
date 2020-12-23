@@ -1,20 +1,21 @@
-const { TabBar, Icon, SearchBar } = require('@vizality/components');
-const { string: { toTitleCase } } = require('@vizality/util');
-const { React } = require('@vizality/react');
-const { getModule } = require('@vizality/webpack');
-const { Messages } = require('@vizality/i18n');
+import React, { memo } from 'react';
 
-const SortFilterMenu = require('./SortFilterMenu');
-const OverflowMenu = require('./OverflowMenu');
-const DisplayMenu = require('./DisplayMenu');
-const TagsMenu = require('./TagsMenu');
+import { TabBar, Icon, SearchBar } from '@vizality/components';
+import { toTitleCase } from '@vizality/util/string';
+import { getModule } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
 
-module.exports = React.memo(props => {
+import SortFilterMenu from './SortFilterMenu';
+import OverflowMenu from './OverflowMenu';
+import DisplayMenu from './DisplayMenu';
+import TagsMenu from './TagsMenu';
+
+export default memo(props => {
   const { query, tab, display, handleTabChange, handleQueryChange, handleDisplayChange } = props;
 
   const PopoutDispatcher = getModule('openPopout');
 
-  const formatDisplayIconName = (display) => {
+  const formatDisplayIconName = display => {
     return `Layout${toTitleCase(display).replace(' ', '')}`;
   };
 

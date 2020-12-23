@@ -1,9 +1,10 @@
-const { React, React: { useState, useReducer } } = require('@vizality/react');
-const { string: { toTitleCase } } = require('@vizality/util');
-const { Menu, SearchBar } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
+import React, { memo, useState, useReducer } from 'react';
 
-module.exports = React.memo(props => {
+import { Menu, SearchBar } from '@vizality/components';
+import { toTitleCase } from '@vizality/util/string';
+import { Messages } from '@vizality/i18n';
+
+export default memo(props => {
   const { type, onClose } = props;
   const [ query, setQuery ] = useState('');
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);

@@ -1,8 +1,9 @@
-const { constants, getModule } = require('@vizality/webpack');
-const { Anchor } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ manifest }) => {
+import { constants, getModule } from '@vizality/webpack';
+import { Anchor } from '@vizality/components';
+
+export default memo(({ manifest }) => {
   return (
     <div className='vz-addon-card-author-wrapper'>
       <Anchor

@@ -1,18 +1,19 @@
-const { resolve } = require('path');
-const { format } = require('util');
-const { parse } = require('url');
+import React, { PureComponent } from 'react';
 
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
-const { get } = require('@vizality/http');
+import { resolve } from 'path';
+import { format } from 'util';
+import { parse } from 'url';
+
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+import { get } from '@vizality/http';
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;
 
 const ReactInvariant = get('https://raw.githubusercontent.com/facebook/react/master/scripts/error-codes/codes.json')
   .then(res => JSON.parse(res.body.toString()));
 
-module.exports = class VizalityErrorBoundary extends React.PureComponent {
+export default class VizalityErrorBoundary extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -81,4 +82,4 @@ module.exports = class VizalityErrorBoundary extends React.PureComponent {
       </>
     );
   }
-};
+}

@@ -1,18 +1,20 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+/* eslint-disable no-unused-vars */
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const FormItem = require('./FormItem');
+import AsyncComponent from '../AsyncComponent';
+import { FormItem } from '.';
 
-const TextArea = AsyncComponent.from(getModuleByDisplayName('TextArea', true));
+const TextArea = AsyncComponent.fromDisplayName('TextArea');
 
-module.exports = React.memo(props => {
-  const { children: title, note, required } = props;
-  delete this?.props?.children;
+export default memo(props => {
+  const { children: title, note, required, className, autoFocus, autoSize, disabled, flex, maxLength,
+    name, onChange, placeholder, resizeable, rows, value } = props;
+  delete props.children;
+  delete props.className;
 
   return (
     <FormItem title={title} note={note} required={required} noteHasMargin>
-      <TextArea {...props}/>
+      <TextArea {...props} className={className} />
     </FormItem>
   );
 });
