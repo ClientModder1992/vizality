@@ -31,19 +31,21 @@ export default class I18nAPI extends API {
     Object.assign(i18n._proxyContext.messages, this.messages[this.locale]);
     Object.assign(i18n._proxyContext.defaultMessages, this.messages['en-US']);
     /*
-     * @todo: This removes the 'Hold up!' string, which is also used in the
-     * mention everyone popout... Look for a fix, possibly patching into a
+     * @todo This removes the 'Hold up!' string, which is also used in the
+     * mention everyone popout. Look for a fix, possibly patching into a
      * function call by DiscordNative that is fired when dev tools are opened.
      */
     [ 'messages', 'defaultMessages' ].forEach(obj => {
-      Object.keys(i18n._proxyContext[obj]).filter(key => key.startsWith('SELF_XSS')).forEach(key => delete i18n._proxyContext[obj][key]);
+      Object.keys(i18n._proxyContext[obj])
+        .filter(key => key.startsWith('SELF_XSS'))
+        .forEach(key => delete i18n._proxyContext[obj][key]);
     });
   }
 
   injectAllStrings (strings) {
     Object.keys(strings).forEach(locale => {
       const ogLocale = locale;
-      locale = locale.replace(/([A-Z])/, '-$1').trim();
+      locale = (/-/).test(locale) ? ogLocale : locale.replace(/([A-Z])/, '-$1').trim();
       this.injectStrings(locale, strings[ogLocale]);
     });
   }
