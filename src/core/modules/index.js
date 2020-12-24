@@ -1,10 +1,10 @@
-export { default as Discord } from './discord';
-export { default as Http } from './http';
+// export { default as Discord } from './discord';
 export { default as Util } from './util';
-export * as modal from './modal';
 export * as components from './components';
 export * as constants from './constants';
 export * as webpack from './webpack';
 export * as patcher from './patcher';
 export * as react from './react';
+export * as modal from './modal';
 export * as i18n from './i18n';
+export * as http from './http';

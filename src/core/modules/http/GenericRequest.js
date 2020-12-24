@@ -2,13 +2,13 @@
  * Forked from DevYukine's http module and Snekfetch
  */
 
-const querystring = require('querystring');
-const https = require('https');
-const http = require('http');
-const url = require('url');
+import querystring from 'querystring';
+import https from 'https';
+import http from 'http';
+import url from 'url';
 
-const { Repositories } = require('@vizality/constants');
-const { logger : { log } } = require('@vizality/util');
+import { Repositories } from '@vizality/constants';
+import { log } from '@vizality/util/logger';
 
 /**
  * @typedef HTTPResponse
@@ -21,14 +21,14 @@ const { logger : { log } } = require('@vizality/util');
  */
 
 class HTTPError extends Error {
-  constructor (message, res, headers) {
+  constructor (message, res) {
     super(message);
     Object.assign(this, res);
     this.name = this.constructor.name;
   }
 }
 
-module.exports = class GenericRequest {
+export default class GenericRequest {
   constructor (method, uri, headers) {
     this.module = 'HTTP';
     this.submodule = this.constructor.name;
@@ -188,4 +188,4 @@ module.exports = class GenericRequest {
   catch (rejector) {
     return this.then(null, rejector);
   }
-};
+}
