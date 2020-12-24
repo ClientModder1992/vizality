@@ -75,6 +75,9 @@ export default class SettingsAPI extends API {
       this.tabs[id] = props;
       this.tabs[id].settings = this.connectStores(id)(render);
 
+      Object.freeze(this.tabs[id].render.prototype);
+      Object.freeze(this.tabs[id]);
+
       const Render = this.tabs[id].settings;
 
       vizality.api.router.registerRoute({
@@ -89,6 +92,20 @@ export default class SettingsAPI extends API {
       });
     } catch (err) {
       return error(_module, `${_submodule}:registerCoreSettings`, null, err);
+    }
+  }
+
+  unregisterAddonSettings (addonId) {
+    try {
+      if (this.tabs[addonId]) {
+        delete this.tabs[addonId];
+      } else {
+        throw new Error(`Settings for "${addonId}" are not registered, so they cannot be unregistered!`);
+      }
+
+      vizality.api.router.unregisterRoute(`/dashboard/plugins/${addonId}`);
+    } catch (err) {
+      return error(_module, `${_submodule}:unregisterAddonSettings`, null, err);
     }
   }
 

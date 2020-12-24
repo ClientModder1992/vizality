@@ -32,7 +32,6 @@
  * @experimental Code that is not fully tested and possibly unstable
  * @note Generic message meant to explain or point out something
  * @i18n Indication that the section needs to have proper internationalization added
- * @powercord Code that is a remnant of Powercord and needs to be removed
  * @test Information for testing a certain scenario, or code that needs to be tested
  * @warning Alert that indicates something important to be aware of
  */

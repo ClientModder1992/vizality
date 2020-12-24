@@ -10,7 +10,6 @@
         "@experimental",
         "@i18n",
         "@note",
-        "@powercord",
         "@test",
         "@todo",
         "@warning"
@@ -53,12 +52,6 @@
             "icon": "pencil",
             "foreground": "#7842ff",
             "background": "#7842ff",
-            "opacity": 0
-        },
-        "@powercord": {
-            "icon": "zap",
-            "foreground": "#889c54",
-            "background": "#889c54",
             "opacity": 0
         },
         "@test": {
