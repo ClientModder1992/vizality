@@ -42,7 +42,6 @@
     "@vizality/root": ".",
     "@vizality/src": "src",
     "@vizality": "src/core/modules",
-    "@vizality/webpack": "src/core/modules/webpack",
     "@vizality/modules": "src/core/modules",
     "@vizality/builtins": "src/core/builtins",
     "@vizality/typedefs": "src/core/typedefs",

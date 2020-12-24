@@ -20,9 +20,9 @@
 
 /**
  * ----------------
- * Todo Anootations
+ * Annotations
  * ----------------
- * These todo annotations are used throughout the source code, and they're pretty
+ * These annotations are used throughout the source code, and they're pretty
  * self-explanatory but helpful to be aware of.
  * ----------------
  * @todo Task that has yet to be completed

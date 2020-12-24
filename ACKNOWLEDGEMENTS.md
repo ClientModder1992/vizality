@@ -1,6 +1,6 @@
 # Acknowledgements
 
-This project is not the work of a single person. It contains Node packages and code from many members of the Discord modding community over time and even the JavaScript community in general. I try to make citations in the code to give credit where credit is due as much as possible---indicating the author, license type, and usually a link to the original source---but I am sure I've missed some people as well. Still, this is a thank to all of those people whose code and ideas have contributed to the creation of Vizality.
+This project is not the work of a single person. It contains Node packages and code from many members of the Discord modding community over time and even the JavaScript community in general. I try to make citations in the code to give credit where credit is due as much as possible---indicating the author, license type, and usually a link to the original source---but I'm sure I've missed some people as well. Still, this is a thank to all of those people whose code and ideas have contributed to the creation of Vizality.
 
 ## Notable Mentions
 
