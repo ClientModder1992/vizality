@@ -5,9 +5,6 @@ import { API } from '@vizality/core';
 import Sidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
 import Routes from '@vizality/builtins/dashboard/routes/Routes';
 
-console.log(Sidebar);
-console.log(Routes);
-
 const _module = 'API';
 const _submodule = 'Router';
 
@@ -52,8 +49,7 @@ export default class RouterAPI extends API {
   /** @private */
   _reregisterDashboard () {
     if (!this.routes.find(r => r.path === '/dashboard')) return;
-    console.log('PIE', Routes);
-    console.log('CAkE', Sidebar);
+
     this.unregisterRoute('/dashboard');
     this.registerRoute({
       path: '/dashboard',
@@ -73,14 +69,6 @@ export default class RouterAPI extends API {
       if (this.routes.find(r => r.path === route.path)) {
         throw new Error(`Route "${route.path}" is already registered!`);
       }
-
-      console.log('HMM', route.render);
-
-      // route.render = route.render.__esModule ? route.render.default : route.render;
-      // route.sidebar = route.sidebar.__esModule ? route.sidebar.default : route.sidebar;
-
-      console.log('PIZZA', route.render);
-      console.log('ICEC', route.sidebar);
 
       this.routes.push(route);
       if (this.routes[this.routes.length - 1].path !== '/dashboard') {

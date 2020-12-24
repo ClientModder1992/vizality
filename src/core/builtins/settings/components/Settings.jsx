@@ -72,7 +72,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         {Messages.VIZALITY_SETTINGS_NO_CLYDE}
       </SwitchItem>
       <SwitchItem
-        note='Eenables live reload for folder/file changes for plugins.'
+        note='Enables live reload for folder/file changes for plugins.'
         value={getSetting('hotReload', false)}
         onChange={async () => {
           toggleSetting('hotReload', false);

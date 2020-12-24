@@ -107,7 +107,7 @@ export default memo(() => {
           action={() => vizality.api.router.navigate('plugins')}
         >
           {plugins.length && <>
-            {/* <Menu.MenuControlItem
+            <Menu.MenuControlItem
               id='search-plugins'
               control={(_props, ref) => <SearchBar
                 ref={ref}
@@ -120,7 +120,7 @@ export default memo(() => {
                 }}
                 onClear={() => setPluginQuery('')}
               />}
-            /> */}
+            />
             <Menu.MenuGroup label='Plugins'>
               {renderItems('plugins')}
             </Menu.MenuGroup>
@@ -132,7 +132,7 @@ export default memo(() => {
           action={() => vizality.api.router.navigate('themes')}
         >
           {themes.length && <>
-            {/* <Menu.MenuControlItem
+            <Menu.MenuControlItem
               id='search-themes'
               control={(_props, ref) => <SearchBar
                 ref={ref}
@@ -145,7 +145,7 @@ export default memo(() => {
                 }}
                 onClear={() => setThemeQuery('')}
               />}
-            /> */}
+            />
             <Menu.MenuGroup label='Themes'>
               {renderItems('themes')}
             </Menu.MenuGroup>

@@ -1,0 +1,33 @@
+@use '@vizality' as *;
+
+:root {
+  --vz-editor-scrollbar-thumb-background: #{color('black', .3)};
+  --vz-editor-scrollbar-thumb-border-radius: 4px;
+  --vz-editor-scrollbar-thumb-size: 8px;
+}
+
+.monaco-scrollable-element {
+  > .invisible.fade,
+  > .visible {
+    transition: none;
+  }
+  > .scrollbar {
+    // Vertical only
+    &.vertical {
+      > .slider {
+        width: var('vz-editor-scrollbar-thumb-size') !important;
+      }
+    }
+    // Horizontal only
+    &.horizontal {
+      > .slider {
+        height: var('vz-editor-scrollbar-thumb-size') !important;
+      }
+    }
+    // Both vertical and horizontal
+    > .slider {
+      border-radius: var('vz-editor-scrollbar-thumb-border-radius');
+      background-color: var('vz-editor-scrollbar-thumb-background') !important;
+    }
+  }
+}

@@ -1,13 +1,12 @@
 // const { Table } = require('@vizality/components');
 import React, { memo, useState, useEffect } from 'react';
 
-// import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
-// import { getModuleByDisplayName } from '@vizality/webpack';
+import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
+import { getModuleByDisplayName } from '@vizality/webpack';
 
-// const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
+const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
 
 export default memo(() => {
-  return <></>;
   return (
     <>
       <FormNotice

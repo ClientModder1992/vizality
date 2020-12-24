@@ -76,18 +76,15 @@ export default class SettingsAPI extends API {
       this.tabs[id].settings = this.connectStores(id)(render);
 
       const Render = this.tabs[id].settings;
-      const FinalRender =
-        <Layout>
-          <Content heading='Settings' className='poo'>
-            <Render {...props} />
-          </Content>
-        </Layout>;
 
-      console.log('R1', Render);
-      console.log('F1', FinalRender);
       vizality.api.router.registerRoute({
         path: `/dashboard/plugins/${id}`,
-        render: FinalRender,
+        render: props =>
+          <Layout>
+            <Content heading='Settings' className='poo'>
+              <Render {...props} />
+            </Content>
+          </Layout>,
         sidebar: Sidebar
       });
     } catch (err) {
@@ -103,18 +100,15 @@ export default class SettingsAPI extends API {
       this.tabs[id].render = this.connectStores(id)(render);
 
       const Render = this.tabs[id].render;
-      const FinalRender =
-        <Layout>
-          <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${id}`}>
-            <Render {...props} />
-          </Content>
-        </Layout>;
 
-      console.log('R2', Render);
-      console.log('F2', FinalRender);
       vizality.api.router.registerRoute({
         path: `/dashboard/${path}`,
-        render: FinalRender,
+        render: props =>
+          <Layout>
+            <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${id}`}>
+              <Render {...props} />
+            </Content>
+          </Layout>,
         sidebar: Sidebar
       });
     } catch (err) {

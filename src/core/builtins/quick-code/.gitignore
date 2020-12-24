@@ -1,0 +1,4 @@
+stores/css/*
+stores/js/*
+!stores/css/.exists
+!stores/js/.exists

@@ -6,7 +6,14 @@ import { getModule } from '@vizality/webpack';
 import { TabBar } from '.';
 
 export default memo(props => {
-  const { previewTabChildren, codeTabChildren, tabChildren, aside, selectedTab = 'PREVIEW', type = TabBar.Types.TOP_PILL } = props;
+  const {
+    previewTabChildren,
+    codeTabChildren,
+    tabChildren,
+    aside,
+    selectedTab = 'PREVIEW',
+    type = TabBar.Types.TOP_PILL
+  } = props;
 
   const [ tab, setTab ] = useState(selectedTab);
   const { item } = getModule('topPill');

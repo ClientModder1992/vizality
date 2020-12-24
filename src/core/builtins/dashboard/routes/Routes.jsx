@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
 import { Route, Switch, Redirect } from 'react-router';
+import React, { memo } from 'react';
 
 import ImageCarouselModal from '../components/pages/screenshots/ImageCarouselModal';
 import Markdown from '../components/pages/documentation/components/Markdown';

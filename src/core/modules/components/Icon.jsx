@@ -5,7 +5,7 @@ import { warn, error } from '@vizality/util/logger';
 import { joinClassNames } from '@vizality/util';
 import { getModule } from '@vizality/webpack';
 
-import { Clickable, TooltipContainer } from '.';
+import { Clickable, Tooltip as TooltipContainer } from '.';
 
 const _module = 'Component';
 const _submodule = 'Icon';

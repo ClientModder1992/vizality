@@ -1,0 +1,34 @@
+@use '@vizality' as *;
+
+.monaco-editor {
+  .suggest-widget {
+    color: var('text-normal') !important;
+    padding: 5px 0;
+    background: var('background-tertiary') !important;
+    border: 1px solid var('background-tertiary') !important;
+    box-shadow: var('elevation-low');
+    border-radius: 4px;
+    line-height: 30px !important;
+    > .tree {
+      background: none !important;
+      border: none !important;
+    }
+    .monaco-list .monaco-list-row {
+      padding: 0 5px;
+    }
+    .monaco-list:not(.drop-target) .monaco-list-row:hover:not(.selected):not(.focused) {
+      background: var('background-modifier-hover') !important;
+    }
+    .monaco-list .monaco-list-row.focused {
+      background: var('background-floating') !important;
+      color: var('header-primary');
+      &,
+      & .monaco-icon-label {
+        color: color('white');
+      }
+    }
+    .details {
+      border: none;
+    }
+  }
+}

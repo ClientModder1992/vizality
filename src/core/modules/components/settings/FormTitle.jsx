@@ -3,6 +3,8 @@ import React, { memo } from 'react';
 import { joinClassNames } from '@vizality/util';
 import { getModule } from '@vizality/webpack';
 
+import { FormTitle } from '..';
+
 export default memo(props => {
   const { children, className } = props;
   delete props.className;

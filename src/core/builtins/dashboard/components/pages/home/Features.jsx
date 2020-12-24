@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 
-// import { Button, Icon } from '@vizality/components';
+import { Button, Icon } from '@vizality/components';
 
 const Card = memo(({ icon, header, description, buttonText, path }) => {
-  return <></>;
   return (
     <div className='vz-dashboard-home-features-card-wrapper'>
       <div className='vz-dashboard-home-features-card'>
@@ -29,7 +28,6 @@ const Card = memo(({ icon, header, description, buttonText, path }) => {
 });
 
 export default memo(() => {
-  return <></>;
   return (
     <div className='vz-dashboard-home-features-wrapper'>
       <div className='vz-dashboard-home-features'>

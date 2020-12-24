@@ -1,0 +1,83 @@
+@use '@vizality' as *;
+
+:root {
+  --vz-editor-wrapper-background: var(--deprecated-card-bg);
+  --vz-editor-background: none;
+  --vz-editor-border-radius: 4px;
+
+  --vz-editor-context-menu-box-shadow: var(--elevation-high);
+  --vz-editor-context-menu-background: var(--background-floating);
+  --vz-editor-context-menu-border-radius: 4px;
+  --vz-editor-context-menu-font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --vz-editor-context-menu-item-color: var(--interactive-normal);
+  --vz-editor-context-menu-item-padding: 8px 12px;
+  --vz-editor-context-menu-item-border-radius: 2px;
+
+  --vz-editor-context-menu-separator-height: 1px;
+  --vz-editor-context-menu-separator-style: solid;
+  --vz-editor-context-menu-separator-color: var(--background-modifier-accent);
+
+  --vz-editor-context-menu-item-focus-background: #7289da;
+  --vz-editor-context-menu-item-focus-color: #{color('white')};
+
+  --vz-editor-line-numbers-color: var(--text-muted);
+}
+
+.vz-editor {
+  padding: 20px 0;
+  background: var('vz-editor-wrapper-background');
+  border-radius: var('vz-editor-border-radius');
+}
+
+.monaco-editor {
+  // To fix editor resizing issues
+  position: absolute;
+  .line-numbers {
+    color: var('vz-editor-line-numbers-color') !important;
+  }
+  // Little color boxes
+  [class*='ced-colorBox'] {
+    vertical-align: middle;
+    &::before {
+      border: none !important;
+      border-radius: 2px;
+      box-shadow: var('elevation-medium');
+    }
+  }
+  // Line numbers gutter
+  .margin {
+    background-color: var('vz-editor-background') !important;
+  }
+  // Main body
+  &,
+  &-background,
+  .inputarea.ime-input {
+    background-color: var('vz-editor-background') !important;
+  }
+  .scroll-decoration {
+    display: none;
+  }
+}
+
+.monaco-menu {
+  .monaco-action-bar {
+    background: red!important;
+  }
+}
+
+// Overview ruler
+.decorationsOverviewRuler {
+  opacity: .5 !important;
+  right: 4px !important;
+}
+
+.monaco-scrollable-element>.scrollbar {
+  height: 100% !important;
+}
+
+.monaco-custom-checkbox.checked {
+  background: #7289da !important;
+  color: color('white') !important;
+  border-radius: 3px;
+}

@@ -1,4 +1,4 @@
-import React, { memo ,useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Icon, CodeBlock, ComponentPreview } from '@vizality/components';
 import { getModule, getModuleByDisplayName } from '@vizality/webpack';
