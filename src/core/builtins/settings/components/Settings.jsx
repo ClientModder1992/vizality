@@ -15,7 +15,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   const clearDiscordCache = () => {
     setDiscordCacheCleared(true);
-    vizality.native.clearCache().then(() => {
+    vizality.native.app.clearCache().then(() => {
       setTimeout(() => {
         setDiscordCacheCleared(false);
       }, 2500);
@@ -71,16 +71,6 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         />
         {Messages.VIZALITY_SETTINGS_NO_CLYDE}
       </SwitchItem>
-      <SwitchItem
-        note='Enables live reload for folder/file changes for plugins.'
-        value={getSetting('hotReload', false)}
-        onChange={async () => {
-          toggleSetting('hotReload', false);
-          await vizality.manager.plugins.reloadAll();
-        }}
-      >
-        Enable Hot Reload
-      </SwitchItem>
       <Category
         name={Messages.ADVANCED_SETTINGS}
         description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}
@@ -88,6 +78,26 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         onChange={() => toggleSetting('advancedSettings')}
       >
         <SwitchItem
+          note={Messages.VIZALITY_SETTINGS_REACT_DEVELOPER_TOOLS_DESC.format()}
+          value={getSetting('reactDeveloperTools', false)}
+          onChange={() => {
+            toggleSetting('reactDeveloperTools', false);
+            askRestart();
+          }}
+        >
+          Enable React Developer Tools
+        </SwitchItem>
+        <SwitchItem
+          note='Enables live reload for folder/file changes for plugins.'
+          value={getSetting('hotReload', false)}
+          onChange={async () => {
+            toggleSetting('hotReload', false);
+            await vizality.manager.plugins.reloadAll();
+          }}
+        >
+          Enable Hot Reload
+        </SwitchItem>
+        {/* <SwitchItem
           note={Messages.VIZALITY_SETTINGS_DEBUG_LOGS_DESC}
           value={getSetting('debugLogs', false)}
           onChange={() => {
@@ -96,8 +106,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           }}
         >
           {Messages.VIZALITY_SETTINGS_DEBUG_LOGS}
-        </SwitchItem>
-        <SwitchItem
+        </SwitchItem> */}
+        {/* <SwitchItem
           note={'Vizality\'s Software Development Kit (SDK) is a toolkit created to help make plugin developers\'s and theme developers\' lives easier. Once enabled, you can access it through an icon at the top right hand corner of the channel headerbar.'}
           value={getSetting('sdkEnabled', false)}
           onChange={() => toggleSetting('sdkEnabled')}
@@ -110,7 +120,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           onChange={() => toggleSetting('openOverlayDevTools')}
         >
           {Messages.VIZALITY_SETTINGS_OVERLAY}
-        </SwitchItem>
+        </SwitchItem> */}
         <SwitchItem
           note={Messages.VIZALITY_SETTINGS_KEEP_TOKEN_DESC}
           value={getSetting('hideToken', true)}

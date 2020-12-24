@@ -1,0 +1,11 @@
+.vz-settings-button-item {
+  &-inner{
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+  &-info {
+    margin-right: 40px;
+    flex: 1;
+  }
+}

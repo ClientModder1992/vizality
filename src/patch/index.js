@@ -16,6 +16,17 @@ const Module = require('module');
  * }
  */
 
+let reactDeveloperTools = false;
+let settings = {};
+
+try {
+  settings = require(join(__dirname, '..', '..', 'settings', 'settings.json'));
+
+  ({ reactDeveloperTools } = settings);
+} catch (err) {
+  // @todo Handle this.
+}
+
 require('../ipc/main');
 
 const discordPath = join(dirname(require.main.filename), '..', 'app.asar');
@@ -60,9 +71,11 @@ electron.protocol.registerSchemesAsPrivileged([
 ]);
 
 electron.app.once('ready', () => {
-  installExtension(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
+  if (reactDeveloperTools) {
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err));
+  }
   // @todo Possibly add whitelists instead of just disabling CSP.
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     Object.keys(responseHeaders)

@@ -32,7 +32,7 @@ function closeDevTools (e) {
 }
 
 function clearCache (e) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     e.sender.session.clearCache(() => resolve(null));
   });
 }
