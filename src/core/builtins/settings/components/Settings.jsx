@@ -92,7 +92,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('hotReload', false)}
           onChange={async () => {
             toggleSetting('hotReload', false);
-            await vizality.manager.plugins.reloadAll();
+            await vizality.manager.plugins.remountAll();
           }}
         >
           Enable Hot Reload

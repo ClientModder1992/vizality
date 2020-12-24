@@ -4,8 +4,8 @@ const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 
 const VIZALITY_REGEX = new RegExp('@vizality([^\'"]{1,})?', 'ig');
-const BASE_DIR = join(__dirname, '..', '..');
 const LIB_DIR = join(__dirname, '..', 'core', 'lib', 'sass');
+const BASE_DIR = join(__dirname, '..', '..');
 
 if (!ipcMain) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
@@ -58,7 +58,7 @@ function getHistory (e) {
 
 function compileSass (_, file) {
   return new Promise((res, reject) => {
-    readFile(file, 'utf8').then((rawScss) => {
+    readFile(file, 'utf8').then(rawScss => {
       const relativePath = relative(file, LIB_DIR);
       const absolutePath = resolve(join(file, relativePath));
       const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);

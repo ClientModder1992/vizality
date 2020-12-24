@@ -143,14 +143,15 @@ export default class Plugin extends Updatable {
     const _this = this;
     this._watchers = watch(this.addonPath, {
       recursive: true,
-      filter (f, skip) {
+      async filter (f, skip) {
         // skip node_modules
         if ((/\\node_modules/).test(f)) return skip;
         // skip .git folder
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
         if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return skip;
-        vizality.manager.plugins.reload(_this.addonId);
+        console.log('test');
+        await vizality.manager.plugins.remount(_this.addonId);
       }
     });
   }
@@ -205,7 +206,7 @@ export default class Plugin extends Updatable {
       }
       this.log('Plugin unloaded');
     } catch (e) {
-      this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
+      this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
       this._ready = false;
       if (this._watchers && this._watchers.isClosed && !this._watchers.isClosed()) {

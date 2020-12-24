@@ -120,6 +120,13 @@ export default class AddonManager {
     this.get(addonId)._load();
   }
 
+  async remountAll () {
+    const addons = this.getAllEnabled();
+    for (const addon of addons) {
+      await this.remount(addon);
+    }
+  }
+
   async unmount (addonId) {
     const addon = this.get(addonId);
 
@@ -322,4 +329,4 @@ export default class AddonManager {
   log (...data) { log(_module, toSingular(this.type), null, ...data); }
   warn (...data) { warn(_module, toSingular(this.type), null, ...data); }
   error (...data) { error(_module, toSingular(this.type), null, ...data); }
-};
+}
