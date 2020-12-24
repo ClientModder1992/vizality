@@ -1,4 +1,4 @@
-const { API } = require('@vizality/entities');
+import { API } from '@vizality/core';
 
 /* @todo: Use logger. */
 
@@ -16,7 +16,7 @@ const { API } = require('@vizality/entities');
  * @property {Object.<String, function(String): Boolean>} scopes RPC Scopes
  * @property {Object.<String, DiscordRpcEvent>} scopes RPC Scopes
  */
-module.exports = class RpcAPI extends API {
+export default class RpcAPI extends API {
   constructor () {
     super();
 

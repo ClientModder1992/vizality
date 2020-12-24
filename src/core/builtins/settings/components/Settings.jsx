@@ -1,13 +1,15 @@
-const { settings: { TextInput, SwitchItem, ButtonItem, Category }, Icon, Confirm } = require('@vizality/components');
-const { file: { removeDirRecursive } } = require('@vizality/util');
-const { React, React: { useState } } = require('@vizality/react');
-const { Directories } = require('@vizality/constants');
-const { getModule } = require('@vizality/webpack');
-const { Messages } = require('@vizality/i18n');
+import React, { memo, useState } from 'react';
 
-const { open: openModal, close: closeModal } = require('@vizality/modal');
+import { TextInput, SwitchItem, ButtonItem, Category } from '@vizality/components/settings';
+import { removeDirRecursive } from '@vizality/util/file';
+import { Icon, Confirm } from '@vizality/components';
+import { Directories } from '@vizality/constants';
+import { getModule } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
 
-module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
+import { open as openModal, close as closeModal } from '@vizality/modal';
+
+export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);
   const [ isVizalityCacheCleared, setVizalityCacheCleared ] = useState(false);
 
@@ -70,7 +72,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
         {Messages.VIZALITY_SETTINGS_NO_CLYDE}
       </SwitchItem>
       <SwitchItem
-        note='Eenables live reload for folder/file changes for plugins.'
+        note='Enables live reload for folder/file changes for plugins.'
         value={getSetting('hotReload', false)}
         onChange={async () => {
           toggleSetting('hotReload', false);

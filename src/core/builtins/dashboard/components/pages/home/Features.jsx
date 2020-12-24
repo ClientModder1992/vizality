@@ -1,7 +1,8 @@
-const { Button, Icon } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Card = React.memo(({ icon, header, description, buttonText, path }) => {
+import { Button, Icon } from '@vizality/components';
+
+const Card = memo(({ icon, header, description, buttonText, path }) => {
   return (
     <div className='vz-dashboard-home-features-card-wrapper'>
       <div className='vz-dashboard-home-features-card'>
@@ -26,7 +27,7 @@ const Card = React.memo(({ icon, header, description, buttonText, path }) => {
   );
 });
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <div className='vz-dashboard-home-features-wrapper'>
       <div className='vz-dashboard-home-features'>

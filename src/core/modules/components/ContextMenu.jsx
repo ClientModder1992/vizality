@@ -1,8 +1,12 @@
-const { dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
-const { getModule, contextMenu: { closeContextMenu } } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { PureComponent } from 'react';
 
-module.exports = class ContextMenu extends React.PureComponent {
+import { getModule, contextMenu } from '@vizality/webpack';
+import { getOwnerInstance } from '@vizality/util/react';
+import { waitForElement } from '@vizality/util/dom';
+
+const { closeContextMenu } = contextMenu;
+
+export default class ContextMenu extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {};
@@ -172,4 +176,4 @@ module.exports = class ContextMenu extends React.PureComponent {
       </MenuItem>
     );
   }
-};
+}

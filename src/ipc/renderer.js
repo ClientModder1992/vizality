@@ -60,6 +60,9 @@ if (!window.__SPLASH__) {
       case '@vizality/webpack':
       case '@vizality/modal':
       case '@vizality/modules':
+      case 'react':
+      case 'react-dom':
+      case 'react-router':
         return require(module);
       default:
         // @todo Use @vizality/constants.ErrorTypes

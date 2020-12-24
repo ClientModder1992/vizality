@@ -1,24 +1,25 @@
-const { AdvancedScrollerThin } = require('@vizality/components');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Item = require('./Item');
+import { AdvancedScrollerThin } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-const Header = React.memo(({ children }) => {
+import Item from './Item';
+
+const Header = memo(({ children }) => {
   const { header } = getModule('header', 'item', 'separator');
   return <h2 className={joinClassNames('vz-dashboard-sidebar-header', header)}>{children}</h2>;
 });
 
-const Separator = React.memo(props =>
+const Separator = memo(props =>
   <div className='vz-dashboard-sidebar-separator' {...props}></div>
 );
 
-const SubItem = React.memo(({ label, path, action, launch }) =>
+const SubItem = memo(({ label, path, action, launch }) =>
   <Item label={label} path={path} action={action} launch={launch} subItem />
 );
 
-module.exports = React.memo(() =>
+export default memo(() =>
   <AdvancedScrollerThin className='vz-dashboard-sidebar'>
     <Header>Vizality Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />

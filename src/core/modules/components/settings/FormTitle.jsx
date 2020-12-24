@@ -1,15 +1,16 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const joinClassNames = require('../../util/joinClassNames');
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle', true));
+import { FormTitle } from '..';
 
-module.exports = React.memo(props => {
+export default memo(props => {
   const { children, className } = props;
-  const { marginBottom8 } = getModule('marginBottom8');
   delete props.className;
+  delete props.children;
+
+  const { marginBottom8 } = getModule('marginBottom8');
 
   return (
     <FormTitle className={joinClassNames(marginBottom8, className)} {...props}>

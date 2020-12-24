@@ -1,12 +1,12 @@
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Section = require('../../parts/Section');
-const Content = require('../../parts/Content');
-const Layout = require('../../parts/Layout');
-const Features = require('./Features');
-const CTA = require('./CTA');
+import Section from '../../parts/Section';
+import Content from '../../parts/Content';
+import Layout from '../../parts/Layout';
+import Features from './Features';
+import CTA from './CTA';
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <Layout className='vz-dashboard-home'>
       <Content>

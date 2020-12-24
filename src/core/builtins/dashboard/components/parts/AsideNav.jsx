@@ -1,9 +1,10 @@
-const { React, React: { useState } } = require('@vizality/react');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { Icon } = require('@vizality/components');
+import React, { memo, useState } from 'react';
 
-module.exports = React.memo(({ type, heading, sections }) => {
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+import { Icon } from '@vizality/components';
+
+export default memo(({ type, heading, sections }) => {
   const [ collapsed, setCollapsed ] = useState(false);
   const { auto, fade } = getModule('thin', 'scrollerBase');
 

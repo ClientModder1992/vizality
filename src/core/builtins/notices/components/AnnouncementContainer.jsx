@@ -1,8 +1,8 @@
-const { React } = require('@vizality/react');
+import React, { PureComponent } from 'react';
 
-const Announcement = require('./Announcement');
+import Announcement from './Announcement';
 
-module.exports = class AnnouncementContainer extends React.PureComponent {
+export default class AnnouncementContainer extends PureComponent {
   constructor (props) {
     super(props);
     this._handler = () => this.forceUpdate();
@@ -24,4 +24,4 @@ module.exports = class AnnouncementContainer extends React.PureComponent {
       ? <Announcement id={announcementId} {...vizality.api.notices.announcements[announcementId]}/>
       : null;
   }
-};
+}

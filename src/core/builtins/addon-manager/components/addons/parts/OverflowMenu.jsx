@@ -1,12 +1,12 @@
-const { shell } = require('electron');
+import React, { memo } from 'react';
+import { shell } from 'electron';
 
-const { React } = require('@vizality/react');
-const { string: { toPlural } } = require('@vizality/util');
-const { Directories } = require('@vizality/constants');
-const { Menu } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
+import { Directories } from '@vizality/constants';
+import { toPlural } from '@vizality/util/string';
+import { Menu } from '@vizality/components';
+import { Messages } from '@vizality/i18n';
 
-module.exports = React.memo(props => {
+export default memo(props => {
   const { type, resetSearchOptions, fetchMissing, enableAll, disableAll, onClose } = props;
 
   return (

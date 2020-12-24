@@ -1,21 +1,21 @@
-const { API } = require('@vizality/entities');
+import { API } from '@vizality/core';
 
 /**
  * @typedef VizalityChatCommand
- * @property {String} command Command name
- * @property {String[]} aliases Command aliases
- * @property {String} description Command description
- * @property {String} usage Command usage
+ * @property {string} command Command name
+ * @property {string[]} aliases Command aliases
+ * @property {string} description Command description
+ * @property {string} usage Command usage
  * @property {Function} executor Command executor
  * @property {Function|undefined} autocomplete Autocompletion method
- * @property {Boolean|undefined} showTyping Whether typing status should be shown or not
+ * @property {boolean|undefined} showTyping Whether typing status should be shown or not
  */
 
 /**
  * Vizality chat commands API
- * @property {Object.<String, VizalityChatCommand>} commands Registered commands
+ * @property {Object.<string, VizalityChatCommand>} commands Registered commands
  */
-module.exports = class CommandsAPI extends API {
+export default class CommandsAPI extends API {
   constructor () {
     super();
     this.commands = {};
@@ -72,11 +72,11 @@ module.exports = class CommandsAPI extends API {
 
   /**
    * Unregisters a command
-   * @param {String} command Command name to unregister
+   * @param {string} command Command name to unregister
    */
   unregisterCommand (command) {
     if (this.commands[command]) {
       delete this.commands[command];
     }
   }
-};
+}

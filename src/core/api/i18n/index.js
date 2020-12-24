@@ -1,15 +1,17 @@
-const { getModule, i18n } = require('@vizality/webpack');
-const { Directories } = require('@vizality/constants');
-const { API } = require('@vizality/entities');
+import { getModule, i18n } from '@vizality/webpack';
+import { Directories } from '@vizality/constants';
+import { API } from '@vizality/core';
 
-const strings = require(Directories.LANGUAGES);
-
-module.exports = class I18nAPI extends API {
+export default class I18nAPI extends API {
   constructor () {
     super();
     this.messages = {};
     this.locale = null;
-    this.injectAllStrings(strings);
+
+    (async () => {
+      this.strings = await import(Directories.LANGUAGES);
+      this.injectAllStrings(this.strings);
+    })();
   }
 
   async onStart () {
@@ -39,7 +41,11 @@ module.exports = class I18nAPI extends API {
   }
 
   injectAllStrings (strings) {
-    Object.keys(strings).forEach(locale => this.injectStrings(locale, strings[locale]));
+    Object.keys(strings).forEach(locale => {
+      const ogLocale = locale;
+      locale = locale.replace(/([A-Z])/, '-$1').trim();
+      this.injectStrings(locale, strings[ogLocale]);
+    });
   }
 
   injectStrings (locale, strings) {
@@ -53,4 +59,4 @@ module.exports = class I18nAPI extends API {
     }
     this._addVizalityStrings();
   }
-};
+}

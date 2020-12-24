@@ -1,10 +1,13 @@
-const { Clickable } = require('@vizality/components');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+// @todo Make functional and move to @vizality/components
+
+import React, { PureComponent } from 'react';
+
+import { Clickable } from '@vizality/components';
+import { getModule } from '@vizality/webpack';
 
 let classesCache = null;
 
-module.exports = class Announcement extends React.PureComponent {
+export default class Announcement extends PureComponent {
   constructor () {
     super();
     this.state = classesCache || {
@@ -58,4 +61,4 @@ module.exports = class Announcement extends React.PureComponent {
       func();
     }
   }
-};
+}

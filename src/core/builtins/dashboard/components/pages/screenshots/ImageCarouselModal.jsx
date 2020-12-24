@@ -1,13 +1,12 @@
-const { readdirSync, readFileSync } = require('fs');
-const { join, extname } = require('path');
+import React, { memo, useState, useEffect } from 'react';
+import { readdirSync, readFileSync } from 'fs';
+import { join, extname } from 'path';
 
-const { React, React: { useState, useEffect } } = require('@vizality/react');
-const { ImageCarouselModal, Image } = require('@vizality/components');
-const { joinClassNames } = require('@vizality/util');
+import { ImageCarouselModal, Image } from '@vizality/components';
+import { open as openModal } from '@vizality/modal';
+import { joinClassNames } from '@vizality/util';
 
-const { open: openModal } = require('@vizality/modal');
-
-module.exports = React.memo(() => {
+export default memo(() => {
   const [ images, setImages ] = useState([]);
 
   const convertImagesToBlobs = () => {

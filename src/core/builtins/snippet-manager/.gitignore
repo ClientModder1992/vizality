@@ -1,9 +1,0 @@
-snippets/css/*
-snippets/js/*
-!snippets/css/.exists
-!snippets/js/.exists
-
-custom/css/*
-custom/js/*
-!custom/css/.exists
-!custom/js/.exists

@@ -1,17 +1,20 @@
-const { promises: { unlink }, existsSync } = require('fs');
-const { join } = require('path');
+import { promises, existsSync } from 'fs';
+import { join } from 'path';
+import React from 'react';
 
-const { react: { forceUpdateElement, getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { Guild, Directories } = require('@vizality/constants');
-const { patch, unpatch } = require('@vizality/patcher');
-const { Builtin } = require('@vizality/entities');
-const { React } = require('@vizality/react');
+import { forceUpdateElement, getOwnerInstance } from '@vizality/util/react';
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { Guild, Directories } from '@vizality/constants';
+import { waitForElement } from '@vizality/util/dom';
+import { patch, unpatch } from '@vizality/patcher';
+import { Builtin } from '@vizality/core';
 
-const AnnouncementContainer = require('./components/AnnouncementContainer');
-const ToastContainer = require('./components/ToastContainer');
+import AnnouncementContainer from './components/AnnouncementContainer';
+import ToastContainer from './components/ToastContainer';
 
-module.exports = class Notices extends Builtin {
+const { unlink } = promises;
+
+export default class Notices extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this._patchAnnouncements();
@@ -38,7 +41,9 @@ module.exports = class Notices extends Builtin {
     const { base } = getModule('base', 'container');
     const instance = getOwnerInstance(await waitForElement(`.${base.split(' ')[0]}`));
     patch('vz-notices-announcements', instance.__proto__, 'render', (_, res) => {
-      res.props.children[1].props.children.unshift(React.createElement(AnnouncementContainer));
+      res.props.children[1].props.children.unshift(
+        <AnnouncementContainer />
+      );
       return res;
     });
 
@@ -50,7 +55,9 @@ module.exports = class Notices extends Builtin {
     const Shakeable = getModuleByDisplayName('Shakeable');
     patch('vz-notices-toast', Shakeable.prototype, 'render', (_, res) => {
       if (!res.props.children.find(child => child.type && child.type.name === 'ToastContainer')) {
-        res.props.children.push(React.createElement(ToastContainer));
+        res.props.children.push(
+          <ToastContainer />
+        );
       }
       return res;
     });
@@ -82,4 +89,4 @@ module.exports = class Notices extends Builtin {
       message: `Vizality does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Stable for best results.`
     });
   }
-};
+}

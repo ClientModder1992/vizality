@@ -1,7 +1,8 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { PureComponent } from 'react';
 
-module.exports = class AsyncComponent extends React.PureComponent {
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+
+export default class AsyncComponent extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -44,4 +45,4 @@ module.exports = class AsyncComponent extends React.PureComponent {
   static fetchFromProps (filter, prop, fallback) {
     return AsyncComponent.from((async () => (await getModule(filter, true))[prop || filter])(), fallback);
   }
-};
+}

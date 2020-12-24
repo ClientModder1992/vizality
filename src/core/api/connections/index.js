@@ -1,6 +1,6 @@
-const { API } = require('@vizality/entities');
+import { API } from '@vizality/core';
 
-module.exports = class ConnectionsAPI extends API {
+export default class ConnectionsAPI extends API {
   constructor () {
     super();
     this.connections = [];
@@ -40,4 +40,4 @@ module.exports = class ConnectionsAPI extends API {
 
     return connections[type] || null;
   }
-};
+}

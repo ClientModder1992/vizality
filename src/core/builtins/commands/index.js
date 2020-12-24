@@ -1,21 +1,18 @@
-const { Builtin } = require('@vizality/entities');
-const { unpatch } = require('@vizality/patcher');
+import { unpatch } from '@vizality/patcher';
+import { Builtin } from '@vizality/core';
 
-const monkeypatchMessages = require('./monkeypatchMessages');
-const injectAutocomplete = require('./injectAutocomplete');
-const commands = require('./commands');
+import monkeypatchMessages from './monkeypatchMessages';
+import injectAutocomplete from './injectAutocomplete';
 
-module.exports = class Commands extends Builtin {
+export default class Commands extends Builtin {
   onStart () {
-    Object.values(commands).forEach(command => vizality.api.commands.registerCommand(command));
     monkeypatchMessages.call(this);
     injectAutocomplete.call(this);
   }
 
   onStop () {
-    Object.values(commands).forEach(command => vizality.api.commands.unregisterCommand(command.command));
     unpatch('vz-commands-textArea');
     unpatch('vz-commands-plainAutocomplete');
     unpatch('vz-commands-slateAutocomplete');
   }
-};
+}

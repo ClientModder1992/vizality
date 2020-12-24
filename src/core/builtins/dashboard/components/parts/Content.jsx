@@ -1,9 +1,10 @@
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { Icon, Divider } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ icon, heading, subheading, className, children }) => {
+import { Icon, Divider } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+
+export default memo(({ icon, heading, subheading, className, children }) => {
   const { base } = getModule('base');
   const { content } = getModule('wrappedLayout');
   const { marginBottom20 } = getModule('marginBottom20');

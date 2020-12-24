@@ -1,10 +1,12 @@
-const { React, Router: { Link } } = require('@vizality/react');
-const { Button, Tooltip, Anchor } = require('@vizality/components');
-const { string: { toPlural } } = require('@vizality/util');
-const { HTTP } = require('@vizality/constants');
-const { Messages } = require('@vizality/i18n');
+import React, { memo } from 'react';
+import { Link } from 'react-router';
 
-module.exports = React.memo(props => {
+import { Button, Tooltip, Anchor } from '@vizality/components';
+import { toPlural } from '@vizality/util/string';
+import { HTTP } from '@vizality/constants';
+import { Messages } from '@vizality/i18n';
+
+export default memo(props => {
   let { manifest, addonId, id, repo, commits, updating, onSkip, onDisable, disabled, onEnableUpdates } = props;
 
   const type = id.split(/_(.+)/)[0].slice(0, -1);

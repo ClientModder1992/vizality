@@ -1,14 +1,15 @@
-const { typing, getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { react: { getOwnerInstance } } = require('@vizality/util');
-const { AdvancedScrollerThin } = require('@vizality/components');
-const { patch } = require('@vizality/patcher');
-const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
+import React from 'react';
 
-const Command = require('./components/Command');
-const Title = require('./components/Title');
+import { typing, getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { AdvancedScrollerThin } from '@vizality/components';
+import { getOwnerInstance } from '@vizality/util/react';
+import { patch } from '@vizality/patcher';
+import { Messages } from '@vizality/i18n';
 
-module.exports = async function injectAutocomplete () {
+import Command from './components/Command';
+import Title from './components/Title';
+
+export default async function injectAutocomplete () {
   this.classes = {
     ...await getModule('channelTextArea', 'inner')
   };
@@ -171,4 +172,4 @@ module.exports = async function injectAutocomplete () {
     }
     return res;
   });
-};
+}

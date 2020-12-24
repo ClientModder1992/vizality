@@ -1,8 +1,8 @@
-const { logger: { log, error } } = require('@vizality/util');
+import { log, error } from '@vizality/util/logger';
 
-const Events = require('events');
+import Events from 'events';
 
-module.exports = class API extends Events {
+export default class API extends Events {
   constructor () {
     super();
     this._module = 'API';
@@ -15,8 +15,8 @@ module.exports = class API extends Events {
       if (typeof this.onStart === 'function') {
         await this.onStart();
       }
-      log(this._module, this._submodule, null, 'API loaded.');
       this._ready = true;
+      log(this._module, this._submodule, null, 'API loaded.');
     } catch (err) {
       error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
     }
@@ -35,4 +35,4 @@ module.exports = class API extends Events {
       );
     }
   }
-};
+}

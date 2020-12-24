@@ -1,8 +1,8 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
+import { getModuleByDisplayName } from '@vizality/webpack';
 
 const Autocomplete = getModuleByDisplayName('Autocomplete');
 
-class Title extends Autocomplete.Title {
+export default class Title extends Autocomplete.Title {
   render () {
     const res = super.render();
     if (!this.props.title[0]) {
@@ -13,5 +13,3 @@ class Title extends Autocomplete.Title {
     return res;
   }
 }
-
-module.exports = Title;

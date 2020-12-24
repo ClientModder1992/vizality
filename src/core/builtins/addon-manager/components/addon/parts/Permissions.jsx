@@ -1,27 +1,28 @@
-const { FormTitle, Icon, Divider } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
+
+import { FormTitle, Icon, Divider } from '@vizality/components';
+import { Messages } from '@vizality/i18n';
 
 const Permissions = {
   keypresses: {
-    icon: React.memo(({ size }) => <Icon name='Keyboard' size={size} />),
+    icon: memo(({ size }) => <Icon name='Keyboard' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_KEYPRESSES
   },
   use_eud: {
-    icon: React.memo(({ size }) => <Icon name='PersonShield' size={size} />),
+    icon: memo(({ size }) => <Icon name='PersonShield' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_USE_EUD
   },
   filesystem: {
-    icon: React.memo(({ size }) => <Icon name='Copy' size={size} />),
+    icon: memo(({ size }) => <Icon name='Copy' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_FS
   },
   ext_api: {
-    icon: React.memo(({ size }) => <Icon name='ImportExport' size={size} />),
+    icon: memo(({ size }) => <Icon name='ImportExport' size={size} />),
     text: () => Messages.VIZALITY_ADDONS_PERMISSIONS_API
   }
 };
 
-const Perm = React.memo(props => {
+const Perm = memo(props => {
   const { permissions, size } = props;
   return (
     <div className='vz-addon-card-permissions'>
@@ -34,7 +35,7 @@ const Perm = React.memo(props => {
   );
 });
 
-module.exports = React.memo(({ permissions }) => {
+export default memo(({ permissions }) => {
   const hasPermissions = permissions && permissions.length > 0;
 
   if (!hasPermissions) return null;

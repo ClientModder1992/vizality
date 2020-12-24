@@ -1,10 +1,10 @@
 /* eslint-disable no-unreachable */
-const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
-const { Builtin } = require('@vizality/entities');
-const { HTTP } = require('@vizality/constants');
+import { patch, unpatch } from '@vizality/patcher';
+import { getModule } from '@vizality/webpack';
+import { Builtin } from '@vizality/entities';
+import { HTTP } from '@vizality/constants';
 
-module.exports = class RPC extends Builtin {
+export default class RPC extends Builtin {
   async onStart () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
@@ -88,4 +88,4 @@ module.exports = class RPC extends Builtin {
   _removeEvent (event) {
     delete this.handlers[event];
   }
-};
+}

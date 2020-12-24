@@ -1,20 +1,21 @@
-/* eslint-disable quote-props */
-const { ipcRenderer } = require('electron');
+import { ipcRenderer } from 'electron';
 
-const { Builtin } = require('@vizality/entities');
+import { Builtin } from '@vizality/core';
 
-const modules = require('./modules');
+import * as modules from './modules';
 
-module.exports = class Attributes extends Builtin {
+export default class Attributes extends Builtin {
   onStart () {
     this.callbacks = [];
 
-    Object.values(modules).forEach(async mdl => {
-      const callback = await mdl();
-      if (typeof callback === 'function') {
-        this.callbacks.push(callback);
-      }
-    });
+    for (const mod of Object.values(modules)) {
+      (async () => {
+        const callback = await mod();
+        if (typeof callback === 'function') {
+          this.callbacks.push(callback);
+        }
+      })();
+    }
 
     const root = document.documentElement;
     const date = new Date();
@@ -49,6 +50,6 @@ module.exports = class Attributes extends Builtin {
   }
 
   onStop () {
-    this.callbacks.forEach(cb => cb());
+    this.callbacks.forEach(callback => callback());
   }
-};
+}

@@ -1,8 +1,9 @@
-const { Modal, Card, FormTitle } = require('@vizality/components');
-const { Messages } = require('@vizality/i18n');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
+import { Modal, Card, FormTitle } from '@vizality/components';
+import { Messages } from '@vizality/i18n';
+
+export default memo(({ spdx, license: { name, url, permissions, conditions, limitations } }) => {
   const data = {
     permissions,
     conditions,

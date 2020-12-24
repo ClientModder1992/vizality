@@ -1,8 +1,8 @@
-const { getModule } = require('@vizality/webpack');
+import { getModule } from '@vizality/webpack';
 
-const AsyncComponent = require('./AsyncComponent');
+import AsyncComponent from './AsyncComponent';
 
-module.exports = AsyncComponent.from((async () => {
+export default AsyncComponent.from((async () => {
   const DiscordPopoutWindow = getModule(m => m.DecoratedComponent && m.DecoratedComponent.render);
   class PopupWindow extends DiscordPopoutWindow {
     constructor (props) {

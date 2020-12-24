@@ -1,47 +1,46 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { joinClassNames } = require('@vizality/util');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const Icon = require('../Icon');
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util';
 
-const DFormItem = AsyncComponent.from(getModuleByDisplayName('FormItem', true));
-const FormText = AsyncComponent.from(getModuleByDisplayName('FormText', true));
+import { FormItem, FormText, Icon } from '..';
 
-module.exports = React.memo(props => {
+export default memo(props => {
   const { name, description, children, opened, onChange } = props;
+
   const Flex = getModuleByDisplayName('Flex');
-  const classes = {
-    flex: joinClassNames(Flex.Direction.VERTICAL, Flex.Justify.START, Flex.Align.STRETCH, Flex.Wrap.NO_WRAP),
-    divider: getModule(m => Object.keys(m).join('') === 'divider').divider,
-    dividerDefault: getModule('dividerDefault').dividerDefault,
-    description: getModule('formText', 'description').description,
-    labelRow: getModule('labelRow').labelRow,
-    title: getModule('labelRow').title
-  };
+  const flex = joinClassNames(Flex.Direction.VERTICAL, Flex.Justify.START, Flex.Align.STRETCH, Flex.Wrap.NO_WRAP);
+  const { description: desc } = getModule('formText', 'description');
+  const { labelRow, title } = getModule('labelRow');
 
   return (
-    <DFormItem className={joinClassNames('vz-c-settings-item vz-c-settings-category', classes.flex)}>
+    <FormItem className={joinClassNames('vz-c-settings-item vz-c-settings-category', flex)}>
       <div
         className={joinClassNames('vz-c-settings-category-title', 'vz-c-settings-title')}
         onClick={() => onChange(!opened)}
         vz-opened={opened ? '' : null}
       >
         <div className='vz-c-settings-category-title-inner'>
-          <div className={classes.labelRow}>
-            <label class={classes.title}>
+          <div className={labelRow}>
+            <label class={title}>
               {name}
             </label>
           </div>
-          <FormText className={classes.description}>
+          <FormText className={desc}>
             {description}
           </FormText>
         </div>
-        <Icon className='vz-c-settings-category-title-icon-wrapper' name='RightCaret' width='18' height='18' />
+        <Icon
+          className='vz-c-settings-category-title-icon-wrapper'
+          name='RightCaret'
+          size='18'
+        />
       </div>
-      {opened && <div className='vz-c-settings-category-inner'>
-        {children}
-      </div>}
-    </DFormItem>
+      {opened &&
+        <div className='vz-c-settings-category-inner'>
+          {children}
+        </div>
+      }
+    </FormItem>
   );
 });

@@ -1,11 +1,11 @@
-const { readdirSync } = require('fs');
-const { resolve } = require('path');
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 
-const { Directories } = require('@vizality/constants');
+import { Directories } from '@vizality/constants';
 
-const AddonManager = require('../../addon');
+import AddonManager from '../../addon';
 
-module.exports = class PluginManager extends AddonManager {
+export default class PluginManager extends AddonManager {
   constructor (type, dir) {
     type = 'plugins';
     dir = Directories.PLUGINS;
@@ -63,4 +63,4 @@ module.exports = class PluginManager extends AddonManager {
       await this._bulkUnload(nextPlugins);
     }
   }
-};
+}

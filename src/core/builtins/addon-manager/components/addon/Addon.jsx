@@ -1,11 +1,14 @@
-const { contextMenu: { openContextMenu } } = require('@vizality/webpack');
-const { React, React: { memo } } = require('@vizality/react');
-const { string: { toPlural } } = require('@vizality/util');
+import React, { memo } from 'react';
 
-const AddonContextMenu = require('./AddonContextMenu');
-const Inner = require('./parts/Inner');
+import { toPlural } from '@vizality/util/string';
+import { contextMenu } from '@vizality/webpack';
 
-module.exports = memo(props => {
+import AddonContextMenu from './AddonContextMenu';
+import Inner from './parts/Inner';
+
+const { openContextMenu } = contextMenu;
+
+export default memo(props => {
   const { type, addonId, hasPreviewImages, previewImages } = props;
 
   const handleContextMenu = e => {

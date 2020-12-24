@@ -1,6 +1,6 @@
-const { React } = require('@vizality/react');
+import React from 'react';
 
-module.exports = {
+export default {
   UpToDate: () => <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
     <path
       fill='#43b581'

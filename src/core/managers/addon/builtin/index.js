@@ -1,11 +1,11 @@
-const { readdirSync } = require('fs');
-const { resolve } = require('path');
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 
-const { Directories } = require('@vizality/constants');
+import { Directories } from '@vizality/constants';
 
-const AddonManager = require('../../addon');
+import AddonManager from '../../addon';
 
-module.exports = class BuiltinManager extends AddonManager {
+export default class BuiltinManager extends AddonManager {
   constructor (type, dir) {
     type = 'builtins';
     dir = Directories.BUILTINS;
@@ -16,4 +16,4 @@ module.exports = class BuiltinManager extends AddonManager {
   _setIcon () {
     return void 0;
   }
-};
+}

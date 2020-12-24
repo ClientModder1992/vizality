@@ -1,32 +1,31 @@
-const { modal } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React from 'react';
 
-module.exports = {
-  /**
-   * Opens a new modal
-   * @param {React.Component|function(): React.Element} Component
-   */
-  open: (Component) => {
-    modal.push(
-      class VizalityModal extends React.Component {
-        render () {
-          return React.createElement(Component);
-        }
+import { modal } from '@vizality/webpack';
+
+/**
+ * Opens a new modal.
+ * @param {React.Component|function(): React.Element} Component Modal component to show
+ */
+export const open = Component => {
+  modal.push(
+    class VizalityModal extends React.Component {
+      render () {
+        return <Component />;
       }
-    );
-  },
+    }
+  );
+};
 
-  /**
-   * Closes the currently opened modal
-   */
-  close: () => {
-    modal.pop();
-  },
+/**
+ * Closes the currently opened modal
+ */
+export const close = () => {
+  modal.pop();
+};
 
-  /**
-   * Closes all modals
-   */
-  closeAll: () => {
-    modal.popAll();
-  }
+/**
+ * Closes all modals
+ */
+export const closeAll = () => {
+  modal.popAll();
 };

@@ -42,15 +42,16 @@
     "@vizality/root": ".",
     "@vizality/src": "src",
     "@vizality": "src/core/modules",
+    "@vizality/webpack": "src/core/modules/webpack",
     "@vizality/modules": "src/core/modules",
     "@vizality/builtins": "src/core/builtins",
     "@vizality/typedefs": "src/core/typedefs",
     "@vizality/compilers": "src/core/compilers",
     "@vizality/core": "src/core/entities",
     "@vizality/entities": "src/core/entities",
-    "react": "src/core/modules/react/react",
-    "react-dom": "src/core/modules/react/reactdom",
-    "react-router": "src/core/modules/react/router"
+    "react": "src/core/modules/react/React",
+    "react-dom": "src/core/modules/react/ReactDOM",
+    "react-router": "src/core/modules/react/Router"
   },
   "dependencies": {
     "@monaco-editor/react": "^3.7.1",
@@ -59,6 +60,7 @@
     "mime-types": "^2.1.27",
     "module-alias": "^2.2.2",
     "node-watch": "^0.6.4",
+    "pirates": "^4.0.1",
     "pluralize": "^8.0.0",
     "react-markdown": "^4.3.1",
     "sass": "^1.26.10",

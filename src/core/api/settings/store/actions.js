@@ -1,8 +1,8 @@
-const { FluxDispatcher } = require('@vizality/webpack');
+import { FluxDispatcher } from '@vizality/webpack';
 
-const ActionTypes = require('./constants');
+import ActionTypes from './constants';
 
-module.exports = {
+export default {
   toggleSetting (category, setting, defaultValue) {
     FluxDispatcher.dispatch({
       type: ActionTypes.TOGGLE_SETTING,

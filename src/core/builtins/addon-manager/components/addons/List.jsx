@@ -1,18 +1,20 @@
 /* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
-const { existsSync, lstatSync, readdirSync } = require('fs');
-const { join, extname } = require('path');
+import React, { memo, useState, useReducer, useEffect } from 'react';
 
-const { React, React: { useState, useReducer, useEffect } } = require('@vizality/react');
-const { string: { toPlural, toTitleCase }, joinClassNames } = require('@vizality/util');
-const { Confirm, Spinner, Text, LazyImage } = require('@vizality/components');
-const { open: openModal, close: closeModal } = require('@vizality/modal');
-const { getModule } = require('@vizality/webpack');
-const { Messages } = require('@vizality/i18n');
+import { existsSync, lstatSync, readdirSync } from 'fs';
+import { join, extname } from 'path';
 
-const StickyBar = require('./parts/StickyBar');
-const Addon = require('../addon/Addon');
+import { open as openModal, close as closeModal } from '@vizality/modal';
+import { toPlural, toTitleCase } from '@vizality/util/string';
+import { Confirm, Spinner, Text } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
 
-module.exports = React.memo(({ type, tab, search, displayType, limit, className }) => {
+import StickyBar from './parts/StickyBar';
+import Addon from '../addon/Addon';
+
+export default memo(({ type, tab, search, displayType, limit, className }) => {
   const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
   const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
 

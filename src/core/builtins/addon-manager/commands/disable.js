@@ -1,6 +1,6 @@
-const { string: { toPlural, toTitleCase } } = require('@vizality/util');
+import { toPlural, toTitleCase } from '@vizality/util/string';
 
-module.exports = {
+export default {
   command: 'disable',
   description: 'Disables a currently enabled addon, or disable all addons.',
   usage: '{c} <addon ID | all>',

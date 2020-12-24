@@ -1,23 +1,18 @@
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const FormItem = require('./FormItem');
+import AsyncComponent from '../AsyncComponent';
+import { FormItem } from '.';
 
-const Slider = AsyncComponent.from(getModuleByDisplayName('Slider', true));
+const Slider = AsyncComponent.fromDisplayName('Slider');
 
-module.exports = class SliderInput extends React.PureComponent {
-  render () {
-    const { children: title, note, required } = this.props;
-    delete this.props.children;
+export default memo(props => {
+  const { children: title, note, required, className } = props;
+  delete props.className;
+  delete props.children;
 
-    return (
-      <FormItem title={title} note={note} required={required}>
-        <Slider {...{
-          ...this.props,
-          className: `${this.props.className || ''}`.trim()
-        }} />
-      </FormItem>
-    );
-  }
-};
+  return (
+    <FormItem title={title} note={note} required={required}>
+      <Slider {...props} className={className} />
+    </FormItem>
+  );
+});

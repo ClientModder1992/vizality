@@ -1,10 +1,10 @@
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Section = require('../parts/Section');
-const Content = require('../parts/Content');
-const Layout = require('../parts/Layout');
+import Section from '../parts/Section';
+import Content from '../parts/Content';
+import Layout from '../parts/Layout';
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <Layout>
       <Content heading='Error Test'>

@@ -1,19 +1,19 @@
-const { readdirSync, existsSync } = require('fs');
-const { clipboard } = require('electron');
+import React, { memo, useState } from 'react';
+import { readdirSync, existsSync } from 'fs';
+import { clipboard } from 'electron';
 
-const { Confirm, settings: { SwitchItem, TextInput, Category, FormTitle }, Clickable, Button, FormNotice } = require('@vizality/components');
-const { Messages, chosenLocale: currentLocale } = require('@vizality/i18n');
-const { Repositories, Directories } = require('@vizality/constants');
-const { React, React: { useState } } = require('@vizality/react');
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
+import { SwitchItem, TextInput, Category, FormTitle } from '@vizality/components/settings';
+import { Confirm, Clickable, Button, FormNotice } from '@vizality/components';
+import { open as openModal, close as closeModal } from '@vizality/modal';
+import { Repositories, Directories } from '@vizality/constants';
+import { Messages, chosenLocale } from '@vizality/i18n';
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
-const { open: openModal, close: closeModal } = require('@vizality/modal');
+import Update from './Update';
+import Icons from './Icons';
 
-const Update = require('./Update');
-const Icons = require('./Icons');
-
-module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
+export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ opened, setOpened ] = useState(false);
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const [ debugInfoOpened, setDebugInfoOpened ] = useState();
@@ -197,7 +197,7 @@ module.exports = React.memo(({ getSetting, toggleSetting, updateSetting }) => {
         <code>
           <b>System / Discord</b>
           <div className='row'>
-            <div className='column'>Locale:&#10;{currentLocale}</div>
+            <div className='column'>Locale:&#10;{chosenLocale}</div>
             <div className='column'>OS:&#10;{(window.platform.os).toString()}</div>
             <div className='column'>Architecture:&#10;{superProperties.os_arch}</div>
             {process.platform === 'linux' && (

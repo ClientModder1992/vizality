@@ -4,8 +4,6 @@ const watch = require('node-watch');
 const Events = require('events');
 const { join } = require('path');
 
-const { Directories } = require('@vizality/constants');
-
 // @todo: Schedule a cache cleanup?
 
 /**
@@ -22,7 +20,7 @@ module.exports = class Compiler extends Events {
   constructor (file) {
     super();
     this.file = file;
-    this.cacheDir = join(Directories.CACHE, this.constructor.name.toLowerCase());
+    this.cacheDir = join(__dirname, '..', '..', '..', '.cache', this.constructor.name.toLowerCase());
     this.watcherEnabled = false;
     this._watchers = {};
     this._compiledOnce = {};

@@ -1,11 +1,11 @@
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Compact = require('../displays/Compact');
-const Cover = require('../displays/Cover');
-const List = require('../displays/List');
-const Card = require('../displays/Card');
+import Compact from '../displays/Compact';
+import Cover from '../displays/Cover';
+import List from '../displays/List';
+import Card from '../displays/Card';
 
-module.exports = React.memo(props => {
+export default memo(props => {
   const { display } = props;
 
   return (

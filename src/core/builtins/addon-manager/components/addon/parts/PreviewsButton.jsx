@@ -1,14 +1,14 @@
-const { React, React: { memo, useState, useEffect } } = require('@vizality/react');
-const { ImageCarouselModal, Icon } = require('@vizality/components');
-const { open: openModal } = require('@vizality/modal');
+import React, { memo, useEffect, useState } from 'react';
 
-module.exports = memo(props => {
+import { ImageCarouselModal, Icon } from '@vizality/components';
+import { open as openModal } from '@vizality/modal';
+
+export default memo(props => {
   const { size, previewImages } = props;
   const [ previews, setPreviews ] = useState([]);
 
   const getPreviewImages = () => {
     const previewImgs = [];
-    // eslint-disable-next-line array-callback-return
     previewImages.forEach(image => {
       previewImgs.push({
         src: image

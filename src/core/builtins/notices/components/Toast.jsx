@@ -1,11 +1,11 @@
-const { AsyncComponent, Button, Tooltip, Icon } = require('@vizality/components');
-const { getModuleByDisplayName } = require('@vizality/webpack');
-const { joinClassNames } = require('@vizality/util');
-const { React } = require('@vizality/react');
+import React, { PureComponent } from 'react';
 
-const Progress = AsyncComponent.from(getModuleByDisplayName('Progress'));
+import { AsyncComponent, Button, Tooltip, Icon } from '@vizality/components';
+import { joinClassNames } from '@vizality/util';
 
-module.exports = class Toast extends React.PureComponent {
+const Progress = AsyncComponent.fromDisplayName('Progress');
+
+export default class Toast extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -147,4 +147,4 @@ module.exports = class Toast extends React.PureComponent {
       animate={true}
     />;
   }
-};
+}

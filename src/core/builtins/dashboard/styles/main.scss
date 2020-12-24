@@ -2,7 +2,7 @@
 @use 'parts';
 
 .vz-dashboard {
-  color: var(--text-normal);
+  color: var(--text-normal) !important;
   overflow: hidden;
 }
 

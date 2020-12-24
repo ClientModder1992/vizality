@@ -1,8 +1,9 @@
-const { joinClassNames } = require('@vizality/util');
-const { getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Header = React.memo(({ heading, subheading }) => {
+import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
+
+const Header = memo(({ heading, subheading }) => {
   const { base } = getModule('base');
   const { size32 } = getModule('size24');
   const { content } = getModule('wrappedLayout');
@@ -20,7 +21,7 @@ const Header = React.memo(({ heading, subheading }) => {
   );
 });
 
-module.exports = React.memo(({ heading, subheading, className, children }) => {
+export default memo(({ heading, subheading, className, children }) => {
   return (
     <div className={joinClassNames('vz-dashboard-section', className)}>
       {heading && <Header heading={heading} subheading={subheading} />}

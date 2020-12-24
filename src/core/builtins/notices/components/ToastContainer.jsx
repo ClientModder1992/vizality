@@ -1,8 +1,8 @@
-const { React } = require('@vizality/react');
+import React, { PureComponent } from 'react';
 
-const Toast = require('./Toast');
+import Toast from './Toast';
 
-module.exports = class ToastContainer extends React.PureComponent {
+export default class ToastContainer extends PureComponent {
   constructor (props) {
     super(props);
     this.state = { closing: null };
@@ -32,4 +32,4 @@ module.exports = class ToastContainer extends React.PureComponent {
       />}
     </div>;
   }
-};
+}

@@ -1,13 +1,10 @@
-module.exports = {
-  components: require('./components'),
-  constants: require('./constants'),
-  discord: require('./discord'),
-  http: require('./http'),
-  i18n: require('./i18n'),
-  // @todo Merge this with the modal Component
-  modal: require('./modal'),
-  patcher: require('./patcher'),
-  react: require('./react'),
-  util: require('./util'),
-  webpack: require('./webpack')
-};
+export { default as Discord } from './discord';
+export { default as Http } from './http';
+export { default as Util } from './util';
+export * as modal from './modal';
+export * as components from './components';
+export * as constants from './constants';
+export * as webpack from './webpack';
+export * as patcher from './patcher';
+export * as react from './react';
+export * as i18n from './i18n';

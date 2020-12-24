@@ -1,9 +1,10 @@
-const { Markdown } = require('@vizality/components');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Section = require('../../../parts/Section');
-const Content = require('../../../parts/Content');
-const Layout = require('../../../parts/Layout');
+import { Markdown } from '@vizality/components';
+
+import Section from '../../../parts/Section';
+import Content from '../../../parts/Content';
+import Layout from '../../../parts/Layout';
 
 const preview = `
 ---
@@ -157,7 +158,7 @@ With a reference later in the document defining the URL location:
 [id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"`;
 
 
-module.exports = React.memo(() => {
+export default memo(() => {
   return (
     <Layout>
       <Content heading='Components' subheading='I like components and stuff'>

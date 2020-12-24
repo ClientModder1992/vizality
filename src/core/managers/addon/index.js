@@ -1,12 +1,14 @@
-const { readdirSync } = require('fs');
-const { resolve } = require('path');
+import { readdirSync, existsSync } from 'fs';
+import { resolve } from 'path';
 
-const { file: { removeDirRecursive }, string: { toSingular, toTitleCase, toHash }, logger: { log, warn, error } } = require('@vizality/util');
-const { Avatars } = require('@vizality/constants');
+import { toSingular, toTitleCase, toHash } from '@vizality/util/string';
+import { log, warn, error } from '@vizality/util/logger';
+import { removeDirRecursive } from '@vizality/util/file';
+import { Avatars } from '@vizality/constants';
 
 const _module = 'Manager';
 
-module.exports = class AddonManager {
+export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
@@ -24,7 +26,11 @@ module.exports = class AddonManager {
   }
 
   get keys () {
-    return this[this.type].keys();
+    return [ ...this[this.type].keys() ];
+  }
+
+  has (addonId) {
+    return this[this.type].has(addonId);
   }
 
   get (addonId) {
@@ -32,35 +38,42 @@ module.exports = class AddonManager {
   }
 
   getAll () {
-    return [ ...this[this.type].keys() ];
+    return this.keys;
   }
 
   isInstalled (addonId) {
-    return this[this.type].has(addonId);
+    return this.has(addonId);
   }
 
   isEnabled (addonId) {
-    return !vizality.settings.get(`disabled${toTitleCase(this.type)}`, []).includes(addonId);
+    return !vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
+      .filter(addon => this.isInstalled(addon))
+      .includes(addonId);
+  }
+
+  isDisabled (addonId) {
+    return !this.isEnabled(addonId);
   }
 
   getAllEnabled () {
-    const addons = [ ...this[this.type].keys() ];
-    return addons.filter(addon => !this.getAllDisabled().includes(addon));
+    const addons = this.getAll();
+    return addons.filter(addon => this.isEnabled(addon));
   }
 
   getAllDisabled () {
-    return vizality.settings.get(`disabled${toTitleCase(this.type)}`, []);
+    const addons = this.getAll();
+    return addons.filter(addon => this.isDisabled(addon));
   }
 
   // Mount/load/enable/install
-  mount (addonId) {
+  async mount (addonId) {
     let manifest;
     try {
       manifest = Object.assign({
         appMode: 'app',
         dependencies: [],
         optionalDependencies: []
-      }, require(resolve(this.dir, addonId, 'manifest.json')));
+      }, await import(resolve(this.dir, addonId, 'manifest.json')));
     } catch (err) {
       return this.error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest - Skipping`);
     }
@@ -70,7 +83,9 @@ module.exports = class AddonManager {
     }
 
     try {
-      const AddonClass = require(resolve(this.dir, addonId));
+      const addonModule = await import(resolve(this.dir, addonId));
+      const AddonClass = addonModule && addonModule.__esModule ? addonModule.default : addonModule;
+
       Object.defineProperties(AddonClass.prototype, {
         addonId: {
           get: () => addonId,
@@ -101,8 +116,8 @@ module.exports = class AddonManager {
     } catch (err) {
       // chhhh
     }
-    this.mount(addonId);
-    this[this.type].get(addonId)._load();
+    await this.mount(addonId);
+    this.get(addonId)._load();
   }
 
   async unmount (addonId) {
@@ -139,8 +154,8 @@ module.exports = class AddonManager {
       if (!sync) {
         await this.mount(addonId, filename);
 
-        // if theme didn't mounted
-        if (!this[this.type].get(addonId)) {
+        // If addon didn't mount
+        if (!this.get(addonId)) {
           continue;
         }
       }
@@ -151,7 +166,7 @@ module.exports = class AddonManager {
           missingThemes.push(addonId);
         }
 
-        this[this.type].get(addonId)._load();
+        this.get(addonId)._load();
       }
     }
 
@@ -160,7 +175,7 @@ module.exports = class AddonManager {
     }
   }
 
-  enable (addonId) {
+  async enable (addonId) {
     const addon = this.get(addonId);
 
     if (!addon) {
@@ -171,13 +186,14 @@ module.exports = class AddonManager {
       return this.error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
     }
 
-    vizality.settings.set(`disabled${toTitleCase(this.type)}`, vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
-      .filter(addon => addon !== addonId));
+    vizality.settings.set(`disabled${toTitleCase(this.type)}`,
+      vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
+        .filter(addon => addon !== addonId));
 
     addon._load();
   }
 
-  disable (addonId) {
+  async disable (addonId) {
     const addon = this.get(addonId);
 
     if (!addon) {
@@ -188,7 +204,10 @@ module.exports = class AddonManager {
       return this.error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
     }
 
-    vizality.settings.set(`disabled${toTitleCase(this.type)}`, [ ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []), addonId ]);
+    vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
+      ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []),
+      addonId
+    ]);
 
     addon._unload();
   }
@@ -281,19 +300,23 @@ module.exports = class AddonManager {
   }
 
   /** @private */
-  _setIcon (manifest, addonId) {
+  async _setIcon (manifest, addonId) {
     if (manifest.icon) {
       return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
     }
 
-    const addonIdHash = toHash(addonId);
-    let iconIdentifier;
-    if (addonIdHash % 10 === 0 || addonIdHash % 10 === 1) iconIdentifier = 1;
-    if (addonIdHash % 10 === 2 || addonIdHash % 10 === 3) iconIdentifier = 2;
-    if (addonIdHash % 10 === 4 || addonIdHash % 10 === 5) iconIdentifier = 3;
-    if (addonIdHash % 10 === 6 || addonIdHash % 10 === 7) iconIdentifier = 4;
-    if (addonIdHash % 10 === 8 || addonIdHash % 10 === 9) iconIdentifier = 5;
-    return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${iconIdentifier}`];
+    const validExtensions = [ '.png', '.jpg', '.jpeg', '.webp' ];
+
+    if (validExtensions.some(ext => existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`)))) {
+      for (const ext of validExtensions) {
+        if (existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`))) {
+          return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/assets/icon${ext}`;
+        }
+      }
+    } else {
+      const addonIdHash = toHash(addonId);
+      return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${(addonIdHash % 5) + 1}`];
+    }
   }
 
   log (...data) { log(_module, toSingular(this.type), null, ...data); }

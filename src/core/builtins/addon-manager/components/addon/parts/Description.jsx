@@ -1,5 +1,5 @@
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = React.memo(({ description }) => {
+export default memo(({ description }) => {
   return <div className='vz-addon-card-description'>{description}</div>;
 });

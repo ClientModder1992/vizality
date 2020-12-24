@@ -1,16 +1,25 @@
-const CSSCompiler = require('./css');
-const JsxCompiler = require('./jsx');
-const ScssCompiler = require('./scss');
+const SCSSCompiler = require('./SCSS');
+const CSSCompiler = require('./CSS');
+const JSXCompiler = require('./JSX');
+const TSXCompiler = require('./TSX');
+const JSCompiler = require('./JS');
+const TSCompiler = require('./TS');
 
 module.exports = {
-  css: CSSCompiler,
-  jsx: JsxCompiler,
-  scss: ScssCompiler,
-  resolveCompiler: (file) => {
+  SCSS: SCSSCompiler,
+  CSS: CSSCompiler,
+  JSX: JSXCompiler,
+  TSX: TSXCompiler,
+  JS: JSCompiler,
+  TS: TSCompiler,
+  resolveCompiler: file => {
     switch (file.split('.').pop()) {
-      case 'jsx': return new JsxCompiler(file);
-      case 'scss': return new ScssCompiler(file);
+      case 'scss': return new SCSSCompiler(file);
       case 'css': return new CSSCompiler(file);
+      case 'jsx': return new JSXCompiler(file);
+      case 'tsx': return new TSXCompiler(file);
+      case 'js': return new JSCompiler(file);
+      case 'ts': return new TSCompiler(file);
     }
   }
 };

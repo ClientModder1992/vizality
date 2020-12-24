@@ -1,20 +1,17 @@
-const { getModuleByDisplayName } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const AsyncComponent = require('../AsyncComponent');
-const FormItem = require('./FormItem');
+import AsyncComponent from '../AsyncComponent';
+import { FormItem } from '.';
 
-const SelectTempWrapper = AsyncComponent.from(getModuleByDisplayName('SelectTempWrapper', true));
+const SelectTempWrapper = AsyncComponent.fromDisplayName('SelectTempWrapper');
 
-module.exports = class SelectInput extends React.PureComponent {
-  render () {
-    const { children: title, note, required } = this.props;
-    delete this.props.children;
+export default memo(props => {
+  const { children: title, note, required } = props;
+  delete props.children;
 
-    return (
-      <FormItem title={title} note={note} required={required} noteHasMargin>
-        <SelectTempWrapper {...this.props}/>
-      </FormItem>
-    );
-  }
-};
+  return (
+    <FormItem title={title} note={note} required={required} noteHasMargin>
+      <SelectTempWrapper {...props}/>
+    </FormItem>
+  );
+});

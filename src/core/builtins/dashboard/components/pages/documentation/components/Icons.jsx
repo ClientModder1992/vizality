@@ -1,17 +1,18 @@
-const { Icon, CodeBlock, ComponentPreview } = require('@vizality/components');
-const { getModule, getModuleByDisplayName } = require('@vizality/webpack');
-const { React, React: { useState } } = require('@vizality/react');
-const { joinClassNames } = require('@vizality/util');
+import React, { memo, useState } from 'react';
+
+import { Icon, CodeBlock, ComponentPreview } from '@vizality/components';
+import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util';
+
+import AsideNav from '../../../parts/AsideNav';
+import Section from '../../../parts/Section';
+import Content from '../../../parts/Content';
+import Layout from '../../../parts/Layout';
 
 // @todo Remember to use @vizality/component later when you add this.
 const TextInput = getModuleByDisplayName('TextInput');
 
-const AsideNav = require('../../../parts/AsideNav');
-const Section = require('../../../parts/Section');
-const Content = require('../../../parts/Content');
-const Layout = require('../../../parts/Layout');
-
-module.exports = React.memo(() => {
+export default memo(() => {
   const [ selectedIcon, setSelectedIcon ] = useState('');
   const [ query, setQuery ] = useState('');
   const [ hasSearchResults ] = useState(true);

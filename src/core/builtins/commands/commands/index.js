@@ -1,3 +1,1 @@
-module.exports = {
-  help: require('./help')
-};
+export { default as help } from './help';

@@ -1,10 +1,12 @@
-const { react : { findInReactTree, findInTree, getOwnerInstance }, dom: { waitForElement } } = require('@vizality/util');
-const { getModule, getModules, getModuleByDisplayName } = require('@vizality/webpack');
-const { patch, unpatch } = require('@vizality/patcher');
-const { Builtin } = require('@vizality/entities');
-const { React } = require('@vizality/react');
+import React from 'react';
 
-module.exports = class Router extends Builtin {
+import { findInReactTree, findInTree, getOwnerInstance } from '@vizality/util/react';
+import { getModule, getModules, getModuleByDisplayName } from '@vizality/webpack';
+import { waitForElement } from '@vizality/util/dom';
+import { patch, unpatch } from '@vizality/patcher';
+import { Builtin } from '@vizality/core';
+
+export default class Router extends Builtin {
   async onStart () {
     await this.injectRouter();
     await this.injectViews();
@@ -28,13 +30,16 @@ module.exports = class Router extends Builtin {
     const RouteRenderer = getOwnerInstance(await waitForElement(`.${container.split(' ')[0]}`));
     patch('vz-router-routes', RouteRenderer.__proto__, 'render', (_, res) => {
       const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
-
       routes.push(
         ...vizality.api.router.routes.map(route => ({
           ...routes[0],
           props: {
-            // @todo: Error boundary (?)
-            render: () => React.createElement(route.render),
+            // @todo Error boundary (?)
+            render: () => {
+              const Render = route.render;
+              // Render = Render.__esModule ? Render.default : Render;
+              return <Render />;
+            },
             path: `/vizality${route.path}`
           }
         }))
@@ -47,7 +52,7 @@ module.exports = class Router extends Builtin {
     const FluxifiedViews = await getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)', true);
     const Views = FluxifiedViews.prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
 
-    patch('vz-router-views', Views.prototype, 'render', (args, res) => {
+    patch('vz-router-views', Views.prototype, 'render', (_, res) => {
       const routes = findInTree(res, n => Array.isArray(n) && n[0] && n[0].key && n[0].props.path && n[0].props.render);
 
       routes[routes.length - 1].props.path = [
@@ -71,7 +76,9 @@ module.exports = class Router extends Builtin {
           const rawPath = rendered.props.value.location.pathname.substring('vizality'.length + 1);
           const route = vizality.api.router.routes.find(rte => rawPath.startsWith(rte.path));
           if (route && route.sidebar) {
-            rendered.props.children.props.children[0] = React.createElement(route.sidebar);
+            const Sidebar = route.sidebar;
+            // Sidebar = Sidebar.__esModule ? Sidebar.default : Sidebar;
+            rendered.props.children.props.children[0] = <Sidebar />;
           } else {
             rendered.props.children = null;
           }
@@ -93,4 +100,4 @@ module.exports = class Router extends Builtin {
     const routesInstance = getOwnerInstance(await waitForElement(`.${container}`));
     routesInstance.forceUpdate();
   }
-};
+}
