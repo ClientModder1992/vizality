@@ -1,14 +1,15 @@
-/* eslint-disable no-unused-vars */
-const { promises: { readFile }, watch, writeFileSync, readFileSync } = require('fs');
-const { join } = require('path');
+import { promises, watch, writeFileSync, readFileSync } from 'fs';
+import React, { memo, useEffect, useState, useRef } from 'react';
+import Editor from '@monaco-editor/react';
+import { join } from 'path';
 
-const { default: Editor } = require('@monaco-editor/react');
-const { React, React: { useEffect, useState, useRef } } = require('@vizality/react');
-const { dom: { injectShadowStyles } } = require('@vizality/util');
-const { Spinner } = require('@vizality/components');
-const { joinClassNames } = require('@vizality/util');
+import { injectShadowStyles } from '@vizality/util/dom';
+import { joinClassNames } from '@vizality/util';
+import { Spinner } from '@vizality/components';
 
-module.exports = React.memo(props => {
+const { readFile } = promises;
+
+export default memo(props => {
   const { main, getSetting, updateSetting } = props;
   const [ , setIsEditorReady ] = useState(false);
   const [ value, setValue ] = useState(getSetting('custom-css', ''));

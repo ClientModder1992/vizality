@@ -30,7 +30,6 @@ export default class Router extends Builtin {
     const RouteRenderer = getOwnerInstance(await waitForElement(`.${container.split(' ')[0]}`));
     patch('vz-router-routes', RouteRenderer.__proto__, 'render', (_, res) => {
       const { children: routes } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
-      console.log('weird');
       routes.push(
         ...vizality.api.router.routes.map(route => ({
           ...routes[0],
@@ -38,7 +37,6 @@ export default class Router extends Builtin {
             // @todo Error boundary (?)
             render: () => {
               const Render = route.render;
-              console.log('RENDER', Render);
               // Render = Render.__esModule ? Render.default : Render;
               return <Render />;
             },
@@ -76,12 +74,9 @@ export default class Router extends Builtin {
         const className = rendered && rendered.props && rendered.props.children && rendered.props.children.props && rendered.props.children.props.className;
         if (className && className.startsWith('sidebar-') && rendered.props.value.location.pathname.startsWith('/vizality')) {
           const rawPath = rendered.props.value.location.pathname.substring('vizality'.length + 1);
-          console.log('uhhhh');
           const route = vizality.api.router.routes.find(rte => rawPath.startsWith(rte.path));
           if (route && route.sidebar) {
-            console.log('hmmmm');
             const Sidebar = route.sidebar;
-            console.log('SIDE', Sidebar);
             // Sidebar = Sidebar.__esModule ? Sidebar.default : Sidebar;
             rendered.props.children.props.children[0] = <Sidebar />;
           } else {

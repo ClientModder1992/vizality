@@ -566,17 +566,7 @@ export default memo(props => {
 
   const isClickable = Boolean(onClick || onContextMenu);
 
-  let SVG;
-
-  if (icon) {
-    SVG = icon;
-  } else {
-    if (Icons[name]) {
-      SVG = Icons[name];
-    } else {
-      SVG = registry(`./${name}`).default;
-    }
-  }
+  const SVG = icon ? icon : Icons[name] ? Icons[name] : registry(`./${name}`).default;
 
   if (!SVG && !icon) {
     return error(_module, _submodule, null, `Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, this.Names);

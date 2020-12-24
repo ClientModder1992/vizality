@@ -74,7 +74,6 @@ export default class Settings extends Builtin {
   }
 
   patchSettingsContextMenu () {
-    console.log(ContextMenu);
     const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
     patch('vz-settings-actions', SettingsContextMenu, 'default', (_, res) => {
       const items = res.props.children.find(child => Array.isArray(child));

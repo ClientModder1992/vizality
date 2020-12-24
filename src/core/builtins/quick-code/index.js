@@ -1,13 +1,15 @@
-const { promises: { writeFile, readFile }, existsSync } = require('fs');
-const { join } = require('path');
+import { promises, existsSync } from 'fs';
+import { join } from 'path';
+import React from 'react';
 
-const { getModule } = require('@vizality/webpack');
-const { Builtin } = require('@vizality/entities');
-const { React } = require('@vizality/react');
+import { getModule } from '@vizality/webpack';
+import { Builtin } from '@vizality/core';
 
-const QuickCodePage = require('./components/QuickCode');
+import QuickCodePage from './components/QuickCode';
 
-module.exports = class QuickCode extends Builtin {
+const { writeFile, readFile } = promises;
+
+export default class QuickCode extends Builtin {
   async onStart () {
     await vizality.api.settings.registerDashboardItem({
       id: this.addonId,
@@ -51,4 +53,4 @@ module.exports = class QuickCode extends Builtin {
       await writeFile(this._customCSSFile, customCSS);
     }
   }
-};
+}

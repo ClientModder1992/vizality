@@ -1,10 +1,11 @@
-const { AsyncComponent } = require('@vizality/components');
-const { Flux, getModule } = require('@vizality/webpack');
-const { React } = require('@vizality/react');
+import React, { memo } from 'react';
 
-const Editor = require('./Editor');
+import { AsyncComponent } from '@vizality/components';
+import { Flux, getModule } from '@vizality/webpack';
 
-const QuickCode = React.memo(props => {
+import Editor from './Editor';
+
+const QuickCode = memo(props => {
   return (
     <>
       <Editor {...props} />
@@ -12,7 +13,7 @@ const QuickCode = React.memo(props => {
   );
 });
 
-module.exports = AsyncComponent.from((async () => {
+export default AsyncComponent.from((async () => {
   const windowStore = await getModule('getWindow');
   return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOM_CSS'),
