@@ -244,7 +244,8 @@ export default class Vizality extends Updatable {
           }, {
             text: 'Postpone',
             color: 'grey',
-            look: 'outlined'
+            look: 'outlined',
+            onClick: () => vizality.api.notices.closeToast('vizality-updater')
           } ]
         });
       }
