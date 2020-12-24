@@ -6,12 +6,12 @@ const JSCompiler = require('./JS');
 const TSCompiler = require('./TS');
 
 module.exports = {
-  SCSS: SCSSCompiler,
-  CSS: CSSCompiler,
-  JSX: JSXCompiler,
-  TSX: TSXCompiler,
-  JS: JSCompiler,
-  TS: TSCompiler,
+  scss: SCSSCompiler,
+  css: CSSCompiler,
+  jsx: JSXCompiler,
+  tsx: TSXCompiler,
+  js: JSCompiler,
+  ts: TSCompiler,
   resolveCompiler: file => {
     switch (file.split('.').pop()) {
       case 'scss': return new SCSSCompiler(file);
