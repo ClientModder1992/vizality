@@ -49,7 +49,7 @@ export default class QuickCode extends Builtin {
     if (existsSync(this._customCSSFile)) {
       customCSS = await readFile(this._customCSSFile, 'utf8');
     } else {
-      customCSS = customCSS && customCSS.trim();
+      customCSS = customCSS?.trim();
       await writeFile(join(__dirname, 'stores', 'css', 'main.scss'), customCSS);
       this._customCSSFile = join(__dirname, 'stores', 'css', 'main.scss');
     }
