@@ -2,7 +2,7 @@ const { promises: { readFile }, existsSync, statSync } = require('fs');
 const { info: sassInfo } = require('sass');
 const { join, dirname } = require('path');
 
-const Compiler = require('./compiler');
+const Compiler = require('./Compiler');
 
 /**
  * SCSS compiler.

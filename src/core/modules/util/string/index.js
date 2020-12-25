@@ -1,4 +1,5 @@
 const pluralize = require('pluralize');
+const chunk = require('chunk-text');
 
 /**
  * @module util.string
@@ -21,6 +22,10 @@ const String = module.exports = {
 
   toPlural (string) {
     return pluralize(string);
+  },
+
+  chunk (string, characters) {
+    return chunk(string, characters);
   },
 
   toHash (string) {

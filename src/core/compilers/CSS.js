@@ -1,6 +1,6 @@
 const { promises: { readFile } } = require('fs');
 
-const Compiler = require('./compiler');
+const Compiler = require('./Compiler');
 
 /**
  * CSS compiler

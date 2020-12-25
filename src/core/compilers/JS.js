@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs');
 const sucrase = require('sucrase');
 
-const Compiler = require('./compiler');
+const Compiler = require('./Compiler');
 
 /**
  * JS compiler
