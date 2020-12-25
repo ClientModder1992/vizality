@@ -1,10 +1,10 @@
 const { existsSync, createWriteStream, promises: { readFile } } = require('fs');
-const { relative, join, dirname, resolve } = require('path');
+const { relative, join, dirname, resolve, sep } = require('path');
 const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 
 const VIZALITY_REGEX = new RegExp('@vizality([^\'"]{1,})?', 'ig');
-const LIB_DIR = join(__dirname, '..', 'core', 'lib', 'sass');
+const LIB_DIR = `${join(__dirname, '..', 'core', 'lib', 'sass')}${sep}`;
 const BASE_DIR = join(__dirname, '..', '..');
 
 if (!ipcMain) {

@@ -105,7 +105,7 @@ export default class Vizality extends Updatable {
 
     // Token manipulation stuff
     if (this.settings.get('hideToken', true)) {
-      const tokenModule = await require('@vizality/webpack').getModule('hideToken');
+      const tokenModule = getModule('hideToken');
       tokenModule.hideToken = () => void 0;
       setImmediate(() => tokenModule.showToken()); // just to be sure
     }

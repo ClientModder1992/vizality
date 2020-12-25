@@ -82,10 +82,14 @@ export default memo(() => {
     return (
       <>
         {hasSearchResults && selectedIcon && <>
-          <div className={`vz-docs-components-icons-aside-icon-name ${size20} ${marginBottom20} ${weightMedium}`}>
+          <div className={joinClassNames('vz-docs-components-icons-aside-icon-name', size20, marginBottom20, weightMedium)}>
             {selectedIcon}
           </div>
-          <Icon name={selectedIcon} width={'100%'} height={'100%'} className='vz-docs-components-icons-aside-icon-wrapper' />
+          <Icon
+            name={selectedIcon}
+            size='100%'
+            className='vz-docs-components-icons-aside-icon-wrapper'
+          />
         </>}
       </>
     );
@@ -95,11 +99,13 @@ export default memo(() => {
     return (
       <>
         <CodeBlock language='js' header='JSX' content={
-          `const { Icon } = require('@vizality/components');\n\n` +
+          `import React from 'react';\n` +
+          `import { Icon } from '@vizality/components';\n\n` +
           `<Icon name='${selectedIcon}' />`}
         />
         <CodeBlock language='js' header='React' content={
-          `const { Icon } = require('@vizality/components');\n\n` +
+          `import React from 'react';\n` +
+          `import { Icon } from '@vizality/components';\n\n` +
           `React.createElement(Icon, {\n` +
           `  name: '${selectedIcon}'\n` +
           `});`}

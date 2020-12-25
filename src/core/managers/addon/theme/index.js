@@ -82,7 +82,7 @@ export default class ThemeManager extends AddonManager {
 
     let manifest;
     try {
-      manifest = require(manifestFile);
+      manifest = await import(manifestFile);
     } catch (e) {
       this._logError(ErrorTypes.MANIFEST_LOAD_FAILED, [ themeID ]);
       console.error('%c[Vizality:StyleManager]', 'color: #7289da', 'Failed to load manifest', e);

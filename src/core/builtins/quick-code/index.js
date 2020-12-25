@@ -31,6 +31,10 @@ export default class QuickCode extends Builtin {
     this.injectStyles(this._customCSSFile, true);
   }
 
+  onStop () {
+    vizality.api.router.unregisterRoute('/dashboard/quick-code');
+  }
+
   async _openCustomCSS () {
     const popoutModule = getModule('setAlwaysOnTop', 'open');
     const id = 'DISCORD_VIZALITY_CUSTOM_CSS';
