@@ -22,8 +22,8 @@ export default class QuickCode extends Builtin {
 
     this.watcher = false;
 
-    this._customCSS = this.settings.get('custom-css');
-    this._customCSSFile = join(__dirname, 'stores', 'css', 'main.scss');
+    this._customCSS = this.settings.get('customCSS');
+    this._customCSSFile = null;
 
     await this._loadCustomCSS();
 
@@ -45,12 +45,13 @@ export default class QuickCode extends Builtin {
   }
 
   async _loadCustomCSS () {
-    let customCSS = this.settings.get('custom-css');
+    let customCSS = this.settings.get('customCSS');
     if (existsSync(this._customCSSFile)) {
       customCSS = await readFile(this._customCSSFile, 'utf8');
     } else {
-      customCSS = customCSS.trim();
-      await writeFile(this._customCSSFile, customCSS);
+      customCSS = customCSS && customCSS.trim();
+      await writeFile(join(__dirname, 'stores', 'css', 'main.scss'), customCSS);
+      this._customCSSFile = join(__dirname, 'stores', 'css', 'main.scss');
     }
   }
 }

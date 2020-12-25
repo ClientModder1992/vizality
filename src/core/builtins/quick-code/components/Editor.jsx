@@ -12,7 +12,7 @@ const { readFile } = promises;
 export default memo(props => {
   const { main, getSetting, updateSetting } = props;
   const [ , setIsEditorReady ] = useState(false);
-  const [ value, setValue ] = useState(getSetting('custom-css', ''));
+  const [ value, setValue ] = useState(getSetting('customCSS', ''));
 
   let editor = useRef();
   let model = useRef();
@@ -23,7 +23,7 @@ export default memo(props => {
   const _handleMonacoUpdate = async (ev, val) => {
     val = val.trim();
     writeFileSync(customCSSFile, val);
-    updateSetting('custom-css', val);
+    updateSetting('customCSS', val);
   };
 
   const _watchFiles = async () => {
@@ -31,7 +31,7 @@ export default memo(props => {
     main.watcher = watch(customCSSFile, { persistent: false }, async (eventType, filename) => {
       if (!eventType || !filename) return;
       const val = readFileSync(customCSSFile).toString();
-      if (val !== getSetting('custom-css')) updateSetting('custom-css', val);
+      if (val !== getSetting('customCSS')) updateSetting('customCSS', val);
       if (val !== value) setValue(val);
     });
   };
