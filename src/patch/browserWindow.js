@@ -54,6 +54,34 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
     win.on('maximize', () => win.webContents.send('VIZALITY_WINDOW_MAXIMIZE'));
     win.on('unmaximize', () => win.webContents.send('VIZALITY_WINDOW_UNMAXIMIZE'));
 
+    /*
+     * The following code was given by Lighty, thanks Lighty!
+     * ---
+     */
+    // eslint-disable-next-line no-unused-vars
+    win.webContents.on('devtools-opened', async _ => {
+      const dtwc = win.webContents.devToolsWebContents;
+      // Please tell me there is a better way of doing this?
+      await dtwc.executeJavaScript(`(${(() => {
+        if (localStorage.experiments) {
+          localStorage.experiments = JSON.stringify(
+            Object.assign(
+              JSON.parse(localStorage.experiments),
+              { sourcesPrettyPrint: true }
+            )
+          );
+        } else {
+          localStorage.experiments = '{"sourcesPrettyPrint":true}';
+        }
+
+        const { settings } = window.Common;
+
+        settings.moduleSetting('jsSourceMapsEnabled').set(false);
+        settings.moduleSetting('cssSourceMapsEnabled').set(false);
+      }).toString()})()`);
+      console.log('Auto sources pretty print enabled, js and css source maps disabled.');
+    });
+
     win.webContents._preload = originalPreload;
     return win;
   }
