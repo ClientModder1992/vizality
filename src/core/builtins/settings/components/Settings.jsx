@@ -2,12 +2,10 @@ import React, { memo, useState } from 'react';
 
 import { TextInput, SwitchItem, ButtonItem, Category } from '@vizality/components/settings';
 import { removeDirRecursive } from '@vizality/util/file';
-import { Icon, Confirm } from '@vizality/components';
 import { Directories } from '@vizality/constants';
 import { getModule } from '@vizality/webpack';
+import { Icon } from '@vizality/components';
 import { Messages } from '@vizality/i18n';
-
-import { open as openModal, close as closeModal } from '@vizality/modal';
 
 export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);
@@ -29,23 +27,6 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         setVizalityCacheCleared(false);
       }, 2500);
     });
-  };
-
-  const askRestart = () => {
-    const { colorStandard } = getModule('colorStandard');
-
-    openModal(() => <Confirm
-      red
-      header={Messages.ERRORS_RESTART_APP}
-      confirmText={Messages.BUNDLE_READY_RESTART}
-      cancelText={Messages.BUNDLE_READY_LATER}
-      onConfirm={() => DiscordNative.app.relaunch()}
-      onCancel={closeModal}
-    >
-      <div className={colorStandard}>
-        {Messages.VIZALITY_SETTINGS_RESTART}
-      </div>
-    </Confirm>);
   };
 
   return (
@@ -82,7 +63,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('reactDeveloperTools', false)}
           onChange={() => {
             toggleSetting('reactDeveloperTools', false);
-            askRestart();
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           Enable React Developer Tools
@@ -136,7 +117,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('transparentWindow', false)}
           onChange={() => {
             toggleSetting('transparentWindow');
-            askRestart();
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_TRANSPARENT}
@@ -146,7 +127,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('experimentalWebPlatform', false)}
           onChange={() => {
             toggleSetting('experimentalWebPlatform');
-            askRestart();
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}

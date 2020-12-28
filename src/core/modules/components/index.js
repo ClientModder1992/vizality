@@ -4,6 +4,7 @@ import AsyncComponent from './AsyncComponent';
 import { Icons, Blacklist } from './Icon';
 
 // --- fromProps
+export const BotTag = AsyncComponent.fromProps(m => m.default?.displayName === 'BotTag');
 export const Button = AsyncComponent.fromProps(m => m.DropdownSizes);
 // --- fromDisplayName
 export const ApplicationStoreListingCarousel = AsyncComponent.fromDisplayName('ApplicationStoreListingCarousel');
@@ -67,40 +68,56 @@ export * as misc from './misc';
 
 // Re-export module properties
 getModuleByDisplayName('FormNotice', true, true).then(FormNotice =>
-  [ 'Types' ].forEach(prop => this.FormNotice[prop] = FormNotice[prop]));
+  [ 'Types' ].forEach(prop => this.FormNotice[prop] = FormNotice[prop])
+);
 
 getModuleByDisplayName('Spinner', true, true).then(Spinner =>
-  [ 'Type' ].forEach(prop => this.Spinner[prop] = Spinner[prop]));
+  [ 'Type' ].forEach(prop => this.Spinner[prop] = Spinner[prop])
+);
 
 getModule(m => m.DropdownSizes, true, true).then(Button =>
-  [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => this.Button[prop] = Button[prop]));
+  [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => this.Button[prop] = Button[prop])
+);
+
+getModule(m => m.default?.displayName === 'BotTag', true, true).then(BotTag =>
+  this.BotTag.Types = BotTag.BotTagTypes
+);
 
 getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar =>
-  [ 'Icon', 'Title', 'Divider' ].forEach(prop => this.HeaderBar[prop] = HeaderBar[prop]));
+  [ 'Icon', 'Title', 'Divider' ].forEach(prop => this.HeaderBar[prop] = HeaderBar[prop])
+);
 
 getModuleByDisplayName('Card', true, true).then(Card =>
-  [ 'Types' ].forEach(prop => this.Card[prop] = Card[prop]));
+  [ 'Types' ].forEach(prop => this.Card[prop] = Card[prop])
+);
 
 getModuleByDisplayName('TabBar', true, true).then(TabBar =>
-  [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => this.TabBar[prop] = TabBar[prop]));
+  [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => this.TabBar[prop] = TabBar[prop])
+);
 
 getModuleByDisplayName('SearchBar', true, true).then(SearchBar =>
-  [ 'Sizes' ].forEach(prop => this.SearchBar[prop] = SearchBar[prop]));
+  [ 'Sizes' ].forEach(prop => this.SearchBar[prop] = SearchBar[prop])
+);
 
 getModuleByDisplayName('TextInput', true, true).then(TextInput =>
-  [ 'Sizes' ].forEach(prop => this.TextInput[prop] = TextInput[prop]));
+  [ 'Sizes' ].forEach(prop => this.TextInput[prop] = TextInput[prop])
+);
 
 getModuleByDisplayName('Text', true, true).then(Text =>
-  [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => this.Text[prop] = Text[prop]));
+  [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => this.Text[prop] = Text[prop])
+);
 
 getModuleByDisplayName('Flex', true, true).then(Flex =>
-  [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => this.Flex[prop] = Flex[prop]));
+  [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => this.Flex[prop] = Flex[prop])
+);
 
 getModule('AnimatedAvatar', true, true).then(Avatar =>
-  [ 'Sizes' ].forEach(prop => this.Avatar[prop] = Avatar[prop]));
+  [ 'Sizes' ].forEach(prop => this.Avatar[prop] = Avatar[prop])
+);
 
 getModule('CarouselWithPreview', true, true).then(CarouselWithPreview =>
-  [ 'Alignment' ].forEach(prop => this.CarouselWithPreview[prop] = CarouselWithPreview[prop]));
+  [ 'Alignment' ].forEach(prop => this.CarouselWithPreview[prop] = CarouselWithPreview[prop])
+);
 
 getModule('MenuGroup', true, true).then(Menu => {
   [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
@@ -110,7 +127,8 @@ getModule('MenuGroup', true, true).then(Menu => {
 });
 
 getModuleByDisplayName('DeprecatedModal', true, true).then(Modal =>
-  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => this.Modal[prop] = Modal[prop]));
+  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => this.Modal[prop] = Modal[prop])
+);
 
 this.Confirm.defaultProps = {
   transitionState: 1,

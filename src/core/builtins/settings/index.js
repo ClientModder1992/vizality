@@ -1,8 +1,13 @@
 import React from 'react';
 
+import { open as openModal, close as closeModal } from '@vizality/modal';
 import { getModuleByDisplayName, getModule } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
+import { joinClassNames } from '@vizality/util';
+import { Confirm } from '@vizality/components';
 import { Builtin } from '@vizality/entities';
+import { Messages } from '@vizality/i18n';
+
 
 import ContextMenu from './components/ContextMenu';
 import SettingsComponent from './components/Settings';
@@ -20,6 +25,11 @@ export default class Settings extends Builtin {
       render: props => <SettingsComponent {...props} />
     });
 
+    vizality.api.actions.registerAction({
+      action: 'confirmRestart',
+      executor: () => this.confirmRestart()
+    });
+
     this.patchSettingsComponent();
     this.patchExperiments();
     this.patchSettingsContextMenu();
@@ -30,6 +40,25 @@ export default class Settings extends Builtin {
     unpatch('vz-settings-items');
     unpatch('vz-settings-actions');
     unpatch('vz-settings-errorHandler');
+  }
+
+  confirmRestart () {
+    const { colorStandard } = getModule('colorStandard');
+    const { spacing } = getModule('spacing', 'message');
+    const { size16 } = getModule('size16');
+
+    openModal(() => <Confirm
+      red
+      header={Messages.ERRORS_RESTART_APP}
+      confirmText={Messages.BUNDLE_READY_RESTART}
+      cancelText={Messages.BUNDLE_READY_LATER}
+      onConfirm={() => DiscordNative.app.relaunch()}
+      onCancel={closeModal}
+    >
+      <div className={joinClassNames(colorStandard, spacing, size16)}>
+        {Messages.VIZALITY_SETTINGS_RESTART}
+      </div>
+    </Confirm>);
   }
 
   patchExperiments () {
