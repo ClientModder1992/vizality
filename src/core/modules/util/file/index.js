@@ -54,7 +54,7 @@ const File = module.exports = {
 
     if (isDir) {
       readdirSync(path)
-        .filter(file => allowedExtensions.indexOf(extname(file) !== -1))
+        .filter(file => lstatSync(join(path, file)).isFile() && allowedExtensions.indexOf(extname(file)) !== -1)
         .map(file => getURL(join(path, file)));
     } else {
       if (isFile) {
