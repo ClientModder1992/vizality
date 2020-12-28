@@ -60,6 +60,7 @@ if (!window.__SPLASH__) {
       case '@vizality/webpack':
       case '@vizality/modal':
       case '@vizality/modules':
+      case '@vizality/api':
       case 'react':
       case 'react-dom':
       case 'react-router':

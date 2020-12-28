@@ -41,6 +41,7 @@
   "_moduleAliases": {
     "@vizality/root": ".",
     "@vizality/src": "src",
+    "@vizality/api": "src/core/api",
     "@vizality": "src/core/modules",
     "@vizality/modules": "src/core/modules",
     "@vizality/builtins": "src/core/builtins",
