@@ -1,3 +1,5 @@
+@use '@vizality' as *;
+
 .vz-component-preview {
   $base: &;
   // To counteract the tabs padding below
@@ -80,6 +82,13 @@
     display: flex;
     justify-content: space-around;
     animation: fadeShortSlideInFromBottom 0.3s forwards;
+    &-loading {
+      @include size(100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
     /* Fix for last row of flex container */
     &::after {
       content: '';

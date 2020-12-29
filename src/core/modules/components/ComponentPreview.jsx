@@ -3,7 +3,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { joinClassNames } from '@vizality/util';
 import { getModule } from '@vizality/webpack';
 
-import { TabBar } from '.';
+import { TabBar, DeferredRender, Spinner } from '.';
 
 export default memo(props => {
   const {
@@ -65,7 +65,13 @@ export default memo(props => {
         </div>}
         {tab === 'PREVIEW' && <>
           {previewTabChildren && <div className='vz-component-preview-content'>
-            {previewTabChildren}
+            <DeferredRender fallback={
+              <div className='vz-component-preview-content-loading'>
+                <Spinner />
+              </div>
+            }>
+              {previewTabChildren}
+            </DeferredRender>
           </div>}
         </>}
         {tab === 'CODE' && <>

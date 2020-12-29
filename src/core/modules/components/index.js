@@ -4,7 +4,6 @@ import AsyncComponent from './AsyncComponent';
 import { Icons, Blacklist } from './Icon';
 
 // --- fromProps
-export const BotTag = AsyncComponent.fromProps(m => m.default?.displayName === 'BotTag');
 export const Button = AsyncComponent.fromProps(m => m.DropdownSizes);
 // --- fromDisplayName
 export const ApplicationStoreListingCarousel = AsyncComponent.fromDisplayName('ApplicationStoreListingCarousel');
@@ -49,6 +48,7 @@ export const Menu = () => null;
 
 export { default as ComponentPreview } from './ComponentPreview';
 export { default as AsyncComponent } from './AsyncComponent';
+export { default as DeferredRender } from './DeferredRender';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as StickyWrapper } from './StickyWrapper';
 export { default as ColorPicker } from './ColorPicker';
