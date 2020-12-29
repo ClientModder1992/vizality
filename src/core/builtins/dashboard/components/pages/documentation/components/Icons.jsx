@@ -1,16 +1,13 @@
 import React, { memo, useState } from 'react';
 
-import { Icon, CodeBlock, ComponentPreview } from '@vizality/components';
-import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { Icon, CodeBlock, ComponentPreview, TextInput } from '@vizality/components';
 import { joinClassNames } from '@vizality/util';
+import { getModule } from '@vizality/webpack';
 
 import AsideNav from '../../../parts/AsideNav';
 import Section from '../../../parts/Section';
 import Content from '../../../parts/Content';
 import Layout from '../../../parts/Layout';
-
-// @todo Remember to use @vizality/component later when you add this.
-const TextInput = getModuleByDisplayName('TextInput');
 
 export default memo(() => {
   const [ selectedIcon, setSelectedIcon ] = useState('');
@@ -20,17 +17,13 @@ export default memo(() => {
   const { weightMedium } = getModule('weightMedium');
   const { size20 } = getModule('size24');
 
-  const _sortItems = icons => {
+  const _sortIcons = icons => {
     if (query && query !== '') {
       const search = query.toLowerCase();
       icons = icons.filter(icon => icon.toLowerCase().includes(search));
     }
 
     return icons.sort();
-  };
-
-  const _getItems = () => {
-    return _sortItems(Icon.Names);
   };
 
   const renderIcon = icon => {
@@ -45,10 +38,10 @@ export default memo(() => {
   };
 
   const renderPreviewTab = () => {
-    const items = _getItems();
+    const icons = _sortIcons(Icon.Names);
     return (
       <>
-        {!items.length
+        {!icons.length
           ? <div className='vz-component-preview-no-results'>
             <div className='vz-component-preview-no-results-image' />
             <div className={`vz-component-preview-no-results-text ${marginBottom20}`}>
@@ -56,8 +49,9 @@ export default memo(() => {
             </div>
           </div>
           : <>
-            {items.map(icon => renderIcon(icon))}
-          </>}
+            {icons.map(icon => renderIcon(icon))}
+          </>
+        }
       </>
     );
   };

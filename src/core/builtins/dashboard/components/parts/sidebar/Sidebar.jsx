@@ -7,8 +7,14 @@ import { getModule } from '@vizality/webpack';
 import Item from './Item';
 
 const Header = memo(({ children }) => {
-  const { header } = getModule('header', 'item', 'separator');
-  return <h2 className={joinClassNames('vz-dashboard-sidebar-header', header)}>{children}</h2>;
+  const { discoverHeader } = getModule('discoverHeader');
+  const { size24 } = getModule('size24');
+  const { base } = getModule('base');
+  return (
+    <h2 className={joinClassNames(discoverHeader, base, size24)}>
+      {children}
+    </h2>
+  );
 });
 
 const Separator = memo(props =>
@@ -21,7 +27,7 @@ const SubItem = memo(({ label, path, action, launch }) =>
 
 export default memo(() =>
   <AdvancedScrollerThin className='vz-dashboard-sidebar'>
-    <Header>Vizality Dashboard</Header>
+    <Header>Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />
     <Item icon='Wrench' label='Settings' path='/settings' />
     {/* Installed, Discover, Ideas & Inspiration */}
