@@ -75,4 +75,4 @@ export default class RpcAPI extends API {
       this.emit('eventRemoved', name);
     }
   }
-};
+}

@@ -79,10 +79,6 @@ getModule(m => m.DropdownSizes, true, true).then(Button =>
   [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => this.Button[prop] = Button[prop])
 );
 
-getModule(m => m.default?.displayName === 'BotTag', true, true).then(BotTag =>
-  this.BotTag.Types = BotTag.BotTagTypes
-);
-
 getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar =>
   [ 'Icon', 'Title', 'Divider' ].forEach(prop => this.HeaderBar[prop] = HeaderBar[prop])
 );

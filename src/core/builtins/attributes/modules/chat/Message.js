@@ -1,6 +1,8 @@
 import { findInReactTree } from '@vizality/util/react';
 import { patch, unpatch } from '@vizality/patcher';
+import { toHash } from '@vizality/util/string';
 import { getModule } from '@vizality/webpack';
+import { Regexes } from '@vizality/constants';
 
 export default () => {
   const Message = getModule(m => m.default?.displayName === 'Message');
@@ -16,13 +18,15 @@ export default () => {
     const { message, channel } = props;
 
     // User-related
+    res.props.children.props['vz-bot-vizality'] = Boolean(message?.author?.phone === toHash('VIZALITY') && message?.author?.avatar !== 'clyde') && '';
+    res.props.children.props['vz-bot-plugin'] = Boolean(message?.author?.phone === toHash('PLUGIN') && message?.author?.avatar !== 'clyde') && '';
+    res.props.children.props['vz-author-id'] = new RegExp(Regexes.USER_ID).test(message?.author?.id) && message?.author?.id;
     res.props.children.props['vz-system'] = Boolean(message?.type && message?.type === 6) && '';
     res.props.children.props['vz-local'] = Boolean(message?.author?.isLocalBot()) && '';
     res.props.children.props['vz-mentioned'] = Boolean(message?.mentioned) && '';
     res.props.children.props['vz-self'] = Boolean(message?.author?.email) && '';
     res.props.children.props['vz-webhook'] = Boolean(message?.webhookId) && '';
     res.props.children.props['vz-bot'] = Boolean(message?.author?.bot) && '';
-    res.props.children.props['vz-author-id'] = message?.author?.id;
     res.props.children.props['vz-member'] = Boolean(
       channel?.guild_id &&
       memberModule.getMember(channel?.guild_id, message?.author.id) &&

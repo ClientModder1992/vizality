@@ -1,4 +1,6 @@
-export const {
+const { connections, settings, commands, keybinds, actions, notices, popups, router, i18n, rpc } = vizality.api;
+
+export default {
   connections,
   settings,
   commands,
@@ -9,4 +11,6 @@ export const {
   router,
   i18n,
   rpc
-} = vizality.api;
+};
+
+console.log(this);
