@@ -63,3 +63,25 @@
   display: flex;
   flex: 1;
 }
+
+// Show special tag for plugins and Vizality "clyde"
+.message-2qnXI6 {
+  &[vz-bot-plugin],
+  &[vz-bot-vizality] {
+    .botTag-2WPJ74 {
+      &:not(.vz-bot-plugin-tag) {
+        &:not(.vz-bot-vizality-tag) {
+          display: none;
+        }
+      }
+    }
+  }
+  &[vz-local] {  
+    &:not([vz-bot-plugin]):not([vz-bot-vizality]) {
+      .vz-bot-plugin-tag,
+      .vz-bot-vizality-tag {
+        display: none;
+      }
+    }
+  }
+}

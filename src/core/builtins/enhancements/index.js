@@ -2,7 +2,7 @@ import { Builtin } from '@vizality/core';
 
 import * as modules from './modules';
 
-export default class CoreDiscordEnhancements extends Builtin {
+export default class Enhancements extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
     this.callbacks = [];

@@ -1,4 +1,5 @@
 import { getModule, channels } from '@vizality/webpack';
+import { toHash } from '@vizality/util/string';
 import { HTTP } from '@vizality/constants';
 
 const { getChannelId } = channels;
@@ -40,10 +41,12 @@ export default async function monkeypatchMessages () {
         'Vizality';
 
         let botAvatarName = 'vizality';
+        let botPhone = toHash('VIZALITY');
 
         if (plugin) {
           BOT_AVATARS[plugin.addonId] = command.avatar || plugin.manifest.icon;
           botAvatarName = plugin.addonId;
+          botPhone = toHash('PLUGIN');
         }
 
         const avatar = command.avatar ||
@@ -55,6 +58,7 @@ export default async function monkeypatchMessages () {
 
         receivedMessage.author.username = username;
         receivedMessage.author.avatar = botAvatarName;
+        receivedMessage.author.phone = botPhone;
 
         if (result.avatar_url) {
           BOT_AVATARS[result.username] = result.avatar_url;
