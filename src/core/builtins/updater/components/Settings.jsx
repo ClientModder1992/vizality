@@ -63,8 +63,9 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   }
 
   const _renderFormNotice = (title, body) => {
+    const { marginBottom20 } = getModule('marginBottom20');
     return <FormNotice
-      className='vz-updater-form-notice'
+      className={joinClassNames('vz-updater-form-notice', marginBottom20)}
       imageData={{
         width: 60,
         height: 60,
