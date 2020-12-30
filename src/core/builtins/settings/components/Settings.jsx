@@ -6,7 +6,6 @@ import { Directories } from '@vizality/constants';
 import { getModule } from '@vizality/webpack';
 import { Icon } from '@vizality/components';
 import { Messages } from '@vizality/i18n';
-import { actions } from '@vizality/api';
 
 export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ isDiscordCacheCleared, setDiscordCacheCleared ] = useState(false);
@@ -64,7 +63,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('reactDeveloperTools', false)}
           onChange={() => {
             toggleSetting('reactDeveloperTools', false);
-            actions.invoke('confirmRestart');
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           Enable React Developer Tools
@@ -118,7 +117,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('transparentWindow', false)}
           onChange={() => {
             toggleSetting('transparentWindow');
-            actions.invoke('confirmRestart');
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_TRANSPARENT}
@@ -128,7 +127,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('experimentalWebPlatform', false)}
           onChange={() => {
             toggleSetting('experimentalWebPlatform');
-            actions.invoke('confirmRestart');
+            vizality.api.actions.invoke('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}

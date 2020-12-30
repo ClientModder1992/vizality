@@ -124,7 +124,7 @@ export default class Vizality extends Updatable {
 
     // APIs
     await this.manager.apis.initialize();
-    this.settings = vizality.api.settings.buildCategoryObject('settings');
+    this.settings = this.api.settings.buildCategoryObject('settings');
     this.emit('settingsReady');
 
     // @todo Make this and removeDiscordLogs settings options
@@ -232,7 +232,7 @@ export default class Vizality extends Updatable {
       const updater = this.manager.builtins.get('updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
-        vizality.api.notices.sendToast('vizality-updater', {
+        this.api.notices.sendToast('vizality-updater', {
           header: 'Update complete!',
           content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
           type: 'success',
@@ -245,7 +245,7 @@ export default class Vizality extends Updatable {
             text: 'Postpone',
             color: 'grey',
             look: 'outlined',
-            onClick: () => vizality.api.notices.closeToast('vizality-updater')
+            onClick: () => this.api.notices.closeToast('vizality-updater')
           } ]
         });
       }
