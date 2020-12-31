@@ -126,7 +126,7 @@ export default class Builtin {
 
         const after = performance.now();
 
-        const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');
+        const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
         this.log(`Builtin loaded. Initialization took ${time} ms.`);
       }
@@ -160,7 +160,7 @@ export default class Builtin {
       if (typeof this.onStop === 'function') {
         await this.onStop();
       }
-      this.log('Builtin unloaded');
+      this.log('Builtin unloaded.');
     } catch (e) {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {

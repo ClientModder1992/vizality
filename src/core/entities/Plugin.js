@@ -169,7 +169,7 @@ export default class Plugin extends Updatable {
 
         const after = performance.now();
 
-        const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');
+        const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
         this.log(`Plugin loaded. Initialization took ${time} ms.`);
       }
@@ -203,7 +203,7 @@ export default class Plugin extends Updatable {
       if (typeof this.onStop === 'function') {
         await this.onStop();
       }
-      this.log('Plugin unloaded');
+      this.log('Plugin unloaded.');
     } catch (e) {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
