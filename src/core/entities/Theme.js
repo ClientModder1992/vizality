@@ -12,12 +12,11 @@ export default class Theme extends Updatable {
     this.manifest = manifest;
     this.applied = false;
 
-    this.module = 'Theme';
-    this.submodule = this.manifest.name;
-    this.submoduleColor = null;
+    this._module = this.constructor.name;
+    this._submodule = this.manifest.name;
   }
 
-  _load () {
+  load () {
     if (!this.applied) {
       this.applied = true;
       const style = createElement('style', {
@@ -38,7 +37,7 @@ export default class Theme extends Updatable {
     this.log('Theme loaded.');
   }
 
-  _unload () {
+  unload () {
     if (this.applied) {
       this.applied = false;
       this.compiler.off('src-update', this._doCompile);
@@ -48,14 +47,14 @@ export default class Theme extends Updatable {
   }
 
   log (...data) {
-    log(this.module, this.submodule, null, ...data);
+    log(this._module, this._submodule, null, ...data);
   }
 
   error (...data) {
-    error(this.module, this.submodule, null, ...data);
+    error(this._module, this._submodule, null, ...data);
   }
 
   warn (...data) {
-    warn(this.module, this.submodule, null, ...data);
+    warn(this._module, this._submodule, null, ...data);
   }
 }

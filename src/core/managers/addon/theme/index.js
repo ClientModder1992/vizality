@@ -117,7 +117,7 @@ export default class ThemeManager extends AddonManager {
       throw new Error(`Tried to unmount a non installed theme (${themeID})`);
     }
 
-    theme._unload();
+    theme.unload();
     this.themes.delete(themeID);
   }
 
@@ -148,7 +148,7 @@ export default class ThemeManager extends AddonManager {
   //         missingThemes.push(addonId);
   //       }
 
-  //       this[this.type].get(addonId)._load();
+  //       this[this.type].get(addonId).load();
   //     }
   //   }
 
@@ -158,7 +158,7 @@ export default class ThemeManager extends AddonManager {
   // }
 
   terminate () {
-    return [ ...this.themes.values() ].forEach(t => t._unload());
+    return [ ...this.themes.values() ].forEach(t => t.unload());
   }
 
   _validateManifest (manifest) {

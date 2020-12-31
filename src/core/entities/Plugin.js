@@ -79,7 +79,7 @@ export default class Plugin extends Updatable {
     const id = Math.random().toString(36).slice(2);
     const compiler = resolveCompiler(resolvedPath);
     const style = createElement('style', {
-      id: `style-${this.addonId}-${id}`,
+      id: `plugin-${this.addonId}-${id}`,
       'vz-style': '',
       'vz-plugin': ''
     });
@@ -124,7 +124,7 @@ export default class Plugin extends Updatable {
   /**
    * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
    */
-  async enableWatcher () {
+  async _enableWatcher () {
     this._watcherEnabled = vizality.settings.get('hotReload', false);
   }
 
@@ -132,7 +132,7 @@ export default class Plugin extends Updatable {
    * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
    * was previously enabled.
    */
-  async disableWatcher () {
+  async _disableWatcher () {
     this._watcherEnabled = false;
     this._watchers.close();
     this._watchers = {};
@@ -156,7 +156,7 @@ export default class Plugin extends Updatable {
   }
 
   // Internals
-  async _load () {
+  async load () {
     try {
       while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
         await sleep(1);
@@ -184,19 +184,19 @@ export default class Plugin extends Updatable {
        * with JSX file caching, which you can see if you disable a plugin, edit a file, and enable
        * the plugin.
        */
-      this.enableWatcher();
+      this._enableWatcher();
       if (this._watcherEnabled) {
         this._watchFiles();
       }
     }
   }
 
-  async _unload () {
+  async unload () {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`style-${this.addonId}-${id}`).remove();
+        document.getElementById(`plugin-${this.addonId}-${id}`).remove();
       }
 
       this.styles = {};
@@ -209,7 +209,7 @@ export default class Plugin extends Updatable {
     } finally {
       this._ready = false;
       if (this._watchers && this._watchers.isClosed && !this._watchers.isClosed()) {
-        await this.disableWatcher();
+        await this._disableWatcher();
       }
     }
   }

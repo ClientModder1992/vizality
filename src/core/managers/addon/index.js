@@ -117,7 +117,7 @@ export default class AddonManager {
       // chhhh
     }
     await this.mount(addonId);
-    this.get(addonId)._load();
+    this.get(addonId).load();
   }
 
   async remountAll () {
@@ -135,7 +135,7 @@ export default class AddonManager {
     }
 
     if (addon._ready) {
-      await addon._unload();
+      await addon.unload();
     }
 
     Object.keys(require.cache).forEach(key => {
@@ -173,7 +173,7 @@ export default class AddonManager {
           missingThemes.push(addonId);
         }
 
-        this.get(addonId)._load();
+        this.get(addonId).load();
       }
     }
 
@@ -197,7 +197,7 @@ export default class AddonManager {
       vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
         .filter(addon => addon !== addonId));
 
-    addon._load();
+    addon.load();
   }
 
   async disable (addonId) {
@@ -216,7 +216,7 @@ export default class AddonManager {
       addonId
     ]);
 
-    addon._unload();
+    addon.unload();
   }
 
   async reload (addonId) {
