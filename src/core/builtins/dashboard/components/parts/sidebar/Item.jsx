@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 
-import { Clickable, Icon, Tooltip } from '@vizality/components';
+import { Clickable, Icon, Tooltip, Menu } from '@vizality/components';
+import { getModule, contextMenu } from '@vizality/webpack';
 import { joinClassNames } from '@vizality/util';
-import { getModule } from '@vizality/webpack';
+
+const { closeContextMenu, openContextMenu } = contextMenu;
 
 export default memo(({ icon, label, path, action, launch, expandable, subItem, disabled, auxillaryIconTooltipText, children }) => {
   const { useLocation } = getModule('useLocation');
@@ -17,6 +19,15 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
   return (
     <>
       <Clickable
+        onContextMenu={e => openContextMenu(e, () =>
+          <Menu.Menu navId='dashboard-item' onClose={closeContextMenu}>
+            <Menu.MenuItem
+              id='copy-link'
+              label='Copy Link'
+              action={() => DiscordNative.clipboard.copy(`<vizality:/${path}>`)}
+            />
+          </Menu.Menu>
+        )}
         onClick={(e) => {
           if (disabled) return;
           // @todo Make this... not so bad.
