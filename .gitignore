@@ -16,5 +16,3 @@ settings/*.json
 
 debug.log
 main.log
-
-addons/plugins/vz-snippets/snippets/*

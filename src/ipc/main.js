@@ -8,22 +8,20 @@ const LIB_DIR = join(__dirname, '..', 'core', 'lib', 'sass');
 const BASE_DIR = join(__dirname, '..', '..');
 
 if (!ipcMain) {
-  throw new Error('Don\'t require stuff you shouldn\'t silly.');
+  throw new Error('You tried to require an unpermitted package.');
 }
 
 function openDevTools (e, opts, externalWindow) {
   e.sender.openDevTools(opts);
   if (externalWindow) {
-    if (externalWindow) {
-      let devToolsWindow = new BrowserWindow({
-        webContents: e.sender.devToolsWebContents
-      });
-      devToolsWindow.on('ready-to-show', () => devToolsWindow.show());
-      devToolsWindow.on('close', () => {
-        e.sender.closeDevTools();
-        devToolsWindow = null;
-      });
-    }
+    let devToolsWindow = new BrowserWindow({
+      webContents: e.sender.devToolsWebContents
+    });
+    devToolsWindow.on('ready-to-show', () => devToolsWindow.show());
+    devToolsWindow.on('close', () => {
+      e.sender.closeDevTools();
+      devToolsWindow = null;
+    });
   }
 }
 
