@@ -6,20 +6,18 @@ import { error, log, warn } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { sleep } from '@vizality/util';
-
-import Updatable from './Updatable';
 
 /**
  * Main class for Vizality builtins
- * @property {boolean} _ready Whether the builtin is ready or not
- * @property {SettingsCategory} settings Builtin settings
- * @property {object<string, Compiler>} styles Styles the builtin loaded
+ * @property {boolean} _ready Whether the plugin is ready or not
+ * @property {SettingsCategory} settings Plugin settings
+ * @property {object<string, Compiler>} styles Styles the plugin loaded
  * @abstract
  */
-export default class Builtin extends Updatable {
+export default class Builtin {
   constructor () {
-    super(vizality.manager.builtins.dir);
+    this.baseDir = vizality.manager.builtins.dir;
+    this.addonPath = join(this.baseDir, this.addonId);
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
     this._ready = false;
@@ -27,34 +25,6 @@ export default class Builtin extends Updatable {
     this._watchers = {};
     this._module = 'Builtin';
     this._submodule = this.constructor.name;
-    this._submoduleColor = this.manifest.color || null;
-  }
-
-  get dependencies () {
-    return this.manifest.dependencies;
-  }
-
-  get optionalDependencies () {
-    return this.manifest.optionalDependencies;
-  }
-
-  get effectiveOptionalDependencies () {
-    const deps = this.manifest.optionalDependencies;
-    const disabled = vizality.settings.get('disabledPlugins', []);
-    return deps.filter(d => vizality.manager.builtins.get(d) !== void 0 && !disabled.includes(d));
-  }
-
-  get allDependencies () {
-    return this.dependencies.concat(this.optionalDependencies);
-  }
-
-  get allEffectiveDependencies () {
-    return this.dependencies.concat(this.effectiveOptionalDependencies);
-  }
-
-  get dependents () {
-    const dependents = [ ...vizality.manager.builtins.values ].filter(p => p.manifest.dependencies.includes(this.addonId));
-    return [ ...new Set(dependents.map(d => d.addonId).concat(...dependents.map(d => d.dependents))) ];
   }
 
   /**
@@ -79,12 +49,13 @@ export default class Builtin extends Updatable {
     const id = Math.random().toString(36).slice(2);
     const compiler = resolveCompiler(resolvedPath);
     const style = createElement('style', {
-      id: `style-${this.addonId}-${id}`,
+      id: `builtin-${this.addonId}-${id}`,
       'vz-style': '',
-      'vz-plugin': ''
+      'vz-builtin': ''
     });
 
     document.head.appendChild(style);
+
     const compile = async () => {
       let compiled;
       if (suppress) {
@@ -111,27 +82,18 @@ export default class Builtin extends Updatable {
     return compile();
   }
 
-  // Update
-  async _update (force = false) {
-    const success = await super._update(force);
-    if (success && this._ready) {
-      await vizality.manager.builtins.remount(this.addonId);
-    }
-    return success;
-  }
-
   /**
    * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
    */
-  enableWatcher () {
-    this._watcherEnabled = true;
+  async _enableWatcher () {
+    this._watcherEnabled = vizality.settings.get('hotReload', false);
   }
 
   /**
    * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
    * was previously enabled.
    */
-  disableWatcher () {
+  async _disableWatcher () {
     this._watcherEnabled = false;
     this._watchers.close();
     this._watchers = {};
@@ -142,25 +104,21 @@ export default class Builtin extends Updatable {
     const _this = this;
     this._watchers = watch(this.addonPath, {
       recursive: true,
-      filter (f, skip) {
+      async filter (f, skip) {
         // skip node_modules
         if ((/\\node_modules/).test(f)) return skip;
         // skip .git folder
         if ((/\.git/).test(f)) return skip;
         // Don't do anything if it's a Sass/CSS file or the manifest file
-        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return;
-        vizality.manager.builtins.remount(_this.addonId);
+        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return skip;
+        await vizality.manager.builtins.remount(_this.addonId);
       }
     });
   }
 
   // Internals
-  async _load () {
+  async load () {
     try {
-      while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.builtins.get(pluginName)._ready)) {
-        await sleep(1);
-      }
-
       if (typeof this.onStart === 'function') {
         const before = performance.now();
 
@@ -170,7 +128,7 @@ export default class Builtin extends Updatable {
 
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '');
 
-        this.log(`Plugin loaded. Initialization took ${time} ms.`);
+        this.log(`Builtin loaded. Initialization took ${time} ms.`);
       }
     } catch (err) {
       this.error('An error occurred during initialization!', err);
@@ -183,46 +141,45 @@ export default class Builtin extends Updatable {
        * with JSX file caching, which you can see if you disable a plugin, edit a file, and enable
        * the plugin.
        */
-      this.enableWatcher();
+      this._enableWatcher();
       if (this._watcherEnabled) {
         this._watchFiles();
       }
     }
   }
 
-  async _unload () {
+  async unload () {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`style-${this.addonId}-${id}`).remove();
+        document.getElementById(`builtin-${this.addonId}-${id}`).remove();
       }
 
       this.styles = {};
       if (typeof this.onStop === 'function') {
         await this.onStop();
       }
-      this.log('Plugin unloaded');
+      this.log('Builtin unloaded');
     } catch (e) {
-      this.error('An error occurred during shutting down! It\'s heavily recommended reloading Discord to ensure there are no conflicts.', e);
+      this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
       this._ready = false;
-      // this._watcher.close();
-      if (this._watcherEnabled) {
-        this.disableWatcher();
+      if (this._watchers && this._watchers.isClosed && !this._watchers.isClosed()) {
+        await this._disableWatcher();
       }
     }
   }
 
   log (...data) {
-    log(this._module, this._submodule, this._submoduleColor, ...data);
+    log(this._module, this._submodule, null, ...data);
   }
 
   error (...data) {
-    error(this._module, this._submodule, this._submoduleColor, ...data);
+    error(this._module, this._submodule, null, ...data);
   }
 
   warn (...data) {
-    warn(this._module, this._submodule, this._submoduleColor, ...data);
+    warn(this._module, this._submodule, null, ...data);
   }
 }

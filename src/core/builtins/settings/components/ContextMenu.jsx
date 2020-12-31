@@ -121,7 +121,7 @@ export default memo(() => {
                 onClear={() => setPluginQuery('')}
               />}
             />
-            <Menu.MenuGroup label='Plugins'>
+            <Menu.MenuGroup>
               {renderItems('plugins')}
             </Menu.MenuGroup>
           </>}
@@ -146,7 +146,7 @@ export default memo(() => {
                 onClear={() => setThemeQuery('')}
               />}
             />
-            <Menu.MenuGroup label='Themes'>
+            <Menu.MenuGroup>
               {renderItems('themes')}
             </Menu.MenuGroup>
           </>}
