@@ -1,7 +1,6 @@
 /.cache
 /.logs
 node_modules
-package-lock.json
 
 addons/plugins/*
 !addons/plugins/.exists
