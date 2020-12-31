@@ -37,6 +37,7 @@ export default () => {
       const userId = props?.href?.replace(userRegex, '');
       props.onClick = e => {
         e.preventDefault();
+        if (!userId) return;
         // @todo Use Discord module for this after it's set up.
         getModule('getUser').getUser(userId)
           .then(() => getModule('open', 'fetchProfile').open(userId))

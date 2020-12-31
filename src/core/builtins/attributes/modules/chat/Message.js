@@ -20,7 +20,7 @@ export default () => {
     // User-related
     res.props.children.props['vz-bot-vizality'] = Boolean(message?.author?.phone === toHash('VIZALITY') && message?.author?.avatar !== 'clyde') && '';
     res.props.children.props['vz-bot-plugin'] = Boolean(message?.author?.phone === toHash('PLUGIN') && message?.author?.avatar !== 'clyde') && '';
-    res.props.children.props['vz-author-id'] = new RegExp(Regexes.USER_ID).test(message?.author?.id) && message?.author?.id;
+    res.props.children.props['vz-user-id'] = new RegExp(Regexes.USER_ID).test(message?.author?.id) && message?.author?.id;
     res.props.children.props['vz-system'] = Boolean(message?.type && message?.type === 6) && '';
     res.props.children.props['vz-local'] = Boolean(message?.author?.isLocalBot()) && '';
     res.props.children.props['vz-mentioned'] = Boolean(message?.mentioned) && '';
