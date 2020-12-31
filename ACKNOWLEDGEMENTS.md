@@ -14,10 +14,10 @@ _Developer of [discord.js](https://discord.js.org/)_
 
 His work on discord.js has been a helpful learning tool for me, and while mostly not directly related to manipulating Discord's internals like a client mod does, it helped spark ideas and tools to provide and code structures.
 
-**[Aetheryx](https://github.com/aetheryx)** & **[Bowser](https://github.com/Bowser65)**<br>
+**[Aetheryx](https://github.com/aetheryx)** & **[Cynthia](https://github.com/cyyynthia)**<br>
 _Developers of [Powercord](https://powercord.dev/)_
 
-It's no secret that there is plenty of bad blood between me and the Powercord community--- Bowser and Aetheryx in particular. I don't always agree with their personalities or choices in the modding department, but they are skilled developers and much of Vizality's base code is attributed to them. Regardless, without their work on Powercord, Vizality would not be around today, and I thank them for their work and dedication to the community.
+It's no secret that there is a bit of bad blood between me and the Powercord community--- Cynthia and Aetheryx in particular. We have a difference of opinion in the way some things should work, but they are skilled developers and much of Vizality's base code is attributed to them. Regardless, without their work on Powercord, Vizality would not be around today, and I thank them for their work and dedication to the community.
 
 ## Other Mentions
 
