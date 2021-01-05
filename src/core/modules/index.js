@@ -1,5 +1,5 @@
-// export { default as Discord } from './discord';
-export { default as Util } from './util';
+export { default as Discord } from './discord';
+export * as util from './util';
 export * as components from './components';
 export * as constants from './constants';
 export * as webpack from './webpack';

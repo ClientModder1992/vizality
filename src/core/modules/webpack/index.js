@@ -1,8 +1,6 @@
-/* eslint-disable brace-style */
-
 import moduleFilters from './modules.json';
 import { log, warn } from '../util/logger';
-import sleep from '../util/sleep';
+import { sleep } from '../util/time';
 
 const _module = 'Module';
 const _submodule = 'Webpack';
@@ -200,9 +198,9 @@ export const getModuleById = (id, retry = false, forever = false) => {
 };
 
 /*
-* @todo: Make this work like getModule, where it accepts the argument as strings... i.e.
-* getModuleByPrototypes('_log') instead of getModuleByPrototypes([ '_log' ])
-*/
+ * @todo: Make this work like getModule, where it accepts the argument as strings... i.e.
+ * getModuleByPrototypes('_log') instead of getModuleByPrototypes([ '_log' ])
+ */
 
 /**
  * Grabs a module using properties on its prototype.
@@ -232,8 +230,15 @@ export const getModulesByKeyword = (keyword, exact = false) => {
   return this.getModules(module => {
     const modules = [ ...Object.keys(module), ...Object.keys(module.__proto__) ];
     for (const mdl of modules) {
-      if (exact) { if (mdl === keyword) return true; }
-      else { if (mdl.toLowerCase().indexOf(keyword.toLowerCase()) > -1) return true; }
+      if (exact) {
+        if (mdl === keyword) {
+          return true;
+        }
+      } else {
+        if (mdl.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
+          return true;
+        }
+      }
     }
     return false;
   });

@@ -1,20 +1,20 @@
 /* eslint-disable no-undef */
-const { performance, PerformanceObserver } = require('perf_hooks');
+import { performance, PerformanceObserver } from 'perf_hooks';
 
 /**
  * Benchmarks an array of functions and sorts them by performance.
- * @param {Array} functs The functions to benchmark.
+ * @param {Array} funcs The functions to benchmark.
  * @param {number} iterations The amount of iterations to run through and Median on.
  * @param {boolean} [nano=true] Whether to show the formatted string in milliseconds or nanoseconds.
  * @param {boolean} [log=true] Whether or not to log the results to the console right away.
  * @returns {object} The results. All ready to be handled if you don't want them printed to the console.
  */
-module.exports = (functs, iterations, nano = true, log = true) => {
+export const benchmark = (funcs, iterations, nano = true, log = true) => {
   return new Promise(async resolve => {
     const res = [];
 
-    for (let i = 0; i < functs.length; i++) {
-      const funct = functs[i];
+    for (let i = 0; i < funcs.length; i++) {
+      const funct = funcs[i];
 
       let obs;
       try {
