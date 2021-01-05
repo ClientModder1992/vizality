@@ -7,7 +7,7 @@ import { join, extname } from 'path';
 import { open as openModal, close as closeModal } from '@vizality/modal';
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { Confirm, Spinner, Text } from '@vizality/components';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
 
@@ -96,7 +96,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   const _fetchMissing = async type => {
     vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
 
-    const missingAddons = vizality.manager[toPlural(type)].load(true);
+    const missingAddons = vizality.manager[toPlural(type)].start(true);
     const missingAddonsList = missingAddons.length
       ? <>
         <div>{Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length })}</div>

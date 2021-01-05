@@ -82,6 +82,18 @@ export default class Builtin {
     return compile();
   }
 
+  log (...data) {
+    log(this._module, this._submodule, null, ...data);
+  }
+
+  error (...data) {
+    error(this._module, this._submodule, null, ...data);
+  }
+
+  warn (...data) {
+    warn(this._module, this._submodule, null, ...data);
+  }
+
   /**
    * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
    */
@@ -117,7 +129,7 @@ export default class Builtin {
   }
 
   // Internals
-  async load () {
+  async _load () {
     try {
       if (typeof this.onStart === 'function') {
         const before = performance.now();
@@ -148,7 +160,7 @@ export default class Builtin {
     }
   }
 
-  async unload () {
+  async _unload () {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
@@ -169,17 +181,5 @@ export default class Builtin {
         await this._disableWatcher();
       }
     }
-  }
-
-  log (...data) {
-    log(this._module, this._submodule, null, ...data);
-  }
-
-  error (...data) {
-    error(this._module, this._submodule, null, ...data);
-  }
-
-  warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
   }
 }

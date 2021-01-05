@@ -148,7 +148,7 @@ export default class ThemeManager extends AddonManager {
   //         missingThemes.push(addonId);
   //       }
 
-  //       this[this.type].get(addonId).load();
+  //       this[this.type].get(addonId)._load();
   //     }
   //   }
 
@@ -158,7 +158,7 @@ export default class ThemeManager extends AddonManager {
   // }
 
   terminate () {
-    return [ ...this.themes.values() ].forEach(t => t.unload());
+    return [ ...this.themes.values() ].forEach(t => t._unload());
   }
 
   _validateManifest (manifest) {
@@ -202,4 +202,4 @@ export default class ThemeManager extends AddonManager {
     }
     return errors;
   }
-};
+}

@@ -6,14 +6,13 @@ import { log, warn, error } from '@vizality/util/logger';
 import { removeDirRecursive } from '@vizality/util/file';
 import { Avatars } from '@vizality/constants';
 
-const _module = 'Manager';
-
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
     this.requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
-
+    this._module = 'Manager';
+    this._submodule = toTitleCase(toSingular(this.type));
     this[type] = new Map();
   }
 
@@ -75,11 +74,11 @@ export default class AddonManager {
         optionalDependencies: []
       }, await import(resolve(this.dir, addonId, 'manifest.json')));
     } catch (err) {
-      return this.error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest - Skipping`);
+      return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
     }
 
     if (!this.requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this.error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest - Skipping`);
+      return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
     }
 
     try {
@@ -102,11 +101,10 @@ export default class AddonManager {
       });
 
       this._setIcon(manifest, addonId);
-      // this._setColor(manifest);
 
       this[this.type].set(addonId, new AddonClass());
     } catch (err) {
-      this.error(`An error occurred while initializing "${addonId}"!`, err);
+      this._error(`An error occurred while initializing "${addonId}"!`, err);
     }
   }
 
@@ -117,7 +115,7 @@ export default class AddonManager {
       // chhhh
     }
     await this.mount(addonId);
-    this.get(addonId).load();
+    this.get(addonId)._load();
   }
 
   async remountAll () {
@@ -135,7 +133,7 @@ export default class AddonManager {
     }
 
     if (addon._ready) {
-      await addon.unload();
+      await addon._unload();
     }
 
     Object.keys(require.cache).forEach(key => {
@@ -148,12 +146,11 @@ export default class AddonManager {
   }
 
   // Start/Stop
-  async load (sync = false) {
+  async start (sync = false) {
     const missingThemes = [];
     const files = readdirSync(this.dir);
     for (const filename of files) {
       if (filename.startsWith('.')) {
-        console.debug('%c[Vizality:AddonManager]', 'color: #7289da', 'Ignoring dotfile', filename);
         continue;
       }
 
@@ -173,7 +170,7 @@ export default class AddonManager {
           missingThemes.push(addonId);
         }
 
-        this.get(addonId).load();
+        this.get(addonId)._load();
       }
     }
 
@@ -197,7 +194,7 @@ export default class AddonManager {
       vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
         .filter(addon => addon !== addonId));
 
-    addon.load();
+    addon._load();
   }
 
   async disable (addonId) {
@@ -216,7 +213,7 @@ export default class AddonManager {
       addonId
     ]);
 
-    addon.unload();
+    addon._unload();
   }
 
   async reload (addonId) {
@@ -326,7 +323,15 @@ export default class AddonManager {
     }
   }
 
-  log (...data) { log(_module, toSingular(this.type), null, ...data); }
-  warn (...data) { warn(_module, toSingular(this.type), null, ...data); }
-  error (...data) { error(_module, toSingular(this.type), null, ...data); }
+  _log (...data) {
+    log(this._module, toSingular(this.type), null, ...data);
+  }
+
+  _warn (...data) {
+    warn(this._module, toSingular(this.type), null, ...data);
+  }
+
+  _error (...data) {
+    error(this._module, toSingular(this.type), null, ...data);
+  }
 }

@@ -27,7 +27,6 @@ export default class Plugin extends Updatable {
     this._watchers = {};
     this._module = 'Plugin';
     this._submodule = this.constructor.name;
-    this._submoduleColor = this.manifest.color || null;
   }
 
   get dependencies () {
@@ -112,6 +111,18 @@ export default class Plugin extends Updatable {
     return compile();
   }
 
+  log (...data) {
+    log(this._module, this._submodule, null, ...data);
+  }
+
+  error (...data) {
+    error(this._module, this._submodule, null, ...data);
+  }
+
+  warn (...data) {
+    warn(this._module, this._submodule, null, ...data);
+  }
+
   // Update
   async _update (force = false) {
     const success = await super._update(force);
@@ -156,7 +167,7 @@ export default class Plugin extends Updatable {
   }
 
   // Internals
-  async load () {
+  async _load () {
     try {
       while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
         await sleep(1);
@@ -191,7 +202,7 @@ export default class Plugin extends Updatable {
     }
   }
 
-  async unload () {
+  async _unload () {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
@@ -212,17 +223,5 @@ export default class Plugin extends Updatable {
         await this._disableWatcher();
       }
     }
-  }
-
-  log (...data) {
-    log(this._module, this._submodule, null, ...data);
-  }
-
-  error (...data) {
-    error(this._module, this._submodule, null, ...data);
-  }
-
-  warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
   }
 }

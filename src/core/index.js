@@ -144,13 +144,13 @@ export default class Vizality extends Updatable {
     }
 
     // Builtins
-    await this.manager.builtins.load();
+    await this.manager.builtins.start();
 
     // Themes
-    this.manager.themes.load();
+    this.manager.themes.start();
 
     // Plugins
-    await this.manager.plugins.load();
+    await this.manager.plugins.start();
 
     this._initialized = true;
 
