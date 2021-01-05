@@ -1,8 +1,8 @@
-const { react: { findInTree } } = require('@vizality/util');
-const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
+// const { react: { findInTree } } = require('@vizality/util');
+// const { patch, unpatch } = require('@vizality/patcher');
+// const { getModule } = require('@vizality/webpack');
 
-module.exports = () => {
+export default () => {
   return void 0;
   // const UserPopout = getModule(m => m.default?.displayName === 'UserPopout');
 

@@ -43,6 +43,7 @@ export const Avatar = AsyncComponent.fetchFromProps('AnimatedAvatar', 'default')
 export const Helmet = AsyncComponent.fetchFromProps('HelmetProvider', 'Helmet');
 export const HelmetProvider = AsyncComponent.fetchFromProps('HelmetProvider');
 export const Tooltip = AsyncComponent.fetchFromProps('TooltipContainer');
+export const SlideIn = AsyncComponent.fetchFromProps('SlideIn');
 // ---
 export const Menu = () => null;
 

@@ -12,7 +12,6 @@ export default class AddonManager {
     this.type = type;
     this.requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
     this._module = 'Manager';
-    this._submodule = toTitleCase(toSingular(this.type));
     this[type] = new Map();
   }
 

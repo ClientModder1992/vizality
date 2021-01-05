@@ -2,7 +2,8 @@
 // const { patch, unpatch } = require('@vizality/patcher');
 // const { getModule } = require('@vizality/webpack');
 
-module.exports = async () => { void 0;
+export default () => {
+  return void 0;
   // const { roleCircle } = getModule('roleCircle', 'roleName', 'root');
   // const instance = getOwnerInstance(await waitForElement(`.${roleCircle.split(' ')[0]}`));
 

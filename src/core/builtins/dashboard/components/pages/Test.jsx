@@ -4,17 +4,24 @@ import React, { memo, useState, useEffect } from 'react';
 import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
 import { getModuleByDisplayName } from '@vizality/webpack';
 
+const TransitionGroup = getModuleByDisplayName('TransitionGroup');
+const SlideIn = getModuleByDisplayName('SlideIn');
+
 const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
 
 export default memo(() => {
   return (
     <>
-      <FormNotice
-        className='poo'
-        type={FormNotice.Types.WARNING}
-        title={'i like'}
-        body={'apple pie'}
-      />;
+      <TransitionGroup>
+        <SlideIn>
+          <FormNotice
+            className='poo'
+            type={FormNotice.Types.WARNING}
+            title={'i like'}
+            body={'apple pie'}
+          />
+        </SlideIn>
+      </TransitionGroup>
       <ApplicationStoreListingCarousel
         className='poog'
         autoplayInterval={8000}

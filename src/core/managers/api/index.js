@@ -24,13 +24,13 @@ export default class APIManager {
 
   async start () {
     for (const api of this.apis) {
-      await vizality.api[api].start();
+      await vizality.api[api]._load();
     }
   }
 
   async stop () {
     for (const api of this.apis) {
-      await vizality.api[api].stop();
+      await vizality.api[api]._unload();
     }
   }
 

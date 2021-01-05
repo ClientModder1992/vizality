@@ -3,7 +3,8 @@
 // const { getModule } = require('@vizality/webpack');
 // const { Messages } = require('@vizality/i18n');
 
-module.exports = async () => { void 0;
+export default () => {
+  return void 0;
   // const channelHeaderButtonClasses = await getModule('iconWrapper', 'toolbar', true);
   // const instance = getOwnerInstance(await waitForElement(`.${channelHeaderButtonClasses.iconWrapper}`));
 

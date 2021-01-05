@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron';
 
 import { Builtin } from '@vizality/core';
 
-import * as modules from './modules';
+import modules from './modules';
 
 export default class Attributes extends Builtin {
   onStart () {
@@ -10,7 +10,9 @@ export default class Attributes extends Builtin {
 
     for (const mod of Object.values(modules)) {
       (async () => {
+        console.log(mod);
         const callback = await mod();
+        console.log(typeof callback);
         if (typeof callback === 'function') {
           this.callbacks.push(callback);
         }
