@@ -10,7 +10,7 @@ export default class API extends Events {
     this._ready = false;
   }
 
-  async start () {
+  async _load () {
     try {
       if (typeof this.onStart === 'function') {
         await this.onStart();
@@ -22,7 +22,7 @@ export default class API extends Events {
     }
   }
 
-  async stop () {
+  async _unload () {
     try {
       if (typeof this.onStop === 'function') {
         await this.onStop();

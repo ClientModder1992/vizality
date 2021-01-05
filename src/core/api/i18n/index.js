@@ -1,6 +1,7 @@
-import { getModule, i18n } from '@vizality/webpack';
 import { Directories } from '@vizality/constants';
+import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/core';
+import i18n from '@vizality/i18n';
 
 export default class I18nAPI extends API {
   constructor () {
@@ -24,6 +25,20 @@ export default class I18nAPI extends API {
         }
       });
       this._addVizalityStrings();
+    });
+  }
+
+  onStop () {
+    console.log('test');
+    [ 'messages', 'defaultMessages' ].forEach(obj => {
+      Object.keys(i18n._proxyContext[obj])
+        .filter(key =>
+          Object.keys(this.messages[this.locale])
+            .filter(k => k === key))
+        .forEach(key => {
+          console.log('key2', key);
+          delete i18n._proxyContext[obj][key];
+        });
     });
   }
 
