@@ -4,7 +4,7 @@ import { resolve } from 'path';
 import { format } from 'util';
 import { parse } from 'url';
 
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 import { get } from '@vizality/http';
 

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 import { findInReactTree } from '@vizality/util/react';
+import { joinClassNames } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
-import { joinClassNames } from '@vizality/util';
 import { toHash } from '@vizality/util/string';
 import { getModule } from '@vizality/webpack';
 

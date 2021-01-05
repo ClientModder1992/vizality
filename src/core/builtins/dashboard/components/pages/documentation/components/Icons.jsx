@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 
 import { Icon, CodeBlock, ComponentPreview, TextInput } from '@vizality/components';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import AsideNav from '../../../parts/AsideNav';

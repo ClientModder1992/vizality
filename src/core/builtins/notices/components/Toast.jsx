@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { AsyncComponent, Button, Tooltip, Icon } from '@vizality/components';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 
 const Progress = AsyncComponent.fromDisplayName('Progress');
 

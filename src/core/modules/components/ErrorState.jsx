@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import { Icon } from '.';

@@ -7,7 +7,7 @@ import { Confirm, Clickable, Button, FormNotice } from '@vizality/components';
 import { open as openModal, close as closeModal } from '@vizality/modal';
 import { Repositories, Directories } from '@vizality/constants';
 import { Messages, chosenLocale } from '@vizality/i18n';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import Update from './Update';

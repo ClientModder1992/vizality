@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import { getModule, getModuleByDisplayName } from '@vizality/webpack';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 
 import { FormItem, FormText, Tooltip, Button, Divider } from '..';
 

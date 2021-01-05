@@ -2,8 +2,8 @@ import React from 'react';
 
 import { open as openModal, close as closeModal } from '@vizality/modal';
 import { getModuleByDisplayName, getModule } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
-import { joinClassNames } from '@vizality/util';
 import { Confirm } from '@vizality/components';
 import { Builtin } from '@vizality/entities';
 import { Messages } from '@vizality/i18n';

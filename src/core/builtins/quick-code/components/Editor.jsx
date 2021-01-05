@@ -3,8 +3,7 @@ import React, { memo, useEffect, useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { join } from 'path';
 
-import { injectShadowStyles } from '@vizality/util/dom';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames, injectShadowStyles } from '@vizality/util/dom';
 import { Spinner } from '@vizality/components';
 
 const { readFile } = promises;

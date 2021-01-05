@@ -1,6 +1,6 @@
-const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
-const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
+// const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
+// const { patch, unpatch } = require('@vizality/patcher');
+// const { getModule } = require('@vizality/webpack');
 
 module.exports = async () => { void 0;
   // const { roleCircle } = getModule('roleCircle', 'roleName', 'root');

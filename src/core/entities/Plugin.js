@@ -6,7 +6,7 @@ import { error, log, warn } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { sleep } from '@vizality/util';
+import { sleep } from '@vizality/util/time';
 
 import Updatable from './Updatable';
 

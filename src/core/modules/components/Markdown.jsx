@@ -6,7 +6,7 @@ import { shell } from 'electron';
 
 import { toKebabCase } from '@vizality/util/string';
 import { open as openModal } from '@vizality/modal';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import AsyncComponent from './AsyncComponent';

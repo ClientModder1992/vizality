@@ -1,4 +1,4 @@
-import { getOwnerInstance } from '@vizality/util/react';
+import { getOwnerInstance, findInReactTree } from '@vizality/util/react';
 import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';

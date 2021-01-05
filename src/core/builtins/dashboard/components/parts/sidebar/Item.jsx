@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { Clickable, Icon, Tooltip, Menu } from '@vizality/components';
 import { getModule, contextMenu } from '@vizality/webpack';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 
 const { closeContextMenu, openContextMenu } = contextMenu;
 

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import { Icon, Divider } from '@vizality/components';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 export default memo(({ icon, heading, subheading, className, children }) => {

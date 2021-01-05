@@ -1,7 +1,7 @@
-const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@vizality/util');
-const { patch, unpatch } = require('@vizality/patcher');
-const { getModule } = require('@vizality/webpack');
-const { Messages } = require('@vizality/i18n');
+// const { joinClassNames, dom: { waitForElement }, react: { forceUpdateElement, getOwnerInstance }, string: { toCamelCase } } = require('@vizality/util');
+// const { patch, unpatch } = require('@vizality/patcher');
+// const { getModule } = require('@vizality/webpack');
+// const { Messages } = require('@vizality/i18n');
 
 module.exports = async () => { void 0;
   // const channelHeaderButtonClasses = await getModule('iconWrapper', 'toolbar', true);

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 
 export default memo(props => {
   const { className, wrapperClassName, children, handleStickyChange } = props;

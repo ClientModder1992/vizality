@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { clipboard } from 'electron';
 
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
 

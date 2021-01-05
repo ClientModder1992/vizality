@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import { AdvancedScrollerThin } from '@vizality/components';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import Item from './Item';

@@ -4,7 +4,7 @@ import cp from 'child_process';
 import { initialize, getModule } from '@vizality/webpack';
 import { Directories, HTTP } from '@vizality/constants';
 import { Updatable } from '@vizality/entities';
-import { sleep } from '@vizality/util';
+import { sleep } from '@vizality/util/time';
 
 import BuiltinManager from './managers/addon/builtin';
 import PluginManager from './managers/addon/plugin';

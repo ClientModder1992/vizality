@@ -2,8 +2,8 @@ import React, { memo, useState } from 'react';
 import { clipboard } from 'electron';
 
 import { getModuleByDisplayName } from '@vizality/webpack';
+import { sleep } from '@vizality/util/time';
 import { Messages } from '@vizality/i18n';
-import { sleep } from '@vizality/util';
 
 import AsyncComponent from '../AsyncComponent';
 import { FormItem } from '..';

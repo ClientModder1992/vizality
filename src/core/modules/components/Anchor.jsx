@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 import { getModule, constants } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util/dom';
 import { toPlural } from '@vizality/util/string';
-import { joinClassNames } from '@vizality/util';
 
 import AsyncComponent from './AsyncComponent';
 

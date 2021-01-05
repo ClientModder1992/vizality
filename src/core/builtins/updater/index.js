@@ -6,8 +6,8 @@ import React from 'react';
 
 import { open as openModal, close as closeModal } from '@vizality/modal';
 import { getModule, getModuleByDisplayName } from '@vizality/webpack';
+import { joinClassNames } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { joinClassNames } from '@vizality/util';
 import { Confirm } from '@vizality/components';
 import { Messages } from '@vizality/i18n';
 import { Builtin } from '@vizality/core';

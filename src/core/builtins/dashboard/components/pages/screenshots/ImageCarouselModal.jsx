@@ -4,7 +4,7 @@ import { join, extname } from 'path';
 
 import { ImageCarouselModal, Image } from '@vizality/components';
 import { open as openModal } from '@vizality/modal';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 
 export default memo(() => {
   const [ images, setImages ] = useState([]);

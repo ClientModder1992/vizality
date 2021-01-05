@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { toKebabCase } from '@vizality/util/string';
 import { warn, error } from '@vizality/util/logger';
-import { joinClassNames } from '@vizality/util';
+import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 import { Clickable, Tooltip as TooltipContainer } from '.';
