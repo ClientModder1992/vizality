@@ -13,7 +13,6 @@ import APIManager from './managers/API';
 
 const exec = promisify(cp.exec);
 
-console.log(Updatable);
 /**
  * @typedef VizalityAPI
  * @property {CommandsAPI} commands

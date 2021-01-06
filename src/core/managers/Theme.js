@@ -26,9 +26,7 @@ export default class ThemeManager extends AddonManager {
 
     if (!window.__SPLASH__) {
       /**
-       * Injects a style element containing the styles from the specified stylesheet into the
-       * document head. Style element (and styles) are automatically removed on
-       * plugin disable/unload.
+       * Injects a style element containing Vizality's core styles.
        * @returns {void}
        */
       const injectStyles = () => {
