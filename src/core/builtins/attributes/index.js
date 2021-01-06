@@ -10,9 +10,7 @@ export default class Attributes extends Builtin {
 
     for (const mod of Object.values(modules)) {
       (async () => {
-        console.log(mod);
         const callback = await mod();
-        console.log(typeof callback);
         if (typeof callback === 'function') {
           this.callbacks.push(callback);
         }

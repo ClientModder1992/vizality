@@ -9,27 +9,23 @@ export default async () => {
   const { chat } = getModule('chat');
   const instance = getOwnerInstance(await waitForElement(`.${chat.split(' ')[0]}`));
 
-  patch('vz-attributes-chat', instance.__proto__, 'render', function (args, res) {
-    console.log('test');
-    console.log('this', this);
-    console.log('args', args);
-    console.log('res', res);
+  patch('vz-attributes-chat', instance.__proto__, 'render', function (_, res) {
     const Chat = findInReactTree(res, r => r.className === chat);
 
     if (!Chat) return res;
 
     const { channel, guild } = this.props;
 
-    Chat['vz-guild-channel'] = Boolean([ 0, 2, 4, 5, 6 ].includes(channel.type)) && '';
-    Chat['vz-private-channel'] = Boolean([ 1, 3 ].includes(channel.type)) && '';
-    Chat['vz-group-channel'] = Boolean([ 3 ].includes(channel.type)) && '';
-    Chat['vz-text-channel'] = Boolean([ 0, 5 ].includes(channel.type)) && '';
-    Chat['vz-voice-channel'] = Boolean([ 2 ].includes(channel.type)) && '';
-    Chat['vz-news-channel'] = Boolean([ 5 ].includes(channel.type)) && '';
-    Chat['vz-rules-channel'] = Boolean(guild.rulesChannelId === channel.id) && '';
-    Chat['vz-store-channel'] = Boolean([ 6 ].includes(channel.type)) && '';
-    Chat['vz-nsfw-channel'] = Boolean(channel.nsfw) && '';
-    Chat['vz-unavailable-channel'] = Boolean(channel.isUnavailable) && '';
+    Chat['vz-guild-channel'] = Boolean([ 0, 2, 4, 5, 6 ].includes(channel?.type)) && '';
+    Chat['vz-private-channel'] = Boolean([ 1, 3 ].includes(channel?.type)) && '';
+    Chat['vz-group-channel'] = Boolean([ 3 ].includes(channel?.type)) && '';
+    Chat['vz-text-channel'] = Boolean([ 0, 5 ].includes(channel?.type)) && '';
+    Chat['vz-voice-channel'] = Boolean([ 2 ].includes(channel?.type)) && '';
+    Chat['vz-news-channel'] = Boolean([ 5 ].includes(channel?.type)) && '';
+    Chat['vz-rules-channel'] = Boolean(guild?.rulesChannelId === channel?.id) && '';
+    Chat['vz-store-channel'] = Boolean([ 6 ].includes(channel?.type)) && '';
+    Chat['vz-nsfw-channel'] = Boolean(channel?.nsfw) && '';
+    Chat['vz-unavailable-channel'] = Boolean(channel?.isUnavailable) && '';
 
     const attributes = {
       'vz-search-results-active': this.props?.section && this.props?.section === 'SEARCH',

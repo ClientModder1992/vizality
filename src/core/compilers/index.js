@@ -1,3 +1,5 @@
+const { extname } = require('path');
+
 const SCSSCompiler = require('./SCSS');
 const CSSCompiler = require('./CSS');
 const JSXCompiler = require('./JSX');
@@ -13,7 +15,8 @@ module.exports = {
   js: JSCompiler,
   ts: TSCompiler,
   resolveCompiler: file => {
-    switch (file.split('.').pop()) {
+    const extension = extname(file).substr(1);
+    switch (extension) {
       case 'scss': return new SCSSCompiler(file);
       case 'css': return new CSSCompiler(file);
       case 'jsx': return new JSXCompiler(file);
