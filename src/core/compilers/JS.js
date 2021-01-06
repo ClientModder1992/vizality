@@ -12,6 +12,7 @@ module.exports = class JS extends Compiler {
     const js = readFileSync(this.file, 'utf8');
     return sucrase.transform(js, {
       transforms: [ 'jsx', 'imports' ],
+      enableLegacyBabel5ModuleInterop: true,
       filePath: this.file
     }).code;
   }

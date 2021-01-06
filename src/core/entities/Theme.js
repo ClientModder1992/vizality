@@ -16,7 +16,19 @@ export default class Theme extends Updatable {
     this._submodule = this.manifest.name;
   }
 
-  load () {
+  log (...data) {
+    log(this._module, this._submodule, null, ...data);
+  }
+
+  error (...data) {
+    error(this._module, this._submodule, null, ...data);
+  }
+
+  warn (...data) {
+    warn(this._module, this._submodule, null, ...data);
+  }
+
+  _load () {
     if (!this.applied) {
       this.applied = true;
       const style = createElement('style', {
@@ -32,29 +44,18 @@ export default class Theme extends Updatable {
 
       this.compiler.enableWatcher();
       this.compiler.on('src-update', this._doCompile);
+      this.log('Theme loaded.');
       return this._doCompile();
     }
-    this.log('Theme loaded.');
   }
 
-  unload () {
+  _unload () {
     if (this.applied) {
       this.applied = false;
       this.compiler.off('src-update', this._doCompile);
       document.getElementById(`theme-${this.addonId}`).remove();
       this.compiler.disableWatcher();
+      this.log('Theme unloaded.');
     }
-  }
-
-  log (...data) {
-    log(this._module, this._submodule, null, ...data);
-  }
-
-  error (...data) {
-    error(this._module, this._submodule, null, ...data);
-  }
-
-  warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
   }
 }

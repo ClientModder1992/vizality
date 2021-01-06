@@ -4,8 +4,8 @@ import { join } from 'path';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { Theme } from '@vizality/core';
 
+import Theme from '../entities/Theme';
 import AddonManager from './Addon';
 
 const fileRegex = /\.((s?c)ss)$/;
