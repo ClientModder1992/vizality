@@ -1,9 +1,6 @@
-import { readdirSync } from 'fs';
-import { resolve } from 'path';
-
 import { Directories } from '@vizality/constants';
 
-import AddonManager from '../../addon';
+import AddonManager from './Addon';
 
 export default class BuiltinManager extends AddonManager {
   constructor (type, dir) {

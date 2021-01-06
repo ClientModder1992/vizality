@@ -6,7 +6,7 @@ import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 import { Theme } from '@vizality/core';
 
-import AddonManager from '../../addon';
+import AddonManager from './Addon';
 
 const fileRegex = /\.((s?c)ss)$/;
 const { lstat } = promises;
@@ -32,7 +32,7 @@ export default class ThemeManager extends AddonManager {
        * @returns {void}
        */
       const injectStyles = () => {
-        const path = '../../../styles/main.scss';
+        const path = join('..', 'styles', 'main.scss');
 
         // Assume it's a relative path and try resolving it
         const resolvedPath = join(__dirname, path);
@@ -83,9 +83,9 @@ export default class ThemeManager extends AddonManager {
     let manifest;
     try {
       manifest = await import(manifestFile);
-    } catch (e) {
+    } catch (err) {
       this._logError(ErrorTypes.MANIFEST_LOAD_FAILED, [ themeID ]);
-      console.error('%c[Vizality:StyleManager]', 'color: #7289da', 'Failed to load manifest', e);
+      console.error('%c[Vizality:StyleManager]', 'color: #7289da', 'Failed to load manifest', err);
       return;
     }
 
@@ -110,17 +110,6 @@ export default class ThemeManager extends AddonManager {
     super._setIcon(manifest, themeID);
     this.themes.set(themeID, new Theme(themeID, manifest));
   }
-
-  unmount (themeID) {
-    const theme = this.themes.get(themeID);
-    if (!theme) {
-      throw new Error(`Tried to unmount a non installed theme (${themeID})`);
-    }
-
-    theme.unload();
-    this.themes.delete(themeID);
-  }
-
 
   // Start/Stop
   // async load (sync = false) {

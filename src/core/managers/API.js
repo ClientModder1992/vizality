@@ -17,18 +17,18 @@ export default class APIManager {
 
       vizality.api[api] = new APIClass();
       this.apis.push(api);
-    } catch (e) {
-      error('Manager', 'API', null, `An error occurred while initializing '${api}'!`, e);
+    } catch (err) {
+      error('Manager', 'API', null, `An error occurred while initializing '${api}'!`, err);
     }
   }
 
-  async start () {
+  async load () {
     for (const api of this.apis) {
       await vizality.api[api]._load();
     }
   }
 
-  async stop () {
+  async unload () {
     for (const api of this.apis) {
       await vizality.api[api]._unload();
     }
@@ -42,6 +42,11 @@ export default class APIManager {
       await this.mount(api);
     }
 
-    await this.start();
+    await this.load();
+  }
+
+  terminate () {
+    // @todo
+    return void 0;
   }
 }

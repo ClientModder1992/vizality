@@ -6,6 +6,16 @@ import { log, warn, error } from '@vizality/util/logger';
 import { removeDirRecursive } from '@vizality/util/file';
 import { Avatars } from '@vizality/constants';
 
+const ErrorTypes = {
+  NOT_A_DIRECTORY: 'NOT A DIRECTOR',
+  MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
+  INVALID_MANIFEST: 'INVALID_MANIFEST',
+  ENABLE_NON_INSTALLED: 'ENABLE_NON_INSTALLED',
+  ENABLE_ALREADY_ENABLED: 'ENABLE_ALREADY_ENABLED',
+  DISABLE_NON_INSTALLED: 'DISABLE_NON_INSTALLED',
+  DISABLE_NON_ENABLED: 'DISABLE_NON_ENABLED'
+};
+
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
@@ -131,9 +141,7 @@ export default class AddonManager {
       throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
     }
 
-    if (addon._ready) {
-      await addon._unload();
-    }
+    await addon._unload();
 
     Object.keys(require.cache).forEach(key => {
       if (key.includes(addonId)) {

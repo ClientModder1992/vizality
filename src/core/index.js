@@ -3,16 +3,17 @@ import cp from 'child_process';
 
 import { initialize, getModule } from '@vizality/webpack';
 import { Directories, HTTP } from '@vizality/constants';
-import { Updatable } from '@vizality/entities';
 import { sleep } from '@vizality/util/time';
+import { Updatable } from '@vizality/core';
 
-import BuiltinManager from './managers/addon/builtin';
-import PluginManager from './managers/addon/plugin';
-import ThemeManager from './managers/addon/theme';
-import APIManager from './managers/api';
+import BuiltinManager from './managers/Builtin';
+import PluginManager from './managers/Plugin';
+import ThemeManager from './managers/Theme';
+import APIManager from './managers/API';
 
 const exec = promisify(cp.exec);
 
+console.log(Updatable);
 /**
  * @typedef VizalityAPI
  * @property {CommandsAPI} commands
@@ -173,11 +174,11 @@ export default class Vizality extends Updatable {
     // Plugins
     await this.manager.plugins.terminate();
 
-    // Style Manager
+    // Themes
     this.manager.themes.terminate();
 
     // APIs
-    await this.manager.apis.unload();
+    await this.manager.apis.terminate();
   }
 
   // Bad code
