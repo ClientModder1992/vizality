@@ -49,7 +49,7 @@
     "@vizality/compilers": "src/core/compilers",
     "@vizality/core": "src/core/entities",
     "@vizality/entities": "src/core/entities",
-    "@vizality/util": "src/core/modules/util",
+    "@vizality/util": "src/core/modules/util/index",
     "react": "src/core/modules/react/React",
     "react-dom": "src/core/modules/react/ReactDOM",
     "react-router": "src/core/modules/react/Router"
