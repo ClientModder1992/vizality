@@ -1,6 +1,6 @@
 import moduleFilters from './modules.json';
-import { log, warn } from '../util/logger';
-import { sleep } from '../util/time';
+import { log, warn } from '../util/Logger';
+import { sleep } from '../util/Time';
 
 const _module = 'Module';
 const _submodule = 'Webpack';

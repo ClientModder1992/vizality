@@ -55,6 +55,7 @@ if (!window.__SPLASH__) {
       case '@vizality/http':
       case '@vizality/i18n':
       case '@vizality/patcher':
+      case '@vizality/core':
       case '@vizality/react':
       case '@vizality/util':
       case '@vizality/webpack':
