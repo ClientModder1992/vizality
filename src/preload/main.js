@@ -16,7 +16,7 @@ require('../ipc/renderer');
 
 
 // Initialize Vizality
-const Vizality = require('../core').default;
+const Vizality = require('../core');
 
 global.vizality = new Vizality();
 
