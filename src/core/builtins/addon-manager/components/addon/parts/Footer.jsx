@@ -4,10 +4,8 @@ import { Icon, Switch, Button } from '@vizality/components';
 import { toPlural } from '@vizality/util/string';
 import { Messages } from '@vizality/i18n';
 
-import PreviewsButton from './PreviewsButton';
-
 export default memo(props => {
-  const { onUninstall, isEnabled, onToggle, type, addonId, showPreviewImages, hasPreviewImages, displayType } = props;
+  const { onUninstall, isEnabled, onToggle, type, addonId } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   const isInstalled = vizality.manager[toPlural(type)].isInstalled(addonId);
@@ -45,7 +43,6 @@ export default memo(props => {
           </div> */}
         </div>
         <div className='vz-addon-card-footer-section-right'>
-          {!showPreviewImages && hasPreviewImages && displayType !== 'cover' && <PreviewsButton {...props} />}
           {isInstalled && hasSettings &&
             <div className='vz-addon-card-settings-button'>
               <Icon

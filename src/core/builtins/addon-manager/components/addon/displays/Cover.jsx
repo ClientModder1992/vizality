@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 
 import { Tooltip } from '@vizality/components';
 
-import PreviewsButton from '../parts/PreviewsButton';
 import Description from '../parts/Description';
 import Permissions from '../parts/Permissions';
 import AddonIcon from '../parts/Icon';
@@ -10,7 +9,7 @@ import Footer from '../parts/Footer';
 import Author from '../parts/Author';
 
 export default memo(props => {
-  const { manifest, hasPreviewImages } = props;
+  const { manifest } = props;
 
   return (
     <div className='vz-addon-card-header-wrapper'>
@@ -28,7 +27,6 @@ export default memo(props => {
                 <span className='vz-addon-card-version'>
                   {manifest.version}
                 </span>
-                {hasPreviewImages && <PreviewsButton {...props} size='18px' />}
               </div>
               <Author manifest={manifest} />
             </div>

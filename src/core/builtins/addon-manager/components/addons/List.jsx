@@ -19,7 +19,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
 
   const [ loading, setLoading ] = useState(true);
-  const [ currentTab, setCurrentTab ] = useState(tab || 'INSTALLED');
+  const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
   const [ query, setQuery ] = useState(search || '');
   const [ display, setDisplay ] = useState(displayType || getSetting('listDisplay', 'card'));
   const [ showPreviewImages, setShowPreviewImages ] = useState(getSetting('showPreviewImages', false));

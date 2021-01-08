@@ -2,12 +2,11 @@ import React, { memo, useReducer } from 'react';
 
 import { Icon, Switch, Tooltip } from '@vizality/components';
 
-import PreviewsButton from '../parts/PreviewsButton';
 import AddonIcon from '../parts/Icon';
 import Author from '../parts/Author';
 
 export default memo(props => {
-  const { manifest, isEnabled, onToggle, onUninstall, hasPreviewImages } = props;
+  const { manifest, isEnabled, onToggle, onUninstall } = props;
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   return (
@@ -26,7 +25,6 @@ export default memo(props => {
                 <span className='vz-addon-card-version'>
                   {manifest.version}
                 </span>
-                {hasPreviewImages && <PreviewsButton {...props} size='18px' />}
               </div>
               <Author manifest={manifest} />
             </div>

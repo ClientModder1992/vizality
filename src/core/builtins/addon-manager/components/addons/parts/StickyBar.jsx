@@ -67,13 +67,13 @@ export default memo(props => {
             onItemSelect={tab => handleTabChange(tab)}
             type={TabBar.Types.TOP_PILL}
           >
-            <TabBar.Item selectedItem={tab} id='INSTALLED'>
+            <TabBar.Item selectedItem={tab} id='installed'>
               {Messages.VIZALITY_INSTALLED}
             </TabBar.Item>
-            <TabBar.Item selectedItem={tab} id='DISCOVER'>
+            <TabBar.Item selectedItem={tab} id='discord'>
               {Messages.DISCOVER}
             </TabBar.Item>
-            <TabBar.Item selectedItem={tab} id='SUGGESTIONS'>
+            <TabBar.Item selectedItem={tab} id='suggestions'>
               Suggestions
             </TabBar.Item>
           </TabBar>
