@@ -3,44 +3,6 @@ import React, { memo, useState, useEffect } from 'react';
 import { PopupWindow, Titlebar, Spinner } from '@vizality/components';
 import { getModule } from '@vizality/webpack';
 import { Events } from '@vizality/constants';
-
-const PopupContent = memo(props => {
-  const [ loading, setLoading ] = useState(true);
-  const { url, windowKey, titlebarType, titlebar } = props;
-
-  const sandbox = 'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts';
-
-  useEffect(() => {
-    return () => {
-      /*
-       * @todo Fix this. Not sure how to set it when it's not apart of the class
-       * that extends API.
-       * events.emit(Events.VIZALITY_POPUP_WINDOW_CLOSE, props.windowKey);
-       */
-      delete vizality.api.popups.windows[props.windowKey];
-    };
-  }, []);
-
-  return (
-    <div className='vz-popup-window' vz-titlebar={titlebar ? '' : null}>
-      {titlebar && <Titlebar type={titlebarType} windowKey={windowKey} focused={true} />}
-      {loading && url && <Spinner className='vz-popup-window-spinner' />}
-      <div className='vz-popup-window-content-wrapper'>
-        {url
-          ? <iframe
-            src={url}
-            onLoad={() => setLoading(false)}
-            className='vz-popup-window-content'
-            allowtransparency={true}
-            sandbox={sandbox}
-          />
-          : <>
-            {props.children}
-          </>}
-      </div>
-    </div>
-  );
-});
 import { API } from '@vizality/entities';
 
 export default class PopupsAPI extends API {
@@ -56,7 +18,7 @@ export default class PopupsAPI extends API {
    * @fires PopupAPI#popupWindowOpen
    */
   async openWindow (props, options = {}) {
-    props.id = props.id || `DISCORD_EXT_LINK_${(Math.random().toString(36) + Date.now()).substring(2, 6)}`;
+    props.id = props.id || `external-url-${(Math.random().toString(36) + Date.now()).substring(2, 10)}`;
     props.title = props.title || 'Discord Popup';
     options.width = options.width || 800;
     options.height = options.height || 600;
@@ -85,10 +47,41 @@ export default class PopupsAPI extends API {
 
     this.windows[id] = props;
 
-    // eslint-disable-next-line no-unused-vars
-    return new Promise(_resolve => {
+    const PopupContent = memo(props => {
+      const [ loading, setLoading ] = useState(true);
+      const { url, windowKey, titlebarType, titlebar, children } = props;
+      const sandbox = 'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts';
+
+      useEffect(() => {
+        return () => {
+          this.emit(Events.VIZALITY_POPUP_WINDOW_CLOSE, windowKey);
+          delete this.windows[windowKey];
+        };
+      }, []);
+
+      return (
+        <div className='vz-popup-window' vz-titlebar={titlebar ? '' : null}>
+          {titlebar && <Titlebar type={titlebarType} windowKey={windowKey} focused={true} />}
+          {loading && url && <Spinner className='vz-popup-window-spinner' />}
+          <div className='vz-popup-window-content-wrapper'>
+            {url
+              ? <iframe
+                src={url}
+                onLoad={() => setLoading(false)}
+                className='vz-popup-window-content'
+                allowtransparency={true}
+                sandbox={sandbox}
+              />
+              : children
+            }
+          </div>
+        </div>
+      );
+    });
+
+    return new Promise(() => {
       const popoutModule = getModule('setAlwaysOnTop', 'open');
-      popoutModule.open(id, key => {
+      popoutModule.open(`DISCORD_${id}`, key => {
         return (
           <PopupWindow windowKey={key} {...props}>
             <PopupContent windowKey={key} {...props}>
@@ -111,6 +104,9 @@ export default class PopupsAPI extends API {
     if (!this.windows[id]) {
       return this.error(`Popup window with ID "${id}" not found.`);
     }
+
+    const popoutModule = getModule('setAlwaysOnTop', 'open');
+    popoutModule.close(`DISCORD_${id}`);
 
     delete this.windows[id];
   }
