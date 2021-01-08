@@ -49,19 +49,19 @@ global.VizalityNative = {
 if (!window.__SPLASH__) {
   window.require = module => {
     switch (module) {
+      case '@vizality':
       case '@vizality/components':
       case '@vizality/constants':
       case '@vizality/discord':
       case '@vizality/http':
       case '@vizality/i18n':
       case '@vizality/patcher':
-      case '@vizality/core':
+      case '@vizality/entities':
       case '@vizality/react':
       case '@vizality/util':
       case '@vizality/webpack':
       case '@vizality/modal':
       case '@vizality/modules':
-      case '@vizality/api':
       case 'react':
       case 'react-dom':
       case 'react-router':
