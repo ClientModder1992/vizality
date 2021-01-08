@@ -7,7 +7,7 @@ import { getModule, getModuleByDisplayName } from '@vizality/webpack';
 import { Guild, Directories } from '@vizality/constants';
 import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 import AnnouncementContainer from './components/AnnouncementContainer';
 import ToastContainer from './components/ToastContainer';

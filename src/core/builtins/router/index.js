@@ -4,7 +4,7 @@ import { findInReactTree, findInTree, getOwnerInstance } from '@vizality/util/re
 import { getModule, getModules, getModuleByDisplayName } from '@vizality/webpack';
 import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 export default class Router extends Builtin {
   async onStart () {

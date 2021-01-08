@@ -3,8 +3,8 @@ import React from 'react';
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 import { Regexes } from '@vizality/constants';
+import { Builtin } from '@vizality/entities';
 import { Icon } from '@vizality/components';
-import { Builtin } from '@vizality/core';
 
 import Sidebar from './components/parts/sidebar/Sidebar';
 import Routes from './routes/Routes';

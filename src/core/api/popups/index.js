@@ -3,7 +3,6 @@ import React, { memo, useState, useEffect } from 'react';
 import { PopupWindow, Titlebar, Spinner } from '@vizality/components';
 import { getModule } from '@vizality/webpack';
 import { Events } from '@vizality/constants';
-import { API } from '@vizality/core';
 
 const PopupContent = memo(props => {
   const [ loading, setLoading ] = useState(true);
@@ -42,6 +41,7 @@ const PopupContent = memo(props => {
     </div>
   );
 });
+import { API } from '@vizality/entities';
 
 export default class PopupsAPI extends API {
   constructor () {

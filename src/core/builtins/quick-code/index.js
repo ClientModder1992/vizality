@@ -3,7 +3,7 @@ import { join } from 'path';
 import React from 'react';
 
 import { getModule } from '@vizality/webpack';
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 import QuickCodePage from './components/QuickCode';
 

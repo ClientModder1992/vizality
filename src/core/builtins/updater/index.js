@@ -9,8 +9,8 @@ import { getModule, getModuleByDisplayName } from '@vizality/webpack';
 import { joinClassNames } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 import { Confirm } from '@vizality/components';
+import { Builtin } from '@vizality/entities';
 import { Messages } from '@vizality/i18n';
-import { Builtin } from '@vizality/core';
 
 import Settings from './components/Settings';
 

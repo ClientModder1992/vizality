@@ -1,6 +1,6 @@
 import { Directories } from '@vizality/constants';
 import { getModule } from '@vizality/webpack';
-import { API } from '@vizality/core';
+import { API } from '@vizality/entities';
 import i18n from '@vizality/i18n';
 
 export default class I18nAPI extends API {

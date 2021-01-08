@@ -3,8 +3,8 @@ import cp from 'child_process';
 
 import { initialize, getModule } from '@vizality/webpack';
 import { Directories, HTTP } from '@vizality/constants';
+import { Updatable } from '@vizality/entities';
 import { sleep } from '@vizality/util/time';
-import { Updatable } from '@vizality/core';
 
 import BuiltinManager from './managers/Builtin';
 import PluginManager from './managers/Plugin';

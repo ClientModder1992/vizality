@@ -3,8 +3,8 @@ import React from 'react';
 import { open as openModal, close as closeModal } from '@vizality/modal';
 import { Confirm, Text, LazyImage } from '@vizality/components';
 import { toTitleCase, toPlural } from '@vizality/util/string';
+import { Builtin } from '@vizality/entities';
 import { Messages } from '@vizality/i18n';
-import { Builtin } from '@vizality/core';
 
 import * as commands from './commands';
 import * as i18n from './i18n';

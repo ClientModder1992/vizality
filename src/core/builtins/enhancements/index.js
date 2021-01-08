@@ -1,4 +1,4 @@
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 import * as modules from './modules';
 

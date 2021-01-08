@@ -1,4 +1,4 @@
-import { API } from '@vizality/core';
+import { API } from '@vizality/entities';
 
 export default class ConnectionsAPI extends API {
   constructor () {

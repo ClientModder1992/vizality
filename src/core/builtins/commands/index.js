@@ -1,5 +1,5 @@
 import { unpatch } from '@vizality/patcher';
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 import monkeypatchMessages from './monkeypatchMessages';
 import injectAutocomplete from './injectAutocomplete';

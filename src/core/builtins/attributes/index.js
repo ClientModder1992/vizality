@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 import modules from './modules';
 

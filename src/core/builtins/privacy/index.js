@@ -24,7 +24,7 @@
 
 
 import { getModule } from '@vizality/webpack';
-import { Builtin } from '@vizality/core';
+import { Builtin } from '@vizality/entities';
 
 let Analytics, Reporter, Sentry;
 

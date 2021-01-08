@@ -1,6 +1,6 @@
 import { getModule } from '@vizality/webpack';
+import { API } from '@vizality/entities';
 import { error } from '@vizality/util';
-import { API } from '@vizality/core';
 
 const _module = 'API';
 const _submodule = 'Keybinds';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { error } from '@vizality/util/logger';
 import { Flux } from '@vizality/webpack';
-import { API } from '@vizality/core';
+import { API } from '@vizality/entities';
 
 import actions from './store/actions';
 import store from './store/store';

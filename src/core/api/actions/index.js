@@ -1,5 +1,7 @@
 import { error } from '@vizality/util/logger';
-import { API } from '@vizality/core';
+import { API } from '@vizality/entities';
+
+console.log(API);
 
 const _module = 'Module';
 const _submodule = 'API:Actions';
