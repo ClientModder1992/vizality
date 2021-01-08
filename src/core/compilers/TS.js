@@ -4,15 +4,14 @@ const sucrase = require('sucrase');
 const Compiler = require('./Compiler');
 
 /**
- * JSX compiler
+ * TS compiler
  * @extends {Compiler}
  */
 module.exports = class TS extends Compiler {
   _compile () {
-    const jsx = readFileSync(this.file, 'utf8');
-    return sucrase.transform(jsx, {
+    const ts = readFileSync(this.file, 'utf8');
+    return sucrase.transform(ts, {
       transforms: [ 'jsx', 'imports', 'typescript' ],
-      enableLegacyBabel5ModuleInterop: true,
       filePath: this.file
     }).code;
   }
