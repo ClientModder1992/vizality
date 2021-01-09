@@ -1,12 +1,24 @@
 const { ipcRenderer, contextBridge } = require('electron');
+const { join } = require('path');
 require('module-alias/register');
 require('@vizality/compilers');
 require('../ipc/renderer');
 
 (() => {
+  const { Module } = require('module');
   const extensions = [ '.jsx', '.js', '.ts', '.tsx' ];
   for (const ext of extensions) {
-    require.extensions[ext] = (module, filename) => {
+    const oldRequireExt = Module._extensions[ext];
+    Module._extensions[ext] = (module, filename) => {
+      const coreDir = join(__dirname, '..', 'core');
+      const addonsDir = join(__dirname, '..', '..', 'addons');
+      if ((filename.indexOf(coreDir) &&
+          filename.indexOf(addonsDir)) ||
+          filename.indexOf('node_modules') !== -1
+      ) {
+        return oldRequireExt(module, filename);
+      }
+
       const compiler = new (require(`@vizality/compilers/${ext.substring(1).toUpperCase()}`))(filename);
       const compiled = compiler.compile();
       module._compile(compiled, filename);
