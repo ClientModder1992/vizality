@@ -45,9 +45,6 @@ export default class Updater extends Builtin {
     vizality.api.settings.registerDashboardItem({
       id: this.addonId,
       path: 'updater',
-      heading: 'Updater',
-      subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
-      icon: 'CloudDownload',
       render: Settings
     });
 
@@ -342,9 +339,7 @@ export default class Updater extends Builtin {
               <a
                 className={joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover)}
                 onClick={() => vizality.api.router.navigate('changelog')}
-              >
-                Check out our full changelog history.
-              </a>
+              > Check out our full changelog history.</a>
             </div>;
 
           return footer;
