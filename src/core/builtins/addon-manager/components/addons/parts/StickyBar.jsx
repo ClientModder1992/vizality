@@ -70,7 +70,7 @@ export default memo(props => {
             <TabBar.Item selectedItem={tab} id='installed'>
               {Messages.VIZALITY_INSTALLED}
             </TabBar.Item>
-            <TabBar.Item selectedItem={tab} id='discord'>
+            <TabBar.Item selectedItem={tab} id='discover'>
               {Messages.DISCOVER}
             </TabBar.Item>
             <TabBar.Item selectedItem={tab} id='suggestions'>

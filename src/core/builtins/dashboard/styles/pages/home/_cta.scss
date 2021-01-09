@@ -71,6 +71,13 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      @at-root {
+        @media (max-width: 1200px) {
+          & {
+            display: none;
+          }
+        }
+      }
     }
     &-icon {
       margin-left: 5px;

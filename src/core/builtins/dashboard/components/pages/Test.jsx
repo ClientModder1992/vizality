@@ -1,17 +1,22 @@
 // const { Table } = require('@vizality/components');
 import React, { memo, useState, useEffect } from 'react';
 
-import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationCommandDiscoverySectionList, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
+import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, Text, HeaderBarContainer, CarouselWithPreview, ApplicationCommandDiscoverySectionList, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
 import { getModuleByDisplayName } from '@vizality/webpack';
 
 const TransitionGroup = getModuleByDisplayName('TransitionGroup');
 const SlideIn = getModuleByDisplayName('SlideIn');
 
+// eslint-disable-next-line no-empty-function
 const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
 
 export default memo(() => {
+  console.log(HeaderBarContainer);
   return (
     <>
+      <HeaderBarContainer>
+        <Text>I like pie</Text>
+      </HeaderBarContainer>
       <ApplicationCommandDiscoverySectionList
         activeSectionIndex={0}
         sections={[

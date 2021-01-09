@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo, PureComponent } from 'react';
 
 import { getModule, getModuleByDisplayName } from '@vizality/webpack';
 
@@ -19,7 +19,7 @@ export default class AsyncComponent extends PureComponent {
   render () {
     const { Component } = this.state;
     if (Component) {
-      return React.createElement(Component, Object.assign({}, this.props, this.props._pass));
+      return <Component {...this.props} />;
     }
     return this.props._fallback || null;
   }
@@ -29,7 +29,7 @@ export default class AsyncComponent extends PureComponent {
    * @param {Promise} promise Promise of a React component
    */
   static from (promise, fallback) {
-    return React.memo(props =>
+    return memo(props =>
       <AsyncComponent _provider={() => promise} _fallback={fallback} {...props} />
     );
   }

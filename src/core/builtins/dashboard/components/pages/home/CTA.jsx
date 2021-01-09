@@ -26,9 +26,7 @@ export default memo(() => {
           <h1 className='vz-dashboard-home-cta-content-header'>Welcome, {username}!</h1>
           <h3 className='vz-dashboard-home-cta-content-subtext'>
             You've made the right choice. The power of customization is now at your fingertips. Check out the features below to learn how to harness your newfound power.
-            {!hasJoinedDiscord && <>
-              Make sure you check out the Discord server, we'd love to have you!
-            </>}
+            {!hasJoinedDiscord && ` Make sure you check out the Discord server, we'd love to have you!`}
           </h3>
           {!hasJoinedDiscord && <div className='vz-dashboard-home-cta-content-buttons-wrapper'>
             <Button

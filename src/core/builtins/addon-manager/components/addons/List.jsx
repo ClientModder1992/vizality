@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define *//* eslint-disable no-unused-vars */
 import React, { memo, useState, useReducer, useEffect } from 'react';
 
 import { existsSync, lstatSync, readdirSync } from 'fs';
@@ -300,9 +299,9 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
       <div
         className={joinClassNames('vz-addons-list', className, colorStandard)}
         vz-display={display}
-        vz-previews={showPreviewImages ? '' : null}
-        vz-plugins={type === 'plugin' ? '' : null}
-        vz-themes={type === 'theme' ? '' : null}
+        vz-previews={showPreviewImages && ''}
+        vz-plugins={type === 'plugin' && ''}
+        vz-themes={type === 'theme' && ''}
       >
         <StickyBar
           type={type}
