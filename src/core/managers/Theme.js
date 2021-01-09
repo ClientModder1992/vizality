@@ -30,17 +30,10 @@ export default class ThemeManager extends AddonManager {
        * @returns {void}
        */
       const injectStyles = () => {
-        const path = join('..', 'styles', 'main.scss');
-
-        // Assume it's a relative path and try resolving it
-        const resolvedPath = join(__dirname, path);
-
-        if (!existsSync(resolvedPath)) {
-          throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
-        }
+        const path = join(__dirname, '..', 'styles', 'main.scss');
 
         const id = Math.random().toString(36).slice(2);
-        const compiler = resolveCompiler(resolvedPath);
+        const compiler = resolveCompiler(path);
         const style = createElement('style', {
           id: 'vizality-core-styles',
           'vz-style': ''
@@ -65,14 +58,14 @@ export default class ThemeManager extends AddonManager {
     }
   }
 
-  async mount (themeID, filename) {
-    const stat = await lstat(join(this.dir, filename));
+  async mount (themeID) {
+    const stat = await lstat(join(this.dir, themeID));
     if (stat.isFile()) {
       this._logError(ErrorTypes.NOT_A_DIRECTORY, [ themeID ]);
       return;
     }
 
-    const manifestFile = join(this.dir, filename, 'manifest.json');
+    const manifestFile = join(this.dir, themeID, 'manifest.json');
     if (!existsSync(manifestFile)) {
       // Add an error here
       return;
@@ -104,9 +97,9 @@ export default class ThemeManager extends AddonManager {
       return console.warn('%c[Vizality:StyleManager]', 'color: #7289da', `Theme "${themeID}" is not meant to run on that environment - Skipping`);
     }
 
-    manifest.effectiveTheme = join(this.dir, filename, manifest.effectiveTheme);
-    super._setIcon(manifest, themeID);
-    this.themes.set(themeID, new Theme(themeID, manifest));
+    manifest.effectiveTheme = join(this.dir, themeID, manifest.effectiveTheme);
+    this._setIcon(manifest, themeID);
+    this.items.set(themeID, new Theme(themeID, manifest));
   }
 
   // Start/Stop
@@ -143,10 +136,6 @@ export default class ThemeManager extends AddonManager {
   //     return missingThemes;
   //   }
   // }
-
-  terminate () {
-    return [ ...this.themes.values() ].forEach(t => t._unload());
-  }
 
   _validateManifest (manifest) {
     const errors = [];

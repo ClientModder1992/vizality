@@ -40,24 +40,4 @@ export default class PluginManager extends AddonManager {
   //     return missing[this.type];
   //   }
   // }
-
-  terminate () {
-    return this._bulkUnload([ ...vizality.manager.plugins.keys ]);
-  }
-
-  async _bulkUnload (plugins) {
-    const nextPlugins = [];
-    for (const plugin of plugins) {
-      const deps = this.get(plugin).allDependencies;
-      if (deps.filter(dep => this.get(dep) && this.get(dep)._ready).length !== 0) {
-        nextPlugins.push(plugin);
-      } else {
-        await this.unmount(plugin);
-      }
-    }
-
-    if (nextPlugins.length !== 0) {
-      await this._bulkUnload(nextPlugins);
-    }
-  }
 }

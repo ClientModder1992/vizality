@@ -20,29 +20,31 @@ export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
-    this.requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
+    this.items = new Map();
+
+    this._requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
     this._module = 'Manager';
-    this[type] = new Map();
+    this._submodule = toSingular(this.type);
   }
 
   get count () {
-    return this[this.type].size;
+    return this.items.size;
   }
 
   get values () {
-    return this[this.type].values();
+    return this.items.values();
   }
 
   get keys () {
-    return [ ...this[this.type].keys() ];
+    return [ ...this.items.keys() ];
   }
 
   has (addonId) {
-    return this[this.type].has(addonId);
+    return this.items.has(addonId);
   }
 
   get (addonId) {
-    return this[this.type].get(addonId);
+    return this.items.get(addonId);
   }
 
   getAll () {
@@ -86,7 +88,7 @@ export default class AddonManager {
       return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
     }
 
-    if (!this.requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
+    if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
       return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
     }
 
@@ -111,7 +113,7 @@ export default class AddonManager {
 
       this._setIcon(manifest, addonId);
 
-      this[this.type].set(addonId, new AddonClass());
+      this.items.set(addonId, new AddonClass());
     } catch (err) {
       this._error(`An error occurred while initializing "${addonId}"!`, err);
     }
@@ -149,11 +151,11 @@ export default class AddonManager {
       }
     });
 
-    this[this.type].delete(addonId);
+    this.items.delete(addonId);
   }
 
   // Start/Stop
-  async start (sync = false) {
+  async initialize (sync = false) {
     const missingThemes = [];
     const files = readdirSync(this.dir);
     for (const filename of files) {
@@ -161,9 +163,10 @@ export default class AddonManager {
         continue;
       }
 
-      const addonId = filename.split('.').shift();
+      const addonId = filename;
+
       if (!sync) {
-        await this.mount(addonId, filename);
+        await this.mount(addonId);
 
         // If addon didn't mount
         if (!this.get(addonId)) {
@@ -173,7 +176,7 @@ export default class AddonManager {
 
       if (!this.getAllDisabled().includes(addonId)) {
         if (sync && !this.isInstalled(addonId)) {
-          await this.mount(addonId, filename);
+          await this.mount(addonId);
           missingThemes.push(addonId);
         }
 
@@ -184,6 +187,15 @@ export default class AddonManager {
     if (sync) {
       return missingThemes;
     }
+  }
+
+  async terminate () {
+    const addons = this.getAllEnabled();
+    for (const addon of addons) {
+      await this.unmount(addon);
+    }
+
+    return this._log(`All ${this.type} have been unloaded.`);
   }
 
   async enable (addonId) {
@@ -331,14 +343,14 @@ export default class AddonManager {
   }
 
   _log (...data) {
-    log(this._module, toSingular(this.type), null, ...data);
+    log(this._module, this._submodule, null, ...data);
   }
 
   _warn (...data) {
-    warn(this._module, toSingular(this.type), null, ...data);
+    warn(this._module, this._submodule, null, ...data);
   }
 
   _error (...data) {
-    error(this._module, toSingular(this.type), null, ...data);
+    error(this._module, this._submodule, null, ...data);
   }
 }
