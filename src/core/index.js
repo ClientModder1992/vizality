@@ -1,8 +1,9 @@
 import { promisify } from 'util';
 import cp from 'child_process';
 
+import { Directories, HTTP, Events } from '@vizality/constants';
 import { initialize, getModule } from '@vizality/webpack';
-import { Directories, HTTP } from '@vizality/constants';
+import { log, warn, error } from '@vizality/util/logger';
 import { Updatable } from '@vizality/entities';
 import { sleep } from '@vizality/util/time';
 
@@ -41,6 +42,7 @@ const exec = promisify(cp.exec);
  * @property {Git} git
  * @property {boolean} _initialized
  */
+
 export default class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
@@ -50,8 +52,8 @@ export default class Vizality extends Updatable {
      * VizalityNative, so that we are staying consistent and only have
      * one top level global variable.
      */
-    this.native = global.VizalityNative;
-    delete global.VizalityNative;
+    this.native = window.VizalityNative;
+    delete window.VizalityNative;
 
     this.api = {};
     this.modules = {};
@@ -68,7 +70,6 @@ export default class Vizality extends Updatable {
     this.manager.themes = new ThemeManager();
 
     this._initialized = false;
-    this._originalLogFunc = {};
     this._hookRPCServer();
     this._patchWebSocket();
 
@@ -86,8 +87,7 @@ export default class Vizality extends Updatable {
       // await sleep(250);
     }
 
-    // Webpack & Modules
-    await initialize();
+    await initialize(); // Webpack & Modules
 
     (async () => {
       const Flux = getModule('Store', 'PersistedStore');
@@ -99,92 +99,73 @@ export default class Vizality extends Updatable {
         })());
     })();
 
-    // Start
-    await this.start();
+    await this.start(); // Start
     this.git = await this.manager.builtins.get('updater').getGitInfo();
 
-    // Token manipulation stuff
+    /* Token manipulation stuff */
     if (this.settings.get('hideToken', true)) {
       const tokenModule = getModule('hideToken');
       tokenModule.hideToken = () => void 0;
-      setImmediate(() => tokenModule.showToken()); // just to be sure
+      setImmediate(() => tokenModule.showToken()); // Just to be sure
     }
 
-    // Used in src/preload/main
-    this.emit('initialized');
+    this.emit(Events.VIZALITY_INITIALIZED); // Used in src/preload/main
   }
 
   // Startup
   async start () {
-    // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
-    console.clear();
+    console.clear(); // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
 
     // Startup banner
     console.log('%c ', `background: url('${HTTP.ASSETS}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
 
-    // APIs
-    await this.manager.apis.initialize();
+    await this.manager.apis.initialize(); // APIs
+
     this.settings = this.api.settings.buildCategoryObject('settings');
-    this.emit('settingsReady');
+    this.emit(Events.VIZALITY_SETTINGS_READY);
 
-    // @todo Make this and removeDiscordLogs settings options
-
-    // Patch Discord's console logs
-    // this.patchDiscordLogs();
-
-    // Remove Discord's console logs
-    this.removeDiscordLogs();
+    this._patchDiscordLogs(); // This has to be after settings have been initialized
 
     // Setting up the modules for the global vizality object
     const modules = [ 'components', 'constants', 'discord', 'http', 'i18n', 'patcher', 'react', 'util', 'webpack' ];
 
     for (const mdl of modules) {
-      const Mdl = require(`@vizality/${mdl}`);
+      const Mdl = await import(`@vizality/${mdl}`);
       Object.assign(this.modules, { [mdl]: Mdl });
     }
 
-    // Builtins
-    await this.manager.builtins.start();
-
-    // Themes
-    this.manager.themes.start();
-
-    // Plugins
-    await this.manager.plugins.start();
+    await this.manager.builtins.initialize(); // Builtins
+    await this.manager.themes.initialize(); // Themes
+    await this.manager.plugins.initialize(); // Plugins
 
     this._initialized = true;
 
     const router = getModule('transitionTo');
 
-    // This needs to be here, after the Webpack modules have been initialized
-    router.getHistory().listen(() => {
-      const { route: { getCurrentRoute } } = require('@vizality/discord');
-      document.documentElement.setAttribute('vz-route', getCurrentRoute());
+    // This needs to be after the Webpack modules have been initialized
+    router.getHistory().listen(async () => {
+      const { route: { getCurrentRoute } } = await import('@vizality/discord');
+      const root = document.documentElement;
+      root.setAttribute('vz-route', getCurrentRoute());
     });
   }
 
   // Vizality shutdown
-  async stop () {
+  async terminate () {
     this._initialized = false;
 
-    // Unpatch Discord's console logs
-    this.unpatchDiscordLogs();
+    this.unpatchDiscordLogs(); // Unpatch Discord's console logs
 
-    // Plugins
-    await this.manager.plugins.terminate();
-
-    // Themes
-    this.manager.themes.terminate();
-
-    // APIs
-    await this.manager.apis.terminate();
+    await this.manager.plugins.terminate(); // Plugins
+    await this.manager.themes.terminate(); // Themes
+    await this.manager.builtins.terminate(); // Builtins
+    await this.manager.apis.terminate(); // APIs
   }
 
-  // Bad code
   async _hookRPCServer () {
     const _this = this;
 
-    while (!global.DiscordNative) {
+    while (!window.DiscordNative) {
       await sleep(1);
     }
 
@@ -197,18 +178,33 @@ export default class Vizality extends Updatable {
     };
   }
 
-  // Patch Discord's logs to follow Vizality's log style
-  patchDiscordLogs () {
-  }
-
-  // Remove Discord's logs entirely
-  removeDiscordLogs () {
+  async _patchDiscordLogs () {
     const { setLogFn } = getModule('setLogFn');
-    setLogFn(() => void 0);
-  }
+    const module = 'Discord';
 
-  // Unpatch Discord's logs back to the default style
-  unpatchDiscordLogs () {
+    if (!this.settings.get('showDiscordConsoleLogs', false)) {
+      /*
+       * Remove Discord's logs entirely... except the logs that don't use the function
+       * i.e. normal console.logs.
+       */
+      setLogFn(() => void 0);
+    } else {
+      // Patch Discord's logs to follow Vizality's log style
+      setLogFn((submodule, type, ...data) => {
+        switch (type) {
+          case 'info':
+          case 'log':
+            return log(module, submodule, null, ...data);
+          case 'error':
+          case 'trace':
+            return error(module, submodule, null, ...data);
+          case 'warn':
+            return warn(module, submodule, null, ...data);
+          default:
+            return log(module, submodule, null, ...data);
+        }
+      });
+    }
   }
 
   _patchWebSocket () {
@@ -218,7 +214,7 @@ export default class Vizality extends Updatable {
       constructor (url) {
         super(url);
 
-        this.addEventListener('message', (data) => {
+        this.addEventListener('message', data => {
           _this.emit(`webSocketMessage:${data.origin.slice(6)}`, data);
         });
       }

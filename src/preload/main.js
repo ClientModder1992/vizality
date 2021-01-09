@@ -20,7 +20,7 @@ const { Events } = require('@vizality/constants');
 // Initialize Vizality
 const Vizality = require('../core').default;
 
-global.vizality = new Vizality();
+window.vizality = new Vizality();
 
 // https://github.com/electron/electron/issues/9047
 if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin')) {
