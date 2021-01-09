@@ -183,7 +183,7 @@ export const getModule = (...filter) => {
  * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
  */
 export const getModuleByDisplayName = (displayName, retry = false, forever = false) => {
-  return this._getModule(m => m.displayName && m.displayName.toLowerCase() === displayName.toLowerCase(), retry, forever);
+  return this._getModule(m => m?.displayName && m?.displayName?.toLowerCase() === displayName?.toLowerCase(), retry, forever);
 };
 
 /**

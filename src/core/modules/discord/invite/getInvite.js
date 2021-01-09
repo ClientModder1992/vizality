@@ -1,1 +1,1 @@
-// vizality.modules.webpack.getModule("getInvites").getInvite('42B8AC9')
+// vizality.modules.webpack.getModule("getInvites").getInvite('Fvmsfv2')

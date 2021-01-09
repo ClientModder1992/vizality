@@ -43,7 +43,7 @@ export const Directories = Object.freeze({
 
 // Guild
 export const Guild = Object.freeze({
-  INVITE: '42B8AC9',
+  INVITE: 'Fvmsfv2',
   ID: '689933814864150552'
 });
 

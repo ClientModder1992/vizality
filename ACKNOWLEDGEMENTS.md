@@ -21,7 +21,7 @@ It's no secret that there is a bit of bad blood between me and the Powercord com
 
 ## Other Mentions
 
-- Special thanks to anyone that has donated anything, pledged on Patreon, and everyone that has joined our [Discord server](https://discord.gg/42B8AC9) and been very supportive along the way towards creating a better Discord experience for everyone.
+- Special thanks to anyone that has donated anything, pledged on Patreon, and everyone that has joined our [Discord server](https://discord.gg/Fvmsfv2) and been very supportive along the way towards creating a better Discord experience for everyone.
 
 - BetterDiscord, EnhancedDiscord, DiscordInjections, Lightcord, and obviously Powercord, have all been a source of inspiration as we all ultimately have striven towards the same, or at least similar, goal of making the Discord experience more enjoyable. Let's keep the community fresh and keep coming up with new ideas amd implementations.
 

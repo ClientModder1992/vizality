@@ -10,7 +10,7 @@ This is a client modification for the Discord desktop app, meant to give it enha
 
 ### Support
 
-You can reach out to us on our Discord support server [here](https://discord.gg/42B8AC9).
+You can reach out to us on our Discord support server [here](https://discord.gg/Fvmsfv2).
 
 # What's Different
 
