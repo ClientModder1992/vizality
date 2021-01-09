@@ -16,16 +16,20 @@ export default async () => {
 
     const { channel, guild } = this.props;
 
-    Chat['vz-guild-channel'] = Boolean([ 0, 2, 4, 5, 6 ].includes(channel?.type)) && '';
-    Chat['vz-private-channel'] = Boolean([ 1, 3 ].includes(channel?.type)) && '';
-    Chat['vz-group-channel'] = Boolean([ 3 ].includes(channel?.type)) && '';
-    Chat['vz-text-channel'] = Boolean([ 0, 5 ].includes(channel?.type)) && '';
-    Chat['vz-voice-channel'] = Boolean([ 2 ].includes(channel?.type)) && '';
-    Chat['vz-news-channel'] = Boolean([ 5 ].includes(channel?.type)) && '';
-    Chat['vz-rules-channel'] = Boolean(guild?.rulesChannelId === channel?.id) && '';
-    Chat['vz-store-channel'] = Boolean([ 6 ].includes(channel?.type)) && '';
-    Chat['vz-nsfw-channel'] = Boolean(channel?.nsfw) && '';
-    Chat['vz-unavailable-channel'] = Boolean(channel?.isUnavailable) && '';
+    const chatProps = [];
+
+    Boolean([ 0, 2, 4, 5, 6 ].includes(channel?.type)) && chatProps.push('guild');
+    Boolean([ 1, 3 ].includes(channel?.type)) && chatProps.push('private');
+    Boolean([ 3 ].includes(channel?.type)) && chatProps.push('group');
+    Boolean([ 0, 5 ].includes(channel?.type)) && chatProps.push('text');
+    Boolean([ 2 ].includes(channel?.type)) && chatProps.push('voice');
+    Boolean([ 5 ].includes(channel?.type)) && chatProps.push('news');
+    Boolean(guild?.rulesChannelId === channel?.id) && chatProps.push('rules');
+    Boolean([ 6 ].includes(channel?.type)) && chatProps.push('store');
+    Boolean(channel?.nsfw) && chatProps.push('nsfw');
+    Boolean(channel?.isUnavailable) && chatProps.push('unavailable');
+
+    Chat['vz-channel'] = chatProps.join(', ');
 
     const attributes = {
       'vz-search-results-active': this.props?.section && this.props?.section === 'SEARCH',
