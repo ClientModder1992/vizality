@@ -96,7 +96,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   const _fetchMissing = async type => {
     vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
 
-    const missingAddons = vizality.manager[toPlural(type)].start(true);
+    const missingAddons = vizality.manager[toPlural(type)].initialize(true);
     const missingAddonsList = missingAddons.length
       ? <>
         <div>{Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length })}</div>

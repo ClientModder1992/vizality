@@ -17,7 +17,99 @@ export function registerCommands (type) {
   vizality.api.commands.registerCommand({
     command: type,
     description: `Commands related to ${type}s.`,
-    usage: '{c} <disable|enable|settings|list>',
+    subCommandPath: [ 'user', 'get' ],
+    options: [
+      {
+        name: 'user',
+        description: 'Get or edit permissions for a user',
+        type: 2, // 2 is type SUB_COMMAND_GROUP
+        options: [
+          {
+            name: 'get',
+            description: 'Get permissions for a user',
+            type: 1, // 1 is type SUB_COMMAND
+            options: [
+              {
+                name: 'user',
+                description: 'The user to get',
+                type: 6, // 6 is type USER
+                required: true
+              },
+              {
+                name: 'channel',
+                description: 'The channel permissions to get. If omitted, the guild permissions will be returned',
+                type: 7, // 7 is type CHANNEL
+                required: false
+              }
+            ]
+          },
+          {
+            name: 'edit',
+            description: 'Edit permissions for a user',
+            type: 1,
+            options: [
+              {
+                name: 'user',
+                description: 'The user to edit',
+                type: 6,
+                required: true
+              },
+              {
+                name: 'channel',
+                description: 'The channel permissions to edit. If omitted, the guild permissions will be edited',
+                type: 7,
+                required: false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: 'role',
+        description: 'Get or edit permissions for a role',
+        type: 2,
+        options: [
+          {
+            name: 'get',
+            description: 'Get permissions for a role',
+            type: 1,
+            options: [
+              {
+                name: 'role',
+                description: 'The role to get',
+                type: 8, // 8 is type ROLE
+                required: true
+              },
+              {
+                name: 'channel',
+                description: 'The channel permissions to get. If omitted, the guild permissions will be returned',
+                type: 7,
+                required: false
+              }
+            ]
+          },
+          {
+            name: 'edit',
+            description: 'Edit permissions for a role',
+            type: 1,
+            options: [
+              {
+                name: 'role',
+                description: 'The role to edit',
+                type: 8,
+                required: true
+              },
+              {
+                name: 'channel',
+                description: 'The channel permissions to edit. If omitted, the guild permissions will be edited',
+                type: 7,
+                required: false
+              }
+            ]
+          }
+        ]
+      }
+    ],
     executor: (args) => {
       const subcommand = commands[args[0]];
       if (!subcommand) {

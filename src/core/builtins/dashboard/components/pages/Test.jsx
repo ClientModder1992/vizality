@@ -1,7 +1,7 @@
 // const { Table } = require('@vizality/components');
 import React, { memo, useState, useEffect } from 'react';
 
-import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
+import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, CarouselWithPreview, ApplicationCommandDiscoverySectionList, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
 import { getModuleByDisplayName } from '@vizality/webpack';
 
 const TransitionGroup = getModuleByDisplayName('TransitionGroup');
@@ -12,6 +12,17 @@ const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)
 export default memo(() => {
   return (
     <>
+      <ApplicationCommandDiscoverySectionList
+        activeSectionIndex={0}
+        sections={[
+          {
+            icon: '/assets/6debd47ed13483642cf09e832ed0bc1b.png',
+            id: '-1',
+            isBuiltIn: true,
+            name: 'Built-In'
+          }
+        ]}
+      />
       <TransitionGroup>
         <SlideIn>
           <FormNotice
@@ -95,7 +106,7 @@ export default memo(() => {
         src='https://cdn.discordapp.com/avatars/597905003717459968/74809b431684d381a5ed0637f8adbf91.png'
         status='online'
         statusTooltip={true}
-        size='SIZE_32'
+        size={Avatar.Sizes.SIZE_32}
       />
       <KeybindEntry
         keybind={{ managed: false, id: '1', action: 'TOGGLE_MUTE', shortcut: [] }}

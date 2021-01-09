@@ -8,6 +8,7 @@ export const Button = AsyncComponent.fromProps(m => m.DropdownSizes);
 // --- fromDisplayName
 export const ApplicationStoreListingCarousel = AsyncComponent.fromDisplayName('ApplicationStoreListingCarousel');
 export const ImageCarouselModal = AsyncComponent.fromDisplayName('componentDispatchSubscriber(ModalCarousel)');
+export const ApplicationCommandDiscoverySectionList = AsyncComponent.fromDisplayName('ApplicationCommandDiscoverySectionList');
 export const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 export const KeyboardShortcut = AsyncComponent.fromDisplayName('KeyboardShortcut');
 export const KeybindRecorder = AsyncComponent.fromDisplayName('KeybindRecorder');

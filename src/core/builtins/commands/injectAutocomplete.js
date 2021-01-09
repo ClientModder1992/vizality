@@ -1,25 +1,32 @@
 import React from 'react';
 
 import { typing, getModule, getModuleByDisplayName } from '@vizality/webpack';
-import { AdvancedScrollerThin } from '@vizality/components';
-import { getOwnerInstance } from '@vizality/util/react';
+import { AdvancedScrollerThin, ApplicationCommandDiscoverySectionList, Avatar } from '@vizality/components';
+import { getOwnerInstance, findInReactTree } from '@vizality/util/react';
+import { joinClassNames } from '@vizality/util/dom';
+import { HTTP } from '@vizality/constants';
 import { patch } from '@vizality/patcher';
 import { Messages } from '@vizality/i18n';
 
-import Command from './components/Command';
-import Title from './components/Title';
+import CategoryTitle from './components/CategoryTitle';
 
-export default async function injectAutocomplete () {
-  this.classes = {
-    ...await getModule('channelTextArea', 'inner')
-  };
+export default function injectAutocomplete () {
+  const Autocomplete = getModuleByDisplayName('Autocomplete');
+  const { textArea } = getModule('channelTextArea', 'inner');
+  const { rail } = getModule('rail');
+  const _this = this;
 
   function renderHeader (value, formatHeader, customHeader) {
     const title = value.length > 0 ? Messages.COMMANDS_MATCHING.format({ prefix: formatHeader(value) }) : Messages.COMMANDS;
+    if (title[1]?.props?.children) {
+      title[1].props.children = value.length > 0 && `${vizality.api.commands.prefix}${value}`;
+    }
 
-    return React.createElement(Title, {
-      title: customHeader || [ 'Vizality ', title ]
-    }, 'autocomplete-title-Commands');
+    return _this.settings.get('showCommandRail', true)
+      ? <CategoryTitle icon={`${HTTP.ASSETS}/logo.png`}>
+        {customHeader || `Vizality ${title}`}
+      </CategoryTitle>
+      : <Autocomplete.Title title={title} />;
   }
 
   function renderCommandResults (value, selected, commands, onHover, onClick, formatCommand, formatHeader, customHeader) {
@@ -27,24 +34,53 @@ export default async function injectAutocomplete () {
       return null;
     }
 
-    const results = commands.map((command, index) => React.createElement(Command, Object.assign({
-      onClick,
-      onHover,
-      selected: selected === index,
-      index
-    }, formatCommand(command, index))));
-
-    return React.createElement(React.Fragment, {}, renderHeader(value, formatHeader, customHeader), results.length > 10
-      ? React.createElement(AdvancedScrollerThin, { style: { height: '337px' } }, results)
-      : results
+    const results = commands.map((command, index) =>
+      <>
+        <Autocomplete.NewCommand
+          onClick={onClick}
+          onHover={onHover}
+          selected={selected === index}
+          index={index}
+          {...formatCommand(command, index)}
+        />
+      </>
     );
+
+    const CommandsRail = () => <ApplicationCommandDiscoverySectionList
+      activeSectionIndex={0}
+      className={joinClassNames('vz-commands-rail', rail)}
+      sections={[
+        {
+          icon: '/assets/6debd47ed13483642cf09e832ed0bc1b.png',
+          id: '-1',
+          isBuiltIn: true,
+          name: 'Built-In'
+        }
+      ]}
+    />;
+
+    if ((/\s/).test(value)) {
+      _this.settings.set('showCommandImages', true);
+      _this.settings.set('showCommandRail', false);
+    } else {
+      _this.settings.set('showCommandImages', false);
+      _this.settings.set('showCommandRail', true);
+    }
+
+    return <>
+      {_this.settings.get('showCommandRail', true) && <CommandsRail />}
+      <AdvancedScrollerThin style={_this.settings.get('showCommandRail', true) ? { marginLeft: '56px' } : { maxHeight: '400px' }}>
+        {renderHeader(value, formatHeader, customHeader)}
+        {results}
+      </AdvancedScrollerThin>
+    </>;
   }
 
   function getMatchingCommand (c) {
     return [ c.command.toLowerCase(), ...(c.aliases?.map(alias => alias.toLowerCase()) || []) ];
   }
 
-  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = await getModule('AUTOCOMPLETE_OPTIONS');
+  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = getModule('AUTOCOMPLETE_OPTIONS');
 
   AutocompleteTypes.VIZALITY_AUTOCOMPLETE = {
     autoSelect: true,
@@ -82,7 +118,7 @@ export default async function injectAutocomplete () {
     },
     getPlainText: (index, _state, { commands }) => {
       let value = '';
-      const instance = getOwnerInstance(document.querySelector(`.${this.classes.textArea}`));
+      const instance = getOwnerInstance(document.querySelector(`.${textArea}`));
       const currentText = instance.getCurrentWord().word;
 
       if (commands[index].wildcard) {
@@ -126,15 +162,14 @@ export default async function injectAutocomplete () {
     }
   };
 
-  const _this = this;
-  const ChannelEditorContainer = await getModuleByDisplayName('ChannelEditorContainer');
+  const ChannelEditorContainer = getModuleByDisplayName('ChannelEditorContainer');
   patch('vz-commands-textArea', ChannelEditorContainer.prototype, 'render', function (_, res) {
     _this.instance = this;
     return res;
   });
 
   /* Silent command typing */
-  typing.startTyping = (startTyping => (channel) => setImmediate(() => {
+  typing.startTyping = (startTyping => channel => setImmediate(() => {
     if (this.instance && this.instance.props) {
       const { textValue } = this.instance.props;
       const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(textValue.slice(vizality.api.commands.prefix.length).split(' ')[0]));
@@ -145,7 +180,7 @@ export default async function injectAutocomplete () {
     }
   }))(this.oldStartTyping = typing.startTyping);
 
-  const PlainTextArea = await getModuleByDisplayName('PlainTextArea');
+  const PlainTextArea = getModuleByDisplayName('PlainTextArea');
   patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.props;
     if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(value)) {
@@ -157,7 +192,7 @@ export default async function injectAutocomplete () {
     return res;
   });
 
-  const SlateChannelTextArea = await getModuleByDisplayName('SlateChannelTextArea');
+  const SlateChannelTextArea = getModuleByDisplayName('SlateChannelTextArea');
   patch('vz-commands-slateAutocomplete', SlateChannelTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.editorRef;
     const { selection, document } = value;
@@ -170,6 +205,50 @@ export default async function injectAutocomplete () {
         };
       }
     }
+    return res;
+  });
+
+  const ApplicationCommandItem = getModule(m => m.default?.displayName === 'ApplicationCommandItem');
+  const { image, title } = getModule('image', 'infoWrapper');
+  patch('vz-commands-commandItem', ApplicationCommandItem, 'default', ([ props ], res) => {
+    const vizalityCommand = Boolean(props?.command?.executor);
+    const plugin = vizality.manager.plugins.get(props?.command?.origin);
+    // console.log(props);
+
+    if (vizalityCommand) {
+      // console.log(props?.command);
+      let commandText = findInReactTree(res, r => r.className === title);
+
+      commandText = commandText.children.substring(1);
+
+      res.props.children[1].props.children[0].props.children[0].props.children = commandText;
+
+      if (plugin) {
+        if (this.settings.get('showCommandImages', false)) {
+          res.props.children[0] =
+            <div className={image}>
+              <Avatar
+                src={plugin.manifest.icon}
+                size={Avatar.Sizes.SIZE_32}
+              />
+            </div>;
+        }
+
+        res.props.children[2].props.children = plugin.manifest.name;
+      } else {
+        if (this.settings.get('showCommandImages', false)) {
+          res.props.children[0] =
+            <div className={image}>
+              <Avatar
+                src={`${HTTP.ASSETS}/logo.png`}
+                size={Avatar.Sizes.SIZE_32}
+              />
+            </div>;
+        }
+        res.props.children[2].props.children = 'Vizality';
+      }
+    }
+
     return res;
   });
 }
