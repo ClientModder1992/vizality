@@ -50,10 +50,10 @@ export default class CommandsAPI extends API {
    * @param {VizalityChatCommand} command Command to register
    */
   registerCommand (command) {
-    // @todo: remove this once there's a proper implemention (if any) for fetching the command origin.
+    // @todo remove this once there's a proper implemention (if any) for fetching the command origin.
     const stackTrace = (new Error()).stack;
-    const [ , origin ] = stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
-      stackTrace.match(new RegExp(`${global._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`));
+    const [ , origin ] = stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
+      (stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`)) && [ null, 'vizality' ]);
 
     if (typeof command === 'string') {
       console.error('no');

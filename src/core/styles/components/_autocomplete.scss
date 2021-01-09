@@ -1,4 +1,16 @@
-.vz-commands-rail {
-  position: absolute;
-  height: 100%;
+.vz-commands-autocomplete {
+  [vz-rail-active] {
+    .autocompleteRow-2OthDa {
+      padding: 0;
+    }
+  }
+  &:not([vz-rail-active]) {
+    // Targetting only the header
+    .autocompleteRow-2OthDa:first-of-type {
+      position: sticky;
+      top: 0;
+      background: var(--background-mobile-secondary);
+      z-index: 1;  
+    }
+  }
 }

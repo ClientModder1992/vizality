@@ -13,6 +13,7 @@ export const HeaderBarContainer = AsyncComponent.fromDisplayName('HeaderBarConta
 export const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 export const KeyboardShortcut = AsyncComponent.fromDisplayName('KeyboardShortcut');
 export const KeybindRecorder = AsyncComponent.fromDisplayName('KeybindRecorder');
+export const Autocomplete = AsyncComponent.fromDisplayName('Autocomplete');
 export const ShinyButton = AsyncComponent.fromDisplayName('ShinyButton');
 export const WebhookCard = AsyncComponent.fromDisplayName('WebhookCard');
 export const FormNotice = AsyncComponent.fromDisplayName('FormNotice');

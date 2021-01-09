@@ -110,7 +110,7 @@ export function registerCommands (type) {
         ]
       }
     ],
-    executor: (args) => {
+    executor: args => {
       const subcommand = commands[args[0]];
       if (!subcommand) {
         return {
@@ -121,7 +121,7 @@ export function registerCommands (type) {
 
       return subcommand.executor(args.slice(1), type);
     },
-    autocomplete: (args) => {
+    autocomplete: args => {
       if (args[0] !== void 0 && args.length === 1) {
         return {
           commands: Object.values(commands).filter(({ command }) => command.includes(args[0].toLowerCase())),
