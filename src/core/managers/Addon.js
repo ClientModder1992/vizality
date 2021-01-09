@@ -206,7 +206,7 @@ export default class AddonManager {
     }
 
     if (this.type !== 'themes' && addon._ready) {
-      return this.error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
+      return this._error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
     }
 
     vizality.settings.set(`disabled${toTitleCase(this.type)}`,
@@ -224,7 +224,7 @@ export default class AddonManager {
     }
 
     if (this.type !== 'themes' && !addon._ready) {
-      return this.error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
+      return this._error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
     }
 
     vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
