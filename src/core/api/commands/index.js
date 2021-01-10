@@ -1,4 +1,9 @@
+import { isObject, isEmpty } from '@vizality/util/object';
+import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
+
+const _module = 'API';
+const _submodule = 'Commands';
 
 /**
  * @typedef VizalityChatCommand
@@ -55,19 +60,23 @@ export default class CommandsAPI extends API {
     const [ , origin ] = stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
       (stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`)) && [ null, 'vizality' ]);
 
-    if (typeof command === 'string') {
-      console.error('no');
-      return;
-    }
-    if (this.commands[command.command]) {
-      /* @todo: Use logger. */
-      throw new Error(`Command ${command.command} is already registered!`);
-    }
+    try {
+      if (!isObject(command) || isEmpty(command)) {
+        throw new Error('Command must be a non-empty object!');
+      }
 
-    this.commands[command.command] = {
-      ...command,
-      origin
-    };
+      if (this.commands[command.command]) {
+        /* @todo: Use logger. */
+        throw new Error(`Command "${command.command}" is already registered!`);
+      }
+
+      this.commands[command.command] = {
+        ...command,
+        origin
+      };
+    } catch (err) {
+      return error(_module, `${_submodule}:registerCommand`, null, err);
+    }
   }
 
   /**
