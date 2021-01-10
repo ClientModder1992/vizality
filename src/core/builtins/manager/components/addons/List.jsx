@@ -15,9 +15,6 @@ import Addon from '../addon/Addon';
 
 export default memo(({ type, tab, search, displayType, limit, className }) => {
   const { getSetting, updateSetting } = vizality.api.settings._fluxProps('manager');
-  console.log(getSetting);
-  // const getSetting = vizality.manager.builtins.get('manager').settings.get;
-  // const updateSetting = vizality.manager.builtins.get('manager').settings.set;
 
   const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
