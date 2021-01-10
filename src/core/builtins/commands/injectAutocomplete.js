@@ -15,24 +15,25 @@ export default function injectAutocomplete () {
   const Autocomplete = getModuleByDisplayName('Autocomplete');
   const { categorySection, categorySectionLast } = getModule('categorySection');
   const { textArea } = getModule('channelTextArea', 'inner');
-  const { listItems } = getModule('listItems');
-  const { rail, wrapper } = getModule('rail');
+  const { builtInSeparator } = getModule('builtInSeparator');
+  const { listItems, scroller } = getModule('listItems');
+  const { rail, wrapper, list } = getModule('rail');
   const _this = this;
 
-  const renderHeader = (value, formatHeader, customHeader, icon) => {
+  const renderHeader = (value, formatHeader, addonName, icon, id) => {
     const title = value?.length > 0 ? Messages.COMMANDS_MATCHING.format({ prefix: formatHeader(value) }) : Messages.COMMANDS;
     if (title[1]?.props?.children) {
       title[1].props.children = value.length > 0 && `${vizality.api.commands.prefix}${value}`;
     }
 
     return this.settings.get('showCommandRail', true)
-      ? <CategoryTitle icon={icon}>
-        {customHeader}
+      ? <CategoryTitle icon={icon} id={id}>
+        {addonName}
       </CategoryTitle>
       : <Autocomplete.Title title={title} />;
   };
 
-  const renderCommandResults = (value, selected, commands, onHover, onClick, formatCommand, formatHeader, customHeader) => {
+  const renderCommandResults = (value, selected, commands, onHover, onClick, formatCommand, formatHeader) => {
     if (!commands || commands.length === 0) {
       return null;
     }
@@ -62,7 +63,7 @@ export default function injectAutocomplete () {
     if (this.settings.get('showCommandRail', true)) {
       const origins = [];
       const vizalitySectionInner = [];
-      vizalitySectionInner.push(renderHeader('', null, 'Vizality', `${HTTP.ASSETS}/logo.png`));
+      vizalitySectionInner.push(renderHeader('', null, 'Vizality', `${HTTP.ASSETS}/logo.png`, `vz-cmd-vizality`));
       results.forEach(result => {
         const { command } = findInReactTree(result, r => r.command);
         if (!origins.includes(command.origin) && command.origin !== 'vizality') {
@@ -79,7 +80,7 @@ export default function injectAutocomplete () {
         const addon = vizality.manager.plugins.get(origin);
         if (!addon) return;
         sections[origin] = [];
-        sections[origin].push(renderHeader(null, null, addon.manifest.name, addon.manifest.icon));
+        sections[origin].push(renderHeader(null, null, addon.manifest.name, addon.manifest.icon, `vz-cmd-${origin}`));
         results.forEach(result => {
           const { command } = findInReactTree(result, r => r.command);
           if (origin === command.origin) {
@@ -88,6 +89,7 @@ export default function injectAutocomplete () {
         });
       });
 
+      let index = 0;
       for (const section of Object.entries(sections)) {
         categorizedResults.push(
           <div className={categorySection}>
@@ -99,8 +101,11 @@ export default function injectAutocomplete () {
           icon: vizality.manager.plugins.get(section[0]).manifest.icon,
           id: section[0],
           isBuiltIn: false,
-          name: vizality.manager.plugins.get(section[0]).manifest.name
+          name: vizality.manager.plugins.get(section[0]).manifest.name,
+          index
         });
+
+        index++;
       }
 
       categorizedResults.push(
@@ -113,30 +118,32 @@ export default function injectAutocomplete () {
         icon: 'https://cdn.vizality.com/assets/logo.png',
         id: 'vizality',
         isBuiltIn: false,
-        name: 'Vizality'
+        name: 'Vizality',
+        index: index++
       });
     }
 
     const CommandsRail = () =>
       <ApplicationCommandDiscoverySectionList
-        activeSectionIndex={0}
+        activeSectionIndex={777} // this.settings.get('selectedRailItemIndex', 0)
         className={joinClassNames('vz-commands-rail', rail)}
         sections={railSections}
+        children={<hr className={builtInSeparator} />}
       />;
 
     return (
       this.settings.get('showCommandRail', true)
         ? <div className={joinClassNames('vz-commands-autocomplete', wrapper)} vz-rail-active={this.settings.get('showCommandRail', true) && ''}>
           <CommandsRail />
-          <AdvancedScrollerThin>
+          <AdvancedScrollerThin className={joinClassNames(scroller, list)}>
             <div className={listItems} style={{ inset: '8px 8px 0px' }}>
               {categorizedResults}
             </div>
           </AdvancedScrollerThin>
         </div>
         : <div className={joinClassNames('vz-commands-autocomplete')}>
-          <AdvancedScrollerThin style={{ maxHeight: '432px' }}>
-            {renderHeader(value, formatHeader, customHeader)}
+          <AdvancedScrollerThin className={joinClassNames(scroller, list)} style={{ maxHeight: '376px' }}>
+            {renderHeader(value, formatHeader)}
             {results}
           </AdvancedScrollerThin>
         </div>
@@ -171,16 +178,17 @@ export default function injectAutocomplete () {
     renderResults: (_channel, value, selected, onHover, onClick, _state, _props, autocomplete) => {
       if (autocomplete && autocomplete.commands) {
         const { commands } = autocomplete;
-        const customHeader = Array.isArray(commands.__header) ? commands.__header : [ commands.__header ];
+        const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
 
         return renderCommandResults(value, selected, commands, onHover, onClick, c => ({
           key: `vizality-${c.command}`,
           command: {
             name: c.command,
-            ...c
+            ...c,
+            origin: currentCommand.origin
           },
           prefix: value.split(' ')[0]
-        }), () => void 0, customHeader);
+        }), () => void 0);
       }
     },
     getPlainText: (index, _state, { commands }) => {
@@ -278,7 +286,7 @@ export default function injectAutocomplete () {
   const ApplicationCommandItem = getModule(m => m.default?.displayName === 'ApplicationCommandItem');
   const { image, title } = getModule('image', 'infoWrapper');
   patch('vz-commands-commandItem', ApplicationCommandItem, 'default', ([ props ], res) => {
-    const vizalityCommand = Boolean(props?.command?.executor);
+    const vizalityCommand = Boolean(props?.command?.origin);
     const plugin = vizality.manager.plugins.get(props?.command?.origin);
 
     if (vizalityCommand) {
@@ -297,24 +305,24 @@ export default function injectAutocomplete () {
           res.props.children[0] =
             <div className={image}>
               <Avatar
-                src={plugin.manifest.icon}
+                src={props?.command?.icon || plugin.manifest.icon}
                 size={Avatar.Sizes.SIZE_32}
               />
             </div>;
         }
 
-        res.props.children[2].props.children = plugin.manifest.name;
+        res.props.children[2].props.children = props?.command?.source || plugin.manifest.name;
       } else {
         if (this.settings.get('showCommandImages', false)) {
           res.props.children[0] =
             <div className={image}>
               <Avatar
-                src={`${HTTP.ASSETS}/logo.png`}
+                src={props?.command?.icon || `${HTTP.ASSETS}/logo.png`}
                 size={Avatar.Sizes.SIZE_32}
               />
             </div>;
         }
-        res.props.children[2].props.children = 'Vizality';
+        res.props.children[2].props.children = props?.command?.source || 'Vizality';
       }
     }
 
@@ -322,10 +330,24 @@ export default function injectAutocomplete () {
   });
 
   const ApplicationCommandDiscoveryApplicationIcon = getModule(m => m.default?.displayName === 'ApplicationCommandDiscoveryApplicationIcon');
-  patch('vz-commands-railIcon', ApplicationCommandDiscoveryApplicationIcon, 'default', (_, res) => {
+  const { autocompleteRow } = getModule('autocompleteRow');
+  patch('vz-commands-railIcon', ApplicationCommandDiscoveryApplicationIcon, 'default', ([ props ], res) => {
     let { src } = findInReactTree(res, r => r.src);
 
     if (src.includes('vz-plugin://') || src.includes('https://cdn.vizality.com/assets')) {
+      res.props.onClick = () => {
+        let topOfElement = document.querySelector(`#vz-cmd-${props?.section?.id}`).offsetTop;
+        const scroller = document.querySelector('.vz-commands-autocomplete > .scrollerBase-289Jih');
+        const row = document.querySelector(`.${autocompleteRow}`);
+        const { scrollTop } = scroller;
+        if (scrollTop > topOfElement && row) {
+          topOfElement -= row.offsetHeight;
+        }
+
+        document.querySelector('.vz-commands-autocomplete > .scrollerBase-289Jih').scroll({ top: topOfElement, behavior: 'smooth' });
+        // this.settings.set('selectedRailItemIndex', props?.section?.index);
+      };
+
       src = src.split('.webp');
       if (new RegExp(`https://cdn.discordapp.com/app-icons/(.*)/`).test(src[0])) {
         res.props.children.props.children.props.src = src[0].replace(new RegExp(`https://cdn.discordapp.com/app-icons/([^/]+)/`, 'ig'), '');

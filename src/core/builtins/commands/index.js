@@ -1,10 +1,16 @@
-import React from 'react';
+/**
+ * @todo There are some more things that need to be done for commands:
+ * - An error occurs in console when you click a rail icon
+ * - Add the ability to collapse categories (Discord hasn't even added this yet,
+ * though it's clear they intend to)
+ * - There is a bug with arrow key navigation where the list doesn't scroll
+ * - Currently selected rail item doesn't update (the index does update, but need
+ * to figure out how to force update)
+ * - Consider adding a back arrow button to the header for subcommand autocompletes
+ */
 
-import { HTTP } from '@vizality/constants';
-import { getModule } from '@vizality/webpack';
-import { patch, unpatch } from '@vizality/patcher';
 import { Builtin } from '@vizality/entities';
-import { Avatar } from '@vizality/components';
+import { unpatch } from '@vizality/patcher';
 
 import monkeypatchMessages from './monkeypatchMessages';
 import injectAutocomplete from './injectAutocomplete';
