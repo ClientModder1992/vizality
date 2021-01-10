@@ -33,16 +33,16 @@ function clearCache (e) {
   return new Promise(resolve => {
     e.sender.session.clearCache(() => resolve(null));
   });
-}
 
-const logger = createWriteStream(join(BASE_DIR, 'main.log'), {
-  flags: 'a',
-  encoding: 'utf8'
-});
 
 /* EXPERIMENTAL */
 // eslint-disable-next-line no-unused-vars
 function logToFile (str) {
+  const logger = createWriteStream(join(BASE_DIR, 'main.log'), {
+    flags: 'a',
+    encoding: 'utf8'
+  });
+
   logger.write(`${new Date().toISOString()} | INFO | ${str}\n`, (err) => {
     if (err) {
       console.error(err);

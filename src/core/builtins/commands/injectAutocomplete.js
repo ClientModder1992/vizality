@@ -325,7 +325,7 @@ export default function injectAutocomplete () {
   patch('vz-commands-railIcon', ApplicationCommandDiscoveryApplicationIcon, 'default', (_, res) => {
     let { src } = findInReactTree(res, r => r.src);
 
-    if (src.includes('vz-plugin://') || src.includes('https://cdn.vizality.com/assets/logo.png')) {
+    if (src.includes('vz-plugin://') || src.includes('https://cdn.vizality.com/assets')) {
       src = src.split('.webp');
       if (new RegExp(`https://cdn.discordapp.com/app-icons/(.*)/`).test(src[0])) {
         res.props.children.props.children.props.src = src[0].replace(new RegExp(`https://cdn.discordapp.com/app-icons/([^/]+)/`, 'ig'), '');

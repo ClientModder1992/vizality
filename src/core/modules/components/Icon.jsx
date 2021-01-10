@@ -654,7 +654,7 @@ export default memo(props => {
     return <SVG
       {...props}
       name={name}
-      className={joinClassNames(iconClassName, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
+      className={joinClassNames(className, 'vz-icon', `vz-icon-${toKebabCase(name)}`)}
       width={width}
       height={height}
       color={color}
