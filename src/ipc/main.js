@@ -33,6 +33,7 @@ function clearCache (e) {
   return new Promise(resolve => {
     e.sender.session.clearCache(() => resolve(null));
   });
+}
 
 
 /* EXPERIMENTAL */
