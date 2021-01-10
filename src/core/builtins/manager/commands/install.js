@@ -3,7 +3,9 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'install',
   description: 'Installs an addon.',
-  usage: '{c} <addon ID>',
+  options: [
+    { name: 'addonId', required: true }
+  ],
   executor (args, type) {
     let result;
 

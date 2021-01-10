@@ -14,8 +14,10 @@ import StickyBar from './parts/StickyBar';
 import Addon from '../addon/Addon';
 
 export default memo(({ type, tab, search, displayType, limit, className }) => {
-  const getSetting = vizality.manager.builtins.get('addon-manager').settings.get;
-  const updateSetting = vizality.manager.builtins.get('addon-manager').settings.set;
+  const { getSetting, updateSetting } = vizality.api.settings._fluxProps('manager');
+  console.log(getSetting);
+  // const getSetting = vizality.manager.builtins.get('manager').settings.get;
+  // const updateSetting = vizality.manager.builtins.get('manager').settings.set;
 
   const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
@@ -93,7 +95,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   };
 
   const _fetchMissing = async type => {
-    vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
+    vizality.api.notices.closeToast('vz-manager-fetch-entities');
 
     const missingAddons = vizality.manager[toPlural(type)].initialize(true);
     const missingAddonsList = missingAddons.length
@@ -105,7 +107,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
       </>
       : Messages.VIZALITY_MISSING_ADDONS_NONE;
 
-    vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
+    vizality.api.notices.sendToast('vz-manager-fetch-entities', {
       header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length || 0 }),
       content: missingAddonsList,
       type: missingAddons.length > 0 && 'success',

@@ -8,7 +8,11 @@ import { open as openModal } from '@vizality/modal';
 export default {
   command: 'list',
   description: 'Displays a list of currently installed addons.',
-  usage: '{c} <all | enabled | disabled>',
+  options: [
+    { name: 'all', required: true },
+    { name: 'enabled', required: true },
+    { name: 'disabled', required: true }
+  ],
   executor: async (args, type) => {
     let addons, result;
 
@@ -39,8 +43,8 @@ export default {
         <div className='vz-embed-table-grid-row'>
           <div className='vz-embed-table-grid-row-inner'>
             <LazyImageZoomable
-              className='vz-addon-manager-command-list-embed-table-addon-image-wrapper'
-              imageClassName='vz-addon-manager-command-list-embed-table-addon-img'
+              className='vz-manager-command-list-embed-table-addon-image-wrapper'
+              imageClassName='vz-manager-command-list-embed-table-addon-img'
               src={addon.manifest.icon}
               width='20'
               height='20'
@@ -94,7 +98,7 @@ export default {
         text: <>
           {await renderItems().then(() => {
             return (
-              <div className='vz-embed-table vz-addon-manager-command-list-embed-table'>
+              <div className='vz-embed-table vz-manager-command-list-embed-table'>
                 <div className='vz-embed-table-grid-header vz-embed-table-grid-row'>
                   <div className='vz-embed-table-grid-header-inner'>
                     Name
@@ -139,8 +143,7 @@ export default {
           command: 'disabled',
           description: `List of all disabled ${toPlural(type)}.`
         }
-      ],
-      header: `Vizality ${toTitleCase(type)} List`
+      ]
     };
   }
 };

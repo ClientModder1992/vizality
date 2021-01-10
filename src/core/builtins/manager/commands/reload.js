@@ -3,7 +3,11 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'reload',
   description: 'Reloads a currently enabled addon, or reload all addons.',
-  usage: '{c} <addon ID | all>',
+  addonIcon: true,
+  options: [
+    { name: 'addonId', required: true },
+    { name: 'all', required: true }
+  ],
   executor: async (args, type) => {
     let result;
 
@@ -55,13 +59,14 @@ export default {
           .filter(addon => addon && addon.addonId.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
-            description: addon.manifest.description
+            description: addon.manifest.description,
+            icon: addon.manifest.icon,
+            source: addon.manifest.name
           }))
           .concat({
             command: 'all',
             description: `Reloads all ${toPlural(type)}.`
-          }),
-      header: `Vizality Enabled ${toTitleCase(toPlural(type))}`
+          })
     };
   }
 };

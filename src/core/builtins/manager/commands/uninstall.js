@@ -3,7 +3,10 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'uninstall',
   description: 'Uninstalls an addon.',
-  usage: '{c} <addon ID>',
+  addonIcon: true,
+  options: [
+    { name: 'addonId', required: true }
+  ],
   executor (args, type) {
     let result;
 
@@ -42,9 +45,10 @@ export default {
           .filter(addon => addon && addon.addonId.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
-            description: addon.manifest.description
-          })),
-      header: `Vizality Installed ${toTitleCase(toPlural(type))}`
+            description: addon.manifest.description,
+            icon: addon.manifest.icon,
+            source: addon.manifest.name
+          }))
     };
   }
 };

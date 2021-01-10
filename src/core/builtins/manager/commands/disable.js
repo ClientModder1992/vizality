@@ -3,7 +3,10 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'disable',
   description: 'Disables a currently enabled addon, or disable all addons.',
-  usage: '{c} <addon ID | all>',
+  options: [
+    { name: 'addonId', required: true },
+    { name: 'all', required: true }
+  ],
   executor (args, type) {
     let result;
 
@@ -55,13 +58,14 @@ export default {
           .filter(addon => addon && addon.addonId.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
-            description: addon.manifest.description
+            description: addon.manifest.description,
+            icon: addon.manifest.icon,
+            source: addon.manifest.name
           }))
           .concat({
             command: 'all',
             description: `Disables all ${toPlural(type)}.`
-          }),
-      header: `Vizality Enabled ${toTitleCase(toPlural(type))}`
+          })
     };
   }
 };

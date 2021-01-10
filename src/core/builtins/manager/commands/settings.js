@@ -6,7 +6,10 @@ import { FormTitle, Anchor } from '@vizality/components';
 export default {
   command: 'settings',
   description: `Allows you to change an addon's settings directly in chat.`,
-  usage: '{c} <addon ID>',
+  addonIcon: true,
+  options: [
+    { name: 'addonId', required: true }
+  ],
   async executor (args, type) {
     let result;
 
@@ -32,7 +35,7 @@ export default {
           color: type === 'plugin' ? 0x42ffa7 : 0xb68aff,
           provider: {
             name: <>
-              <FormTitle tag='h2' className='vz-addon-manager-command-addon-settings-header'>
+              <FormTitle tag='h2' className='vz-manager-command-addon-settings-header'>
                 Settings
               </FormTitle>
               <Settings />
@@ -81,9 +84,10 @@ export default {
           .filter(addon => addon && addon.addonId.includes(args[0]) && vizality.api.settings.tabs[addon.addonId]?.settings)
           .map(addon => ({
             command: addon.addonId,
-            description: addon.manifest.description
-          })),
-      header: `Vizality ${toTitleCase(type)} Settings`
+            description: addon.manifest.description,
+            icon: addon.manifest.icon,
+            source: addon.manifest.name
+          }))
     };
   }
 };

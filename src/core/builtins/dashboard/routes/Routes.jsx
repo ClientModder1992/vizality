@@ -12,7 +12,7 @@ import Home from '../components/pages/home/Home';
 import Layout from '../components/parts/Layout';
 import Test from '../components/pages/Test';
 
-import AddonList from '@vizality/builtins/addon-manager/components/addons/List';
+import AddonList from '@vizality/builtins/manager/components/addons/List';
 
 export default memo(() => {
   return (

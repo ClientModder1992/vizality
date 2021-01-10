@@ -23,9 +23,8 @@ export default class AddonsManager extends Builtin {
   }
 
   onStop () {
-    commands.unregisterCommands();
-    vizality.api.commands.unregisterCommand('plugin');
-    vizality.api.commands.unregisterCommand('theme');
+    commands.unregisterCommands('plugin');
+    commands.unregisterCommands('theme');
   }
 
   uninstallAddon (addonId, type) {
