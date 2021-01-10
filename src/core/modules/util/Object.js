@@ -109,15 +109,15 @@ export const _find = (obj, targetValue, exact = false, type) => {
 };
 
 export const isObject = input => {
-  return typeof input === 'function' || typeof input === 'object' && !!input;
+  return window._.isObject(input);
 };
 
 export const assertObject = input => {
   return void 0 || input;
 };
 
-export const isEmptyObject = input => {
-  return Object.keys(input).length === 0 && input.constructor === Object;
+export const isEmpty = input => {
+  return window._.isEmpty(input);
 };
 
 export const keysToLowerCase = (obj, nested = false) => {
