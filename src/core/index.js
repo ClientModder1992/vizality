@@ -100,7 +100,7 @@ export default class Vizality extends Updatable {
     })();
 
     await this.start(); // Start
-    this.git = await this.manager.builtins.get('updater').getGitInfo();
+    this.git = await this.manager.builtins.get('vz-updater').getGitInfo();
 
     /* Token manipulation stuff */
     if (this.settings.get('hideToken', true)) {
@@ -121,7 +121,7 @@ export default class Vizality extends Updatable {
 
     await this.manager.apis.initialize(); // APIs
 
-    this.settings = this.api.settings.buildCategoryObject('settings');
+    this.settings = this.api.settings.buildCategoryObject('vz-settings');
     this.emit(Events.VIZALITY_SETTINGS_READY);
 
     this._patchDiscordLogs(); // This has to be after settings have been initialized
@@ -225,7 +225,7 @@ export default class Vizality extends Updatable {
     const success = await super._update(force);
     if (success) {
       await exec('npm install --only=prod', { cwd: this.addonPath });
-      const updater = this.manager.builtins.get('updater');
+      const updater = this.manager.builtins.get('vz-updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {
         this.api.notices.sendToast('vizality-updater', {
@@ -245,7 +245,7 @@ export default class Vizality extends Updatable {
           } ]
         });
       }
-      updater.settings.set('awaiting_reload', true);
+      updater.settings.set('awaitingReload', true);
     }
     return success;
   }

@@ -2,8 +2,8 @@ import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
-import Sidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
-import Routes from '@vizality/builtins/dashboard/routes/Routes';
+import Sidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
+import Routes from '@vizality/builtins/vz-dashboard/routes/Routes';
 
 const _module = 'API';
 const _submodule = 'Router';

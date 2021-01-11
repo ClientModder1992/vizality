@@ -1,0 +1,86 @@
+@use '@vizality' as *;
+
+.vz-addons-list {
+  $base: &;
+  &[vz-display='compact'] {
+    #{$base}-items {
+      margin: 25px -10px 0;
+    }
+    .vz-addon-card {
+      padding: 10px;
+      margin: 5px 10px;
+      flex: 1 100%;
+      &:empty {
+        display: none;
+      }
+      &-header {
+        margin: 0;
+      }
+      &-metadata {
+        width: 100%;
+      }
+      &-version {
+        margin-bottom: 0;
+      }
+      &-name-version {
+        align-items: center;
+      }
+      &-author {
+        margin: 0;
+      }
+      &-tags {
+        flex: 1 0 100%;
+        margin: 0;
+        align-items: center;
+      }
+      &-details {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        flex: 1;
+      }
+      &-detail-wrapper {
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+        margin-right: 30px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      &-content-wrapper {
+        padding: 0;
+      }
+      &-detail-label {
+        margin-bottom: 7px;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var('text-muted');
+        white-space: nowrap;
+      }
+      &-detail-value-wrapper {
+        display: flex;
+        align-items: center;
+      }
+      &-detail-value-icon-wrapper {
+        margin-right: 4px;
+      }
+      &-description {
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        opacity: .8;
+      }
+      &-actions {
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        > div {
+          margin-left: 10px;
+          > div {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}

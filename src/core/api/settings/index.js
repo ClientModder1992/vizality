@@ -7,9 +7,9 @@ import { API } from '@vizality/entities';
 import actions from './store/actions';
 import store from './store/store';
 
-import Sidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
-import Content from '@vizality/builtins/dashboard/components/parts/Content';
-import Layout from '@vizality/builtins/dashboard/components/parts/Layout';
+import Sidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
+import Content from '@vizality/builtins/vz-dashboard/components/parts/Content';
+import Layout from '@vizality/builtins/vz-dashboard/components/parts/Layout';
 
 const _module = 'API';
 const _submodule = 'Settings';

@@ -20,7 +20,7 @@ let reactDeveloperTools = false;
 let settings = {};
 
 try {
-  settings = require(join(__dirname, '..', '..', 'settings', 'settings.json'));
+  settings = require(join(__dirname, '..', '..', 'settings', 'vz-settings.json'));
 
   ({ reactDeveloperTools } = settings);
 } catch (err) {
