@@ -117,7 +117,7 @@ export default class Vizality extends Updatable {
     console.clear(); // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
 
     // Startup banner
-    console.log('%c ', `background: url('${HTTP.ASSETS}/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ', `background: url('vz-asset://images/console-banner.png') no-repeat center / contain; padding: 115px 345px; font-size: 1px; margin: 10px 0;`);
 
     await this.manager.apis.initialize(); // APIs
 
