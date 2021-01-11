@@ -73,8 +73,8 @@ electron.protocol.registerSchemesAsPrivileged([
 electron.app.once('ready', () => {
   if (reactDeveloperTools) {
     installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log('An error occurred: ', err));
+      .then(name => console.log(`Added Extension:  ${name}`))
+      .catch(err => console.log('An error occurred: ', err));
   }
   // @todo Possibly add whitelists instead of just disabling CSP.
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
@@ -96,20 +96,28 @@ electron.app.once('ready', () => {
     }
   });
 
-  const registerProtocol = (name, folder) => {
+  const registerProtocol = name => {
     electron.protocol.registerFileProtocol(name, (request, cb) => {
       // https://security.stackexchange.com/a/123723
       const [ url ] = normalize(request.url.replace(`${name}://`, '')).replace(/^(\.\.(\/|\\|$))+/, '').split('?');
-      if (folder === 'builtins') {
-        return cb({ path: join(__dirname, '..', 'core', 'builtins', folder, url) });
+
+      switch (name) {
+        case 'vz-asset':
+          return cb({ path: join(__dirname, '..', 'core', 'assets', url) });
+        case 'vz-builtin':
+          return cb({ path: join(__dirname, '..', 'core', 'builtins', url) });
+        case 'vz-theme':
+          return cb({ path: join(__dirname, '..', '..', 'addons', 'themes', url) });
+        case 'vz-plugin':
+          return cb({ path: join(__dirname, '..', '..', 'addons', 'plugins', url) });
       }
-      return cb({ path: join(__dirname, '..', '..', 'addons', folder, url) });
     });
   };
 
-  registerProtocol('vz-plugin', 'plugins');
-  registerProtocol('vz-theme', 'themes');
-  registerProtocol('vz-builtin', 'builtins');
+  registerProtocol('vz-asset');
+  registerProtocol('vz-builtin');
+  registerProtocol('vz-theme');
+  registerProtocol('vz-plugin');
 });
 
 const discordPackage = require(join(discordPath, 'package.json'));
