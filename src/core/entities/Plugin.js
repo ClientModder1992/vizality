@@ -1,12 +1,12 @@
-import { join, win32, extname } from 'path';
+import { join, sep } from 'path';
+import { watch } from 'chokidar';
 import { existsSync } from 'fs';
-import watch from 'node-watch';
 
 import { error, log, warn } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { sleep } from '@vizality/util/time';
+import { toPlural } from '@vizality/util/string';
 
 import Updatable from './Updatable';
 
@@ -29,33 +29,6 @@ export default class Plugin extends Updatable {
     this._submodule = this.constructor.name;
   }
 
-  get dependencies () {
-    return this.manifest.dependencies;
-  }
-
-  get optionalDependencies () {
-    return this.manifest.optionalDependencies;
-  }
-
-  get effectiveOptionalDependencies () {
-    const deps = this.manifest.optionalDependencies;
-    const disabled = vizality.settings.get('disabledPlugins', []);
-    return deps.filter(d => vizality.manager.plugins.get(d) !== void 0 && !disabled.includes(d));
-  }
-
-  get allDependencies () {
-    return this.dependencies.concat(this.optionalDependencies);
-  }
-
-  get allEffectiveDependencies () {
-    return this.dependencies.concat(this.effectiveOptionalDependencies);
-  }
-
-  get dependents () {
-    const dependents = [ ...vizality.manager.plugins.values ].filter(p => p.manifest.dependencies.includes(this.addonId));
-    return [ ...new Set(dependents.map(d => d.addonId).concat(...dependents.map(d => d.dependents))) ];
-  }
-
   /**
    * Injects a style element containing the styles from the specified stylesheet into the
    * document head. Style element (and styles) are automatically removed on
@@ -68,7 +41,7 @@ export default class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(Directories.PLUGINS, this.addonId, path);
+      resolvedPath = join(this._module === 'Plugin' ? Directories.PLUGINS : Directories.BUILTINS, this.addonId, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
@@ -123,17 +96,21 @@ export default class Plugin extends Updatable {
     warn(this._module, this._submodule, null, ...data);
   }
 
-  // Update
+  /**
+   * Update
+   * @private
+   */
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      await vizality.manager.plugins.remount(this.addonId);
+      await vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId);
     }
     return success;
   }
 
   /**
    * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
+   * @private
    */
   async _enableWatcher () {
     this._watcherEnabled = vizality.settings.get('hotReload', false);
@@ -142,37 +119,42 @@ export default class Plugin extends Updatable {
   /**
    * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
    * was previously enabled.
+   * @private
    */
   async _disableWatcher () {
     this._watcherEnabled = false;
     this._watchers.close();
-    this._watchers = {};
   }
 
   /** @private */
   async _watchFiles () {
-    const _this = this;
+    const _module = 'Watcher';
+
     this._watchers = watch(this.addonPath, {
-      recursive: true,
-      async filter (f, skip) {
-        // skip node_modules
-        if ((/\\node_modules/).test(f)) return skip;
-        // skip .git folder
-        if ((/\.git/).test(f)) return skip;
-        // Don't do anything if it's a Sass/CSS file or the manifest file
-        if (win32.basename(f) === 'manifest.json' || extname(f) === '.scss' || extname(f) === '.css') return skip;
-        await vizality.manager.plugins.remount(_this.addonId);
-      }
+      ignored: [ /node_modules/, /.git/, /manifest.json/, '*.scss', '*.css' ],
+      ignoreInitial: true
     });
+
+    this._watchers
+      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId));
+
+    this._watchers
+      .on('add', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been added.`))
+      .on('change', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been changed.`))
+      .on('unlink', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been removed.`));
+
+    // More possible events.
+    this._watchers
+      .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.addonPath + sep, '')}" has been added.`))
+      .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.addonPath + sep, '')}" has been removed.`))
+      .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, `Watcher error: ${error.replace(this.addonPath + sep, '')}`));
   }
 
-  // Internals
+  /**
+   * @private
+   */
   async _load () {
     try {
-      while (!this.allEffectiveDependencies.every(pluginName => vizality.manager.plugins.get(pluginName)._ready)) {
-        await sleep(1);
-      }
-
       if (typeof this.onStart === 'function') {
         const before = performance.now();
 
@@ -186,22 +168,22 @@ export default class Plugin extends Updatable {
       }
     } catch (err) {
       this.error('An error occurred during initialization!', err);
-    } finally {
-      this._ready = true;
-      /*
-       * @todo Have this be a toggleable developer setting, default to off. Also have a notice
-       * warning about potential performance issues, though I haven't encountered any yet, the
-       * potential still exists from the extra overhead. Also seems to have a bug/interference
-       * with JSX file caching, which you can see if you disable a plugin, edit a file, and enable
-       * the plugin.
-       */
-      this._enableWatcher();
-      if (this._watcherEnabled) {
-        this._watchFiles();
-      }
+    }
+
+    this._ready = true;
+    /*
+     * @todo Seems to possibly have a bug/interference with file caching, which you can see
+     * if you disable a plugin, edit a file, and enable the plugin.
+     */
+    this._enableWatcher();
+    if (this._watcherEnabled) {
+      await this._watchFiles();
     }
   }
 
+  /**
+   * @private
+   */
   async _unload () {
     try {
       for (const id in this.styles) {
@@ -219,7 +201,7 @@ export default class Plugin extends Updatable {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
       this._ready = false;
-      if (this._watchers && this._watchers.isClosed && !this._watchers.isClosed()) {
+      if (this._watchers) {
         await this._disableWatcher();
       }
     }

@@ -1,6 +1,6 @@
 const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
 const { createHash } = require('crypto');
-const watch = require('node-watch');
+const { watch } = require('chokidar');
 const Events = require('events');
 const { join } = require('path');
 
@@ -118,7 +118,8 @@ module.exports = class Compiler extends Events {
     // Add new watchers
     files.forEach(f => {
       if (!this._watchers[f]) {
-        this._watchers[f] = watch(f, () => this.emit('src-update'));
+        this._watchers[f] = watch(f);
+        this._watchers[f].on('all', () => this.emit('src-update'));
       }
     });
   }

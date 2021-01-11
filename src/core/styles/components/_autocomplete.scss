@@ -1,8 +1,7 @@
 .vz-commands-autocomplete {
-  &[vz-rail-active] {
-    .autocompleteRow-2OthDa {
-      padding: 0;
-    }
+  .vz-command-icon,
+  .vz-commands-category-header-icon {
+    border-radius: 50%;
   }
   &:not([vz-rail-active]) {
     // Targetting only the header

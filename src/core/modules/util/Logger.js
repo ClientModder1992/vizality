@@ -32,10 +32,11 @@ export const _log = (module, submodule, submoduleLabelColor, message, type) => {
     manager: { module: '#1e2963', submodule: '#782049' },
     builtin: { module: '#267366', submodule: '#fff' },
     plugin: { module: '#42ffa7', submodule: '#594bda' },
-    theme: { module: '#b68aff', submodule: '#F3523D' },
-    discord: { module: '#7289DA', submodule: '#18191c' },
+    theme: { module: '#b68aff', submodule: '#f3523d' },
+    discord: { module: '#7289da', submodule: '#18191c' },
     module: { module: '#ed7c6f', submodule: '#34426e' },
-    patch: { module: '#a70338', submodule: '#0195b5' }
+    patch: { module: '#a70338', submodule: '#0195b5' },
+    watcher: { module: '#631323', submodule: '#fcff8d' }
   };
 
   type = this._parseType(type);
