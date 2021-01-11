@@ -2,9 +2,6 @@ import { isObject, isEmpty } from '@vizality/util/object';
 import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
 
-const _module = 'API';
-const _submodule = 'Commands';
-
 /**
  * @typedef VizalityChatCommand
  * @property {string} command Command name
@@ -20,10 +17,12 @@ const _submodule = 'Commands';
  * Vizality chat commands API
  * @property {Object.<string, VizalityChatCommand>} commands Registered commands
  */
-export default class CommandsAPI extends API {
+export default class Commands extends API {
   constructor () {
     super();
     this.commands = {};
+    this._module = 'API';
+    this._submodule = 'Commands';
   }
 
   get prefix () {
@@ -55,7 +54,6 @@ export default class CommandsAPI extends API {
    * @param {VizalityChatCommand} command Command to register
    */
   registerCommand (command) {
-    // @todo remove this once there's a proper implemention (if any) for fetching the command origin.
     const stackTrace = (new Error()).stack;
     const [ , origin ] = stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
       (stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`)) && [ null, 'vizality' ]);
@@ -75,7 +73,7 @@ export default class CommandsAPI extends API {
         origin
       };
     } catch (err) {
-      return error(_module, `${_submodule}:registerCommand`, null, err);
+      return error(this._module, `${this._submodule}:registerCommand`, null, err);
     }
   }
 

@@ -4,6 +4,8 @@ export default class ConnectionsAPI extends API {
   constructor () {
     super();
     this.connections = [];
+    this._module = 'API';
+    this._submodule = 'Connections';
   }
 
   get map () {

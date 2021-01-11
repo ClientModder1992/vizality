@@ -1,24 +1,21 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, Children } from 'react';
 
 import { existsSync, promises } from 'fs';
 import Markdown from 'react-markdown';
-import { shell } from 'electron';
 
+import { getImageDimensions } from '@vizality/util/file';
 import { toKebabCase } from '@vizality/util/string';
 import { open as openModal } from '@vizality/modal';
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
-import AsyncComponent from './AsyncComponent';
-import CodeBlock from './CodeBlock';
-import Icon from './Icon';
+import { AsyncComponent, CodeBlock, Icon, DeferredRender, Spinner } from '.';
 
 const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 const ImageModal = AsyncComponent.fromDisplayName('ImageModal');
 const Anchor = AsyncComponent.fromDisplayName('Anchor');
 
 const { readFile } = promises;
-const { openExternal } = shell;
 
 export default memo(({ source, className }) => {
   const [ markdown, setMarkdown ] = useState();
@@ -44,7 +41,7 @@ export default memo(({ source, className }) => {
   const flatten = (text, child) => {
     return typeof child === 'string'
       ? text + child
-      : React.Children.toArray(child.props.children).reduce(flatten, text);
+      : Children.toArray(child?.props?.children).reduce(flatten, text);
   };
 
   const generateId = (() => {
@@ -79,10 +76,16 @@ export default memo(({ source, className }) => {
       if (start !== null && start !== 1 && start !== undefined) {
         attrs.start = start.toString();
       }
-      return React.createElement(ordered ? 'ol' : 'ul', {
-        className: joinClassNames('vz-markdown-list', `vz-is-${ordered ? 'ol' : 'ul'}`),
-        start: attrs.start
-      }, children);
+
+      const ListItem = ordered ? 'ol' : 'ul';
+      return (
+        <ListItem
+          className={joinClassNames('vz-markdown-list', `vz-is-${ordered ? 'ol' : 'ul'}`)}
+          start={attrs.start}
+        >
+          {children}
+        </ListItem>
+      );
     },
 
     listItem: ({ children }) => {
@@ -95,7 +98,6 @@ export default memo(({ source, className }) => {
       return <>
         <Anchor
           href={href}
-          onClick={() => openExternal(href)}
           className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}
         >
           {children}
@@ -107,8 +109,7 @@ export default memo(({ source, className }) => {
       return <>
         <Anchor
           href={href}
-          onClick={() => openExternal(href)}
-          className={joinClassNames('vz-markdown-link', anchor, anchorUnderlineOnHover)}
+          className={joinClassNames('vz-markdown-link-reference', anchor, anchorUnderlineOnHover)}
         >
           {children}
         </Anchor>
@@ -139,21 +140,45 @@ export default memo(({ source, className }) => {
       return <code className='vz-markdown-code-inline'>{children}</code>;
     },
 
+    // @todo Fix this to work with variable dimensions.
     image: ({ alt, src }) => {
       return <LazyImageZoomable
         className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => openModal(() => <ImageModal src={src} />)}
+        width='500'
+        height='500'
+        onClick={e => {
+          e.preventDefault();
+          console.log('uh');
+          openModal(() =>
+            <ImageModal
+              src={src}
+              width='500'
+              height='500'
+            />
+          );
+        }}
       />;
     },
 
+    // @todo Fix this to work with variable dimensions.
     imageReference: ({ alt, src }) => {
       return <LazyImageZoomable
         className={joinClassNames('vz-markdown-image', imageWrapper)}
         src={src}
         alt={alt}
-        onClick={() => openModal(() => <ImageModal src={src} />)}
+        width='500'
+        height='500'
+        onClick={e => {
+          e.preventDefault();
+          openModal(() =>
+            <ImageModal
+              src={src}
+              width='500'
+              height='500'
+            />);
+        }}
       />;
     },
 
@@ -195,5 +220,13 @@ export default memo(({ source, className }) => {
       );
     }
   };
-  return <Markdown source={markdown} renderers={renderers} />;
+  return (
+    <DeferredRender idleTimeout={2500} fallback={
+      <div className='vz-markdown-content-loading'>
+        <Spinner />
+      </div>
+    }>
+      <Markdown source={markdown} renderers={renderers} />
+    </DeferredRender>
+  );
 });

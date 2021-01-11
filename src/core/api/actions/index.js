@@ -1,11 +1,6 @@
 import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
 
-console.log(API);
-
-const _module = 'Module';
-const _submodule = 'API:Actions';
-
 /**
  * @typedef VizalityActions
  * @property {string} name Action name
@@ -16,10 +11,12 @@ const _submodule = 'API:Actions';
  * Vizality Actions API
  * @property {VizalityAction[]} actions Registered actions
  */
-export default class ActionsAPI extends API {
+export default class Actions extends API {
   constructor () {
     super();
     this.actions = [];
+    this._module = 'API';
+    this._submodule = 'Actions';
   }
 
   /**
@@ -30,14 +27,14 @@ export default class ActionsAPI extends API {
    */
   registerAction (action) {
     try {
-      if (this.actions.find(r => r.action === name)) throw new Error(`Action "${name}" is already registered!`);
+      if (this.actions.find(r => r.action === action.id)) throw new Error(`Action "${action.id}" is already registered!`);
       if (!action.executor) throw new Error(`"action" property must be specified!`);
       if (typeof action.executor !== 'function') throw new Error(`"action" property value must be a function!`);
 
       this.actions.push(action);
       this.emit('actionAdded', action);
     } catch (err) {
-      return error(_module, `${_submodule}:registerAction`, null, err);
+      return error(this._module, `${this._submodule}:registerAction`, null, err);
     }
   }
 
@@ -56,7 +53,7 @@ export default class ActionsAPI extends API {
         throw new Error(`Action "${name}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
-      return error(_module, `${_submodule}:unregisterAction`, null, err);
+      return error(this._module, `${this._submodule}:unregisterAction`, null, err);
     }
   }
 
