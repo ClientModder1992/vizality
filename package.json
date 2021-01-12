@@ -68,6 +68,10 @@
     "@vizality/util/time": "src/core/modules/util/Time",
     "@vizality/util/dom": "src/core/modules/util/DOM",
     "@vizality": "src/core/modules",
+    "moment": "src/core/modules/packages/Moment",
+    "react": "src/core/modules/packages/React",
+    "react-dom": "src/core/modules/packages/ReactDOM",
+    "react-router": "src/core/modules/packages/ReactRouter"
   },
   "dependencies": {
     "@monaco-editor/react": "^3.7.1",

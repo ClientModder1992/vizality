@@ -11,6 +11,10 @@
       "@vizality/builtins": [ "./core/builtins"],
       "@vizality/modules": [ "./core/modules"],
       "@vizality/typedefs": [ "./core/typedefs" ],
+      "moment": [ "./core/modules/packages/Moment" ],
+      "react": [ "./core/modules/packages/React" ],
+      "react-dom": [ "./core/modules/packages/ReactDOM" ],
+      "react-router": [ "./core/modules/packages/Router" ]
     }
   }
 }
