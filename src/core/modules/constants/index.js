@@ -107,3 +107,9 @@ export const ErrorTypes = Object.freeze({
   MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
   INVALID_MANIFEST: 'INVALID_MANIFEST'
 });
+
+// Vizality Developers
+export const Developers = Object.freeze([
+  '97549189629636608', // dperolio
+  '301494563514613762' // Sebastian
+]);

@@ -1,7 +1,7 @@
 import { promisify } from 'util';
 import cp from 'child_process';
 
-import { Directories, HTTP, Events } from '@vizality/constants';
+import { Directories, Developers, Events } from '@vizality/constants';
 import { initialize, getModule } from '@vizality/webpack';
 import { log, warn, error } from '@vizality/util/logger';
 import { Updatable } from '@vizality/entities';
@@ -46,9 +46,10 @@ const exec = promisify(cp.exec);
 export default class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
+    delete this.addonId; // Leftover prop from Updatable
 
     /*
-     * Copy over the VizalityNative to vizality.native and then delete
+     * @note Copy over the VizalityNative to vizality.native and then delete
      * VizalityNative, so that we are staying consistent and only have
      * one top level global variable.
      */
@@ -82,11 +83,6 @@ export default class Vizality extends Updatable {
 
   // Initialization
   async initialize () {
-    const isOverlay = (/overlay/).test(location.pathname);
-    if (isOverlay) { // eh
-      // await sleep(250);
-    }
-
     await initialize(); // Webpack & Modules
 
     const Flux = getModule('Store', 'PersistedStore');
@@ -122,10 +118,15 @@ export default class Vizality extends Updatable {
     this.settings = this.api.settings.buildCategoryObject('vz-settings');
     this.emit(Events.VIZALITY_SETTINGS_READY);
 
+    const { getId: currentUserId } = getModule('initialize', 'getFingerprint');
+    if (Developers.includes(currentUserId())) {
+      this.settings.set('vizalityDeveloper', true);
+    }
+
     this._patchDiscordLogs(); // This has to be after settings have been initialized
 
     // Setting up the modules for the global vizality object
-    const modules = [ 'components', 'constants', 'discord', 'http', 'i18n', 'patcher', 'react', 'util', 'webpack' ];
+    const modules = [ 'components', 'constants', 'discord', 'http', 'i18n', 'patcher', 'packages', 'util', 'webpack' ];
 
     for (const mdl of modules) {
       const Mdl = await import(`@vizality/${mdl}`);

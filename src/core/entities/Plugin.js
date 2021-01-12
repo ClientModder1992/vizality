@@ -115,7 +115,15 @@ export default class Plugin extends Updatable {
    * @private
    */
   async _enableWatcher () {
-    this._watcherEnabled = vizality.settings.get('hotReload', false);
+    /**
+     * @note Don't enable the watcher for builtins unless the user is a Vizality developer.
+     * No need to use extra resources watching something that shouldn't need it.
+     */
+    if (this._module === 'Builtin' && !vizality.settings.get('vizalityDeveloper', false)) {
+      this._watcherEnabled = false;
+    } else {
+      this._watcherEnabled = vizality.settings.get('hotReload', false);
+    }
   }
 
   /**
