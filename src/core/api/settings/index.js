@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { toSingular } from '@vizality/util/string';
 import { error } from '@vizality/util/logger';
 import { Flux } from '@vizality/webpack';
 import { API } from '@vizality/entities';
@@ -38,119 +39,115 @@ const _submodule = 'Settings';
  * @property {Flux.Store} store Flux store
  * @property {object<string, SettingsTab>} tabs Settings tab
  */
-export default class SettingsAPI extends API {
+export default class Settings extends API {
   constructor () {
     super();
     this.store = store;
-    this.tabs = {};
+    this.plugins = [];
+    this.themes = [];
   }
 
   /**
    * Registers a settings tab
-   * @param {string} tabId Settings tab ID
    * @param {SettingsTab} props Props of the settings tab
+   * @private
    */
-  registerSettings (tabId, props) {
+  _registerAddonSettings (props) {
     try {
-      if (this.tabs[tabId]) {
-        throw new Error(`Settings tab "${tabId}" is already registered!`);
-      }
-      this.tabs[tabId] = props;
-
-      this.tabs[tabId].render = this.connectStores(props.category)(props.render);
-      Object.freeze(this.tabs[tabId].render.prototype);
-      Object.freeze(this.tabs[tabId]);
-    } catch (err) {
-      return error(_module, `${_submodule}:registerSettings`, null, err);
-    }
-  }
-
-  registerAddonSettings (props) {
-    try {
-      let { id, render } = props;
+      let { type, addonId, render } = props;
 
       // Check if it's an ES module
       render = render.__esModule ? render.default : render;
 
-      this.tabs[id] = props;
-      this.tabs[id].settings = this.connectStores(id)(render);
+      const addon = vizality.manager[type].get(addonId);
 
-      Object.freeze(this.tabs[id].render.prototype);
-      Object.freeze(this.tabs[id]);
+      addon.sections.settings = {
+        component: render,
+        render: this.connectStores(addonId)(render)
+      };
 
-      const Render = this.tabs[id].settings;
+      Object.freeze(addon.sections.settings.component.prototype);
+      Object.freeze(addon.sections.settings);
+
+      const Render = addon.sections.settings.render;
 
       vizality.api.router.registerRoute({
-        path: `/dashboard/plugins/${id}`,
+        path: `/dashboard/${type}/${addonId}`,
         render: props =>
           <Layout>
-            <Content heading='Settings' className='poo'>
+            <Content heading='Settings' className={`vz-settings-${toSingular(type)}-${addonId}`}>
               <Render {...props} />
             </Content>
           </Layout>,
         sidebar: Sidebar
       });
+
+      // Add the addon to the list of addons with settings
+      this[type].push(addonId);
     } catch (err) {
       return error(_module, `${_submodule}:registerCoreSettings`, null, err);
     }
   }
 
-  unregisterAddonSettings (addonId) {
+  /**
+   * Unregisters a settings tab.
+   * @param {string} type Type of the addon
+   * @param {string} addonId Addon ID of the settings to unregister
+   * @private
+   */
+  _unregisterAddonSettings (type, addonId) {
     try {
-      if (this.tabs[addonId]) {
-        delete this.tabs[addonId];
+      const addon = vizality.manager.plugins.get(addonId);
+      if (addon?.sections?.settings) {
+        delete addon.sections.settings;
       } else {
         throw new Error(`Settings for "${addonId}" are not registered, so they cannot be unregistered!`);
       }
 
       vizality.api.router.unregisterRoute(`/dashboard/plugins/${addonId}`);
+
+      // Remove the addon from the list of addons with settings
+      this[type].splice(this[type].indexOf(addonId), 1);
     } catch (err) {
-      return error(_module, `${_submodule}:unregisterAddonSettings`, null, err);
+      return error(_module, `${_submodule}:_unregisterAddonSettings`, null, err);
     }
   }
 
-  registerDashboardItem (props) {
+  /** @private */
+  _registerBuiltinSidebarSection (props) {
     try {
-      const { id, path, heading, subheading, icon, render } = props;
+      const { addonId, path, heading, subheading, icon, render } = props;
 
-      this.tabs[id] = props;
-      this.tabs[id].render = this.connectStores(id)(render);
+      const builtin = vizality.manager.builtins.get(addonId);
 
-      const Render = this.tabs[id].render;
+      builtin.sections.settings = props;
+      builtin.sections.settings.render = this.connectStores(addonId)(render);
+
+      const Render = builtin.sections.settings.render;
 
       vizality.api.router.registerRoute({
         path: `/dashboard/${path}`,
         render: props =>
           <Layout>
-            <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${id}`}>
+            <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${addonId}`}>
               <Render {...props} />
             </Content>
           </Layout>,
         sidebar: Sidebar
       });
     } catch (err) {
-      return error(_module, `${_submodule}:registerCoreSettings`, null, err);
+      return error(_module, `${_submodule}:_registerBuiltinSidebarSection`, null, err);
     }
   }
 
   /**
-   * Unregisters a settings tab
-   * @param {string} tabId Settings tab ID to unregister
-   */
-  unregisterSettings (tabId) {
-    if (this.tabs[tabId]) {
-      delete this.tabs[tabId];
-    }
-  }
-
-  /**
-   * Builds a settings category that can be used by a plugin
+   * Builds a settings category that can be used by a plugin.
    * @param {string} category Settings category name
    * @returns {SettingsCategory}
    */
   buildCategoryObject (category) {
     return {
-      connectStore: (component) => this.connectStores(category)(component),
+      connectStore: component => this.connectStores(category)(component),
       getKeys: () => store.getSettingsKeys(category),
       get: (setting, defaultValue) => store.getSetting(category, setting, defaultValue),
       set: (setting, newValue) => {
@@ -166,7 +163,7 @@ export default class SettingsAPI extends API {
   }
 
   /**
-   * Creates a flux decorator for a given settings category
+   * Creates a flux decorator for a given settings category.
    * @param {string} category Settings category
    * @returns {Function}
    */
@@ -183,4 +180,4 @@ export default class SettingsAPI extends API {
       toggleSetting: (setting, defaultValue) => actions.toggleSetting(category, setting, defaultValue)
     };
   }
-};
+}
