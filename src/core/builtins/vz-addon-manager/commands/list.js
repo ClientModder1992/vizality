@@ -17,9 +17,9 @@ export default {
     let addons, result;
 
     switch (args[0]) {
-      case 'all': addons = vizality.manager[toPlural(type)].getAll(); break;
-      case 'enabled': addons = vizality.manager[toPlural(type)].getAllEnabled(); break;
-      case 'disabled': addons = vizality.manager[toPlural(type)].getAllDisabled(); break;
+      case 'all': addons = vizality.manager[toPlural(type)].keys; break;
+      case 'enabled': addons = vizality.manager[toPlural(type)].getEnabledKey(); break;
+      case 'disabled': addons = vizality.manager[toPlural(type)].getDisabledKeys(); break;
     }
 
     if (!addons.length) {

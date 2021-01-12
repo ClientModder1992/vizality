@@ -71,17 +71,16 @@ export default {
     };
   },
   autocomplete (args, _, type) {
-    const addons =
-      vizality.manager[toPlural(type)].getAllEnabled()
-        .sort((a, b) => a - b)
-        .map(plugin => vizality.manager[toPlural(type)].get(plugin));
+    if (args.length > 1) {
+      return false;
+    }
 
-    if (args.length > 1) return false;
+    const addons = vizality.manager[toPlural(type)].getEnabled();
 
     return {
       commands:
         addons
-          .filter(addon => addon && addon.addonId.includes(args[0]) && vizality.api.settings.tabs[addon.addonId]?.settings)
+          .filter(addon => addon?.addonId?.includes(args[0]) && vizality.api.settings.tabs[addon?.addonId]?.settings)
           .map(addon => ({
             command: addon.addonId,
             description: addon.manifest.description,

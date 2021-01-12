@@ -83,7 +83,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('debugLogs', false)}
           onChange={() => {
             toggleSetting('debugLogs');
-            askRestart();
+            confirmRestart();
           }}
         >
           {Messages.VIZALITY_SETTINGS_DEBUG_LOGS}

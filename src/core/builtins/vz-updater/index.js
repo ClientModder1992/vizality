@@ -189,7 +189,7 @@ export default class Updater extends Builtin {
             text: Messages.VIZALITY_UPDATES_FORCE,
             color: 'red',
             look: 'outlined',
-            onClick: () => this.askForce()
+            onClick: () => this.confirmForce()
           }, {
             text: Messages.FRIEND_REQUEST_IGNORE,
             look: 'outlined',
@@ -209,7 +209,7 @@ export default class Updater extends Builtin {
   }
 
   // MODALS
-  askForce (callback) {
+  confirmForce (callback) {
     const { colorStandard } = getModule('colorStandard');
 
     openModal(() =>

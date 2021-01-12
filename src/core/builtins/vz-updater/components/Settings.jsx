@@ -100,7 +100,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
     return _renderFormNotice(Messages.VIZALITY_UPDATES_UNSUPPORTED_TITLE, body);
   };
 
-  const _ask = (title, content, confirm, callback, red = true) => {
+  const _confirm = (title, content, confirm, callback, red = true) => {
     const { colorStandard } = getModule('colorStandard');
 
     openModal(() => <Confirm
@@ -116,8 +116,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   // --- PROMPTS
-  const askSkipUpdate = (callback) => {
-    _ask(
+  const confirmSkipUpdate = callback => {
+    _confirm(
       Messages.VIZALITY_UPDATES_SKIP_MODAL_TITLE,
       Messages.VIZALITY_UPDATES_SKIP_MODAL,
       Messages.VIZALITY_UPDATES_SKIP,
@@ -125,8 +125,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
     );
   };
 
-  const askPauseUpdates = () => {
-    _ask(
+  const confirmPauseUpdates = () => {
+    _confirm(
       Messages.VIZALITY_UPDATES_PAUSE,
       Messages.VIZALITY_UPDATES_PAUSE_MODAL,
       Messages.VIZALITY_UPDATES_PAUSE,
@@ -134,8 +134,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
     );
   };
 
-  const askDisableUpdates = (all, callback) => {
-    _ask(
+  const confirmDisableUpdates = (all, callback) => {
+    _confirm(
       Messages.VIZALITY_UPDATES_DISABLE,
       all ? Messages.VIZALITY_UPDATES_DISABLE_MODAL_ALL : Messages.VIZALITY_UPDATES_DISABLE_MODAL,
       Messages.VIZALITY_UPDATES_DISABLE,
@@ -163,7 +163,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
     const { manager: { apis: { apis } }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
-    const plugins = vizality.manager.plugins.getAllEnabled();
+    const plugins = vizality.manager.plugins.getEnabledKeys();
 
     const experimentOverrides = Object.keys(getExperimentOverrides()).length;
     const availableExperiments = Object.keys(getRegisteredExperiments()).length;
@@ -223,9 +223,9 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           <div className='row'>
             <div className='column'>Commands:&#10;{Object.keys(commands).length}</div>
             <div className='column'>Settings:&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
-            <div className='column'>Plugins:&#10;{vizality.manager.plugins.getAllEnabled().length} / {vizality.manager.plugins.count}
+            <div className='column'>Plugins:&#10;{vizality.manager.plugins.getEnabledKeys().length} / {vizality.manager.plugins.count}
             </div>
-            <div className='column'>Themes:&#10;{vizality.manager.themes.getAllEnabled().length} / {vizality.manager.themes.count}
+            <div className='column'>Themes:&#10;{vizality.manager.themes.getEnabledKeys().length} / {vizality.manager.themes.count}
             </div>
             <div className='column'>{`Settings Sync:\n${vizality.settings.get('settingsSync', false)}`}</div>
             <div className='column'>Cached Files:&#10;{cachedFiles}</div>
@@ -250,7 +250,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
 
           <b>Listings</b>
           <div className='row'>
-            {createPathReveal('Vizality Path', vizality.baseDir)}
+            {createPathReveal('Vizality Path', vizality.dir)}
             {createPathReveal('Discord Path', discordPath)}
             <div className='full-column'>Experiments:&#10;{experimentOverrides ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
             <div className='full-column'>
@@ -340,7 +340,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
               {updates.length > 0 && <Button
                 size={Button.Sizes.SMALL}
                 color={failed ? Button.Colors.RED : Button.Colors.GREEN}
-                onClick={() => failed ? _this.askForce() : _this.doUpdate()}
+                onClick={() => failed ? _this.confirmForce() : _this.doUpdate()}
               >
                 {failed ? Messages.VIZALITY_UPDATES_FORCE : Messages.VIZALITY_UPDATES_UPDATE}
               </Button>}
@@ -353,14 +353,14 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
               <Button
                 size={Button.Sizes.SMALL}
                 color={Button.Colors.YELLOW}
-                onClick={() => askPauseUpdates()}
+                onClick={() => confirmPauseUpdates()}
               >
                 {Messages.VIZALITY_UPDATES_PAUSE}
               </Button>
               <Button
                 size={Button.Sizes.SMALL}
                 color={Button.Colors.RED}
-                onClick={() => askDisableUpdates(true, () => updateSetting('disabled', true))}
+                onClick={() => confirmDisableUpdates(true, () => updateSetting('disabled', true))}
               >
                 {Messages.VIZALITY_UPDATES_DISABLE}
               </Button>
@@ -375,8 +375,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           {...update}
           key={update.id}
           updating={updating}
-          onSkip={() => askSkipUpdate(() => _this.skipUpdate(update.id, update.commits[0].id))}
-          onDisable={() => askDisableUpdates(false, () => _this.disableUpdates(update))}
+          onSkip={() => confirmSkipUpdate(() => _this.skipUpdate(update.id, update.commits[0].id))}
+          onDisable={() => confirmDisableUpdates(false, () => _this.disableUpdates(update))}
         />)}
       </div>}
       {disabledAddons.length > 0 && <Category

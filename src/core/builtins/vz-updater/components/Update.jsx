@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 import { Button, Tooltip, Anchor } from '@vizality/components';
 import { toPlural } from '@vizality/util/string';
-import { HTTP } from '@vizality/constants';
 import { Messages } from '@vizality/i18n';
 
 export default memo(props => {
@@ -14,7 +13,7 @@ export default memo(props => {
   // If no manifest, i.e. getting a disabled update addon manifest and addonId are not sent as props
   if (!manifest && id !== 'vizality') {
     [ , addonId ] = id.split(/_(.+)/);
-    ({ manifest } = vizality.manager[`${type}s`].get(addonId));
+    ({ manifest } = vizality.manager[toPlural(type)].get(addonId));
   }
 
   return (

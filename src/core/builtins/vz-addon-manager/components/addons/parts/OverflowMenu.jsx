@@ -19,7 +19,7 @@ export default memo(props => {
       <Menu.MenuItem
         id='refresh-list'
         label='Refresh List'
-        action={() => fetchMissing(type)}
+        action={async () => fetchMissing(type)}
       />
       <Menu.MenuItem
         id='reset-search-options'
@@ -30,12 +30,12 @@ export default memo(props => {
       <Menu.MenuItem
         id='enable-all'
         label='Enable All'
-        action={() => enableAll(type)}
+        action={async () => enableAll(type)}
       />
       <Menu.MenuItem
         id='disable-all'
         label='Disable All'
-        action={() => disableAll(type)}
+        action={async () => disableAll(type)}
       />
     </Menu.Menu>
   );

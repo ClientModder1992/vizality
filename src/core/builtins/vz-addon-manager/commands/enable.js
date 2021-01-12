@@ -35,17 +35,14 @@ export default {
     };
   },
   autocomplete (args, _, type) {
-    const addons =
-      vizality.manager[toPlural(type)].getAllDisabled()
-        .sort((a, b) => a - b)
-        .map(addon => vizality.manager[toPlural(type)].get(addon));
-
     if (args.length > 1) return false;
+
+    const addons = vizality.manager[toPlural(type)].getDisabled();
 
     return {
       commands:
         addons
-          .filter(addon => addon && addon.addonId.includes(args[0]))
+          .filter(addon => addon?.addonId?.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
             description: addon.manifest.description,

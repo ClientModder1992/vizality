@@ -31,7 +31,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
 
   const _checkForPreviewImages = (addonId) => {
     const addon = vizality.manager[toPlural(type)].get(addonId);
-    const screenshotsDir = join(addon.addonPath, 'screenshots');
+    const screenshotsDir = join(addon.path, 'screenshots');
 
     const hasPreviewImages = existsSync(screenshotsDir) && lstatSync(screenshotsDir).isDirectory();
 
@@ -48,7 +48,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
     const previewImages = [];
     const validExtensions = [ '.png', '.gif', '.jpg', '.jpeg', '.webp' ];
 
-    readdirSync(join(addon.addonPath, 'screenshots'))
+    readdirSync(join(addon.path, 'screenshots'))
       .filter(file => validExtensions.indexOf(extname(file).toLowerCase()) !== -1)
       .map(file => previewImages.push(`vz-${type}://${addonId}/screenshots/${file}`));
 
@@ -59,13 +59,13 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
    * Including these in this component so we can forceUpdate the switches.
    * There's probably a better way to do it.
    */
-  const _enableAll = type => {
-    vizality.manager[toPlural(type)].enableAll();
+  const _enableAll = async type => {
+    await vizality.manager[toPlural(type)].enableAll();
     forceUpdate();
   };
 
-  const _disableAll = type => {
-    vizality.manager[toPlural(type)].disableAll();
+  const _disableAll = async type => {
+    await vizality.manager[toPlural(type)].disableAll();
     forceUpdate();
   };
 
@@ -92,9 +92,9 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   };
 
   const _fetchMissing = async type => {
-    vizality.api.notices.closeToast('vz-manager-fetch-entities');
+    vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
 
-    const missingAddons = vizality.manager[toPlural(type)].initialize(true);
+    const missingAddons = await vizality.manager[toPlural(type)].initialize(true);
     const missingAddonsList = missingAddons.length
       ? <>
         <div>{Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length })}</div>
@@ -104,7 +104,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
       </>
       : Messages.VIZALITY_MISSING_ADDONS_NONE;
 
-    vizality.api.notices.sendToast('vz-manager-fetch-entities', {
+    vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
       header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length || 0 }),
       content: missingAddonsList,
       type: missingAddons.length > 0 && 'success',

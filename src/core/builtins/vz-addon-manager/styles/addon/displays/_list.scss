@@ -21,7 +21,7 @@
     &:not([vz-previews]) {
       .vz-addon-card {
         &-icon {
-          @include size(180px);
+          @include size(192px);
           margin-right: 10px;
         }
       }

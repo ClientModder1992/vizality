@@ -10,12 +10,12 @@ export default memo(() => {
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   const plugins =
-    vizality.manager.plugins.getAll()
+    vizality.manager.plugins.keys
       .sort((a, b) => a - b)
       .map(plugin => vizality.manager.plugins.get(plugin));
 
   const themes =
-    vizality.manager.themes.getAll()
+    vizality.manager.themes.keys
       .sort((a, b) => a - b)
       .map(theme => vizality.manager.themes.get(theme));
 
