@@ -65,6 +65,17 @@ export default class AddonManager {
     return !this.isEnabled(addonId);
   }
 
+  hasSettings (addonId) {
+    try {
+      const addon = this.get(addonId);
+      if (!addon) throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is not installed!`);
+
+      return Boolean(addon.sections?.settings);
+    } catch (err) {
+      this._error(`An error occurred while checking for settings for "${addonId}"!`, err);
+    }
+  }
+
   getEnabledKeys () {
     const addons = this.keys;
     return addons.filter(addon => this.isEnabled(addon));
