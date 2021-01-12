@@ -2,11 +2,11 @@ import { join, sep } from 'path';
 import { watch } from 'chokidar';
 import { existsSync } from 'fs';
 
+import { toPlural, toSingular } from '@vizality/util/string';
 import { error, log, warn } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
-import { toPlural } from '@vizality/util/string';
 
 import Updatable from './Updatable';
 
@@ -23,8 +23,8 @@ export default class Plugin extends Updatable {
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
     this._ready = false;
-    this._watcherEnabled = true;
-    this._watchers = {};
+    this._watcherEnabled = null;
+    this._watcher = {};
     this._module = 'Plugin';
     this._submodule = this.constructor.name;
   }
@@ -41,19 +41,20 @@ export default class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(this._module === 'Plugin' ? Directories.PLUGINS : Directories.BUILTINS, this.addonId, path);
+      resolvedPath = join(this.dir, this.addonId, path);
 
       if (!existsSync(resolvedPath)) {
-        throw new Error(`Cannot find '${path}'! Make sure the file exists and try again.`);
+        throw new Error(`Cannot find "${path}"! Make sure the file exists and try again.`);
       }
     }
 
     const id = Math.random().toString(36).slice(2);
     const compiler = resolveCompiler(resolvedPath);
+    const mdl = toSingular(this._module).toLowerCase();
     const style = createElement('style', {
-      id: `plugin-${this.addonId}-${id}`,
+      id: `${mdl}-${this.addonId}-${id}`,
       'vz-style': '',
-      'vz-plugin': ''
+      [`vz-${mdl}`]: ''
     });
 
     document.head.appendChild(style);
@@ -103,13 +104,14 @@ export default class Plugin extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      await vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId);
+      this.log(`${toSingular(this.module)} has been successfully updated.`);
+      await vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false);
     }
     return success;
   }
 
   /**
-   * Enables the file watcher. Will emit "src-update" event if any of the files are updated.
+   * Enables the file watcher.
    * @private
    */
   async _enableWatcher () {
@@ -123,31 +125,37 @@ export default class Plugin extends Updatable {
    */
   async _disableWatcher () {
     this._watcherEnabled = false;
-    this._watchers.close();
+    if (this._watcher?.close) {
+      await this._watcher.close();
+      this._watcher = {};
+    }
   }
 
   /** @private */
   async _watchFiles () {
     const _module = 'Watcher';
 
-    this._watchers = watch(this.addonPath, {
+    this._watcher = watch(this.path, {
       ignored: [ /node_modules/, /.git/, /manifest.json/, '*.scss', '*.css' ],
       ignoreInitial: true
     });
 
-    this._watchers
-      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId));
-
-    this._watchers
-      .on('add', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been added.`))
-      .on('change', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been changed.`))
-      .on('unlink', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.addonPath + sep, '')}" has been removed.`));
+    this._watcher
+      .on('add', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been added.`))
+      .on('change', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been changed.`))
+      .on('unlink', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been removed.`));
 
     // More possible events.
-    this._watchers
-      .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.addonPath + sep, '')}" has been added.`))
-      .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.addonPath + sep, '')}" has been removed.`))
-      .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, `Watcher error: ${error.replace(this.addonPath + sep, '')}`));
+    this._watcher
+      .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
+      .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
+      .on('error', error => {
+        const errors = [ 'Error:', error ];
+        log(_module, `${this._module}:${this._submodule}`, null, ...errors);
+      });
+
+    this._watcher
+      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false));
   }
 
   /**
@@ -157,11 +165,8 @@ export default class Plugin extends Updatable {
     try {
       if (typeof this.onStart === 'function') {
         const before = performance.now();
-
         await this.onStart();
-
         const after = performance.now();
-
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
         this.log(`Plugin loaded. Initialization took ${time} ms.`);
@@ -171,11 +176,9 @@ export default class Plugin extends Updatable {
     }
 
     this._ready = true;
-    /*
-     * @todo Seems to possibly have a bug/interference with file caching, which you can see
-     * if you disable a plugin, edit a file, and enable the plugin.
-     */
-    this._enableWatcher();
+
+    await this._enableWatcher();
+
     if (this._watcherEnabled) {
       await this._watchFiles();
     }
@@ -189,7 +192,7 @@ export default class Plugin extends Updatable {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`plugin-${this.addonId}-${id}`).remove();
+        document.getElementById(`${toSingular(this._module).toLowerCase()}-${this.addonId}-${id}`).remove();
       }
 
       this.styles = {};
@@ -201,7 +204,7 @@ export default class Plugin extends Updatable {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
       this._ready = false;
-      if (this._watchers) {
+      if (this._watcher) {
         await this._disableWatcher();
       }
     }

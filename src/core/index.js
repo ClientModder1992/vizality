@@ -222,7 +222,7 @@ export default class Vizality extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success) {
-      await exec('npm install --only=prod', { cwd: this.addonPath });
+      await exec('npm install --only=prod', { cwd: this.dir });
       const updater = this.manager.builtins.get('vz-updater');
       // @i18n
       if (!document.querySelector('#vizality-updater, .vizality-updater')) {

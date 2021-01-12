@@ -1,5 +1,7 @@
 import { join } from 'path';
 
+import { Directories } from '@vizality/constants';
+
 import Plugin from './Plugin';
 
 /**
@@ -12,8 +14,8 @@ import Plugin from './Plugin';
 export default class Builtin extends Plugin {
   constructor () {
     super();
-    this.baseDir = vizality.manager.builtins.dir;
-    this.addonPath = join(this.baseDir, this.addonId);
+    this.dir = Directories.BUILTINS;
+    this.path = join(this.dir, this.addonId);
     this._module = 'Builtin';
   }
 
