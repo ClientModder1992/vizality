@@ -9,8 +9,8 @@ require('../ipc/renderer');
 const initialize = () => {
   document.documentElement.setAttribute('vizality', '');
   const ThemeManager = require('../core/managers/Theme');
-  global.sm = new ThemeManager();
-  global.sm.start();
+  window.sm = new ThemeManager();
+  window.sm.start();
 };
 
 if (document.readyState === 'loading') {

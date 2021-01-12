@@ -11,7 +11,7 @@
  * @returns {boolean} Whether or not the input is an array
  */
 export const isArray = input => {
-  return global._.isArray(input);
+  return window._.isArray(input);
 };
 
 /**
@@ -27,7 +27,7 @@ export const assertArray = input => {
 };
 
 export const getRandomArrayItem = array => {
-  return global._.sample(array);
+  return window._.sample(array);
 };
 
 export default { isArray, assertArray, getRandomArrayItem };

@@ -82,7 +82,7 @@ export const isUrl = string => {
  * toCamelCase('I am a CAMEL CASE string.')
  */
 export const toCamelCase = string => {
-  return global._.camelCase(string);
+  return window._.camelCase(string);
 };
 
 /**
@@ -94,7 +94,7 @@ export const toCamelCase = string => {
  * toDotCase('I am a DOT CASE string.')
  */
 export const toDotCase = string => {
-  return global._.lowerCase(string).replace(/ /g, '.');
+  return window._.lowerCase(string).replace(/ /g, '.');
 };
 
 /**
@@ -106,7 +106,7 @@ export const toDotCase = string => {
  * toTitleCase('I am a TITLE CASE string.')
  */
 export const toTitleCase = string => {
-  return global._.startCase(global._.camelCase(string));
+  return window._.startCase(window._.camelCase(string));
 };
 
 /**
@@ -118,7 +118,7 @@ export const toTitleCase = string => {
  * toSentenceCase('i am a SENTENCE CASE string.')
  */
 export const toSentenceCase = string => {
-  return global._.upperFirst(global._.lowerCase(string));
+  return window._.upperFirst(window._.lowerCase(string));
 };
 
 /**
@@ -130,7 +130,7 @@ export const toSentenceCase = string => {
  * toPascalCase('I am a PASCAL CASE string.')
  */
 export const toPascalCase = string => {
-  return global._.startCase(global._.camelCase(string)).replace(/ /g, '');
+  return window._.startCase(window._.camelCase(string)).replace(/ /g, '');
 };
 
 /**
@@ -142,7 +142,7 @@ export const toPascalCase = string => {
  * toPathCase('I am a PATH CASE string.')
  */
 export const toPathCase = string => {
-  return global._.lowerCase(string).replace(/ /g, '/');
+  return window._.lowerCase(string).replace(/ /g, '/');
 };
 
 /**
@@ -154,7 +154,7 @@ export const toPathCase = string => {
  * toSnakeCase('I am a SNAKE CASE string.')
  */
 export const toSnakeCase = string => {
-  return global._.snakeCase(string);
+  return window._.snakeCase(string);
 };
 
 /**
@@ -166,7 +166,7 @@ export const toSnakeCase = string => {
  * toKebabCase('i am a keBab CASE string.')
  */
 export const toKebabCase = string => {
-  return global._.kebabCase(string);
+  return window._.kebabCase(string);
 };
 
 /**
@@ -175,7 +175,7 @@ export const toKebabCase = string => {
  * @returns {boolean} Whether or not the input is a string
  */
 export const isString = input => {
-  return global._.isString(input);
+  return window._.isString(input);
 };
 
 /**

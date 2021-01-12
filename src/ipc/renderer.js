@@ -6,7 +6,7 @@ if (!ipcRenderer) {
 }
 
 // Name doesn't really matter here, because we get rid of it on startup
-global.VizalityNative = {
+window.VizalityNative = {
   app: {
     /**
      * Open DevTools for the current window

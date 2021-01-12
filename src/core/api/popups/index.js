@@ -35,8 +35,8 @@ export default class PopupsAPI extends API {
     if (props.render) Render = props.render;
 
     // Center the popup window based on the user's screen size
-    const y = global.top.outerHeight / 2 + global.top.screenY - (height / 2);
-    const x = global.top.outerWidth / 2 + global.top.screenX - (width / 2);
+    const y = window.top.outerHeight / 2 + window.top.screenY - (height / 2);
+    const x = window.top.outerWidth / 2 + window.top.screenX - (width / 2);
 
     options.top = options.top || y;
     options.left = options.left || x;
