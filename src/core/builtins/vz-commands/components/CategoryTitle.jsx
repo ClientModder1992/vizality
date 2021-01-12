@@ -7,8 +7,8 @@ import { getModule } from '@vizality/webpack';
 export default memo(props => {
   const { icon, id, children } = props;
 
+  const { wrapper } = getModule('expressionPickerListSectionHeadingHeight', 'wrapper');
   const { categoryHeader } = getModule('categoryHeader');
-  const { wrapper } = getModule('image', 'infoWrapper');
   const { header, headerLabel, headerIcon } = getModule('header', 'headerLabel');
 
   return <div className={joinClassNames(wrapper, categoryHeader)} id={id}>

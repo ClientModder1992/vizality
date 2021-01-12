@@ -3,6 +3,11 @@
   .vz-commands-category-header-icon {
     border-radius: 50%;
   }
+  &[vz-rail-active] {
+    .autocompleteRow-2OthDa {
+      padding: 0;
+    }
+  }
   &:not([vz-rail-active]) {
     // Targetting only the header
     .autocompleteRow-2OthDa:first-of-type {

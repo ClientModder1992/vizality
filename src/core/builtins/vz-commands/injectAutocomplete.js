@@ -10,14 +10,22 @@ import { Messages } from '@vizality/i18n';
 import CategoryTitle from './components/CategoryTitle';
 
 export default function injectAutocomplete () {
+  const ApplicationCommandDiscoveryApplicationIcon = getModule(m => m.default?.displayName === 'ApplicationCommandDiscoveryApplicationIcon');
   const ApplicationCommandDiscoverySectionList = getModuleByDisplayName('ApplicationCommandDiscoverySectionList');
+  const { rail, wrapper, outerWrapper, list, categorySection, categorySectionLast } = getModule('rail');
+  const ApplicationCommandItem = getModule(m => m.default?.displayName === 'ApplicationCommandItem');
+  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = getModule('AUTOCOMPLETE_OPTIONS');
+  const ChannelEditorContainer = getModuleByDisplayName('ChannelEditorContainer');
+  const SlateChannelTextArea = getModuleByDisplayName('SlateChannelTextArea');
+  const { autocomplete, autocompleteInner } = getModule('autocompleteInner');
+  const { autocomplete: autocomplete2 } = getModule('autocomplete');
+  const PlainTextArea = getModuleByDisplayName('PlainTextArea');
   const Autocomplete = getModuleByDisplayName('Autocomplete');
-  const { categorySection, categorySectionLast } = getModule('categorySection');
   const { textArea } = getModule('channelTextArea', 'inner');
+  const { image, title } = getModule('image', 'infoWrapper');
   const { builtInSeparator } = getModule('builtInSeparator');
   const { listItems, scroller } = getModule('listItems');
-  const { autocomplete } = getModule('autocomplete');
-  const { rail, wrapper, outerWrapper, list } = getModule('rail');
+  const { autocompleteRow } = getModule('autocompleteRow');
   const _this = this;
 
   const renderHeader = (value, formatHeader, addonName, icon, id) => {
@@ -38,7 +46,7 @@ export default function injectAutocomplete () {
       return null;
     }
 
-    const results = commands.slice(0).reverse().map((command, index) =>
+    const results = commands.map((command, index) =>
       <>
         <Autocomplete.NewCommand
           onClick={onClick}
@@ -50,9 +58,11 @@ export default function injectAutocomplete () {
       </>
     );
 
-    if (!value) { // If only the prefix is entered, show the "slash command" UI
+    // If only the prefix is entered, show the slash command UI
+    if (!value) {
       this.settings.set('showCommandImages', false);
       this.settings.set('showCommandRail', true);
+      this.settings.set('private.pie', true);
     } else { // Else show the slate autocomplete with image icons
       this.settings.set('showCommandImages', true);
       this.settings.set('showCommandRail', false);
@@ -89,10 +99,16 @@ export default function injectAutocomplete () {
         });
       });
 
+      categorizedResults.push(
+        <div className={joinClassNames(categorySection)}>
+          {vizalitySectionInner}
+        </div>
+      );
+
       let index = 0;
       for (const section of Object.entries(sections)) {
         categorizedResults.push(
-          <div className={categorySection}>
+          <div className={joinClassNames(categorySection, { [categorySectionLast]: section[0] === Object.entries(sections)[Object.entries(sections).length - 1][0] })}>
             {section[1]}
           </div>
         );
@@ -109,12 +125,6 @@ export default function injectAutocomplete () {
         index++;
       }
 
-      categorizedResults.push(
-        <div className={joinClassNames(categorySection, categorySectionLast)}>
-          {vizalitySectionInner}
-        </div>
-      );
-
       railSections.push({
         icon: 'vz-asset://images/logo.png',
         id: 'vizality',
@@ -125,38 +135,31 @@ export default function injectAutocomplete () {
       });
     }
 
-    const CommandsRail = () =>
-      <ApplicationCommandDiscoverySectionList
-        activeSectionIndex={777} // this.settings.get('selectedRailItemIndex', 0)
-        className={joinClassNames('vz-commands-rail', rail)}
-        sections={railSections}
-        children={<hr className={builtInSeparator} />}
-      />;
-
     return (
       this.settings.get('showCommandRail', true)
         ? <>
-          <CommandsRail />
+          <ApplicationCommandDiscoverySectionList
+            activeSectionIndex={777}
+            className={joinClassNames('vz-commands-rail', rail)}
+            sections={railSections}
+            children={<hr className={builtInSeparator} />}
+          />
           <AdvancedScrollerThin className={joinClassNames(scroller, list)}>
             <div className={listItems} style={{ inset: '8px 8px 0px' }}>
               {categorizedResults}
             </div>
           </AdvancedScrollerThin>
         </>
-        : <div className={joinClassNames('vz-commands-autocomplete')}>
-          <AdvancedScrollerThin className={joinClassNames(scroller, list)} style={{ maxHeight: '376px' }}>
-            {renderHeader(value, formatHeader)}
-            {results}
-          </AdvancedScrollerThin>
-        </div>
+        : <AdvancedScrollerThin className={joinClassNames(scroller, list)} style={{ maxHeight: '376px' }}>
+          {renderHeader(value, formatHeader)}
+          {results}
+        </AdvancedScrollerThin>
     );
   };
 
   const getMatchingCommand = c => {
     return [ c.command.toLowerCase(), ...(c.aliases?.map(alias => alias.toLowerCase()) || []) ];
   };
-
-  const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = getModule('AUTOCOMPLETE_OPTIONS');
 
   AutocompleteTypes.VIZALITY_AUTOCOMPLETE = {
     autoSelect: true,
@@ -239,7 +242,6 @@ export default function injectAutocomplete () {
     }
   };
 
-  const ChannelEditorContainer = getModuleByDisplayName('ChannelEditorContainer');
   patch('vz-commands-textArea', ChannelEditorContainer.prototype, 'render', function (_, res) {
     _this.instance = this;
     return res;
@@ -257,7 +259,6 @@ export default function injectAutocomplete () {
     }
   }))(this.oldStartTyping = typing.startTyping);
 
-  const PlainTextArea = getModuleByDisplayName('PlainTextArea');
   patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.props;
     if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(value)) {
@@ -269,7 +270,6 @@ export default function injectAutocomplete () {
     return res;
   });
 
-  const SlateChannelTextArea = getModuleByDisplayName('SlateChannelTextArea');
   patch('vz-commands-slateAutocomplete', SlateChannelTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.editorRef;
     const { selection, document } = value;
@@ -285,8 +285,6 @@ export default function injectAutocomplete () {
     return res;
   });
 
-  const ApplicationCommandItem = getModule(m => m.default?.displayName === 'ApplicationCommandItem');
-  const { image, title } = getModule('image', 'infoWrapper');
   patch('vz-commands-commandItem', ApplicationCommandItem, 'default', ([ props ], res) => {
     const vizalityCommand = Boolean(props?.command?.origin);
     const plugin = vizality.manager.plugins.get(props?.command?.origin);
@@ -335,25 +333,33 @@ export default function injectAutocomplete () {
     return res;
   });
 
-  const ApplicationCommandDiscoveryApplicationIcon = getModule(m => m.default?.displayName === 'ApplicationCommandDiscoveryApplicationIcon');
-  const { autocompleteRow } = getModule('autocompleteRow');
+  /**
+   * Patch icons on the slash commands autocomplete rail.
+   */
   patch('vz-commands-railIcon', ApplicationCommandDiscoveryApplicationIcon, 'default', ([ props ], res) => {
     let { src } = findInReactTree(res, r => r.src);
+
+    // Check if it's a Vizality-specific icons
     if (src.includes('vz-plugin://') || src.includes('vz-asset://')) {
       res.props.onClick = () => {
+        /**
+         * Scrolls to the specific category section on click. Using DOM selectors here which is not optimal.
+         * @bug Currently it also throws an error in console, which does not affect anything.
+         */
         let topOfElement = document.querySelector(`#vz-cmd-${props?.section?.id}`).offsetTop;
-        const scroller = document.querySelector('.vz-commands-autocomplete > .scrollerBase-289Jih');
+        const scroller = document.querySelector(`.vz-commands-autocomplete .${list}`);
         const row = document.querySelector(`.${autocompleteRow}`);
         const { scrollTop } = scroller;
         if (scrollTop > topOfElement && row) {
           topOfElement -= row.offsetHeight * props?.section?.commandsAmount;
         }
 
-        document.querySelector('.vz-commands-autocomplete > .scrollerBase-289Jih').scroll({ top: topOfElement, behavior: 'smooth' });
-        // this.settings.set('selectedRailItemIndex', props?.section?.index);
+        scroller.scroll({ top: topOfElement, behavior: 'smooth' });
       };
 
       src = src.split('.webp');
+
+      // Check if we have already replaced the source. If not, do so.
       if (new RegExp(`https://cdn.discordapp.com/app-icons/(.*)/`).test(src[0])) {
         res.props.children.props.children.props.src = src[0].replace(new RegExp(`https://cdn.discordapp.com/app-icons/([^/]+)/`, 'ig'), '');
       }
@@ -362,13 +368,35 @@ export default function injectAutocomplete () {
     return res;
   });
 
-  patch('vz-commands-autocomplete', Autocomplete.prototype, 'render', (args, res) => {
-    console.log(res);
+  /**
+   * @note Patching the autocomplete menu to add some classes to make the Vizality
+   * commands autocomplete replicate the classes of Discord's slash commands
+   * autocomplete perfectly. We also add a couple of our own utility classes/attributes, like
+   * [vz-rail-active], .vz-commands-autocomplete, and .vz-commands-rail
+   */
+  patch('vz-commands-autocomplete', Autocomplete.prototype, 'render', (_, res) => {
+    const _autocompleteInner = findInReactTree(res, r => r.className?.includes(autocompleteInner) && !r.className?.includes(wrapper));
+    const _autocomplete = findInReactTree(res, r => r.className?.includes(autocomplete) && !r.className?.includes(outerWrapper));
+    const _rail = findInReactTree(res, r => r.className?.includes('vz-commands-rail'));
 
-    // vz-commands-autocomplete
-    // wrapper
-    // outerWrapper
-    // autocomplete
+    // Target the autocompleteInner div
+    if (_autocompleteInner) {
+      _autocompleteInner.className = joinClassNames(_autocompleteInner.className, {
+        [wrapper]: Boolean(_rail)
+      });
+    }
+
+    // Target the autocomplete div
+    if (_autocomplete) {
+      res.props['vz-rail-active'] = Boolean(_rail) && '';
+      _autocomplete.className = joinClassNames(
+        'vz-commands-autocomplete',
+        autocomplete, {
+          [outerWrapper]: Boolean(_rail),
+          [autocomplete2]: Boolean(!_rail)
+        });
+    }
+
     return res;
   });
 }
