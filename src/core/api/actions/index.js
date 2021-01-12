@@ -27,9 +27,17 @@ export default class Actions extends API {
    */
   registerAction (action) {
     try {
-      if (this.actions.find(r => r.action === action.id)) throw new Error(`Action "${action.id}" is already registered!`);
-      if (!action.executor) throw new Error(`"action" property must be specified!`);
-      if (typeof action.executor !== 'function') throw new Error(`"action" property value must be a function!`);
+      if (this.actions.find(a => a.action === action.id)) {
+        throw new Error(`Action "${action.id}" is already registered!`);
+      }
+
+      if (!action.executor) {
+        throw new Error(`Must specify property "action"!`);
+      }
+
+      if (typeof action.executor !== 'function') {
+        throw new Error(`Property "action" value must be a function!`);
+      }
 
       this.actions.push(action);
       this.emit('actionAdded', action);
@@ -40,17 +48,17 @@ export default class Actions extends API {
 
   /**
    * Unregisters an action
-   * @param {string} name Name of the action
+   * @param {string} id Name of the action
    * @emits ActionAPI#actionRemoved
    * @returns {void}
    */
-  unregisterAction (name) {
+  unregisterAction (id) {
     try {
-      if (this.actions.find(r => r.action === name)) {
-        this.actions = this.actions.filter(r => r.action !== name);
-        this.emit('routeRemoved', name);
+      if (this.actions.find(a => a.id === id)) {
+        this.actions = this.actions.filter(r => r.action !== id);
+        this.emit('actionRemoved', id);
       } else {
-        throw new Error(`Action "${name}" is not registered, so it cannot be unregistered!`);
+        throw new Error(`Action "${id}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
       return error(this._module, `${this._submodule}:unregisterAction`, null, err);
@@ -59,10 +67,14 @@ export default class Actions extends API {
 
   /**
    * Invokes an action.
-   * @param {string} name Name of the action
+   * @param {string} id Name of the action
    * @returns {void}
    */
-  async invoke (name) {
-    return this.actions.find(r => r.action === name).executor();
+  async invoke (id) {
+    try {
+      this.actions.find(a => a.id === id).executor();
+    } catch (err) {
+      return error(this._module, `${this._submodule}:invoke`, null, err);
+    }
   }
 }
