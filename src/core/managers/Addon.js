@@ -137,14 +137,14 @@ export default class AddonManager {
     }
   }
 
-  async unmount (addonId) {
+  async unmount (addonId, showLogs = true) {
     try {
       const addon = this.get(addonId);
       if (!addon) {
         throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
       }
 
-      await addon._unload();
+      await addon._unload(showLogs);
 
       Object.keys(require.cache).forEach(key => {
         if (key.includes(addonId)) {
@@ -158,24 +158,22 @@ export default class AddonManager {
     }
   }
 
-  async remount (addonId) {
+  async remount (addonId, showLogs = true) {
     try {
-      const addon = this.get(addonId);
-      if (!addon) {
-        throw new Error(`Tried to remount a non-installed ${toSingular(this.type)}: (${addonId})`);
-      }
-      await addon._unload(false);
-      await addon._load(false);
+      await this.unmount(addonId, showLogs);
     } catch (err) {
       this._error(`An error occurred while remounting "${addonId}"!`, err);
     }
+
+    await this.mount(addonId);
+    await this.get(addonId)._load(showLogs);
   }
 
   async remountAll () {
     try {
       const addons = this.getEnabledKeys();
       for (const addon of addons) {
-        await this.remount(addon);
+        await this.remount(addon, false);
       }
     } catch (err) {
       this._error(`An error occurred while remounting all ${this.type}!`, err);

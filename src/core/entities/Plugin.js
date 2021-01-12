@@ -161,7 +161,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _load () {
+  async _load (showLogs = true) {
     try {
       if (typeof this.onStart === 'function') {
         const before = performance.now();
@@ -169,7 +169,9 @@ export default class Plugin extends Updatable {
         const after = performance.now();
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
-        this.log(`Plugin loaded. Initialization took ${time} ms.`);
+        if (showLogs) {
+          this.log(`${this._module} loaded. Initialization took ${time} ms.`);
+        }
       }
     } catch (err) {
       this.error('An error occurred during initialization!', err);
@@ -187,7 +189,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _unload () {
+  async _unload (showLogs = true) {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
@@ -199,7 +201,10 @@ export default class Plugin extends Updatable {
       if (typeof this.onStop === 'function') {
         await this.onStop();
       }
-      this.log('Plugin unloaded.');
+
+      if (showLogs) {
+        this.log(`${this._module} unloaded.`);
+      }
     } catch (e) {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
     } finally {
