@@ -11,8 +11,8 @@ const { writeFile, readFile } = promises;
 
 export default class QuickCode extends Builtin {
   async onStart () {
-    await vizality.api.settings.registerDashboardItem({
-      id: this.addonId,
+    vizality.api.settings._registerBuiltinSidebarSection({
+      addonId: this.addonId,
       path: 'quick-code',
       heading: 'Quick Code',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',

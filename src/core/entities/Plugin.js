@@ -22,6 +22,7 @@ export default class Plugin extends Updatable {
     super(vizality.manager.plugins.dir);
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
+    this.sections = {};
     this._ready = false;
     this._watcherEnabled = null;
     this._watcher = {};

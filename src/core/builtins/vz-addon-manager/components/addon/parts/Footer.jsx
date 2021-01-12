@@ -9,7 +9,7 @@ export default memo(props => {
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
 
   const isInstalled = vizality.manager[toPlural(type)].isInstalled(addonId);
-  const hasSettings = vizality.api.settings.tabs[addonId];
+  const hasSettings = vizality.manager[toPlural(type)].hasSettings(addonId);
 
   return (
     <div className='vz-addon-card-footer-wrapper'>

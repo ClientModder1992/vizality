@@ -44,16 +44,17 @@ export default {
   },
 
   autocomplete (args, _, type) {
-    if (args.length > 1) {
-      return false;
-    }
+    if (args.length > 1) return false;
 
-    const addons = vizality.manager[toPlural(type)].getEnabled();
+    const addons =
+      vizality.manager[toPlural(type)].getEnabledKeys()
+        .sort((a, b) => a - b)
+        .map(plugin => vizality.manager[toPlural(type)].get(plugin));
 
     return {
       commands:
         addons
-          .filter(addon => addon?.addonId?.includes(args[0]))
+          .filter(addon => addon?.addonId.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
             description: addon.manifest.description,

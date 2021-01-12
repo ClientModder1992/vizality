@@ -20,6 +20,8 @@ export default {
       };
     }
 
+    const addon = vizality.manager[toPlural(type)].get(args[0]);
+
     if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
       if (!vizality.manager[toPlural(type)].isEnabled(args[0])) {
         return {
@@ -27,9 +29,8 @@ export default {
           result: `${toTitleCase(type)} \`${args[0]}\` is disabled.`
         };
       }
-      if (vizality.api.settings.tabs[args[0]]?.settings) {
-        const Settings = vizality.api.settings.tabs[args[0]]?.settings;
-        const addon = vizality.manager[toPlural(type)].get(args[0]);
+      if (vizality.manager[toPlural(type)].hasSettings(args[0])) {
+        const Settings = addon.sections.settings.render;
 
         result = {
           color: type === 'plugin' ? 0x42ffa7 : 0xb68aff,
@@ -71,16 +72,17 @@ export default {
     };
   },
   autocomplete (args, _, type) {
-    if (args.length > 1) {
-      return false;
-    }
+    if (args.length > 1) return false;
 
-    const addons = vizality.manager[toPlural(type)].getEnabled();
+    const addons =
+      vizality.manager[toPlural(type)].getEnabledKeys()
+        .sort((a, b) => a - b)
+        .map(plugin => vizality.manager[toPlural(type)].get(plugin));
 
     return {
       commands:
         addons
-          .filter(addon => addon?.addonId?.includes(args[0]) && vizality.api.settings.tabs[addon?.addonId]?.settings)
+          .filter(addon => addon?.addonId.includes(args[0]) && vizality.manager[toPlural(type)].hasSettings(addon?.addonId))
           .map(addon => ({
             command: addon.addonId,
             description: addon.manifest.description,

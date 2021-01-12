@@ -37,12 +37,15 @@ export default {
   autocomplete (args, _, type) {
     if (args.length > 1) return false;
 
-    const addons = vizality.manager[toPlural(type)].getDisabled();
+    const addons =
+      vizality.manager[toPlural(type)].getDisabledKeys()
+        .sort((a, b) => a - b)
+        .map(plugin => vizality.manager[toPlural(type)].get(plugin));
 
     return {
       commands:
         addons
-          .filter(addon => addon?.addonId?.includes(args[0]))
+          .filter(addon => addon?.addonId.includes(args[0]))
           .map(addon => ({
             command: addon.addonId,
             description: addon.manifest.description,
@@ -51,7 +54,7 @@ export default {
           }))
           .concat({
             command: 'all',
-            description: `Enables all ${toPlural(type)}.`
+            description: `Disables all ${toPlural(type)}.`
           })
     };
   }
