@@ -52,7 +52,6 @@
     "@vizality/http": "src/core/modules/http",
     "@vizality/i18n": "src/core/modules/i18n",
     "@vizality/patcher": "src/core/modules/patcher",
-    "@vizality/react": "src/core/modules/react",
     "@vizality/webpack": "src/core/modules/webpack",
     "@vizality/util": "src/core/modules/util",
     "@vizality/util/performance": "src/core/modules/util/Performance",
@@ -69,9 +68,6 @@
     "@vizality/util/time": "src/core/modules/util/Time",
     "@vizality/util/dom": "src/core/modules/util/DOM",
     "@vizality": "src/core/modules",
-    "react": "src/core/modules/react/React",
-    "react-dom": "src/core/modules/react/ReactDOM",
-    "react-router": "src/core/modules/react/Router"
   },
   "dependencies": {
     "@monaco-editor/react": "^3.7.1",
