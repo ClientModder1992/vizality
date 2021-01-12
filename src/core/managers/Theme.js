@@ -1,4 +1,4 @@
-import { promises, readdirSync, existsSync } from 'fs';
+import { promises, existsSync } from 'fs';
 import { join } from 'path';
 
 import { resolveCompiler } from '@vizality/compilers';
@@ -101,41 +101,6 @@ export default class ThemeManager extends AddonManager {
     this._setIcon(manifest, themeID);
     this.items.set(themeID, new Theme(themeID, manifest));
   }
-
-  // Start/Stop
-  // async load (sync = false) {
-  //   const missingThemes = [];
-  //   const files = readdirSync(this.dir);
-  //   for (const filename of files) {
-  //     if (filename.startsWith('.')) {
-  //       console.debug('%c[Vizality:StyleManager]', 'color: #7289da', 'Ignoring dotfile', filename);
-  //       continue;
-  //     }
-
-  //     const addonId = filename.split('.').shift();
-  //     if (!sync) {
-  //       await this.mount(addonId, filename);
-
-  //       // if theme didn't mounted
-  //       if (!this[this.type].get(addonId)) {
-  //         continue;
-  //       }
-  //     }
-
-  //     if (!this.getAllDisabled().includes(addonId)) {
-  //       if (sync && !this.isInstalled(addonId)) {
-  //         await this.mount(addonId, filename);
-  //         missingThemes.push(addonId);
-  //       }
-
-  //       this[this.type].get(addonId)._load();
-  //     }
-  //   }
-
-  //   if (sync) {
-  //     return missingThemes;
-  //   }
-  // }
 
   _validateManifest (manifest) {
     const errors = [];

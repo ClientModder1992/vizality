@@ -150,7 +150,6 @@ export default memo(({ source, className }) => {
         height='500'
         onClick={e => {
           e.preventDefault();
-          console.log('uh');
           openModal(() =>
             <ImageModal
               src={src}

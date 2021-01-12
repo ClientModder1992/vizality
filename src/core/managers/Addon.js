@@ -6,6 +6,8 @@ import { log, warn, error } from '@vizality/util/logger';
 import { removeDirRecursive } from '@vizality/util/file';
 import { Avatars } from '@vizality/constants';
 
+const requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
+
 const ErrorTypes = {
   NOT_A_DIRECTORY: 'NOT A DIRECTOR',
   MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
@@ -15,14 +17,12 @@ const ErrorTypes = {
   DISABLE_NON_INSTALLED: 'DISABLE_NON_INSTALLED',
   DISABLE_NON_ENABLED: 'DISABLE_NON_ENABLED'
 };
-
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
     this.items = new Map();
 
-    this._requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
     this._module = 'Manager';
     this._submodule = toSingular(this.type);
   }
@@ -48,7 +48,7 @@ export default class AddonManager {
   }
 
   getAll () {
-    return this.keys;
+    return this.items;
   }
 
   isInstalled (addonId) {
@@ -65,14 +65,34 @@ export default class AddonManager {
     return !this.isEnabled(addonId);
   }
 
-  getAllEnabled () {
-    const addons = this.getAll();
+  getEnabledKeys () {
+    const addons = this.keys;
     return addons.filter(addon => this.isEnabled(addon));
   }
 
-  getAllDisabled () {
-    const addons = this.getAll();
+  getEnabled () {
+    const enabled = new Map();
+    this.getEnabledKeys()
+      .sort((a, b) => a - b)
+      .map(addon => this.get(addon))
+      .forEach(addon => enabled.set(addon.addonId, addon));
+
+    return enabled;
+  }
+
+  getDisabledKeys () {
+    const addons = this.keys;
     return addons.filter(addon => this.isDisabled(addon));
+  }
+
+  getDisabled () {
+    const disabled = new Map();
+    this.getDisabledKeys()
+      .sort((a, b) => a - b)
+      .map(addon => this.get(addon))
+      .forEach(addon => disabled.set(addon.addonId, addon));
+
+    return disabled;
   }
 
   // Mount/load/enable/install
@@ -80,16 +100,14 @@ export default class AddonManager {
     let manifest;
     try {
       manifest = Object.assign({
-        appMode: 'app',
-        dependencies: [],
-        optionalDependencies: []
+        appMode: 'app'
       }, await import(resolve(this.dir, addonId, 'manifest.json')));
     } catch (err) {
-      return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
+      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Skipping...`);
     }
 
-    if (!this._requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this._error(`${toSingular(toTitleCase(this.type))} ${addonId} doesn't have a valid manifest. Skipping...`);
+    if (!requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
+      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Skipping...`);
     }
 
     try {
@@ -119,44 +137,56 @@ export default class AddonManager {
     }
   }
 
+  async unmount (addonId) {
+    try {
+      const addon = this.get(addonId);
+      if (!addon) {
+        throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
+      }
+
+      await addon._unload();
+
+      Object.keys(require.cache).forEach(key => {
+        if (key.includes(addonId)) {
+          delete require.cache[key];
+        }
+      });
+
+      this.items.delete(addonId);
+    } catch (err) {
+      this._error(`An error occurred while unmounting "${addonId}"!`, err);
+    }
+  }
+
   async remount (addonId) {
     try {
-      await this.unmount(addonId);
+      const addon = this.get(addonId);
+      if (!addon) {
+        throw new Error(`Tried to remount a non-installed ${toSingular(this.type)}: (${addonId})`);
+      }
+      await addon._unload(false);
+      await addon._load(false);
     } catch (err) {
-      // chhhh
+      this._error(`An error occurred while remounting "${addonId}"!`, err);
     }
-    await this.mount(addonId);
-    this.get(addonId)._load();
   }
 
   async remountAll () {
-    const addons = this.getAllEnabled();
-    for (const addon of addons) {
-      await this.remount(addon);
-    }
-  }
-
-  async unmount (addonId) {
-    const addon = this.get(addonId);
-
-    if (!addon) {
-      throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
-    }
-
-    await addon._unload();
-
-    Object.keys(require.cache).forEach(key => {
-      if (key.includes(addonId)) {
-        delete require.cache[key];
+    try {
+      const addons = this.getEnabledKeys();
+      for (const addon of addons) {
+        await this.remount(addon);
       }
-    });
+    } catch (err) {
+      this._error(`An error occurred while remounting all ${this.type}!`, err);
+    }
 
-    this.items.delete(addonId);
+    this._log(`All ${this.type} have been re-initialized.`);
   }
 
   // Start/Stop
   async initialize (sync = false) {
-    const missingThemes = [];
+    const missing = [];
     const files = readdirSync(this.dir);
     for (const filename of files) {
       if (filename.startsWith('.')) {
@@ -165,37 +195,43 @@ export default class AddonManager {
 
       const addonId = filename;
 
-      if (!sync) {
+      if (sync && !this.get(addonId)._ready) {
+        await this.enable(addonId);
+        missing.push(addonId);
+      } else if (!sync) {
         await this.mount(addonId);
-
         // If addon didn't mount
         if (!this.get(addonId)) {
           continue;
         }
       }
 
-      if (!this.getAllDisabled().includes(addonId)) {
+      if (!this.getDisabledKeys().includes(addonId)) {
         if (sync && !this.isInstalled(addonId)) {
           await this.mount(addonId);
-          missingThemes.push(addonId);
+          missing.push(addonId);
         }
 
-        this.get(addonId)._load();
+        await this.get(addonId)._load();
       }
     }
 
     if (sync) {
-      return missingThemes;
+      return missing;
     }
   }
 
   async terminate () {
-    const addons = this.getAllEnabled();
-    for (const addon of addons) {
-      await this.unmount(addon);
+    try {
+      const addons = this.keys;
+      for (const addon of addons) {
+        await this.unmount(addon);
+      }
+    } catch (err) {
+      // Suppress errors
+    } finally {
+      return this._log(`All ${this.type} have been unloaded.`);
     }
-
-    return this._log(`All ${this.type} have been unloaded.`);
   }
 
   async enable (addonId) {
@@ -205,7 +241,7 @@ export default class AddonManager {
       throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: (${addonId})`);
     }
 
-    if (this.type !== 'themes' && addon._ready) {
+    if ((this.type === 'plugins' || this.type === 'builtins') && addon._ready) {
       return this._error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
     }
 
@@ -213,7 +249,7 @@ export default class AddonManager {
       vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
         .filter(addon => addon !== addonId));
 
-    addon._load();
+    await addon._load('enabled');
   }
 
   async disable (addonId) {
@@ -223,7 +259,7 @@ export default class AddonManager {
       throw new Error(`Tried to disable a non-installed ${toSingular(this.type)}: (${addonId})`);
     }
 
-    if (this.type !== 'themes' && !addon._ready) {
+    if ((this.type === 'plugins' || this.type === 'builtins') && !addon._ready) {
       return this._error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
     }
 
@@ -232,7 +268,7 @@ export default class AddonManager {
       addonId
     ]);
 
-    addon._unload();
+    await addon._unload('disabled');
   }
 
   async reload (addonId) {
@@ -241,31 +277,38 @@ export default class AddonManager {
   }
 
   async reloadAll () {
-    const addons = this.getAllEnabled();
+    const addons = this.getEnabled();
     for (const addon of addons) {
       await this.reload(addon);
     }
   }
 
-  enableAll () {
-    const addons = this.getAllDisabled();
-    addons.forEach(addon => this.enable(addon));
+  async enableAll () {
+    const addons = this.getDisabled();
+    for (const addon of addons) {
+      await this.enable(addon);
+    }
   }
 
-  disableAll () {
-    const addons = this.getAllEnabled();
-    addons.forEach(addon => this.disable(addon));
+  async disableAll () {
+    const addons = this.getEnabled();
+    for (const addon of addons) {
+      await this.disable(addon);
+    }
   }
 
+  /** @private */
   async install (addonId) {
     throw new Error('no');
   }
 
+  /** @private */
   async _uninstall (addonId) {
     await this.unmount(addonId);
     await removeDirRecursive(resolve(this.dir, addonId));
   }
 
+  /** @private */
   _handleError (errorType, args) {
     if (window.__SPLASH__ || window.__OVERLAY__) {
       return;
@@ -342,14 +385,17 @@ export default class AddonManager {
     }
   }
 
+  /** @private */
   _log (...data) {
     log(this._module, this._submodule, null, ...data);
   }
 
+  /** @private */
   _warn (...data) {
     warn(this._module, this._submodule, null, ...data);
   }
 
+  /** @private */
   _error (...data) {
     error(this._module, this._submodule, null, ...data);
   }
