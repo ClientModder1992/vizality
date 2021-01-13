@@ -240,9 +240,9 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
       <div
         className={joinClassNames('vz-addons-list', className, colorStandard)}
         vz-display={display}
-        vz-previews={showPreviewImages && ''}
-        vz-plugins={type === 'plugin' && ''}
-        vz-themes={type === 'theme' && ''}
+        vz-previews={Boolean(showPreviewImages) && ''}
+        vz-plugins={Boolean(type === 'plugin') && ''}
+        vz-themes={Boolean(type === 'theme') && ''}
       >
         <StickyBar
           type={type}

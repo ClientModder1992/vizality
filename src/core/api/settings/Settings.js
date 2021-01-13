@@ -114,7 +114,13 @@ export default class Settings extends API {
         path: `/dashboard/${type}/${addonId}`,
         render: props =>
           <Layout>
-            <Content heading='Settings' className={`vz-settings-${toSingular(type)}-${addonId}`}>
+            <Content
+              heading='Settings'
+              vz-plugin={Boolean(type === 'plugins') && addonId}
+              vz-theme={Boolean(type === 'themes') && addonId}
+              vz-plugin-section={Boolean(type === 'plugins') && 'settings'}
+              vz-theme-section={Boolean(type === 'themes') && 'settings'}
+            >
               <Render {...props} />
             </Content>
           </Layout>,
@@ -174,7 +180,12 @@ export default class Settings extends API {
         path: `/dashboard/${path}`,
         render: props =>
           <Layout>
-            <Content heading={heading} subheading={subheading} icon={icon} className={`vz-builtin-${addonId}`}>
+            <Content
+              heading={heading}
+              subheading={subheading}
+              icon={icon}
+              vz-builtin={addonId}
+            >
               <Render {...props} />
             </Content>
           </Layout>,

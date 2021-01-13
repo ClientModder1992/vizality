@@ -233,6 +233,8 @@ export default class Plugin extends Updatable {
         if (showLogs) {
           this.log(`${this._module} loaded. Initialization took ${time} ms.`);
         }
+      } else {
+        this.warn(`${this._module} has no "start" method!`);
       }
     } catch (err) {
       this.error('An error occurred during initialization!', err);
