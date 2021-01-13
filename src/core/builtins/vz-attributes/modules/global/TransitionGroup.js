@@ -5,7 +5,8 @@ import { patch, unpatch } from '@vizality/patcher';
 
 /*
  * Modifies The TransitionGroup component. We are checking for and modifying
- * settings content sections in particular, adding utility helper classes.
+ * settings content sections in particular, adding high level specificity utility
+ * helper classes.
  */
 export default () => {
   const TransitionGroup = getModuleByDisplayName('TransitionGroup');

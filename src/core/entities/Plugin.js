@@ -1,6 +1,6 @@
+import { existsSync, existsSync } from 'fs';
 import { join, sep } from 'path';
 import { watch } from 'chokidar';
-import { existsSync } from 'fs';
 
 import { toPlural, toSingular } from '@vizality/util/string';
 import { error, log, warn } from '@vizality/util/logger';
@@ -19,7 +19,7 @@ import Updatable from './Updatable';
  */
 export default class Plugin extends Updatable {
   constructor () {
-    super(vizality.manager.plugins.dir);
+    super(Directories.PLUGINS);
     this.settings = vizality.api.settings.buildCategoryObject(this.addonId);
     this.styles = {};
     this.sections = {};
@@ -42,7 +42,7 @@ export default class Plugin extends Updatable {
     let resolvedPath = path;
     if (!existsSync(resolvedPath)) {
       // Assume it's a relative path and try resolving it
-      resolvedPath = join(this.dir, this.addonId, path);
+      resolvedPath = join(this.path, path);
 
       if (!existsSync(resolvedPath)) {
         throw new Error(`Cannot find "${path}"! Make sure the file exists and try again.`);
@@ -86,6 +86,14 @@ export default class Plugin extends Updatable {
     return compile();
   }
 
+  registerSettings (render) {
+    vizality.api.settings.registerSettings({
+      type: toPlural(this._module).toLowerCase(),
+      addonId: this.addonId,
+      render
+    });
+  }
+
   log (...data) {
     log(this._module, this._submodule, null, ...data);
   }
@@ -99,7 +107,7 @@ export default class Plugin extends Updatable {
   }
 
   /**
-   * Update
+   * Update the addon.
    * @private
    */
   async _update (force = false) {
@@ -140,7 +148,9 @@ export default class Plugin extends Updatable {
     }
   }
 
-  /** @private */
+  /**
+   * @private
+   */
   async _watchFiles () {
     const _module = 'Watcher';
 
@@ -172,11 +182,31 @@ export default class Plugin extends Updatable {
    */
   async _load (showLogs = true) {
     try {
-      if (typeof this.onStart === 'function') {
+      if (typeof this.start === 'function') {
         const before = performance.now();
-        await this.onStart();
+        await this.start();
         const after = performance.now();
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
+
+        if (!this.sections.settings) {
+          let Render;
+          const addon = vizality.manager[toPlural(this._module).toLowerCase()].get(this.addonId);
+          if (addon?.manifest?.sections?.settings) {
+            Render = await import(join(this.path, addon.manifest.sections.settings));
+          } else if (existsSync(join(this.path, 'Settings.jsx'))) {
+            Render = await import(join(this.path, 'Settings.jsx'));
+          } else if (existsSync(join(this.path, 'components', 'Settings.jsx'))) {
+            Render = await import(join(this.path, 'components', 'Settings.jsx'));
+          }
+
+          if (Render) {
+            vizality.api.settings.registerSettings({
+              type: toPlural(this._module).toLowerCase(),
+              addonId: this.addonId,
+              render: Render
+            });
+          }
+        }
 
         if (showLogs) {
           this.log(`${this._module} loaded. Initialization took ${time} ms.`);
@@ -207,8 +237,13 @@ export default class Plugin extends Updatable {
       }
 
       this.styles = {};
-      if (typeof this.onStop === 'function') {
-        await this.onStop();
+      if (typeof this.stop === 'function') {
+        await this.stop();
+      }
+
+      // Unregister settings
+      if (this.sections.settings) {
+        vizality.api.settings.unregisterSettings(this.addonId, toPlural(this._module).toLowerCase());
       }
 
       if (showLogs) {

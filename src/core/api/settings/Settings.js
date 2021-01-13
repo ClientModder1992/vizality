@@ -52,8 +52,16 @@ export default class Settings extends API {
     try {
       let { type, addonId, render } = props;
 
-      // Check if it's an ES module
-      render = render.__esModule ? render.default : render;
+      render =
+        render?.__esModule
+          ? render?.default
+          : render?.type
+            ? render.type
+            : render;
+
+      if (!render) {
+        throw new Error(`You must specify a render component to register settings for "${addonId}"!`);
+      }
 
       const addon = vizality.manager[type].get(addonId);
 
