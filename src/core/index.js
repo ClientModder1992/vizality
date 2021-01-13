@@ -221,31 +221,58 @@ export default class Vizality extends Updatable {
   }
 
   async _update (force = false) {
-    const success = await super._update(force);
-    if (success) {
-      await exec('npm install --only=prod', { cwd: this.dir });
-      const updater = this.manager.builtins.get('vz-updater');
-      // @i18n
-      if (!document.querySelector('#vizality-updater, .vizality-updater')) {
-        this.api.notices.sendToast('vizality-updater', {
-          header: 'Update complete!',
-          content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
-          type: 'success',
-          buttons: [ {
-            text: 'Reload',
-            color: 'green',
-            look: 'ghost',
-            onClick: () => location.reload()
-          }, {
-            text: 'Postpone',
-            color: 'grey',
-            look: 'outlined',
-            onClick: () => this.api.notices.closeToast('vizality-updater')
-          } ]
-        });
+    try {
+      const success = await super._update(force);
+      if (success) {
+        try {
+          await exec('npm install --only=prod --legacy-peer-deps', { cwd: this.dir });
+        } catch (err) {
+          return this._error(`An error occurred while updating Vizality's dependencies!`, err);
+        }
+
+        const updater = this.manager.builtins.get('vz-updater');
+        // @i18n
+        if (!document.querySelector('#vizality-updater, .vz-builtin-vz-updater')) {
+          this.api.notices.sendToast('vizality-updater', {
+            header: 'Update complete!',
+            content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
+            type: 'success',
+            buttons: [
+              {
+                text: 'Reload',
+                color: 'green',
+                look: 'ghost',
+                onClick: () => location.reload()
+              },
+              {
+                text: 'Postpone',
+                color: 'grey',
+                look: 'outlined',
+                onClick: () => this.api.notices.closeToast('vizality-updater')
+              }
+            ]
+          });
+        }
+        updater.settings.set('awaitingReload', true);
       }
-      updater.settings.set('awaitingReload', true);
+      return success;
+    } catch (err) {
+      return this._error(`An error occurred while updating Vizality!`, err);
     }
-    return success;
+  }
+
+  /** @private */
+  _log (...data) {
+    log(this.constructor.name, 'Core', null, ...data);
+  }
+
+  /** @private */
+  _warn (...data) {
+    warn(this._module, 'Core', null, ...data);
+  }
+
+  /** @private */
+  _error (...data) {
+    error(this._module, 'Core', null, ...data);
   }
 }
