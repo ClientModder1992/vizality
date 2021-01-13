@@ -282,6 +282,7 @@
         "Voice": "Voice"
       },
       "tagNamePreference": {
+        "fires": "emits",
         "component": "component",
         "augments": "extends",
         "warn": "warn",

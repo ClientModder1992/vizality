@@ -102,20 +102,29 @@ export default class Windows extends API {
    * @fires Windows#popupClosed
    */
   closeWindow (windowId) {
-    if (!this.windows[windowId]) {
-      return this.error(`Window with ID "${windowId}" not found.`);
+    try {
+      if (!this.windows[windowId]) {
+        throw new Error(`Window with ID "${windowId}" not found.`);
+      }
+
+      const popoutModule = getModule('setAlwaysOnTop', 'open');
+      popoutModule.close(`DISCORD_${windowId}`);
+
+      delete this.windows[windowId];
+    } catch (err) {
+      return error(this._module, `${this._submodule}:closeWindow`, null, err);
     }
-
-    const popoutModule = getModule('setAlwaysOnTop', 'open');
-    popoutModule.close(`DISCORD_${windowId}`);
-
-    delete this.windows[windowId];
   }
 
-  setAlwaysOnTop (windowId, boolean = true) {
+  /**
+   * Sets a popup window to always be on top of other windows.
+   * @param {string} windowId Popup window ID
+   * @param {boolean} alwaysOnTop Whether the window should always be on top or not
+   */
+  setAlwaysOnTop (windowId, alwaysOnTop = true) {
     try {
       const popoutModule = getModule('setAlwaysOnTop', 'open');
-      popoutModule.setAlwaysOnTop(`DISCORD_${windowId}`, boolean);
+      popoutModule.setAlwaysOnTop(`DISCORD_${windowId}`, alwaysOnTop);
     } catch (err) {
       return error(this._module, `${this._submodule}:setAlwaysOnTop`, null, err);
     }

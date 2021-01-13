@@ -81,7 +81,6 @@
     "long": "^4.0.0",
     "mime-types": "^2.1.27",
     "module-alias": "^2.2.2",
-    "pirates": "^4.0.1",
     "pluralize": "^8.0.0",
     "react-markdown": "^4.3.1",
     "sass": "^1.26.10",

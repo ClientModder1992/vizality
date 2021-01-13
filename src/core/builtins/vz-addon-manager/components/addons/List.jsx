@@ -3,10 +3,9 @@ import React, { memo, useState, useReducer, useEffect } from 'react';
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, extname } from 'path';
 
-import { open as openModal, close as closeModal } from '@vizality/modal';
 import { toPlural, toTitleCase } from '@vizality/util/string';
-import { Confirm, Spinner, Text } from '@vizality/components';
 import { joinClassNames } from '@vizality/util/dom';
+import { Spinner } from '@vizality/components';
 import { getModule } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
 

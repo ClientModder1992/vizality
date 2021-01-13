@@ -16,12 +16,13 @@ import { API } from '@vizality/entities';
  * @property {Object.<String, function(String): Boolean>} scopes RPC Scopes
  * @property {Object.<String, DiscordRpcEvent>} scopes RPC Scopes
  */
-export default class RpcAPI extends API {
+export default class RPC extends API {
   constructor () {
     super();
-
     this.scopes = {};
     this.events = {};
+    this._module = 'API';
+    this._submodule = 'RPC';
   }
 
   /**
