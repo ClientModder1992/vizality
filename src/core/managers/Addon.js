@@ -152,7 +152,7 @@ export default class AddonManager {
     try {
       const addon = this.get(addonId);
       if (!addon) {
-        throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)}: ${addon}`);
+        throw new Error(`Tried to unmount a non-installed ${toSingular(this.type)} "${addon}"!`);
       }
 
       await addon._unload(showLogs);
@@ -190,43 +190,48 @@ export default class AddonManager {
       this._error(`An error occurred while remounting all ${this.type}!`, err);
     }
 
-    this._log(`All ${this.type} have been re-initialized.`);
+    this._log(`All ${this.type} have been re-initialized!`);
   }
 
   // Start/Stop
   async initialize (sync = false) {
-    const missing = [];
-    const files = readdirSync(this.dir);
-    for (const filename of files) {
-      if (filename.startsWith('.')) {
-        continue;
-      }
-
-      const addonId = filename;
-
-      if (sync && !this.get(addonId)._ready) {
-        await this.enable(addonId);
-        missing.push(addonId);
-      } else if (!sync) {
-        await this.mount(addonId);
-        // If addon didn't mount
-        if (!this.get(addonId)) {
+    let addonId;
+    try {
+      const missing = [];
+      const files = readdirSync(this.dir);
+      for (const filename of files) {
+        if (filename.startsWith('.')) {
           continue;
         }
-      }
 
-      if (!this.getDisabledKeys().includes(addonId)) {
-        if (sync && !this.isInstalled(addonId)) {
-          await this.mount(addonId);
+        addonId = filename;
+
+        if (sync && !this.get(addonId)._ready) {
+          await this.enable(addonId);
           missing.push(addonId);
+        } else if (!sync) {
+          await this.mount(addonId);
+          // If addon didn't mount
+          if (!this.get(addonId)) {
+            continue;
+          }
         }
 
-        await this.get(addonId)._load();
-      }
-    }
+        if (!this.getDisabledKeys().includes(addonId)) {
+          if (sync && !this.isInstalled(addonId)) {
+            await this.mount(addonId);
+            missing.push(addonId);
+          }
 
-    if (sync) {
-      return missing;
+          await this.get(addonId)._load();
+        }
+      }
+
+      if (sync) {
+        return missing;
+      }
+    } catch (err) {
+      this._error(`An error occurred while initializing "${addonId}"!`, err);
     }
   }
 
@@ -237,9 +242,9 @@ export default class AddonManager {
         await this.unmount(addon);
       }
     } catch (err) {
-      // Suppress errors
+      return this._log(`There was a problem shutting down ${this.type}!`, err);
     } finally {
-      return this._log(`All ${this.type} have been unloaded.`);
+      return this._log(`All ${this.type} have been unloaded!`);
     }
   }
 
@@ -247,11 +252,11 @@ export default class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: (${addonId})`);
+      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)} "${addonId}"!`);
     }
 
     if ((this.type === 'plugins' || this.type === 'builtins') && addon._ready) {
-      return this._error(`Tried to load an already-loaded ${toSingular(this.type)}: (${addonId})`);
+      return this._error(`Tried to load an already-loaded ${toSingular(this.type)} "${addonId}"!`);
     }
 
     vizality.settings.set(`disabled${toTitleCase(this.type)}`,
@@ -265,11 +270,11 @@ export default class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to disable a non-installed ${toSingular(this.type)}: (${addonId})`);
+      throw new Error(`Tried to disable a non-installed ${toSingular(this.type)} "${addonId}"!`);
     }
 
     if ((this.type === 'plugins' || this.type === 'builtins') && !addon._ready) {
-      return this._error(`Tried to unload a non-loaded ${toSingular(this.type)}: (${addon})`);
+      return this._error(`Tried to unload a non-loaded ${toSingular(this.type)} "${addon}"!`);
     }
 
     vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
