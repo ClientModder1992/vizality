@@ -2,44 +2,51 @@ import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
 
 /**
- * @typedef VizalityActions
- * @property {string} name Action name
- * @property {Function} action The action to be performed
+ * @typedef VizalityAction
+ * @property {string} actionId Action ID
+ * @property {Function} executor Action to be called
  */
 
 /**
- * Vizality Actions API
- * @property {VizalityAction[]} actions Registered actions
+ * The Actions API is meant for registering useful, quick actions that may be
+ * useful to be used in other plugins or contexts to call on the fly.
+ * @class
+ * @extends API Vizality API
  */
 export default class Actions extends API {
   constructor () {
     super();
-    this.actions = [];
+    /**
+     * Stores registered actions.
+     * @type {object}
+     */
+    this.actions = {};
+
     this._module = 'API';
     this._submodule = 'Actions';
   }
 
   /**
-   * Registers an action
-   * @param {Function} action Action to perform
-   * @emits ActionsAPI#actionAdded
-   * @returns {void}
+   * Registers an action.
+   * @param {VizalityAction} action Action to register
+   * @emits Actions#actionAdded
+   * @returns {undefined}
    */
   registerAction (action) {
     try {
-      if (this.actions.find(a => a.action === action.id)) {
-        throw new Error(`Action "${action.id}" is already registered!`);
+      if (this.actions[action.actionId]) {
+        throw new Error(`Action "${action.actionId}" is already registered!`);
       }
 
       if (!action.executor) {
-        throw new Error(`Must specify property "action"!`);
+        throw new Error(`Action must specify property "action"!`);
       }
 
       if (typeof action.executor !== 'function') {
-        throw new Error(`Property "action" value must be a function!`);
+        throw new Error(`Action property "action" value must be a function!`);
       }
 
-      this.actions.push(action);
+      this.actions[action.actionId] = action;
       this.emit('actionAdded', action);
     } catch (err) {
       return error(this._module, `${this._submodule}:registerAction`, null, err);
@@ -47,18 +54,18 @@ export default class Actions extends API {
   }
 
   /**
-   * Unregisters an action
-   * @param {string} id Name of the action
-   * @emits ActionAPI#actionRemoved
-   * @returns {void}
+   * Unregisters an action.
+   * @param {string} actionId Action ID
+   * @emits Actions#actionRemoved
+   * @returns {undefined}
    */
-  unregisterAction (id) {
+  unregisterAction (actionId) {
     try {
-      if (this.actions.find(a => a.id === id)) {
-        this.actions = this.actions.filter(r => r.action !== id);
-        this.emit('actionRemoved', id);
+      if (this.actions[actionId]) {
+        delete this.actions[actionId];
+        this.emit('actionRemoved', actionId);
       } else {
-        throw new Error(`Action "${id}" is not registered, so it cannot be unregistered!`);
+        throw new Error(`Action "${actionId}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
       return error(this._module, `${this._submodule}:unregisterAction`, null, err);
@@ -66,13 +73,19 @@ export default class Actions extends API {
   }
 
   /**
-   * Invokes an action.
-   * @param {string} id Name of the action
-   * @returns {void}
+   * Calls an action function.
+   * @param {string} actionId Action ID
+   * @emits Actions#actionInvoked
+   * @returns {undefined}
    */
-  async invoke (id) {
+  async invoke (actionId) {
     try {
-      this.actions.find(a => a.id === id).executor();
+      if (this.actions[actionId]) {
+        this.actions[actionId].executor();
+        this.emit('actionInvoked', actionId);
+      } else {
+        throw new Error(`Action "${actionId}" could not be found!`);
+      }
     } catch (err) {
       return error(this._module, `${this._submodule}:invoke`, null, err);
     }
