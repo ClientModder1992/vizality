@@ -3,8 +3,7 @@ window.__SPLASH__ = true;
 require('../ipc/renderer');
 
 /*
- * CSS Injection
- * @todo Use the new manager.themes for this.
+ * Theme injection
  */
 const initialize = () => {
   document.documentElement.setAttribute('vizality', '');

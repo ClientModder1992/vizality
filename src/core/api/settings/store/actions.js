@@ -1,6 +1,6 @@
 import { FluxDispatcher } from '@vizality/webpack';
 
-import ActionTypes from './constants';
+import ActionTypes from './Constants';
 
 export default {
   toggleSetting (category, setting, defaultValue) {

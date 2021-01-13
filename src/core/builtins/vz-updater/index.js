@@ -44,7 +44,7 @@ export default class Updater extends Builtin {
       executor: () => this.openLatestChangelog()
     });
 
-    vizality.api.settings._registerBuiltinSidebarSection({
+    vizality.api.settings._registerBuiltinSettings({
       addonId: this.addonId,
       path: 'updater',
       heading: 'Updater',

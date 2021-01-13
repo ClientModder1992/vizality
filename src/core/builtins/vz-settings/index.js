@@ -16,7 +16,7 @@ export default class Settings extends Builtin {
   onStart () {
     this.injectStyles('styles/main.scss');
 
-    vizality.api.settings._registerBuiltinSidebarSection({
+    vizality.api.settings._registerBuiltinSettings({
       addonId: this.addonId,
       path: 'settings',
       heading: 'Settings',

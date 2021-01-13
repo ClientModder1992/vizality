@@ -5,17 +5,12 @@ import { error } from '@vizality/util/logger';
 import { Flux } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
-import actions from './store/actions';
-import store from './store/store';
+import actions from './store/Actions';
+import store from './store/Store';
 
 import Sidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
 import Content from '@vizality/builtins/vz-dashboard/components/parts/Content';
 import Layout from '@vizality/builtins/vz-dashboard/components/parts/Layout';
-
-const _module = 'API';
-const _submodule = 'Settings';
-
-/* @todo: Use logger. */
 
 /**
  * @typedef SettingsCategory
@@ -45,14 +40,15 @@ export default class Settings extends API {
     this.store = store;
     this.plugins = [];
     this.themes = [];
+    this._module = 'API';
+    this._submodule = 'Settings';
   }
 
   /**
-   * Registers a settings tab
+   * Registers a settings tab.
    * @param {SettingsTab} props Props of the settings tab
-   * @private
    */
-  _registerAddonSettings (props) {
+  registerSettings (props) {
     try {
       let { type, addonId, render } = props;
 
@@ -84,37 +80,41 @@ export default class Settings extends API {
 
       // Add the addon to the list of addons with settings
       this[type].push(addonId);
+
+      this.emit('settingsRegistered');
     } catch (err) {
-      return error(_module, `${_submodule}:registerCoreSettings`, null, err);
+      return error(this._module, `${this._submodule}:registerCoreSettings`, null, err);
     }
   }
 
   /**
    * Unregisters a settings tab.
-   * @param {string} type Type of the addon
    * @param {string} addonId Addon ID of the settings to unregister
-   * @private
+   * @param {string} type Type of the addon
    */
-  _unregisterAddonSettings (type, addonId) {
+  unregisterSettings (addonId, type) {
+    type = type || 'plugins';
+
     try {
-      const addon = vizality.manager.plugins.get(addonId);
+      const addon = vizality.manager[type].get(addonId);
       if (addon?.sections?.settings) {
         delete addon.sections.settings;
       } else {
         throw new Error(`Settings for "${addonId}" are not registered, so they cannot be unregistered!`);
       }
 
-      vizality.api.router.unregisterRoute(`/dashboard/plugins/${addonId}`);
+      vizality.api.router.unregisterRoute(`/dashboard/${type}/${addonId}`);
 
       // Remove the addon from the list of addons with settings
       this[type].splice(this[type].indexOf(addonId), 1);
+      this.emit('settingsUnregistered');
     } catch (err) {
-      return error(_module, `${_submodule}:_unregisterAddonSettings`, null, err);
+      return error(this._module, `${this._submodule}:_unregisterAddonSettings`, null, err);
     }
   }
 
   /** @private */
-  _registerBuiltinSidebarSection (props) {
+  _registerBuiltinSettings (props) {
     try {
       const { addonId, path, heading, subheading, icon, render } = props;
 
@@ -135,8 +135,10 @@ export default class Settings extends API {
           </Layout>,
         sidebar: Sidebar
       });
+
+      this.emit('builtinSettingsRegistered');
     } catch (err) {
-      return error(_module, `${_submodule}:_registerBuiltinSidebarSection`, null, err);
+      return error(this._module, `${this._submodule}:_registerBuiltinSettings`, null, err);
     }
   }
 

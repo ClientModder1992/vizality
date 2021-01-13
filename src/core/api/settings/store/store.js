@@ -4,7 +4,7 @@ import { join } from 'path';
 import { Flux, FluxDispatcher } from '@vizality/webpack';
 import { Directories } from '@vizality/constants';
 
-import ActionTypes from './constants';
+import ActionTypes from './Constants';
 
 if (!existsSync(Directories.SETTINGS)) {
   mkdirSync(Directories.SETTINGS);
