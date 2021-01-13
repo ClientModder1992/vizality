@@ -1,12 +1,13 @@
-import { existsSync, existsSync } from 'fs';
 import { join, sep } from 'path';
 import { watch } from 'chokidar';
+import { existsSync } from 'fs';
 
 import { toPlural, toSingular } from '@vizality/util/string';
 import { error, log, warn } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
+import { isArray } from '@vizality/util/array';
 
 import Updatable from './Updatable';
 
@@ -87,7 +88,7 @@ export default class Plugin extends Updatable {
   }
 
   registerSettings (render) {
-    vizality.api.settings.registerSettings({
+    vizality.api.settings._registerSettings({
       type: toPlural(this._module).toLowerCase(),
       addonId: this.addonId,
       render
@@ -128,10 +129,16 @@ export default class Plugin extends Updatable {
      * @note Don't enable the watcher for builtins unless the user is a Vizality developer.
      * No need to use extra resources watching something that shouldn't need it.
      */
-    if (this._module === 'Builtin' && !vizality.settings.get('vizalityDeveloper', false)) {
-      this._watcherEnabled = false;
+    if (!this.manifest) {
+      if (!vizality.settings.get('vizalityDeveloper', false)) {
+        this._watcherEnabled = false;
+      }
     } else {
-      this._watcherEnabled = vizality.settings.get('hotReload', false);
+      if (typeof this.manifest.hotReload?.enable === 'boolean') {
+        this._watcherEnabled = this.manifest.hotReload.enable;
+      } else {
+        this._watcherEnabled = vizality.settings.get('hotReload', false);
+      }
     }
   }
 
@@ -154,8 +161,27 @@ export default class Plugin extends Updatable {
   async _watchFiles () {
     const _module = 'Watcher';
 
+    const ignored = [];
+    if (this.manifest.hotReload?.ignore) {
+      if (isArray(this.manifest.hotReload?.ignore)) {
+        for (const ign of this.manifest.hotReload?.ignore) {
+          if (ign.startsWith('*')) {
+            ignored.push(ign);
+          } else {
+            ignored.push(new RegExp(ign));
+          }
+        }
+      } else {
+        if (this.manifest.hotReload.ignore.startsWith('*')) {
+          ignored.push(this.manifest.hotReload.ignore);
+        } else {
+          ignored.push(new RegExp(this.manifest.hotReload.ignore));
+        }
+      }
+    }
+
     this._watcher = watch(this.path, {
-      ignored: [ /node_modules/, /.git/, /manifest.json/, '*.scss', '*.css' ],
+      ignored: [ /node_modules/, /.git/, /manifest.json/, '*.scss', '*.css' ].concat(ignored),
       ignoreInitial: true
     });
 
@@ -168,10 +194,7 @@ export default class Plugin extends Updatable {
     this._watcher
       .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
       .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
-      .on('error', error => {
-        const errors = [ 'Error:', error ];
-        log(_module, `${this._module}:${this._submodule}`, null, ...errors);
-      });
+      .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, [ 'Error:', error ]));
 
     this._watcher
       .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false));
@@ -188,11 +211,10 @@ export default class Plugin extends Updatable {
         const after = performance.now();
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
-        if (!this.sections.settings) {
+        if (this._module !== 'Builtin' && !this.sections.settings) {
           let Render;
-          const addon = vizality.manager[toPlural(this._module).toLowerCase()].get(this.addonId);
-          if (addon?.manifest?.sections?.settings) {
-            Render = await import(join(this.path, addon.manifest.sections.settings));
+          if (this.manifest.sections?.settings) {
+            Render = await import(join(this.path, this.manifest.sections.settings));
           } else if (existsSync(join(this.path, 'Settings.jsx'))) {
             Render = await import(join(this.path, 'Settings.jsx'));
           } else if (existsSync(join(this.path, 'components', 'Settings.jsx'))) {
@@ -200,7 +222,7 @@ export default class Plugin extends Updatable {
           }
 
           if (Render) {
-            vizality.api.settings.registerSettings({
+            vizality.api.settings._registerSettings({
               type: toPlural(this._module).toLowerCase(),
               addonId: this.addonId,
               render: Render
@@ -243,7 +265,7 @@ export default class Plugin extends Updatable {
 
       // Unregister settings
       if (this.sections.settings) {
-        vizality.api.settings.unregisterSettings(this.addonId, toPlural(this._module).toLowerCase());
+        vizality.api.settings._unregisterSettings(this.addonId);
       }
 
       if (showLogs) {
