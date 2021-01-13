@@ -52,6 +52,8 @@ export default class Settings extends API {
     try {
       let { type, addonId, render } = props;
 
+      type = type || 'plugins';
+
       render =
         render?.__esModule
           ? render?.default
