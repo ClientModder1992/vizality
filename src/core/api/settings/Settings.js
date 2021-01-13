@@ -45,10 +45,42 @@ export default class Settings extends API {
   }
 
   /**
+   * Builds a settings category that can be used by a plugin.
+   * @param {string} category Settings category name
+   * @returns {SettingsCategory}
+   */
+  buildCategoryObject (category) {
+    return {
+      connectStore: component => this.connectStores(category)(component),
+      getKeys: () => store.getSettingsKeys(category),
+      get: (setting, defaultValue) => store.getSetting(category, setting, defaultValue),
+      set: (setting, newValue) => {
+        if (newValue === void 0) {
+          return actions.toggleSetting(category, setting);
+        }
+        actions.updateSetting(category, setting, newValue);
+      },
+      delete: (setting) => {
+        actions.deleteSetting(category, setting);
+      }
+    };
+  }
+
+  /**
+   * Creates a flux decorator for a given settings category.
+   * @param {string} category Settings category
+   * @returns {Function}
+   */
+  connectStores (category) {
+    return Flux.connectStores([ this.store ], () => this._fluxProps(category));
+  }
+
+  /**
    * Registers a settings tab.
    * @param {SettingsTab} props Props of the settings tab
+   * @private
    */
-  registerSettings (props) {
+  _registerSettings (props) {
     try {
       let { type, addonId, render } = props;
 
@@ -67,13 +99,14 @@ export default class Settings extends API {
 
       const addon = vizality.manager[type].get(addonId);
 
+      if (!addon) {
+        throw new Error(`Cannot register settings for "${addonId}" because it isn't installed!`);
+      }
+
       addon.sections.settings = {
         component: render,
         render: this.connectStores(addonId)(render)
       };
-
-      Object.freeze(addon.sections.settings.component.prototype);
-      Object.freeze(addon.sections.settings);
 
       const Render = addon.sections.settings.render;
 
@@ -93,7 +126,7 @@ export default class Settings extends API {
 
       this.emit('settingsRegistered');
     } catch (err) {
-      return error(this._module, `${this._submodule}:registerCoreSettings`, null, err);
+      return error(this._module, `${this._submodule}:_registerSettings`, null, err);
     }
   }
 
@@ -101,8 +134,9 @@ export default class Settings extends API {
    * Unregisters a settings tab.
    * @param {string} addonId Addon ID of the settings to unregister
    * @param {string} type Type of the addon
+   * @private
    */
-  unregisterSettings (addonId, type) {
+  _unregisterSettings (addonId, type) {
     type = type || 'plugins';
 
     try {
@@ -120,7 +154,7 @@ export default class Settings extends API {
       this[type].splice(this[type].indexOf(addonId), 1);
       this.emit('settingsUnregistered');
     } catch (err) {
-      return error(this._module, `${this._submodule}:_unregisterAddonSettings`, null, err);
+      return error(this._module, `${this._submodule}:_unregisterSettings`, null, err);
     }
   }
 
@@ -151,37 +185,6 @@ export default class Settings extends API {
     } catch (err) {
       return error(this._module, `${this._submodule}:_registerBuiltinSettings`, null, err);
     }
-  }
-
-  /**
-   * Builds a settings category that can be used by a plugin.
-   * @param {string} category Settings category name
-   * @returns {SettingsCategory}
-   */
-  buildCategoryObject (category) {
-    return {
-      connectStore: component => this.connectStores(category)(component),
-      getKeys: () => store.getSettingsKeys(category),
-      get: (setting, defaultValue) => store.getSetting(category, setting, defaultValue),
-      set: (setting, newValue) => {
-        if (newValue === void 0) {
-          return actions.toggleSetting(category, setting);
-        }
-        actions.updateSetting(category, setting, newValue);
-      },
-      delete: (setting) => {
-        actions.deleteSetting(category, setting);
-      }
-    };
-  }
-
-  /**
-   * Creates a flux decorator for a given settings category.
-   * @param {string} category Settings category
-   * @returns {Function}
-   */
-  connectStores (category) {
-    return Flux.connectStores([ this.store ], () => this._fluxProps(category));
   }
 
   /** @private */
