@@ -10,7 +10,7 @@ import * as commands from './commands';
 import * as i18n from './i18n';
 
 export default class AddonsManager extends Builtin {
-  onStart () {
+  start () {
     this.injectStyles('styles/main.scss');
 
     [ 'plugin', 'theme' ].forEach(type =>
@@ -22,7 +22,7 @@ export default class AddonsManager extends Builtin {
     commands.registerCommands('theme');
   }
 
-  onStop () {
+  stop () {
     vizality.api.commands.unregisterCommand('plugin');
     vizality.api.commands.unregisterCommand('theme');
   }

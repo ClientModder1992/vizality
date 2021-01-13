@@ -3,7 +3,7 @@ import { Builtin } from '@vizality/entities';
 import * as modules from './modules';
 
 export default class Enhancements extends Builtin {
-  onStart () {
+  start () {
     this.injectStyles('styles/main.scss');
     this.callbacks = [];
 
@@ -17,7 +17,7 @@ export default class Enhancements extends Builtin {
     }
   }
 
-  onStop () {
+  stop () {
     this.callbacks.forEach(callback => callback());
   }
 }

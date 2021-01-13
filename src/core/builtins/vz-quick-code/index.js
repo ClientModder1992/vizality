@@ -10,7 +10,7 @@ import QuickCodePage from './components/QuickCode';
 const { writeFile, readFile } = promises;
 
 export default class QuickCode extends Builtin {
-  async onStart () {
+  async start () {
     vizality.api.settings._registerBuiltinSettings({
       addonId: this.addonId,
       path: 'quick-code',
@@ -31,7 +31,7 @@ export default class QuickCode extends Builtin {
     this.injectStyles(this._customCSSFile, true);
   }
 
-  onStop () {
+  stop () {
     vizality.api.router.unregisterRoute('/dashboard/quick-code');
   }
 

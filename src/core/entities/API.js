@@ -12,8 +12,8 @@ export default class API extends Events {
 
   async _load () {
     try {
-      if (typeof this.onStart === 'function') {
-        await this.onStart();
+      if (typeof this.start === 'function') {
+        await this.start();
       }
       this._ready = true;
       log(this._module, this._submodule, null, 'API loaded.');
@@ -24,8 +24,8 @@ export default class API extends Events {
 
   async _unload () {
     try {
-      if (typeof this.onStop === 'function') {
-        await this.onStop();
+      if (typeof this.stop === 'function') {
+        await this.stop();
       }
       this._ready = false;
       log(this._module, this._submodule, null, 'API unloaded.');

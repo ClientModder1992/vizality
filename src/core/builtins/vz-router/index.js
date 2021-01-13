@@ -7,7 +7,7 @@ import { patch, unpatch } from '@vizality/patcher';
 import { Builtin } from '@vizality/entities';
 
 export default class Router extends Builtin {
-  async onStart () {
+  async start () {
     await this.injectRouter();
     await this.injectViews();
     await this.injectSidebar();
@@ -16,7 +16,7 @@ export default class Router extends Builtin {
     vizality.api.router.on('routeRemoved', this.forceRouterUpdate);
   }
 
-  onStop () {
+  stop () {
     vizality.api.router.off('routeAdded', this.forceRouterUpdate);
     vizality.api.router.off('routeRemoved', this.forceRouterUpdate);
     unpatch('vz-router-routes');

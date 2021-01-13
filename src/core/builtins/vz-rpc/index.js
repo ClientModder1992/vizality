@@ -5,7 +5,7 @@ import { Builtin } from '@vizality/entities';
 import { HTTP } from '@vizality/constants';
 
 export default class RPC extends Builtin {
-  async onStart () {
+  async start () {
     this.handlers = getModule('INVITE_BROWSER');
     this._patchHTTPServer();
     this._patchWebSocketServer();
@@ -18,7 +18,7 @@ export default class RPC extends Builtin {
     vizality.api.rpc.on('eventRemoved', this._boundRemoveEvent);
   }
 
-  onStop () {
+  stop () {
     unpatch('vz-rpc-ws');
     unpatch('vz-rpc-ws-promise');
 

@@ -31,7 +31,7 @@ export default class Updater extends Builtin {
     };
   }
 
-  async onStart () {
+  async start () {
     this.injectStyles('styles/main.scss');
 
     this.settings.set('paused', false);
@@ -69,7 +69,7 @@ export default class Updater extends Builtin {
     }
   }
 
-  onStop () {
+  stop () {
     vizality.api.router.unregisterRoute('/dashboard/updater');
     clearInterval(this._interval);
   }

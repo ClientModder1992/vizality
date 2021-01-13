@@ -13,7 +13,7 @@ import ContextMenu from './components/ContextMenu';
 import SettingsComponent from './components/Settings';
 
 export default class Settings extends Builtin {
-  onStart () {
+  start () {
     this.injectStyles('styles/main.scss');
 
     vizality.api.settings._registerBuiltinSettings({
@@ -35,7 +35,7 @@ export default class Settings extends Builtin {
     this.patchSettingsContextMenu();
   }
 
-  onStop () {
+  stop () {
     vizality.api.router.unregisterRoute('/dashboard/settings');
     unpatch('vz-settings-items');
     unpatch('vz-settings-actions');

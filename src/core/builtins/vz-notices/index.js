@@ -15,7 +15,7 @@ import ToastContainer from './components/ToastContainer';
 const { unlink } = promises;
 
 export default class Notices extends Builtin {
-  onStart () {
+  start () {
     this.injectStyles('styles/main.scss');
     this._patchAnnouncements();
     this._patchToasts();
@@ -32,7 +32,7 @@ export default class Notices extends Builtin {
     }
   }
 
-  onStop () {
+  stop () {
     unpatch('vz-notices-announcements');
     unpatch('vz-notices-toast');
   }

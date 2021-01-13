@@ -15,7 +15,7 @@ export default class I18nAPI extends API {
     })();
   }
 
-  async onStart () {
+  async start () {
     await getModule('locale', 'theme', true).then(module => {
       this.locale = module.locale;
       module.addChangeListener(() => {
@@ -28,8 +28,7 @@ export default class I18nAPI extends API {
     });
   }
 
-  onStop () {
-    console.log('test');
+  stop () {
     [ 'messages', 'defaultMessages' ].forEach(obj => {
       Object.keys(i18n._proxyContext[obj])
         .filter(key =>

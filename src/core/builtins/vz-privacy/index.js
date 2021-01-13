@@ -29,7 +29,7 @@ import { Builtin } from '@vizality/entities';
 let Analytics, Reporter, Sentry;
 
 export default class Privacy extends Builtin {
-  onStart () {
+  start () {
     Analytics = getModule('getSuperPropertiesBase64');
     Reporter = getModule('submitLiveCrashReport');
     Sentry = {
@@ -59,7 +59,7 @@ export default class Privacy extends Builtin {
     }));
   }
 
-  onStop () {
+  stop () {
     Analytics.track = Analytics.__oldTrack;
     Reporter.submitLiveCrashReport = Reporter.__oldSubmitLiveCrashReport;
     Sentry.main.addBreadcrumb = Sentry.main.__oldAddBreadcrumb;

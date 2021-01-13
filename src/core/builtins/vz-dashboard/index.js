@@ -10,7 +10,7 @@ import Sidebar from './components/parts/sidebar/Sidebar';
 import Routes from './routes/Routes';
 
 export default class Dashboard extends Builtin {
-  onStart () {
+  start () {
     this.injectStyles('styles/main.scss');
     this.patchTabs();
     // this.injectGuildHomeButton();
@@ -34,7 +34,7 @@ export default class Dashboard extends Builtin {
     });
   }
 
-  onStop () {
+  stop () {
     vizality.api.router.unregisterRoute('/dashboard');
     vizality.api.keybinds.unregisterKeybind('exit-dashboard');
     vizality.api.keybinds.unregisterKeybind('go-to-dashboard');

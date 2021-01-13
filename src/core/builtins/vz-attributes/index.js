@@ -5,7 +5,7 @@ import { Builtin } from '@vizality/entities';
 import modules from './modules';
 
 export default class Attributes extends Builtin {
-  onStart () {
+  start () {
     this.callbacks = [];
 
     for (const mod of Object.values(modules)) {
@@ -49,7 +49,7 @@ export default class Attributes extends Builtin {
     ipcRenderer.on('VIZALITY_WINDOW_UNMAXIMIZE', () => root.setAttribute('vz-window', 'restored'));
   }
 
-  onStop () {
+  stop () {
     this.callbacks.forEach(callback => callback());
   }
 }
