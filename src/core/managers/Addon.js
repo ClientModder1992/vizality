@@ -17,6 +17,7 @@ const ErrorTypes = {
   DISABLE_NON_INSTALLED: 'DISABLE_NON_INSTALLED',
   DISABLE_NON_ENABLED: 'DISABLE_NON_ENABLED'
 };
+
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;

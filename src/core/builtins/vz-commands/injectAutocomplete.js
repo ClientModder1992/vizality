@@ -145,7 +145,7 @@ export default function injectAutocomplete () {
             children={<hr className={builtInSeparator} />}
           />
           <AdvancedScrollerThin className={joinClassNames(scroller, list)}>
-            <div className={listItems} style={{ inset: '8px 8px 0px' }}>
+            <div className={listItems}>
               {categorizedResults}
             </div>
           </AdvancedScrollerThin>
