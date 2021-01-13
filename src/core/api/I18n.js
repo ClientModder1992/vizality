@@ -3,7 +3,7 @@ import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 import i18n from '@vizality/i18n';
 
-export default class I18nAPI extends API {
+export default class I18n extends API {
   constructor () {
     super();
     this.messages = {};

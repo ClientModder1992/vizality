@@ -40,7 +40,7 @@ import { API } from '@vizality/entities';
  * @property {object.<string, VizalityToast>} toasts
  * @property {object.<string, VizalityAnnouncement>} announcements
  */
-export default class NoticesAPI extends API {
+export default class Notices extends API {
   constructor () {
     super();
     this.announcements = {};

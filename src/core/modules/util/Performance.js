@@ -3,10 +3,10 @@ import { performance, PerformanceObserver } from 'perf_hooks';
 
 /**
  * Benchmarks an array of functions and sorts them by performance.
- * @param {Array} funcs The functions to benchmark.
- * @param {number} iterations The amount of iterations to run through and Median on.
- * @param {boolean} [nano=true] Whether to show the formatted string in milliseconds or nanoseconds.
- * @param {boolean} [log=true] Whether or not to log the results to the console right away.
+ * @param {Array} funcs The functions to benchmark
+ * @param {number} iterations The amount of iterations to run through and Median on
+ * @param {boolean} [nano=true] Whether to show the formatted string in milliseconds or nanoseconds
+ * @param {boolean} [log=true] Whether or not to log the results to the console right away
  * @returns {object} The results. All ready to be handled if you don't want them printed to the console.
  */
 export const benchmark = (funcs, iterations, nano = true, log = true) => {

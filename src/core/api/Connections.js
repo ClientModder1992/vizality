@@ -1,6 +1,6 @@
 import { API } from '@vizality/entities';
 
-export default class ConnectionsAPI extends API {
+export default class Connections extends API {
   constructor () {
     super();
     this.connections = [];

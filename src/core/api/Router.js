@@ -1,12 +1,10 @@
+import { Regexes } from '@vizality/constants';
 import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
-import Sidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
-import Routes from '@vizality/builtins/vz-dashboard/routes/Routes';
-
-const _module = 'API';
-const _submodule = 'Router';
+import DashboardSidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
+import DashboardRoutes from '@vizality/builtins/vz-dashboard/routes/Routes';
 
 /**
  * @typedef VizalityRoute
@@ -19,10 +17,12 @@ const _submodule = 'Router';
  * Vizality custom router API
  * @property {VizalityRoute[]} routes Registered routes
  */
-export default class RouterAPI extends API {
+export default class Router extends API {
   constructor () {
     super();
     this.routes = [];
+    this._module = 'API';
+    this._submodule = 'Router';
   }
 
   /**
@@ -30,19 +30,24 @@ export default class RouterAPI extends API {
    * @returns {void}
    */
   async restorePrevious () {
-    return null;
-    /*
-     * const oldRoute = await DiscordNative.settings.get('_VIZALITY_ROUTE');
-     * if (oldRoute && this.routes.find(c => c.path === oldRoute.split('/vizality')[1])) {
-     *   const router = getModule('replaceWith');
-     *   router.replaceWith(oldRoute);
-     * }
-     * return DiscordNative.settings.set('_VIZALITY_ROUTE', void 0);
-     */
+    try {
+      if (window.location.pathname.startsWith('/vizality')) {
+        const router = getModule('replaceWith');
+        let history = await vizality.native.app.getHistory();
+        history = history.reverse();
+        history.shift();
+        const match = history.find(location => !location.includes('/vizality'));
+        const route = match.replace(new RegExp(Regexes.DISCORD), '');
+        router.replaceWith(route);
+        // this.navigate(route);
+      }
+    } catch (err) {
+      return error(this._module, `${this._submodule}:restorePrevious`, null, err);
+    }
   }
 
   /**
-   * This is a hacky method used to unregister and reregister the main dashboard route
+   * @note This is a hacky method used to unregister and reregister the main dashboard route
    * so that it doesn't override the plugin and theme routes... Not really sure how to do
    * this in a better way at the moment, but definitely should be addressed in the future.
    */
@@ -53,8 +58,8 @@ export default class RouterAPI extends API {
     this.unregisterRoute('/dashboard');
     this.registerRoute({
       path: '/dashboard',
-      render: Routes,
-      sidebar: Sidebar
+      render: DashboardRoutes,
+      sidebar: DashboardSidebar
     });
   }
 
@@ -76,7 +81,7 @@ export default class RouterAPI extends API {
       }
       this.emit('routeAdded', route);
     } catch (err) {
-      return error(_module, `${_submodule}:registerRoute`, null, err);
+      return error(this._module, `${this._submodule}:registerRoute`, null, err);
     }
   }
 
@@ -95,7 +100,7 @@ export default class RouterAPI extends API {
         throw new Error(`Route "${path}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
-      return error(_module, `${_submodule}:unregisterRoute`, null, err);
+      return error(this._module, `${this._submodule}:unregisterRoute`, null, err);
     }
   }
 
@@ -135,7 +140,7 @@ export default class RouterAPI extends API {
 
       transitionTo(path);
     } catch (err) {
-      return error(_module, `${_submodule}:navigate`, null, err);
+      return error(this._module, `${this._submodule}:navigate`, null, err);
     }
   }
 }

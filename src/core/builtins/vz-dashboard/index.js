@@ -2,7 +2,6 @@ import React from 'react';
 
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
-import { Regexes } from '@vizality/constants';
 import { Builtin } from '@vizality/entities';
 import { Icon } from '@vizality/components';
 
@@ -12,7 +11,7 @@ import Routes from './routes/Routes';
 export default class Dashboard extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
-    this.patchTabs();
+    this._injectPrivateTab();
     // this.injectGuildHomeButton();
 
     vizality.api.router.registerRoute({
@@ -23,7 +22,7 @@ export default class Dashboard extends Builtin {
 
     vizality.api.keybinds.registerKeybind({
       id: 'exit-dashboard',
-      executor: this.leaveDashboard,
+      executor: () => vizality.api.router.restorePrevious(),
       shortcut: 'esc'
     });
 
@@ -45,7 +44,7 @@ export default class Dashboard extends Builtin {
    * Special thanks to Winston and AAGaming for coming up with
    * the original version of this function.
    */
-  patchTabs () {
+  _injectPrivateTab () {
     const ConnectedPrivateChannelsList = getModule(m => m.default?.displayName === 'ConnectedPrivateChannelsList');
     const { LinkButton } = getModule('LinkButton');
 
@@ -96,15 +95,4 @@ export default class Dashboard extends Builtin {
   //     return res;
   //   });
   // }
-
-  async leaveDashboard () {
-    if (window.location.pathname.startsWith('/vizality/dashboard')) {
-      let history = await vizality.native.app.getHistory();
-      history = history.reverse();
-      history.shift();
-      const match = history.find(location => !location.includes('/vizality/dashboard'));
-      const route = match.replace(new RegExp(Regexes.DISCORD), '');
-      vizality.api.router.navigate(route);
-    }
-  }
 }

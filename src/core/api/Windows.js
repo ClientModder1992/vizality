@@ -9,7 +9,7 @@ import { API } from '@vizality/entities';
 export default class Windows extends API {
   constructor () {
     super();
-    this.popups = {};
+    this.windows = {};
     this._module = 'API';
     this._submodule = 'Windows';
   }
@@ -20,9 +20,9 @@ export default class Windows extends API {
    * @fires Windows#popupWindowOpen
    */
   async openWindow (props, options = {}) {
-    props.windowId = props.windowId || `external-url-${(Math.random().toString(36) + Date.now()).substring(2, 10)}`;
-    props.width = props.width || 800;
-    props.height = props.height || 600;
+    props.windowId = props.windowId || `window-${(Math.random().toString(36) + Date.now()).substring(2, 10)}`;
+    options.width = options.width || 800;
+    options.height = options.height || 600;
 
     let Render;
 
@@ -61,15 +61,15 @@ export default class Windows extends API {
       }, []);
 
       return (
-        <div className='vz-window' vz-titlebar={titlebar ? '' : null}>
+        <div className='vz-popup-window' vz-titlebar={titlebar ? '' : null}>
           {titlebar && <Titlebar type={titlebarType} windowKey={windowKey} focused={true} />}
-          {loading && url && <Spinner className='vz-window-spinner' />}
-          <div className='vz-window-content-wrapper'>
+          {loading && url && <Spinner className='vz-popup-window-spinner' />}
+          <div className='vz-popup-window-content-wrapper'>
             {url
               ? <iframe
                 src={url}
                 onLoad={() => setLoading(false)}
-                className='vz-window-content'
+                className='vz-popup-window-content'
                 allowtransparency={true}
                 sandbox={sandbox}
               />

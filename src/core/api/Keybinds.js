@@ -18,7 +18,7 @@ import { error } from '@vizality/util';
  * Vizality Keybinds API
  * @property {object<VizalityKeybind>} keybinds Keybinds
  */
-export default class KeybindsAPI extends API {
+export default class Keybinds extends API {
   constructor () {
     super();
     this.keybinds = {};
@@ -42,9 +42,9 @@ export default class KeybindsAPI extends API {
         keyup: true
       };
 
-      this._register(keybind);
+      this._registerKeybind(keybind);
     } catch (err) {
-      error(_module, `${_submodule}:registerKeybind`, null, err);
+      error(this._module, `${this._submodule}:registerKeybind`, null, err);
     }
   }
 
@@ -56,9 +56,9 @@ export default class KeybindsAPI extends API {
     try {
       if (!this.keybinds[id]) throw new Error(`Keybind "${id}" is not registered!`);
 
-      this._unregister(this.keybinds[id]);
+      this._unregisterKeybind(this.keybinds[id]);
     } catch (err) {
-      error(_module, `${_submodule}:unregisterKeybind`, null, err);
+      error(this._module, `${this._submodule}:unregisterKeybind`, null, err);
     }
   }
 
@@ -73,35 +73,35 @@ export default class KeybindsAPI extends API {
 
       const keybind = this.keybinds[id];
 
-      this._unregister(this.keybinds[id]);
+      this._unregisterKeybind(this.keybinds[id]);
       keybind.shortcut = newShortcut;
-      this._register(keybind);
+      this._registerKeybind(keybind);
     } catch (err) {
-      error(_module, `${_submodule}:changeKeybindShortcut`, null, err);
+      error(this._module, `${this._submodule}:changeKeybindShortcut`, null, err);
     }
   }
 
   /** @private */
-  _register (keybind) {
+  _registerKeybind (keybind) {
     try {
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventRegister(keybind.eventId, this._shortcutToKeyCode(keybind.shortcut), keybind.executor, keybind.options);
       this.keybinds[keybind.id] = keybind;
     } catch (err) {
-      error(_module, `${_submodule}:_register`, null, err);
+      error(this._module, `${this._submodule}:_registerKeybind`, null, err);
     }
   }
 
   /** @private */
-  _unregister (keybind) {
+  _unregisterKeybind (keybind) {
     try {
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventUnregister(keybind.eventId);
       delete this.keybinds[keybind.id];
     } catch (err) {
-      error(_module, `${_submodule}:_unregister`, null, err);
+      error(this._module, `${this._submodule}:_unregisterKeybind`, null, err);
     }
   }
 
