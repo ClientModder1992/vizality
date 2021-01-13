@@ -113,6 +113,7 @@ export default class Settings extends API {
 
       vizality.api.router.unregisterRoute(`/dashboard/${type}/${addonId}`);
 
+      if (type === 'builtins') return;
       // Remove the addon from the list of addons with settings
       this[type].splice(this[type].indexOf(addonId), 1);
       this.emit('settingsUnregistered');

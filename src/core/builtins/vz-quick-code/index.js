@@ -36,16 +36,11 @@ export default class QuickCode extends Builtin {
   }
 
   async _openCustomCSS () {
-    const popoutModule = getModule('setAlwaysOnTop', 'open');
-    const id = 'DISCORD_VIZALITY_CUSTOM_CSS';
-
-    vizality.api.popups.openWindow({
-      id,
+    vizality.api.windows.openWindow({
+      windowId: 'VIZALITY_CUSTOM_CSS',
       title: 'Quick Code - CSS',
       render: <Editor {...this.props} />
     });
-
-    popoutModule.setAlwaysOnTop('DISCORD_VIZALITY_CUSTOM_CSS', false);
   }
 
   async _loadCustomCSS () {

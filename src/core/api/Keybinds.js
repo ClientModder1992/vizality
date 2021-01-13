@@ -2,9 +2,6 @@ import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 import { error } from '@vizality/util';
 
-const _module = 'API';
-const _submodule = 'Keybinds';
-
 /**
  * @typedef VizalityKeybind
  * @property {string} id Keybind ID
@@ -25,6 +22,8 @@ export default class KeybindsAPI extends API {
   constructor () {
     super();
     this.keybinds = {};
+    this._module = 'API';
+    this._submodule = 'Keybinds';
   }
 
   /**

@@ -8,6 +8,8 @@ export default class I18nAPI extends API {
     super();
     this.messages = {};
     this.locale = null;
+    this._module = 'API';
+    this._submodule = 'I18n';
 
     (async () => {
       this.strings = await import(Directories.LANGUAGES);

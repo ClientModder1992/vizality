@@ -1,51 +1,52 @@
 import React, { memo, useState, useEffect } from 'react';
 
 import { PopupWindow, Titlebar, Spinner } from '@vizality/components';
+import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 import { Events } from '@vizality/constants';
 import { API } from '@vizality/entities';
 
-export default class PopupsAPI extends API {
+export default class Windows extends API {
   constructor () {
     super();
-
-    this.windows = {};
+    this.popups = {};
+    this._module = 'API';
+    this._submodule = 'Windows';
   }
 
   /**
    * Opens a website URL in an iframe in a popup window.
    * @param {object} props Popup window properties
-   * @fires PopupAPI#popupWindowOpen
+   * @fires Windows#popupWindowOpen
    */
   async openWindow (props, options = {}) {
-    props.id = props.id || `external-url-${(Math.random().toString(36) + Date.now()).substring(2, 10)}`;
-    props.title = props.title || 'Discord Popup';
-    options.width = options.width || 800;
-    options.height = options.height || 600;
+    props.windowId = props.windowId || `external-url-${(Math.random().toString(36) + Date.now()).substring(2, 10)}`;
+    props.width = props.width || 800;
+    props.height = props.height || 600;
 
-    const { id } = props;
-    const { width, height } = options;
     let Render;
 
     // Show a titlebar if they don't specify titlebar={false}
     if (typeof props.titlebar === 'undefined' || props.titlebar === null) props.titlebar = true;
 
+
+    props.title = props.title || 'Discord Popup';
     // Let url override render
     if (props.url) props.render = null;
     if (props.render) Render = props.render;
 
-    // Center the popup window based on the user's screen size
-    const y = window.top.outerHeight / 2 + window.top.screenY - (height / 2);
-    const x = window.top.outerWidth / 2 + window.top.screenX - (width / 2);
+    // Center the window based on the user's screen size
+    const y = window.top.outerHeight / 2 + window.top.screenY - (options.height / 2);
+    const x = window.top.outerWidth / 2 + window.top.screenX - (options.width / 2);
 
     options.top = options.top || y;
     options.left = options.left || x;
 
-    if (this.windows[id]) {
-      return this.error(`Popup window with ID "${props.id}" is already used by another plugin.`);
+    if (this.windows[props.windowId]) {
+      return this.error(`Window with ID "${props.id}" is already used by another plugin.`);
     }
 
-    this.windows[id] = props;
+    this.windows[props.windowId] = props;
 
     const PopupContent = memo(props => {
       const [ loading, setLoading ] = useState(true);
@@ -60,15 +61,15 @@ export default class PopupsAPI extends API {
       }, []);
 
       return (
-        <div className='vz-popup-window' vz-titlebar={titlebar ? '' : null}>
+        <div className='vz-window' vz-titlebar={titlebar ? '' : null}>
           {titlebar && <Titlebar type={titlebarType} windowKey={windowKey} focused={true} />}
-          {loading && url && <Spinner className='vz-popup-window-spinner' />}
-          <div className='vz-popup-window-content-wrapper'>
+          {loading && url && <Spinner className='vz-window-spinner' />}
+          <div className='vz-window-content-wrapper'>
             {url
               ? <iframe
                 src={url}
                 onLoad={() => setLoading(false)}
-                className='vz-popup-window-content'
+                className='vz-window-content'
                 allowtransparency={true}
                 sandbox={sandbox}
               />
@@ -81,7 +82,7 @@ export default class PopupsAPI extends API {
 
     return new Promise(() => {
       const popoutModule = getModule('setAlwaysOnTop', 'open');
-      popoutModule.open(`DISCORD_${id}`, key => {
+      popoutModule.open(`DISCORD_${props.windowId}`, key => {
         return (
           <PopupWindow windowKey={key} {...props}>
             <PopupContent windowKey={key} {...props}>
@@ -91,23 +92,32 @@ export default class PopupsAPI extends API {
         );
       }, options);
 
-      this.emit(Events.VIZALITY_POPUP_WINDOW_OPEN, id);
+      this.emit(Events.VIZALITY_POPUP_WINDOW_OPEN, props.windowId);
     });
   }
 
   /**
    * Closes a popup window.
-   * @param {string} id Popup window ID
-   * @fires PopupAPI#popupClosed
+   * @param {string} windowId Popup window ID
+   * @fires Windows#popupClosed
    */
-  closeWindow (id) {
-    if (!this.windows[id]) {
-      return this.error(`Popup window with ID "${id}" not found.`);
+  closeWindow (windowId) {
+    if (!this.windows[windowId]) {
+      return this.error(`Window with ID "${windowId}" not found.`);
     }
 
     const popoutModule = getModule('setAlwaysOnTop', 'open');
-    popoutModule.close(`DISCORD_${id}`);
+    popoutModule.close(`DISCORD_${windowId}`);
 
-    delete this.windows[id];
+    delete this.windows[windowId];
+  }
+
+  setAlwaysOnTop (windowId, boolean = true) {
+    try {
+      const popoutModule = getModule('setAlwaysOnTop', 'open');
+      popoutModule.setAlwaysOnTop(`DISCORD_${windowId}`, boolean);
+    } catch (err) {
+      return error(this._module, `${this._submodule}:setAlwaysOnTop`, null, err);
+    }
   }
 }

@@ -43,12 +43,10 @@ import { API } from '@vizality/entities';
 export default class NoticesAPI extends API {
   constructor () {
     super();
-
     this.announcements = {};
     this.toasts = {};
-    this.alerts = {};
-    this.prompts = {};
-    this.confirmations = {};
+    this._module = 'API';
+    this._submodule = 'Notices';
   }
 
   /**
