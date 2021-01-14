@@ -9,7 +9,10 @@
     }
   }
   .listItems-1uJgMC {
-    inset: 8px 8px 0;
+    top: 8px;
+    right: 8px;
+    bottom: 0px;
+    left: 8px;
   }
   &:not([vz-rail-active]) {
     // Targetting only the header
