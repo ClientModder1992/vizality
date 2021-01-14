@@ -8,7 +8,6 @@ export const Button = AsyncComponent.fromProps(m => m.DropdownSizes);
 // --- fromDisplayName
 export const ApplicationStoreListingCarousel = AsyncComponent.fromDisplayName('ApplicationStoreListingCarousel');
 export const ImageCarouselModal = AsyncComponent.fromDisplayName('componentDispatchSubscriber(ModalCarousel)');
-export const ApplicationCommandDiscoverySectionList = AsyncComponent.fromDisplayName('ApplicationCommandDiscoverySectionList');
 export const HeaderBarContainer = AsyncComponent.fromDisplayName('HeaderBarContainer');
 export const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 export const KeyboardShortcut = AsyncComponent.fromDisplayName('KeyboardShortcut');
@@ -43,12 +42,11 @@ export const AdvancedScrollerAuto = AsyncComponent.fetchFromProps('AdvancedScrol
 export const AdvancedScrollerNone = AsyncComponent.fetchFromProps('AdvancedScrollerNone');
 export const CarouselWithPreview = AsyncComponent.fetchFromProps('CarouselWithPreview');
 export const Avatar = AsyncComponent.fetchFromProps('AnimatedAvatar', 'default');
+export const ContextMenu = AsyncComponent.fetchFromProps('MenuGroup', 'default');
 export const Helmet = AsyncComponent.fetchFromProps('HelmetProvider', 'Helmet');
 export const HelmetProvider = AsyncComponent.fetchFromProps('HelmetProvider');
 export const Tooltip = AsyncComponent.fetchFromProps('TooltipContainer');
 export const SlideIn = AsyncComponent.fetchFromProps('SlideIn');
-// ---
-export const Menu = () => null;
 
 export { default as ComponentPreview } from './ComponentPreview';
 export { default as AsyncComponent } from './AsyncComponent';
@@ -56,7 +54,6 @@ export { default as DeferredRender } from './DeferredRender';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as StickyWrapper } from './StickyWrapper';
 export { default as ColorPicker } from './ColorPicker';
-export { default as ContextMenu } from './ContextMenu';
 export { default as PopupWindow } from './PopupWindow';
 export { default as ErrorState } from './ErrorState';
 export { default as CodeBlock } from './CodeBlock';
@@ -119,11 +116,11 @@ getModule('CarouselWithPreview', true, true).then(CarouselWithPreview =>
   [ 'Alignment' ].forEach(prop => this.CarouselWithPreview[prop] = CarouselWithPreview[prop])
 );
 
-getModule('MenuGroup', true, true).then(Menu => {
+getModule('MenuGroup', true, true).then(ContextMenu => {
   [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
-    .forEach(prop => this.Menu[prop] = Menu[prop]);
+    .forEach(prop => this.ContextMenu[prop.replace('Menu', '')] = ContextMenu[prop]);
 
-  this.Menu.Menu = Menu.default;
+  this.ContextMenu.ContextMenu = ContextMenu.default;
 });
 
 getModuleByDisplayName('DeprecatedModal', true, true).then(Modal =>
