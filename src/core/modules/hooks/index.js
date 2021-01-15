@@ -67,7 +67,7 @@ export function useForceUpdate () {
  * @param {*} callback Callback
  */
 export function useForceUpdateWithCallback (callback) {
-  const [value, setValue] = useState(0);
+  const [ value, setValue ] = useState(0);
   const isUpdating = useRef(0);
   useLayoutEffect(() => {
     if (isUpdating.current) {
