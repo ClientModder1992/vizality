@@ -29,6 +29,14 @@ import CallTile from './private/CallTile';
 // Global
 import TransitionGroup from './global/TransitionGroup';
 
+// Vizality
+import VZSettings from './vizality/Settings';
+
+// Misc
+import Holiday from './misc/Holiday';
+import Window from './misc/Window';
+import Route from './misc/Route';
+
 export default {
   BlockedMessageGroup,
   Message,
@@ -46,5 +54,9 @@ export default {
   ContextMenu,
   PrivateChannel,
   CallTile,
-  TransitionGroup
+  TransitionGroup,
+  Route,
+  Window,
+  Holiday,
+  VZSettings
 };
