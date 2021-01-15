@@ -131,7 +131,7 @@ export default class Updater extends Builtin {
     if (updates.length > 0) {
       if (this.settings.get('automatic', false)) {
         this.doUpdate();
-      } else if (!document.querySelector('#vizality-updater, .vizality-updater')) {
+      } else if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
         vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
@@ -181,7 +181,7 @@ export default class Updater extends Builtin {
     if (failed.length > 0) {
       this.settings.set('failed', true);
       this.settings.set('updates', failed);
-      if (!document.querySelector('#vizality-updater, .vizality-updater')) {
+      if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
         vizality.api.notices.sendToast('vizality-updater', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
           type: 'error',

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useEffect, memo, useState } from 'react';
 import { readdirSync, existsSync } from 'fs';
 import { clipboard } from 'electron';
 
@@ -19,6 +19,10 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ debugInfoOpened, setDebugInfoOpened ] = useState();
   const [ pathsRevealed, setPathsRevealed ] = useState();
   const [ pluginsRevealed, setPluginsRevealed ] = useState();
+
+  useEffect(() => {
+    vizality.api.notices.closeToast('vizality-updater');
+  });
 
   // eslint-disable-next-line consistent-this
   const _this = vizality.manager.builtins.get('vz-updater');

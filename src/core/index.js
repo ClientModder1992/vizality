@@ -243,7 +243,7 @@ export default class Vizality extends Updatable {
 
         const updater = this.manager.builtins.get('vz-updater');
         // @i18n
-        if (!document.querySelector('#vizality-updater, .vz-builtin-vz-updater')) {
+        if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
           this.api.notices.sendToast('vizality-updater', {
             header: 'Update complete!',
             content: `Please click 'Reload' to complete the final stages of this Vizality update.`,

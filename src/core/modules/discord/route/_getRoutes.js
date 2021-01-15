@@ -12,10 +12,11 @@ const _getRoutes = () => {
     nitro: Routes.APPLICATION_STORE,
     'vz-installed-plugins': '/vizality/dashboard/plugins/installed',
     'vz-discover-plugins': '/vizality/dashboard/plugins/discover',
-    'vz-plugin': '/vizality/dashboard/plugins/',
+    'vz-plugins': '/vizality/dashboard/plugins',
     'vz-installed-themes': '/vizality/dashboard/themes/installed',
     'vz-discover-themes': '/vizality/dashboard/themes/discover',
-    'vz-theme': '/vizality/dashboard/themes/',
+    'vz-themes': '/vizality/dashboard/themes',
+    'vz-updater': '/vizality/dashboard/updater',
     'vz-dashboard': '/vizality/dashboard'
   };
 
