@@ -14,6 +14,10 @@ export const isArray = input => {
   return window._.isArray(input);
 };
 
+export const isEmpty = input => {
+  return window._.isEmpty(input);
+};
+
 /**
  * Asserts that the input is an array. If it isn't, throw an error, otherwise do nothing.
  * @param {*} input Argument input

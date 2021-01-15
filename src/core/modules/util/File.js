@@ -1,6 +1,8 @@
 import { promises, existsSync, lstatSync, readFileSync, readdirSync } from 'fs';
 import { lookup as getMimeType } from 'mime-types';
-import { extname, join, basename } from 'path';
+import { extname, join, parse } from 'path';
+
+import { isString } from './String';
 
 const { readdir, lstat, unlink, rmdir } = promises;
 /**
@@ -38,34 +40,62 @@ export const getImageDimensions = async image => {
 };
 
 export const getObjectURL = async (path, allowedExtensions = [ '.png', '.jpg', '.jpeg', '.webp', '.gif' ]) => {
-  if (typeof allowedExtensions === 'string' || allowedExtensions instanceof String) {
-    allowedExtensions = allowedExtensions.split();
+  if (isString(allowedExtensions)) {
+    allowedExtensions = [ allowedExtensions ];
   }
 
-  const URLs = [];
+  const urlObjects = [];
+
   const isDir = existsSync(path) && lstatSync(path).isDirectory();
   const isFile = existsSync(path) && lstatSync(path).isFile();
 
-  const getURL = (file) => {
+  const getURL = async file => {
     const buffer = readFileSync(file);
     const ext = extname(file).slice(1);
     const blob = new Blob([ buffer ], { type: getMimeType(ext) });
-    return URLs.push({
-      name: basename(file, extname(file)),
-      url: URL.createObjectURL(blob),
+    const url = URL.createObjectURL(blob);
+    const { name } = parse(file);
+    /**
+     * If it's an image, let's include the width and height
+     * as properties to make it easier on the developer.
+     */
+    let width, height;
+    if ([ 'png', 'jpg', 'jpeg', 'webp', 'gif' ].includes(ext)) {
+      const dimensions = await this.getImageDimensions(url);
+      ({ width, height } = dimensions);
+    }
+
+    console.log('???');
+
+    if (width && height) {
+      return urlObjects.push({
+        name,
+        url,
+        path: file,
+        width,
+        height
+      });
+    }
+
+    return urlObjects.push({
+      name,
+      url,
       path: file
     });
   };
 
   if (isDir) {
-    readdirSync(path)
-      .filter(file => lstatSync(join(path, file)).isFile() && allowedExtensions.indexOf(extname(file)) !== -1)
-      .map(file => getURL(join(path, file)));
+    const files = readdirSync(path)
+      .filter(file => lstatSync(join(path, file)).isFile() && allowedExtensions.indexOf(extname(file)) !== -1);
+
+    for (const file of files) {
+      await getURL(join(path, file));
+    }
   } else {
     if (isFile) {
-      getURL(path);
+      await getURL(path);
     }
   }
 
-  return URLs;
+  return urlObjects;
 };
