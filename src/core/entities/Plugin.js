@@ -37,7 +37,7 @@ export default class Plugin extends Updatable {
    * plugin disable/unload.
    * @param {string} path Stylesheet path. Either absolute or relative to the plugin root
    * @param {boolean} suppress Whether or not to suppress errors in console
-   * @returns {void}
+   * @returns {undefined}
    */
   injectStyles (path, suppress = false) {
     let resolvedPath = path;
@@ -132,6 +132,8 @@ export default class Plugin extends Updatable {
     if (!this.manifest) {
       if (!vizality.settings.get('vizalityDeveloper', false)) {
         this._watcherEnabled = false;
+      } else {
+        this._watcherEnabled = vizality.settings.get('hotReload', false);
       }
     } else {
       if (typeof this.manifest.hotReload?.enable === 'boolean') {
@@ -162,7 +164,7 @@ export default class Plugin extends Updatable {
     const _module = 'Watcher';
 
     const ignored = [];
-    if (this.manifest.hotReload?.ignore) {
+    if (this.manifest?.hotReload?.ignore) {
       if (isArray(this.manifest.hotReload?.ignore)) {
         for (const ign of this.manifest.hotReload?.ignore) {
           if (ign.startsWith('*')) {
