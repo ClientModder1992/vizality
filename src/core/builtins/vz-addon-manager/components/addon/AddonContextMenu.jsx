@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Menu, LazyImage } from '@vizality/components';
+import { ContextMenu, LazyImage } from '@vizality/components';
 import { contextMenu } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
 
@@ -10,8 +10,8 @@ export default memo(props => {
   const { manifest, onUninstall, isEnabled, onToggle } = props;
 
   return (
-    <Menu.Menu navId='vz-addon-context-menu' onClose={closeContextMenu}>
-      <Menu.MenuGroup
+    <ContextMenu.Menu navId='vz-addon-context-menu' onClose={closeContextMenu}>
+      <ContextMenu.Group
         label={<>
           <div className='vz-addon-context-menu-header-addon-icon'>
             <LazyImage
@@ -30,53 +30,53 @@ export default memo(props => {
         {!onUninstall
           ? null
           : isEnabled
-            ? <Menu.MenuItem
+            ? <ContextMenu.Item
               id='disable'
               label='Disable'
               action={() => onToggle(false)}
             />
-            : <Menu.MenuItem
+            : <ContextMenu.Item
               id='enable'
               label='Enable'
               action={() => onToggle(true)}
             />
         }
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='settings'
           label='Settings'
           action={() => void 0}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='details'
           label='Details'
           action={() => void 0}
         />
         {onUninstall
-          ? <Menu.MenuItem
+          ? <ContextMenu.Item
             id='uninstall'
             label='Uninstall'
             color='colorDanger'
             action={() => void 0}
           />
-          : <Menu.MenuItem
+          : <ContextMenu.Item
             id='install'
             label='Install'
             color='colorSuccess'
             action={() => void 0}
           />
         }
-        <Menu.MenuSeparator />
-        <Menu.MenuItem
+        <ContextMenu.Separator />
+        <ContextMenu.Item
           id='copy-link'
           label='Copy Link'
           action={() => void 0}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='copy-id'
           label='Copy ID'
           action={() => void 0}
         />
-      </Menu.MenuGroup>
-    </Menu.Menu>
+      </ContextMenu.Group>
+    </ContextMenu.Menu>
   );
 });

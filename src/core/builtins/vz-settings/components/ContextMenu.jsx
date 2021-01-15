@@ -1,13 +1,14 @@
-import React, { memo, useState, useReducer } from 'react';
+import React, { memo, useState } from 'react';
 
-import { Menu, SearchBar } from '@vizality/components';
+import { ContextMenu, SearchBar } from '@vizality/components';
 import { toPlural } from '@vizality/util/string';
+import { useForceUpdate } from '@vizality/hooks';
 import { Messages } from '@vizality/i18n';
 
 export default memo(() => {
   const [ pluginQuery, setPluginQuery ] = useState('');
   const [ themeQuery, setThemeQuery ] = useState('');
-  const [ , forceUpdate ] = useReducer(x => x + 1, 0);
+  const forceUpdate = useForceUpdate();
 
   const plugins =
     vizality.manager.plugins.keys
@@ -64,14 +65,14 @@ export default memo(() => {
 
   const renderContextItem = (item, type) => {
     return (
-      <Menu.MenuCheckboxItem
+      <ContextMenu.CheckboxItem
         id={item.addonId}
         label={item.manifest.name}
         checked={vizality.manager[toPlural(type)].isEnabled(item.addonId)}
-        action={() => {
+        action={async () => {
           vizality.manager[toPlural(type)].isEnabled(item.addonId)
-            ? vizality.manager[toPlural(type)].disable(item.addonId)
-            : vizality.manager[toPlural(type)].enable(item.addonId);
+            ? await vizality.manager[toPlural(type)].disable(item.addonId)
+            : await vizality.manager[toPlural(type)].enable(item.addonId);
           forceUpdate();
         }}
       />
@@ -85,29 +86,29 @@ export default memo(() => {
 
   return (
     <>
-      <Menu.MenuSeparator />
-      <Menu.MenuItem
+      <ContextMenu.Separator />
+      <ContextMenu.Item
         id='vizality'
         label='Vizality'
         action={() => vizality.api.router.navigate('dashboard')}
       >
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='home'
           label='Home'
           action={() => vizality.api.router.navigate('dashboard')}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='settings'
           label='Settings'
           action={() => vizality.api.router.navigate('settings')}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='plugins'
           label='Plugins'
           action={() => vizality.api.router.navigate('plugins')}
         >
           {plugins.length && <>
-            {/* <Menu.MenuControlItem
+            {/* <ContextMenu.ControlItem
               id='search-plugins'
               control={(_props, ref) => <SearchBar
                 ref={ref}
@@ -121,18 +122,18 @@ export default memo(() => {
                 onClear={() => setPluginQuery('')}
               />}
             /> */}
-            <Menu.MenuGroup>
+            <ContextMenu.Group>
               {renderItems('plugins')}
-            </Menu.MenuGroup>
+            </ContextMenu.Group>
           </>}
-        </Menu.MenuItem>
-        <Menu.MenuItem
+        </ContextMenu.Item>
+        <ContextMenu.Item
           id='themes'
           label='Themes'
           action={() => vizality.api.router.navigate('themes')}
         >
           {themes.length && <>
-            {/* <Menu.MenuControlItem
+            {/* <ContextMenu.ControlItem
               id='search-themes'
               control={(_props, ref) => <SearchBar
                 ref={ref}
@@ -146,90 +147,90 @@ export default memo(() => {
                 onClear={() => setThemeQuery('')}
               />}
             /> */}
-            <Menu.MenuGroup>
+            <ContextMenu.Group>
               {renderItems('themes')}
-            </Menu.MenuGroup>
+            </ContextMenu.Group>
           </>}
-        </Menu.MenuItem>
-        {vizality.manager.builtins.isEnabled('vz-snippet-manager') && <Menu.MenuItem
+        </ContextMenu.Item>
+        {vizality.manager.builtins.isEnabled('vz-snippet-manager') && <ContextMenu.Item
           id='snippets'
           label='Snippets'
           action={() => vizality.api.router.navigate('snippets')}
         />}
-        {vizality.manager.builtins.isEnabled('vz-quick-code') && <Menu.MenuItem
+        {vizality.manager.builtins.isEnabled('vz-quick-code') && <ContextMenu.Item
           id='quick-code'
           label='Quick Code'
           action={() => vizality.api.router.navigate('quick-code')}
         />}
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='theme-editor'
           label='Theme Editor'
           disabled={true}
         />
-        <Menu.MenuSeparator/>
-        <Menu.MenuItem
+        <ContextMenu.Separator/>
+        <ContextMenu.Item
           id='developers'
           label='Developers'
           action={() => vizality.api.router.navigate('developers')}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='documentation'
           label='Documentation'
           action={() => vizality.api.router.navigate('documentation')}
         >
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='getting-started'
             label='Getting Started'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/getting-started')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='plugins'
             label='Plugins'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/plugins')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='themes'
             label='Themes'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/themes')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='screenshots'
             label='Screenshots'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/screenshots')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='icons'
             label='Components'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/components/icons')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='markdown'
             label='Markdown'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/markdown')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='error-test'
             label='Error Test'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/error-test')}
           />
-          <Menu.MenuItem
+          <ContextMenu.Item
             id='test'
             label='Test'
             action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/test')}
           />
-        </Menu.MenuItem>
-        <Menu.MenuSeparator/>
-        <Menu.MenuItem
+        </ContextMenu.Item>
+        <ContextMenu.Separator/>
+        <ContextMenu.Item
           id='updater'
           label='Updater'
           action={() => vizality.api.router.navigate('updater')}
         />
-        <Menu.MenuItem
+        <ContextMenu.Item
           id='changelog'
           label='Changelog'
           action={() => vizality.api.router.navigate('changelog')}
         />
-      </Menu.MenuItem>
+      </ContextMenu.Item>
     </>
   );
 });

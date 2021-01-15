@@ -1,6 +1,6 @@
 import React, { memo, useState, useReducer } from 'react';
 
-import { Menu, SearchBar } from '@vizality/components';
+import { ContextMenu, SearchBar } from '@vizality/components';
 import { toTitleCase } from '@vizality/util/string';
 import { Messages } from '@vizality/i18n';
 
@@ -29,7 +29,7 @@ export default memo(props => {
 
   const renderItem = (item) => {
     return (
-      <Menu.MenuCheckboxItem
+      <ContextMenu.CheckboxItem
         id={`tag-${item}`}
         label={toTitleCase(item)}
         checked={false}
@@ -47,8 +47,8 @@ export default memo(props => {
   };
 
   return (
-    <Menu.Menu navId='vz-addons-list-tags-menu' onClose={onClose}>
-      <Menu.MenuControlItem
+    <ContextMenu.Menu navId='vz-addons-list-tags-menu' onClose={onClose}>
+      <ContextMenu.ControlItem
         id='search-tags'
         control={(_props, ref) => <SearchBar
           ref={ref}
@@ -62,9 +62,9 @@ export default memo(props => {
           onClear={() => setQuery('')}
         />}
       />
-      <Menu.MenuGroup label='Tags'>
+      <ContextMenu.Group label='Tags'>
         {renderResults()}
-      </Menu.MenuGroup>
-    </Menu.Menu>
+      </ContextMenu.Group>
+    </ContextMenu.Menu>
   );
 });

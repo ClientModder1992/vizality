@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Clickable, Icon, Tooltip, Menu } from '@vizality/components';
+import { Clickable, Icon, Tooltip, ContextMenu } from '@vizality/components';
 import { getModule, contextMenu } from '@vizality/webpack';
 import { joinClassNames } from '@vizality/util/dom';
 
@@ -20,13 +20,13 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
     <>
       <Clickable
         onContextMenu={e => openContextMenu(e, () =>
-          <Menu.Menu navId='dashboard-item' onClose={closeContextMenu}>
-            <Menu.MenuItem
+          <ContextMenu.Menu navId='dashboard-item' onClose={closeContextMenu}>
+            <ContextMenu.Item
               id='copy-link'
               label='Copy Link'
               action={() => DiscordNative.clipboard.copy(`<vizality:/${path}>`)}
             />
-          </Menu.Menu>
+          </ContextMenu.Menu>
         )}
         onClick={(e) => {
           if (disabled) return;
@@ -40,6 +40,7 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
             return;
           }
 
+          // @todo Get rid of eval here. :yikes:
           if (path) {
             if (action) {
               vizality.api.router.navigate(fullPath);
