@@ -34,7 +34,7 @@ export const Table = AsyncComponent.fromDisplayName('Table');
 export const Image = AsyncComponent.fromDisplayName('Image');
 export const Video = AsyncComponent.fromDisplayName('Video');
 export const Card = AsyncComponent.fromDisplayName('Card');
-export const Text = AsyncComponent.fromDisplayName('Text');
+export const Text = AsyncComponent.fromDisplayName('Text'); // "className", "color", "size", "tag", "selectable", "children", "style", "aria-label"
 export const Flex = AsyncComponent.fromDisplayName('Flex');
 // --- fetchFromProps
 export const AdvancedScrollerThin = AsyncComponent.fetchFromProps('AdvancedScrollerThin');
@@ -67,65 +67,91 @@ export { default as Icon } from './Icon';
 export * as settings from './settings';
 export * as misc from './misc';
 
-// Re-export module properties
-getModuleByDisplayName('FormNotice', true, true).then(FormNotice =>
-  [ 'Types' ].forEach(prop => this.FormNotice[prop] = FormNotice[prop])
-);
-
-getModuleByDisplayName('Spinner', true, true).then(Spinner =>
-  [ 'Type' ].forEach(prop => this.Spinner[prop] = Spinner[prop])
-);
-
-getModule(m => m.DropdownSizes, true, true).then(Button =>
-  [ 'DropdownSizes', 'Sizes', 'Colors', 'Looks' ].forEach(prop => this.Button[prop] = Button[prop])
-);
-
-getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar =>
-  [ 'Icon', 'Title', 'Divider' ].forEach(prop => this.HeaderBar[prop] = HeaderBar[prop])
-);
-
-getModuleByDisplayName('Card', true, true).then(Card =>
-  [ 'Types' ].forEach(prop => this.Card[prop] = Card[prop])
-);
-
-getModuleByDisplayName('TabBar', true, true).then(TabBar =>
-  [ 'Types', 'Header', 'Item', 'Separator' ].forEach(prop => this.TabBar[prop] = TabBar[prop])
-);
-
-getModuleByDisplayName('SearchBar', true, true).then(SearchBar =>
-  [ 'Sizes' ].forEach(prop => this.SearchBar[prop] = SearchBar[prop])
-);
-
-getModuleByDisplayName('TextInput', true, true).then(TextInput =>
-  [ 'Sizes' ].forEach(prop => this.TextInput[prop] = TextInput[prop])
-);
-
-getModuleByDisplayName('Text', true, true).then(Text =>
-  [ 'Colors', 'Family', 'Sizes', 'Weights' ].forEach(prop => this.Text[prop] = Text[prop])
-);
-
-getModuleByDisplayName('Flex', true, true).then(Flex =>
-  [ 'Direction', 'Justify', 'Align', 'Wrap', 'Child' ].forEach(prop => this.Flex[prop] = Flex[prop])
-);
-
-getModule('AnimatedAvatar', true, true).then(Avatar =>
-  [ 'Sizes' ].forEach(prop => this.Avatar[prop] = Avatar[prop])
-);
-
-getModule('CarouselWithPreview', true, true).then(CarouselWithPreview =>
-  [ 'Alignment' ].forEach(prop => this.CarouselWithPreview[prop] = CarouselWithPreview[prop])
-);
-
-getModule('MenuGroup', true, true).then(ContextMenu => {
-  [ 'MenuCheckboxItem', 'MenuControlItem', 'MenuGroup', 'MenuItem', 'MenuRadioItem', 'MenuSeparator', 'MenuStyle' ]
-    .forEach(prop => this.ContextMenu[prop.replace('Menu', '')] = ContextMenu[prop]);
-
-  this.ContextMenu.ContextMenu = ContextMenu.default;
+/**
+ * Re-export module properties
+ * ---
+ */
+getModuleByDisplayName('FormNotice', true, true).then(FormNotice => {
+  this.FormNotice.Types = FormNotice.Types;
 });
 
-getModuleByDisplayName('DeprecatedModal', true, true).then(Modal =>
-  [ 'Header', 'Footer', 'Content', 'ListContent', 'CloseButton', 'Sizes' ].forEach(prop => this.Modal[prop] = Modal[prop])
-);
+getModuleByDisplayName('Spinner', true, true).then(Spinner => {
+  this.Spinner.Types = Spinner.Type;
+});
+
+getModule(m => m.DropdownSizes, true, true).then(Button => {
+  this.Button.DropdownSizes = Button.DropdownSizes;
+  this.Button.Colors = Button.Colors;
+  this.Button.Looks = Button.Looks;
+  this.Button.Sizes = Button.Sizes;
+});
+
+getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar => {
+  this.HeaderBar.Divider = HeaderBar.Divider;
+  this.HeaderBar.Title = HeaderBar.Title;
+  this.HeaderBar.Icon = HeaderBar.Icon;
+});
+
+getModuleByDisplayName('Card', true, true).then(Card => {
+  this.Card.Types = Card.Types;
+});
+
+getModuleByDisplayName('TabBar', true, true).then(TabBar => {
+  this.TabBar.Separator = TabBar.Separator;
+  this.TabBar.Header = TabBar.Header;
+  this.TabBar.Types = TabBar.Types;
+  this.TabBar.Item = TabBar.Item;
+});
+
+getModuleByDisplayName('SearchBar', true, true).then(SearchBar => {
+  this.SearchBar.Sizes = SearchBar.Sizes;
+});
+
+getModuleByDisplayName('TextInput', true, true).then(TextInput => {
+  this.TextInput.Sizes = TextInput.Sizes;
+});
+
+getModuleByDisplayName('Text', true, true).then(Text => {
+  this.Text.Colors = Text.Colors;
+  this.Text.Sizes = Text.Sizes;
+});
+
+getModuleByDisplayName('Flex', true, true).then(Flex => {
+  this.Flex.defaultProps = Flex.defaultProps;
+  this.Flex.Direction = Flex.Direction;
+  this.Flex.Justify = Flex.Justify;
+  this.Flex.Align = Flex.Align;
+  this.Flex.Child = Flex.Child;
+  this.Flex.Wrap = Flex.Wrap;
+});
+
+getModule('AnimatedAvatar', true, true).then(Avatar => {
+  this.Avatar.Sizes = Avatar.Sizes;
+});
+
+getModule('CarouselWithPreview', true, true).then(CarouselWithPreview => {
+  this.CarouselWithPreview.Alignment = CarouselWithPreview.Alignment;
+});
+
+getModule('MenuGroup', true, true).then(ContextMenu => {
+  this.ContextMenu.CheckboxItem = ContextMenu.MenuCheckboxItem;
+  this.ContextMenu.ControlItem = ContextMenu.MenuControlItem;
+  this.ContextMenu.RadioItem = ContextMenu.MenuRadioItem;
+  this.ContextMenu.Separator = ContextMenu.MenuSeparator;
+  this.ContextMenu.Group = ContextMenu.MenuGroup;
+  this.ContextMenu.Style = ContextMenu.MenuStyle;
+  this.ContextMenu.Item = ContextMenu.MenuItem;
+  this.ContextMenu.Menu = ContextMenu.default;
+});
+
+getModuleByDisplayName('DeprecatedModal', true, true).then(Modal => {
+  this.Modal.ListContent = Modal.ListContent;
+  this.Modal.CloseButton = Modal.CloseButton;
+  this.Modal.Content = Modal.Content;
+  this.Modal.Header = Modal.Header;
+  this.Modal.Footer = Modal.Footer;
+  this.Modal.Sizes = Modal.Sizes;
+});
 
 this.Confirm.defaultProps = {
   transitionState: 1,
