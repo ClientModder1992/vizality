@@ -1,6 +1,6 @@
 import React, { memo, useReducer } from 'react';
 
-import { Icon, Switch, Tooltip } from '@vizality/components';
+import { Icon, Switch } from '@vizality/components';
 
 import AddonIcon from '../parts/Icon';
 import Author from '../parts/Author';
@@ -18,9 +18,7 @@ export default memo(props => {
             <div className='vz-addon-card-metadata'>
               <div className='vz-addon-card-name-version'>
                 <div className='vz-addon-card-name'>
-                  <Tooltip text={manifest.name}>
-                    {manifest.name}
-                  </Tooltip>
+                  {manifest.name}
                 </div>
                 <span className='vz-addon-card-version'>
                   {manifest.version}

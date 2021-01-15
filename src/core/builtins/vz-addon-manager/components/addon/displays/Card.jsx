@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-import { Tooltip } from '@vizality/components';
-
 import Description from '../parts/Description';
 import Permissions from '../parts/Permissions';
 import Previews from '../parts/Previews';
@@ -22,9 +20,7 @@ export default memo(props => {
             <div className='vz-addon-card-metadata'>
               <div className='vz-addon-card-name-version'>
                 <div className='vz-addon-card-name'>
-                  <Tooltip text={manifest.name}>
-                    {manifest.name}
-                  </Tooltip>
+                  {manifest.name}
                 </div>
                 <span className='vz-addon-card-version'>
                   {manifest.version}
