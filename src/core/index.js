@@ -125,28 +125,39 @@ export default class Vizality extends Updatable {
 
     this._patchDiscordLogs(); // This has to be after settings have been initialized
 
-    // Setting up the modules for the global vizality object
-    const modules = [ 'components', 'constants', 'discord', 'http', 'i18n', 'patcher', 'packages', 'util', 'webpack' ];
+    /**
+     * Setting up the modules for the global vizality object
+     * ---
+     */
+    const modules = [
+      'components',
+      'constants',
+      'discord',
+      'http',
+      'i18n',
+      'patcher',
+      'packages',
+      'util',
+      'webpack',
+      'hooks'
+    ];
 
     for (const mdl of modules) {
       const Mdl = await import(`@vizality/${mdl}`);
       Object.assign(this.modules, { [mdl]: Mdl });
     }
+    /** --- */
 
+    /**
+     * Initializing builtins, themes, and plugins
+     * ---
+     */
     await this.manager.builtins.initialize(); // Builtins
     await this.manager.themes.initialize(); // Themes
     await this.manager.plugins.initialize(); // Plugins
+    /** --- */
 
     this._initialized = true;
-
-    const router = getModule('transitionTo');
-
-    // This needs to be after the Webpack modules have been initialized
-    router.getHistory().listen(async () => {
-      const { route: { getCurrentRoute } } = await import('@vizality/discord');
-      const root = document.documentElement;
-      root.setAttribute('vz-route', getCurrentRoute());
-    });
   }
 
   // Vizality shutdown
