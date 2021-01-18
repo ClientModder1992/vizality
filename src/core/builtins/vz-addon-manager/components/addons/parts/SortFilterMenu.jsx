@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Menu, Icon } from '@vizality/components';
+import { ContextMenu, Icon } from '@vizality/components';
 import { Messages } from '@vizality/i18n';
 
 export default memo(props => {
