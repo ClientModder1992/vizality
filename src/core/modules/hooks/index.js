@@ -56,6 +56,16 @@ export function useFetch (requestType, url, headers) {
             setHasError(true);
             setLoading(false);
           });
+      default:
+        return get(url, headers)
+          .then(res => {
+            setResponse(res.data);
+            setLoading(false);
+          })
+          .catch(() => {
+            setHasError(true);
+            setLoading(false);
+          });
     }
   }, [ url ]);
 
@@ -65,7 +75,7 @@ export function useFetch (requestType, url, headers) {
 /**
  * Hook that uses `util.file.getObjectURL` to get an async collection of blob object URLs.
  * @param {string} path Path to the file or directory to be included
- * @param {string|Array} [allowedExtensions] List of desired file-type extensions to be included
+ * @param {?string|?Array} allowedExtensions List of desired file-type extensions to be included
  * @example
  * ```
  * const [ images, loading, error ] = useFetchImageObjectURL(dir);
@@ -131,7 +141,7 @@ export function useForceUpdate () {
  * @copyright Copyright (c) 2019 Hovhannes Babayan
  * @license MIT
  * @see {@link https://github.com/bhovhannes/use-force-update-hook}
- * @param {*} [callback] Callback
+ * @param {*} callback Callback
  * @example
  * ```
  * function handleUpdate () {

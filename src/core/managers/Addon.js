@@ -173,6 +173,14 @@ export default class AddonManager {
   async remount (addonId, showLogs = true) {
     try {
       await this.unmount(addonId, showLogs);
+    } catch (err) {
+      this._error(`An error occurred while remounting "${addonId}"!`, err);
+    }
+    /*
+     * I have these separated because it seems to cause problems if they're not for some
+     * reason. Not confirmed yet though.
+     */
+    try {
       await this.mount(addonId);
       await this.get(addonId)?._load(showLogs);
     } catch (err) {

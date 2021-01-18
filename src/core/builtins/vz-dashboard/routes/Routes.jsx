@@ -19,15 +19,13 @@ export default memo(() => {
     <>
       <Switch>
         <Redirect from='/vizality/dashboard' to='/vizality/dashboard/home' exact />
-        <Redirect from='/vizality/dashboard/plugins' to='/vizality/dashboard/plugins/installed' exact />
-        <Redirect from='/vizality/dashboard/themes' to='/vizality/dashboard/themes/installed' exact />
         <Redirect from='/vizality/dashboard/documentation' to='/vizality/dashboard/documentation/getting-started' exact />
       </Switch>
       <Switch>
         <Route path='/vizality/dashboard/home' exact>
           <Home />
         </Route>
-        <Route path='/vizality/dashboard/plugins/installed' exact>
+        <Route path='/vizality/dashboard/plugins' exact>
           <Layout>
             <Content
               heading='Plugins'
@@ -49,7 +47,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/themes/installed' exact>
+        <Route path='/vizality/dashboard/themes' exact>
           <Layout>
             <Content
               heading='Themes'

@@ -1,21 +1,12 @@
 import React, { memo } from 'react';
 
+import { excludeProperties } from '@vizality/util/object';
 import { Icon, Divider } from '@vizality/components';
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
 export default memo(props => {
   const { icon, heading, subheading, className, children } = props;
-
-  /**
-   * @note Deleting these props as we've already stored their values and we don't want
-   * to send them to the content div when we use spread props below.
-   */
-  delete props.icon;
-  delete props.heading;
-  delete props.subheading;
-  delete props.className;
-  delete props.children;
 
   const { marginBottom20 } = getModule('marginBottom20');
   const { headerSubtext } = getModule('headerSubtext');
@@ -24,21 +15,38 @@ export default memo(props => {
   const { base } = getModule('base');
 
   return (
-    <div className={joinClassNames('vz-dashboard-content', className)} {...props}>
-      {heading && <div className={`vz-dashboard-content-header-wrapper ${marginBottom20}`}>
-        <div className='vz-dashboard-content-header-inner-wrapper'>
-          {icon && <div className='vz-dashboard-content-header-icon-wrapper'>
-            <Icon className='vz-dashboard-content-header-icon' name={icon} width={'100%'} height={'100%'} />
-          </div>}
-          <h1 className={`vz-dashboard-content-header ${base} ${content}`}>{heading}</h1>
+    <div
+      className={joinClassNames('vz-dashboard-content', className)}
+      /**
+       * @note Excluding these props as we've already stored their values and we don't want
+       * to send them to the content div when we use spread props below to allow for
+       * custom props/attributes.
+       */
+      {...excludeProperties(props, props.children, props.icon, props.heading, props.subhjeading, props.className, props.children)}
+    >
+      {heading &&
+        <div className={joinClassNames('vz-dashboard-content-header-wrapper', marginBottom20)}>
+          <div className='vz-dashboard-content-header-inner-wrapper'>
+            {icon &&
+              <Icon
+                className='vz-dashboard-content-header-icon-wrapper'
+                iconClassName='vz-dashboard-content-header-icon'
+                name={icon}
+                size='100%'
+              />
+            }
+            <h1 className={joinClassNames('vz-dashboard-content-header', base, content)}>
+              {heading}
+            </h1>
+          </div>
+          {subheading && <>
+            <h4 className={joinClassNames('vz-dashboard-content-header-subtext', h1, headerSubtext)}>
+              {subheading}
+            </h4>
+            <Divider />
+          </>}
         </div>
-        {subheading && <>
-          <h4 className={`vz-dashboard-content-header-subtext ${h1} ${headerSubtext}`}>
-            {subheading}
-          </h4>
-          <Divider />
-        </>}
-      </div>}
+      }
       {children}
     </div>
   );
