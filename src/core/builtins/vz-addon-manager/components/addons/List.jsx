@@ -15,7 +15,6 @@ import Addon from '../addon/Addon';
 export default memo(({ type, tab, search, displayType, limit, className }) => {
   const { getSetting, updateSetting } = vizality.api.settings._fluxProps('vz-addon-manager');
 
-  const [ loading, setLoading ] = useState(true);
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
   const [ query, setQuery ] = useState(search || '');
   const [ display, setDisplay ] = useState(displayType || getSetting('listDisplay', 'list'));
@@ -23,10 +22,6 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
   const { colorStandard } = getModule('colorStandard');
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const _checkForPreviewImages = (addonId) => {
     const addon = vizality.manager[toPlural(type)].get(addonId);
@@ -262,13 +257,8 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
           handleShowPreviewImages={_handleShowPreviewImages}
         />
         <div className='vz-addons-list-inner'>
-          {loading
-            ? <Spinner className='vz-addons-list-loading' />
-            : <>
-              {renderHeader()}
-              {renderBody()}
-            </>
-          }
+          {renderHeader()}
+          {renderBody()}
         </div>
       </div>
     </>
