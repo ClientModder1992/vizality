@@ -15,7 +15,7 @@ export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
     try {
       finalReturn = i.method.call(_this, originalArgs, finalReturn);
     } catch (err) {
-      error(_module, `${_submodule}:_runPatches`, null, `Failed to run patch '${i.id}'.`, err);
+      error(_module, `${_submodule}:_runPatches`, null, `Failed to run patch "${i.id}"!`, err);
     }
   });
   return finalReturn;
@@ -37,7 +37,7 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
   }
 
   if (!Array.isArray(args)) {
-    error(_module, `${_submodule}:_runPrePatchesRecursive`, null, `Pre-patch ${patch.id} returned something invalid. Patch will be ignored.`);
+    error(_module, `${_submodule}:_runPrePatchesRecursive`, null, `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
     args = originalArgs;
   }
 
@@ -66,11 +66,11 @@ export const isPatched = patchId => {
  */
 export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
   if (!moduleToPatch) {
-    return error(_module, `${_submodule}:patch`, null, `Tried to patch undefined (patch ID '${patchId}').`);
+    return error(_module, `${_submodule}:patch`, null, `Tried to patch undefined patch ID "${patchId}"!`);
   }
 
   if (patches.find(i => i.id === patchId)) {
-    return error(_module, `${_submodule}:patch`, null, `Patch ID '${patchId}' is already used!`);
+    return error(_module, `${_submodule}:patch`, null, `Patch ID "${patchId}" is already used!`);
   }
 
   if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {

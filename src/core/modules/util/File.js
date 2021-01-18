@@ -1,6 +1,6 @@
 import { promises, existsSync, lstatSync, readFileSync, readdirSync } from 'fs';
-import { lookup as getMimeType } from 'mime-types';
 import { extname, join, parse } from 'path';
+import { lookup as _getMimeType } from 'mime-types';
 
 import { isString } from './String';
 
@@ -11,6 +11,10 @@ const { readdir, lstat, unlink, rmdir } = promises;
  * @memberof util
  * @version 0.0.1
  */
+
+export const getMimeType = file => {
+  return _getMimeType(file);
+};
 
 export const removeDirRecursive = async directory => {
   if (existsSync(directory)) {
@@ -39,6 +43,12 @@ export const getImageDimensions = async image => {
   });
 };
 
+export const convertURLToFile = (url, fileName) => {
+  return fetch(url)
+    .then(res => res.arrayBuffer())
+    .then(buffer => new File([ buffer ], fileName, { type: this.getMimeType(url) }));
+};
+
 export const getObjectURL = async (path, allowedExtensions = [ '.png', '.jpg', '.jpeg', '.webp', '.gif' ]) => {
   if (isString(allowedExtensions)) {
     allowedExtensions = [ allowedExtensions ];
@@ -52,7 +62,7 @@ export const getObjectURL = async (path, allowedExtensions = [ '.png', '.jpg', '
   const getURL = async file => {
     const buffer = readFileSync(file);
     const ext = extname(file).slice(1);
-    const blob = new Blob([ buffer ], { type: getMimeType(ext) });
+    const blob = new Blob([ buffer ], { type: this.getMimeType(ext) });
     const url = URL.createObjectURL(blob);
     const { name } = parse(file);
     /**
