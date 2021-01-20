@@ -75,7 +75,7 @@ export function useFetch (requestType, url, headers) {
 /**
  * Hook that uses `util.file.getObjectURL` to get an async collection of blob object URLs.
  * @param {string} path Path to the file or directory to be included
- * @param {?string|?Array} allowedExtensions List of desired file-type extensions to be included
+ * @param {string|Array} [allowedExtensions] List of desired file-type extensions to be included
  * @example
  * ```
  * const [ images, loading, error ] = useFetchImageObjectURL(dir);
@@ -113,7 +113,7 @@ export function useFetchImageObjectURL (path, allowedExtensions) {
         setHasError(true);
         setLoading(false);
       });
-  }, [ path ]);
+  }, [ path, allowedExtensions ]);
 
   return [ response, loading, hasError ];
 }

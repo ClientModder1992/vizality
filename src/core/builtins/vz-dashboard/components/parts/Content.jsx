@@ -7,7 +7,6 @@ import { getModule } from '@vizality/webpack';
 
 export default memo(props => {
   const { icon, heading, subheading, className, children } = props;
-
   const { marginBottom20 } = getModule('marginBottom20');
   const { headerSubtext } = getModule('headerSubtext');
   const { content } = getModule('wrappedLayout');
@@ -22,7 +21,7 @@ export default memo(props => {
        * to send them to the content div when we use spread props below to allow for
        * custom props/attributes.
        */
-      {...excludeProperties(props, props.children, props.icon, props.heading, props.subhjeading, props.className, props.children)}
+      {...excludeProperties(props, 'children', 'icon', 'heading', 'subheading', 'className')}
     >
       {heading &&
         <div className={joinClassNames('vz-dashboard-content-header-wrapper', marginBottom20)}>

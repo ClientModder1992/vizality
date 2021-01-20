@@ -1,13 +1,11 @@
 import React, { memo, useEffect, useRef } from 'react';
 
+import { excludeProperties } from '@vizality/util/object';
 import { joinClassNames } from '@vizality/util/dom';
 
 export default memo(props => {
   const { className, wrapperClassName, children, handleStickyChange } = props;
   const sticky = useRef(null);
-
-  delete props.className;
-  delete props.wrapperClassName;
 
   const _handleStickyChange = (state, element) => {
     handleStickyChange(state, element);
@@ -34,7 +32,11 @@ export default memo(props => {
   }, []);
 
   return (
-    <div ref={sticky} className={joinClassNames('vz-sticky-wrapper', wrapperClassName)} {...props}>
+    <div
+      ref={sticky}
+      className={joinClassNames('vz-sticky-wrapper', wrapperClassName)}
+      {...excludeProperties(props, 'children', 'className', 'wrapperClassName')}
+    >
       <div className={joinClassNames('vz-sticky', className)}>
         {children}
       </div>
