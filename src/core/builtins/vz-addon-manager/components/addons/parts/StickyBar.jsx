@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
-import { TabBar, Icon, SearchBar } from '@vizality/components';
+import { StickyWrapper, TabBar, Icon, SearchBar } from '@vizality/components';
 import { toTitleCase } from '@vizality/util/string';
 import { getModule } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
@@ -12,11 +12,15 @@ import TagsMenu from './TagsMenu';
 
 export default memo(props => {
   const { query, tab, display, handleTabChange, handleQueryChange, handleDisplayChange } = props;
-
+  const [ sticky, setSticky ] = useState(null);
   const PopoutDispatcher = getModule('openPopout');
 
   const formatDisplayIconName = display => {
     return `Layout${toTitleCase(display).replace(' ', '')}`;
+  };
+
+  const _handleStickyChange = (status) => {
+    setSticky(status);
   };
 
   const popoutConfig = {
@@ -59,65 +63,69 @@ export default memo(props => {
   };
 
   return (
-    <>
-      <div className='vz-addons-list-sticky-bar-wrapper'>
-        <div className='vz-addons-list-sticky-bar'>
-          <TabBar
-            selectedItem={tab}
-            onItemSelect={tab => handleTabChange(tab)}
-            type={TabBar.Types.TOP_PILL}
-          >
-            <TabBar.Item selectedItem={tab} id='installed'>
-              {Messages.VIZALITY_INSTALLED}
-            </TabBar.Item>
-            <TabBar.Item selectedItem={tab} id='discover'>
-              {Messages.DISCOVER}
-            </TabBar.Item>
-            <TabBar.Item selectedItem={tab} id='suggestions'>
-              Suggestions
-            </TabBar.Item>
-          </TabBar>
-          <div className='vz-addons-list-search-options'>
-            <div className='vz-addons-list-search'>
-              <SearchBar
-                placeholder={Messages.SEARCH}
-                query={query}
-                onChange={search => handleQueryChange(search)}
-                onClear={() => handleQueryChange('')}
-              />
-            </div>
-            <div className='vz-addons-list-filter-button vz-addons-list-search-options-button'>
-              <Icon
-                tooltip={`Sort & Filter`}
-                size='20'
-                name='Filter2'
-                onClick={e => renderSortFilterMenu(e)}
-              />
-            </div>
-            <div className='vz-addons-list-tags-button vz-addons-list-search-options-button'>
-              <Icon
-                tooltip='Tags'
-                name='StoreTag'
-                onClick={e => renderTagsMenu(e)}
-              />
-            </div>
-            <div className='vz-addons-list-display-button vz-addons-list-search-options-button'>
-              <Icon
-                tooltip='Display'
-                name={formatDisplayIconName(display)}
-                onClick={e => renderDisplayMenu(e)}
-              />
-            </div>
-            <div className='vz-addons-list-more-button vz-addons-list-search-options-button'>
-              <Icon
-                tooltip={Messages.MORE}
-                name='OverflowMenu'
-                onClick={e => renderOverflowMenu(e)}
-              />
-            </div>
-          </div>
+    <StickyWrapper
+      handleStickyChange={_handleStickyChange}
+      wrapperClassName='vz-addons-list-sticky-bar-wrapper'
+      className='vz-addons-list-sticky-bar'
+    >
+      <TabBar
+        selectedItem={tab}
+        onItemSelect={tab => handleTabChange(tab)}
+        type={TabBar.Types.TOP_PILL}
+      >
+        <TabBar.Item selectedItem={tab} id='installed'>
+          {Messages.VIZALITY_INSTALLED}
+        </TabBar.Item>
+        <TabBar.Item selectedItem={tab} id='discover'>
+          {Messages.DISCOVER}
+        </TabBar.Item>
+        <TabBar.Item selectedItem={tab} id='suggestions'>
+          Suggestions
+        </TabBar.Item>
+      </TabBar>
+      <div className='vz-addons-list-search-options'>
+        <div className='vz-addons-list-search'>
+          <SearchBar
+            placeholder={Messages.SEARCH}
+            query={query}
+            onChange={search => handleQueryChange(search)}
+            onClear={() => handleQueryChange('')}
+          />
+        </div>
+        <div className='vz-addons-list-filter-button vz-addons-list-search-options-button'>
+          <Icon
+            tooltip={`Sort & Filter`}
+            size='20'
+            tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
+            name='Filter2'
+            onClick={e => renderSortFilterMenu(e)}
+          />
+        </div>
+        <div className='vz-addons-list-tags-button vz-addons-list-search-options-button'>
+          <Icon
+            tooltip='Tags'
+            name='StoreTag'
+            tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
+            onClick={e => renderTagsMenu(e)}
+          />
+        </div>
+        <div className='vz-addons-list-display-button vz-addons-list-search-options-button'>
+          <Icon
+            tooltip='Display'
+            tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
+            name={formatDisplayIconName(display)}
+            onClick={e => renderDisplayMenu(e)}
+          />
+        </div>
+        <div className='vz-addons-list-more-button vz-addons-list-search-options-button'>
+          <Icon
+            tooltip={Messages.MORE}
+            tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
+            name='OverflowMenu'
+            onClick={e => renderOverflowMenu(e)}
+          />
         </div>
       </div>
-    </>
+    </StickyWrapper>
   );
 });
