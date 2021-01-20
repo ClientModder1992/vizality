@@ -51,11 +51,11 @@ export const getElementDimensions = node => {
   return { width, height };
 };
 
-export const setCssVariable = (varName, value, element = document.body) => {
+export const setCSSCustomProperty = (varName, value, element = document.body) => {
   return element.style.setProperty(`--${varName}`, value);
 };
 
-export const getCssVariable = (varName, element = document.documentElement) => {
+export const getCSSCustomProperty = (varName, element = document.documentElement) => {
   return getComputedStyle(element).getPropertyValue(`--${varName}`);
 };
 
@@ -71,6 +71,14 @@ export const injectShadowStyles = (shadowRootElement, insertBeforeSelector, styl
       root.insertBefore(newStyleTag, root.querySelector(insertBeforeSelector));
     }
   }
+};
+
+export const injectStyles = () => {
+  // @todo
+};
+
+export const injectScript = () => {
+  // @todo
 };
 
 /**
