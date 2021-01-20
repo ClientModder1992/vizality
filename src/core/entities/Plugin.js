@@ -190,16 +190,11 @@ export default class Plugin extends Updatable {
     this._watcher
       .on('add', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been added.`))
       .on('change', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been changed.`))
-      .on('unlink', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been removed.`));
-
-    // More possible events.
-    this._watcher
+      .on('unlink', path => log(_module, `${this._module}:${this._submodule}`, null, `File "${path.replace(this.path + sep, '')}" has been removed.`))
       .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
       .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
-      .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, [ 'Error:', error ]));
-
-    this._watcher
-      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false));
+      .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, error))
+      .on('all', window._.debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false), 300));
   }
 
   /**
