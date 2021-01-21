@@ -77,10 +77,12 @@ export const Regexes = Object.freeze({
 
 // Events
 export const Events = Object.freeze({
-  VIZALITY_POPUP_WINDOW_OPEN: 'vizalityPopupWindowOpen',
-  VIZALITY_POPUP_WINDOW_CLOSE: 'vizalityPopupWindowClose',
-  VIZALITY_INITIALIZED: 'vizalityInitialized',
-  VIZALITY_SETTINGS_READY: 'vizalitySettingsReady'
+  VIZALITY_POPUP_WINDOW_OPEN: 'popupWindowOpen',
+  VIZALITY_POPUP_WINDOW_CLOSE: 'popupWindowClose',
+  VIZALITY_INITIALIZE: 'initialized',
+  VIZALITY_SETTINGS_READY: 'settingsReady',
+  VIZALITY_SETTING_UPDATE: 'settingUpdate',
+  VIZALITY_SETTING_TOGGLE: 'settingToggle'
 });
 
 // Avatars
