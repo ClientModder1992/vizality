@@ -247,13 +247,12 @@ export default class AddonManager {
     try {
       const addons = this.keys;
       for (const addon of addons) {
-        await this.unmount(addon);
+        await this.unmount(addon, false);
       }
     } catch (err) {
       return this._log(`There was a problem shutting down ${this.type}!`, err);
-    } finally {
-      return this._log(`All ${this.type} have been unloaded!`);
     }
+    return this._log(`All ${this.type} have been unloaded!`);
   }
 
   async enable (addonId) {
