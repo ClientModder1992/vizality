@@ -71,6 +71,7 @@
     "moment": "src/core/modules/packages/Moment",
     "react": "src/core/modules/packages/React",
     "react-dom": "src/core/modules/packages/ReactDOM",
+    "react-spring": "src/core/modules/packages/ReactSpring",
     "react-router": "src/core/modules/packages/ReactRouter"
   },
   "dependencies": {

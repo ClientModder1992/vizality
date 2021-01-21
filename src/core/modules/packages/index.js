@@ -1,7 +1,7 @@
+import * as ReactRouter from './ReactRouter';
+import * as ReactDOM from './ReactDOM';
 import * as Moment from './Moment';
 import * as React from './React';
-import * as ReactDOM from './ReactDOM';
-import * as ReactRouter from './ReactRouter';
 
 export default {
   moment: Moment,
