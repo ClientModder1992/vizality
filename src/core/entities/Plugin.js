@@ -263,7 +263,7 @@ export default class Plugin extends Updatable {
       }
 
       // Unregister settings
-      if (this.sections.settings) {
+      if (this.sections.settings && this._module !== 'Builtin') {
         vizality.api.settings._unregisterSettings(this.addonId);
       }
 
