@@ -1,8 +1,8 @@
 import { readdirSync, statSync } from 'fs';
 import { join, parse } from 'path';
 
+import { log, warn, error } from '@vizality/util/logger';
 import { Directories } from '@vizality/constants';
-import { error } from '@vizality/util/logger';
 
 export default class APIManager {
   constructor () {
@@ -21,12 +21,12 @@ export default class APIManager {
       } else {
         apiModule = await import(join(this.dir, api));
       }
-      const APIClass = apiModule && apiModule.__esModule ? apiModule.default : apiModule;
 
+      const APIClass = apiModule && apiModule.__esModule ? apiModule.default : apiModule;
       vizality.api[api.toLowerCase()] = new APIClass();
       this.apis.push(api.toLowerCase());
     } catch (err) {
-      error(this._module, this._submodule, null, `An error occurred while initializing "${api}"!`, err);
+      return this._error(`An error occurred while initializing "${api}"!`, err);
     }
   }
 
@@ -36,10 +36,12 @@ export default class APIManager {
     }
   }
 
-  async unload () {
+  async terminate () {
     for (const api of this.apis) {
-      await vizality.api[api]._unload();
+      await vizality.api[api]._unload(false);
     }
+
+    return this._log(`All APIs have been unloaded!`);
   }
 
   async initialize () {
@@ -55,8 +57,18 @@ export default class APIManager {
     await this.load();
   }
 
-  terminate () {
-    // @todo
-    return void 0;
+  /** @private */
+  _log (...data) {
+    log(this._module, this._submodule, null, ...data);
+  }
+
+  /** @private */
+  _warn (...data) {
+    warn(this._module, this._submodule, null, ...data);
+  }
+
+  /** @private */
+  _error (...data) {
+    error(this._module, this._submodule, null, ...data);
   }
 }
