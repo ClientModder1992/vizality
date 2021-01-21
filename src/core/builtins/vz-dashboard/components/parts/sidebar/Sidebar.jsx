@@ -50,6 +50,7 @@ export default memo(() =>
       <SubItem label='Markdown' path='/documentation/components/markdown' />
       <SubItem label='Error Test' path='/documentation/components/error-test' />
       <SubItem label='Test' path='/documentation/components/test' />
+      <SubItem label='Test2' path='/documentation/components/test2' />
     </Item>
     <Separator />
     <Item icon='CloudDownload' label='Updater' path='/updater' />

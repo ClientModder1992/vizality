@@ -11,23 +11,16 @@ const SlideIn = getModuleByDisplayName('SlideIn');
 const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
 
 export default memo(() => {
-  console.log(HeaderBarContainer);
   return (
     <>
+      {/* <Sticker
+        className='pie'
+        src='https://i.giphy.com/media/wTgYlmxctT2O4/giphy.webp'
+      />
+      <Emote name='Bob' src="https://cdn.discordapp.com/avatars/97549189629636608/42091c785e85fc5c20b9f1733d6b802a.png" /> */}
       <HeaderBarContainer>
         <Text>I like pie</Text>
       </HeaderBarContainer>
-      <ApplicationCommandDiscoverySectionList
-        activeSectionIndex={0}
-        sections={[
-          {
-            icon: '/assets/6debd47ed13483642cf09e832ed0bc1b.png',
-            id: '-1',
-            isBuiltIn: true,
-            name: 'Built-In'
-          }
-        ]}
-      />
       <TransitionGroup>
         <SlideIn>
           <FormNotice

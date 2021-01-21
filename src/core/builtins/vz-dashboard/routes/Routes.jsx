@@ -10,6 +10,7 @@ import ErrorTest from '../components/pages/ErrorTest';
 import Content from '../components/parts/Content';
 import Home from '../components/pages/home/Home';
 import Layout from '../components/parts/Layout';
+import Test2 from '../components/pages/Test2';
 import Test from '../components/pages/Test';
 
 import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/List';
@@ -117,17 +118,13 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        {/* <Route path='/vizality/dashboard/updater' exact>
+        <Route path='/vizality/dashboard/documentation/components/test2' exact>
           <Layout>
-            <Content
-              heading='Updater'
-              subheading='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.'
-              icon='CloudDownload'
-            >
-              <Updater />
+            <Content>
+              <Test2 />
             </Content>
           </Layout>
-        </Route> */}
+        </Route>
         <Route path='/vizality/dashboard/changelog' exact>
           <Layout>
             <Content
