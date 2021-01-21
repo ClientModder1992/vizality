@@ -10,29 +10,37 @@ export default class API extends Events {
     this._ready = false;
   }
 
-  async _load () {
+  async _load (showLogs = true) {
     try {
       if (typeof this.start === 'function') {
         await this.start();
       }
-      this._ready = true;
-      log(this._module, this._submodule, null, 'API loaded.');
+
+      if (showLogs) {
+        log(this._module, this._submodule, null, 'API loaded.');
+      }
     } catch (err) {
       error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
     }
+
+    this._ready = true;
   }
 
-  async _unload () {
+  async _unload (showLogs = true) {
     try {
       if (typeof this.stop === 'function') {
         await this.stop();
       }
-      this._ready = false;
-      log(this._module, this._submodule, null, 'API unloaded.');
+
+      if (showLogs) {
+        log(this._module, this._submodule, null, 'API unloaded.');
+      }
     } catch (err) {
       error(this._module, this._submodule, null,
-        'An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', err
+        `An error occurred during shutting down! It's recommended to reload Discord to ensure there are no conflicts.`, err
       );
+    } finally {
+      this._ready = false;
     }
   }
 }
