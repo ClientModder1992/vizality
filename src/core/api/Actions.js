@@ -21,7 +21,6 @@ export default class Actions extends API {
      * @type {object}
      */
     this.actions = {};
-
     this._module = 'API';
     this._submodule = 'Actions';
   }
