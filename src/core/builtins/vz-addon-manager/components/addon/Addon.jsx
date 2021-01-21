@@ -20,6 +20,7 @@ export default memo(props => {
   return (
     <div
       className='vz-addon-card'
+      vz-addon-id={addonId}
       onContextMenu={e => handleContextMenu(e)}
       onClick={e => {
         if (e.target.classList.contains('smallCarouselImage-2Qvg9S')) return;
