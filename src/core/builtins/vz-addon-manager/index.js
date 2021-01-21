@@ -38,7 +38,7 @@ export default class AddonsManager extends Builtin {
         cancelText={Messages.CANCEL}
         onCancel={closeModal}
         onConfirm={async () => {
-          await vizality.manager[toPlural(type)].uninstall(addonId);
+          await vizality.manager[toPlural(type)]._uninstall(addonId);
           closeModal();
         }}
       >

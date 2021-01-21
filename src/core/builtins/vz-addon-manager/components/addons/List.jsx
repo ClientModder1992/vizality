@@ -156,8 +156,8 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
     forceUpdate();
   };
 
-  const _uninstall = (addonId, type) => {
-    vizality.manager[toPlural(type)].uninstall(addonId);
+  const _uninstall = async (addonId, type) => {
+    await vizality.manager[toPlural(type)].uninstall(addonId);
   };
 
   const renderItem = item => {
