@@ -44,7 +44,7 @@ export default class Updater extends Builtin {
       executor: () => this.openLatestChangelog()
     });
 
-    vizality.api.settings._registerBuiltinSettings({
+    vizality.api.settings._registerBuiltinTab({
       addonId: this.addonId,
       path: 'updater',
       heading: 'Updater',
@@ -71,6 +71,7 @@ export default class Updater extends Builtin {
 
   stop () {
     vizality.api.router.unregisterRoute('/dashboard/updater');
+    vizality.api.actions.unregisterAction('openLatestChangelog');
     clearInterval(this._interval);
   }
 

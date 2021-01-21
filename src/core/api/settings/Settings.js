@@ -165,7 +165,7 @@ export default class Settings extends API {
   }
 
   /** @private */
-  _registerBuiltinSettings (props) {
+  _registerBuiltinTab (props) {
     try {
       const { addonId, path, heading, subheading, icon, render } = props;
 
@@ -194,7 +194,7 @@ export default class Settings extends API {
 
       this.emit('builtinSettingsRegistered');
     } catch (err) {
-      return error(this._module, `${this._submodule}:_registerBuiltinSettings`, null, err);
+      return error(this._module, `${this._submodule}:_registerBuiltinTab`, null, err);
     }
   }
 

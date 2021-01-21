@@ -16,7 +16,7 @@ export default class Settings extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
 
-    vizality.api.settings._registerBuiltinSettings({
+    vizality.api.settings._registerBuiltinTab({
       addonId: this.addonId,
       path: 'settings',
       heading: 'Settings',
@@ -37,6 +37,7 @@ export default class Settings extends Builtin {
 
   stop () {
     vizality.api.router.unregisterRoute('/dashboard/settings');
+    vizality.api.actions.unregisterAction('confirmRestart');
     unpatch('vz-settings-items');
     unpatch('vz-settings-actions');
     unpatch('vz-settings-errorHandler');

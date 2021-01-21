@@ -2,7 +2,6 @@ import { promises, existsSync } from 'fs';
 import { join } from 'path';
 import React from 'react';
 
-import { getModule } from '@vizality/webpack';
 import { Builtin } from '@vizality/entities';
 
 import QuickCodePage from './components/QuickCode';
@@ -11,7 +10,7 @@ const { writeFile, readFile } = promises;
 
 export default class QuickCode extends Builtin {
   async start () {
-    vizality.api.settings._registerBuiltinSettings({
+    vizality.api.settings._registerBuiltinTab({
       addonId: this.addonId,
       path: 'quick-code',
       heading: 'Quick Code',
