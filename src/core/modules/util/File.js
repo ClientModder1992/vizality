@@ -19,19 +19,23 @@ const { readdir, lstat, unlink, rmdir } = promises;
  */
 
 export const getMimeType = async input => {
-  if (input.startsWith('blob:')) {
-    return fetch(input)
-      .then(res => res.blob().then(blob => blob.type));
-  } else if (_getMimeType(input)) {
-    return _getMimeType(input);
+  let type = null;
+  type = _getMimeType(input);
+
+  if (!type) {
+    type = await fetch(input).then(res => res.blob().then(blob => blob.type));
   }
 
-  let result = null;
-  if (typeof input !== 'string') return result;
-  const mimeType = input.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
-  if (mimeType && mimeType.length) [ , result ] = mimeType;
+  if (!type) {
+    if (typeof input !== 'string') {
+      return type;
+    }
 
-  return result;
+    const mimeType = input.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    if (mimeType && mimeType.length) [ , type ] = mimeType;
+  }
+
+  return type;
 };
 
 export const removeDirRecursive = async directory => {
