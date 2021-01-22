@@ -30,7 +30,7 @@ export default class Keybinds extends API {
    * Registers a keybind.
    * @param {VizalityKeybind} keybind Keybind
    */
-  registerKeybind (keybind) {
+  async registerKeybind (keybind) {
     try {
       if (this.keybinds[keybind.id]) throw new Error(`Keybind "${keybind.id}" is already registered!`);
 
@@ -42,7 +42,7 @@ export default class Keybinds extends API {
         keyup: true
       };
 
-      this._registerKeybind(keybind);
+      await this._registerKeybind(keybind);
     } catch (err) {
       error(this._module, `${this._submodule}:registerKeybind`, null, err);
     }
@@ -52,11 +52,11 @@ export default class Keybinds extends API {
    * Unregisters a keybind.
    * @param {string} id ID of the keybind to unregister
    */
-  unregisterKeybind (id) {
+  async unregisterKeybind (id) {
     try {
       if (!this.keybinds[id]) throw new Error(`Keybind "${id}" is not registered!`);
 
-      this._unregisterKeybind(this.keybinds[id]);
+      await this._unregisterKeybind(this.keybinds[id]);
     } catch (err) {
       error(this._module, `${this._submodule}:unregisterKeybind`, null, err);
     }
@@ -67,35 +67,38 @@ export default class Keybinds extends API {
    * @param {string} id ID of the keybind to unregister
    * @param {string} newShortcut New shortcut to bind
    */
-  changeKeybindShortcut (id, newShortcut) {
+  async changeKeybindShortcut (id, newShortcut) {
     try {
       if (!this.keybinds[id]) throw new Error(`Keybind "${id}" is not registered!`);
 
       const keybind = this.keybinds[id];
 
-      this._unregisterKeybind(this.keybinds[id]);
+      await this._unregisterKeybind(this.keybinds[id]);
       keybind.shortcut = newShortcut;
-      this._registerKeybind(keybind);
+      await this._registerKeybind(keybind);
     } catch (err) {
       error(this._module, `${this._submodule}:changeKeybindShortcut`, null, err);
     }
   }
 
   /** @private */
-  _registerKeybind (keybind) {
+  async _registerKeybind (keybind) {
     try {
+      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventRegister(keybind.eventId, this._shortcutToKeyCode(keybind.shortcut), keybind.executor, keybind.options);
       this.keybinds[keybind.id] = keybind;
+      this.keybinds[keybind.id].keyCode = this._shortcutToKeyCode(keybind.shortcut);
     } catch (err) {
       error(this._module, `${this._submodule}:_registerKeybind`, null, err);
     }
   }
 
   /** @private */
-  _unregisterKeybind (keybind) {
+  async _unregisterKeybind (keybind) {
     try {
+      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventUnregister(keybind.eventId);
@@ -128,10 +131,10 @@ export default class Keybinds extends API {
     /** @see {@link https://github.com/ianstormtaylor/is-hotkey} **/
     const keysHolder = [];
     const keys = shortcut.split('+');
-    keys.forEach(key => {
+    for (let key of keys) {
       key = this._getVirtualKeyCode(key);
       keysHolder.push([ 0, key ]);
-    });
+    }
 
     return keysHolder;
   }
