@@ -103,7 +103,7 @@ export default class Vizality extends Updatable {
       setImmediate(() => tokenModule.showToken()); // Just to be sure
     }
 
-    this.emit(Events.VIZALITY_INITIALIZED); // Used in src/preload/main
+    this.emit(Events.VIZALITY_INITIALIZE); // Used in src/preload/main
   }
 
   // Startup
@@ -118,44 +118,31 @@ export default class Vizality extends Updatable {
     this.settings = this.api.settings.buildCategoryObject('vz-settings');
     this.emit(Events.VIZALITY_SETTINGS_READY);
 
+    /**
+     * Check if the current user is a Vizality Developer
+     */
     const { getId: currentUserId } = getModule('initialize', 'getFingerprint');
     if (Developers.includes(currentUserId())) {
       this.settings.set('vizalityDeveloper', true);
     }
 
-    this._patchDiscordLogs(); // This has to be after settings have been initialized
+    // This has to be after settings have been initialized
+    this._patchDiscordLogs();
 
     /**
      * Setting up the modules for the global vizality object
-     * ---
      */
-    const modules = [
-      'components',
-      'constants',
-      'discord',
-      'http',
-      'i18n',
-      'patcher',
-      'packages',
-      'util',
-      'webpack',
-      'hooks'
-    ];
-
-    for (const mdl of modules) {
-      const Mdl = await import(`@vizality/${mdl}`);
-      Object.assign(this.modules, { [mdl]: Mdl });
+    const modules = await import('@vizality/modules');
+    for (const mdl of Object.keys(modules)) {
+      Object.assign(this.modules, { [mdl]: modules[mdl] });
     }
-    /** --- */
 
     /**
      * Initializing builtins, themes, and plugins
-     * ---
      */
     await this.manager.builtins.initialize(); // Builtins
     await this.manager.themes.initialize(); // Themes
     await this.manager.plugins.initialize(); // Plugins
-    /** --- */
 
     this._initialized = true;
   }
@@ -164,7 +151,7 @@ export default class Vizality extends Updatable {
   async terminate () {
     this._initialized = false;
 
-    this.unpatchDiscordLogs(); // Unpatch Discord's console logs
+    // this._unpatchDiscordLogs();
 
     await this.manager.plugins.terminate(); // Plugins
     await this.manager.themes.terminate(); // Themes
@@ -183,8 +170,8 @@ export default class Vizality extends Updatable {
     const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
     const { createServer } = discordRpc.RPCWebSocket.http;
     discordRpc.RPCWebSocket.http.createServer = function () {
-      _this.rpcServer = createServer();
-      return _this.rpcServer;
+      _this.rpc = createServer();
+      return _this.rpc;
     };
   }
 
@@ -194,7 +181,7 @@ export default class Vizality extends Updatable {
 
     if (!this.settings.get('showDiscordConsoleLogs', false)) {
       /*
-       * Remove Discord's logs entirely... except the logs that don't use the function
+       * Removes Discord's logs entirely... except the logs that don't use the function
        * i.e. normal console.logs.
        */
       setLogFn(() => void 0);
