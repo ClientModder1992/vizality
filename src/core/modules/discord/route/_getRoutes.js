@@ -3,21 +3,22 @@ const Routes = require('../module/routes');
 // With how this is set up, always go from specific to more generic
 const _getRoutes = () => {
   const routes = {
+    private: '/channels/@me/',
     discover: Routes.GUILD_DISCOVERY,
-    // channel: '//channels/[0-9]+/.*/',
-    dm: '/channels/@me/',
     friends: Routes.FRIENDS,
-    guild: '/channels/',
     library: Routes.APPLICATION_LIBRARY,
     nitro: Routes.APPLICATION_STORE,
-    'vz-installed-plugins': '/vizality/dashboard/plugins/installed',
-    'vz-discover-plugins': '/vizality/dashboard/plugins/discover',
-    'vz-plugins': '/vizality/dashboard/plugins',
-    'vz-installed-themes': '/vizality/dashboard/themes/installed',
-    'vz-discover-themes': '/vizality/dashboard/themes/discover',
-    'vz-themes': '/vizality/dashboard/themes',
-    'vz-updater': '/vizality/dashboard/updater',
-    'vz-dashboard': '/vizality/dashboard'
+    guild: '/channels/',
+    settings: '/vizality/dashboard/settings',
+    plugins: '/vizality/dashboard/plugins',
+    themes: '/vizality/dashboard/themes',
+    snippets: '/vizality/dashboard/snippets',
+    'quick-code': '/vizality/dashboard/quick-code',
+    developers: '/vizality/dashboard/developers',
+    docs: '/vizality/dashboard/documentation',
+    updater: '/vizality/dashboard/updater',
+    changelog: '/vizality/dashboard/changelog',
+    dashboard: '/vizality/dashboard'
   };
 
   return routes;
