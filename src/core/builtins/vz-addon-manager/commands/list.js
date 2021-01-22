@@ -2,7 +2,7 @@ import React from 'react';
 
 import { LazyImageZoomable, ImageModal, Tooltip, Anchor } from '@vizality/components';
 import { toPlural, toTitleCase } from '@vizality/util/string';
-import { getImageDimensions } from '@vizality/util/file';
+import { getMediaDimensions } from '@vizality/util/file';
 import { open as openModal } from '@vizality/modal';
 
 export default {
@@ -50,7 +50,7 @@ export default {
               height='20'
               shouldLink={false}
               onClick={async () => {
-                const albumDimensions = await getImageDimensions(addon.manifest.icon);
+                const albumDimensions = await getMediaDimensions(addon.manifest.icon);
                 openModal(() =>
                   <ImageModal
                     src={addon.manifest.icon}

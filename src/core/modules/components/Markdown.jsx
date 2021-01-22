@@ -3,7 +3,7 @@ import React, { memo, useState, useEffect, Children } from 'react';
 import { existsSync, promises } from 'fs';
 import Markdown from 'react-markdown';
 
-import { getImageDimensions } from '@vizality/util/file';
+import { getMediaDimensions } from '@vizality/util/file';
 import { toKebabCase } from '@vizality/util/string';
 import { open as openModal } from '@vizality/modal';
 import { joinClassNames } from '@vizality/util/dom';
