@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { toSingular } from '@vizality/util/string';
-import { error } from '@vizality/util/logger';
+import { Events } from '@vizality/constants';
 import { Flux } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
@@ -130,9 +129,9 @@ export default class Settings extends API {
       // Add the addon to the list of addons with settings
       this[type].push(addonId);
 
-      this.emit('settingsRegistered');
+      this.emit(Events.VIZALITY_SETTINGS_REGISTER, addonId);
     } catch (err) {
-      return error(this._module, `${this._submodule}:_registerSettings`, null, err);
+      return this._error(err);
     }
   }
 
@@ -155,12 +154,11 @@ export default class Settings extends API {
 
       vizality.api.router.unregisterRoute(`/dashboard/${type}/${addonId}`);
 
-      if (type === 'builtins') return;
       // Remove the addon from the list of addons with settings
       this[type].splice(this[type].indexOf(addonId), 1);
-      this.emit('settingsUnregistered');
+      this.emit(Events.VIZALITY_SETTINGS_UNREGISTER, addonId);
     } catch (err) {
-      return error(this._module, `${this._submodule}:_unregisterSettings`, null, err);
+      return this._error(err);
     }
   }
 
@@ -191,10 +189,8 @@ export default class Settings extends API {
           </Layout>,
         sidebar: Sidebar
       });
-
-      this.emit('builtinSettingsRegistered');
     } catch (err) {
-      return error(this._module, `${this._submodule}:_registerBuiltinTab`, null, err);
+      return this._error(err);
     }
   }
 
@@ -202,9 +198,25 @@ export default class Settings extends API {
   _fluxProps (category) {
     return {
       settings: store.getSettings(category),
-      getSetting: (setting, defaultValue) => store.getSetting(category, setting, defaultValue),
-      updateSetting: (setting, value) => actions.updateSetting(category, setting, value),
-      toggleSetting: (setting, defaultValue) => actions.toggleSetting(category, setting, defaultValue)
+      getSetting: (setting, defaultValue) => {
+        return store.getSetting(category, setting, defaultValue);
+      },
+      updateSetting: (setting, value) => {
+        if (category === 'vz-settings') {
+          this.emit(Events.VIZALITY_SETTING_UPDATE, setting, value);
+        } else {
+          this.emit(Events.VIZALITY_ADDON_SETTING_UPDATE, category, setting, value);
+        }
+        return actions.updateSetting(category, setting, value);
+      },
+      toggleSetting: (setting, defaultValue) => {
+        if (category === 'vz-settings') {
+          this.emit(Events.VIZALITY_SETTING_TOGGLE, setting, defaultValue);
+        } else {
+          this.emit(Events.VIZALITY_ADDON_SETTING_TOGGLE, category, setting, defaultValue);
+        }
+        return actions.toggleSetting(category, setting, defaultValue);
+      }
     };
   }
 }

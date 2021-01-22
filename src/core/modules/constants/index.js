@@ -79,10 +79,16 @@ export const Regexes = Object.freeze({
 export const Events = Object.freeze({
   VIZALITY_POPUP_WINDOW_OPEN: 'popupWindowOpen',
   VIZALITY_POPUP_WINDOW_CLOSE: 'popupWindowClose',
+  // ---
   VIZALITY_INITIALIZE: 'initialized',
   VIZALITY_SETTINGS_READY: 'settingsReady',
   VIZALITY_SETTING_UPDATE: 'settingUpdate',
-  VIZALITY_SETTING_TOGGLE: 'settingToggle'
+  VIZALITY_SETTING_TOGGLE: 'settingToggle',
+  // ---
+  VIZALITY_ADDON_SETTINGS_REGISTER: 'addonSettingsRegister',
+  VIZALITY_ADDON_SETTINGS_UNREGISTER: 'addonSettingsUnregister',
+  VIZALITY_ADDON_SETTING_UPDATE: 'addonSettingUpdate',
+  VIZALITY_ADDON_SETTING_TOGGLE: 'addonSettingToggle'
 });
 
 // Avatars
