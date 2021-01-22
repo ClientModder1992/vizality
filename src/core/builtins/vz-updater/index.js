@@ -70,7 +70,7 @@ export default class Updater extends Builtin {
   }
 
   stop () {
-    vizality.api.router.unregisterRoute('/dashboard/updater');
+    vizality.api.routes.unregisterRoute('/dashboard/updater');
     vizality.api.actions.unregisterAction('openLatestChangelog');
     clearInterval(this._interval);
   }
@@ -142,7 +142,7 @@ export default class Updater extends Builtin {
             color: 'grey',
             onClick: () => {
               vizality.api.notices.closeToast('vizality-updater');
-              vizality.api.router.navigate('updater');
+              vizality.api.routes.navigate('updater');
             }
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
@@ -345,7 +345,7 @@ export default class Updater extends Builtin {
               Missed an update?
               <a
                 className={joinClassNames('vz-changelog-modal-footer-a', anchor, anchorUnderlineOnHover)}
-                onClick={() => vizality.api.router.navigate('changelog')}
+                onClick={() => vizality.api.routes.navigate('changelog')}
               > Check out our full changelog history.</a>
             </div>;
 

@@ -31,7 +31,7 @@ export default class QuickCode extends Builtin {
   }
 
   stop () {
-    vizality.api.router.unregisterRoute('/dashboard/quick-code');
+    vizality.api.routes.unregisterRoute('/dashboard/quick-code');
   }
 
   async _openCustomCSS () {

@@ -109,7 +109,7 @@ export default class Settings extends API {
 
       const Render = addon.sections.settings.render;
 
-      vizality.api.router.registerRoute({
+      vizality.api.routes.registerRoute({
         path: `/dashboard/${type}/${addonId}`,
         render: props =>
           <Layout>
@@ -152,7 +152,7 @@ export default class Settings extends API {
         throw new Error(`Settings for "${addonId}" are not registered, so they cannot be unregistered!`);
       }
 
-      vizality.api.router.unregisterRoute(`/dashboard/${type}/${addonId}`);
+      vizality.api.routes.unregisterRoute(`/dashboard/${type}/${addonId}`);
 
       // Remove the addon from the list of addons with settings
       this[type].splice(this[type].indexOf(addonId), 1);
@@ -174,7 +174,7 @@ export default class Settings extends API {
 
       const Render = builtin.sections.settings.render;
 
-      vizality.api.router.registerRoute({
+      vizality.api.routes.registerRoute({
         path: `/dashboard/${path}`,
         render: props =>
           <Layout>

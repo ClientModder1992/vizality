@@ -14,7 +14,7 @@ export default class Dashboard extends Builtin {
     this._injectPrivateTab();
     // this.injectGuildHomeButton();
 
-    vizality.api.router.registerRoute({
+    vizality.api.routes.registerRoute({
       path: '/dashboard',
       render: Routes,
       sidebar: Sidebar
@@ -22,13 +22,13 @@ export default class Dashboard extends Builtin {
 
     vizality.api.keybinds.registerKeybind({
       id: 'exit-dashboard',
-      executor: () => vizality.api.router.restorePrevious(),
+      executor: () => vizality.api.routes.restorePrevious(),
       shortcut: 'esc'
     });
 
     vizality.api.keybinds.registerKeybind({
       id: 'go-to-dashboard',
-      executor: () => vizality.api.router.navigate('dashboard'),
+      executor: () => vizality.api.routes.navigate('dashboard'),
       shortcut: 'alt+v'
     });
   }
@@ -37,6 +37,7 @@ export default class Dashboard extends Builtin {
     vizality.api.router.unregisterRoute('/dashboard');
     vizality.api.keybinds.unregisterKeybind('exit-dashboard');
     vizality.api.keybinds.unregisterKeybind('go-to-dashboard');
+    vizality.api.routes.unregisterRoute('/dashboard');
     unpatch('vz-dashboard-private-channels-list-item');
   }
 

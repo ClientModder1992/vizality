@@ -90,22 +90,22 @@ export default memo(() => {
       <ContextMenu.Item
         id='vizality'
         label='Vizality'
-        action={() => vizality.api.router.navigate('dashboard')}
+        action={() => vizality.api.routes.navigate('dashboard')}
       >
         <ContextMenu.Item
           id='home'
           label='Home'
-          action={() => vizality.api.router.navigate('dashboard')}
+          action={() => vizality.api.routes.navigate('dashboard')}
         />
         <ContextMenu.Item
           id='settings'
           label='Settings'
-          action={() => vizality.api.router.navigate('settings')}
+          action={() => vizality.api.routes.navigate('settings')}
         />
         <ContextMenu.Item
           id='plugins'
           label='Plugins'
-          action={() => vizality.api.router.navigate('plugins')}
+          action={() => vizality.api.routes.navigate('plugins')}
         >
           {plugins.length && <>
             {/* <ContextMenu.ControlItem
@@ -130,7 +130,7 @@ export default memo(() => {
         <ContextMenu.Item
           id='themes'
           label='Themes'
-          action={() => vizality.api.router.navigate('themes')}
+          action={() => vizality.api.routes.navigate('themes')}
         >
           {themes.length && <>
             {/* <ContextMenu.ControlItem
@@ -155,12 +155,12 @@ export default memo(() => {
         {vizality.manager.builtins.isEnabled('vz-snippet-manager') && <ContextMenu.Item
           id='snippets'
           label='Snippets'
-          action={() => vizality.api.router.navigate('snippets')}
+          action={() => vizality.api.routes.navigate('snippets')}
         />}
         {vizality.manager.builtins.isEnabled('vz-quick-code') && <ContextMenu.Item
           id='quick-code'
           label='Quick Code'
-          action={() => vizality.api.router.navigate('quick-code')}
+          action={() => vizality.api.routes.navigate('quick-code')}
         />}
         <ContextMenu.Item
           id='theme-editor'
@@ -171,64 +171,64 @@ export default memo(() => {
         <ContextMenu.Item
           id='developers'
           label='Developers'
-          action={() => vizality.api.router.navigate('developers')}
+          action={() => vizality.api.routes.navigate('developers')}
         />
         <ContextMenu.Item
           id='documentation'
           label='Documentation'
-          action={() => vizality.api.router.navigate('documentation')}
+          action={() => vizality.api.routes.navigate('documentation')}
         >
           <ContextMenu.Item
             id='getting-started'
             label='Getting Started'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/getting-started')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/getting-started')}
           />
           <ContextMenu.Item
             id='plugins'
             label='Plugins'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/plugins')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/plugins')}
           />
           <ContextMenu.Item
             id='themes'
             label='Themes'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/themes')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/themes')}
           />
           <ContextMenu.Item
             id='screenshots'
             label='Screenshots'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/screenshots')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/screenshots')}
           />
           <ContextMenu.Item
             id='icons'
             label='Components'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/components/icons')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/components/icons')}
           />
           <ContextMenu.Item
             id='markdown'
             label='Markdown'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/markdown')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/markdown')}
           />
           <ContextMenu.Item
             id='error-test'
             label='Error Test'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/error-test')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/error-test')}
           />
           <ContextMenu.Item
             id='test'
             label='Test'
-            action={() => vizality.api.router.navigate('/vizality/dashboard/documentation/test')}
+            action={() => vizality.api.routes.navigate('/vizality/dashboard/documentation/test')}
           />
         </ContextMenu.Item>
         <ContextMenu.Separator/>
         <ContextMenu.Item
           id='updater'
           label='Updater'
-          action={() => vizality.api.router.navigate('updater')}
+          action={() => vizality.api.routes.navigate('updater')}
         />
         <ContextMenu.Item
           id='changelog'
           label='Changelog'
-          action={() => vizality.api.router.navigate('changelog')}
+          action={() => vizality.api.routes.navigate('changelog')}
         />
       </ContextMenu.Item>
     </>

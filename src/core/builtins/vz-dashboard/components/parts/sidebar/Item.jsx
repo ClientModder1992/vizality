@@ -43,10 +43,10 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
           // @todo Get rid of eval here. :yikes:
           if (path) {
             if (action) {
-              vizality.api.router.navigate(fullPath);
+              vizality.api.routes.navigate(fullPath);
               return eval(action);
             }
-            vizality.api.router.navigate(fullPath);
+            vizality.api.routes.navigate(fullPath);
           } else {
             if (action) {
               return eval(action);

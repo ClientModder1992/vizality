@@ -47,7 +47,7 @@ export default {
               href={`${window.location.origin}/vizality/dashboard/${toPlural(type)}/${args[0]}`}
               onClick={e => {
                 e.preventDefault();
-                vizality.api.router.navigate(`/vizality/dashboard/${toPlural(type)}/${args[0]}`);
+                vizality.api.routes.navigate(`/vizality/dashboard/${toPlural(type)}/${args[0]}`);
               }}
             >
               {addon.manifest.name}

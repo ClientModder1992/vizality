@@ -16,7 +16,7 @@ const Card = memo(({ icon, header, description, buttonText, path }) => {
         <div className='vz-dashboard-home-features-card-footer'>
           <Button
             className='vz-dashboard-home-features-button'
-            onClick={() => vizality.api.router.navigate(path)}
+            onClick={() => vizality.api.routes.navigate(path)}
             size={Button.Sizes.LARGE}
           >
             {buttonText}

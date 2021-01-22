@@ -14,19 +14,19 @@ import DashboardRoutes from '@vizality/builtins/vz-dashboard/routes/Routes';
  */
 
 /**
- * Vizality custom router API
+ * Vizality custom routes API
  * @property {VizalityRoute[]} routes Registered routes
  */
-export default class Router extends API {
+export default class Routes extends API {
   constructor () {
     super();
     this.routes = [];
     this._module = 'API';
-    this._submodule = 'Router';
+    this._submodule = 'Routes';
   }
 
   /**
-   * Restores previous navigation if necessary
+   * Restores previous navigation, 
    * @returns {void}
    */
   async restorePrevious () {
@@ -35,7 +35,7 @@ export default class Router extends API {
         const router = getModule('replaceWith');
         let history = await vizality.native.app.getHistory();
         history = history.reverse();
-        history.shift();
+        history = history.shift();
         const match = history.find(location => !location.includes('/vizality'));
         const route = match.replace(new RegExp(Regexes.DISCORD), '');
         router.replaceWith(route);
@@ -50,8 +50,8 @@ export default class Router extends API {
    * @note This is a hacky method used to unregister and reregister the main dashboard route
    * so that it doesn't override the plugin and theme routes... Not really sure how to do
    * this in a better way at the moment, but definitely should be addressed in the future.
+   * @private
    */
-  /** @private */
   _reregisterDashboard () {
     if (!this.routes.find(r => r.path === '/dashboard')) return;
 
@@ -66,7 +66,7 @@ export default class Router extends API {
   /**
    * Registers a route
    * @param {VizalityRoute} route Route to register
-   * @emits RouterAPI#routeAdded
+   * @emits Routes#routeAdded
    * @returns {void}
    */
   registerRoute (route) {
@@ -88,7 +88,7 @@ export default class Router extends API {
   /**
    * Unregisters a route
    * @param {string} path Route path to unregister
-   * @emits RouterAPI#routeRemoved
+   * @emits Routes#routeRemoved
    * @returns {void}
    */
   unregisterRoute (path) {
@@ -104,7 +104,7 @@ export default class Router extends API {
     }
   }
 
-  navigate (path) {
+  goToRoute (path) {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');
@@ -142,5 +142,10 @@ export default class Router extends API {
     } catch (err) {
       return error(this._module, `${this._submodule}:navigate`, null, err);
     }
+  }
+
+  stop () {
+    delete vizality.api.routes;
+    this.removeAllListeners();
   }
 }

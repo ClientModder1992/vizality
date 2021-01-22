@@ -36,7 +36,7 @@ export default class Settings extends Builtin {
   }
 
   stop () {
-    vizality.api.router.unregisterRoute('/dashboard/settings');
+    vizality.api.routes.unregisterRoute('/dashboard/settings');
     vizality.api.actions.unregisterAction('confirmRestart');
     unpatch('vz-settings-items');
     unpatch('vz-settings-actions');
