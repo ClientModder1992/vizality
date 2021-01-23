@@ -8,9 +8,6 @@ import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/Lis
 export default {
   command: 'manage',
   description: 'Allows you to manage your addons directly in chat.',
-  options: [
-    { name: 'addonId', required: true }
-  ],
   executor (_, type) {
     const result = {
       type: 'rich',

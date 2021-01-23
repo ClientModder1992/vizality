@@ -2,12 +2,23 @@ import settings from './settings';
 import manage from './manage';
 import enable from './enable';
 import disable from './disable';
+import terminate from './terminate';
 import reload from './reload';
 import list from './list';
 import install from './install';
 import uninstall from './uninstall';
 
-export const commands = { uninstall, settings, install, disable, enable, reload, manage, list };
+export const commands = {
+  uninstall,
+  settings,
+  install,
+  disable,
+  terminate,
+  enable,
+  reload,
+  manage,
+  list
+};
 
 export function getSettings () {
   return vizality.manager.builtins.get('vz-addon-manager').settings;
@@ -22,6 +33,7 @@ export function registerCommands (type) {
       { name: 'manage', required: true },
       { name: 'enable', required: true },
       { name: 'disable', required: true },
+      { name: 'terminate', required: true },
       { name: 'reload', required: true },
       { name: 'list', required: true },
       { name: 'install', required: true },
