@@ -98,7 +98,7 @@ export default class ThemeManager extends AddonManager {
     }
 
     manifest.effectiveTheme = join(this.dir, themeID, manifest.effectiveTheme);
-    this._setIcon(manifest, themeID);
+    this._setIcon(themeID, manifest);
     this.items.set(themeID, new Theme(themeID, manifest));
   }
 
