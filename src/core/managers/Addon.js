@@ -1,5 +1,7 @@
-import { readdirSync, existsSync } from 'fs';
+import { readdirSync, existsSync, stat } from 'fs';
+import { watch } from 'chokidar';
 import { resolve } from 'path';
+import { sep } from 'path';
 
 import { toSingular, toTitleCase, toHash } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
@@ -8,22 +10,14 @@ import { Avatars } from '@vizality/constants';
 
 const requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
 
-const ErrorTypes = {
-  NOT_A_DIRECTORY: 'NOT A DIRECTOR',
-  MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
-  INVALID_MANIFEST: 'INVALID_MANIFEST',
-  ENABLE_NON_INSTALLED: 'ENABLE_NON_INSTALLED',
-  ENABLE_ALREADY_ENABLED: 'ENABLE_ALREADY_ENABLED',
-  DISABLE_NON_INSTALLED: 'DISABLE_NON_INSTALLED',
-  DISABLE_NON_ENABLED: 'DISABLE_NON_ENABLED'
-};
-
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
     this.items = new Map();
 
+    this._watcherEnabled = null;
+    this._watcher = {};
     this._module = 'Manager';
     this._submodule = toSingular(this.type);
   }
@@ -73,7 +67,7 @@ export default class AddonManager {
 
       return Boolean(addon.sections?.settings);
     } catch (err) {
-      this._error(`An error occurred while checking for settings for "${addonId}"!`, err);
+      this.error(`An error occurred while checking for settings for "${addonId}"!`, err);
     }
   }
 
@@ -202,10 +196,15 @@ export default class AddonManager {
   }
 
   // Start/Stop
-  async initialize (sync = false) {
+  async initialize () {
     let addonId;
+    await this._enableWatcher();
+
+    if (this._watcherEnabled) {
+      await this._watchFiles();
+    }
+
     try {
-      const missing = [];
       const files = readdirSync(this.dir);
       for (const filename of files) {
         if (filename.startsWith('.')) {
@@ -214,29 +213,15 @@ export default class AddonManager {
 
         addonId = filename;
 
-        if (sync && !this.get(addonId)._ready) {
-          await this.enable(addonId);
-          missing.push(addonId);
-        } else if (!sync) {
-          await this.mount(addonId);
-          // If addon didn't mount
-          if (!this.get(addonId)) {
-            continue;
-          }
+        await this.mount(addonId);
+        // If addon didn't mount
+        if (!this.get(addonId)) {
+          continue;
         }
 
         if (!this.getDisabledKeys().includes(addonId)) {
-          if (sync && !this.isInstalled(addonId)) {
-            await this.mount(addonId);
-            missing.push(addonId);
-          }
-
           await this.get(addonId)._load();
         }
-      }
-
-      if (sync) {
-        return missing;
       }
     } catch (err) {
       this._error(`An error occurred while initializing "${addonId}"!`, err);
@@ -245,6 +230,7 @@ export default class AddonManager {
 
   async terminate () {
     try {
+      this._disableWatcher();
       const addons = this.keys;
       for (const addon of addons) {
         await this.unmount(addon, false);
@@ -330,63 +316,6 @@ export default class AddonManager {
   }
 
   /** @private */
-  _handleError (errorType, args) {
-    if (window.__SPLASH__ || window.__OVERLAY__) {
-      return;
-    }
-
-    switch (errorType) {
-      case ErrorTypes.NOT_A_DIRECTORY:
-        vizality.api.notices.sendToast('vz-styleManager-invalid-theme', {
-          header: `"${args[0]}" is a file`,
-          content: 'Make sure all of your theme files are in a subfolder.',
-          type: 'error',
-          buttons: [
-            /*
-             * {
-             *   text: 'Documentation',
-             *   color: 'green',
-             *   look: 'ghost',
-             *   onClick: () => console.log('yes')
-             * },
-             */
-          ]
-        });
-        break;
-      case ErrorTypes.MANIFEST_LOAD_FAILED:
-        vizality.api.notices.sendToast('sm-invalid-theme', {
-          header: `Failed to load manifest for "${args[0]}"`,
-          content: 'This is most likely due to a syntax error in the file. Check console for more details.',
-          type: 'error',
-          buttons: [
-            {
-              text: 'Open Developer Tools',
-              color: 'green',
-              look: 'ghost',
-              onClick: () => vizality.native.openDevTools()
-            }
-          ]
-        });
-        break;
-      case ErrorTypes.INVALID_MANIFEST:
-        vizality.api.notices.sendToast('sm-invalid-theme', {
-          header: `Invalid manifest for "${args[0]}"`,
-          content: 'Check the console for more details.',
-          type: 'error',
-          buttons: [
-            {
-              text: 'Open Developer Tools',
-              color: 'green',
-              look: 'ghost',
-              onClick: () => vizality.native.openDevTools()
-            }
-          ]
-        });
-        break;
-    }
-  }
-
-  /** @private */
   async _setIcon (manifest, addonId) {
     if (manifest.icon) {
       return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
@@ -404,6 +333,71 @@ export default class AddonManager {
       const addonIdHash = toHash(addonId);
       return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${(addonIdHash % 5) + 1}`];
     }
+  }
+
+  /**
+   * Enables the addon directory watcher.
+   * @private
+   */
+  async _enableWatcher () {
+    this._watcherEnabled = true;
+  }
+
+  /**
+   * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
+   * was previously enabled.
+   * @private
+   */
+  async _disableWatcher () {
+    this._watcherEnabled = false;
+    if (this._watcher?.close) {
+      await this._watcher.close();
+      this._watcher = {};
+    }
+  }
+
+  /**
+   * @private
+   */
+  async _watchFiles () {
+    this._watcher = watch(this.dir, {
+      ignored: [ /.exists/ ],
+      ignoreInitial: true,
+      depth: 0
+    });
+
+    /**
+     * Makes sure that the directory added has been completely copied by the operating
+     * system before it attempts to do anything with the addon.
+     * @see {@link https://memorytin.com/2015/07/08/node-js-chokidar-wait-for-file-copy-to-complete-before-modifying/}
+     */
+    const _this = this;
+    function checkAddDirComplete (path, prev) {
+      stat(path, async (err, stat) => {
+        if (err) {
+          throw err;
+        }
+        if (stat.mtime.getTime() === prev.mtime.getTime()) {
+          const addonId = path.replace(_this.dir + sep, '');
+          await _this.mount(addonId);
+          await _this.get(addonId)._load();
+        } else {
+          setTimeout(checkAddDirComplete, 1000, path, stat);
+        }
+      });
+    }
+
+    this._watcher
+      .on('addDir', (path, stat) => setTimeout(checkAddDirComplete, 1000, path, stat))
+      .on('unlinkDir', path => {
+        Object.keys(require.cache).forEach(key => {
+          if (key.includes(path.replace(this.dir + sep, ''))) {
+            delete require.cache[key];
+          }
+        });
+
+        this.items.delete(path.replace(this.dir + sep, ''));
+      });
   }
 
   /** @private */

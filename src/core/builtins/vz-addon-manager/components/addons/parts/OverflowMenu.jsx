@@ -7,7 +7,7 @@ import { toPlural } from '@vizality/util/string';
 import { Messages } from '@vizality/i18n';
 
 export default memo(props => {
-  const { type, resetSearchOptions, fetchMissing, enableAll, disableAll, onClose } = props;
+  const { type, resetSearchOptions, enableAll, disableAll, onClose } = props;
 
   return (
     <ContextMenu.Menu navId='vz-addons-list-overflow-menu' onClose={onClose}>
@@ -15,11 +15,6 @@ export default memo(props => {
         id='open-folder'
         label='Show in File Explorer'
         action={() => shell.openPath(Directories[toPlural(type).toUpperCase()])}
-      />
-      <ContextMenu.Item
-        id='refresh-list'
-        label='Refresh List'
-        action={async () => fetchMissing(type)}
       />
       <ContextMenu.Item
         id='reset-search-options'

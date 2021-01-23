@@ -85,34 +85,6 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
     return setCurrentTab(tab);
   };
 
-  const _fetchMissing = async type => {
-    vizality.api.notices.closeToast('vz-addon-manager-fetch-entities');
-
-    const missingAddons = await vizality.manager[toPlural(type)].initialize(true);
-    const missingAddonsList = missingAddons.length
-      ? <>
-        <div>{Messages.VIZALITY_MISSING_ADDONS_RETRIEVED.format({ entity: type, count: missingAddons.length })}</div>
-        <ul>
-          {missingAddons.map(entity => <li>{`– ${entity}`}</li>)}
-        </ul>
-      </>
-      : Messages.VIZALITY_MISSING_ADDONS_NONE;
-
-    vizality.api.notices.sendToast('vz-addon-manager-fetch-entities', {
-      header: Messages.VIZALITY_MISSING_ADDONS_FOUND.format({ type, count: missingAddons.length || 0 }),
-      content: missingAddonsList,
-      type: missingAddons.length > 0 && 'success',
-      icon: toTitleCase(type),
-      timeout: 5e3,
-      buttons: [
-        {
-          text: 'Got it',
-          look: 'ghost'
-        }
-      ]
-    });
-  };
-
   const _sortItems = items => {
     if (query && query !== '') {
       const search = query.toLowerCase();
@@ -247,7 +219,6 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
           handleTabChange={_handleTabChange}
           handleQueryChange={_handleQueryChange}
           handleDisplayChange={_handleDisplayChange}
-          fetchMissing={_fetchMissing}
           enableAll={_enableAll}
           disableAll={_disableAll}
           resetSearchOptions={_resetSearchOptions}
