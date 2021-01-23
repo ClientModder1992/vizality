@@ -8,21 +8,20 @@ import { Confirm } from '@vizality/components';
 import { Builtin } from '@vizality/entities';
 import { Messages } from '@vizality/i18n';
 
-
 import ContextMenu from './components/ContextMenu';
-import SettingsComponent from './components/Settings';
+import Page from './components/Page';
 
 export default class Settings extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
 
-    vizality.api.settings._registerBuiltinTab({
+    vizality.api.settings._registerBuiltinPage({
       addonId: this.addonId,
       path: 'settings',
       heading: 'Settings',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'Wrench',
-      render: props => <SettingsComponent {...props} />
+      render: props => <Page {...props} />
     });
 
     vizality.api.actions.registerAction({

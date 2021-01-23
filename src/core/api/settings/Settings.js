@@ -194,7 +194,7 @@ export default class Settings extends API {
   }
 
   /** @private */
-  _registerBuiltinTab (props) {
+  _registerBuiltinPage (props) {
     try {
       const { addonId, path, heading, subheading, icon, render } = props;
 

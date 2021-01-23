@@ -88,7 +88,7 @@ export default class Plugin extends Updatable {
   }
 
   registerSettings (render) {
-    vizality.api.settings._registerSettings({
+    vizality.api.settings.registerSettings({
       type: toPlural(this._module).toLowerCase(),
       addonId: this.addonId,
       render
@@ -208,9 +208,9 @@ export default class Plugin extends Updatable {
         const after = performance.now();
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
-        if (this._module !== 'Builtin' && !this.sections.settings) {
+        if (!this.sections.settings && this._module !== 'Builtin') {
           let Render;
-          if (this.manifest.sections?.settings) {
+          if (this.manifest?.sections?.settings) {
             Render = await import(join(this.path, this.manifest.sections.settings));
           } else if (existsSync(join(this.path, 'Settings.jsx'))) {
             Render = await import(join(this.path, 'Settings.jsx'));
@@ -219,7 +219,7 @@ export default class Plugin extends Updatable {
           }
 
           if (Render) {
-            vizality.api.settings._registerSettings({
+            vizality.api.settings.registerSettings({
               type: toPlural(this._module).toLowerCase(),
               addonId: this.addonId,
               render: Render
@@ -264,14 +264,14 @@ export default class Plugin extends Updatable {
 
       // Unregister settings
       if (this.sections.settings && this._module !== 'Builtin') {
-        vizality.api.settings._unregisterSettings(this.addonId);
+        vizality.api.settings.unregisterSettings(this.addonId);
       }
 
       if (showLogs) {
         this.log(`${this._module} unloaded.`);
       }
-    } catch (e) {
-      this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, e);
+    } catch (err) {
+      this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, err);
     } finally {
       this._ready = false;
       if (this._watcher) {

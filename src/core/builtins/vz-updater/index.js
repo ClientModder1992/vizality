@@ -12,12 +12,11 @@ import { Confirm } from '@vizality/components';
 import { Builtin } from '@vizality/entities';
 import { Messages } from '@vizality/i18n';
 
-import Settings from './components/Settings';
+import Page from './components/Page';
 
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 const exec = promisify(cp.exec);
 const { readFile } = promises;
-
 export default class Updater extends Builtin {
   constructor () {
     super();
@@ -44,13 +43,13 @@ export default class Updater extends Builtin {
       executor: () => this.openLatestChangelog()
     });
 
-    vizality.api.settings._registerBuiltinTab({
+    vizality.api.settings._registerBuiltinPage({
       addonId: this.addonId,
       path: 'updater',
       heading: 'Updater',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'CloudDownload',
-      render: Settings
+      render: Page
     });
 
     let minutes = Number(this.settings.get('interval', 15));

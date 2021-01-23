@@ -10,7 +10,7 @@ const { writeFile, readFile } = promises;
 
 export default class QuickCode extends Builtin {
   async start () {
-    vizality.api.settings._registerBuiltinTab({
+    vizality.api.settings._registerBuiltinPage({
       addonId: this.addonId,
       path: 'quick-code',
       heading: 'Quick Code',

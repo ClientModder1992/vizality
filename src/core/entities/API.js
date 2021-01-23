@@ -1,4 +1,4 @@
-import { log, error } from '@vizality/util/logger';
+import { log, warn, error } from '@vizality/util/logger';
 
 import Events from 'events';
 
@@ -10,6 +10,18 @@ export default class API extends Events {
     this._ready = false;
   }
 
+  log (...data) {
+    log(this._module, this._submodule, null, ...data);
+  }
+
+  error (...data) {
+    error(this._module, this._submodule, null, ...data);
+  }
+
+  warn (...data) {
+    warn(this._module, this._submodule, null, ...data);
+  }
+
   async _load (showLogs = true) {
     try {
       if (typeof this.start === 'function') {
@@ -17,10 +29,10 @@ export default class API extends Events {
       }
 
       if (showLogs) {
-        log(this._module, this._submodule, null, 'API loaded.');
+        this.log('API loaded.');
       }
     } catch (err) {
-      error(this._module, this._submodule, null, 'An error occurred during initialization!', err);
+      this.error('An error occurred during initialization!', err);
     }
 
     this._ready = true;
@@ -33,12 +45,10 @@ export default class API extends Events {
       }
 
       if (showLogs) {
-        log(this._module, this._submodule, null, 'API unloaded.');
+        this.log(this._module, this._submodule, null, 'API unloaded.');
       }
     } catch (err) {
-      error(this._module, this._submodule, null,
-        `An error occurred during shutting down! It's recommended to reload Discord to ensure there are no conflicts.`, err
-      );
+      this.error(`An error occurred during shutting down! It's recommended to reload Discord to ensure there are no conflicts.`, err);
     } finally {
       this._ready = false;
     }
