@@ -198,11 +198,11 @@ export default class AddonManager {
   // Start/Stop
   async initialize () {
     let addonId;
-    await this._enableWatcher();
+    // await this._enableWatcher();
 
-    if (this._watcherEnabled) {
-      await this._watchFiles();
-    }
+    // if (this._watcherEnabled) {
+    //   await this._watchFiles();
+    // }
 
     try {
       const files = readdirSync(this.dir);
@@ -339,66 +339,70 @@ export default class AddonManager {
    * Enables the addon directory watcher.
    * @private
    */
-  async _enableWatcher () {
-    this._watcherEnabled = true;
-  }
+  // async _enableWatcher () {
+  //   this._watcherEnabled = true;
+  // }
 
-  /**
-   * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
-   * was previously enabled.
-   * @private
-   */
-  async _disableWatcher () {
-    this._watcherEnabled = false;
-    if (this._watcher?.close) {
-      await this._watcher.close();
-      this._watcher = {};
-    }
-  }
+  // /**
+  //  * Disables the file watcher. MUST be called if you no longer need the compiler and the watcher
+  //  * was previously enabled.
+  //  * @private
+  //  */
+  // async _disableWatcher () {
+  //   this._watcherEnabled = false;
+  //   if (this._watcher?.close) {
+  //     await this._watcher.close();
+  //     this._watcher = {};
+  //   }
+  // }
 
-  /**
-   * @private
-   */
-  async _watchFiles () {
-    this._watcher = watch(this.dir, {
-      ignored: [ /.exists/ ],
-      ignoreInitial: true,
-      depth: 0
-    });
+  // /**
+  //  * @private
+  //  */
+  // async _watchFiles () {
+  //   this._watcher = watch(this.dir, {
+  //     ignored: [ /.exists/ ],
+  //     ignoreInitial: true,
+  //     depth: 0
+  //   });
 
-    /**
-     * Makes sure that the directory added has been completely copied by the operating
-     * system before it attempts to do anything with the addon.
-     * @see {@link https://memorytin.com/2015/07/08/node-js-chokidar-wait-for-file-copy-to-complete-before-modifying/}
-     */
-    const _this = this;
-    function checkAddDirComplete (path, prev) {
-      stat(path, async (err, stat) => {
-        if (err) {
-          throw err;
-        }
-        if (stat.mtime.getTime() === prev.mtime.getTime()) {
-          const addonId = path.replace(_this.dir + sep, '');
-          await _this.mount(addonId);
-          await _this.get(addonId)._load();
-        } else {
-          setTimeout(checkAddDirComplete, 1000, path, stat);
-        }
-      });
-    }
+  //   /**
+  //    * Makes sure that the directory added has been completely copied by the operating
+  //    * system before it attempts to do anything with the addon.
+  //    * @see {@link https://memorytin.com/2015/07/08/node-js-chokidar-wait-for-file-copy-to-complete-before-modifying/}
+  //    */
+  //   const _this = this;
+  //   function checkAddDirComplete (path, prev) {
+  //     stat(path, async (err, stat) => {
+  //       if (err) {
+  //         throw err;
+  //       }
+  //       if (stat.mtime.getTime() === prev.mtime.getTime()) {
+  //         const addonId = path.replace(_this.dir + sep, '');
+  //         try {
+  //           await _this.mount(addonId).catch(() => void 0);
+  //           await _this.get(addonId)._load().catch(() => void 0);
+  //           return this._log(`${toSingular(this.type)} "${addonId}" has been installed!`);
+  //         } catch (err) {}
+  //       } else {
+  //         setTimeout(checkAddDirComplete, 1000, path, stat);
+  //       }
+  //     });
+  //   }
 
-    this._watcher
-      .on('addDir', (path, stat) => setTimeout(checkAddDirComplete, 1000, path, stat))
-      .on('unlinkDir', path => {
-        Object.keys(require.cache).forEach(key => {
-          if (key.includes(path.replace(this.dir + sep, ''))) {
-            delete require.cache[key];
-          }
-        });
+  //   this._watcher
+  //     .on('addDir', (path, stat) => setTimeout(checkAddDirComplete, 1000, path, stat))
+  //     .on('unlinkDir', path => {
+  //       const addonId = path.replace(this.dir + sep, '');
+  //       Object.keys(require.cache).forEach(key => {
+  //         if (key.includes(addonId)) {
+  //           delete require.cache[key];
+  //         }
+  //       });
 
-        this.items.delete(path.replace(this.dir + sep, ''));
-      });
-  }
+  //       this.items.delete(addonId);
+  //     });
+  // }
 
   /** @private */
   _log (...data) {

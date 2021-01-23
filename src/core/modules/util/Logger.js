@@ -28,7 +28,7 @@ export const _log = (module, submodule, submoduleLabelColor, message, type) => {
     api: { module: '#dc2167', submodule: '#242a85' },
     core: { module: '#591870', submodule: '#ce03e5' },
     http: { module: '#e63200', submodule: '#2e89c9' },
-    manager: { module: '#5e8a4a', submodule: '#782049' },
+    manager: { module: '#9ee945', submodule: '#782049' },
     builtin: { module: '#267366', submodule: '#fff' },
     plugin: { module: '#42ffa7', submodule: '#594bda' },
     theme: { module: '#b68aff', submodule: '#f3523d' },
