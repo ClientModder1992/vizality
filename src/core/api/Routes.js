@@ -34,7 +34,7 @@ export default class Routes extends API {
         const router = getModule('replaceWith');
         let history = await vizality.native.app.getHistory();
         history = history.reverse();
-        history = history.shift();
+        history.shift();
         const match = history.find(location => !location.includes('/vizality'));
         const route = match.replace(new RegExp(Regexes.DISCORD), '');
         router.replaceWith(route);
