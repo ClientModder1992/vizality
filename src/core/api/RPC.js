@@ -1,7 +1,5 @@
 import { API } from '@vizality/entities';
 
-/* @todo: Use logger. */
-
 /**
  * @typedef DiscordRpcEvent
  * @todo Dig into discord's more complex selectors (seem to be mongo-ish)
@@ -75,5 +73,10 @@ export default class RPC extends API {
       delete this.events[name];
       this.emit('eventRemoved', name);
     }
+  }
+
+  stop () {
+    delete vizality.api.rpc;
+    this.removeAllListeners();
   }
 }

@@ -42,6 +42,9 @@ export default class I18n extends API {
         .filter(key => Object.keys(this.messages[this.locale]).filter(k => k === key))
         .forEach(key => delete i18n._proxyContext[obj][key]);
     });
+
+    delete vizality.api.i18n;
+    this.removeAllListeners();
   }
 
   _addVizalityStrings () {

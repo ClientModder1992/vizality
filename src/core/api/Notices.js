@@ -117,4 +117,9 @@ export default class Notices extends API {
     this.emit('toastClosing', id);
     setTimeout(() => delete this.toasts[id], 500);
   }
+
+  stop () {
+    delete vizality.api.notices;
+    this.removeAllListeners();
+  }
 }

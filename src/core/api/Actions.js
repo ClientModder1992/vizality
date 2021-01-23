@@ -1,4 +1,3 @@
-import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
 
 /**
@@ -48,7 +47,7 @@ export default class Actions extends API {
       this.actions[action.actionId] = action;
       this.emit('actionAdded', action);
     } catch (err) {
-      return error(this._module, `${this._submodule}:registerAction`, null, err);
+      return this.error(err);
     }
   }
 
@@ -67,7 +66,7 @@ export default class Actions extends API {
         throw new Error(`Action "${actionId}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
-      return error(this._module, `${this._submodule}:unregisterAction`, null, err);
+      return this.error(err);
     }
   }
 
@@ -80,13 +79,18 @@ export default class Actions extends API {
   async invoke (actionId) {
     try {
       if (this.actions[actionId]) {
-        this.actions[actionId].executor();
+        await this.actions[actionId].executor();
         this.emit('actionInvoked', actionId);
       } else {
         throw new Error(`Action "${actionId}" could not be found!`);
       }
     } catch (err) {
-      return error(this._module, `${this._submodule}:invoke`, null, err);
+      return this.error(err);
     }
+  }
+
+  stop () {
+    delete vizality.api.actions;
+    this.removeAllListeners();
   }
 }

@@ -16,21 +16,21 @@ const exec = promisify(cp.exec);
 
 /**
  * @typedef VizalityAPI
- * @property {CommandsAPI} commands
- * @property {SettingsAPI} settings
- * @property {NoticesAPI} notices
- * @property {KeybindsAPI} keybinds
- * @property {RouterAPI} router
- * @property {ConnectionsAPI} connections
- * @property {I18nAPI} i18n
- * @property {RPCAPI} rpc
+ * @property {Commands} commands
+ * @property {Settings} settings
+ * @property {Notices} notices
+ * @property {Keybinds} keybinds
+ * @property {Routes} routes
+ * @property {Connections} connections
+ * @property {I18n} i18n
+ * @property {RPC} rpc
  */
 
 /**
  * @typedef Git
- * @property {String} upstream
- * @property {String} branch
- * @property {String} revision
+ * @property {string} upstream
+ * @property {string} branch
+ * @property {string} revision
  */
 
 /**

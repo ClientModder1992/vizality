@@ -1,10 +1,9 @@
 import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
-import { error } from '@vizality/util';
 
 /**
  * @typedef VizalityKeybind
- * @property {string} id Keybind ID
+ * @property {string} keybindId Keybind ID
  * @property {string} shortcut Keyboard shortcut
  * @property {Function} executor Executor action
  * @property {object} [options] Keybind options
@@ -30,81 +29,87 @@ export default class Keybinds extends API {
    * Registers a keybind.
    * @param {VizalityKeybind} keybind Keybind
    */
-  async registerKeybind (keybind) {
+  registerKeybind (keybind) {
     try {
-      if (this.keybinds[keybind.id]) throw new Error(`Keybind "${keybind.id}" is already registered!`);
+      if (this.keybinds[keybind.keybindId]) {
+        throw new Error(`Keybind "${keybind.keybindId}" is already registered!`);
+      }
 
-      keybind.eventId = Math.floor(100000 + Math.random() * 900000);
-      keybind.options = keybind.options || {
+      const options = {
         blurred: false,
         focused: true,
         keydown: false,
         keyup: true
       };
 
-      await this._registerKeybind(keybind);
+      keybind.eventId = Math.floor(100000 + Math.random() * 900000);
+      keybind.options = keybind.options || options;
+
+      this._registerKeybind(keybind);
     } catch (err) {
-      error(this._module, `${this._submodule}:registerKeybind`, null, err);
+      return this.error(err);
     }
   }
 
   /**
    * Unregisters a keybind.
-   * @param {string} id ID of the keybind to unregister
+   * @param {string} keybindId ID of the keybind to unregister
    */
-  async unregisterKeybind (id) {
+  unregisterKeybind (keybindId) {
     try {
-      if (!this.keybinds[id]) throw new Error(`Keybind "${id}" is not registered!`);
+      if (!this.keybinds[keybindId]) {
+        throw new Error(`Keybind "${keybindId}" is not registered!`);
+      }
 
-      await this._unregisterKeybind(this.keybinds[id]);
+      this._unregisterKeybind(this.keybinds[keybindId]);
     } catch (err) {
-      error(this._module, `${this._submodule}:unregisterKeybind`, null, err);
+      return this.error(err);
     }
   }
 
   /**
    * Changes a keybind.
-   * @param {string} id ID of the keybind to unregister
+   * @param {string} keybindId ID of the keybind to unregister
    * @param {string} newShortcut New shortcut to bind
    */
-  async changeKeybindShortcut (id, newShortcut) {
+  changeKeybindShortcut (keybindId, newShortcut) {
     try {
-      if (!this.keybinds[id]) throw new Error(`Keybind "${id}" is not registered!`);
+      if (!this.keybinds[keybindId]) {
+        throw new Error(`Keybind "${keybindId}" is not registered!`);
+      }
 
-      const keybind = this.keybinds[id];
+      const keybind = this.keybinds[keybindId];
 
-      await this._unregisterKeybind(this.keybinds[id]);
+      this._unregisterKeybind(this.keybinds[keybindId]);
       keybind.shortcut = newShortcut;
-      await this._registerKeybind(keybind);
+      this._registerKeybind(keybind);
     } catch (err) {
-      error(this._module, `${this._submodule}:changeKeybindShortcut`, null, err);
+      return this.error(err);
     }
   }
 
   /** @private */
-  async _registerKeybind (keybind) {
+  _registerKeybind (keybind) {
     try {
-      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventRegister(keybind.eventId, this._shortcutToKeyCode(keybind.shortcut), keybind.executor, keybind.options);
-      this.keybinds[keybind.id] = keybind;
-      this.keybinds[keybind.id].keyCode = this._shortcutToKeyCode(keybind.shortcut);
+      this.keybinds[keybind.keybindId] = keybind;
+      this.keybinds[keybind.keybindId].keyCode = this._shortcutToKeyCode(keybind.shortcut);
     } catch (err) {
-      error(this._module, `${this._submodule}:_registerKeybind`, null, err);
+      return this.error(err);
     }
   }
 
   /** @private */
-  async _unregisterKeybind (keybind) {
+  _unregisterKeybind (keybind) {
     try {
-      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
 
       discordUtils.inputEventUnregister(keybind.eventId);
-      delete this.keybinds[keybind.id];
+      delete this.keybinds[keybind.keybindId];
     } catch (err) {
-      error(this._module, `${this._submodule}:_unregisterKeybind`, null, err);
+      return this.error(err);
     }
   }
 
@@ -128,14 +133,23 @@ export default class Keybinds extends API {
 
   /** @private */
   _shortcutToKeyCode (shortcut) {
-    /** @see {@link https://github.com/ianstormtaylor/is-hotkey} **/
-    const keysHolder = [];
-    const keys = shortcut.split('+');
-    for (let key of keys) {
-      key = this._getVirtualKeyCode(key);
-      keysHolder.push([ 0, key ]);
-    }
+    try {
+      /** @see {@link https://github.com/ianstormtaylor/is-hotkey} **/
+      const keysHolder = [];
+      const keys = shortcut.split('+');
+      for (let key of keys) {
+        key = this._getVirtualKeyCode(key);
+        keysHolder.push([ 0, key ]);
+      }
 
-    return keysHolder;
+      return keysHolder;
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  stop () {
+    delete vizality.api.keybinds;
+    this.removeAllListeners();
   }
 }

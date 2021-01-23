@@ -42,4 +42,9 @@ export default class Connections extends API {
 
     return connections[type] || null;
   }
+
+  stop () {
+    delete vizality.api.connections;
+    this.removeAllListeners();
+  }
 }

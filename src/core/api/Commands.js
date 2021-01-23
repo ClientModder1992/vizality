@@ -1,9 +1,8 @@
 import { isObject, isEmpty } from '@vizality/util/object';
-import { error } from '@vizality/util/logger';
 import { API } from '@vizality/entities';
 
 /**
- * @typedef VizalityChatCommand
+ * @typedef VizalityCommand
  * @property {string} command Command name
  * @property {string[]} aliases Command aliases
  * @property {string} description Command description
@@ -14,8 +13,8 @@ import { API } from '@vizality/entities';
  */
 
 /**
- * Vizality chat commands API
- * @property {Object.<string, VizalityChatCommand>} commands Registered commands
+ * Vizality chat commands API.
+ * @property {object.<string, VizalityCommand>} commands Registered commands
  */
 export default class Commands extends API {
   constructor () {
@@ -50,10 +49,14 @@ export default class Commands extends API {
   }
 
   /**
-   * Registers a command
-   * @param {VizalityChatCommand} command Command to register
+   * Registers a command.
+   * @param {VizalityCommand} command Command to register
    */
   registerCommand (command) {
+    /**
+     * @note Hacky way to get the origin of the command. Check if it's a plugin first. If
+     * it's not, check if it's a builtin. If it's not, consider it a core Vizality command.
+     */
     const stackTrace = (new Error()).stack;
     const [ , origin ] = stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
       (stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`)) && [ null, 'vizality' ]);
@@ -64,7 +67,6 @@ export default class Commands extends API {
       }
 
       if (this.commands[command.command]) {
-        /* @todo: Use logger. */
         throw new Error(`Command "${command.command}" is already registered!`);
       }
 
@@ -73,17 +75,28 @@ export default class Commands extends API {
         origin
       };
     } catch (err) {
-      return error(this._module, `${this._submodule}:registerCommand`, null, err);
+      return this.error(err);
     }
   }
 
   /**
-   * Unregisters a command
+   * Unregisters a command.
    * @param {string} command Command name to unregister
    */
   unregisterCommand (command) {
-    if (this.commands[command]) {
+    try {
+      if (!this.commands[command]) {
+        throw new Error(`Command "${command}" is not registered!`);
+      }
+
       delete this.commands[command];
+    } catch (err) {
+      return this.error(err);
     }
+  }
+
+  stop () {
+    delete vizality.api.commands;
+    this.removeAllListeners();
   }
 }

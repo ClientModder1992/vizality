@@ -37,8 +37,6 @@ export default class Settings extends API {
   constructor () {
     super();
     this.store = store;
-    this.plugins = [];
-    this.themes = [];
     this._module = 'API';
     this._submodule = 'Settings';
   }
@@ -74,12 +72,12 @@ export default class Settings extends API {
     return Flux.connectStores([ this.store ], () => this._fluxProps(category));
   }
 
-  /**
-   * Registers a settings tab.
-   * @param {SettingsTab} props Props of the settings tab
-   * @private
-   */
-  _registerSettings (props) {
+  // /**
+  //  * Registers a settings tab.
+  //  * @param {SettingsTab} props Props of the settings tab
+  //  * @private
+  //  */
+  registerSettings (props) {
     try {
       let { type, addonId, render } = props;
 
@@ -126,14 +124,50 @@ export default class Settings extends API {
         sidebar: Sidebar
       });
 
-      // Add the addon to the list of addons with settings
-      this[type].push(addonId);
-
       this.emit(Events.VIZALITY_SETTINGS_REGISTER, addonId);
     } catch (err) {
-      return this._error(err);
+      return this.error(err);
     }
   }
+
+  /**
+   * Registers a settings tab.
+   * @param {SettingsTab} settings Props of the settings tab
+   * @private
+   */
+  // registerSettings (settings) {
+  //   try {
+  //     let { type, addonId, render } = settings;
+
+  //     type = type || 'plugins';
+
+  //     render =
+  //       render?.__esModule
+  //         ? render?.default
+  //         : render?.type
+  //           ? render.type
+  //           : render;
+
+  //     if (!render) {
+  //       throw new Error(`You must specify a render component to register settings for "${addonId}"!`);
+  //     }
+
+  //     const addon = vizality.manager[type].get(addonId);
+
+  //     if (!addon) {
+  //       throw new Error(`Cannot register settings for "${addonId}" because it isn't installed!`);
+  //     }
+
+  //     addon.sections.settings = {
+  //       component: render,
+  //       render: this.connectStores(addonId)(render)
+  //     };
+
+  //     this.emit(Events.VIZALITY_SETTINGS_REGISTER, addonId);
+  //   } catch (err) {
+  //     return this.error(err);
+  //   }
+  // }
 
   /**
    * Unregisters a settings tab.
@@ -141,10 +175,9 @@ export default class Settings extends API {
    * @param {string} type Type of the addon
    * @private
    */
-  _unregisterSettings (addonId, type) {
-    type = type || 'plugins';
-
+  unregisterSettings (addonId, type) {
     try {
+      type = type || 'plugins';
       const addon = vizality.manager[type].get(addonId);
       if (addon?.sections?.settings) {
         delete addon.sections.settings;
@@ -154,11 +187,9 @@ export default class Settings extends API {
 
       vizality.api.routes.unregisterRoute(`/dashboard/${type}/${addonId}`);
 
-      // Remove the addon from the list of addons with settings
-      this[type].splice(this[type].indexOf(addonId), 1);
       this.emit(Events.VIZALITY_SETTINGS_UNREGISTER, addonId);
     } catch (err) {
-      return this._error(err);
+      return this.error(err);
     }
   }
 
@@ -190,7 +221,7 @@ export default class Settings extends API {
         sidebar: Sidebar
       });
     } catch (err) {
-      return this._error(err);
+      return this.error(err);
     }
   }
 
@@ -218,5 +249,10 @@ export default class Settings extends API {
         return actions.toggleSetting(category, setting, defaultValue);
       }
     };
+  }
+
+  stop () {
+    delete vizality.api.settings;
+    this.removeAllListeners();
   }
 }

@@ -1,5 +1,4 @@
 import { Regexes } from '@vizality/constants';
-import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
@@ -26,7 +25,7 @@ export default class Routes extends API {
   }
 
   /**
-   * Restores previous navigation, 
+   * Restores previous navigation,
    * @returns {void}
    */
   async restorePrevious () {
@@ -42,7 +41,7 @@ export default class Routes extends API {
         // this.navigate(route);
       }
     } catch (err) {
-      return error(this._module, `${this._submodule}:restorePrevious`, null, err);
+      return this.error(err);
     }
   }
 
@@ -81,7 +80,7 @@ export default class Routes extends API {
       }
       this.emit('routeAdded', route);
     } catch (err) {
-      return error(this._module, `${this._submodule}:registerRoute`, null, err);
+      return this.error(err);
     }
   }
 
@@ -100,11 +99,11 @@ export default class Routes extends API {
         throw new Error(`Route "${path}" is not registered, so it cannot be unregistered!`);
       }
     } catch (err) {
-      return error(this._module, `${this._submodule}:unregisterRoute`, null, err);
+      return this.error(err);
     }
   }
 
-  goToRoute (path) {
+  navigate (path) {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');
@@ -118,7 +117,7 @@ export default class Routes extends API {
         const { Routes } = getModule('Routes');
 
         switch (path) {
-          case 'home': path = '/channels/@me'; break;
+          case 'private': path = '/channels/@me/'; break;
           case 'discover': path = Routes.GUILD_DISCOVERY; break;
           case 'friends': path = Routes.FRIENDS; break;
           case 'library': path = Routes.APPLICATION_LIBRARY; break;
@@ -140,7 +139,7 @@ export default class Routes extends API {
 
       transitionTo(path);
     } catch (err) {
-      return error(this._module, `${this._submodule}:navigate`, null, err);
+      return this.error(err);
     }
   }
 

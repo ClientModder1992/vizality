@@ -21,23 +21,22 @@ export default class Dashboard extends Builtin {
     });
 
     vizality.api.keybinds.registerKeybind({
-      id: 'exit-dashboard',
+      keybindId: 'leaveDashboard',
       executor: () => vizality.api.routes.restorePrevious(),
       shortcut: 'esc'
     });
 
     vizality.api.keybinds.registerKeybind({
-      id: 'go-to-dashboard',
+      keybindId: 'goToDashboard',
       executor: () => vizality.api.routes.navigate('dashboard'),
       shortcut: 'alt+v'
     });
   }
 
   stop () {
-    vizality.api.router.unregisterRoute('/dashboard');
-    vizality.api.keybinds.unregisterKeybind('exit-dashboard');
-    vizality.api.keybinds.unregisterKeybind('go-to-dashboard');
     vizality.api.routes.unregisterRoute('/dashboard');
+    vizality.api.keybinds.unregisterKeybind('leaveDashboard');
+    vizality.api.keybinds.unregisterKeybind('goToDashboard');
     unpatch('vz-dashboard-private-channels-list-item');
   }
 
