@@ -81,6 +81,7 @@
     "chunk-text": "^2.0.1",
     "electron-devtools-installer": "^3.1.1",
     "image-size": "^0.9.3",
+    "isomorphic-git": "^1.8.0",
     "long": "^4.0.0",
     "mime-types": "^2.1.27",
     "module-alias": "^2.2.2",

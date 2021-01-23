@@ -1,7 +1,9 @@
-import { readdirSync, existsSync, stat } from 'fs';
+import fs, { readdirSync, existsSync, stat, lstatSync } from 'fs';
 import { watch } from 'chokidar';
 import { resolve } from 'path';
-import { sep } from 'path';
+import { sep, join } from 'path';
+import { clone } from 'isomorphic-git';
+import http from 'isomorphic-git/http/node';
 
 import { toSingular, toTitleCase, toHash } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
@@ -135,7 +137,7 @@ export default class AddonManager {
         }
       });
 
-      this._setIcon(manifest, addonId);
+      this._setIcon(addonId, manifest);
 
       this.items.set(addonId, new AddonClass());
     } catch (err) {
@@ -278,50 +280,114 @@ export default class AddonManager {
     await addon._unload('disabled');
   }
 
+  /**
+   * Reloads an plugin or theme.
+   * @param {string} addonId Addon ID
+   */
   async reload (addonId) {
-    await this.disable(addonId);
-    await this.enable(addonId);
+    try {
+      await this.disable(addonId);
+      await this.enable(addonId);
+    } catch (err) {
+      return this._error(err);
+    }
   }
 
+  /**
+   * Reloads all plugins or themes.
+   */
   async reloadAll () {
-    const addons = this.getEnabled();
-    for (const addon of addons) {
-      await this.reload(addon);
+    try {
+      const addons = this.getEnabled();
+      for (const addon of addons) {
+        await this.reload(addon);
+      }
+    } catch (err) {
+      return this._error(err);
     }
   }
 
   async enableAll () {
-    const addons = this.getDisabled();
-    for (const addon of addons) {
-      await this.enable(addon);
+    try {
+      const addons = this.getDisabled();
+      for (const addon of addons) {
+        await this.enable(addon);
+      }
+    } catch (err) {
+      return this._error(err);
     }
   }
 
   async disableAll () {
-    const addons = this.getEnabled();
-    for (const addon of addons) {
-      await this.disable(addon);
+    try {
+      const addons = this.getEnabled();
+      for (const addon of addons) {
+        await this.disable(addon);
+      }
+    } catch (err) {
+      return this._error(err);
     }
   }
 
-  /** @private */
-  async install (addonId) {
-    throw new Error('no');
+  async install (url) {
+    const addonId = url.split('.git')[0].split('/')[url.split('.git')[0].split('/').length - 1];
+    try {
+      if (!url?.endsWith('.git')) {
+        throw new Error('You must provide a valid GitHub repository URL ending with .git!');
+      }
+
+      if (this.isInstalled(addonId)) {
+        throw new Error(`${toSingular(toTitleCase(this.type))} is already installed!`);
+      }
+
+      if (existsSync(join(this.dir, addonId)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
+        throw new Error(`${toSingular(toTitleCase(this.type))} directory "${addonId}" already exists!`);
+      }
+
+      await clone({
+        fs,
+        http,
+        singleBranch: true,
+        depth: 1,
+        dir: join(this.dir, addonId),
+        url
+      })
+        .then(async () => {
+          this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
+          await this.mount(addonId);
+          await this.get(addonId)._load(false);
+        })
+        .catch(async err => {
+          /*
+           * isomorphic-git creates the directory before even check if the
+           * repositry URL is valid, so let's remove it if there's an error here.
+           */
+          await removeDirRecursive(resolve(this.dir, addonId));
+          return this._error(err);
+        });
+    } catch (err) {
+      return this._error(err);
+    }
   }
 
   /** @private */
   async _uninstall (addonId) {
-    await this.unmount(addonId);
-    await removeDirRecursive(resolve(this.dir, addonId));
+    try {
+      await this.unmount(addonId);
+      await removeDirRecursive(resolve(this.dir, addonId));
+      return this._log(`${toTitleCase(toSingular(this.type))} "${addonId}" has been uninstalled!`);
+    } catch (err) {
+      return this._error(err);
+    }
   }
 
   /** @private */
-  async _setIcon (manifest, addonId) {
+  async _setIcon (addonId, manifest) {
     if (manifest.icon) {
       return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
     }
 
-    const validExtensions = [ '.png', '.jpg', '.jpeg', '.webp' ];
+    const validExtensions = [ '.png', '.svg', '.jpg', '.jpeg', '.webp' ];
 
     if (validExtensions.some(ext => existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`)))) {
       for (const ext of validExtensions) {
