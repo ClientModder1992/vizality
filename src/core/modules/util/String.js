@@ -25,7 +25,7 @@ export const toPlural = string => {
 };
 
 export const chunk = (string, numberOfCharacters) => {
-  return _chunk(string, numberOfCharacters);
+  return _chunk.default(string, numberOfCharacters);
 };
 
 export const toHash = string => {
