@@ -28,6 +28,7 @@ function fixDocument () {
 copyProp('DiscordSentry');
 copyProp('__SENTRY__');
 copyProp('GLOBAL_ENV');
+copyProp('platform');
 copyProp('_');
 
 fixDocument();
