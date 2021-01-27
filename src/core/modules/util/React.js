@@ -87,7 +87,7 @@ export const getReactInstance = node => {
   i++;
   node.dataset.vzReactInstance = i;
   const elem = webFrame.top.context.document.querySelector(`[data-vz-react-instance="${i}"]`);
-  node.removeAttribute('data-vz-react-instance');
+  node?.removeAttribute('data-vz-react-instance');
   return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
 };
 

@@ -18,7 +18,7 @@ function fixDocument () {
       i++;
       this.dataset.vzReactRoot = i;
       const elem = realDoc.querySelector(`[data-vz-react-root="${i}"]`);
-      elem.removeAttribute('data-vz-react-root');
+      elem?.removeAttribute('data-vz-react-root');
       return elem._reactRootContainer;
     }
   });
