@@ -19,19 +19,18 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
     let originalPreload;
     if (opts.webContents) {
       // General purpose popout windows used by Discord
-    } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
+    } else if (opts.webPreferences && (opts.webPreferences.nodeIntegration || opts.webPreferences.preload?.endsWith('splashScreenPreload.js'))) {
       // Splash Screen
+      originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'splash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-    } else if (opts.webPreferences && opts.webPreferences.preload) {
+    } else if (opts.webPreferences && opts.webPreferences.preload?.endsWith('mainScreenPreload.js')) {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-      // @todo Get rid of this.
-      opts.webPreferences.contextIsolation = false;
 
       if (transparency) {
         opts.transparent = true;

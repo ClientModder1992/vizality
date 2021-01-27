@@ -1,6 +1,38 @@
-const { ipcRenderer, contextBridge } = require('electron');
+const { ipcRenderer, webFrame } = require('electron');
 const { join } = require('path');
 require('module-alias/register');
+
+function copyProp (name, reverse = false) {
+  Object.defineProperty(reverse ? webFrame.top.context : window, name, {
+    get: () => (reverse ? window : webFrame.top.context)[name]
+  });
+}
+
+function fixDocument () {
+  const realDoc = webFrame.top.context.document;
+  let i = 0;
+
+  // Allow accessing React root container
+  Object.defineProperty(HTMLElement.prototype, '_reactRootContainer', {
+    get () {
+      i++;
+      this.dataset.vzReactRoot = i;
+      const elem = realDoc.querySelector(`[data-vz-react-root="${i}"]`);
+      elem.removeAttribute('data-vz-react-root');
+      return elem._reactRootContainer;
+    }
+  });
+}
+
+// Bypass the context isolation
+copyProp('DiscordSentry');
+copyProp('__SENTRY__');
+copyProp('GLOBAL_ENV');
+copyProp('_');
+
+fixDocument();
+
+
 require('@vizality/compilers');
 require('../ipc/renderer');
 
@@ -34,6 +66,9 @@ const Vizality = require('../core').default;
 
 window.vizality = new Vizality();
 
+copyProp('vizality', true);
+copyProp('require', true);
+
 // https://github.com/electron/electron/issues/9047
 if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin')) {
   process.env.PATH += ':/usr/local/bin';
@@ -41,13 +76,9 @@ if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin'
 
 // Discord's preload
 const preload = ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
-
 if (preload) {
   // Restore original preload for future windows
   process.electronBinding('command_line').appendSwitch('preload', preload);
-
-  // Make sure DiscordNative gets exposed
-  contextBridge.exposeInMainWorld = (key, val) => window[key] = val;
 
   require(preload);
 }
