@@ -82,7 +82,15 @@ export const findInReactTree = (tree, searchFilter) => {
 };
 
 export const getReactInstance = node => {
+<<<<<<< Updated upstream
   return node[Object.keys(node).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
+=======
+  i++;
+  node?.setAttribute('vz-react-instance', i);
+  const elem = webFrame.top.context.document.querySelector(`[vz-react-instance="${i}"]`);
+  node?.removeAttribute('vz-react-instance');
+  return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
+>>>>>>> Stashed changes
 };
 
 export const getOwnerInstance = node => {

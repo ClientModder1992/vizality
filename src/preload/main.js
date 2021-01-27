@@ -1,6 +1,43 @@
 const { ipcRenderer, contextBridge } = require('electron');
 const { join } = require('path');
 require('module-alias/register');
+<<<<<<< Updated upstream
+=======
+
+function exposeProp (name, toMainWorld = false) {
+  Object.defineProperty(toMainWorld ? webFrame.top.context : window, name, {
+    get: () => (toMainWorld ? window : webFrame.top.context)[name]
+  });
+}
+
+function fixDocument () {
+  const realDoc = webFrame.top.context.document;
+  let i = 0;
+
+  // Allow accessing React root container
+  Object.defineProperty(HTMLElement.prototype, '_reactRootContainer', {
+    get () {
+      i++;
+      this.setAttribute('vz-react-root', i);
+      const elem = realDoc.querySelector(`[vz-react-root="${i}"]`);
+      elem?.removeAttribute('vz-react-root');
+      return elem._reactRootContainer;
+    }
+  });
+}
+
+// Bypass the context isolation
+exposeProp('DiscordSentry');
+exposeProp('__SENTRY__');
+exposeProp('GLOBAL_ENV');
+exposeProp('platform');
+exposeProp('_');
+exposeProp('WebSocket', true);
+
+fixDocument();
+
+
+>>>>>>> Stashed changes
 require('@vizality/compilers');
 require('../ipc/renderer');
 
