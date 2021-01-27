@@ -2,9 +2,9 @@ const { ipcRenderer, webFrame } = require('electron');
 const { join } = require('path');
 require('module-alias/register');
 
-function copyProp (name, reverse = false) {
-  Object.defineProperty(reverse ? webFrame.top.context : window, name, {
-    get: () => (reverse ? window : webFrame.top.context)[name]
+function exposeProp (name, toMainWorld = false) {
+  Object.defineProperty(toMainWorld ? webFrame.top.context : window, name, {
+    get: () => (toMainWorld ? window : webFrame.top.context)[name]
   });
 }
 
@@ -25,11 +25,12 @@ function fixDocument () {
 }
 
 // Bypass the context isolation
-copyProp('DiscordSentry');
-copyProp('__SENTRY__');
-copyProp('GLOBAL_ENV');
-copyProp('platform');
-copyProp('_');
+exposeProp('DiscordSentry');
+exposeProp('__SENTRY__');
+exposeProp('GLOBAL_ENV');
+exposeProp('platform');
+exposeProp('_');
+exposeProp('WebSocket', true);
 
 fixDocument();
 
@@ -67,8 +68,8 @@ const Vizality = require('../core').default;
 
 window.vizality = new Vizality();
 
-copyProp('vizality', true);
-copyProp('require', true);
+exposeProp('vizality', true);
+exposeProp('require', true);
 
 // https://github.com/electron/electron/issues/9047
 if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin')) {
