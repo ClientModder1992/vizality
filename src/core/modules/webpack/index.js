@@ -1,3 +1,4 @@
+import { webFrame } from 'electron';
 import moduleFilters from './modules.json';
 import { log, warn } from '../util/Logger';
 import { sleep } from '../util/Time';
@@ -64,12 +65,12 @@ export const _getModules = (filter, all = false) => {
  */
 export const initialize = async () => {
   // Wait until webpack is ready
-  while (!window.webpackJsonp) {
+  while (!webFrame.top.context.webpackJsonp) {
     await sleep(1e3);
   }
 
   // Extract values from webpack
-  const instance = webpackJsonp.push([
+  const instance = webFrame.top.context.webpackJsonp.push([
     [],
     {
       _vizality: (_, e, r) => {

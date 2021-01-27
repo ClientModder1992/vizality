@@ -10,18 +10,21 @@ export default () => {
   const g = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
   const ogUseState = g.useState;
   const ogUseLayoutEffect = g.useLayoutEffect;
+  const ogUseCallback = g.useCallback;
   const ogUseContext = g.useContext;
   const ogUseRef = g.useRef;
 
   g.useState = () => [ null, () => void 0 ];
   g.useLayoutEffect = () => null;
   g.useRef = () => ({});
+  g.useCallback = (fnc) => (fnc);
   g.useContext = () => ({});
 
   const Guild = new DecoratedComponent({ guildId: null }).type;
 
   g.useState = ogUseState;
   g.useLayoutEffect = ogUseLayoutEffect;
+  g.useCallback = ogUseCallback;
   g.useContext = ogUseContext;
   g.useRef = ogUseRef;
 

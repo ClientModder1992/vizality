@@ -1,8 +1,6 @@
-const { ipcRenderer, contextBridge } = require('electron');
+const { ipcRenderer, webFrame } = require('electron');
 const { join } = require('path');
 require('module-alias/register');
-<<<<<<< Updated upstream
-=======
 
 function exposeProp (name, toMainWorld = false) {
   Object.defineProperty(toMainWorld ? webFrame.top.context : window, name, {
@@ -36,8 +34,6 @@ exposeProp('WebSocket', true);
 
 fixDocument();
 
-
->>>>>>> Stashed changes
 require('@vizality/compilers');
 require('../ipc/renderer');
 
@@ -71,6 +67,9 @@ const Vizality = require('../core').default;
 
 window.vizality = new Vizality();
 
+exposeProp('vizality', true);
+exposeProp('require', true);
+
 // https://github.com/electron/electron/issues/9047
 if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin')) {
   process.env.PATH += ':/usr/local/bin';
@@ -78,13 +77,9 @@ if (process.platform === 'darwin' && !process.env.PATH.includes('/usr/local/bin'
 
 // Discord's preload
 const preload = ipcRenderer.sendSync('VIZALITY_GET_PRELOAD');
-
 if (preload) {
   // Restore original preload for future windows
   process.electronBinding('command_line').appendSwitch('preload', preload);
-
-  // Make sure DiscordNative gets exposed
-  contextBridge.exposeInMainWorld = (key, val) => window[key] = val;
 
   require(preload);
 }

@@ -1,3 +1,4 @@
+import { webFrame } from 'electron';
 /**
  * @module util.react
  * @namespace util.react
@@ -81,22 +82,21 @@ export const findInReactTree = (tree, searchFilter) => {
   return this.findInTree(tree, searchFilter, { walkable: [ 'props', 'children', 'child', 'sibling' ] });
 };
 
+let i = 0;
 export const getReactInstance = node => {
-<<<<<<< Updated upstream
-  return node[Object.keys(node).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
-=======
   i++;
   node?.setAttribute('vz-react-instance', i);
   const elem = webFrame.top.context.document.querySelector(`[vz-react-instance="${i}"]`);
   node?.removeAttribute('vz-react-instance');
   return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
->>>>>>> Stashed changes
 };
+
+const RealHTMLElement = webFrame.top.context.HTMLElement;
 
 export const getOwnerInstance = node => {
   for (let curr = this.getReactInstance(node); curr; curr = curr.return) {
     const owner = curr.stateNode;
-    if (owner && !(owner instanceof HTMLElement)) {
+    if (owner && !(owner instanceof RealHTMLElement)) {
       return owner;
     }
   }
