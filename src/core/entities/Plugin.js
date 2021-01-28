@@ -11,6 +11,12 @@ import { isArray } from '@vizality/util/array';
 
 import Updatable from './Updatable';
 
+// We need to do this because Webpack hasn't been initialized yet
+let lodash;
+(async () => {
+  lodash = await import('lodash');
+})();
+
 /**
  * Main class for Vizality plugins
  * @property {boolean} _ready Whether the plugin is ready or not
@@ -130,7 +136,7 @@ export default class Plugin extends Updatable {
      * No need to use extra resources watching something that shouldn't need it.
      */
     if (!this.manifest) {
-      if (!vizality.settings.get('vizalityDeveloper', false)) {
+      if (!vizality.settings.get('verifiedVizalityDeveloper', false)) {
         this._watcherEnabled = false;
       } else {
         this._watcherEnabled = vizality.settings.get('hotReload', false);
@@ -194,7 +200,7 @@ export default class Plugin extends Updatable {
       .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
       .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
       .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, error))
-      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false));
+      .on('all', lodash.debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
   }
 
   /**
