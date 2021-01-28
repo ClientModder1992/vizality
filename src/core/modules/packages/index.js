@@ -1,11 +1,13 @@
 import * as ReactRouter from './ReactRouter';
 import * as ReactDOM from './ReactDOM';
+import * as Lodash from './Lodash';
 import * as Moment from './Moment';
 import * as React from './React';
 
 export default {
-  moment: Moment,
-  react: React,
+  'react-router': ReactRouter,
   'react-dom': ReactDOM,
-  'react-router': ReactRouter
+  lodash: Lodash,
+  moment: Moment,
+  react: React
 };
