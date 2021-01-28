@@ -114,7 +114,7 @@ export default class Plugin extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      this.log(`${toSingular(this.module)} has been successfully updated.`);
+      this.log(`${toSingular(this._module)} has been successfully updated.`);
       await vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false);
     }
     return success;
@@ -194,7 +194,7 @@ export default class Plugin extends Updatable {
       .on('addDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
       .on('unlinkDir', path => log(_module, `${this._module}:${this._submodule}`, null, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
       .on('error', error => log(_module, `${this._module}:${this._submodule}`, null, error))
-      .on('all', window._.debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false), 300));
+      .on('all', async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false));
   }
 
   /**
