@@ -30,7 +30,7 @@ exposeProp('__SENTRY__');
 exposeProp('GLOBAL_ENV');
 exposeProp('platform');
 exposeProp('_');
-exposeProp('webpackJsonp');
+exposeProp('webpackJsonp', true);
 exposeProp('WebSocket', true);
 
 fixDocument();
