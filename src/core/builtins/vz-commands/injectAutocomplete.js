@@ -18,7 +18,7 @@ export default function injectAutocomplete () {
   const ChannelEditorContainer = getModuleByDisplayName('ChannelEditorContainer');
   const SlateChannelTextArea = getModuleByDisplayName('SlateChannelTextArea');
   const { autocomplete, autocompleteInner } = getModule('autocompleteInner');
-  const { autocomplete: autocomplete2 } = getModule('autocomplete');
+  const { autocomplete: autocomplete2 } = getModule('autocomplete', 'stickerAutoComplete');
   const PlainTextArea = getModuleByDisplayName('PlainTextArea');
   const Autocomplete = getModuleByDisplayName('Autocomplete');
   const { textArea } = getModule('channelTextArea', 'inner');
