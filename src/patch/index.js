@@ -65,10 +65,42 @@ delete require.cache[electronPath].exports;
 require.cache[electronPath].exports = electronExports;
 
 electron.protocol.registerSchemesAsPrivileged([
-  { scheme: 'vz-plugin', privileges: { supportFetchAPI: true, corsEnabled: true, standard: true, secure: true } },
-  { scheme: 'vz-theme', privileges: { supportFetchAPI: true, corsEnabled: true, standard: true, secure: true } },
-  { scheme: 'vz-builtin', privileges: { supportFetchAPI: true, corsEnabled: true, standard: true, secure: true } },
-  { scheme: 'vz-asset', privileges: { supportFetchAPI: true, corsEnabled: true, standard: true, secure: true } }
+  {
+    scheme: 'vz-plugin',
+    privileges: {
+      supportFetchAPI: true,
+      corsEnabled: true,
+      standard: true,
+      secure: true
+    }
+  },
+  {
+    scheme: 'vz-theme',
+    privileges: {
+      supportFetchAPI: true,
+      corsEnabled: true,
+      standard: true,
+      secure: true
+    }
+  },
+  {
+    scheme: 'vz-builtin',
+    privileges: {
+      supportFetchAPI: true,
+      corsEnabled: true,
+      standard: true,
+      secure: true
+    }
+  },
+  {
+    scheme: 'vz-asset',
+    privileges: {
+      supportFetchAPI: true,
+      corsEnabled: true,
+      standard: true,
+      secure: true
+    }
+  }
 ]);
 
 electron.app.once('ready', () => {
