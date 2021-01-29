@@ -18,8 +18,8 @@ export default class RPC extends Builtin {
     vizality.api.rpc.registerEvent('IS_VIZALITY', {
       scope: 'VIZALITY_PRIVATE',
       handler: e => {
-        console.log(e);
-        return 'yes';
+        // console.log(e);
+        // return 'yes';
       }
     });
   }
@@ -38,7 +38,7 @@ export default class RPC extends Builtin {
     const websocketHandler = getModule('validateSocketClient');
 
     patch('vz-rpc-webSocket', websocketHandler, 'validateSocketClient', args => {
-      console.log(args);
+      // console.log(args);
       if (args[2] === 'vizality') {
         args[2] = void 0;
         args[3] = 'vizality';
@@ -47,7 +47,7 @@ export default class RPC extends Builtin {
     }, true);
 
     patch('vz-rpc-webSocket-promise', websocketHandler, 'validateSocketClient', (args, res) => {
-      console.log(args);
+      // console.log(args);
       if (args[3] === 'vizality') {
         res.catch(() => void 0);
         args[0].authorization.scopes = [
