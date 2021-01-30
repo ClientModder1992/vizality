@@ -9,7 +9,7 @@ import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
 import { Builtin } from '@vizality/entities';
 
-import AnnouncementContainer from './components/AnnouncementContainer';
+// import AnnouncementContainer from './components/AnnouncementContainer';
 import ToastContainer from './components/ToastContainer';
 
 const { unlink } = promises;
@@ -17,7 +17,10 @@ const { unlink } = promises;
 export default class Notices extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
-    this._patchAnnouncements();
+    /*
+     * @todo Fix this.
+     * this._patchAnnouncements();
+     */
     this._patchToasts();
 
     const injectedFile = join(Directories.SRC, '__injected.txt');
