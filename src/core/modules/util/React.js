@@ -1,5 +1,18 @@
-import { webFrame } from "electron";
-import * as logger from "./Logger";
+import { webFrame } from 'electron';
+import { log, warn, error } from './Logger';
+
+const _module = 'Util';
+const _submodule = 'React';
+
+/** @private */
+const _log = (...data) => {
+  log({ module: _module, submodule: _submodule }, ...data);
+};
+
+/** @private */
+const _error = (...data) => {
+  error({ module: _module, submodule: _submodule }, ...data);
+};
 
 /**
  * @module util.react
@@ -10,7 +23,7 @@ import * as logger from "./Logger";
 
 /**
  * Finds a value, subobject, or array from a tree that matches a specific filter.
- * @copyright MIT License - (c) 2018 Zachary Rauen
+ * @copyright MIT License - (c) 2018 Zachary Rauen, modified by Kyza
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L140}
  * @param {object} tree Tree that should be walked
  * @param {Function} filter Filter to check against each object and subobject
@@ -19,86 +32,57 @@ import * as logger from "./Logger";
  * that are allowed to be walked on. Null value indicates all keys are walkable
  * @param {Array<string>} [options.ignore=[]] Array of strings to use as keys to exclude
  * from the search, most helpful when `walkable = null`
- * @param {object} [options.whileLoop=false] Whether or not to use a while loop instead of recursion. This is slower, but not prone to stack overflow.
+ * @param {boolean} [options.whileLoop=false] Whether or not to use a while loop instead of recursion. This is slower, but not prone to stack overflow.
  * @returns {Node|undefined}
  */
-export const findInTree = (
-  tree,
-  filter,
-  { walkable = [], ignore = [], whileLoop = false, first = true } = {}
-) => {
-  if (!tree || typeof tree != "object")
-    return (
-      logger.error(`The specified tree is not an object. Instead got:`, tree),
-      null
-    );
-  if (first) {
-    try {
-      JSON.stringify(tree);
-    } catch {
-      return logger.error("Cannot search a circular object."), null;
-    }
+export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) => {
+  if (!tree || typeof tree !== 'object') {
+    return null;
   }
-  if (typeof filter == "string") return tree[filter];
 
-  if (whileLoop) {
-    const stack = [tree];
-    while (stack.length) {
-      const node = stack[whileLoop === "reverse" ? "pop" : "shift"]();
-      try {
-        if (filter(node)) return node;
-      } catch {}
-      if (Array.isArray(node)) {
-        stack.push(...node);
-      } else if (typeof node === "object" && node !== null) {
-        if (walkable.length > 0) {
-          stack.push(
-            ...Object.entries(node)
-              .filter(
-                ([key, value]) =>
-                  walkable.indexOf(key) !== -1 && ignore.indexOf(key) === -1
-              )
-              .map(([key, value]) => value)
-          );
-        } else {
-          stack.push(
-            ...Object.values(node).filter(
-              (key) => ignore.indexOf(key) === -1 && node
-            )
-          );
-        }
-      }
+  if (typeof filter === 'string') {
+    if (tree.hasOwnProperty(filter)) {
+      return tree[filter];
     }
-    return null;
-  } else {
-    let returnValue;
-    try {
-      if (filter(tree)) return tree;
-    } catch {}
-    if (Array.isArray(tree)) {
-      for (const value of tree) {
-        returnValue = findInTree(value, filter, {
-          walkable,
-          exclude: ignore,
-          whileLoop,
-          first: false,
-        });
-        if (returnValue) return returnValue;
-      }
-    }
-    walkable = walkable || Object.keys(tree);
-    for (const key of walkable) {
-      if (!tree.hasOwnProperty(key) || ignore.includes(key)) continue;
-      returnValue = findInTree(tree[key], filter, {
-        walkable,
-        exclude: ignore,
-        whileLoop,
-        first: false,
-      });
-      if (returnValue) return returnValue;
-    }
-    return null;
+
+    return;
+  } else if (filter(tree)) {
+    return tree;
   }
+
+  let returnValue = null;
+
+  if (Array.isArray(tree)) {
+    for (const value of tree) {
+      returnValue = this.findInTree(value, filter, {
+        walkable,
+        ignore
+      });
+
+      if (returnValue) {
+        return returnValue;
+      }
+    }
+  } else {
+    const walkables = !walkable ? Object.keys(tree) : walkable;
+
+    for (const key of walkables) {
+      if (!tree.hasOwnProperty(key) || ignore.includes(key)) {
+        continue;
+      }
+
+      returnValue = this.findInTree(tree[key], filter, {
+        walkable,
+        ignore
+      });
+
+      if (returnValue) {
+        return returnValue;
+      }
+    }
+  }
+
+  return returnValue;
 };
 
 /**
@@ -112,24 +96,24 @@ export const findInTree = (
  */
 export const findInReactTree = (tree, searchFilter, whileLoop = false) => {
   return this.findInTree(tree, searchFilter, {
-    walkable: ["props", "children", "child", "sibling"],
-    whileLoop,
+    walkable: [ 'props', 'children', 'child', 'sibling' ],
+    whileLoop
   });
 };
 
 let i = 0;
-export const getReactInstance = (node) => {
+export const getReactInstance = node => {
   i++;
-  node?.setAttribute("vz-react-instance", i);
+  node?.setAttribute('vz-react-instance', i);
   const elem = webFrame.top.context.document.querySelector(
     `[vz-react-instance="${i}"]`
   );
-  node?.removeAttribute("vz-react-instance");
+  node?.removeAttribute('vz-react-instance');
   return elem[
     Object.keys(elem).find(
       (key) =>
-        key.startsWith("__reactInternalInstance") ||
-        key.startsWith("__reactFiber")
+        key.startsWith('__reactInternalInstance') ||
+        key.startsWith('__reactFiber')
     )
   ];
 };
@@ -149,8 +133,8 @@ export const getOwnerInstance = (node) => {
 
 export const forceUpdateElement = (query, all = false) => {
   const elements = all
-    ? [...document.querySelectorAll(query)]
-    : [document.querySelector(query)];
+    ? [ ...document.querySelectorAll(query) ]
+    : [ document.querySelector(query) ];
   return elements.filter(Boolean).forEach((element) => {
     if (this.getOwnerInstance(element)) {
       this.getOwnerInstance(element).forceUpdate();
