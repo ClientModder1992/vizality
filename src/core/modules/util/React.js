@@ -1,4 +1,6 @@
 import { webFrame } from "electron";
+import * as logger from "./Logger";
+
 /**
  * @module util.react
  * @namespace util.react
