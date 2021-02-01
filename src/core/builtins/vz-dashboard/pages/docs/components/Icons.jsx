@@ -4,10 +4,10 @@ import { Icon, CodeBlock, ComponentPreview, TextInput } from '@vizality/componen
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
-import AsideNav from '../../../parts/AsideNav';
-import Section from '../../../parts/Section';
-import Content from '../../../parts/Content';
-import Layout from '../../../parts/Layout';
+import AsideNav from '../../../components/parts/AsideNav';
+import Section from '../../../components/parts/Section';
+import Content from '../../../components/parts/Content';
+import Layout from '../../../components/parts/Layout';
 
 export default memo(() => {
   const [ selectedIcon, setSelectedIcon ] = useState('');

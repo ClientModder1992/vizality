@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 
 import { Markdown } from '@vizality/components';
 
-import Section from '../../../parts/Section';
-import Content from '../../../parts/Content';
-import Layout from '../../../parts/Layout';
+import Section from '../../../components/parts/Section';
+import Content from '../../../components/parts/Content';
+import Layout from '../../../components/parts/Layout';
 
 const preview = `
 ---
