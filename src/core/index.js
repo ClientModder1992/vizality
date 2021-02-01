@@ -83,8 +83,10 @@ export default class Vizality extends Updatable {
 
   // Initialization
   async initialize () {
-    await initialize(); // Webpack & Modules
+    // Webpack & Modules
+    await initialize();
 
+    // Set up connectStoresAsync
     const Flux = getModule('Store', 'PersistedStore');
     Flux.connectStoresAsync = (stores, fn) => Component =>
       require('@vizality/components').AsyncComponent.from((async () => {
@@ -93,56 +95,64 @@ export default class Vizality extends Updatable {
         return Flux.connectStores(awaitedStores, props => fn(awaitedStores, props))(Component);
       })());
 
-    await this.start(); // Start
+    // Start
+    await this.start();
     this.git = await this.manager.builtins.get('vz-updater').getGitInfo();
 
-    /* Token manipulation stuff */
+    // Token manipulation stuff
     if (this.settings.get('hideToken', true)) {
       const tokenModule = getModule('hideToken');
       tokenModule.hideToken = () => void 0;
-      setImmediate(() => tokenModule.showToken()); // Just to be sure
+      // Just to be sure
+      setImmediate(() => tokenModule.showToken());
     }
 
-    this.emit(Events.VIZALITY_INITIALIZE); // Used in src/preload/main
+    // Used in src/preload/main
+    this.emit(Events.VIZALITY_INITIALIZE);
   }
 
   // Startup
   async start () {
-    console.clear(); // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
+    // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
+    console.clear();
 
     // Startup banner
-    console.log('%c ', `background: url('vz-asset://images/console-banner.gif') no-repeat center / contain; padding: 110px 350px; font-size: 1px; margin: 10px 0;`);
+    console.log('%c ',
+      `background: url('vz-asset://images/console-banner.gif') no-repeat center / contain;
+       padding: 110px 350px;
+       font-size: 1px;
+       margin: 10px 0;`
+    );
 
-    await this.manager.apis.initialize(); // APIs
+    // Initialize APIs
+    await this.manager.apis.initialize();
 
+    // Initialize Vizality core settings
     this.settings = this.api.settings.buildCategoryObject('vz-settings');
     this.emit(Events.VIZALITY_SETTINGS_READY);
 
-    /**
-     * Check if the current user is a Vizality Developer
-     */
+    // Check if the current user is a verified Vizality Developer
     const { getId: currentUserId } = getModule('initialize', 'getFingerprint');
     if (Developers.includes(currentUserId())) {
-      this.settings.set('vizalityDeveloper', true);
+      this.settings.set('verifiedVizalityDeveloper', true);
     }
 
     // This has to be after settings have been initialized
     this._patchDiscordLogs();
 
-    /**
-     * Setting up the modules for the global vizality object
-     */
+    // Set up the modules for the global vizality object
     const modules = await import('@vizality/modules');
     for (const mdl of Object.keys(modules)) {
       Object.assign(this.modules, { [mdl]: modules[mdl] });
     }
 
-    /**
-     * Initializing builtins, themes, and plugins
-     */
+    // Initialize builtins, plugins, and themes
     await this.manager.builtins.initialize(); // Builtins
     await this.manager.themes.initialize(); // Themes
     await this.manager.plugins.initialize(); // Plugins
+
+    // Set up shorthand global object
+    window.$vz = Object.assign({}, vizality.manager, vizality.api, vizality.modules);
 
     this._initialized = true;
   }

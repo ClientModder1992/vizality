@@ -69,6 +69,7 @@ const Vizality = require('../core').default;
 window.vizality = new Vizality();
 
 exposeGlobal('vizality', true);
+exposeGlobal('$vz', true);
 exposeGlobal('require', true);
 
 // https://github.com/electron/electron/issues/9047
