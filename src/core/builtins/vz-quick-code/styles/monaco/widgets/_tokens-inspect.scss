@@ -1,15 +1,15 @@
 @use '@vizality' as *;
 
 .monaco-editor .tokens-inspect-widget {
-  color: var('text-normal');
-  background: var('background-primary');
+  color: var(--text-normal);
+  background: var(--background-primary);
   border-radius: 4px;
-  border: 1px solid var('background-tertiary');
+  border: 1px solid var(--background-tertiary);
   font-size: 14px;
   padding: 20px;
   .tm-token {
     display: flow-root;
-    color: var('header-primary');
+    color: var(--header-primary);
     padding: 5px 0;
     font-size: 18px;
     font-weight: 700;
@@ -21,13 +21,13 @@
   }
   .tm-metadata-key {
     padding: 5px 20px 5px 0;
-    color: var('text-normal');
+    color: var(--text-normal);
   }
   .tm-metadata-value {
-    color: var('header-primary');
+    color: var(--header-primary);
   }
   .tokens-inspect-separator {
-    background-color: var('background-modifier-accent');
+    background-color: var(--background-modifier-accent);
   }
   .tm-token-type {
     line-height: 2;

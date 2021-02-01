@@ -3,15 +3,15 @@
 .monaco-editor {
   .monaco-hover {
     background-color: color('black') !important;
-    box-shadow: var('elevation-high');
-    color: var('interactive-hover') !important;
+    box-shadow: var(--elevation-high);
+    color: var(--interactive-hover) !important;
     padding: 0 12px;
     border: none !important;
     font-family: 'Whitney' !important;
     border-radius: 4px;
     animation: editor-tooltip .1s ease forwards;
     a {
-      color: var('text-link') !important;
+      color: var(--text-link) !important;
       pointer-events: none;
       &::after {
         content: '- ' attr(data-href);

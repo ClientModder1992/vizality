@@ -10,9 +10,9 @@
     }
   }
   &-header {
-    color: var('text-normal');
+    color: var(--text-normal);
     background: color('black', .1);
-    border-bottom: 1px solid var('background-tertiary');
+    border-bottom: 1px solid var(--background-tertiary);
     line-height: 20px;
     padding: 0 10px;
     font-family: 'Raleway', sans-serif;
@@ -28,7 +28,7 @@
   }
   &-line-numbers {
     @include size(30px, 100%);
-    color: var('interactive-muted');
+    color: var(--interactive-muted);
     text-align: right;
     line-height: 1.125rem;
     font-weight: initial;
@@ -60,9 +60,9 @@
     max-height: calc(100% - 10px);
     min-height: 0;
     opacity: 0;
-    color: var('header-primary');
-    background: var('background-floating');
-    box-shadow: var('elevation-medium');
+    color: var(--header-primary);
+    background: var(--background-floating);
+    box-shadow: var(--elevation-medium);
     transition: opacity .17s, background-color .17s ease, color .17s ease;
     &.vz-is-copied {
       opacity: 1;

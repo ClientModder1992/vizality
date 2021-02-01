@@ -146,7 +146,7 @@
   // }
   // &-tag {
   //   border-radius: 1000px;
-  //   background: var('background-primary');
+  //   background: var(--background-primary);
   //   padding: 0 10px;
   //   font-size: 10px;
   //   text-transform: uppercase;
@@ -164,7 +164,7 @@
   // }
   &-footer-wrapper {
     margin-top: 20px;
-    border-top: 1px solid var('background-modifier-accent');
+    border-top: 1px solid var(--background-modifier-accent);
   }
   &-footer {
     margin-top: 20px;

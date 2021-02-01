@@ -2,8 +2,8 @@
 
 .vz-c-settings-category {
   $base: &;
-  background: var('deprecated-card-editable-bg');
-  border: 1px solid var('background-secondary-alt');
+  background: var(--deprecated-card-editable-bg);
+  border: 1px solid var(--background-secondary-alt);
   border-radius: 4px;
   margin-bottom: 30px;
   & + & {
@@ -16,7 +16,7 @@
     align-items: center;
     &[vz-opened] {
       background: inherit;
-      border-bottom: 1px solid var('background-secondary-alt');
+      border-bottom: 1px solid var(--background-secondary-alt);
       #{$base}-title-icon-wrapper {
         transform: rotate3d(0, 0, 1, 90deg);
       }

@@ -15,19 +15,19 @@
     // Vertical only
     &.vertical {
       > .slider {
-        width: var('vz-editor-scrollbar-thumb-size') !important;
+        width: var(--vz-editor-scrollbar-thumb-size) !important;
       }
     }
     // Horizontal only
     &.horizontal {
       > .slider {
-        height: var('vz-editor-scrollbar-thumb-size') !important;
+        height: var(--vz-editor-scrollbar-thumb-size) !important;
       }
     }
     // Both vertical and horizontal
     > .slider {
-      border-radius: var('vz-editor-scrollbar-thumb-border-radius');
-      background-color: var('vz-editor-scrollbar-thumb-background') !important;
+      border-radius: var(--vz-editor-scrollbar-thumb-border-radius);
+      background-color: var(--vz-editor-scrollbar-thumb-background) !important;
     }
   }
 }

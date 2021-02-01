@@ -54,7 +54,7 @@
         margin-bottom: 7px;
         text-transform: uppercase;
         font-weight: 600;
-        color: var('text-muted');
+        color: var(--text-muted);
         white-space: nowrap;
       }
       &-detail-value-wrapper {

@@ -35,6 +35,6 @@
     background: color('white');
     border-radius: 1000px;
     border: none;
-    box-shadow: var('elevation-low');
+    box-shadow: var(--elevation-low);
   }
 }

@@ -26,15 +26,15 @@
 
 .vz-editor {
   padding: 20px 0;
-  background: var('vz-editor-wrapper-background');
-  border-radius: var('vz-editor-border-radius');
+  background: var(--vz-editor-wrapper-background);
+  border-radius: var(--vz-editor-border-radius);
 }
 
 .monaco-editor {
   // To fix editor resizing issues
   position: absolute;
   .line-numbers {
-    color: var('vz-editor-line-numbers-color') !important;
+    color: var(--vz-editor-line-numbers-color) !important;
   }
   // Little color boxes
   [class*='ced-colorBox'] {
@@ -42,18 +42,18 @@
     &::before {
       border: none !important;
       border-radius: 2px;
-      box-shadow: var('elevation-medium');
+      box-shadow: var(--elevation-medium);
     }
   }
   // Line numbers gutter
   .margin {
-    background-color: var('vz-editor-background') !important;
+    background-color: var(--vz-editor-background) !important;
   }
   // Main body
   &,
   &-background,
   .inputarea.ime-input {
-    background-color: var('vz-editor-background') !important;
+    background-color: var(--vz-editor-background) !important;
   }
   .scroll-decoration {
     display: none;

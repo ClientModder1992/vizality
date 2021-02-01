@@ -6,11 +6,11 @@
 
 .monaco-editor .monaco-editor-overlaymessage .message {
   background-color: #7289da !important;
-  box-shadow: var('elevation-low');
+  box-shadow: var(--elevation-low);
   color: color('white') !important;
   padding: 10px;
   border: none !important;
-  font-family: Whitney !important;
+  font-family: 'Whitney' !important;
   border-radius: 4px;
   margin-left: -10px;
   font-size: 14px;

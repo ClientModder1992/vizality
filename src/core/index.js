@@ -201,14 +201,14 @@ export default class Vizality extends Updatable {
         switch (type) {
           case 'info':
           case 'log':
-            return log(module, submodule, null, ...data);
+            return log({ module, submodule }, ...data);
           case 'error':
           case 'trace':
-            return error(module, submodule, null, ...data);
+            return error({ module, submodule }, ...data);
           case 'warn':
-            return warn(module, submodule, null, ...data);
+            return warn({ module, submodule }, ...data);
           default:
-            return log(module, submodule, null, ...data);
+            return log({ module, submodule }, ...data);
         }
       });
     }
@@ -271,16 +271,16 @@ export default class Vizality extends Updatable {
 
   /** @private */
   _log (...data) {
-    log(this.constructor.name, 'Core', null, ...data);
+    log({ module: this.constructor.name, submodule: 'Core' }, ...data);
   }
 
   /** @private */
   _warn (...data) {
-    warn(this._module, 'Core', null, ...data);
+    warn({ module: this.constructor.name, submodule: 'Core' }, ...data);
   }
 
   /** @private */
   _error (...data) {
-    error(this._module, 'Core', null, ...data);
+    error({ module: this.constructor.name, submodule: 'Core' }, ...data);
   }
 }
