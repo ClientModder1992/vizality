@@ -1,6 +1,6 @@
 @use '@vizality' as *;
 
-.vz-popup-window {
+.vz-popup {
   $base: &;
   @include size(100%);
   position: absolute;
