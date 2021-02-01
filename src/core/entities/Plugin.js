@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import { join, sep } from 'path';
 import { watch } from 'chokidar';
 import { existsSync } from 'fs';
@@ -10,12 +11,6 @@ import { Directories } from '@vizality/constants';
 import { isArray } from '@vizality/util/array';
 
 import Updatable from './Updatable';
-
-// We need to do this because Webpack hasn't been initialized yet
-let lodash;
-(async () => {
-  lodash = await import('lodash');
-})();
 
 /**
  * Main class for Vizality plugins
@@ -194,7 +189,6 @@ export default class Plugin extends Updatable {
     });
 
     this._watcher
-      .on('all', lodash.debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
       .on('add', path =>
         log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `File "${path.replace(this.path + sep, '')}" has been added.`))
       .on('change', path =>
@@ -207,6 +201,7 @@ export default class Plugin extends Updatable {
         log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
       .on('error', error =>
         log({ module: _module, submodule: `${this._module}:${this._submodule}` }, error))
+      .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 2000));
   }
 
   /**
