@@ -6,45 +6,68 @@ import { error } from '@vizality/util/logger';
 const _module = 'Module';
 const _submodule = 'Patcher';
 
+/** @private */
+const _error = (...data) => {
+  error({ module: _module, submodule: _submodule }, ...data);
+};
+
+/**
+ * @module patcher
+ * @namespace patcher
+ * @version 0.0.1
+ */
+
 export let patches = [];
 
 export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
-  let finalReturn = originalReturn;
-  const _patches = patches.filter(i => i.module === moduleId && !i.pre);
-  _patches.forEach(i => {
-    try {
-      finalReturn = i.method.call(_this, originalArgs, finalReturn);
-    } catch (err) {
-      error(_module, `${_submodule}:_runPatches`, null, `Failed to run patch "${i.id}"!`, err);
-    }
-  });
-  return finalReturn;
+  try {
+    let finalReturn = originalReturn;
+    const _patches = patches.filter(i => i.module === moduleId && !i.pre);
+    _patches.forEach(i => {
+      try {
+        finalReturn = i.method.call(_this, originalArgs, finalReturn);
+      } catch (err) {
+        return _error(`Failed to run patch "${i.id}"!`, err);
+      }
+    });
+    return finalReturn;
+  } catch (err) {
+
+  }
 };
 
 export const _runPrePatches = (moduleId, originalArgs, _this) => {
-  const _patches = patches.filter(i => i.module === moduleId && i.pre);
-  if (_patches.length === 0) {
-    return originalArgs;
+  try {
+    const _patches = patches.filter(i => i.module === moduleId && i.pre);
+    if (_patches.length === 0) {
+      return originalArgs;
+    }
+    return this._runPrePatchesRecursive(_patches, originalArgs, _this);
+  } catch (err) {
+    
   }
-  return this._runPrePatchesRecursive(_patches, originalArgs, _this);
 };
 
 export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
-  const patch = patches.pop();
-  let args = patch.method.call(_this, originalArgs);
-  if (args === false) {
-    return false;
-  }
+  try {
+    const patch = patches.pop();
+    let args = patch.method.call(_this, originalArgs);
+    if (args === false) {
+      return false;
+    }
 
-  if (!Array.isArray(args)) {
-    error(_module, `${_submodule}:_runPrePatchesRecursive`, null, `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
-    args = originalArgs;
-  }
+    if (!Array.isArray(args)) {
+      _error(`Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
+      args = originalArgs;
+    }
 
-  if (patches.length > 0) {
-    return this._runPrePatchesRecursive(patches, args, _this);
+    if (patches.length > 0) {
+      return this._runPrePatchesRecursive(patches, args, _this);
+    }
+    return args;
+  } catch (err) {
+    
   }
-  return args;
 };
 
 /**
@@ -52,7 +75,11 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
  * @param {string} patchId The patch to check
  */
 export const isPatched = patchId => {
-  patches.some(i => i.id === patchId);
+  try {
+    patches.some(i => i.id === patchId);
+  } catch (err) {
+    
+  }
 };
 
 /**
@@ -65,42 +92,46 @@ export const isPatched = patchId => {
  * @returns {void}
  */
 export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
-  if (!moduleToPatch) {
-    return error(_module, `${_submodule}:patch`, null, `Tried to patch undefined patch ID "${patchId}"!`);
+  try {
+    if (!moduleToPatch) {
+      return this._error(`Tried to patch undefined with patch ID "${patchId}"!`);
+    }
+
+    if (patches.find(i => i.id === patchId)) {
+      return this._error(`Patch ID "${patchId}" is already used!`);
+    }
+
+    if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
+      // 1st patch
+      const id = randomBytes(16).toString('hex');
+      moduleToPatch.__vizalityPatchId = Object.assign((moduleToPatch.__vizalityPatchId || {}), { [func]: id, name: patchId });
+      moduleToPatch[`__vizalityOriginal_${func}`] = moduleToPatch[func]; // To allow easier debugging
+      const _oldMethod = moduleToPatch[func];
+      const _this = this;
+      moduleToPatch[func] = function (...args) {
+        const finalArgs = _this._runPrePatches(id, args, this);
+        if (finalArgs !== false && Array.isArray(finalArgs)) {
+          const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
+          return _this._runPatches(id, finalArgs, returned, this);
+        }
+      };
+      // Reassign displayName, defaultProps etc etc, not to mess with other plugins
+      Object.assign(moduleToPatch[func], _oldMethod);
+      // Allow code search even after patching
+      moduleToPatch[func].toString = (...args) => _oldMethod.toString(...args);
+
+      patches[id] = [];
+    }
+
+    patches.push({
+      module: moduleToPatch.__vizalityPatchId[func],
+      id: patchId,
+      method: patch,
+      pre
+    });
+  } catch (err) {
+    
   }
-
-  if (patches.find(i => i.id === patchId)) {
-    return error(_module, `${_submodule}:patch`, null, `Patch ID "${patchId}" is already used!`);
-  }
-
-  if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
-    // 1st patch
-    const id = randomBytes(16).toString('hex');
-    moduleToPatch.__vizalityPatchId = Object.assign((moduleToPatch.__vizalityPatchId || {}), { [func]: id });
-    moduleToPatch[`__vizalityOriginal_${func}`] = moduleToPatch[func]; // To allow easier debugging
-    const _oldMethod = moduleToPatch[func];
-    const _this = this;
-    moduleToPatch[func] = function (...args) {
-      const finalArgs = _this._runPrePatches(id, args, this);
-      if (finalArgs !== false && Array.isArray(finalArgs)) {
-        const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
-        return _this._runPatches(id, finalArgs, returned, this);
-      }
-    };
-    // Reassign displayName, defaultProps etc etc, not to mess with other plugins
-    Object.assign(moduleToPatch[func], _oldMethod);
-    // Allow code search even after patching
-    moduleToPatch[func].toString = (...args) => _oldMethod.toString(...args);
-
-    patches[id] = [];
-  }
-
-  patches.push({
-    module: moduleToPatch.__vizalityPatchId[func],
-    id: patchId,
-    method: patch,
-    pre
-  });
 };
 
 /**

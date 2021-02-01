@@ -414,16 +414,17 @@ export default class AddonManager {
 
   /** @private */
   _log (...data) {
-    log(this._module, this._submodule, null, ...data);
+    log({ module: this._module, submodule: this._submodule }, ...data);
   }
 
   /** @private */
   _warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
+    warn({ module: this._module, submodule: this._submodule }, ...data);
   }
 
   /** @private */
   _error (...data) {
-    error(this._module, this._submodule, null, ...data);
+    console.log('ERROR', error);
+    error({ module: this._module, submodule: this._submodule }, ...data);
   }
 }

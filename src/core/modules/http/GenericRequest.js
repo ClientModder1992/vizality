@@ -8,7 +8,7 @@ import http from 'http';
 import url from 'url';
 
 import { Repositories } from '@vizality/constants';
-import { log } from '@vizality/util/logger';
+import { log, warn, error } from '@vizality/util/logger';
 
 /**
  * @typedef HTTPResponse
@@ -30,8 +30,8 @@ class HTTPError extends Error {
 
 export default class GenericRequest {
   constructor (method, uri, headers) {
-    this.module = 'HTTP';
-    this.submodule = this.constructor.name;
+    this._module = 'HTTP';
+    this._submodule = this.constructor.name;
 
     this.opts = {
       method,
@@ -104,7 +104,7 @@ export default class GenericRequest {
       /* */ const opts = Object.assign(this.opts, resolve);
       /* */ if (!opts.uri) return;
 
-      log(this.module, this.submodule, null, 'Performing request to', opts.uri);
+      this._log('Performing request to', opts.uri);
       const { request } = opts.uri.startsWith('https')
         ? https
         : http;
@@ -187,5 +187,20 @@ export default class GenericRequest {
    */
   catch (rejector) {
     return this.then(null, rejector);
+  }
+
+  /** @private */
+  _log (...data) {
+    log({ module: this._module, submodule: this._submodule }, ...data);
+  }
+
+  /** @private */
+  _warn (...data) {
+    warn({ module: this._module, submodule: this._submodule }, ...data);
+  }
+
+  /** @private */
+  _error (...data) {
+    error({ module: this._module, submodule: this._submodule }, ...data);
   }
 }

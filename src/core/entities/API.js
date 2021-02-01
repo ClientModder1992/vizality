@@ -11,15 +11,15 @@ export default class API extends Events {
   }
 
   log (...data) {
-    log(this._module, this._submodule, null, ...data);
-  }
-
-  error (...data) {
-    error(this._module, this._submodule, null, ...data);
+    log({ module: this._module, submodule: this._submodule }, ...data);
   }
 
   warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
+    warn({ module: this._module, submodule: this._submodule }, ...data);
+  }
+
+  error (...data) {
+    error({ module: this._module, submodule: this._submodule }, ...data);
   }
 
   async _load (showLogs = true) {

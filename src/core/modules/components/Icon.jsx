@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 import { toKebabCase } from '@vizality/util/string';
-import { warn, error } from '@vizality/util/logger';
 import { joinClassNames } from '@vizality/util/dom';
+import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 
 import { Clickable, Tooltip as TooltipContainer } from '.';
@@ -558,8 +558,12 @@ export default memo(props => {
     height = size;
   }
 
+  function _error (...data) {
+    return error({ module: this._module, submodule: this._submodule }, ...data);
+  }
+
   if (!name) {
-    return error(_module, _submodule, null, `You must specify a 'name' property for an Icon component.`);
+    return _error('You must specify a "name" property for an Icon component.');
   }
 
   const registry = getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
@@ -569,7 +573,7 @@ export default memo(props => {
   const SVG = icon ? icon : Icons[name] ? Icons[name] : registry(`./${name}`).default;
 
   if (!SVG && !icon) {
-    return error(_module, _submodule, null, `Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, this.Names);
+    return _error(`Invalid "name" property specified ("${name}") for Icon component. A full list of available icon names:`, this.Names);
   }
 
   const render = () => {

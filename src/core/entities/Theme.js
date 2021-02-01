@@ -16,18 +16,6 @@ export default class Theme extends Updatable {
     this._submodule = this.manifest.name;
   }
 
-  log (...data) {
-    log(this._module, this._submodule, null, ...data);
-  }
-
-  error (...data) {
-    error(this._module, this._submodule, null, ...data);
-  }
-
-  warn (...data) {
-    warn(this._module, this._submodule, null, ...data);
-  }
-
   _load () {
     if (!this.applied) {
       this.applied = true;

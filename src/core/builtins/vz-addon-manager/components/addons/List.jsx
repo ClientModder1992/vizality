@@ -1,5 +1,4 @@
 import React, { memo, useState, useReducer, useEffect } from 'react';
-
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, extname } from 'path';
 

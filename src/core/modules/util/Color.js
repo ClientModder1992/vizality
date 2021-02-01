@@ -455,7 +455,7 @@ export const _rgb2int = color => {
   }
 };
 
-export const getContrastedColor = input => {
+export const getContrastColor = input => {
   let r, g, b;
 
   /** @private */

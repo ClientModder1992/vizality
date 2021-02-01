@@ -1,4 +1,4 @@
-import { getRandomColor, getContrastedColor } from './Color';
+import { getRandomColor, getContrastColor } from './Color';
 import { isArray } from './Array';
 
 /**
@@ -9,8 +9,22 @@ import { isArray } from './Array';
  */
 
 export const _parseType = type => {
-  const types = [ 'log', 'warn', 'error', 'deprecate' ];
+  const types = [ 'log', 'warn', 'error' ];
   return types.find(t => t === type) || 'log';
+};
+
+export const modules = {
+  api: { module: '#dc2167', submodule: '#242a85' },
+  core: { module: '#591870', submodule: '#ce03e5' },
+  http: { module: '#e63200', submodule: '#2e89c9' },
+  manager: { module: '#9ee945', submodule: '#782049' },
+  builtin: { module: '#267366', submodule: '#fff' },
+  plugin: { module: '#42ffa7', submodule: '#594bda' },
+  theme: { module: '#b68aff', submodule: '#f3523d' },
+  discord: { module: '#7289da', submodule: '#18191c' },
+  module: { module: '#ed7c6f', submodule: '#34426e' },
+  patch: { module: '#a70338', submodule: '#0195b5' },
+  watcher: { module: '#9a3c4e', submodule: '#fcff8d' }
 };
 
 /**
@@ -23,27 +37,15 @@ export const _parseType = type => {
  * @param {string} type Type of log to use in console
  * @returns {void}
  */
-export const _log = (module, submodule, submoduleLabelColor, message, type) => {
-  const badgeColors = {
-    api: { module: '#dc2167', submodule: '#242a85' },
-    core: { module: '#591870', submodule: '#ce03e5' },
-    http: { module: '#e63200', submodule: '#2e89c9' },
-    manager: { module: '#9ee945', submodule: '#782049' },
-    builtin: { module: '#267366', submodule: '#fff' },
-    plugin: { module: '#42ffa7', submodule: '#594bda' },
-    theme: { module: '#b68aff', submodule: '#f3523d' },
-    discord: { module: '#7289da', submodule: '#18191c' },
-    module: { module: '#ed7c6f', submodule: '#34426e' },
-    patch: { module: '#a70338', submodule: '#0195b5' },
-    watcher: { module: '#9a3c4e', submodule: '#fcff8d' }
-  };
+export const _log = (options = {}, message) => {
+  let { module, submodule, color, type } = options;
 
   type = this._parseType(type);
 
   if (!isArray(message)) message = [ message ];
 
-  module = module.toLowerCase();
-  submodule = submodule.toLowerCase();
+  module = module?.toLowerCase();
+  submodule = submodule?.toLowerCase();
 
   const randomModuleColor = getRandomColor();
   const randomSubmoduleLabelColor = getRandomColor();
@@ -54,13 +56,13 @@ export const _log = (module, submodule, submoduleLabelColor, message, type) => {
 
   const moduleStyles =
     `${baseBadgeStyles}
-    color: ${badgeColors[module] && badgeColors[module].module ? getContrastedColor(badgeColors[module].module) : getContrastedColor(randomModuleColor)};
-    background: ${badgeColors[module] && badgeColors[module].module || randomModuleColor};`;
+    color: ${this.modules[module] && this.modules[module].module ? getContrastColor(this.modules[module].module) : getContrastColor(randomModuleColor)};
+    background: ${this.modules[module] && this.modules[module].module || randomModuleColor};`;
 
   const submoduleStyles =
     `${baseBadgeStyles};
-    color: ${submoduleLabelColor ? getContrastedColor(submoduleLabelColor) : badgeColors[module] && badgeColors[module].submodule ? getContrastedColor(badgeColors[module].submodule) : getContrastedColor(randomSubmoduleLabelColor)};
-    background: ${submoduleLabelColor || badgeColors[module] && badgeColors[module].submodule || randomSubmoduleLabelColor};`;
+    color: ${color ? getContrastColor(color) : this.modules[module] && this.modules[module].submodule ? getContrastColor(this.modules[module].submodule) : getContrastColor(randomSubmoduleLabelColor)};
+    background: ${color || this.modules[module] && this.modules[module].submodule || randomSubmoduleLabelColor};`;
 
   return console[type](
     `%c %c${module}%c${submodule}`,
@@ -79,8 +81,9 @@ export const _log = (module, submodule, submoduleLabelColor, message, type) => {
  * @param {*|Array<*>} message The messages to have logged
  * @returns {void}
  */
-export const log = (module, submodule, submoduleLabelColor, ...message) => {
-  return this._log(module, submodule, submoduleLabelColor, message);
+export const log = (options, ...message) => {
+  options.type = 'log';
+  return this._log(options, message);
 };
 
 /**
@@ -91,8 +94,9 @@ export const log = (module, submodule, submoduleLabelColor, ...message) => {
  * @param {*|Array<*>} message The messages to have logged
  * @returns {void}
  */
-export const warn = (module, submodule, submoduleLabelColor, ...message) => {
-  return this._log(module, submodule, submoduleLabelColor, message, 'warn');
+export const warn = (options, ...message) => {
+  options.type = 'warn';
+  return this._log(options, message);
 };
 
 /**
@@ -103,8 +107,9 @@ export const warn = (module, submodule, submoduleLabelColor, ...message) => {
  * @param {*|Array<*>} message The messages to have logged
  * @returns {void}
  */
-export const error = (module, submodule, submoduleLabelColor, ...message) => {
-  return this._log(module, submodule, submoduleLabelColor, message, 'error');
+export const error = (options, ...message) => {
+  options.type = 'error';
+  return this._log(options, message);
 };
 
 /**
@@ -115,6 +120,7 @@ export const error = (module, submodule, submoduleLabelColor, ...message) => {
  * @param {*|Array<*>} message The messages to have logged
  * @returns {void}
  */
-export const deprecate = (module, submodule, submoduleLabelColor, ...message) => {
-  return this._log(module, submodule, submoduleLabelColor, `Deprecation Notice: ${message}`, 'warn');
+export const deprecate = (options, ...message) => {
+  options.type = 'warn';
+  return this._log(options, `Deprecation Notice: ${message}`);
 };
