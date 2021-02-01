@@ -55,10 +55,8 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
 
     /*
      * The following code was given by Lighty, thanks Lighty!
-     * ---
      */
-    // eslint-disable-next-line no-unused-vars
-    win.webContents.on('devtools-opened', async _ => {
+    win.webContents.on('devtools-opened', async () => {
       const dtwc = win.webContents.devToolsWebContents;
       // Please tell me there is a better way of doing this?
       await dtwc.executeJavaScript(`(${(() => {
@@ -86,7 +84,8 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
   }
 
   static loadUrl (originalLoadUrl, url, opts) {
-    if (url.match(/^https:\/\/discord(app)?\.com\/vizality\//)) {
+    if ((/^https:\/\/discord(app)?\.com\/vizality/).test(url)) {
+      console.log('YES');
       this.webContents.vizalityOriginalUrl = url;
       return originalLoadUrl('https://discordapp.com/app', opts);
     }

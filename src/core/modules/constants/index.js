@@ -14,7 +14,7 @@ export const HTTP = Object.freeze({
 export const Repositories = Object.freeze({
   ORG: 'vizality',
   get VIZALITY () { return `${this.ORG}/vizality`; },
-  get COMMUNITY () { return `vizality-community`; },
+  get COMMUNITY () { return 'vizality-community'; },
   get DOCS () { return `${this.ORG}/docs`; }
 });
 

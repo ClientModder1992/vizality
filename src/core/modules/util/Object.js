@@ -1,8 +1,18 @@
 import { log, error } from './Logger';
 import { toPlural } from './String';
 
-const _module = 'Module';
-const _submodule = 'Util:Object';
+const _module = 'Util';
+const _submodule = 'Object';
+
+/** @private */
+const _log = (...data) => {
+  log({ module: _module, submodule: _submodule }, ...data);
+};
+
+/** @private */
+const _error = (...data) => {
+  error({ module: _module, submodule: _submodule }, ...data);
+};
 
 /**
  * @module util.object
@@ -51,7 +61,7 @@ export const _traverse = function*(obj, targetValue, exactMatch = false, type, c
 export const _find = (obj, targetValue, exact = false, type) => {
   if (typeof targetValue !== 'string' || targetValue.trim() === '') {
     // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
-    return error(_module, `${_submodule}:_find`, null, `Expected a string argument but received ${typeof targetValue}'.`);
+    return _error(`Expected a string argument but received ${typeof targetValue}'.`);
   }
 
   let results;
@@ -59,7 +69,7 @@ export const _find = (obj, targetValue, exact = false, type) => {
   if (type === 'key' || type === 'value' || type === 'all') {
     results = [ ...this._traverse(obj, targetValue, exact, type) ];
   } else {
-    return error(_module, `${_submodule}:_find`, null, `Argument "type" must be a string value of "key", "value", or "both"`);
+    return _error(`Argument "type" must be a string value of "key", "value", or "both"`);
   }
 
   const tempResults = [ ...results ];
@@ -71,7 +81,7 @@ export const _find = (obj, targetValue, exact = false, type) => {
    * @todo This needs reworking somehow. It is bugged for objects which contain
    * keys with period(s) in them.
    */
-  log(_module, `${_submodule}:_find`, null, `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
+  _log(`${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
   if (exact) {
     results = results.map(result => result).join('\n');

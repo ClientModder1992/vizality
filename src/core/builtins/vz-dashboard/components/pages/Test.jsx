@@ -98,14 +98,14 @@ export default memo(() => {
         ]}
         renderItem={handleRender}
       /> */}
-      <Avatar
+      {/* <Avatar
         isTyping={true}
         isMobile={true}
         src='https://cdn.discordapp.com/avatars/597905003717459968/74809b431684d381a5ed0637f8adbf91.png'
         status='online'
         statusTooltip={true}
         size={Avatar.Sizes.SIZE_32}
-      />
+      /> */}
       <KeybindEntry
         keybind={{ managed: false, id: '1', action: 'TOGGLE_MUTE', shortcut: [] }}
         keybindActionTypes={[

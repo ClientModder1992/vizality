@@ -21,7 +21,6 @@ export const createElement = (type, props) => {
 
 export const waitForElement = async (querySelector, all = false) => {
   let element;
-  // @todo: Consider reworking this code... As it stands, if the element doesn't exist, it just keeps running forever...
   while (!(element = document.querySelector(querySelector))) await sleep(1);
 
   if (all) {

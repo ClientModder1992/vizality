@@ -1,6 +1,5 @@
 import { getModule, channels } from '@vizality/webpack';
 import { toHash } from '@vizality/util/string';
-import { HTTP } from '@vizality/constants';
 
 const { getChannelId } = channels;
 
@@ -20,13 +19,13 @@ export default async function monkeypatchMessages () {
 
   messages.sendMessage = (sendMessage => async (id, message, ...params) => {
     if (!message.content.startsWith(vizality.api.commands.prefix)) {
-      return sendMessage(id, message, ...params);
+      return sendMessage(id, message, ...params).catch(() => void 0);
     }
 
     const [ cmd, ...args ] = message.content.slice(vizality.api.commands.prefix.length).split(' ');
     const command = vizality.api.commands.find(c => [ c.command.toLowerCase(), ...(c.aliases?.map(alias => alias.toLowerCase()) || []) ].includes(cmd.toLowerCase()));
     if (!command) {
-      return sendMessage(id, message, ...params);
+      return sendMessage(id, message, ...params).catch(() => void 0);
     }
 
     const result = await command.executor(args, this);
@@ -87,6 +86,6 @@ export default async function monkeypatchMessages () {
       );
     }
 
-    return sendMessage(id, message, ...params);
+    return sendMessage(id, message, ...params).catch(() => void 0);
   })(this.oldSendMessage = messages.sendMessage);
 }

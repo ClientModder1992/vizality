@@ -46,7 +46,11 @@ export default memo(() => {
           </div>}
         </div>
       </div>
-      <Icon className='vz-dashboard-home-cta-icon-wrapper' name='PersonWaving' width='100%' height='100%' />
+      <Icon
+        className='vz-dashboard-home-cta-icon-wrapper'
+        name='PersonWaving'
+        size='100%'
+      />
       <WaveDivider />
     </div>
   );

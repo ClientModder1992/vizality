@@ -120,7 +120,7 @@ export const getReactInstance = node => {
 
 const RealHTMLElement = webFrame.top.context.HTMLElement;
 
-export const getOwnerInstance = (node) => {
+export const getOwnerInstance = node => {
   for (let curr = this.getReactInstance(node); curr; curr = curr.return) {
     const owner = curr.stateNode;
     if (owner && !(owner instanceof RealHTMLElement)) {

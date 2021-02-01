@@ -1,10 +1,21 @@
 import { webFrame } from 'electron';
+
 import moduleFilters from './modules.json';
 import { log, warn } from '../util/Logger';
 import { sleep } from '../util/Time';
 
 const _module = 'Module';
 const _submodule = 'Webpack';
+
+/** @private */
+const _log = (...data) => {
+  log({ module: _module, submodule: _submodule }, ...data);
+};
+
+/** @private */
+const _warn = (...data) => {
+  warn({ module: _module, submodule: _submodule }, ...data);
+};
 
 /**
  * @module webpack
@@ -92,7 +103,7 @@ export const initialize = async () => {
 
 export const findComponent = (keyword, exact = false) => {
   if (!keyword) {
-    return warn(_module, _submodule, null, `First argument provided must be a string.`);
+    return _warn('First argument provided must be a string.');
   }
 
   let byDisplayName, byDefault, byType;
@@ -134,7 +145,7 @@ export const findComponent = (keyword, exact = false) => {
   }
 
   if (!results || !Object.keys(results).length) {
-    return warn(_module, _submodule, null, `No results found for components ${exact ? 'matching' : 'containing'} '${keyword}'`);
+    return _warn(`No results found for components ${exact ? 'matching' : 'containing'} '${keyword}'`);
   }
 
   let count = 0;
@@ -142,7 +153,7 @@ export const findComponent = (keyword, exact = false) => {
 
   Object.keys(results).forEach(key => count += results[key].matches.length);
 
-  log(_module, _submodule, null, `${count} ${resultsText} found for components ${exact ? 'matching' : 'containing'} '${keyword}':\n`);
+  _log(`${count} ${resultsText} found for components ${exact ? 'matching' : 'containing'} '${keyword}':\n`);
 
   return results;
 };
