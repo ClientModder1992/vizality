@@ -18,6 +18,7 @@ export default memo(({ className, wrapperClassName, children }) => {
           <ErrorBoundary
             className='vz-dashboard-error-boundary'
             headerClassName={joinClassNames('vz-dashboard-content-header', base, content)}
+            showScene={true}
           >
             {children}
           </ErrorBoundary>

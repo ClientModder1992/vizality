@@ -76,7 +76,7 @@ export default class VizalityErrorBoundary extends PureComponent {
           <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-error-stack', thin)}>{this.state.errorStack}</div>
           <div className='vz-error-boundary-text'>Component stack:</div>
           <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-component-stack', thin)}>{this.state.componentStack}</div>
-          <PremiumModalHeaderAnimationTier2 className='vz-error-boundary-scene'/>
+          {this.props.showScene && <PremiumModalHeaderAnimationTier2 className='vz-error-boundary-scene'/>}
         </div>}
         {!this.state.hasCrashed && this.props.children}
       </>
