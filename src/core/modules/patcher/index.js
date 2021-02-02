@@ -94,11 +94,11 @@ export const isPatched = patchId => {
 export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
   try {
     if (!moduleToPatch) {
-      return this._error(`Tried to patch undefined with patch ID "${patchId}"!`);
+      throw new Error(`Tried to patch undefined with patch ID "${patchId}"!`);
     }
 
     if (patches.find(i => i.id === patchId)) {
-      return this._error(`Patch ID "${patchId}" is already used!`);
+      throw new Error(`Patch ID "${patchId}" is already used!`);
     }
 
     if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
@@ -109,10 +109,14 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       const _oldMethod = moduleToPatch[func];
       const _this = this;
       moduleToPatch[func] = function (...args) {
-        const finalArgs = _this._runPrePatches(id, args, this);
-        if (finalArgs !== false && Array.isArray(finalArgs)) {
-          const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
-          return _this._runPatches(id, finalArgs, returned, this);
+        try {
+          const finalArgs = _this._runPrePatches(id, args, this);
+          if (finalArgs !== false && Array.isArray(finalArgs)) {
+            const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
+            return _this._runPatches(id, finalArgs, returned, this);
+          }
+        } catch (err) {
+          return this._error(err);
         }
       };
       // Reassign displayName, defaultProps etc etc, not to mess with other plugins
@@ -130,7 +134,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       pre
     });
   } catch (err) {
-    
+    return this._error(err);
   }
 };
 

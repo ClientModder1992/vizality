@@ -198,10 +198,7 @@ export default class Updater extends Builtin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'blue',
             look: 'ghost',
-            onClick: () => {
-              const settingsModule = getModule('open', 'saveAccountChanges');
-              settingsModule.open('updater');
-            }
+            onClick: () => vizality.api.routes.navigate('updater')
           } ]
         });
       }
