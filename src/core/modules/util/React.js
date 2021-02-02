@@ -32,57 +32,60 @@ const _error = (...data) => {
  * that are allowed to be walked on. Null value indicates all keys are walkable
  * @param {Array<string>} [options.ignore=[]] Array of strings to use as keys to exclude
  * from the search, most helpful when `walkable = null`
- * @param {boolean} [options.whileLoop=false] Whether or not to use a while loop instead of recursion. This is slower, but not prone to stack overflow.
  * @returns {Node|undefined}
  */
 export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) => {
-  if (!tree || typeof tree !== 'object') {
-    return null;
-  }
-
-  if (typeof filter === 'string') {
-    if (tree.hasOwnProperty(filter)) {
-      return tree[filter];
+  try {
+    if (!tree || typeof tree !== 'object') {
+      return null;
     }
 
-    return;
-  } else if (filter(tree)) {
-    return tree;
-  }
+    if (typeof filter === 'string') {
+      if (tree.hasOwnProperty(filter)) {
+        return tree[filter];
+      }
 
-  let returnValue = null;
+      return;
+    } else if (filter(tree)) {
+      return tree;
+    }
 
-  if (Array.isArray(tree)) {
-    for (const value of tree) {
-      returnValue = this.findInTree(value, filter, {
-        walkable,
-        ignore
-      });
+    let returnValue = null;
 
-      if (returnValue) {
-        return returnValue;
+    if (Array.isArray(tree)) {
+      for (const value of tree) {
+        returnValue = this.findInTree(value, filter, {
+          walkable,
+          ignore
+        });
+
+        if (returnValue) {
+          return returnValue;
+        }
+      }
+    } else {
+      const walkables = !walkable ? Object.keys(tree) : walkable;
+
+      for (const key of walkables) {
+        if (!tree.hasOwnProperty(key) || ignore.includes(key)) {
+          continue;
+        }
+
+        returnValue = this.findInTree(tree[key], filter, {
+          walkable,
+          ignore
+        });
+
+        if (returnValue) {
+          return returnValue;
+        }
       }
     }
-  } else {
-    const walkables = !walkable ? Object.keys(tree) : walkable;
 
-    for (const key of walkables) {
-      if (!tree.hasOwnProperty(key) || ignore.includes(key)) {
-        continue;
-      }
-
-      returnValue = this.findInTree(tree[key], filter, {
-        walkable,
-        ignore
-      });
-
-      if (returnValue) {
-        return returnValue;
-      }
-    }
+    return returnValue;
+  } catch (err) {
+    console.warn(err);
   }
-
-  return returnValue;
 };
 
 /**
@@ -109,13 +112,7 @@ export const getReactInstance = node => {
     `[vz-react-instance="${i}"]`
   );
   node?.removeAttribute('vz-react-instance');
-  return elem[
-    Object.keys(elem).find(
-      (key) =>
-        key.startsWith('__reactInternalInstance') ||
-        key.startsWith('__reactFiber')
-    )
-  ];
+  return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
 };
 
 const RealHTMLElement = webFrame.top.context.HTMLElement;

@@ -9,19 +9,16 @@ import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
 import { Builtin } from '@vizality/entities';
 
-// import AnnouncementContainer from './components/AnnouncementContainer';
+import AnnouncementContainer from './components/AnnouncementContainer';
 import ToastContainer from './components/ToastContainer';
 
 const { unlink } = promises;
 
 export default class Notices extends Builtin {
-  start () {
+  async start () {
     this.injectStyles('styles/main.scss');
-    /*
-     * @todo Fix this.
-     * this._patchAnnouncements();
-     */
-    this._patchToasts();
+    await this._patchAnnouncements();
+    await this._patchToasts();
 
     const injectedFile = join(Directories.SRC, '__injected.txt');
 
@@ -43,14 +40,12 @@ export default class Notices extends Builtin {
   async _patchAnnouncements () {
     const { base } = getModule('base', 'container');
     const instance = getOwnerInstance(await waitForElement(`.${base.split(' ')[0]}`));
-    patch('vz-notices-announcements', instance.__proto__, 'render', (_, res) => {
+    patch('vz-notices-announcements', instance.props.children, 'type', (_, res) => {
       res.props.children[1].props.children.unshift(
         <AnnouncementContainer />
       );
       return res;
     });
-
-    instance.forceUpdate();
   }
 
   async _patchToasts () {

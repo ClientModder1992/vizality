@@ -12,7 +12,7 @@ export default class Router extends Builtin {
     await this.injectRouter();
     await this.injectViews();
     await this.injectSidebar();
-    this.forceRouterUpdate();
+    await this.forceRouterUpdate();
     vizality.api.routes.on('routeAdded', this.forceRouterUpdate);
     vizality.api.routes.on('routeRemoved', this.forceRouterUpdate);
   }
@@ -27,7 +27,7 @@ export default class Router extends Builtin {
   }
 
   async injectRouter () {
-    const { container } = await getModule('container', 'downloadProgressCircle', true);
+    const { container } = getModule('container', 'downloadProgressCircle');
     const RouteRenderer = getOwnerInstance(await waitForElement(`.${container}`));
     patch('vz-router-routes', RouteRenderer.props.children, 'type', (_, res) => {
       const { children } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
@@ -35,7 +35,6 @@ export default class Router extends Builtin {
         ...vizality.api.routes.routes.map(route => ({
           ...children[0],
           props: {
-            // @todo: Error boundary (?)
             render: () => {
               const Render = route.render;
               return <Render />;
@@ -49,7 +48,7 @@ export default class Router extends Builtin {
   }
 
   async injectViews () {
-    const FluxifiedViews = await getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)', true);
+    const FluxifiedViews = getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
     const Views = FluxifiedViews.prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
     patch('vz-router-views', Views.prototype, 'render', (_, res) => {
       const routes = findInTree(res, n => Array.isArray(n) && n[0] && n[0].key && n[0].props.path && n[0].props.render);
@@ -62,7 +61,7 @@ export default class Router extends Builtin {
   }
 
   async injectSidebar () {
-    const { panels } = await getModule('panels', true);
+    const { panels } = getModule('panels');
     const instance = getOwnerInstance(await waitForElement(`.${panels}`));
     const Routes = getModule('handleRouteChange');
     patch('vz-router-sidebar', instance.props.children, 'type', (_, res) => {
@@ -96,7 +95,7 @@ export default class Router extends Builtin {
     findInTree(viewsInstance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
 
     // Routes
-    const { container } = await getModule('container', 'downloadProgressCircle', true);
+    const { container } = getModule('container', 'downloadProgressCircle');
     const routesInstance = getOwnerInstance(await waitForElement(`.${container}`));
     routesInstance.forceUpdate();
   }

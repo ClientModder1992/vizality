@@ -118,7 +118,7 @@ electron.app.once('ready', () => {
     done({ responseHeaders });
   });
 
-  const urlRegex = /^(https:\/\/(?:canary|ptb)?.?discord(app)?\.com)\/vizality\//;
+  const urlRegex = /^(https:\/\/(?:canary|ptb)?.?discord(app)?\.com)\/vizality/;
 
   electron.session.defaultSession.webRequest.onBeforeRequest((details, done) => {
     if (urlRegex.test(details.url)) {

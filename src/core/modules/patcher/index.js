@@ -104,7 +104,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
     if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
       // 1st patch
       const id = randomBytes(16).toString('hex');
-      moduleToPatch.__vizalityPatchId = Object.assign((moduleToPatch.__vizalityPatchId || {}), { [func]: id, name: patchId });
+      moduleToPatch.__vizalityPatchId = Object.assign((moduleToPatch.__vizalityPatchId || {}), { [func]: id });
       moduleToPatch[`__vizalityOriginal_${func}`] = moduleToPatch[func]; // To allow easier debugging
       const _oldMethod = moduleToPatch[func];
       const _this = this;
