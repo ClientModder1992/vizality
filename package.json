@@ -6,7 +6,7 @@
     "email": "dustin.perolio@gmail.com",
     "url": "https://dperolio.com"
   },
-  "description": "A robust @discord client mod focused on design and user customizability",
+  "description": "A robust @discord client mod focused on design, ease of use, and user customizability",
   "homepage": "https://vizality.com",
   "license": "GPL-3.0",
   "funding": [
@@ -33,8 +33,6 @@
   },
   "main": "index.js",
   "scripts": {
-    "compile-sass": "node src/compile",
-    "lint": "eslint --ext js --ext jsx src",
     "inject": "node src/inject inject --no-exit-codes",
     "uninject": "node src/inject uninject --no-exit-codes"
   },
