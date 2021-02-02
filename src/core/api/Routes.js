@@ -103,7 +103,7 @@ export default class Routes extends API {
     }
   }
 
-  navigate (path) {
+  navigate (path = '') {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');
@@ -113,9 +113,6 @@ export default class Routes extends API {
       // Pop all modals
       popAll();
       // Go to route
-
-      // If no path provided, go to the Vizality dashboard home
-      if (!path) return transitionTo('/vizality');
 
       if (!path.startsWith('/')) {
         const { Routes } = getModule('Routes');
@@ -128,10 +125,13 @@ export default class Routes extends API {
             case 'library': path = Routes.APPLICATION_LIBRARY; break;
             case 'nitro': path = Routes.APPLICATION_STORE; break;
           }
+        } if (path === '/vizality') {
+          path = '';
         } else {
           path = `/vizality/${path}`;
         }
       }
+
       transitionTo(path);
     } catch (err) {
       return this.error(err);
