@@ -142,7 +142,7 @@ export default class AddonManager {
 
       this.items.set(addonId, new AddonClass());
     } catch (err) {
-      this._error(`An error occurred while initializing "${addonId}"!`, err);
+      return this._error(`An error occurred while initializing "${addonId}"!`, err);
     }
   }
 
@@ -163,7 +163,7 @@ export default class AddonManager {
 
       this.items.delete(addonId);
     } catch (err) {
-      this._error(`An error occurred while unmounting "${addonId}"!`, err);
+      return this._error(`An error occurred while unmounting "${addonId}"!`, err);
     }
   }
 
@@ -171,17 +171,17 @@ export default class AddonManager {
     try {
       await this.unmount(addonId, showLogs);
     } catch (err) {
-      this._error(`An error occurred while remounting "${addonId}"!`, err);
+      return this._error(`An error occurred while remounting "${addonId}"!`, err);
     }
     /*
-     * I have these separated because it seems to cause problems if they're not for some
-     * reason. Not confirmed yet though.
+     * @note I have these separated like this because it seems to cause problems if they're
+     * not separated for some reason. Not confirmed yet though.
      */
     try {
       await this.mount(addonId);
       await this.get(addonId)?._load(showLogs);
     } catch (err) {
-      this._error(`An error occurred while remounting "${addonId}"!`, err);
+      return this._error(`An error occurred while remounting "${addonId}"!`, err);
     }
   }
 
@@ -192,10 +192,9 @@ export default class AddonManager {
         await this.remount(addon, false);
       }
     } catch (err) {
-      this._error(`An error occurred while remounting all ${this.type}!`, err);
+      return this._error(`An error occurred while remounting all ${this.type}!`, err);
     }
-
-    this._log(`All ${this.type} have been re-initialized!`);
+    return this._log(`All ${this.type} have been re-initialized!`);
   }
 
   async initialize () {
@@ -247,21 +246,25 @@ export default class AddonManager {
   }
 
   async enable (addonId) {
-    const addon = this.get(addonId);
+    try {
+      const addon = this.get(addonId);
 
-    if (!addon) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: "${addonId}"!`);
+      if (!addon) {
+        throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: "${addonId}"!`);
+      }
+
+      if ((this.type === 'plugins' || this.type === 'builtins') && addon._ready) {
+        throw new Error(`Tried to enable an already-loaded ${toSingular(this.type)}: "${addonId}"!`);
+      }
+
+      vizality.settings.set(`disabled${toTitleCase(this.type)}`,
+        vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
+          .filter(addon => addon !== addonId));
+
+      await addon._load('enabled');
+    } catch (err) {
+      return this._error(err);
     }
-
-    if ((this.type === 'plugins' || this.type === 'builtins') && addon._ready) {
-      return this._error(`Tried to load an already-loaded ${toSingular(this.type)}: "${addonId}"!`);
-    }
-
-    vizality.settings.set(`disabled${toTitleCase(this.type)}`,
-      vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
-        .filter(addon => addon !== addonId));
-
-    await addon._load('enabled');
   }
 
   async disable (addonId) {
@@ -272,7 +275,7 @@ export default class AddonManager {
       }
 
       if ((this.type !== 'themes') && !addon._ready) {
-        throw new Error(`Tried to unload a non-loaded ${toSingular(this.type)}: "${addon}"!`);
+        throw new Error(`Tried to disable a non-loaded ${toSingular(this.type)}: "${addon}"!`);
       }
 
       vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
@@ -336,41 +339,62 @@ export default class AddonManager {
   }
 
   async install (url) {
-    const addonId = url.split('.git')[0].split('/')[url.split('.git')[0].split('/').length - 1];
     try {
-      if (!url?.endsWith('.git')) {
-        throw new Error('You must provide a valid GitHub repository URL ending with .git!');
+      /**
+       * This is temporary until we get the API working to request this info from an endpoint.
+       */
+      const community = [ 'spotify-in-discord', 'copy-raw-message', 'better-code-blocks', 'status-everywhere', 'open-links-in-discord', 'example-plugin-settings', 'channel-members-activity-icons', 'bring-back-gamer-text', 'heyzere' ];
+
+      let addonId;
+      for (const addon of community) {
+        if (url === addon) {
+          addonId = addon;
+          break;
+        }
       }
 
+      if (!addonId) {
+        if (!new RegExp(/^(((https?:\/\/)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})\/))|((ssh:\/\/)?git@)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})(:)))([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})(\/)([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})((\.git)?)$/).test(url)) {
+          throw new Error('You must provide a valid GitHub repository URL or an addon ID from https://github.com/vizality-community!');
+        }
+      }
+
+      // The URL must end in git to get processed by isomorphic-git below
+      if (!url.endsWith('.git')) {
+        url = `${url}.git`;
+      }
+
+      addonId = addonId || url.split('.git')[0].split('/')[url.split('.git')[0].split('/').length - 1];
+
       if (this.isInstalled(addonId)) {
-        throw new Error(`${toSingular(toTitleCase(this.type))} is already installed!`);
+        throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is already installed!`);
       }
 
       if (existsSync(join(this.dir, addonId)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
         throw new Error(`${toSingular(toTitleCase(this.type))} directory "${addonId}" already exists!`);
       }
 
-      await clone({
-        fs,
-        http,
-        singleBranch: true,
-        depth: 1,
-        dir: join(this.dir, addonId),
-        url
-      })
-        .then(async () => {
-          this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
-          await this.mount(addonId);
-          await this.get(addonId)._load(false);
-        })
-        .catch(async err => {
-          /*
-           * isomorphic-git creates the directory before it checks anything, whether there is
-           * a response or not, so let's remove it if there's an error here.
-           */
-          await removeDirRecursive(resolve(this.dir, addonId));
-          return this._error(err);
+      try {
+        await clone({
+          fs,
+          http,
+          singleBranch: true,
+          depth: 1,
+          dir: join(this.dir, addonId),
+          url
         });
+      } catch (err) {
+        /*
+         * isomorphic-git creates the directory before it checks anything, whether there is
+         * a response or not, so let's remove it if there's an error here.
+         */
+        await removeDirRecursive(resolve(this.dir, addonId));
+        return this._error(err);
+      }
+
+      this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
+      await this.mount(addonId);
+      await this.get(addonId)._load(false);
     } catch (err) {
       return this._error(err);
     }
