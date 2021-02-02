@@ -7,7 +7,7 @@ export default {
   options: [
     { name: 'addonId', required: true }
   ],
-  executor (args, type) {
+  async executor (args, type) {
     let result;
 
     if (!args || !args.length) {
@@ -18,9 +18,13 @@ export default {
     }
 
     if (vizality.manager[toPlural(type)].isInstalled(args[0])) {
-      vizality.manager[toPlural(type)].uninstall(args[0]);
+      try {
+        return vizality.manager[toPlural(type)].uninstall(args[0]);
+      } catch (err) {
+        result = err;
+      }
     } else {
-      result = `${toTitleCase(type)} \`${args[0]}\` is not installed.`;
+      result = `${toTitleCase(type)} "${args[0]}" is not installed.`;
     }
 
     return {
@@ -33,7 +37,7 @@ export default {
     if (args.length > 1) return false;
 
     const addons =
-      vizality.manager[toPlural(type)].getEnabledKeys()
+      vizality.manager[toPlural(type)].keys
         .sort((a, b) => a - b)
         .map(plugin => vizality.manager[toPlural(type)].get(plugin));
 
