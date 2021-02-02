@@ -1,7 +1,6 @@
-import fs, { readdirSync, existsSync, stat, lstatSync } from 'fs';
-import { watch } from 'chokidar';
+import fs, { readdirSync, existsSync, lstatSync } from 'fs';
 import { resolve } from 'path';
-import { sep, join } from 'path';
+import { join } from 'path';
 import { clone } from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
 
@@ -106,6 +105,8 @@ export default class AddonManager {
   // Mount/load/enable/install
   async mount (addonId) {
     let manifest;
+    // Skip the .exists file
+    if (addonId === '.exists') return;
     try {
       manifest = Object.assign({
         appMode: 'app'
@@ -197,19 +198,19 @@ export default class AddonManager {
     this._log(`All ${this.type} have been re-initialized!`);
   }
 
-  // Start/Stop
   async initialize () {
     let addonId;
     try {
       const files = readdirSync(this.dir);
       for (const filename of files) {
-        if (filename.startsWith('.')) {
+        addonId = filename;
+
+        if (lstatSync(join(this.dir, addonId)).isFile() && addonId !== '.exists') {
           continue;
         }
 
-        addonId = filename;
-
         await this.mount(addonId);
+
         // If addon didn't mount
         if (!this.get(addonId)) {
           continue;
@@ -220,7 +221,7 @@ export default class AddonManager {
         }
       }
     } catch (err) {
-      this._error(`An error occurred while initializing "${addonId}"!`, err);
+      return this._error(`An error occurred while initializing "${addonId}"!`, err);
     }
   }
 
@@ -249,11 +250,11 @@ export default class AddonManager {
     const addon = this.get(addonId);
 
     if (!addon) {
-      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)} "${addonId}"!`);
+      throw new Error(`Tried to enable a non-installed ${toSingular(this.type)}: "${addonId}"!`);
     }
 
     if ((this.type === 'plugins' || this.type === 'builtins') && addon._ready) {
-      return this._error(`Tried to load an already-loaded ${toSingular(this.type)} "${addonId}"!`);
+      return this._error(`Tried to load an already-loaded ${toSingular(this.type)}: "${addonId}"!`);
     }
 
     vizality.settings.set(`disabled${toTitleCase(this.type)}`,
@@ -264,22 +265,25 @@ export default class AddonManager {
   }
 
   async disable (addonId) {
-    const addon = this.get(addonId);
+    try {
+      const addon = this.get(addonId);
+      if (!addon) {
+        throw new Error(`Tried to disable a non-installed ${toSingular(this.type)}: "${addonId}"!`);
+      }
 
-    if (!addon) {
-      throw new Error(`Tried to disable a non-installed ${toSingular(this.type)} "${addonId}"!`);
+      if ((this.type !== 'themes') && !addon._ready) {
+        throw new Error(`Tried to unload a non-loaded ${toSingular(this.type)}: "${addon}"!`);
+      }
+
+      vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
+        ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []),
+        addonId
+      ]);
+
+      await addon._unload('disabled');
+    } catch (err) {
+      return this._error(err);
     }
-
-    if ((this.type === 'plugins' || this.type === 'builtins') && !addon._ready) {
-      return this._error(`Tried to unload a non-loaded ${toSingular(this.type)} "${addon}"!`);
-    }
-
-    vizality.settings.set(`disabled${toTitleCase(this.type)}`, [
-      ...vizality.settings.get(`disabled${toTitleCase(this.type)}`, []),
-      addonId
-    ]);
-
-    await addon._unload('disabled');
   }
 
   /**
@@ -311,7 +315,7 @@ export default class AddonManager {
 
   async enableAll () {
     try {
-      const addons = this.getDisabled();
+      const addons = this.getDisabledKeys();
       for (const addon of addons) {
         await this.enable(addon);
       }
@@ -322,7 +326,7 @@ export default class AddonManager {
 
   async disableAll () {
     try {
-      const addons = this.getEnabled();
+      const addons = this.getEnabledKeys();
       for (const addon of addons) {
         await this.disable(addon);
       }
@@ -361,8 +365,8 @@ export default class AddonManager {
         })
         .catch(async err => {
           /*
-           * isomorphic-git creates the directory before even check if the
-           * repositry URL is valid, so let's remove it if there's an error here.
+           * isomorphic-git creates the directory before it checks anything, whether there is
+           * a response or not, so let's remove it if there's an error here.
            */
           await removeDirRecursive(resolve(this.dir, addonId));
           return this._error(err);
@@ -413,18 +417,7 @@ export default class AddonManager {
   }
 
   /** @private */
-  _log (...data) {
-    log({ module: this._module, submodule: this._submodule }, ...data);
-  }
-
-  /** @private */
-  _warn (...data) {
-    warn({ module: this._module, submodule: this._submodule }, ...data);
-  }
-
-  /** @private */
-  _error (...data) {
-    console.log('ERROR', error);
-    error({ module: this._module, submodule: this._submodule }, ...data);
-  }
+  _log (...data) { log({ module: this._module, submodule: this._submodule }, ...data); }
+  _warn (...data) { warn({ module: this._module, submodule: this._submodule }, ...data); }
+  _error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
 }

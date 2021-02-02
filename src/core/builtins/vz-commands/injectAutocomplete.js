@@ -63,7 +63,8 @@ export default function injectAutocomplete () {
       this.settings.set('showCommandImages', false);
       this.settings.set('showCommandRail', true);
       this.settings.set('private.pie', true);
-    } else { // Else show the slate autocomplete with image icons
+    // Else show the slate autocomplete with image icons
+    } else {
       this.settings.set('showCommandImages', true);
       this.settings.set('showCommandRail', false);
     }

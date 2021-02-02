@@ -21,7 +21,12 @@ export default memo(() => {
         <div className='vz-dashboard-home-cta-background' />
       </div>
       <div className='vz-dashboard-home-cta-content'>
-        <Icon className='vz-dashboard-home-cta-content-icon-wrapper' iconClassName='vz-dashboard-home-cta-content-icon' name='Vizality' width='100%' height='100%' />
+        <Icon
+          className='vz-dashboard-home-cta-content-icon-wrapper'
+          iconClassName='vz-dashboard-home-cta-content-icon'
+          name='Vizality'
+          size='100%'
+        />
         <div className='vz-dashboard-home-cta-content-header-wrapper'>
           <h1 className='vz-dashboard-home-cta-content-header'>Welcome, {username}!</h1>
           <h3 className='vz-dashboard-home-cta-content-subtext'>

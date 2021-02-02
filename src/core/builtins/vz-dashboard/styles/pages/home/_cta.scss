@@ -9,15 +9,17 @@
   align-items: center;
   overflow: hidden;
   &-icon-wrapper {
-    @include size(400px, auto);
-    position: absolute;
-    right: 100px;
-    bottom: -20px;
-    color: #fff;
-    @at-root {
-      @media (max-width: 1750px) {
-        & {
-          display: none;
+    &.vz-icon-wrapper {
+      @include size(400px, auto);
+      position: absolute;
+      right: 100px;
+      bottom: -20px;
+      color: #fff;
+      @at-root {
+        @media (max-width: 1750px) {
+          & {
+            display: none;
+          }
         }
       }
     }
@@ -59,22 +61,24 @@
     justify-content: center;
     animation: fadeShortSlideInFromTop .3s forwards;
     &-icon-wrapper {
-      width: 200px;
-      flex: 1 0 auto;
-      margin-right: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      padding-top: 200px;
-      height: 0;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      @at-root {
-        @media (max-width: 1200px) {
-          & {
-            display: none;
+      &.vz-icon-wrapper {
+        width: 200px;
+        flex: 1 0 auto;
+        margin-right: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        padding-top: 200px;
+        height: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        @at-root {
+          @media (max-width: 1200px) {
+            & {
+              display: none;
+            }
           }
         }
       }

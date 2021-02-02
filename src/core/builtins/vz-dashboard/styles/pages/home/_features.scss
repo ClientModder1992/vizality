@@ -76,15 +76,16 @@
     // }
     // @todo Fix background color for light theme.
     &-wrapper {
-      display: flex;
-      height: 50px;
-      width: 50px;
-      margin-top: -90px;
-      border-radius: 50%;
-      padding: 20px;
-      border: 20px solid var(--background-primary);
-      background-color: var(--background-accent);
-      transition: background-color .3s ease;
+      &.vz-icon-wrapper {
+        @include size(50px);
+        display: flex;
+        margin-top: -90px;
+        border-radius: 50%;
+        padding: 20px;
+        border: 20px solid var(--background-primary);
+        background-color: var(--background-accent);
+        transition: background-color .3s ease;
+      }
     }
   }
 }

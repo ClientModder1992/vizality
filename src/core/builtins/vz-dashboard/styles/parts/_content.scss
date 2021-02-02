@@ -56,10 +56,12 @@
       align-items: center;
     }
     &-icon-wrapper {
-      @include size(24px);
-      margin-right: 10px;
-      z-index: 1;
-      color: var(--header-secondary);
+      &.vz-icon-wrapper {
+        @include size(24px);
+        margin-right: 10px;
+        z-index: 1;
+        color: var(--header-secondary);
+      }
     }
   }
   &.vz-hasBackground {
