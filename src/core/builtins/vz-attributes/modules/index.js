@@ -9,10 +9,7 @@ import Member from './members/Member';
 
 // Guilds Sidebar
 import Folder from './guilds/Folder';
-/*
- * @todo Fix this.
- */
-// import Guild from './guilds/Guild';
+import Guild from './guilds/Guild';
 
 // Components
 import GameIcon from './components/GameIcon';
@@ -47,7 +44,7 @@ export default {
   RoleHeader,
   Member,
   Folder,
-  // Guild,
+  Guild,
   GameIcon,
   TabBar,
   Anchor,

@@ -4,46 +4,48 @@ import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 
 export default () => {
-  const DragSourceConnectedGuild = getModule('LurkingGuild');
-  const { DecoratedComponent } = DragSourceConnectedGuild.default;
+  try {
+    const DragSourceConnectedGuild = getModule('LurkingGuild');
+    const { DecoratedComponent } = DragSourceConnectedGuild.default;
 
-  const g = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
-  const ogUseState = g.useState;
-  const ogUseLayoutEffect = g.useLayoutEffect;
-  const ogUseCallback = g.useCallback;
-  const ogUseContext = g.useContext;
-  const ogUseRef = g.useRef;
+    const g = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
+    const ogUseState = g.useState;
+    const ogUseLayoutEffect = g.useLayoutEffect;
+    const ogUseCallback = g.useCallback;
+    const ogUseContext = g.useContext;
+    const ogUseRef = g.useRef;
 
-  g.useState = () => [ null, () => void 0 ];
-  g.useLayoutEffect = () => null;
-  g.useRef = () => ({});
-  g.useCallback = (fnc) => (fnc);
-  g.useContext = () => ({});
+    g.useState = () => [ null, () => void 0 ];
+    g.useLayoutEffect = () => null;
+    g.useRef = () => ({});
+    g.useCallback = (fnc) => (fnc);
+    g.useContext = () => ({});
 
-  const Guild = new DecoratedComponent({ guildId: null }).type;
+    const Guild = new DecoratedComponent({ guildId: null }).type;
 
-  g.useState = ogUseState;
-  g.useLayoutEffect = ogUseLayoutEffect;
-  g.useCallback = ogUseCallback;
-  g.useContext = ogUseContext;
-  g.useRef = ogUseRef;
+    g.useState = ogUseState;
+    g.useLayoutEffect = ogUseLayoutEffect;
+    g.useCallback = ogUseCallback;
+    g.useContext = ogUseContext;
+    g.useRef = ogUseRef;
 
-  patch('vz-attributes-guilds', Guild.prototype, 'render', function (_, res) {
-    // This was needed for guilds with outages, not sure if it's needed anymore.
-    if (!res) return _;
+    patch('vz-attributes-guilds', Guild.prototype, 'render', function (_, res) {
+      // This was needed for guilds with outages, not sure if it's needed anymore.
+      if (!res) return _;
 
-    const { audio, badge: mentions, selected, unread, video, screenshare, guildId } = this.props;
+      const { audio, badge: mentions, selected, unread, video, screenshare, guildId } = this.props;
 
-    res.props['vz-guild-id'] = guildId;
-    res.props['vz-unread'] = Boolean(unread) && '';
-    res.props['vz-selected'] = Boolean(selected) && '';
-    res.props['vz-audio'] = Boolean(audio) && '';
-    res.props['vz-video'] = Boolean(video) && '';
-    res.props['vz-screenshare'] = Boolean(screenshare) && '';
-    res.props['vz-mentioned'] = Boolean(mentions > 0) && '';
+      res.props['vz-guild-id'] = guildId;
+      res.props['vz-unread'] = Boolean(unread) && '';
+      res.props['vz-selected'] = Boolean(selected) && '';
+      res.props['vz-audio'] = Boolean(audio) && '';
+      res.props['vz-video'] = Boolean(video) && '';
+      res.props['vz-screenshare'] = Boolean(screenshare) && '';
+      res.props['vz-mentioned'] = Boolean(mentions > 0) && '';
 
-    return res;
-  });
+      return res;
+    });
 
-  return () => unpatch('vz-attributes-guilds');
+    return () => unpatch('vz-attributes-guilds');
+  } catch (err) {}
 };
