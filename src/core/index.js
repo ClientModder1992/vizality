@@ -1,9 +1,12 @@
 import { promisify } from 'util';
 import cp from 'child_process';
+import { join } from 'path';
 
 import { Directories, Developers, Events } from '@vizality/constants';
 import { initialize, getModule } from '@vizality/webpack';
 import { log, warn, error } from '@vizality/util/logger';
+import { resolveCompiler } from '@vizality/compilers';
+import { createElement } from '@vizality/util/dom';
 import { Updatable } from '@vizality/entities';
 import { sleep } from '@vizality/util/time';
 
@@ -107,6 +110,9 @@ export default class Vizality extends Updatable {
       setImmediate(() => tokenModule.showToken());
     }
 
+    // Inject main Vizality styles
+    this._injectMainStyles();
+
     // Used in src/preload/main
     this.emit(Events.VIZALITY_INITIALIZE);
   }
@@ -148,8 +154,8 @@ export default class Vizality extends Updatable {
 
     // Initialize builtins, plugins, and themes
     await this.manager.builtins.initialize(); // Builtins
-    await this.manager.themes.initialize(); // Themes
     await this.manager.plugins.initialize(); // Plugins
+    await this.manager.themes.initialize(); // Themes
 
     // Set up shorthand global object
     window.$vz = Object.assign({}, vizality.manager, vizality.api, vizality.modules);
@@ -266,6 +272,33 @@ export default class Vizality extends Updatable {
       return success;
     } catch (err) {
       return this._error(`An error occurred while updating Vizality!`, err);
+    }
+  }
+
+  /**
+   * Injects a style element containing Vizality's core styles.
+   */
+  _injectMainStyles () {
+    const path = join(__dirname, 'styles', 'main.scss');
+    const id = Math.random().toString(36).slice(2);
+    const compiler = resolveCompiler(path);
+    const style = createElement('style', {
+      id: 'vizality-core-styles',
+      'vz-style': ''
+    });
+
+    document.head.appendChild(style);
+
+    const compile = async () => {
+      style.innerHTML = await compiler.compile();
+    };
+
+    if (this.settings.get('verifiedVizalityDeveloper', false)) {
+      compiler.enableWatcher();
+      compiler.on('src-update', compile);
+      this[`__compileStylesheet_${id}`] = compile;
+      this[`__compiler_${id}`] = compiler;
+      return compile();
     }
   }
 

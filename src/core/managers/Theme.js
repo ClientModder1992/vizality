@@ -1,90 +1,38 @@
-import { promises, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import { join } from 'path';
-
-import { resolveCompiler } from '@vizality/compilers';
-import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 
 import Theme from '../entities/Theme';
 import AddonManager from './Addon';
 
 const fileRegex = /\.((s?c)ss)$/;
-const { lstat } = promises;
-
-const ErrorTypes = Object.freeze({
-  NOT_A_DIRECTORY: 'NOT_A_DIRECTORY',
-  MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
-  INVALID_MANIFEST: 'INVALID_MANIFEST'
-});
 
 export default class ThemeManager extends AddonManager {
   constructor (type, dir) {
     type = 'themes';
     dir = Directories.THEMES;
-
     super(type, dir);
-
-    if (!window.__SPLASH__) {
-      /**
-       * Injects a style element containing Vizality's core styles.
-       * @returns {void}
-       */
-      const injectStyles = () => {
-        const path = join(__dirname, '..', 'styles', 'main.scss');
-
-        const id = Math.random().toString(36).slice(2);
-        const compiler = resolveCompiler(path);
-        const style = createElement('style', {
-          id: 'vizality-core-styles',
-          'vz-style': ''
-        });
-
-        document.head.appendChild(style);
-        const compile = async () => {
-          style.innerHTML = await compiler.compile();
-        };
-
-        compiler.enableWatcher();
-        compiler.on('src-update', compile);
-        this[`__compileStylesheet_${id}`] = compile;
-        this[`__compiler_${id}`] = compiler;
-        return compile();
-      };
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', injectStyles);
-      } else {
-        injectStyles();
-      }
-    }
   }
 
-  async mount (themeID) {
-    const stat = await lstat(join(this.dir, themeID));
-    if (stat.isFile()) {
-      this._logError(ErrorTypes.NOT_A_DIRECTORY, [ themeID ]);
-      return;
-    }
+  async mount (addonId) {
+    // Skip the .exists file
+    if (addonId === '.exists') return;
+    const manifestFile = join(this.dir, addonId, 'manifest.json');
 
-    const manifestFile = join(this.dir, themeID, 'manifest.json');
     if (!existsSync(manifestFile)) {
-      // Add an error here
-      return;
+      return this._error(`no manifest found`);
     }
 
     let manifest;
     try {
       manifest = await import(manifestFile);
     } catch (err) {
-      this._logError(ErrorTypes.MANIFEST_LOAD_FAILED, [ themeID ]);
-      console.error('%c[Vizality:StyleManager]', 'color: #7289da', 'Failed to load manifest', err);
-      return;
+      return this._error('Failed to load manifest');
     }
 
     const errors = this._validateManifest(manifest);
     if (errors.length > 0) {
-      this._logError(ErrorTypes.INVALID_MANIFEST, [ themeID ]);
-      console.error('%c[Vizality:StyleManager]', 'color: #7289da', `Invalid manifest; Detected the following errors:\n\t${errors.join('\n\t')}`);
-      return;
+      return this._error(`Invalid manifest; Detected the following errors:\n\t${errors.join('\n\t')}`);
     }
 
     if (window.__SPLASH__ && manifest.splashTheme) {
@@ -94,12 +42,12 @@ export default class ThemeManager extends AddonManager {
     } else if (!window.__OVERLAY__ && !window.__SPLASH__ && manifest.theme) {
       manifest.effectiveTheme = manifest.theme;
     } else {
-      return console.warn('%c[Vizality:StyleManager]', 'color: #7289da', `Theme "${themeID}" is not meant to run on that environment - Skipping`);
+      return this._warn(`Theme "${addonId}" is not meant to run on that environment - Skipping`);
     }
 
-    manifest.effectiveTheme = join(this.dir, themeID, manifest.effectiveTheme);
-    this._setIcon(themeID, manifest);
-    this.items.set(themeID, new Theme(themeID, manifest));
+    manifest.effectiveTheme = join(this.dir, addonId, manifest.effectiveTheme);
+    this._setIcon(addonId, manifest);
+    this.items.set(addonId, new Theme(addonId, manifest));
   }
 
   _validateManifest (manifest) {
