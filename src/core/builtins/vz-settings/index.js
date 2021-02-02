@@ -32,14 +32,15 @@ export default class Settings extends Builtin {
     this.patchSettingsComponent();
     this.patchExperiments();
     this.patchSettingsContextMenu();
+    this.patchSettingsContextMenuAddonItem();
   }
 
   stop () {
-    vizality.api.routes.unregisterRoute('/dashboard/settings');
+    vizality.api.routes.unregisterRoute('/settings');
     vizality.api.actions.unregisterAction('confirmRestart');
     unpatch('vz-settings-items');
-    unpatch('vz-settings-actions');
-    unpatch('vz-settings-errorHandler');
+    unpatch('vz-settings-context-menu');
+    unpatch('vz-settings-context-menu-addon-items');
   }
 
   confirmRestart () {
@@ -104,9 +105,30 @@ export default class Settings extends Builtin {
 
   patchSettingsContextMenu () {
     const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
-    patch('vz-settings-actions', SettingsContextMenu, 'default', (_, res) => {
+    patch('vz-settings-context-menu', SettingsContextMenu, 'default', (_, res) => {
       const items = res.props.children.find(child => Array.isArray(child));
       items.push(ContextMenu.type().props.children[1]);
+      return res;
+    });
+  }
+
+  patchSettingsContextMenuAddonItem () {
+    const MenuCheckboxItem = getModule(m => m.default?.displayName === 'MenuCheckboxItem');
+    patch('vz-settings-context-menu-addon-items', MenuCheckboxItem, 'default', ([ props ], res) => {
+      if ((res.props?.id?.indexOf('user-settings-cog-vizality--plugins--') &&
+          res.props?.id?.indexOf('user-settings-cog-vizality--themes--')) ||
+          res.props['vz-addon-icon']
+      ) return res;
+
+      const addonIconUrl = props['vz-addon-icon'];
+
+      res.props['vz-addon-icon'] = '';
+      res.props['vz-addon-id'] = props.id;
+
+      if (addonIconUrl) {
+        res.props.style = { ...res.props.style, '--vz-addon-icon': `url(${addonIconUrl})` };
+      }
+
       return res;
     });
   }

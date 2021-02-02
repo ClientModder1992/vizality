@@ -147,3 +147,17 @@
     }
   }
 }
+
+[vz-addon-icon] .label-22pbtT {
+  display: flex;
+  align-items: center;
+  &::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: var(--vz-addon-icon) no-repeat center / contain;
+    display: flex;
+    border-radius: var(--vz-guild-border-radius, 50%);
+    margin-right: 12px;
+  }
+}
