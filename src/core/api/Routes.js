@@ -52,11 +52,11 @@ export default class Routes extends API {
    * @private
    */
   _reregisterDashboard () {
-    if (!this.routes.find(r => r.path === '/dashboard')) return;
+    if (!this.routes.find(r => r.path === '')) return;
 
-    this.unregisterRoute('/dashboard');
+    this.unregisterRoute('');
     this.registerRoute({
-      path: '/dashboard',
+      path: '',
       render: DashboardRoutes,
       sidebar: DashboardSidebar
     });
@@ -75,7 +75,7 @@ export default class Routes extends API {
       }
 
       this.routes.push(route);
-      if (this.routes[this.routes.length - 1].path !== '/dashboard') {
+      if (this.routes[this.routes.length - 1].path !== '') {
         this._reregisterDashboard();
       }
       this.emit('routeAdded', route);
@@ -94,7 +94,7 @@ export default class Routes extends API {
     try {
       if (this.routes.find(r => r.path === path)) {
         this.routes = this.routes.filter(r => r.path !== path);
-        this.emit('routeRemoved', name);
+        this.emit('routeRemoved', path);
       } else {
         throw new Error(`Route "${path}" is not registered, so it cannot be unregistered!`);
       }
@@ -113,30 +113,25 @@ export default class Routes extends API {
       // Pop all modals
       popAll();
       // Go to route
+
+      // If no path provided, go to the Vizality dashboard home
+      if (!path) return transitionTo('/vizality');
+
       if (!path.startsWith('/')) {
         const { Routes } = getModule('Routes');
-
-        switch (path) {
-          case 'private': path = '/channels/@me/'; break;
-          case 'discover': path = Routes.GUILD_DISCOVERY; break;
-          case 'friends': path = Routes.FRIENDS; break;
-          case 'library': path = Routes.APPLICATION_LIBRARY; break;
-          case 'nitro': path = Routes.APPLICATION_STORE; break;
-
-          case 'dashboard': path = '/vizality/dashboard'; break;
-          case 'settings': path = '/vizality/dashboard/settings'; break;
-          case 'plugins': path = '/vizality/dashboard/plugins'; break;
-          case 'themes': path = '/vizality/dashboard/themes'; break;
-          case 'snippets': path = '/vizality/dashboard/snippets'; break;
-          case 'quick-code': path = '/vizality/dashboard/quick-code'; break;
-          case 'developers': path = '/vizality/dashboard/developers'; break;
-          case 'documentation': path = '/vizality/dashboard/documentation'; break;
-          case 'updater': path = '/vizality/dashboard/updater'; break;
-          case 'changelog': path = '/vizality/dashboard/changelog'; break;
-          default: path = '/channels/@me';
+        const discordRoutes = [ 'private', 'discover', 'friends', 'library', 'nitro' ];
+        if (discordRoutes.includes(path)) {
+          switch (path) {
+            case 'private': path = '/channels/@me/'; break;
+            case 'discover': path = Routes.GUILD_DISCOVERY; break;
+            case 'friends': path = Routes.FRIENDS; break;
+            case 'library': path = Routes.APPLICATION_LIBRARY; break;
+            case 'nitro': path = Routes.APPLICATION_STORE; break;
+          }
+        } else {
+          path = `/vizality/${path}`;
         }
       }
-
       transitionTo(path);
     } catch (err) {
       return this.error(err);

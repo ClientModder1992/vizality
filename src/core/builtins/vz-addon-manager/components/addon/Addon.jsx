@@ -26,7 +26,7 @@ export default memo(props => {
         if (e.target.classList.contains('smallCarouselImage-2Qvg9S')) return;
         if (e.target.matches('input') || e.target.matches('button') || e.target.matches('svg') || e.target.matches('a')) return;
 
-        vizality.api.routes.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`);
+        vizality.api.routes.navigate(`/vizality/${toPlural(type)}/${addonId}`);
       }}
     >
       <Inner {...props} hasPreviewImages={hasPreviewImages} previewImages={previewImages} />

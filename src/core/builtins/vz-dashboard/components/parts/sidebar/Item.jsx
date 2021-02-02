@@ -12,7 +12,7 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
   const { container, selected: selectedClass, clickable, wrappedLayout, layout, avatar, content } = getModule('wrappedLayout');
 
   const location = useLocation();
-  const fullPath = `/vizality/dashboard${path}`;
+  const fullPath = `/vizality${path}`;
   const selected = location.pathname.startsWith(fullPath);
   const isSubItemSelected = selected && location.pathname !== fullPath;
 

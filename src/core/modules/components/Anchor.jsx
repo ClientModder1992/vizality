@@ -46,7 +46,7 @@ export default memo(props => {
                 e.preventDefault();
                 // @todo Use Discord module for this after it's set up.
                 if (!addonId) return;
-                vizality.api.routes.navigate(`/vizality/dashboard/${toPlural(type)}/${addonId}`);
+                vizality.api.routes.navigate(`/vizality/${toPlural(type)}/${addonId}`);
               }}
             >
               {children}

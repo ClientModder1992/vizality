@@ -9,16 +9,16 @@ const _getRoutes = () => {
     library: Routes.APPLICATION_LIBRARY,
     nitro: Routes.APPLICATION_STORE,
     guild: '/channels/',
-    settings: '/vizality/dashboard/settings',
-    plugins: '/vizality/dashboard/plugins',
-    themes: '/vizality/dashboard/themes',
-    snippets: '/vizality/dashboard/snippets',
-    'quick-code': '/vizality/dashboard/quick-code',
-    developers: '/vizality/dashboard/developers',
-    docs: '/vizality/dashboard/documentation',
-    updater: '/vizality/dashboard/updater',
-    changelog: '/vizality/dashboard/changelog',
-    dashboard: '/vizality/dashboard'
+    settings: '/vizality/settings',
+    plugins: '/vizality/plugins',
+    themes: '/vizality/themes',
+    snippets: '/vizality/snippets',
+    'quick-code': '/vizality/quick-code',
+    developers: '/vizality/developers',
+    docs: '/vizality/docs',
+    updater: '/vizality/updater',
+    changelog: '/vizality/changelog',
+    dashboard: '/vizality'
   };
 
   return routes;

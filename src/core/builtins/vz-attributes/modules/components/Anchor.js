@@ -28,7 +28,7 @@ export default () => {
       const route = props?.href?.replace(vizalityProtocolRegex, '');
       props.onClick = e => {
         e.preventDefault();
-        vizality.api.routes.navigate(`/vizality/dashboard/${route}`);
+        vizality.api.routes.navigate(`/vizality/${route}`);
       };
     }
 

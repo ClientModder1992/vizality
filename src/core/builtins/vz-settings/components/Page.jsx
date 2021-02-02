@@ -40,7 +40,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         {Messages.VIZALITY_COMMAND_PREFIX}
       </TextInput>
       <SwitchItem
-        note={Messages.VIZALITY_SETTINGS_NO_CLYDE_DESC.format({ discordiaUrl: 'https://discordia.me/clyde', apiUrl:  `${window.location.origin}/vizality/dashboard/documentation` })}
+        note={Messages.VIZALITY_SETTINGS_NO_CLYDE_DESC.format({ discordiaUrl: 'https://discordia.me/clyde', apiUrl:  `${window.location.origin}/vizality/docs` })}
         value={getSetting('replaceClyde', true)}
         onChange={() => toggleSetting('replaceClyde', true)}
       >

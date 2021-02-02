@@ -41,16 +41,16 @@ export default memo(() =>
     <Separator />
     {/* Addon Guidelines, Publish an Addon, Get Verified */}
     <Item icon='UnknownUser' label='Developers' path='/developers' />
-    <Item icon='Science' label='Documentation' path='/documentation' expandable>
-      <SubItem label='Getting Started' path='/documentation/getting-started' />
-      <SubItem label='Plugins' path='/documentation/plugins' />
-      <SubItem label='Themes' path='/documentation/themes' />
-      <SubItem label='Screenshots' path='/documentation/components/screenshots' />
-      <SubItem label='Components' path='/documentation/components/icons' />
-      <SubItem label='Markdown' path='/documentation/components/markdown' />
-      <SubItem label='Error Test' path='/documentation/components/error-test' />
-      <SubItem label='Test' path='/documentation/components/test' />
-      <SubItem label='Test2' path='/documentation/components/test2' />
+    <Item icon='Science' label='Documentation' path='/docs' expandable>
+      <SubItem label='Getting Started' path='/docs/getting-started' />
+      <SubItem label='Plugins' path='/docs/plugins' />
+      <SubItem label='Themes' path='/docs/themes' />
+      <SubItem label='Screenshots' path='/docs/components/screenshots' />
+      <SubItem label='Components' path='/docs/components/icons' />
+      <SubItem label='Markdown' path='/docs/components/markdown' />
+      <SubItem label='Error Test' path='/docs/components/error-test' />
+      <SubItem label='Test' path='/docs/components/test' />
+      <SubItem label='Test2' path='/docs/components/test2' />
     </Item>
     <Separator />
     <Item icon='CloudDownload' label='Updater' path='/updater' />

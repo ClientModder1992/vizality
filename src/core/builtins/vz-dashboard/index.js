@@ -15,7 +15,7 @@ export default class Dashboard extends Builtin {
     // this.injectGuildHomeButton();
 
     vizality.api.routes.registerRoute({
-      path: '/dashboard',
+      path: '',
       render: Routes,
       sidebar: Sidebar
     });
@@ -28,13 +28,13 @@ export default class Dashboard extends Builtin {
 
     vizality.api.keybinds.registerKeybind({
       keybindId: 'goToDashboard',
-      executor: () => vizality.api.routes.navigate('dashboard'),
+      executor: () => vizality.api.routes.navigate(),
       shortcut: 'alt+v'
     });
   }
 
   stop () {
-    vizality.api.routes.unregisterRoute('/dashboard');
+    vizality.api.routes.unregisterRoute('');
     vizality.api.keybinds.unregisterKeybind('leaveDashboard');
     vizality.api.keybinds.unregisterKeybind('goToDashboard');
     unpatch('vz-dashboard-private-channels-list-item');
@@ -49,19 +49,18 @@ export default class Dashboard extends Builtin {
     const { LinkButton } = getModule('LinkButton');
 
     patch('vz-dashboard-private-channels-list-item', ConnectedPrivateChannelsList, 'default', (_, res) => {
-      const selected = window.location.pathname === '/vizality/dashboard';
+      const selected = window.location.pathname.startsWith('/vizality');
       const index = res.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
 
       if (selected) {
-        res.props?.children.forEach(c => c.props.selected = false);
+        res.props?.children?.forEach(c => c?.props?.selected ? c.props.selected = false : null);
       }
 
       res.props.children = [
-        ...res.props.children.slice(0, index),
-        () =>
+        ...res.props.children.slice(0, index), () =>
           <LinkButton
             icon={() => <Icon name='Vizality' />}
-            route='/vizality/dashboard'
+            route='/vizality'
             text='Dashboard'
             selected={selected}
           />,

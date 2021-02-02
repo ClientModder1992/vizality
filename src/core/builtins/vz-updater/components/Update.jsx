@@ -67,7 +67,7 @@ export default memo(props => {
             }
           </div>
           : <div className='vz-updater-update-metadata'>
-            <Link to={`/vizality/dashboard/${toPlural(type)}/${addonId}`} className='vz-updater-update-name'>
+            <Link to={`/vizality/${toPlural(type)}/${addonId}`} className='vz-updater-update-name'>
               {manifest.name}
             </Link>
             <Anchor

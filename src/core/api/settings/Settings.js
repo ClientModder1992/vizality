@@ -108,7 +108,7 @@ export default class Settings extends API {
       const Render = addon.sections.settings.render;
 
       vizality.api.routes.registerRoute({
-        path: `/dashboard/${type}/${addonId}`,
+        path: `/${type}/${addonId}`,
         render: props =>
           <Layout>
             <Content
@@ -185,7 +185,7 @@ export default class Settings extends API {
         throw new Error(`Settings for "${addonId}" are not registered, so they cannot be unregistered!`);
       }
 
-      vizality.api.routes.unregisterRoute(`/dashboard/${type}/${addonId}`);
+      vizality.api.routes.unregisterRoute(`/${type}/${addonId}`);
 
       this.emit(Events.VIZALITY_SETTINGS_UNREGISTER, addonId);
     } catch (err) {
@@ -206,7 +206,7 @@ export default class Settings extends API {
       const Render = builtin.sections.settings.render;
 
       vizality.api.routes.registerRoute({
-        path: `/dashboard/${path}`,
+        path: `/${path}`,
         render: props =>
           <Layout>
             <Content

@@ -69,7 +69,7 @@ export default class Updater extends Builtin {
   }
 
   stop () {
-    vizality.api.routes.unregisterRoute('/dashboard/updater');
+    vizality.api.routes.unregisterRoute('/updater');
     vizality.api.actions.unregisterAction('openLatestChangelog');
     clearInterval(this._interval);
   }

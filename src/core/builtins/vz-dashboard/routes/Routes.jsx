@@ -1,17 +1,17 @@
 import { Route, Switch, Redirect } from 'react-router';
 import React, { memo } from 'react';
 
-import ImageCarouselModal from '../components/pages/screenshots/ImageCarouselModal';
-import Markdown from '../components/pages/documentation/components/Markdown';
-import Icons from '../components/pages/documentation/components/Icons';
-import Screenshots from '../components/pages/screenshots/Screenshots';
-import Changelog from '../components/pages/changelog/Changelog';
-import ErrorTest from '../components/pages/ErrorTest';
+import ImageCarouselModal from '../pages/screenshots/ImageCarouselModal';
+import Markdown from '../pages/docs/components/Markdown';
+import Icons from '../pages/docs/components/Icons';
+import Screenshots from '../pages/screenshots/Screenshots';
+import Changelog from '../pages/changelog/Changelog';
+import ErrorTest from '../pages/ErrorTest';
 import Content from '../components/parts/Content';
-import Home from '../components/pages/home/Home';
+import Home from '../pages/home/Home';
 import Layout from '../components/parts/Layout';
-import Test2 from '../components/pages/Test2';
-import Test from '../components/pages/Test';
+import Test2 from '../pages/Test2';
+import Test from '../pages/Test';
 
 import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/List';
 
@@ -19,14 +19,14 @@ export default memo(() => {
   return (
     <>
       <Switch>
-        <Redirect from='/vizality/dashboard' to='/vizality/dashboard/home' exact />
-        <Redirect from='/vizality/dashboard/documentation' to='/vizality/dashboard/documentation/getting-started' exact />
+        <Redirect from='/vizality' to='/vizality/home' exact />
+        <Redirect from='/vizality/docs' to='/vizality/docs/getting-started' exact />
       </Switch>
       <Switch>
-        <Route path='/vizality/dashboard/home' exact>
+        <Route path='/vizality/home' exact>
           <Home />
         </Route>
-        <Route path='/vizality/dashboard/plugins' exact>
+        <Route path='/vizality/plugins' exact>
           <Layout>
             <Content
               heading='Plugins'
@@ -37,7 +37,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/plugins/discover' exact>
+        <Route path='/vizality/plugins/discover' exact>
           <Layout>
             <Content
               heading='Plugins'
@@ -48,7 +48,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/themes' exact>
+        <Route path='/vizality/themes' exact>
           <Layout>
             <Content
               heading='Themes'
@@ -59,7 +59,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/themes/discover' exact>
+        <Route path='/vizality/themes/discover' exact>
           <Layout>
             <Content
               heading='Themes'
@@ -70,7 +70,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/theme-editor' exact>
+        <Route path='/vizality/theme-editor' exact>
           <Layout>
             <Content
               heading='Theme Editor'
@@ -80,7 +80,7 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/developers' exact>
+        <Route path='/vizality/developers' exact>
           <Layout>
             <Content
               heading='Developers'
@@ -92,40 +92,40 @@ export default memo(() => {
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/documentation/components/screenshots' exact>
+        <Route path='/vizality/docs/components/screenshots' exact>
           <Layout>
             <Content heading='Screenshots' className='vz-addon-screenshots'>
               <Screenshots />
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/documentation/components/icons' exact>
+        <Route path='/vizality/docs/components/icons' exact>
           <Icons selectedTab='PREVIEW' />
         </Route>
-        <Route path='/vizality/dashboard/documentation/components/markdown' exact>
+        <Route path='/vizality/docs/components/markdown' exact>
           <Markdown />
         </Route>
-        {/* <Route path='/vizality/dashboard/documentation/components/test' exact>
+        {/* <Route path='/vizality/docs/components/test' exact>
           <Icons selectedTab='CODE' />
         </Route> */}
-        <Route path='/vizality/dashboard/documentation/components/error-test' exact>
+        <Route path='/vizality/docs/components/error-test' exact>
           <ErrorTest />
         </Route>
-        <Route path='/vizality/dashboard/documentation/components/test' exact>
+        <Route path='/vizality/docs/components/test' exact>
           <Layout>
             <Content heading='Table Testing'>
               <Test />
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/documentation/components/test2' exact>
+        <Route path='/vizality/docs/components/test2' exact>
           <Layout>
             <Content>
               <Test2 />
             </Content>
           </Layout>
         </Route>
-        <Route path='/vizality/dashboard/changelog' exact>
+        <Route path='/vizality/changelog' exact>
           <Layout>
             <Content
               heading='Changelog'
