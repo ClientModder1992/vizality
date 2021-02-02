@@ -1,4 +1,5 @@
 import { isObject, isEmpty } from '@vizality/util/object';
+import { getOrigin } from '@vizality/util/file';
 import { API } from '@vizality/entities';
 
 /**
@@ -57,9 +58,7 @@ export default class Commands extends API {
      * @note Hacky way to get the origin of the command. Check if it's a plugin first. If
      * it's not, check if it's a builtin. If it's not, consider it a core Vizality command.
      */
-    const stackTrace = (new Error()).stack;
-    const [ , origin ] = stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) ||
-      (stackTrace.match(new RegExp(`${window._.escapeRegExp(vizality.manager.builtins.dir)}.([-\\w]+)`)) && [ null, 'vizality' ]);
+    const origin = getOrigin() || 'vizality';
 
     try {
       if (!isObject(command) || isEmpty(command)) {

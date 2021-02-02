@@ -3,6 +3,7 @@ import { lookup as _getMimeType } from 'mime-types';
 import { extname, join, parse } from 'path';
 import gifResize from '@gumlet/gif-resize';
 import { nativeImage } from 'electron';
+import { escapeRegExp } from 'lodash';
 import imageSize from 'image-size';
 import { promisify } from 'util';
 
@@ -17,6 +18,12 @@ const { readdir, lstat, unlink, rmdir } = promises;
  * @memberof util
  * @version 0.0.1
  */
+
+export const getOrigin = () => {
+  const stackTrace = (new Error()).stack;
+  const [ , origin ] = stackTrace.match(new RegExp(`${escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) || [ null, 'vizality' ];
+  return origin;
+};
 
 export const getMimeType = async input => {
   let type = null;
