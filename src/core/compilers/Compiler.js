@@ -1,5 +1,6 @@
 const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
 const { createHash } = require('crypto');
+const { debounce } = require('lodash');
 const { watch } = require('chokidar');
 const Events = require('events');
 const { join } = require('path');
@@ -119,7 +120,7 @@ module.exports = class Compiler extends Events {
     files.forEach(f => {
       if (!this._watchers[f]) {
         this._watchers[f] = watch(f);
-        this._watchers[f].on('all', () => this.emit('src-update'));
+        this._watchers[f].on('all', debounce(async () => this.emit('src-update'), 300));
       }
     });
   }

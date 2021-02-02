@@ -29,7 +29,7 @@ export default class Plugin extends Updatable {
     this._watcherEnabled = null;
     this._watcher = {};
     this._module = 'Plugin';
-    this._submodule = this.constructor.name;
+    this._submodule = this.manifest?.name || this.constructor?.name;
   }
 
   /**
@@ -96,17 +96,9 @@ export default class Plugin extends Updatable {
     });
   }
 
-  log (...data) {
-    log({ module: this._module, submodule: this._submodule }, ...data);
-  }
-
-  warn (...data) {
-    warn({ module: this._module, submodule: this._submodule }, ...data);
-  }
-
-  error (...data) {
-    error({ module: this._module, submodule: this._submodule }, ...data);
-  }
+  log (...data) { log({ module: this._module, submodule: this._submodule }, ...data); }
+  warn (...data) { warn({ module: this._module, submodule: this._submodule }, ...data); }
+  error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
 
   /**
    * Update the addon.
@@ -201,7 +193,7 @@ export default class Plugin extends Updatable {
         log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
       .on('error', error =>
         log({ module: _module, submodule: `${this._module}:${this._submodule}` }, error))
-      .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 2000));
+      .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
   }
 
   /**
