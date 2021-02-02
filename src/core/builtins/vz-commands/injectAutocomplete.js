@@ -126,7 +126,7 @@ export default function injectAutocomplete () {
         index++;
       }
 
-      railSections.push({
+      railSections.unshift({
         icon: 'vz-asset://images/logo.png',
         id: 'vizality',
         isBuiltIn: false,
