@@ -110,9 +110,6 @@ export default class Vizality extends Updatable {
       setImmediate(() => tokenModule.showToken());
     }
 
-    // Inject main Vizality styles
-    this._injectMainStyles();
-
     // Used in src/preload/main
     this.emit(Events.VIZALITY_INITIALIZE);
   }
@@ -151,6 +148,9 @@ export default class Vizality extends Updatable {
     for (const mdl of Object.keys(modules)) {
       Object.assign(this.modules, { [mdl]: modules[mdl] });
     }
+
+    // Inject main Vizality styles
+    this._injectMainStyles();
 
     // Initialize builtins, plugins, and themes
     await this.manager.builtins.initialize(); // Builtins
@@ -300,6 +300,8 @@ export default class Vizality extends Updatable {
       this[`__compiler_${id}`] = compiler;
       return compile();
     }
+
+    return compile();
   }
 
   /** @private */
