@@ -32,6 +32,7 @@ exposeGlobal('platform');
 exposeGlobal('_');
 exposeGlobal('webpackJsonp');
 exposeGlobal('WebSocket', true);
+exposeGlobal('DiscordNative', true);
 
 fixDocument();
 
