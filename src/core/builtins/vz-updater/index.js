@@ -131,8 +131,8 @@ export default class Updater extends Builtin {
     if (updates.length > 0) {
       if (this.settings.get('automatic', false)) {
         this.doUpdate();
-      } else if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
-        vizality.api.notices.sendToast('vizality-updater', {
+      } else if (!document.querySelector(`#vz-updater-update-available, [vz-route='updater']`)) {
+        vizality.api.notices.sendToast('vz-updater-update-available', {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
           icon: 'UpdateAvailable',
@@ -140,14 +140,14 @@ export default class Updater extends Builtin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'grey',
             onClick: () => {
-              vizality.api.notices.closeToast('vizality-updater');
+              vizality.api.notices.closeToast('vz-updater-update-available');
               vizality.api.routes.navigate('updater');
             }
           }, {
             text: Messages.VIZALITY_UPDATES_UPDATE,
             color: 'green',
             onClick: () => {
-              vizality.api.notices.closeToast('vizality-updater');
+              vizality.api.notices.closeToast('vz-updater-update-available');
               this.doUpdate();
             }
           } ]
@@ -182,7 +182,7 @@ export default class Updater extends Builtin {
       this.settings.set('failed', true);
       this.settings.set('updates', failed);
       if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
-        vizality.api.notices.sendToast('vizality-updater', {
+        vizality.api.notices.sendToast('vz-updater-update-failed', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
           type: 'error',
           buttons: [ {
@@ -198,7 +198,10 @@ export default class Updater extends Builtin {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'blue',
             look: 'ghost',
-            onClick: () => vizality.api.routes.navigate('updater')
+            onClick: () => {
+              vizality.api.notices.closeToast('vz-updater-update-failed');
+              vizality.api.routes.navigate('updater');
+            }
           } ]
         });
       }

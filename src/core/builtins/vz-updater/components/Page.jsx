@@ -21,7 +21,14 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const [ pluginsRevealed, setPluginsRevealed ] = useState();
 
   useEffect(() => {
-    vizality.api.notices.closeToast('vizality-updater');
+    const updateToasts = [
+      'vizality-updater-update-complete',
+      'vizality-updater-update-available',
+      'vizality-updater-update-failed'
+    ];
+    for (const toast of updateToasts) {
+      vizality.api.notices.closeToast(toast);
+    }
   });
 
   // eslint-disable-next-line consistent-this

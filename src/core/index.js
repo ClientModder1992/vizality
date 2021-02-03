@@ -194,7 +194,6 @@ export default class Vizality extends Updatable {
   async _patchDiscordLogs () {
     const { setLogFn } = getModule('setLogFn');
     const module = 'Discord';
-
     if (!this.settings.get('showDiscordConsoleLogs', false)) {
       /*
        * Removes Discord's logs entirely... except the logs that don't use the function
@@ -222,11 +221,9 @@ export default class Vizality extends Updatable {
 
   _patchWebSocket () {
     const _this = this;
-
     window.WebSocket = class PatchedWebSocket extends window.WebSocket {
       constructor (url) {
         super(url);
-
         this.addEventListener('message', data => {
           _this.emit(`webSocketMessage:${data.origin.slice(6)}`, data);
         });
@@ -246,8 +243,8 @@ export default class Vizality extends Updatable {
 
         const updater = this.manager.builtins.get('vz-updater');
         // @i18n
-        if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
-          this.api.notices.sendToast('vizality-updater', {
+        if (!document.querySelector(`#vz-updater-update-complete, [vz-route='updater']`)) {
+          this.api.notices.sendToast('vz-updater-update-complete', {
             header: 'Update complete!',
             content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
             type: 'success',
@@ -262,7 +259,7 @@ export default class Vizality extends Updatable {
                 text: 'Postpone',
                 color: 'grey',
                 look: 'outlined',
-                onClick: () => this.api.notices.closeToast('vizality-updater')
+                onClick: () => this.api.notices.closeToast('vz-updater-update-complete')
               }
             ]
           });
@@ -305,17 +302,7 @@ export default class Vizality extends Updatable {
   }
 
   /** @private */
-  _log (...data) {
-    log({ module: this.constructor.name, submodule: 'Core' }, ...data);
-  }
-
-  /** @private */
-  _warn (...data) {
-    warn({ module: this.constructor.name, submodule: 'Core' }, ...data);
-  }
-
-  /** @private */
-  _error (...data) {
-    error({ module: this.constructor.name, submodule: 'Core' }, ...data);
-  }
+  _log (...data) { log({ module: this.constructor.name, submodule: 'Core' }, ...data); }
+  _warn (...data) { warn({ module: this.constructor.name, submodule: 'Core' }, ...data); }
+  _error (...data) { error({ module: this.constructor.name, submodule: 'Core' }, ...data); }
 }
