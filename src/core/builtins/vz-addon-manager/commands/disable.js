@@ -62,7 +62,7 @@ export default {
           }))
           .concat({
             command: 'all',
-            description: `Enables all ${toPlural(type)}.`
+            description: `Disables all ${toPlural(type)}.`
           })
     };
   }
