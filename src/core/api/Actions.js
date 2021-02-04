@@ -76,7 +76,7 @@ export default class Actions extends API {
    * @emits Actions#actionInvoked
    * @returns {undefined}
    */
-  async invoke (actionId) {
+  async invokeAction (actionId) {
     try {
       if (this.actions[actionId]) {
         await this.actions[actionId].executor();

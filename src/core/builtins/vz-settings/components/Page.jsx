@@ -63,7 +63,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('reactDeveloperTools', false)}
           onChange={() => {
             toggleSetting('reactDeveloperTools', false);
-            vizality.api.actions.invoke('confirmRestart');
+            vizality.api.actions.invokeAction('confirmRestart');
           }}
         >
           Enable React Developer Tools
@@ -110,14 +110,11 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           {Messages.VIZALITY_SETTINGS_KEEP_TOKEN}
         </SwitchItem>
         <SwitchItem
-          disabled={!!window.GlasscordApi}
-          note={window.GlasscordApi
-            ? Messages.VIZALITY_SETTINGS_TRANSPARENT_GLASSCORD.format({ glasscordCfgUrl: 'https://github.com/AryToNeX/Glasscord#how-do-i-use-it' })
-            : Messages.VIZALITY_SETTINGS_TRANSPARENT_DESC.format()}
+          note={Messages.VIZALITY_SETTINGS_TRANSPARENT_DESC.format()}
           value={getSetting('transparentWindow', false)}
           onChange={() => {
             toggleSetting('transparentWindow');
-            vizality.api.actions.invoke('confirmRestart');
+            vizality.api.actions.invokeAction('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_TRANSPARENT}
@@ -127,7 +124,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('experimentalWebPlatform', false)}
           onChange={() => {
             toggleSetting('experimentalWebPlatform');
-            vizality.api.actions.invoke('confirmRestart');
+            vizality.api.actions.invokeAction('confirmRestart');
           }}
         >
           {Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}
