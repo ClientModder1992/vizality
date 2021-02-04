@@ -8,7 +8,7 @@ export default () => {
   const MenuItem = getModule(m => m.default?.displayName === 'MenuItem');
   const GuildStore = getModule('getGuild');
 
-  patch('builtin-cde-context-menu-server-invite-icons', MenuItem, 'default', ([ props ], res) => {
+  patch('vz-enhancements-context-menu-server-invite-icons', MenuItem, 'default', ([ props ], res) => {
     if (res.props?.id?.indexOf('user-context-invite-to-server--') || res.props['vz-guild-icon']) return res;
 
     const { id } = props;
@@ -25,5 +25,5 @@ export default () => {
     return res;
   });
 
-  return () => unpatch('builtin-cde-context-menu-server-invite-icons');
+  return () => unpatch('vz-enhancements-context-menu-server-invite-icons');
 };

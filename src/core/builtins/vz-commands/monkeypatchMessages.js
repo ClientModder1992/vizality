@@ -79,10 +79,7 @@ export default async function monkeypatchMessages () {
 
       return (
         messages.receiveMessage(receivedMessage.channel_id, receivedMessage),
-        delete BOT_AVATARS[result.avatar_url],
-        // Restore the "default" Vizality username and avatar to Clyde if the setting is enabled
-        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeUsername', 'Vizality'),
-        vizality.settings.get('replaceClyde', true) && vizality.settings.set('clydeAvatar', 'vz-asset://image/logo.png')
+        delete BOT_AVATARS[result.avatar_url]
       );
     }
 

@@ -32,7 +32,7 @@ export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
     });
     return finalReturn;
   } catch (err) {
-
+    return _error(err);
   }
 };
 
@@ -44,7 +44,7 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
     }
     return this._runPrePatchesRecursive(_patches, originalArgs, _this);
   } catch (err) {
-    
+    return _error(err);
   }
 };
 
@@ -66,7 +66,7 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
     }
     return args;
   } catch (err) {
-    
+    return _error(err);
   }
 };
 
@@ -78,7 +78,7 @@ export const isPatched = patchId => {
   try {
     patches.some(i => i.id === patchId);
   } catch (err) {
-    
+    return _error(err);
   }
 };
 
@@ -116,7 +116,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
             return _this._runPatches(id, finalArgs, returned, this);
           }
         } catch (err) {
-          return this._error(err);
+          return _error(err);
         }
       };
       // Reassign displayName, defaultProps etc etc, not to mess with other plugins
@@ -134,7 +134,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       pre
     });
   } catch (err) {
-    return this._error(err);
+    return _error(err);
   }
 };
 
@@ -143,5 +143,9 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
  * @param {string} patchId The patch specified during injection
  */
 export const unpatch = (patchId) => {
-  patches = patches.filter(i => i.id !== patchId);
+  try {
+    patches = patches.filter(i => i.id !== patchId);
+  } catch (err) {
+    return _error(err);
+  }
 };
