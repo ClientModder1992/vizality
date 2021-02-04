@@ -1,8 +1,6 @@
 @use '@vizality' as *;
 
-$logos: (
-  'Vizality'
-);
+$logos: ( 'Discord', 'Spotify', 'Twitter', 'Vizality', 'Xbox' );
 
 :root {
   @each $logo in $logos {
