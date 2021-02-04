@@ -23,7 +23,7 @@ export default memo(props => {
           {id === 'vizality'
             ? <img
               className='vz-updater-update-icon'
-              src={'vz-asset://images/logo.png'}
+              src={'vz-asset://image/logo.png'}
             />
             : <img
               className='vz-updater-update-icon'

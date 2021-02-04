@@ -74,7 +74,7 @@ export default function injectAutocomplete () {
     if (this.settings.get('showCommandRail', true)) {
       const origins = [];
       const vizalitySectionInner = [];
-      vizalitySectionInner.push(renderHeader('', null, 'Vizality', `vz-asset://images/logo.png`, `vz-cmd-vizality`));
+      vizalitySectionInner.push(renderHeader('', null, 'Vizality', `vz-asset://image/logo.png`, `vz-cmd-vizality`));
       results.forEach(result => {
         const { command } = findInReactTree(result, r => r.command);
         if (!origins.includes(command.origin) && command.origin !== 'vizality') {
@@ -127,7 +127,7 @@ export default function injectAutocomplete () {
       }
 
       railSections.unshift({
-        icon: 'vz-asset://images/logo.png',
+        icon: 'vz-asset://image/logo.png',
         id: 'vizality',
         isBuiltIn: false,
         commandsAmount: vizalitySectionInner.length - 1,
@@ -321,7 +321,7 @@ export default function injectAutocomplete () {
             <div className={image}>
               <LazyImage
                 className='vz-command-icon'
-                src={props?.command?.icon || 'vz-asset://images/logo.png'}
+                src={props?.command?.icon || 'vz-asset://image/logo.png'}
                 width='32'
                 height='32'
               />

@@ -94,17 +94,17 @@ export const Events = Object.freeze({
 // Avatars
 export const Avatars = Object.freeze({
   // Theme icons
-  get DEFAULT_THEME_1 () { return 'vz-asset://images/default-theme-1.png'; },
-  get DEFAULT_THEME_2 () { return 'vz-asset://images/default-theme-2.png'; },
-  get DEFAULT_THEME_3 () { return 'vz-asset://images/default-theme-3.png'; },
-  get DEFAULT_THEME_4 () { return 'vz-asset://images/default-theme-4.png'; },
-  get DEFAULT_THEME_5 () { return 'vz-asset://images/default-theme-5.png'; },
+  get DEFAULT_THEME_1 () { return 'vz-asset://image/default-theme-1.png'; },
+  get DEFAULT_THEME_2 () { return 'vz-asset://image/default-theme-2.png'; },
+  get DEFAULT_THEME_3 () { return 'vz-asset://image/default-theme-3.png'; },
+  get DEFAULT_THEME_4 () { return 'vz-asset://image/default-theme-4.png'; },
+  get DEFAULT_THEME_5 () { return 'vz-asset://image/default-theme-5.png'; },
   // Plugin icons
-  get DEFAULT_PLUGIN_1 () { return 'vz-asset://images/default-plugin-1.png'; },
-  get DEFAULT_PLUGIN_2 () { return 'vz-asset://images/default-plugin-2.png'; },
-  get DEFAULT_PLUGIN_3 () { return 'vz-asset://images/default-plugin-3.png'; },
-  get DEFAULT_PLUGIN_4 () { return 'vz-asset://images/default-plugin-4.png'; },
-  get DEFAULT_PLUGIN_5 () { return 'vz-asset://images/default-plugin-5.png'; }
+  get DEFAULT_PLUGIN_1 () { return 'vz-asset://image/default-plugin-1.png'; },
+  get DEFAULT_PLUGIN_2 () { return 'vz-asset://image/default-plugin-2.png'; },
+  get DEFAULT_PLUGIN_3 () { return 'vz-asset://image/default-plugin-3.png'; },
+  get DEFAULT_PLUGIN_4 () { return 'vz-asset://image/default-plugin-4.png'; },
+  get DEFAULT_PLUGIN_5 () { return 'vz-asset://image/default-plugin-5.png'; }
 });
 
 // Errors

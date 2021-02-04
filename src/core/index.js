@@ -121,7 +121,7 @@ export default class Vizality extends Updatable {
 
     // Startup banner
     console.log('%c ',
-      `background: url('vz-asset://images/console-banner.gif') no-repeat center / contain;
+      `background: url('vz-asset://image/console-banner.gif') no-repeat center / contain;
        padding: 110px 350px;
        font-size: 1px;
        margin: 10px 0;`
