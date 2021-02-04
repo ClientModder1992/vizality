@@ -11,7 +11,7 @@ export default () => {
     const { user, isOwner } = this.props;
 
     res.props['vz-user-id'] = user?.id;
-    res.props['vz-activities'] = Boolean(activities?.some(activity => activity.type !== 4)) && '';
+    res.props['vz-activity'] = Boolean(activities?.some(activity => activity.type !== 4)) && '';
     res.props['vz-self'] = Boolean(user?.email) && '';
     res.props['vz-bot'] = Boolean(user?.bot) && '';
     res.props['vz-owner'] = Boolean(isOwner) && '';

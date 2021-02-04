@@ -10,8 +10,8 @@ export default () => {
 
     res.props['vz-blocked-message'] = '';
     res.props['vz-message-count'] = props?.count;
-    res.props['vz-expanded'] = Boolean(props?.expanded);
-    res.props['vz-collapsed'] = Boolean(!props?.expanded);
+    res.props['vz-expanded'] = Boolean(props?.expanded) && '';
+    res.props['vz-collapsed'] = Boolean(!props?.expanded) && '';
 
     return res;
   });
