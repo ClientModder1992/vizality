@@ -9,20 +9,16 @@ import install from './install';
 import uninstall from './uninstall';
 
 export const commands = {
-  uninstall,
   settings,
-  install,
+  manage,
+  enable,
   disable,
   terminate,
-  enable,
   reload,
-  manage,
-  list
+  list,
+  install,
+  uninstall
 };
-
-export function getSettings () {
-  return vizality.manager.builtins.get('vz-addon-manager').settings;
-}
 
 export function registerCommands (type) {
   vizality.api.commands.registerCommand({
@@ -62,17 +58,7 @@ export function registerCommands (type) {
         return false;
       }
 
-      return subcommand.autocomplete(args.slice(1), this.getSettings(), type);
+      return subcommand.autocomplete(args.slice(1), type);
     }
   });
-}
-
-export function unregisterCommands () {
-  for (const subcommand of this.getSettings().getKeys()) {
-    this.unregisterCommand(subcommand);
-  }
-}
-
-export function unregisterCommand (name) {
-  vizality.api.commands.unregisterCommand(name);
 }

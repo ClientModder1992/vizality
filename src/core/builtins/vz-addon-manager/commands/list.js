@@ -124,7 +124,7 @@ export default {
     };
   },
 
-  autocomplete (args, _, type) {
+  autocomplete (args, type) {
     if (args.length > 1) {
       return false;
     }

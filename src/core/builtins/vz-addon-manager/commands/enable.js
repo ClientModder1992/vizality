@@ -34,7 +34,7 @@ export default {
       result
     };
   },
-  autocomplete (args, _, type) {
+  autocomplete (args, type) {
     if (args.length > 1) return false;
 
     const addons =
