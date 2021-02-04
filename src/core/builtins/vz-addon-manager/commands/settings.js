@@ -47,7 +47,7 @@ export default {
               href={`${window.location.origin}/vizality/${toPlural(type)}/${args[0]}`}
               onClick={e => {
                 e.preventDefault();
-                vizality.api.routes.navigate(`/vizality/${toPlural(type)}/${args[0]}`);
+                vizality.api.routes.navigateTo(`/vizality/${toPlural(type)}/${args[0]}`);
               }}
             >
               {addon.manifest.name}

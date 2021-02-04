@@ -19,7 +19,7 @@ export default () => {
       const route = props?.href?.replace(discordRegex, '');
       props.onClick = e => {
         e.preventDefault();
-        vizality.api.routes.navigate(route);
+        vizality.api.routes.navigateTo(route);
       };
     }
 
@@ -28,7 +28,7 @@ export default () => {
       const route = props?.href?.replace(vizalityProtocolRegex, '');
       props.onClick = e => {
         e.preventDefault();
-        vizality.api.routes.navigate(`/vizality/${route}`);
+        vizality.api.routes.navigateTo(`/vizality/${route}`);
       };
     }
 

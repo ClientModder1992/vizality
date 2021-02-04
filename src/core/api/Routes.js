@@ -38,7 +38,6 @@ export default class Routes extends API {
         const match = history.find(location => !location.includes('/vizality'));
         const route = match.replace(new RegExp(Regexes.DISCORD), '');
         router.replaceWith(route);
-        // this.navigate(route);
       }
     } catch (err) {
       return this.error(err);
@@ -103,7 +102,7 @@ export default class Routes extends API {
     }
   }
 
-  navigate (path = '') {
+  navigateTo (path = '') {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');

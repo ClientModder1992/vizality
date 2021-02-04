@@ -50,7 +50,7 @@ export default memo(props => {
                 iconClassName='vz-addon-card-settings-button-icon'
                 name='Gear'
                 tooltip='Settings'
-                onClick={() => vizality.api.routes.navigate(`/vizality/${toPlural(type)}/${addonId}`)}
+                onClick={() => vizality.api.routes.navigateTo(`/vizality/${toPlural(type)}/${addonId}`)}
               />
             </div>
           }

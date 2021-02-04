@@ -6,7 +6,12 @@ const Card = memo(({ icon, header, description, buttonText, path }) => {
   return (
     <div className='vz-dashboard-home-features-card-wrapper'>
       <div className='vz-dashboard-home-features-card'>
-        <Icon name={icon} className='vz-dashboard-home-features-icon-wrapper' iconClassName='vz-dashboard-home-features-icon' width={'100%'} height={'100%'} />
+        <Icon
+          name={icon}
+          className='vz-dashboard-home-features-icon-wrapper'
+          iconClassName='vz-dashboard-home-features-icon'
+          size='100%'
+        />
         <div className='vz-dashboard-home-features-card-header'>
           {header}
         </div>
@@ -16,7 +21,7 @@ const Card = memo(({ icon, header, description, buttonText, path }) => {
         <div className='vz-dashboard-home-features-card-footer'>
           <Button
             className='vz-dashboard-home-features-button'
-            onClick={() => vizality.api.routes.navigate(path)}
+            onClick={() => vizality.api.routes.navigateTo(path)}
             size={Button.Sizes.LARGE}
           >
             {buttonText}
