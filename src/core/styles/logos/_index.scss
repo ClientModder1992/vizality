@@ -1,19 +1,11 @@
 @use '@vizality' as *;
 
-$color: #fff !default;
-
-@use 'discord' as discord with ($fill: $color);
-@use 'spotify' as spotify with ($fill: $color);
-@use 'twitter' as twitter with ($fill: $color);
-@use 'xbox' as xbox with ($fill: $color);
-
-$module: (
-  vz-logo: (
-    'discord': svg-uri(discord.$logo),
-    'spotify': svg-uri(spotify.$logo),
-    'twitter': svg-uri(twitter.$logo),
-    'xbox': svg-uri(xbox.$logo)
-  )
+$logos: (
+  'Vizality'
 );
 
-:root { @include generate-css-vars($module); }
+:root {
+  @each $logo in $logos {
+    --vz-logo-#{str-case($logo, 'kebab')}: url('vz-asset://logo/#{$logo}.svg');
+  }
+}
