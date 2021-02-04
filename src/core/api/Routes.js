@@ -112,7 +112,6 @@ export default class Routes extends API {
       popAllLayers();
       // Pop all modals
       popAll();
-      // Go to route
 
       if (!path.startsWith('/')) {
         const { Routes } = getModule('Routes');
@@ -125,13 +124,14 @@ export default class Routes extends API {
             case 'library': path = Routes.APPLICATION_LIBRARY; break;
             case 'nitro': path = Routes.APPLICATION_STORE; break;
           }
-        } if (path === '/vizality') {
-          path = '';
+        } else if (path === '') {
+          path = '/vizality';
         } else {
           path = `/vizality/${path}`;
         }
       }
 
+      // Go to route
       transitionTo(path);
     } catch (err) {
       return this.error(err);
