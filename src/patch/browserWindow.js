@@ -10,9 +10,7 @@ try {
 
   transparency = settings.transparentWindow;
   ({ experimentalWebPlatform } = settings);
-} catch (err) {
-  // @todo Handle this.
-}
+} catch (err) {}
 
 module.exports = class PatchedBrowserWindow extends BrowserWindow {
   constructor (opts) {
