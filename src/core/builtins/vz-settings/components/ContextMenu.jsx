@@ -93,12 +93,12 @@ export default memo(() => {
       <ContextMenu.Item
         id='vizality'
         label='Vizality'
-        action={() => vizality.api.routes.navigateTo()}
+        action={() => vizality.api.routes.navigateTo('home')}
       >
         <ContextMenu.Item
           id='home'
           label='Home'
-          action={() => vizality.api.routes.navigateTo()}
+          action={() => vizality.api.routes.navigateTo('home')}
         />
         <ContextMenu.Item
           id='settings'

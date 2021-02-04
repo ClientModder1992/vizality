@@ -28,7 +28,7 @@ export default class Dashboard extends Builtin {
 
     vizality.api.keybinds.registerKeybind({
       keybindId: 'goToDashboard',
-      executor: () => vizality.api.routes.navigateTo(),
+      executor: () => vizality.api.routes.navigateTo('home'),
       shortcut: 'alt+v'
     });
   }

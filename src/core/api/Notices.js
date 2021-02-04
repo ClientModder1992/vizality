@@ -59,7 +59,7 @@ export default class Notices extends API {
    */
   sendAnnouncement (id, props) {
     if (this.announcements[id]) {
-      return this.error(`ID ${id} is already used by another plugin!`);
+      return this.error(`Announcement ID "${id}" is already used by another plugin!`);
     }
 
     this.announcements[id] = props;

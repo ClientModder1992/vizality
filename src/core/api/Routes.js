@@ -24,6 +24,11 @@ export default class Routes extends API {
     this._submodule = 'Routes';
   }
 
+  stop () {
+    delete vizality.api.routes;
+    this.removeAllListeners();
+  }
+
   /**
    * Restores previous navigation,
    * @returns {void}
@@ -42,23 +47,6 @@ export default class Routes extends API {
     } catch (err) {
       return this.error(err);
     }
-  }
-
-  /**
-   * @note This is a hacky method used to unregister and reregister the main dashboard route
-   * so that it doesn't override the plugin and theme routes... Not really sure how to do
-   * this in a better way at the moment, but definitely should be addressed in the future.
-   * @private
-   */
-  _reregisterDashboard () {
-    if (!this.routes.find(r => r.path === '')) return;
-
-    this.unregisterRoute('');
-    this.registerRoute({
-      path: '',
-      render: DashboardRoutes,
-      sidebar: DashboardSidebar
-    });
   }
 
   /**
@@ -102,7 +90,7 @@ export default class Routes extends API {
     }
   }
 
-  navigateTo (path = '') {
+  navigateTo (path) {
     try {
       const { popAllLayers } = getModule('popLayer');
       const { popAll } = getModule('popAll', 'push', 'update', 'pop', 'popWithKey');
@@ -111,6 +99,10 @@ export default class Routes extends API {
       popAllLayers();
       // Pop all modals
       popAll();
+
+      if (!path) {
+        throw new Error(`You must provide a valid path argument!`);
+      }
 
       if (!path.startsWith('/')) {
         const { Routes } = getModule('Routes');
@@ -123,8 +115,6 @@ export default class Routes extends API {
             case 'library': path = Routes.APPLICATION_LIBRARY; break;
             case 'nitro': path = Routes.APPLICATION_STORE; break;
           }
-        } else if (path === '') {
-          path = '/vizality';
         } else {
           path = `/vizality/${path}`;
         }
@@ -137,8 +127,20 @@ export default class Routes extends API {
     }
   }
 
-  stop () {
-    delete vizality.api.routes;
-    this.removeAllListeners();
+  /**
+   * @note This is a hacky method used to unregister and reregister the main dashboard route
+   * so that it doesn't override the plugin and theme routes... Not really sure how to do
+   * this in a better way at the moment, but definitely should be addressed in the future.
+   * @private
+   */
+  _reregisterDashboard () {
+    if (!this.routes.find(r => r.path === '')) return;
+
+    this.unregisterRoute('');
+    this.registerRoute({
+      path: '',
+      render: DashboardRoutes,
+      sidebar: DashboardSidebar
+    });
   }
 }

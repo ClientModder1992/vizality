@@ -167,10 +167,8 @@ export default class Vizality extends Updatable {
   async terminate () {
     this._initialized = false;
 
-    // this._unpatchDiscordLogs();
-
-    await this.manager.plugins.terminate(); // Plugins
     await this.manager.themes.terminate(); // Themes
+    await this.manager.plugins.terminate(); // Plugins
     await this.manager.builtins.terminate(); // Builtins
     await this.manager.apis.terminate(); // APIs
   }
