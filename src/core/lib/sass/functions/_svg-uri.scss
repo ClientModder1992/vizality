@@ -1,4 +1,4 @@
-@use '../functions/str-replace' as *;
+@use 'str-replace' as *;
 
 //  Function to create an optimized svg url
 @function svg-uri($svg){

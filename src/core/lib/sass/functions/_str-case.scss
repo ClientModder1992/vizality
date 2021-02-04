@@ -1,26 +1,42 @@
+@use 'str-replace-all' as *;
+@use 'str-replace' as *;
+
+@use 'sass:string';
+@use 'sass:list';
+
+// @todo Fix this. It doesn't work right for consecutive capitals. i.e. VZCool, you would expect vz-cool, not v-z-cool.
+
 /// Slugify function
 /// @access public
 /// @param {String} $file - Any string input.
 /// @return {String} - A simplified string output.
 /// @require {function} str-replace-all
 
-@function str-case($type, $string) {
+@function str-case($string, $type: 'kebab') {
+  $alphabet-upper: 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U','V', 'W', 'X', 'Y', 'Z';
+  $alphabet-lower: 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z';
+  $special-characters: '.', ';', '/', '\\', '(', ')', '"', '\'', ':', ',', '<', '>', '~', '!', '@', '#', '$', '%', '^', '*', '|', '+', '=', '[', ']', '{', '}', '`', '?', '®', '²', '™';
+
   @if ($type == 'kebab') {
-    $string:  to_lower_case(
-                str-replace-all(
-                  str-replace-all(
-                    str-replace-all($string, '',
-                      '.', ';', '/', '\\', '(',
-                      ')', '"', '\'', ':', ',',
-                      '<', '>', '~', '!', '@',
-                      '#', '$', '%', '^', '*',
-                      '|', '+', '=', '[', ']',
-                      '{', '}', '`', '?', '®',
-                      '²', '™'
-                    ), '-', '_', ' ', '---', '--'
-                  ), 'and', '&'
-                )
-              );
+    $replace-with-dash: '_', ' ', '---', '--';
+
+    @each $character in $alphabet-upper {
+      @if (string.index(#{$string}, #{$character}) == 1) {
+        $string: #{str-replace($string, $character, list.nth($alphabet-lower, list.index($alphabet-upper, $character)))};
+      } @else {
+        $string: #{str-replace-all($string, $character, '-#{list.nth($alphabet-lower, list.index($alphabet-upper, $character))}')};
+      }
+    }
+
+    @each $character in $special-characters {
+      $string: #{str-replace-all($string, $character)};
+    }
+
+    @each $character in $replace-with-dash {
+      $string: #{str-replace-all($string, $character, '-')};
+    }
+
+    $string: #{str-replace-all($string, '&', 'and')};
   }
   
   @return $string;

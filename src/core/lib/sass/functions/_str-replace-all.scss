@@ -1,14 +1,16 @@
-// Helper function to replace ALL of a specific set of characters in a string
-@function str-replace-all($string, $replace-with, $search...) {
-  @each $e in $search {
-    @if str-index($replace-with, $e) {
-      @error 'You almost caused an infinite loop! Bad boy.' + \n
-             'Make sure what you\'re replacing with isn\'t contained in what you\'re replacing.';
-    }
-    @while str-index($string, $e) {
-      $index: str-index($string, $e);
-      $string: str-slice($string, 1, $index - 1) + $replace-with + str-slice($string, $index + str-length($e));
-    }
+@use 'str-replace' as *;
+
+/// Replaces a substring within each string in a list.
+/// @param {list} $strings List of strings.
+/// @param {string} $search Substring.
+/// @param {string} $replace Replacement.
+/// @return {list} Updated list of strings.
+@function str-replace-all($strings, $search, $replace: '') {
+
+  @each $string in $strings {
+    $strings: set-nth($strings, index($strings, $string), str-replace($string, $search, $replace));
   }
-  @return $string;
+
+  @return $strings;
+
 }
