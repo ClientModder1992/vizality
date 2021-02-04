@@ -4,9 +4,9 @@ import React from 'react';
 
 import { forceUpdateElement, getOwnerInstance } from '@vizality/util/react';
 import { getModule, getModuleByDisplayName } from '@vizality/webpack';
-import { Guild, Directories } from '@vizality/constants';
 import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
+import { Directories } from '@vizality/constants';
 import { Builtin } from '@vizality/entities';
 
 import AnnouncementContainer from './components/AnnouncementContainer';
@@ -62,22 +62,8 @@ export default class Notices extends Builtin {
     forceUpdateElement(`.${app}`);
   }
 
-  async _welcomeNewUser () {
-    const store = getModule('getGuilds');
-
-    // @i18n
-    vizality.api.notices.sendAnnouncement('vz-first-welcome', {
-      color: 'green',
-      message: 'Welcome! Vizality has been successfully injected into your Discord client. Feel free to visit our Discord server for announcements, support, and more!',
-      button: {
-        text: store.getGuilds(Guild.ID) ? 'Go to Server' : 'Join Server',
-        onClick: () => {
-          const inviteStore = getModule('acceptInviteAndTransitionToInviteChannel');
-          inviteStore.acceptInviteAndTransitionToInviteChannel(Guild.INVITE);
-          getModule('popLayer').popAllLayers();
-        }
-      }
-    });
+  _welcomeNewUser () {
+    vizality.api.routes.navigateTo('home');
   }
 
   // @i18n
