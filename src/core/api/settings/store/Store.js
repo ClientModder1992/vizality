@@ -1,4 +1,5 @@
 import { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
+import { debounce } from 'lodash';
 import { join } from 'path';
 
 import { Flux, FluxDispatcher } from '@vizality/webpack';
@@ -72,7 +73,7 @@ class SettingsStore extends Flux.Store {
   constructor (Dispatcher, handlers) {
     super(Dispatcher, handlers);
 
-    this._persist = window._.debounce(this._persist.bind(this), 1000);
+    this._persist = debounce(this._persist.bind(this), 1000);
     this.addChangeListener(this._persist);
   }
 

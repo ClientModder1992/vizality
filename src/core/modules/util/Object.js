@@ -1,3 +1,5 @@
+import { isObject as _isObject, isEmpty as _isEmpty } from 'lodash';
+
 import { log, error } from './Logger';
 import { toPlural } from './String';
 
@@ -119,7 +121,7 @@ export const _find = (obj, targetValue, exact = false, type) => {
 };
 
 export const isObject = input => {
-  return window._.isObject(input);
+  return _isObject(input);
 };
 
 export const assertObject = input => {
@@ -127,7 +129,7 @@ export const assertObject = input => {
 };
 
 export const isEmpty = input => {
-  return window._.isEmpty(input);
+  return _isEmpty(input);
 };
 
 export const keysToLowerCase = (obj, nested = false) => {

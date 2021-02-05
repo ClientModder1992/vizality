@@ -1,3 +1,4 @@
+import { camelCase, lowerCase, startCase, upperFirst, snakeCase, kebabCase, isString as _isString } from 'lodash';
 import * as _chunk from 'chunk-text';
 import pluralize from 'pluralize';
 
@@ -82,7 +83,7 @@ export const isUrl = string => {
  * toCamelCase('I am a CAMEL CASE string.')
  */
 export const toCamelCase = string => {
-  return window._.camelCase(string);
+  return camelCase(string);
 };
 
 /**
@@ -94,7 +95,7 @@ export const toCamelCase = string => {
  * toDotCase('I am a DOT CASE string.')
  */
 export const toDotCase = string => {
-  return window._.lowerCase(string).replace(/ /g, '.');
+  return lowerCase(string).replace(/ /g, '.');
 };
 
 /**
@@ -106,7 +107,7 @@ export const toDotCase = string => {
  * toTitleCase('I am a TITLE CASE string.')
  */
 export const toTitleCase = string => {
-  return window._.startCase(window._.camelCase(string));
+  return startCase(camelCase(string));
 };
 
 /**
@@ -118,7 +119,7 @@ export const toTitleCase = string => {
  * toSentenceCase('i am a SENTENCE CASE string.')
  */
 export const toSentenceCase = string => {
-  return window._.upperFirst(window._.lowerCase(string));
+  return upperFirst(lowerCase(string));
 };
 
 /**
@@ -130,7 +131,7 @@ export const toSentenceCase = string => {
  * toPascalCase('I am a PASCAL CASE string.')
  */
 export const toPascalCase = string => {
-  return window._.startCase(window._.camelCase(string)).replace(/ /g, '');
+  return startCase(camelCase(string)).replace(/ /g, '');
 };
 
 /**
@@ -142,7 +143,7 @@ export const toPascalCase = string => {
  * toPathCase('I am a PATH CASE string.')
  */
 export const toPathCase = string => {
-  return window._.lowerCase(string).replace(/ /g, '/');
+  return lowerCase(string).replace(/ /g, '/');
 };
 
 /**
@@ -154,7 +155,7 @@ export const toPathCase = string => {
  * toSnakeCase('I am a SNAKE CASE string.')
  */
 export const toSnakeCase = string => {
-  return window._.snakeCase(string);
+  return snakeCase(string);
 };
 
 /**
@@ -166,7 +167,7 @@ export const toSnakeCase = string => {
  * toKebabCase('i am a keBab CASE string.')
  */
 export const toKebabCase = string => {
-  return window._.kebabCase(string);
+  return kebabCase(string);
 };
 
 /**
@@ -175,7 +176,7 @@ export const toKebabCase = string => {
  * @returns {boolean} Whether or not the input is a string
  */
 export const isString = input => {
-  return window._.isString(input);
+  return _isString(input);
 };
 
 /**

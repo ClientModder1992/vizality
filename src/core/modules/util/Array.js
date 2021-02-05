@@ -1,3 +1,5 @@
+import { isArray as _isArray, isEmpty as _isEmpty, sample as _sample } from 'lodash';
+
 /**
  * @module util.array
  * @namespace util.array
@@ -11,11 +13,11 @@
  * @returns {boolean} Whether or not the input is an array
  */
 export const isArray = input => {
-  return window._.isArray(input);
+  return _isArray(input);
 };
 
 export const isEmpty = input => {
-  return window._.isEmpty(input);
+  return _isEmpty(input);
 };
 
 /**
@@ -31,7 +33,7 @@ export const assertArray = input => {
 };
 
 export const getRandomArrayItem = array => {
-  return window._.sample(array);
+  return _sample(array);
 };
 
 export default { isArray, assertArray, getRandomArrayItem };
