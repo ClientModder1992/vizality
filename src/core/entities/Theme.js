@@ -22,9 +22,7 @@ export default class Theme extends Updatable {
   error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
 
   _load () {
-    console.log('uh');
     if (!this.applied) {
-      console.log('why');
       this.applied = true;
       const style = createElement('style', {
         id: `theme-${this.addonId}`,
@@ -32,13 +30,13 @@ export default class Theme extends Updatable {
         'vz-theme': true
       });
       document.head.appendChild(style);
-      this._doCompile = debounce(async () => {
+      this._doCompile = async () => {
         style.innerHTML = await this.compiler.compile();
         this.log('Theme compiled successfully.');
-      }, 300);
+      };
 
       this.compiler.enableWatcher();
-      this.compiler.on('src-update', this._doCompile);
+      this.compiler.on('src-update', debounce(async () => this._doCompile, 300));
       this.log('Theme loaded.');
       return this._doCompile();
     }

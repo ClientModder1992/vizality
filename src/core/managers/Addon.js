@@ -434,12 +434,13 @@ export default class AddonManager {
       return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
     }
 
-    const validExtensions = [ '.png', '.svg', '.jpg', '.jpeg', '.webp' ];
+    const validExtensions = [ '.png', '.jpg', '.jpeg' ];
 
     if (validExtensions.some(ext => existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`)))) {
       for (const ext of validExtensions) {
         if (existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`))) {
-          return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/assets/icon${ext}`;
+          manifest.icon = `vz-${toSingular(this.type)}://${addonId}/assets/icon${ext}`;
+          break;
         }
       }
     } else {
