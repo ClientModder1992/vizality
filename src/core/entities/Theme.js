@@ -29,16 +29,16 @@ export default class Theme extends Updatable {
         'vz-style': true,
         'vz-theme': true
       });
-      document.head.appendChild(style);
-      this._doCompile = async () => {
-        style.innerHTML = await this.compiler.compile();
-        this.log('Theme compiled successfully.');
-      };
 
+      document.head.appendChild(style);
+      this._doCompile = debounce(async (showLogs = true) => {
+        style.innerHTML = await this.compiler.compile();
+        if (showLogs) this.log('Theme compiled successfully.');
+      }, 300);
       this.compiler.enableWatcher();
-      this.compiler.on('src-update', debounce(async () => this._doCompile, 300));
+      this.compiler.on('src-update', this._doCompile);
       this.log('Theme loaded.');
-      return this._doCompile();
+      return this._doCompile(false);
     }
   }
 
