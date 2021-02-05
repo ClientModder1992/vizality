@@ -1,23 +1,35 @@
 import { Builtin } from '@vizality/entities';
 
-import * as modules from './modules';
+import modules from './modules';
 
 export default class Enhancements extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
     this.callbacks = [];
 
-    for (const mod of Object.values(modules)) {
+    for (const mod of Object.keys(modules)) {
       (async () => {
-        const callback = await mod();
-        if (typeof callback === 'function') {
-          this.callbacks.push(callback);
+        try {
+          const callback = await modules[mod]();
+          if (typeof callback === 'function') {
+            this.callbacks.push(callback);
+          }
+        } catch (err) {
+          this.error(mod, err);
         }
       })();
     }
   }
 
   stop () {
-    this.callbacks.forEach(callback => callback());
+    for (const callback of this.callbacks) {
+      (async () => {
+        try {
+          return callback();
+        } catch (err) {
+          this.error(err);
+        }
+      })();
+    }
   }
 }
