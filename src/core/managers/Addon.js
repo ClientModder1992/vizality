@@ -430,22 +430,30 @@ export default class AddonManager {
    * @private
    */
   async _setIcon (addonId, manifest) {
-    if (manifest.icon) {
-      return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
-    }
-
-    const validExtensions = [ '.png', '.jpg', '.jpeg' ];
-
-    if (validExtensions.some(ext => existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`)))) {
-      for (const ext of validExtensions) {
-        if (existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`))) {
-          manifest.icon = `vz-${toSingular(this.type)}://${addonId}/assets/icon${ext}`;
-          break;
+    try {
+      if (manifest.icon) {
+        if (!manifest.icon.endsWith('.png') && !manifest.icon.endsWith('.jpg') && !manifest.icon.endsWith('.jpeg')) {
+          this._warn(`${toTitleCase(toSingular(this.type))} icon must be of type .png, .jpg, or .jpeg.`);
+        } else {
+          return manifest.icon = `vz-${toSingular(this.type)}://${addonId}/${manifest.icon}`;
         }
       }
-    } else {
-      const addonIdHash = toHash(addonId);
-      return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${(addonIdHash % 5) + 1}`];
+
+      const validExtensions = [ '.png', '.jpg', '.jpeg' ];
+
+      if (validExtensions.some(ext => existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`)))) {
+        for (const ext of validExtensions) {
+          if (existsSync(resolve(this.dir, addonId, 'assets', `icon${ext}`))) {
+            manifest.icon = `vz-${toSingular(this.type)}://${addonId}/assets/icon${ext}`;
+            break;
+          }
+        }
+      } else {
+        const addonIdHash = toHash(addonId);
+        return manifest.icon = Avatars[`DEFAULT_${toSingular(this.type.toUpperCase())}_${(addonIdHash % 5) + 1}`];
+      }
+    } catch (err) {
+      return this._error(err);
     }
   }
 
