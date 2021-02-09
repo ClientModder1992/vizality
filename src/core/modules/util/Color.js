@@ -1,4 +1,13 @@
 /* eslint-disable prefer-const */
+import { log, error } from './Logger';
+
+const _module = 'Util';
+const _submodule = 'Color';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
+
 /**
  * @module util.color
  * @namespace util.color
@@ -455,10 +464,8 @@ export const _rgb2int = color => {
   }
 };
 
-export const getContrastColor = input => {
+export const getContrastColor = color => {
   let r, g, b;
-
-  /** @private */
   function _hex (arg) {
     if (arg.length === 4) {
       r = `0x${arg[1]}${arg[1]}`;
@@ -472,9 +479,11 @@ export const getContrastColor = input => {
     }
   }
 
-  _hex(this.toHex(input));
+  _hex(this.toHex(color));
 
-  if ((r * 0.299) + (g * 0.587) + (b * 0.114) > 160) return '#000';
+  if ((r * 0.299) + (g * 0.587) + (b * 0.114) > 160) {
+    return '#000';
+  }
 
   return '#fff';
 };
@@ -484,17 +493,19 @@ export const getRandomColor = (type = 'hex') => {
 
   const base = '000000';
   const number = Math.floor(Math.random() * 16777215).toString(16);
-  const c = `#${(base + number).substr(-6)}`;
+  const color = `#${(base + number).substr(-6)}`;
 
-  if (type === 'int') return this._hex2int(c);
-  if (type === 'hex') return c;
-  if (type === 'rgb') return this._hex2rgb(c);
-  if (type === 'hsl') return this._hex2hsl(c);
+  if (type === 'hex') return color;
+  if (type === 'int') return this._hex2int(color);
+  if (type === 'rgb') return this._hex2rgb(color);
+  if (type === 'hsl') return this._hex2hsl(color);
+};
+
+export const saturateColor = (color, amount) => {
+
 };
 
 export const getColorType = color => {
-  // @todo Assert string
-
   const ex = {
     hex: /^#([\da-f]{3}){1,2}$/i,
 
@@ -507,40 +518,154 @@ export const getColorType = color => {
   if (ex.hex.test(color)) { return 'hex'; }
   if (ex.hsl.test(color)) { return 'hsl'; }
   if (Number.isInteger(parseInt(color))) { return 'int'; }
+  return _error(`Could not determine a color type for "${color}". Please make sure it is a valid color.`);
 };
 
-export const toHex = input => {
-  const type = this.getColorType(input);
+export const toHex = color => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return;
 
-  if (type === 'int') return this._int2hex(input);
-  if (type === 'hex') return input;
-  if (type === 'rgb') return this._rgb2hex(input);
-  if (type === 'hsl') return this._hsl2hex(input);
+  if (type === 'int') return this._int2hex(color);
+  if (type === 'hex') return color;
+  if (type === 'rgb') return this._rgb2hex(color);
+  if (type === 'hsl') return this._hsl2hex(color);
 };
 
-export const toHSL = input => {
-  const type = this.getColorType(input);
+export const toHSL = color => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return _error(`Could not determine a color type for "${color}". Please make sure it is a valid color.`);
 
-  if (type === 'int') return this._int2hsl(input);
-  if (type === 'hex') return this._hex2hsl(input);
-  if (type === 'rgb') return this._rgb2hsl(input);
-  if (type === 'hsl') return input;
+  if (type === 'int') return this._int2hsl(color);
+  if (type === 'hex') return this._hex2hsl(color);
+  if (type === 'rgb') return this._rgb2hsl(color);
+  if (type === 'hsl') return color;
 };
 
-export const toInt = input => {
-  const type = this.getColorType(input);
+export const toInt = color => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return _error(`Could not determine a color type for "${color}". Please make sure it is a valid color.`);
 
-  if (type === 'int') return this._hex2int(input);
-  if (type === 'hex') return this._hex2int(input);
-  if (type === 'rgb') return this._rgb2int(input);
-  if (type === 'hsl') return this._hsl2int(input);
+  if (type === 'int') return this._hex2int(color);
+  if (type === 'hex') return this._hex2int(color);
+  if (type === 'rgb') return this._rgb2int(color);
+  if (type === 'hsl') return this._hsl2int(color);
 };
 
-export const toRGB = input => {
-  const type = this.getColorType(input);
+export const toRGB = color => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return _error(`Could not determine a color type for "${color}". Please make sure it is a valid color.`);
 
-  if (type === 'int') return this._int2rgb(input);
-  if (type === 'hex') return this._hex2rgb(input);
-  if (type === 'rgb') return input;
-  if (type === 'hsl') return this._hsl2rgb(input);
+  if (type === 'int') return this._int2rgb(color);
+  if (type === 'hex') return this._hex2rgb(color);
+  if (type === 'rgb') return color;
+  if (type === 'hsl') return this._hsl2rgb(color);
+};
+
+/**
+ * Blends two colors together linearly. The type of the first color determines the type
+ * of color you will receive back (hex, int, hsl, rgb).
+ * @param {color} firstColor Color to blend
+ * @param {color} secondColor Color to blend
+ * @param {number} [percent=0.5] Percent balance of the blend. 0.5 (50%) is an even balance of both colors. Less than 0.5 weights towards the first color, greater than 0.5 weights towards the second color.
+ */
+export const blendColors = (firstColor, secondColor, percent = 0.5) => {
+  const firstColorType = this.getColorType(firstColor);
+  const secondColorType = this.getColorType(secondColor);
+  if (!firstColorType) return _error(`Could not determine a color type for "${firstColor}".`);
+  if (!secondColorType) return _error(`Could not determine a color type for "${secondColor}".`);
+
+  /**
+   * @see {@link https://stackoverflow.com/a/13542669 || https://github.com/PimpTrizkit/PJs/wiki/12.-Shade,-Blend-and-Convert-a-Web-Color-(pSBC.js)#stackoverflow-archive-begin}
+   */
+  const rgbLinearBlend = (firstColor, secondColor, percent) => {
+    /*
+     * Do a quick conversion to hex and back to make sure it's in a
+     * cleaned up RGB format.
+     */
+    firstColor = this.toHex(firstColor);
+    firstColor = this.toRGB(firstColor);
+    secondColor = this.toHex(secondColor);
+    secondColor = this.toRGB(secondColor);
+
+    const i = parseInt;
+    const r = Math.round;
+    const P = 1 - percent;
+    const [ a, b, c, d ] = firstColor.split(' ');
+    const [ e, f, g, h ] = secondColor.split(' ');
+    const x = d || h;
+    const j = x ? `/ ${!d ? h : !h ? d : `${r((parseFloat(d) * P + parseFloat(h) * p) * 1000) / 1000})`}` : ')';
+    let result = `rgb${x ? 'a(' : '('}${r(i(a[3] === 'a' ? a.slice(5) : a.slice(4)) * P + i(e[3] === 'a' ? e.slice(5) : e.slice(4)) * percent)} ${r(i(b) * P + i(f) * percent)} ${r(i(c) * P + i(g) * percent)}${j}`;
+    /*
+     * Do a quick conversion to hex and back to make sure it's in a
+     * cleaned up RGB format.
+     */
+    result = this.toHex(result);
+    result = this.toRGB(result);
+
+    return result;
+  };
+
+  // Get the new colors, in RGB format
+  let newColor = rgbLinearBlend(firstColor, secondColor, percent);
+
+  // Convert the new color back to the original provided color's type
+  if (firstColorType === 'int') newColor = this.toInt(newColor);
+  if (firstColorType === 'hex') newColor = this.toHex(newColor);
+  if (firstColorType === 'hsl') newColor = this.toHSL(newColor);
+
+  return newColor;
+};
+
+/**
+ * Shades a color linearly, reducing or increasing its perceived lightness by a specified percent.
+ * Positive percents lighten the color and negative percents darken the color.
+ * @param {color} color Color to shade
+ * @param {number} percent Percent amount to shade, between -1 and 1
+ */
+export const shadeColor = (color, percent) => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return _error(`Could not determine a color type for "${color}".`);
+
+  /**
+   * @see {@link https://stackoverflow.com/a/13542669 || https://github.com/PimpTrizkit/PJs/wiki/12.-Shade,-Blend-and-Convert-a-Web-Color-(pSBC.js)#stackoverflow-archive-begin}
+   */
+  const rgbLinearShade = (color, percent) => {
+    /*
+     * Do a quick conversion to hex and back to make sure it's in a
+     * cleaned up RGB format.
+     */
+    color = this.toHex(color);
+    color = this.toRGB(color);
+
+    const i = parseInt;
+    const r = Math.round;
+    const [ a, b, c, d ] = color.split(' ');
+    let P = percent < 0;
+    const t = P ? 0 : 255 * percent;
+    P = P ? 1 + percent : 1 - percent;
+    let result = `rgb${d ? 'a(' : '('}${r(i(a[3] === 'a' ? a.slice(5) : a.slice(4)) * P + t)} ${r(i(b) * P + t)} ${r(i(c) * P + t)}${d ? ` ${d}` : ')'}`;
+    /*
+     * Do a quick conversion to hex and back to make sure it's in a
+     * cleaned up RGB format.
+     */
+    result = this.toHex(result);
+    result = this.toRGB(result);
+
+    return result;
+  };
+
+  // Get the new color, in RGB format
+  let newColor = rgbLinearShade(color, percent);
+
+  // Convert the new color back to the original provided color's type
+  if (type === 'int') newColor = this.toInt(newColor);
+  if (type === 'hex') newColor = this.toHex(newColor);
+  if (type === 'hsl') newColor = this.toHSL(newColor);
+
+  return newColor;
 };
