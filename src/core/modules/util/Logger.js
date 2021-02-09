@@ -1,4 +1,4 @@
-import { getRandomColor, getContrastColor } from './Color';
+import { getRandomColor, getContrastColor, blendColors } from './Color';
 import { isArray } from './Array';
 
 /**
@@ -24,7 +24,9 @@ export const modules = {
   discord: { module: '#7289da', submodule: '#18191c' },
   module: { module: '#ed7c6f', submodule: '#34426e' },
   patch: { module: '#a70338', submodule: '#0195b5' },
-  watcher: { module: '#9a3c4e', submodule: '#fcff8d' }
+  watcher: { module: '#fcff8d', submodule: '#963b8a' },
+  component: { module: '#162a2e', submodule: '#e58ede' }
+  // #9a3c4e
 };
 
 /**
@@ -38,7 +40,7 @@ export const modules = {
  * @returns {void}
  */
 export const _log = (options = {}, message) => {
-  let { module, submodule, color, type } = options;
+  let { module, submodule, subsubmodule, moduleColor, submoduleColor, subsubmoduleColor, type } = options;
 
   type = this._parseType(type);
 
@@ -46,9 +48,11 @@ export const _log = (options = {}, message) => {
 
   module = module?.toLowerCase();
   submodule = submodule?.toLowerCase();
+  subsubmodule = subsubmodule?.toLowerCase();
 
-  const randomModuleColor = getRandomColor();
-  const randomSubmoduleLabelColor = getRandomColor();
+  moduleColor = moduleColor || this.modules[module]?.module || getRandomColor();
+  submoduleColor = submoduleColor || this.modules[module]?.submodule || getRandomColor();
+  subsubmoduleColor = subsubmoduleColor || this.modules[module]?.subsubmodule || blendColors(moduleColor, submoduleColor, 0.75);
 
   const baseBadgeStyles = `border-radius: 2px; text-align: center; display: inline-block; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase; font-size: 10px; font-weight: 600; line-height: 14px; margin-right: 3px; padding: 1px 4px;`;
 
@@ -56,13 +60,29 @@ export const _log = (options = {}, message) => {
 
   const moduleStyles =
     `${baseBadgeStyles}
-    color: ${this.modules[module] && this.modules[module].module ? getContrastColor(this.modules[module].module) : getContrastColor(randomModuleColor)};
-    background: ${this.modules[module] && this.modules[module].module || randomModuleColor};`;
+    color: ${getContrastColor(moduleColor)};
+    background: ${moduleColor};`;
 
   const submoduleStyles =
     `${baseBadgeStyles};
-    color: ${color ? getContrastColor(color) : this.modules[module] && this.modules[module].submodule ? getContrastColor(this.modules[module].submodule) : getContrastColor(randomSubmoduleLabelColor)};
-    background: ${color || this.modules[module] && this.modules[module].submodule || randomSubmoduleLabelColor};`;
+    color: ${getContrastColor(submoduleColor)};
+    background: ${submoduleColor};`;
+
+  const subsubmoduleStyles =
+    `${baseBadgeStyles};
+    color: ${getContrastColor(subsubmoduleColor)};
+    background: ${subsubmoduleColor};`;
+
+  if (options.subsubmodule) {
+    return console[type](
+      `%c %c${module}%c${submodule}%c${subsubmodule}`,
+      badgeStyles,
+      moduleStyles,
+      submoduleStyles,
+      subsubmoduleStyles,
+      ...message
+    );
+  }
 
   return console[type](
     `%c %c${module}%c${submodule}`,
