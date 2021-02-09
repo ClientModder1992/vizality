@@ -1,18 +1,14 @@
 import { getModuleByDisplayName } from '@vizality/webpack';
+import { findInReactTree } from '@vizality/util/react';
 
 import AsyncComponent from './AsyncComponent';
 
-export default AsyncComponent.from(
-  (async () => {
-    const DecoratedGuildSettingsRoles = await getModuleByDisplayName('FluxContainer(GuildSettingsRoles)');
-    const GuildSettingsRoles = DecoratedGuildSettingsRoles.prototype.render.call({ memoizedGetStateFromStores: () => void 0 }).type;
-    const SettingsPanel = GuildSettingsRoles.prototype.renderRoleSettings.call({
-      props: { guild: { isOwner: () => true } },
-      renderHeader: () => null,
-      getSelectedRole: () => '0'
-    }).props.children.props.children.props.children[1].type;
-    const SuspendedPicker = SettingsPanel.prototype.renderColorPicker.call({ props: { role: {} } }).props.children.type;
-    const mdl = await SuspendedPicker().props.children.type._ctor();
-    return mdl.default;
-  })()
-);
+export default AsyncComponent.from((async () => {
+  /* Thanks to Harley for this~ */
+  const GuildFolderSettingsModal = getModuleByDisplayName('GuildFolderSettingsModal');
+  const ModalRoot = GuildFolderSettingsModal.prototype.render.call({ props: { transitionState: 0 }, state: { name: '', color: '' } });
+  const SuspendedPicker = findInReactTree(ModalRoot, n => n.props?.defaultColor).type;
+  const LazyWebpackModule = await SuspendedPicker().props.children.type;
+  const mdl = await (LazyWebpackModule._ctor || LazyWebpackModule._payload._result)();
+  return mdl.default;
+})());
