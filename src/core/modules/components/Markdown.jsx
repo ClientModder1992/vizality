@@ -54,9 +54,7 @@ export default memo(({ source, className }) => {
 
   const renderers = {
     root: ({ children }) => {
-      return <div className={joinClassNames('vz-markdown', className)}>
-        {children}
-      </div>;
+      return children;
     },
 
     /*
@@ -220,12 +218,17 @@ export default memo(({ source, className }) => {
     }
   };
   return (
-    <DeferredRender idleTimeout={2500} fallback={
-      <div className='vz-markdown-content-loading'>
-        <Spinner />
-      </div>
-    }>
-      <Markdown source={markdown} renderers={renderers} />
-    </DeferredRender>
+    <>
+      {existsSync(source)
+        ? <DeferredRender idleTimeout={2500} fallback={
+          <div className='vz-markdown-content-loading'>
+            <Spinner />
+          </div>
+        }>
+          <Markdown source={markdown} renderers={renderers} />
+        </DeferredRender>
+        : <Markdown source={markdown} renderers={renderers} />
+      }
+    </>
   );
 });
