@@ -70,7 +70,7 @@ export default memo(props => {
     >
       <TabBar
         selectedItem={tab}
-        onItemSelect={tab => handleTabChange(tab)}
+        onItemSelect={handleTabChange}
         type={TabBar.Types.TOP_PILL}
       >
         <TabBar.Item selectedItem={tab} id='installed'>
@@ -88,7 +88,7 @@ export default memo(props => {
           <SearchBar
             placeholder={Messages.SEARCH}
             query={query}
-            onChange={search => handleQueryChange(search)}
+            onChange={handleQueryChange}
             onClear={() => handleQueryChange('')}
           />
         </div>
@@ -97,8 +97,8 @@ export default memo(props => {
             tooltip={`Sort & Filter`}
             size='20'
             tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
-            name='Filter2'
-            onClick={e => renderSortFilterMenu(e)}
+            name='FilterAlt'
+            onClick={renderSortFilterMenu}
           />
         </div>
         <div className='vz-addons-list-tags-button vz-addons-list-search-options-button'>
@@ -106,7 +106,7 @@ export default memo(props => {
             tooltip='Tags'
             name='StoreTag'
             tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
-            onClick={e => renderTagsMenu(e)}
+            onClick={renderTagsMenu}
           />
         </div>
         <div className='vz-addons-list-display-button vz-addons-list-search-options-button'>
@@ -114,7 +114,7 @@ export default memo(props => {
             tooltip='Display'
             tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
             name={formatDisplayIconName(display)}
-            onClick={e => renderDisplayMenu(e)}
+            onClick={renderDisplayMenu}
           />
         </div>
         <div className='vz-addons-list-more-button vz-addons-list-search-options-button'>
@@ -122,7 +122,7 @@ export default memo(props => {
             tooltip={Messages.MORE}
             tooltipPosition={sticky === 'stuck' ? 'bottom' : 'top'}
             name='OverflowMenu'
-            onClick={e => renderOverflowMenu(e)}
+            onClick={renderOverflowMenu}
           />
         </div>
       </div>

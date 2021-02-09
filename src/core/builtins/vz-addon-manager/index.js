@@ -13,6 +13,10 @@ export default class AddonsManager extends Builtin {
   start () {
     this.injectStyles('styles/main.scss');
 
+    /**
+     * We're doing this here because the addon managers are initialized before the components have initialized, so
+     * it causes issues when trying to use the components inside the addon manager.
+     */
     [ 'plugin', 'theme' ].forEach(type =>
       vizality.manager[toPlural(type)].uninstall = (addonId, addonType = type) => this.uninstallAddon(addonId, addonType));
 

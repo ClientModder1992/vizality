@@ -33,6 +33,9 @@
         margin: 0;
         align-items: center;
       }
+      &-icon {
+        @include size(40px);
+      }
       &-details {
         display: flex;
         align-items: center;

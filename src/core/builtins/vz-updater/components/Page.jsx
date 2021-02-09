@@ -1,6 +1,7 @@
 import React, { useEffect, memo, useState } from 'react';
 import { readdirSync, existsSync } from 'fs';
 import { clipboard } from 'electron';
+import moment from 'moment';
 
 import { SwitchItem, TextInput, Category, FormTitle } from '@vizality/components/settings';
 import { Confirm, Clickable, Button, FormNotice } from '@vizality/components';
@@ -35,7 +36,6 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const _this = vizality.manager.builtins.get('vz-updater');
 
   const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable';
-  const time = getModule('momentProperties');
   // @todo: Make this be in its own store
   const awaitingReload = getSetting('awaitingReload', false);
   const updating = getSetting('updating', false);
@@ -47,7 +47,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   const updates = getSetting('updates', []);
   const disabledAddons = getSetting('addonsDisabled', []);
   const checkingProgress = getSetting('checkingProgress', [ 0, 0 ]);
-  const last = time(getSetting('lastCheck', false)).calendar();
+  const last = moment(getSetting('lastCheck', false)).calendar();
 
   let icon, title;
   if (disabled) {
@@ -154,14 +154,14 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
     );
   };
 
-  const handleDebugInfoCopy = (time, plugins) => {
+  const handleDebugInfoCopy = (plugins) => {
     const extract = document.querySelector('.vizality-debug-info > code')
       .innerText.replace(/([A-Z/ ]+) (?=\s(?!C:\\).*?:)/g, '\n[$1]').replace(/(.*?):\s(.*.+)/g, '$1="$2"').replace(/[ -](\w*(?=.*=))/g, '$1');
 
     setCopyText(Messages.COPIED);
     clipboard.writeText(
       `\`\`\`ini
-      # Debugging Information | Result created: ${time().calendar()}
+      # Debugging Information | Result created: ${moment().calendar()}
       ${extract.substring(0, extract.indexOf('\nPlugins', extract.indexOf('\nPlugins') + 1))}
       Plugins="${plugins.join(', ')}"
       \`\`\``.replace(/ {6}|n\/a/g, '').replace(/(?![0-9]{1,3}) \/ (?=[0-9]{1,3})/g, '/')
@@ -170,7 +170,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   // --- DEBUG STUFF (Intentionally left english-only)
-  const renderDebugInfo = (time) => {
+  const renderDebugInfo = () => {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule('initialize', 'getExperimentOverrides');
     const { manager: { apis: { apis } }, api: { commands: { commands }, settings: { store: settingsStore } } } = vizality;
     const superProperties = getModule('getSuperPropertiesBase64').getSuperProperties();
@@ -277,7 +277,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         <Button
           size={Button.Sizes.SMALL}
           color={copyText === Messages.COPIED ? Button.Colors.GREEN : Button.Colors.BRAND}
-          onClick={() => handleDebugInfoCopy(time, plugins)}
+          onClick={() => handleDebugInfoCopy(plugins)}
         >
           {copyText}
         </Button>
@@ -430,7 +430,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
             opened={debugInfoOpened}
             onChange={() => setDebugInfoOpened(!debugInfoOpened)}
           >
-            {renderDebugInfo(time)}
+            {renderDebugInfo()}
           </Category>
         </>}
       </div>

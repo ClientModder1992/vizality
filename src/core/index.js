@@ -251,7 +251,7 @@ export default class Vizality extends Updatable {
                 text: 'Reload',
                 color: 'green',
                 look: 'ghost',
-                onClick: () => location.reload()
+                onClick: () => DiscordNative.app.relaunch()
               },
               {
                 text: 'Postpone',

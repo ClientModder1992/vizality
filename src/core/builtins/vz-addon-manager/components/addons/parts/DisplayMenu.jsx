@@ -13,28 +13,28 @@ export default memo(props => {
         <ContextMenu.Item
           id='compact'
           label='Compact'
-          icon={() => <Icon name='LayoutCompact' size='18px' />}
+          icon={() => <Icon name='LayoutCompact' size='18' />}
           action={() => handleDisplayChange('compact')}
           disabled={display === 'compact'}
         />
         <ContextMenu.Item
           id='cover'
           label='Cover'
-          icon={() => <Icon name='LayoutCover' size='18px' />}
+          icon={() => <Icon name='LayoutCover' size='18' />}
           action={() => handleDisplayChange('cover')}
           disabled={display === 'cover'}
         />
         <ContextMenu.Item
           id='card'
           label='Card'
-          icon={() => <Icon name='LayoutCard' size='18px' />}
+          icon={() => <Icon name='LayoutCard' size='18' />}
           action={() => handleDisplayChange('card')}
           disabled={display === 'card'}
         />
         <ContextMenu.Item
           id='list'
           label='List'
-          icon={() => <Icon name='LayoutList' size='18px' />}
+          icon={() => <Icon name='LayoutList' size='18' />}
           action={() => handleDisplayChange('list')}
           disabled={display === 'list'}
         />

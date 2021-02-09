@@ -24,7 +24,6 @@ const FakeBotTag = memo(props => {
 
 export default () => {
   const MessageHeader = getModule('MessageTimestamp');
-
   patch('vz-enhancements-bot-tags', MessageHeader, 'default', ([ props ], res) => {
     const { message } = props;
     let text;

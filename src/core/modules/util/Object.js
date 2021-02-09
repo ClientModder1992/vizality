@@ -7,14 +7,8 @@ const _module = 'Util';
 const _submodule = 'Object';
 
 /** @private */
-const _log = (...data) => {
-  log({ module: _module, submodule: _submodule }, ...data);
-};
-
-/** @private */
-const _error = (...data) => {
-  error({ module: _module, submodule: _submodule }, ...data);
-};
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 /**
  * @module util.object

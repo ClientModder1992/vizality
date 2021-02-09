@@ -3,8 +3,8 @@ import { getModule } from '@vizality/webpack';
 
 export default () => {
   const GuildFolder = getModule(m => m.default && (
-    (m.default.type?.render?.toString().includes('defaultFolderName')) ||
-    (m.default.type?.__vizalityOriginal_render?.toString().includes('defaultFolderName'))
+    (m.default?.type?.render?.toString().includes('defaultFolderName')) ||
+    (m.default?.type?.__vizalityOriginal_render?.toString().includes('defaultFolderName'))
   ));
 
   patch('vz-attributes-guild-folders', GuildFolder.default.type, 'render', ([ props ], res) => {
