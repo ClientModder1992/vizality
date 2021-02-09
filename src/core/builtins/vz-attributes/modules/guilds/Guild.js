@@ -1,39 +1,15 @@
-import React from 'react';
+import { getOwnerInstance, findInTree, forceUpdateElement } from '@vizality/util/react';
+import { waitForElement } from '@vizality/util/dom';
 
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 
-export default () => {
-  const DragSourceConnectedGuild = getModule('LurkingGuild');
-  const { DecoratedComponent } = DragSourceConnectedGuild.default;
-
-  const g = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
-  const ogUseMemo = g.useMemo;
-  const ogUseState = g.useState;
-  const ogUseEffect = g.useEffect;
-  const ogUseLayoutEffect = g.useLayoutEffect;
-  const ogUseCallback = g.useCallback;
-  const ogUseContext = g.useContext;
-  const ogUseRef = g.useRef;
-
-  g.useMemo = (f) => f();
-  g.useState = (v) => [ v, () => void 0 ];
-  g.useCallback = (v) => v;
-  g.useContext = (ctx) => ctx._currentValue;
-  g.useEffect = () => null;
-  g.useLayoutEffect = () => null;
-  g.useRef = () => ({});
-
-  const Guild = new DecoratedComponent({ guildId: null }).type;
-
-  g.useMemo = ogUseMemo;
-  g.useState = ogUseState;
-  g.useCallback = ogUseCallback;
-  g.useContext = ogUseContext;
-  g.useEffect = ogUseEffect;
-  g.useLayoutEffect = ogUseLayoutEffect;
-  g.useRef = ogUseRef;
-
+export default async () => {
+  const { blobContainer } = getModule('blobContainer');
+  const { listItem } = getModule('guildSeparator', 'listItem');
+  const instance = getOwnerInstance(await waitForElement(`.${blobContainer}`));
+  const reactInstance = instance?._reactInternalFiber || instance?._reactInternals;
+  const Guild = findInTree(reactInstance, n => n.type?.displayName === 'Guild', { walkable: [ 'return' ] })?.type;
   patch('vz-attributes-guilds', Guild.prototype, 'render', function (_, res) {
     // This was needed for guilds with outages, not sure if it's needed anymore.
     if (!res) return _;
@@ -50,6 +26,8 @@ export default () => {
 
     return res;
   });
+
+  setImmediate(() => forceUpdateElement(`.${listItem}`, true));
 
   return () => unpatch('vz-attributes-guilds');
 };
