@@ -182,17 +182,31 @@ export default class Plugin extends Updatable {
 
     this._watcher
       .on('add', path =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `File "${path.replace(this.path + sep, '')}" has been added.`))
+        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
+          `File "${path.replace(this.path + sep, '')}" has been added.`
+        )
+      )
       .on('change', path =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `File "${path.replace(this.path + sep, '')}" has been changed.`))
+        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
+          `File "${path.replace(this.path + sep, '')}" has been changed.`
+        )
+      )
       .on('unlink', path =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `File "${path.replace(this.path + sep, '')}" has been removed.`))
+        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
+          `File "${path.replace(this.path + sep, '')}" has been removed.`
+        )
+      )
       .on('addDir', path =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `Directory "${path.replace(this.path + sep, '')}" has been added.`))
+        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
+          `Directory "${path.replace(this.path + sep, '')}" has been added.`
+        )
+      )
       .on('unlinkDir', path =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, `Directory "${path.replace(this.path + sep, '')}" has been removed.`))
-      .on('error', error =>
-        log({ module: _module, submodule: `${this._module}:${this._submodule}` }, error))
+        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
+          `Directory "${path.replace(this.path + sep, '')}" has been removed.`
+        )
+      )
+      .on('error', error => log({ module: _module, submodule: this._module, subsubmodule: this._submodule }, error))
       .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
   }
 
