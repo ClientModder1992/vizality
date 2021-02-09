@@ -59,6 +59,7 @@ export default class Notices extends Builtin {
       }
       return res;
     });
+
     forceUpdateElement(`.${app}`);
   }
 

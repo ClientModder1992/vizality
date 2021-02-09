@@ -338,10 +338,8 @@ export default function injectAutocomplete () {
    * Patch icons on the slash commands autocomplete rail.
    */
   patch('vz-commands-railIcon', ApplicationCommandDiscoveryApplicationIcon, 'default', ([ props ], res) => {
-    let { src } = findInReactTree(res, r => r.src);
-
-    // Check if it's a Vizality-specific icons
-    if (src.includes('vz-plugin://') || src.includes('vz-asset://')) {
+    // Check if it's a Vizality-specific icon
+    if (props?.section?.icon?.includes('vz-plugin://') || props?.section?.icon?.includes('vz-asset://')) {
       res.props.onClick = () => {
         /**
          * Scrolls to the specific category section on click. Using DOM selectors here which is not optimal.
@@ -358,12 +356,7 @@ export default function injectAutocomplete () {
         scroller.scroll({ top: topOfElement, behavior: 'smooth' });
       };
 
-      src = src.split('.webp');
-
-      // Check if we have already replaced the source. If not, do so.
-      if (new RegExp(`https://cdn.discordapp.com/app-icons/(.*)/`).test(src[0])) {
-        res.props.children.props.children.props.src = src[0].replace(new RegExp(`https://cdn.discordapp.com/app-icons/([^/]+)/`, 'ig'), '');
-      }
+      res.props.children.props.children.props.src = props?.section?.icon;
     }
 
     return res;
@@ -398,6 +391,11 @@ export default function injectAutocomplete () {
         });
     }
 
+    return res;
+  });
+
+  const pie = getModule('useCommandSection');
+  patch('ez-pie', pie, 'useCommandSection', (args, res) => {
     return res;
   });
 }
