@@ -46,20 +46,20 @@ export default {
       if (vizality.manager[toPlural(type)].isInstalled(addonId)) {
         return {
           send: false,
-          result: `${toTitleCase(type)} "${addonId}" is already installed!`
+          result: `${toTitleCase(type)} \`${addonId}\` is already installed!`
         };
       }
 
       if (existsSync(join(Directories.PLUGINS, addonId)) && lstatSync(join(Directories.PLUGINS, addonId)).isDirectory()) {
         return {
           send: false,
-          result: `${toTitleCase(type)} directory "${addonId}" already exists!`
+          result: `${toTitleCase(type)} directory \`${addonId}\` already exists!`
         };
       }
 
       await vizality.manager[toPlural(type)].install(args[0]);
 
-      result = `${toTitleCase(type)} "${addonId}" has been installed!`;
+      result = `${toTitleCase(type)} \`${addonId}\` has been installed!`;
     } catch (err) {
       console.log(err);
       result = 'poo';

@@ -24,7 +24,7 @@ export default {
         result = err;
       }
     } else {
-      result = `${toTitleCase(type)} "${args[0]}" is not installed.`;
+      result = `${toTitleCase(type)} \`${args[0]}\` is not installed.`;
     }
 
     return {
