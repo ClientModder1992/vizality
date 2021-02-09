@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { AsyncComponent, Button, Tooltip, Icon } from '@vizality/components';
+import { AsyncComponent, Button, Tooltip, Icon, Markdown } from '@vizality/components';
 import { joinClassNames } from '@vizality/util/dom';
 
 const Progress = AsyncComponent.fromDisplayName('Progress');
@@ -83,7 +83,10 @@ export default class Toast extends PureComponent {
       </Tooltip>
       <div className='vz-toast-header-content'>
         <div className='vz-toast-header-title'>
-          {this.props.header}
+          {this.props.markdown
+            ? <Markdown source={this.props.header} />
+            : this.props.header
+          }
         </div>
         {this.props.content && this.renderContent()}
       </div>
@@ -92,7 +95,10 @@ export default class Toast extends PureComponent {
 
   renderContent () {
     return <div className='vz-toast-header-message'>
-      {this.props.content}
+      {this.props.markdown
+        ? <Markdown source={this.props.content} />
+        : this.props.content
+      }
     </div>;
   }
 
