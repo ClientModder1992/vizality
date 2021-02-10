@@ -27,11 +27,11 @@ export const Icons = {
 
 };
 
+// Process SVGs
 (async () => {
-  const before = performance.now();
+  // const before = performance.now();
   const icons = readdirSync(join(__dirname, '..', '..', 'assets', 'svg'))
     .map(item => parse(item).name);
-  console.log(icons);
 
   for (const name of icons) {
     const icon = readFileSync(join(__dirname, '..', '..', 'assets', 'svg', `${name}.svg`), { encoding: 'utf8' });
@@ -48,9 +48,35 @@ export const Icons = {
       }
     }));
   }
-  const after = performance.now();
-  const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
-  console.log(time);
+  // const after = performance.now();
+  // const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
+  // console.log(time);
+})();
+
+// Process logos
+(async () => {
+  // const before = performance.now();
+  const icons = readdirSync(join(__dirname, '..', '..', 'assets', 'logo'))
+    .map(item => parse(item).name);
+
+  for (const name of icons) {
+    const icon = readFileSync(join(__dirname, '..', '..', 'assets', 'logo', `${name}.svg`), { encoding: 'utf8' });
+    Icons[toPascalCase(name)] = memo(props => parseHTML(icon, {
+      replace: domNode => {
+        if (domNode.attribs && domNode.name === 'svg') {
+          const attrs = attributesToProps(domNode.attribs);
+          return (
+            <svg {...attrs} {...props}>
+              {domToReact(domNode.children)}
+            </svg>
+          );
+        }
+      }
+    }));
+  }
+  // const after = performance.now();
+  // const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
+  // console.log(time);
 })();
 
 export default memo(props => {

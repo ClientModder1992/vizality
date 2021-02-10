@@ -95,9 +95,10 @@
       color: #fff;
       stroke: #fff;
       path {
+        fill: currentColor;
         stroke-dasharray: 150;
-        animation: strokeSVG .5s ease-in forwards, fillSVG .25s .25s ease-in forwards;
-        stroke-width: 10;
+        animation: strokeSVG .75s ease-in forwards, fillSVG .25s .5s ease-in forwards;
+        stroke-width: 5;
       }
     }
     &-header {
