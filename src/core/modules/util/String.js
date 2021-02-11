@@ -2,12 +2,23 @@ import { camelCase, lowerCase, startCase, upperFirst, snakeCase, kebabCase, isSt
 import * as _chunk from 'chunk-text';
 import pluralize from 'pluralize';
 
+/* eslint-disable no-unused-vars */
+import { log, warn, error } from './Logger';
+
 /**
+ * Contains methods relating to strings.
  * @module util.string
  * @namespace util.string
  * @memberof util
- * @version 0.0.1
  */
+
+const _module = 'Util';
+const _submodule = 'String';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const isSingular = string => {
   return pluralize.isSingular(string);
@@ -182,12 +193,11 @@ export const isString = input => {
 /**
  * Asserts that the input is a string. If it isn't, throw an error, otherwise do nothing.
  * @param {*} input Argument input
- * @returns {void}
  * @throws {TypeError} Throw an error if the input is not a string
  */
 export const assertString = input => {
   if (!this.isString(input)) {
-    return new TypeError(`Input must be a string, but received type of ${typeof input}.`);
+    throw new TypeError(`Expected a string but received ${typeof input}.`);
   }
 };
 
@@ -201,11 +211,11 @@ export const getRandomString = length => {
 };
 
 /**
- * OwO'ify string input.
+ * OwO'ify text input.
  * Sourced from @see {@link https://gist.github.com/aqua-lzma/ced43969ef48056791179138589ebcac}
- * @param {*} string String to convert
+ * @param {string} text Text to convert
  */
-export const owoify = string => {
+export const owoify = text => {
   const stutterChance = 0.1;
   const prefixChance = 0.05;
   const suffixChance = 0.15;

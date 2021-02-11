@@ -1,21 +1,22 @@
+/* eslint-disable no-unused-vars */
 import { isObject as _isObject, isEmpty as _isEmpty } from 'lodash';
 
-import { log, error } from './Logger';
+import { log, warn, error } from './Logger';
 import { toPlural } from './String';
+
+/**
+ * Contains methods relating to objects.
+ * @module util.object
+ * @namespace util.object
+ * @memberof util
+ */
 
 const _module = 'Util';
 const _submodule = 'Object';
 
-/** @private */
 const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
 const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
-
-/**
- * @module util.object
- * @namespace util.object
- * @memberof util
- * @version 0.0.1
- */
 
 // @todo Clean this up.
 export const _traverse = function*(obj, targetValue, exactMatch = false, type, currentPath = '') {

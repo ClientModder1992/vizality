@@ -1,16 +1,21 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars *//* eslint-disable no-undef *//* eslint-disable no-empty-function */
 import { performance, PerformanceObserver } from 'perf_hooks';
 
+import { getMedian, getAverage } from './Number';
+import { log, warn, error } from './Logger';
+
 /**
- * Benchmarks an array of functions and sorts them by performance.
- * @param {Array} funcs The functions to benchmark
- * @param {number} iterations The amount of iterations to run through and Median on
- * @param {boolean} [nano=true] Whether to show the formatted string in milliseconds or nanoseconds
- * @param {boolean} [log=true] Whether or not to log the results to the console right away
- * @returns {object} The results. All ready to be handled if you don't want them printed to the console.
+ * @module util.performance
+ * @namespace util.performance
+ * @memberof util
  */
 
+const _module = 'Util';
+const _submodule = 'Performance';
 
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 /**
  * Runs a function or set over function a specified number of times and then reports

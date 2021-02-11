@@ -1,9 +1,21 @@
+/* eslint-disable no-unused-vars */
+import { log, warn, error } from './Logger';
+import { assertArray } from './Array';
+
 /**
+ * Contains methods relating to numbers.
  * @module util.number
  * @namespace util.number
  * @memberof util
- * @version 0.0.1
  */
+
+const _module = 'Util';
+const _submodule = 'Number';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const isNumber = input => {
   return void 0 || input;
@@ -20,8 +32,12 @@ export const assertNumber = input => {
  * @returns {number} The average of the numbers in the array.
  */
 export const getAverage = numbers => {
-  assertArray(numbers);
-  return numbers.reduce((all, one, _, src) => all += one / src.length, 0);
+  try {
+    assertArray(numbers);
+    return numbers.reduce((all, one, _, src) => all += one / src.length, 0);
+  } catch (err) {
+    return _error(err);
+  }
 };
 
 /**
@@ -31,16 +47,13 @@ export const getAverage = numbers => {
  * @returns {number} The median of the numbers in the array.
  */
 export const getMedian = numbers => {
-  assertArray(numbers);
-
-  numbers.sort((a, b) => {
-    return a - b;
-  });
-
-  const half = Math.floor(numbers.length / 2);
-  if (numbers.length % 2) {
-    return numbers[half];
+  try {
+    assertArray(numbers);
+    numbers.sort((a, b) => a - b);
+    const half = Math.floor(numbers.length / 2);
+    if (numbers.length % 2) return numbers[half];
+    return (numbers[half - 1] + numbers[half]) / 2.0;
+  } catch (err) {
+    return _error(err);
   }
-
-  return (numbers[half - 1] + numbers[half]) / 2.0;
 };

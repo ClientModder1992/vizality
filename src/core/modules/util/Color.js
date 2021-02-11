@@ -1,24 +1,25 @@
-/* eslint-disable prefer-const */
-import { log, error } from './Logger';
-
-const _module = 'Util';
-const _submodule = 'Color';
-
-/** @private */
-const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
-const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
+/* eslint-disable no-unused-vars *//* eslint-disable prefer-const */
+import { log, warn, error } from './Logger';
 
 /**
+ * Contains methods relating to colors.
  * @module util.color
  * @namespace util.color
  * @memberof util
- * @version 0.0.1
  */
 
 /**
  * @todo Add: isType, assertType, isHex, isHsl, isInt, isRgb, assertHex, assertHsl, assertInt, assertRgb
  * @todo Make these work with alphas (8-digit hex numbers, rgba, and hsla).
  */
+
+const _module = 'Util';
+const _submodule = 'Color';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const _hex2hsl = color => {
   // Convert hex to RGB first

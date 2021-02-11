@@ -8,7 +8,6 @@
  * to jsconfig.json.
  * @namespace typedefs
  * @module typedefs
- * @version 0.0.1
  */
 
 

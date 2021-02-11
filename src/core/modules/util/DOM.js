@@ -1,11 +1,24 @@
+/* eslint-disable no-unused-vars */
+import { nativeImage } from 'electron';
+
+import { log, warn, error } from './Logger';
+import { getModule } from '../webpack';
 import { sleep } from './Time';
 
 /**
+ * Contains methods relating to the DOM.
  * @module util.dom
  * @namespace util.dom
  * @memberof util
- * @version 0.0.1
  */
+
+const _module = 'Util';
+const _submodule = 'DOM';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const createElement = (type, props) => {
   const element = document.createElement(type);

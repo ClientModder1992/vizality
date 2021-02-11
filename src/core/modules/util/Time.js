@@ -1,12 +1,21 @@
-/* eslint-disable no-unused-expressions *//* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+import { log, warn, error } from './Logger';
 import { getModule } from '../webpack';
 
 /**
+ * Contains methods relating to time and dates.
  * @module util.time
  * @namespace util.time
  * @memberof util
- * @version 0.0.1
  */
+
+const _module = 'Util';
+const _submodule = 'Time';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const millisecondsToTime = ms => {
   const time = getModule('momentProperties').duration(ms);
@@ -56,3 +65,4 @@ export const sleep = async time => {
     setTimeout(resolve, time)
   );
 };
+

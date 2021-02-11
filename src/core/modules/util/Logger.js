@@ -2,10 +2,10 @@ import { getRandomColor, getContrastColor, blendColors } from './Color';
 import { isArray } from './Array';
 
 /**
+ * Contains methods that output stylized log messages to developer tools console.
  * @module util.logger
  * @namespace util.logger
  * @memberof util
- * @version 0.0.1
  */
 
 export const _parseType = type => {

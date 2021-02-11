@@ -1,25 +1,22 @@
+/* eslint-disable no-unused-vars */
 import { webFrame } from 'electron';
+
 import { log, warn, error } from './Logger';
+
+/**
+ * Contains methods relating to React and the virtual DOM.
+ * @module util.react
+ * @namespace util.react
+ * @memberof util
+ */
 
 const _module = 'Util';
 const _submodule = 'React';
 
 /** @private */
-const _log = (...data) => {
-  log({ module: _module, submodule: _submodule }, ...data);
-};
-
-/** @private */
-const _error = (...data) => {
-  error({ module: _module, submodule: _submodule }, ...data);
-};
-
-/**
- * @module util.react
- * @namespace util.react
- * @memberof util
- * @version 0.0.1
- */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 /**
  * Finds a value, subobject, or array from a tree that matches a specific filter.
@@ -84,7 +81,7 @@ export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) 
 
     return returnValue;
   } catch (err) {
-    console.warn(err);
+    return _error(err);
   }
 };
 

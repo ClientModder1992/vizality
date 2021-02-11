@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { promises, existsSync, lstatSync, readFileSync, readdirSync } from 'fs';
 import { lookup as _getMimeType } from 'mime-types';
 import { extname, join, parse } from 'path';
@@ -7,17 +8,26 @@ import { escapeRegExp } from 'lodash';
 import imageSize from 'image-size';
 import { promisify } from 'util';
 
-const _getImageSize = promisify(imageSize);
-
+import { log, warn, error } from './Logger';
 import { isString } from './String';
 
 const { readdir, lstat, unlink, rmdir } = promises;
+const _getImageSize = promisify(imageSize);
+
 /**
+ * Contains methods relating to files.
  * @module util.file
  * @namespace util.file
  * @memberof util
- * @version 0.0.1
  */
+
+const _module = 'Util';
+const _submodule = 'File';
+
+/** @private */
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 export const getOrigin = () => {
   const stackTrace = (new Error()).stack;
