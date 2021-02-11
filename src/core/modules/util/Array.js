@@ -32,8 +32,18 @@ export const assertArray = input => {
   }
 };
 
-export const getRandomArrayItem = array => {
-  return _sample(array);
+
+/**
+ * Asserts that the input is an array. If it isn't, throw an error, otherwise do nothing.
+ * @param {Array} array Array to process
+ * @returns {*} Returns a random item from the array
+ */
+export const getRandomItem = array => {
+  try {
+    return _sample(array);
+  } catch (err) {
+    return _error(err);
+  }
 };
 
 export default { isArray, assertArray, getRandomArrayItem };
