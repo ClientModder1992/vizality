@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+
 import { Directories } from '@vizality/constants';
 
 import Theme from '../entities/Theme';
@@ -32,7 +33,7 @@ export default class ThemeManager extends AddonManager {
 
     const errors = this._validateManifest(manifest);
     if (errors.length > 0) {
-      return this._error(`Invalid manifest; Detected the following errors:\n\t${errors.join('\n\t')}`);
+      return this._error(`Invalid manifest. Detected the following errors:\n\t${errors.join('\n\t')}`);
     }
 
     if (window.__SPLASH__ && manifest.splashTheme) {
@@ -51,44 +52,38 @@ export default class ThemeManager extends AddonManager {
   }
 
   _validateManifest (manifest) {
-    const errors = [];
-    if (typeof manifest.name !== 'string') {
-      errors.push(`Invalid name: expected a string got ${typeof manifest.name}`);
-    }
-    if (typeof manifest.description !== 'string') {
-      errors.push(`Invalid description: expected a string got ${typeof manifest.description}`);
-    }
-    if (typeof manifest.version !== 'string') {
-      errors.push(`Invalid version: expected a string got ${typeof manifest.version}`);
-    }
-    if (typeof manifest.author !== 'string') {
-      errors.push(`Invalid author: expected a string got ${typeof manifest.author}`);
-    }
-    if (typeof manifest.theme !== 'string') {
-      errors.push(`Invalid theme: expected a string got ${typeof manifest.theme}`);
-    } else if (!fileRegex.test(manifest.theme)) {
-      errors.push('Invalid theme: unsupported file extension');
-    }
-    if (manifest.overlayTheme) {
-      if (typeof manifest.overlayTheme !== 'string') {
-        errors.push(`Invalid theme: expected a string got ${typeof manifest.overlayTheme}`);
-      } else if (!fileRegex.test(manifest.overlayTheme)) {
+    try {
+      const errors = [];
+      if (typeof manifest.name !== 'string') {
+        errors.push(`Invalid name: expected a string got ${typeof manifest.name}`);
+      }
+      if (typeof manifest.description !== 'string') {
+        errors.push(`Invalid description: expected a string got ${typeof manifest.description}`);
+      }
+      if (typeof manifest.version !== 'string') {
+        errors.push(`Invalid version: expected a string got ${typeof manifest.version}`);
+      }
+      if (typeof manifest.author !== 'string') {
+        errors.push(`Invalid author: expected a string got ${typeof manifest.author}`);
+      }
+      if (typeof manifest.theme !== 'string') {
+        errors.push(`Invalid theme: expected a string got ${typeof manifest.theme}`);
+      } else if (!fileRegex.test(manifest.theme)) {
         errors.push('Invalid theme: unsupported file extension');
       }
-    }
-    if (![ 'undefined', 'string' ].includes(typeof manifest.discord)) {
-      errors.push(`Invalid discord code: expected a string got ${typeof manifest.discord}`);
-    }
-    if (manifest.plugins !== void 0) {
-      if (!Array.isArray(manifest.plugins)) {
-        errors.push(`Invalid plugins: expected an array got ${typeof manifest.plugins}`);
-      } else {
-        manifest.plugins.forEach(p => errors.push(...this._validatePlugin(p)));
+      if (manifest.overlayTheme) {
+        if (typeof manifest.overlayTheme !== 'string') {
+          errors.push(`Invalid theme: expected a string got ${typeof manifest.overlayTheme}`);
+        } else if (!fileRegex.test(manifest.overlayTheme)) {
+          errors.push('Invalid theme: unsupported file extension');
+        }
       }
+      if (![ 'undefined', 'string' ].includes(typeof manifest.discord)) {
+        errors.push(`Invalid discord code: expected a string got ${typeof manifest.discord}`);
+      }
+      return errors;
+    } catch (err) {
+      return this._error(err);
     }
-    if (manifest.settings !== void 0) {
-      errors.push(...this._validateSettings(manifest.settings));
-    }
-    return errors;
   }
 }

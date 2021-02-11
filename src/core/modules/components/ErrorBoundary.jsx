@@ -6,6 +6,7 @@ import { parse } from 'url';
 
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
+import { Messages } from '@vizality/i18n';
 import { get } from '@vizality/http';
 
 const RE_INVARIANT_URL = /https?:\/\/reactjs\.org\/docs\/error-decoder\.html\?invariant=([0-9]+)(?:[^ ])+/;
@@ -71,11 +72,21 @@ export default class VizalityErrorBoundary extends PureComponent {
     return (
       <>
         {this.state.hasCrashed && <div className={joinClassNames('vz-error-boundary', this.props.className, colorStandard)}>
-          <h1 className={joinClassNames('vz-error-boundary-header', this.props.headerClassName)}>Huh, that's odd.</h1>
-          <div className='vz-error-boundary-text'>An error occurred while rendering the page:</div>
-          <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-error-stack', thin)}>{this.state.errorStack}</div>
-          <div className='vz-error-boundary-text'>Component stack:</div>
-          <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-component-stack', thin)}>{this.state.componentStack}</div>
+          <h1 className={joinClassNames('vz-error-boundary-header', this.props.headerClassName)}>
+            {Messages.ERROR_GENERIC_TITLE}
+          </h1>
+          <div className='vz-error-boundary-text'>
+            An error occurred while rendering the page:
+          </div>
+          <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-error-stack', thin)}>
+            {this.state.errorStack}
+          </div>
+          <div className='vz-error-boundary-text'>
+            Component stack:
+          </div>
+          <div className={joinClassNames('vz-error-boundary-block', 'vz-error-boundary-component-stack', thin)}>
+            {this.state.componentStack}
+          </div>
           {this.props.showScene && <PremiumModalHeaderAnimationTier2 className='vz-error-boundary-scene'/>}
         </div>}
         {!this.state.hasCrashed && this.props.children}

@@ -59,7 +59,7 @@ export default memo(props => {
                         </Tooltip>
                       </a>
                       <span className='vz-updater-update-summary-message'>{commit.message}</span>
-                      <span className='vz-updater-update-summary-author'>—{commit.author}</span>
+                      <span className='vz-updater-update-summary-author'>— {commit.author}</span>
                     </div>
                   );
                 })}
