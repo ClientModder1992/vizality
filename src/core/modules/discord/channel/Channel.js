@@ -1,6 +1,3 @@
-// vizality.modules.webpack.getModule('getPinnedMessages').getPinnedMessages('690477562857521174')
-// channelId {Object|null}
-
 /**
  * Gets the specified channel's pinned messages.
  * @param {snowflake} channelId Channel ID
