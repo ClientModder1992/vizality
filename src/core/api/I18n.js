@@ -37,11 +37,11 @@ export default class I18n extends API {
      * Need to store the original strings somewhere when overriding in order to revert
      * on stop. Maybe this._original?
      */
-    [ 'messages', 'defaultMessages' ].forEach(obj => {
-      Object.keys(i18n._proxyContext[obj])
-        .filter(key => Object.keys(this.messages[this.locale]).filter(k => k === key))
-        .forEach(key => delete i18n._proxyContext[obj][key]);
-    });
+    // [ 'messages', 'defaultMessages' ].forEach(obj => {
+    //   Object.keys(i18n._proxyContext[obj])
+    //     .filter(key => Object.keys(this.messages[this.locale]).filter(k => k === key))
+    //     .forEach(key => delete i18n._proxyContext[obj][key]);
+    // });
 
     delete vizality.api.i18n;
     this.removeAllListeners();

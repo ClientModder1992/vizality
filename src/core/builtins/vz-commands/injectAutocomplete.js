@@ -4,10 +4,18 @@ import { typing, getModule, getModuleByDisplayName } from '@vizality/webpack';
 import { getOwnerInstance, findInReactTree } from '@vizality/util/react';
 import { AdvancedScrollerThin, LazyImage } from '@vizality/components';
 import { joinClassNames } from '@vizality/util/dom';
+import { error } from '@vizality/util/logger';
 import { patch } from '@vizality/patcher';
 import { Messages } from '@vizality/i18n';
 
 import CategoryTitle from './components/CategoryTitle';
+
+const _module = 'Builtin';
+const _submodule = 'Commands';
+const _subsubmodule = 'injectAutocomplete';
+
+/** @private */
+const _error = (...data) => error({ module: _module, submodule: _submodule, subsubmodule: _subsubmodule }, ...data);
 
 export default function injectAutocomplete () {
   const ApplicationCommandDiscoveryApplicationIcon = getModule(m => m.default?.displayName === 'ApplicationCommandDiscoveryApplicationIcon');
@@ -31,7 +39,7 @@ export default function injectAutocomplete () {
   const renderHeader = (value, formatHeader, addonName, icon, id) => {
     const title = value?.length > 0 ? Messages.COMMANDS_MATCHING.format({ prefix: formatHeader(value) }) : Messages.COMMANDS;
     if (title[1]?.props?.children) {
-      title[1].props.children = value.length > 0 && `${vizality.api.commands.prefix}${value}`;
+      title[1].props.children = value.length > 0 && `${vizality.api?.commands?.prefix}${value}`;
     }
 
     return this.settings.get('showCommandRail', true)
@@ -88,7 +96,7 @@ export default function injectAutocomplete () {
 
       const sections = {};
       origins.forEach(origin => {
-        const addon = vizality.manager.plugins.get(origin);
+        const addon = vizality.manager?.plugins?.get(origin);
         if (!addon) return;
         sections[origin] = [];
         sections[origin].push(renderHeader(null, null, addon.manifest.name, addon.manifest.icon, `vz-cmd-${origin}`));
@@ -115,11 +123,11 @@ export default function injectAutocomplete () {
         );
 
         railSections.push({
-          icon: vizality.manager.plugins.get(section[0]).manifest.icon,
+          icon: vizality.manager?.plugins?.get(section[0]).manifest.icon,
           id: section[0],
           isBuiltIn: false,
           commandsAmount: section[1].length - 1,
-          name: vizality.manager.plugins.get(section[0]).manifest.name,
+          name: vizality.manager?.plugins?.get(section[0]).manifest.name,
           index
         });
 
@@ -164,10 +172,10 @@ export default function injectAutocomplete () {
 
   AutocompleteTypes.VIZALITY_AUTOCOMPLETE = {
     autoSelect: true,
-    getSentinel: () => vizality.api.commands.prefix,
-    matches: (_channel, prefix, value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api.commands.prefix && vizality.api.commands.filter(c => c.autocomplete).find(c => (getMatchingCommand(c)).includes(value.split(' ')[0])),
+    getSentinel: () => vizality.api?.commands?.prefix,
+    matches: (_channel, prefix, value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api?.commands?.prefix && vizality.api?.commands?.filter(c => c.autocomplete).find(c => (getMatchingCommand(c)).includes(value.split(' ')[0])),
     queryResults: (_channel, value) => {
-      const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
+      const currentCommand = vizality.api?.commands?.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
       if (!currentCommand) {
         return false;
       }
@@ -184,7 +192,7 @@ export default function injectAutocomplete () {
     renderResults: (_channel, value, selected, onHover, onClick, _state, _props, autocomplete) => {
       if (autocomplete && autocomplete.commands) {
         const { commands } = autocomplete;
-        const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
+        const currentCommand = vizality.api?.commands?.find(c => (getMatchingCommand(c)).includes(value.split(' ')[0]));
 
         return renderCommandResults(value, selected, commands, onHover, onClick, c => ({
           key: `vizality-${c.command}`,
@@ -221,10 +229,10 @@ export default function injectAutocomplete () {
 
   AutocompleteTypes.VIZALITY = {
     autoSelect: true,
-    getSentinel: () => vizality.api.commands.prefix,
-    matches: (_channel, prefix, _value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api.commands.prefix,
+    getSentinel: () => vizality.api?.commands?.prefix,
+    matches: (_channel, prefix, _value, isAtStart, props) => props.canExecuteCommands && isAtStart && prefix === vizality.api?.commands?.prefix,
     queryResults: (_channel, value) => ({
-      commands: vizality.api.commands.filter(c => (getMatchingCommand(c)).some(commandName => commandName.includes(value)))
+      commands: vizality.api?.commands?.filter(c => (getMatchingCommand(c)).some(commandName => commandName.includes(value)))
     }),
     renderResults: (_channel, value, selected, onHover, onClick, _state, _props, autocomplete) => {
       if (autocomplete && autocomplete.commands) {
@@ -234,10 +242,10 @@ export default function injectAutocomplete () {
             name: c.command,
             ...c
           }
-        }), (value) => `${vizality.api.commands.prefix}${value}`);
+        }), (value) => `${vizality.api?.commands?.prefix}${value}`);
       }
     },
-    getPlainText: (index, _state, { commands }) => commands && commands[index] ? `${vizality.api.commands.prefix}${commands[index].command}` : '',
+    getPlainText: (index, _state, { commands }) => commands && commands[index] ? `${vizality.api?.commands?.prefix}${commands[index].command}` : '',
     getRawText (...args) {
       return this.getPlainText(...args);
     }
@@ -250,19 +258,25 @@ export default function injectAutocomplete () {
 
   /* Silent command typing */
   typing.startTyping = (startTyping => channel => setImmediate(() => {
-    if (this.instance && this.instance.props) {
-      const { textValue } = this.instance.props;
-      const currentCommand = vizality.api.commands.find(c => (getMatchingCommand(c)).includes(textValue.slice(vizality.api.commands.prefix.length).split(' ')[0]));
-      if (textValue.startsWith(vizality.api.commands.prefix) && (!currentCommand || (currentCommand && !currentCommand.showTyping))) {
-        return typing.stopTyping(channel);
+    try {
+      if (this.instance?.props) {
+        const { textValue } = this.instance.props;
+        if (textValue) {
+          const currentCommand = vizality.api?.commands?.find(c => (getMatchingCommand(c)).includes(textValue.slice(vizality.api?.commands?.prefix?.length).split(' ')[0]));
+          if (textValue.startsWith(vizality.api?.commands?.prefix) && (!currentCommand || (currentCommand && !currentCommand.showTyping))) {
+            return typing.stopTyping(channel);
+          }
+          startTyping(channel);
+        }
       }
-      startTyping(channel);
+    } catch (err) {
+      _error(err);
     }
   }))(this.oldStartTyping = typing.startTyping);
 
   patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.props;
-    if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(value)) {
+    if (new RegExp(`^\\${vizality.api?.commands?.prefix}\\S+ `).test(value)) {
       return {
         word: value,
         isAtStart: true
@@ -274,7 +288,7 @@ export default function injectAutocomplete () {
   patch('vz-commands-slateAutocomplete', SlateChannelTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.editorRef;
     const { selection, document } = value;
-    if (new RegExp(`^\\${vizality.api.commands.prefix}\\S+ `).test(document.text)) {
+    if (new RegExp(`^\\${vizality.api?.commands?.prefix}\\S+ `).test(document.text)) {
       const node = document.getNode(selection.start.key);
       if (node) {
         return {
@@ -288,7 +302,7 @@ export default function injectAutocomplete () {
 
   patch('vz-commands-commandItem', ApplicationCommandItem, 'default', ([ props ], res) => {
     const vizalityCommand = Boolean(props?.command?.origin);
-    const plugin = vizality.manager.plugins.get(props?.command?.origin);
+    const plugin = vizality.manager?.plugins?.get(props?.command?.origin);
 
     if (vizalityCommand) {
       let commandText = findInReactTree(res, r => r.className === title);
@@ -296,7 +310,7 @@ export default function injectAutocomplete () {
       commandText = commandText.children.substring(1);
 
       if (this.settings.get('showCommandRail', true)) {
-        commandText = `${vizality.api.commands.prefix}${commandText}`;
+        commandText = `${vizality.api?.commands?.prefix}${commandText}`;
       }
 
       res.props.children[1].props.children[0].props.children[0].props.children = commandText;
@@ -330,7 +344,6 @@ export default function injectAutocomplete () {
         res.props.children[2].props.children = props?.command?.source || 'Vizality';
       }
     }
-
     return res;
   });
 
