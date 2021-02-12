@@ -29,12 +29,25 @@ export default class Commands extends Builtin {
       }
     });
 
+    vizality.api.commands.registerCommand({
+      command: 'relaunch',
+      description: 'Forcefully relaunches Discord.',
+      executor: async () => {
+        try {
+          DiscordNative.app.relaunch();
+        } catch (err) {
+          this.error(err);
+        }
+      }
+    });
+
     monkeypatchMessages.call(this);
     injectAutocomplete.call(this);
   }
 
   stop () {
-    // vizality.api.commands.unregisterCommand('panic');
+    vizality.api.commands.unregisterCommand('panic');
+    vizality.api.commands.unregisterCommand('relaunch');
     unpatch('vz-commands-textArea');
     unpatch('vz-commands-plainAutocomplete');
     unpatch('vz-commands-slateAutocomplete');
