@@ -1,9 +1,0 @@
-@use '@vizality' as *;
-
-$logos: ( 'Discord', 'Spotify', 'Twitter', 'Vizality', 'Xbox' );
-
-:root {
-  @each $logo in $logos {
-    --vz-logo-#{str-case($logo, 'kebab')}: url('vz-asset://logo/#{$logo}.svg');
-  }
-}
