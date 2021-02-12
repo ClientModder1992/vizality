@@ -17,11 +17,17 @@ import injectAutocomplete from './injectAutocomplete';
 
 export default class Commands extends Builtin {
   start () {
-    // vizality.api.commands.registerCommand({
-    //   command: 'panic',
-    //   description: 'Temporarily disables Vizality. Reload Discord to restore.',
-    //   executor: async () => vizality.terminate()
-    // });
+    vizality.api.commands.registerCommand({
+      command: 'panic',
+      description: 'Temporarily disables Vizality. Reload Discord to restore.',
+      executor: async () => {
+        try {
+          vizality.terminate();
+        } catch (err) {
+          this.error(err);
+        }
+      }
+    });
 
     monkeypatchMessages.call(this);
     injectAutocomplete.call(this);
