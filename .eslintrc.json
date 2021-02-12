@@ -1,6 +1,7 @@
 {
   "globals": {
     "vizality": true,
+    "$vz": true,
     "webpackJsonp": true,
     "DiscordNative": false,
     "GLOBAL_ENV": true
