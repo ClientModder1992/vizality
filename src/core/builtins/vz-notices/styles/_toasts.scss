@@ -7,7 +7,6 @@
   color: var(--text-normal);
   display: flex;
   position: absolute;
-  animation: slideInFromBottom 0.5s ease both;
   max-width: 540px;
   min-width: 340px;
   z-index: 999;
@@ -20,18 +19,22 @@
   &.vz-isTopRight {
     top: 25px;
     right: 25px;
+    animation: slideInFromTop 0.5s ease both;
   }
   &.vz-isTopLeft {
     top: 25px;
     left: 25px;
+    animation: slideInFromTop 0.5s ease both;
   }
   &.vz-isBottomRight {
     bottom: 25px;
     right: 25px;
+    animation: slideInFromBottom 0.5s ease both;
   }
   &.vz-isBottomLeft {
     bottom: 25px;
     left: 25px;
+    animation: slideInFromBottom 0.5s ease both;
   }
   &.vz-isClosing {
     animation: fadeOut 0.2s ease both;
