@@ -273,10 +273,10 @@ export const owoify = text => {
     'hehe'
   ];
 
-  function replaceAll (string, map) {
+  function replaceAll (text, map) {
     const source = Object.keys(map).map(i => `\\b${i}`);
     const re = new RegExp(`(?:${source.join(')|(?:')})`, 'gi');
-    return string.replace(re, match => {
+    return text.replace(re, match => {
       let out = map[match.toLowerCase()];
       // Not very tidy way to work out if the word is capitalised
       if ((match.match(/[A-Z]/g) || []).length > match.length / 2) {
@@ -286,25 +286,25 @@ export const owoify = text => {
     });
   }
 
-  string = replaceAll(string, words);
+  text = replaceAll(text, words);
 
   // OwO
-  string = string.replace(/[rl]/gi, match =>
+  text = text.replace(/[rl]/gi, match =>
     match.charCodeAt(0) < 97 ? 'W' : 'w'
   );
 
   // Nya >;3
-  string = string.replace(/n[aeiou]/gi, match =>
+  text = text.replace(/n[aeiou]/gi, match =>
     `${match[0]}${match.charCodeAt(1) < 97 ? 'Y' : 'y'}${match[1]}`
   );
 
   // Words that end in y like cummy wummy
-  string = string.replace(/\b[A-V,X-Z,a-v,x-z]\w{3,}y\b/gi, match =>
+  text = text.replace(/\b[A-V,X-Z,a-v,x-z]\w{3,}y\b/gi, match =>
     `${match} ${match.charCodeAt(0) < 97 ? 'W' : 'w'}${match.slice(1)}`
   );
 
   // S-stutter
-  string = string.split(' ').map(word => {
+  text = text.split(' ').map(word => {
     if (word.length === 0 || word[0].match(/[a-zA-Z]/) === null) {
       return word;
     }
@@ -317,13 +317,13 @@ export const owoify = text => {
   }).join(' ');
   // Prefixes
   if (Math.random() < prefixChance) {
-    string = `${string} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
+    text = `${text} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
   }
 
   // Suffixes
   if (Math.random() < suffixChance) {
-    string = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${string}`;
+    text = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${text}`;
   }
 
-  return string;
+  return text;
 };
