@@ -71,7 +71,8 @@ export const _getModules = (filter, all = false) => {
  */
 export const _initializeModules = async () => {
   // Wait until webpack is ready
-    await sleep(1e3);
+  while (!window.webpackJsonp || window.webpackJsonp.flat(10).length < 5000) {
+    await sleep(200);
   }
 
   // Extract values from webpack
