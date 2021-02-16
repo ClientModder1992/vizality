@@ -80,30 +80,30 @@ export default function injectAutocomplete () {
     const categorizedResults = [];
     const railSections = [];
     if (this.settings.get('showCommandRail', true)) {
-      const origins = [];
+      const callers = [];
       const vizalitySectionInner = [];
       vizalitySectionInner.push(renderHeader('', null, 'Vizality', `vz-asset://image/logo.png`, `vz-cmd-vizality`));
       results.forEach(result => {
         const { command } = findInReactTree(result, r => r.command);
-        if (!origins.includes(command.origin) && command.origin !== 'vizality') {
-          origins.push(command.origin);
+        if (!callers.includes(command.caller) && command.caller !== 'vizality') {
+          callers.push(command.caller);
         }
 
-        if (command.origin === 'vizality') {
+        if (command.caller === 'vizality') {
           vizalitySectionInner.push(result);
         }
       });
 
       const sections = {};
-      origins.forEach(origin => {
-        const addon = vizality.manager?.plugins?.get(origin);
+      callers.forEach(caller => {
+        const addon = vizality.manager?.plugins?.get(caller);
         if (!addon) return;
-        sections[origin] = [];
-        sections[origin].push(renderHeader(null, null, addon.manifest.name, addon.manifest.icon, `vz-cmd-${origin}`));
+        sections[caller] = [];
+        sections[caller].push(renderHeader(null, null, addon.manifest.name, addon.manifest.icon, `vz-cmd-${caller}`));
         results.forEach(result => {
           const { command } = findInReactTree(result, r => r.command);
-          if (origin === command.origin) {
-            sections[origin].push(result);
+          if (caller === command.caller) {
+            sections[caller].push(result);
           }
         });
       });
@@ -199,7 +199,7 @@ export default function injectAutocomplete () {
           command: {
             name: c.command,
             ...c,
-            origin: currentCommand.origin
+            caller: currentCommand.caller
           },
           prefix: value.split(' ')[0]
         }), () => void 0);
@@ -301,8 +301,8 @@ export default function injectAutocomplete () {
   });
 
   patch('vz-commands-commandItem', ApplicationCommandItem, 'default', ([ props ], res) => {
-    const vizalityCommand = Boolean(props?.command?.origin);
-    const plugin = vizality.manager?.plugins?.get(props?.command?.origin);
+    const vizalityCommand = Boolean(props?.command?.caller);
+    const plugin = vizality.manager?.plugins?.get(props?.command?.caller);
 
     if (vizalityCommand) {
       let commandText = findInReactTree(res, r => r.className === title);

@@ -40,7 +40,7 @@ export default async function monkeypatchMessages () {
       const receivedMessage = createBotMessage(getChannelId(), '');
 
       if (vizality.settings.get('replaceClyde', true)) {
-        const plugin = vizality.manager.plugins.get(command.origin);
+        const plugin = vizality.manager.plugins.get(command.caller);
         const username = command.username ||
         (plugin && plugin.manifest.name) ||
         'Vizality';
@@ -55,8 +55,8 @@ export default async function monkeypatchMessages () {
         }
 
         const avatar = command.avatar ||
-        (vizality.manager.plugins.get(command.origin) &&
-         vizality.manager.plugins.get(command.origin).manifest.icon) ||
+        (vizality.manager.plugins.get(command.caller) &&
+         vizality.manager.plugins.get(command.caller).manifest.icon) ||
         'vz-asset://image/logo.png';
 
         BOT_AVATARS[botAvatarName] = avatar;

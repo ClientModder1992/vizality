@@ -9,6 +9,7 @@ import imageSize from 'image-size';
 import { promisify } from 'util';
 
 import { log, warn, error } from './Logger';
+import { Directories } from '../constants';
 import { isString } from './String';
 
 const { readdir, lstat, unlink, rmdir } = promises;
@@ -29,10 +30,10 @@ const _log = (...data) => log({ module: _module, submodule: _submodule }, ...dat
 const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
 const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
-export const getOrigin = () => {
+export const getCaller = () => {
   const stackTrace = (new Error()).stack;
-  const [ , origin ] = stackTrace.match(new RegExp(`${escapeRegExp(vizality.manager.plugins.dir)}.([-\\w]+)`)) || [ null, 'vizality' ];
-  return origin;
+  const [ , caller ] = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`)) || [ null, 'vizality' ];
+  return caller;
 };
 
 export const getMimeType = async input => {

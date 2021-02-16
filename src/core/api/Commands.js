@@ -1,5 +1,5 @@
 import { isObject, isEmpty } from '@vizality/util/object';
-import { getOrigin } from '@vizality/util/file';
+import { getCaller } from '@vizality/util/file';
 import { API } from '@vizality/entities';
 
 /**
@@ -55,10 +55,10 @@ export default class Commands extends API {
    */
   registerCommand (command) {
     /**
-     * @note Hacky way to get the origin of the command. Check if it's a plugin first. If
+     * @note Hacky way to get the caller of the command. Check if it's a plugin first. If
      * it's not, check if it's a builtin. If it's not, consider it a core Vizality command.
      */
-    const origin = getOrigin() || 'vizality';
+    const caller = getCaller();
 
     try {
       if (!isObject(command) || isEmpty(command)) {
@@ -71,7 +71,7 @@ export default class Commands extends API {
 
       this.commands[command.command] = {
         ...command,
-        origin
+        caller
       };
     } catch (err) {
       return this.error(err);
