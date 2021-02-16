@@ -200,7 +200,7 @@ export default class AddonManager {
   async initialize () {
     let addonId;
     try {
-      const files = readdirSync(this.dir).sort(this._sortAddons);
+      const files = readdirSync(this.dir).sort(this._sort);
       for (const filename of files) {
         addonId = filename;
 
@@ -398,14 +398,6 @@ export default class AddonManager {
     } catch (err) {
       return this._error(err);
     }
-  }
-
-
-  _sortAddons (addonA, addonB) {
-    const priority = [ 'vz-privacy', 'vz-router', 'vz-commands', 'vz-dashboard', 'vz-addon-manager', 'vz-attributes', 'vz-notices', 'vz-rpc', 'vz-quick-code', 'vz-enhancements', 'vz-settings', 'vz-updater' ].reverse();
-    const priorityA = priority.indexOf(addonA);
-    const priorityB = priority.indexOf(addonB);
-    return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));
   }
 
   /**

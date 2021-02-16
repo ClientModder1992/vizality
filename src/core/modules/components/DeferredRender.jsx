@@ -8,7 +8,6 @@ export default memo(({ children, idleTimeout = 0, fallback = <Spinner /> }) => {
   useEffect(() => {
     if (render) setRender(false);
     const id = requestIdleCallback(() => setRender(true), { timeout: idleTimeout });
-
     return () => cancelIdleCallback(id);
   }, [ idleTimeout ]);
 

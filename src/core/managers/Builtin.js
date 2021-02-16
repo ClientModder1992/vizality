@@ -31,6 +31,13 @@ export default class BuiltinManager extends AddonManager {
     }
   }
 
+  _sort (addonA, addonB) {
+    const priority = [ 'vz-privacy', 'vz-router', 'vz-commands', 'vz-dashboard', 'vz-addon-manager', 'vz-attributes', 'vz-notices', 'vz-rpc', 'vz-quick-code', 'vz-enhancements', 'vz-settings', 'vz-updater' ].reverse();
+    const priorityA = priority.indexOf(addonA);
+    const priorityB = priority.indexOf(addonB);
+    return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));
+  }
+
   _setIcon () {
     return void 0;
   }
