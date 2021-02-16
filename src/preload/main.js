@@ -10,16 +10,24 @@ function exposeGlobal (name, toMainWorld = false) {
 
 function fixDocument () {
   const realDoc = webFrame.top.context.document;
-  let i = 0;
+  let getI = 0;
+  let setI = 0;
 
   // Allow accessing React root container
   Object.defineProperty(HTMLElement.prototype, '_reactRootContainer', {
-    get () {
-      i++;
-      this.setAttribute('vz-react-root', i);
-      const elem = realDoc.querySelector(`[vz-react-root="${i}"]`);
-      elem?.removeAttribute('vz-react-root');
-      return elem._reactRootContainer;
+    get: () => {
+      getI++;
+      this.setAttribute('vz-react-root-get', getI);
+      const elem = realDoc.querySelector(`[vz-react-root-get='${getI}']`);
+      elem?.removeAttribute('vz-react-root-get');
+      return elem?._reactRootContainer;
+    },
+    set: (prop, value) => {
+      setI++;
+      this.setAttribute('vz-react-root-set', setI);
+      const elem = realDoc.querySelector(`[vz-react-root-set='${setI}']`);
+      elem?.removeAttribute('vz-react-root-set');
+      return elem && (elem[prop] = value);
     }
   });
 }
