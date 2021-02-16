@@ -3,7 +3,7 @@ import cp from 'child_process';
 import { join } from 'path';
 
 import { Directories, Developers, Events } from '@vizality/constants';
-import { initialize, getModule } from '@vizality/webpack';
+import { _initializeModules, getModule } from '@vizality/webpack';
 import { log, warn, error } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
@@ -58,7 +58,7 @@ export default class Vizality extends Updatable {
   // Initialization
   async initialize () {
     // Webpack & Modules
-    await initialize();
+    await _initializeModules();
 
     // Set up connectStoresAsync
     const Flux = getModule('Store', 'PersistedStore');

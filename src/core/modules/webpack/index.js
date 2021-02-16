@@ -69,7 +69,7 @@ export const _getModules = (filter, all = false) => {
  * Initializes the injection into Webpack.
  * @returns {Promise<void>}
  */
-export const initialize = async () => {
+export const _initializeModules = async () => {
   // Wait until webpack is ready
     await sleep(1e3);
   }
