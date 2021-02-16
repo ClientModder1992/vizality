@@ -10,6 +10,35 @@
  * @module typedefs
  */
 
+/**
+ * @typedef VizalityAPI
+ * @property {Commands} commands
+ * @property {Settings} settings
+ * @property {Notices} notices
+ * @property {Keybinds} keybinds
+ * @property {Routes} routes
+ * @property {Connections} connections
+ * @property {I18n} i18n
+ * @property {RPC} rpc
+ */
+
+/**
+ * @typedef Git
+ * @property {string} upstream
+ * @property {string} branch
+ * @property {string} revision
+ */
+
+/**
+ * Main Vizality class
+ * @typedef Vizality
+ * @property {VizalityAPI} api
+ * @property {AddonManager} manager
+ * @property {APIManager} apiManager
+ * @property {Git} git
+ * @property {boolean} _initialized
+ * @global
+ */
 
 //==============================================================================
 // Discord Module

@@ -17,35 +17,6 @@ import APIManager from './managers/API';
 
 const exec = promisify(cp.exec);
 
-/**
- * @typedef VizalityAPI
- * @property {Commands} commands
- * @property {Settings} settings
- * @property {Notices} notices
- * @property {Keybinds} keybinds
- * @property {Routes} routes
- * @property {Connections} connections
- * @property {I18n} i18n
- * @property {RPC} rpc
- */
-
-/**
- * @typedef Git
- * @property {string} upstream
- * @property {string} branch
- * @property {string} revision
- */
-
-/**
- * Main Vizality class
- * @type {Vizality}
- * @property {VizalityAPI} api
- * @property {AddonManager} manager
- * @property {APIManager} _apiManager
- * @property {Git} git
- * @property {boolean} _initialized
- */
-
 export default class Vizality extends Updatable {
   constructor () {
     super(Directories.ROOT, '', 'vizality');
