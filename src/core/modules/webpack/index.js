@@ -1,26 +1,21 @@
+/* eslint-disable no-unused-vars */
 import { webFrame } from 'electron';
 
+import { log, warn, error } from '../util/Logger';
 import moduleFilters from './modules.json';
-import { log, warn } from '../util/Logger';
 import { sleep } from '../util/Time';
 
 const _module = 'Module';
 const _submodule = 'Webpack';
 
 /** @private */
-const _log = (...data) => {
-  log({ module: _module, submodule: _submodule }, ...data);
-};
-
-/** @private */
-const _warn = (...data) => {
-  warn({ module: _module, submodule: _submodule }, ...data);
-};
+const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
+const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
+const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
 
 /**
  * @module webpack
  * @namespace webpack
- * @version 0.0.1
  */
 
 /**
@@ -76,12 +71,11 @@ export const _getModules = (filter, all = false) => {
  */
 export const initialize = async () => {
   // Wait until webpack is ready
-  while (!webFrame.top.context.webpackJsonp) {
     await sleep(1e3);
   }
 
   // Extract values from webpack
-  const instance = webFrame.top.context.webpackJsonp.push([
+  const instance = window.webpackJsonp.push([
     [],
     {
       _vizality: (_, e, r) => {
