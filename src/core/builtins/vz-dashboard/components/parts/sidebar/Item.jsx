@@ -89,7 +89,7 @@ export default memo(({ icon, label, path, action, launch, expandable, subItem, d
             className='vz-dashboard-sidebar-auxillary-icon-wrapper vz-dashboard-sidebar-collapser'
             onClick={(e) => e.target.closest('.vz-dashboard-sidebar-item').classList.toggle('expanded')}
           >
-            <Icon name='RightCaret' width='18' height='18' className='vz-dashboard-sidebar-auxillary-icon' />
+            <Icon name='CaretRight' width='18' height='18' className='vz-dashboard-sidebar-auxillary-icon' />
           </Clickable>}
           {launch && <Tooltip
             text={auxillaryIconTooltipText || 'Open'}

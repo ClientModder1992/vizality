@@ -23,6 +23,7 @@ import snowflake from '../snowflake';
 const _module = 'Discord';
 const _submodule = 'User';
 
+/** @private */
 const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
 const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
 const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);

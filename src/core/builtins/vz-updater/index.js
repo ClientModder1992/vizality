@@ -135,7 +135,7 @@ export default class Updater extends Builtin {
         vizality.api.notices.sendToast('vz-updater-update-available', {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
-          icon: 'UpdateAvailable',
+          icon: 'CloudDownload',
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'grey',

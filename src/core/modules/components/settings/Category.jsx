@@ -32,7 +32,7 @@ export default memo(props => {
         </div>
         <Icon
           className='vz-c-settings-category-title-icon-wrapper'
-          name='RightCaret'
+          name='CaretRight'
           size='18'
         />
       </div>
