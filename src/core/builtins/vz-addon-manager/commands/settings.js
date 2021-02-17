@@ -6,7 +6,6 @@ import { FormTitle, Anchor } from '@vizality/components';
 export default {
   command: 'settings',
   description: `Allows you to change an addon's settings directly in chat.`,
-  addonIcon: true,
   options: [
     { name: 'addonId', required: true }
   ],

@@ -41,7 +41,6 @@ export default {
       result
     };
   },
-
   autocomplete (args, type) {
     if (args.length > 1) return false;
 

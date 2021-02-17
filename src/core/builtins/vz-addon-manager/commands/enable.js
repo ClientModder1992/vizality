@@ -3,7 +3,6 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'enable',
   description: 'Enables a currently disabled addon, or enable all addons.',
-  addonIcon: true,
   options: [
     { name: 'addonId', required: true },
     { name: 'all', required: true }
@@ -15,6 +14,14 @@ export default {
       return {
         send: false,
         result: `You must specify a ${type} to enable, or use \`all\` to enable all.`
+      };
+    }
+
+    if (args[0].toLowerCase() === 'all') {
+      vizality.manager[toPlural(type)].enableAll();
+      return {
+        send: false,
+        result: `All ${toPlural(type)} have been enabled.`
       };
     }
 

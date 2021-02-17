@@ -3,7 +3,6 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'reload',
   description: 'Reloads a currently enabled addon, or reload all addons.',
-  addonIcon: true,
   options: [
     { name: 'addonId', required: true },
     { name: 'all', required: true }
@@ -42,7 +41,6 @@ export default {
       result
     };
   },
-
   autocomplete (args, type) {
     if (args.length > 1) return false;
 

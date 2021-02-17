@@ -3,7 +3,6 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'uninstall',
   description: 'Uninstalls an addon.',
-  addonIcon: true,
   options: [
     { name: 'addonId', required: true }
   ],
@@ -32,7 +31,6 @@ export default {
       result
     };
   },
-
   autocomplete (args, type) {
     if (args.length > 1) return false;
 
