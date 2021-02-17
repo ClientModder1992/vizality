@@ -1,11 +1,10 @@
-const { existsSync, createWriteStream, promises: { readFile } } = require('fs');
+const { existsSync, promises: { readFile } } = require('fs');
 const { relative, join, dirname, resolve } = require('path');
 const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 
-const VIZALITY_REGEX = new RegExp('@vizality([^\'"]{1,})?', 'ig');
+const VIZALITY_REGEX = new RegExp(`'@vizality'`);
 const LIB_DIR = join(__dirname, '..', 'core', 'lib', 'sass');
-const BASE_DIR = join(__dirname, '..', '..');
 
 if (!ipcMain) {
   throw new Error('You tried to require an unpermitted package.');
@@ -35,22 +34,6 @@ function clearCache (e) {
   });
 }
 
-
-/* EXPERIMENTAL */
-// eslint-disable-next-line no-unused-vars
-function logToFile (str) {
-  const logger = createWriteStream(join(BASE_DIR, 'main.log'), {
-    flags: 'a',
-    encoding: 'utf8'
-  });
-
-  logger.write(`${new Date().toISOString()} | INFO | ${str}\n`, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
-}
-
 function getHistory (e) {
   return e.sender.history;
 }
@@ -60,13 +43,13 @@ function compileSass (_, file) {
     readFile(file, 'utf8').then(rawScss => {
       const relativePath = relative(file, LIB_DIR);
       const absolutePath = resolve(join(file, relativePath));
-      const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
+      const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1')}`);
       sass.render(
         {
           data: fixedScss,
           importer: (url, prev) => {
             if (VIZALITY_REGEX.test(url)) {
-              url = url.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
+              url = url.replace(VIZALITY_REGEX, `${join(absolutePath, '$1')}`);
             }
             url = url.replace('file:///', '');
             if (existsSync(url)) {
