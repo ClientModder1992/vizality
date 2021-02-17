@@ -126,7 +126,7 @@ export const resizeImage = async (input, options) => {
   return dataURL;
 };
 
-export const convertURLToFile = (url, fileName) => {
+export const convertUrlToFile = (url, fileName) => {
   return fetch(url)
     .then(res => res.arrayBuffer())
     .then(async buffer => new File([ buffer ], fileName, { type: await this.getMimeType(url) }));
