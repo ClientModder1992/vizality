@@ -1,7 +1,7 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 :root {
-  --vz-editor-scrollbar-thumb-background: #{color('black', .3)};
+  --vz-editor-scrollbar-thumb-background: #{vz.color('black', .3)};
   --vz-editor-scrollbar-thumb-border-radius: 4px;
   --vz-editor-scrollbar-thumb-size: 8px;
 }

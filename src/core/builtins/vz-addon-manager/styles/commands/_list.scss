@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-manager-command-list-embed-table {
   &-addon-image-wrapper {
@@ -7,7 +7,7 @@
   }
   .vz-embed-table-grid-row-inner {
     > div {
-      @include ellipsis;
+      @include vz.ellipsis;
     }
   }
 }

@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .monaco-editor {
   [class*='arrow-decoration'] {
@@ -25,7 +25,7 @@
         background: rgb(240 71 71) !important;
         &,
         & * {
-          color: color('white') !important;
+          color: vz.color('white') !important;
         }
       }
     }
@@ -50,7 +50,7 @@
       &[style*='border-color: rgb(244, 135, 113);'] {
         background: rgb(240 71 71 / .2) !important;
         &::after {
-          @include size(100%);
+          @include vz.size(100%);
           content: '';
           position: absolute;
           top: 0;
@@ -92,7 +92,7 @@
 
 .split-view-view .monaco-list .monaco-list-row {
   font-size: 14px;
-  font-family: Whitney;
+  font-family: 'Whitney';
   font-weight: 500;
   padding: 0 15px;
   position: relative;

@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 :root {
   --vz-editor-wrapper-background: var(--deprecated-card-bg);
@@ -18,8 +18,8 @@
   --vz-editor-context-menu-separator-style: solid;
   --vz-editor-context-menu-separator-color: var(--background-modifier-accent);
 
-  --vz-editor-context-menu-item-focus-background: #7289da;
-  --vz-editor-context-menu-item-focus-color: #{color('white')};
+  --vz-editor-context-menu-item-focus-background: #{vz.color('blurple')};
+  --vz-editor-context-menu-item-focus-color: #{vz.color('white')};
 
   --vz-editor-line-numbers-color: var(--text-muted);
 }
@@ -73,7 +73,7 @@
 }
 
 .monaco-custom-checkbox.checked {
-  background: #7289da !important;
-  color: color('white') !important;
+  background: vz.color('blurple') !important;
+  color: vz.color('white') !important;
   border-radius: 3px;
 }

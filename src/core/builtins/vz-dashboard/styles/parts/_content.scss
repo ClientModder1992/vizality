@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-dashboard-content {
   &-header {
@@ -44,10 +44,10 @@
         position: absolute;
         top: 0;
         left: 0;
-        background: #000;
+        background: vz.color('black');
         height: 100%;
         width: 100%;
-        opacity: .4;
+        opacity: 0.4;
       }
     }
     &-inner-wrapper {
@@ -57,7 +57,7 @@
     }
     &-icon-wrapper {
       &.vz-icon-wrapper {
-        @include size(24px);
+        @include vz.size(24px);
         margin-right: 10px;
         z-index: 1;
         color: var(--header-secondary);
@@ -75,7 +75,7 @@
       margin: 0;
     }
     .vz-dashboard-content-header-icon-wrapper {
-      @include size(60px);
+      @include vz.size(60px);
       position: relative;
     }
     .vz-dashboard-content-header-icon {

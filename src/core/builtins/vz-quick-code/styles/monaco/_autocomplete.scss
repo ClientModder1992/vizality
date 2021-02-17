@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .monaco-editor {
   .suggest-widget {
@@ -24,7 +24,7 @@
       color: var(--header-primary);
       &,
       & .monaco-icon-label {
-        color: color('white');
+        color: vz.color('white');
       }
     }
     .details {

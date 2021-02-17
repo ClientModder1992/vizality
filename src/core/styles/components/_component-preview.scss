@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-component-preview {
   $base: &;
@@ -6,11 +6,11 @@
   margin-top: -40px;
   &-tabs {
     // For specificity
-    #{$base}-tabs-item {
+    #{$base}-tab-item {
       padding: 12px 15px;
       margin: 0;
       background: none;
-      &.vz-is-active {
+      &[vz-active] {
         background: none !important;
         &::after {
           content: '';
@@ -18,8 +18,8 @@
           bottom: 0;
           left: 15px;
           right: 15px;
-          background: #7289da;
-          box-shadow: 0 -4px 12px 0 #7289da;
+          background: vz.color('blurple');
+          box-shadow: 0 -4px 12px 0 vz.color('blurple');
           height: 2px;
           transition: transform .125s;
         }
@@ -83,7 +83,7 @@
     justify-content: space-around;
     animation: fadeShortSlideInFromBottom 0.3s forwards;
     &-loading {
-      @include size(100%);
+      @include vz.size(100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -116,7 +116,7 @@
     font-size: 16px;
     opacity: .5;
   }
-  &.vz-is-active-code {
+  &[vz-tab='code'] {
     #{$base}-content {
       align-self: center;
       display: block;

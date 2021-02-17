@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 [vz-previews] {
   .vz-addon-card {
@@ -39,12 +39,12 @@
         transform: rotate(30deg);
         @at-root [vz-plugins][vz-previews] .vz-addon-card .vz-addon-card-previews-empty {
           &::after {
-            @include mask(icon('plugin'), var(--background-tertiary), 10%, space);
+            @include vz.mask(vz.icon('plugin'), var(--background-tertiary), 10%, space);
           }
         }
         @at-root [vz-themes][vz-previews] .vz-addon-card .vz-addon-card-previews-empty {
           &::after {
-            @include mask(icon('theme'), var(--background-tertiary), 10%, repeat center);
+            @include vz.mask(vz.icon('theme'), var(--background-tertiary), 10%, repeat center);
           }
         }
       }
@@ -101,7 +101,7 @@
       object-fit: cover;
     }
     .pagination-20ouY7 {
-      @include size(100%);
+      @include vz.size(100%);
       position: absolute;
       top: 0;
     }
@@ -121,7 +121,7 @@
       position: relative;
       overflow: hidden;
       &-img {
-        @include size(100%);
+        @include vz.size(100%);
         position: absolute;
         top: 0;
         left: 0;

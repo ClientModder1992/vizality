@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 // @todo Don't forget to replace this image and move this to core Vizality styles.
 :root {
@@ -26,7 +26,7 @@
 // Image carousel modal inner wrapper
 .wrapper-Dh-cqn {
   // -100px to account for the next/previous arrows
-  @include size(calc(80vw - 100px), 80vh);
+  @include vz.size(calc(80vw - 100px), 80vh);
   margin: auto;
   top: 0;
   left: 0;

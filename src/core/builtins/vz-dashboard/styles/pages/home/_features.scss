@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-dashboard-home-section-features {
   margin-top: 0 !important;
@@ -11,7 +11,7 @@
   width: 100%;
   flex: 1;
   opacity: 0;
-  animation: fadeShortSlideInFromBottom .3s forwards;
+  animation: fadeShortSlideInFromBottom 0.3s forwards;
   &-card-wrapper {
     display: flex;
     padding: 10px;
@@ -33,7 +33,7 @@
     z-index: 1;
     flex-flow: column wrap;
     align-items: center;
-    transition: box-shadow .3s ease, background-color .3s ease, transform .3s ease;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     &:hover {
       // @todo Fix background color for light theme.
       transform: translateY(-10px) !important;
@@ -66,7 +66,7 @@
 
 .vz-dashboard-home-features {
   &-icon {
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
     color: var(--header-primary);
     // stroke: var(--header-primary);
     // path {
@@ -77,14 +77,14 @@
     // @todo Fix background color for light theme.
     &-wrapper {
       &.vz-icon-wrapper {
-        @include size(50px);
+        @include vz.size(50px);
         display: flex;
         margin-top: -90px;
         border-radius: 50%;
         padding: 20px;
         border: 20px solid var(--background-primary);
         background-color: var(--background-accent);
-        transition: background-color .3s ease;
+        transition: background-color 0.3s ease;
       }
     }
   }

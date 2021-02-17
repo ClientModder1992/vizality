@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 @use 'themes';
 
@@ -11,7 +11,7 @@
   }
   &-header {
     color: var(--text-normal);
-    background: color('black', .1);
+    background: vz.color('black', 0.1);
     border-bottom: 1px solid var(--background-tertiary);
     line-height: 20px;
     padding: 0 10px;
@@ -27,7 +27,7 @@
     bottom: initial;
   }
   &-line-numbers {
-    @include size(30px, 100%);
+    @include vz.size(30px, 100%);
     color: var(--interactive-muted);
     text-align: right;
     line-height: 1.125rem;
@@ -45,7 +45,7 @@
       left: -3px;
       top: .5em;
       bottom: .5em;
-      border-right: 1px solid color('black', .2);
+      border-right: 1px solid vz.color('black', 0.2);
     }
   }
   /*

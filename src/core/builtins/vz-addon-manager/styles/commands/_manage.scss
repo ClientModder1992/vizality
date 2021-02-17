@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-manager-command-addon-manage-header {
   margin: 0 10px 10px;
@@ -39,7 +39,7 @@
       height: 30px;
     }
     .iconLayout-3OgqU3 {
-      @include size(32px);
+      @include vz.size(32px);
     }
     .emptyStateImage-2MrSNs {
       margin-top: 20px;

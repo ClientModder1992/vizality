@@ -1,10 +1,19 @@
-/*
- * This is the file that plugin/theme developers should import in their SCSS files
- * to take advantage of our functions, mixins, etc.
- * -----
- * To use it, simply add the following to the top of your SCSS files:
- * @use '@vizality' as *;
- */
+//
+//  This file is automatically imported into each compiled Sass file so plugin and theme
+//  devs can easily make use of these utilities without importing anything.
+//  Simple use the function/mixin prefixed with vz.
+//
+//  @example
+//  .vizality-sass {
+//   @include vz.size(50px);
+//  }
+//
+//  @output
+//  .vizality-sass {
+//    width: 50px;
+//    height: 50px;
+//  }
+//
 
 @forward 'functions';
 @forward 'mixins';

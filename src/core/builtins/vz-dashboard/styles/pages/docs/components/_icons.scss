@@ -1,21 +1,26 @@
+@use '@vizality' as vz;
+
  .vz-docs-components-icons {
+   $base: &;
   &-icon-wrapper {
-    cursor: pointer;
-    border-radius: 8px;
-    margin: 5px;
     display: flex;
-    padding: 10px;
     &:hover {
-      background-color: var(--background-modifier-selected);
-      color: var(--interactive-hover);
-    }
-    &.vz-is-active {
-      background: #7289da;
-      color: #fff;
+      #{$base}-icon {
+        background-color: var(--background-modifier-selected);
+        color: var(--interactive-hover);
+      }
     }
   }
   &-icon {
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 5px;
+    padding: 10px;
     overflow: visible;
+    &[vz-active] {
+      background: vz.color('blurple');
+      color: var(--header-primary);
+    }
   }
   &-aside {
     &-icon-wrapper {

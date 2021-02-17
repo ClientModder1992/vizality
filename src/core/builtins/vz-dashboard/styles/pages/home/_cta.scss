@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 // @todo Fix him at varying resolutions and rename class
 .vz-dashboard-home-cta {
@@ -10,7 +10,7 @@
   overflow: hidden;
   &-icon-wrapper {
     &.vz-icon-wrapper {
-      @include size(400px, auto);
+      @include vz.size(400px, auto);
       position: absolute;
       right: 100px;
       bottom: -20px;
@@ -66,7 +66,7 @@
         flex: 1 0 auto;
         margin-right: 40px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
+        background: vz.color('white', 0.1);
         padding-top: 200px;
         height: 0;
         position: relative;
@@ -92,24 +92,24 @@
       left: 50%;
       transform: translate(-50%, -50%);
       stroke-width: 5px;
-      color: #fff;
-      stroke: #fff;
+      color: vz.color('white');
+      stroke: vz.color('white');
       path {
         stroke-dasharray: 150;
-        animation: strokeSVG .75s ease-in forwards, fillSVG .25s .5s ease-in forwards;
+        animation: strokeSVG 0.75s ease-in forwards, fillSVG 0.25s 0.5s ease-in forwards;
         stroke-width: 5;
       }
     }
     &-header {
       font-size: 54px;
       font-weight: 700;
-      color: #fff;
+      color: vz.color('white');
     }
     &-subtext {
       font-size: 20px;
       line-height: 1.2;
       margin-top: 10px;
-      color: #fff;
+      color: vz.color('white');
       opacity: .9;
     }
     &-buttons-wrapper {
@@ -118,8 +118,8 @@
     }
     &-button {
       height: 40px;
-      background: #fff!important;
-      transition: transform .3s, box-shadow .3s;
+      background: vz.color('white')!important;
+      transition: transform 0.3s, box-shadow 0.3s;
       border-radius: 1000px;
       // contents
       > div {
@@ -127,7 +127,7 @@
         font-size: 18px;
       }
       &:hover {
-        box-shadow: 0 0 50px rgba(255, 255, 255, .3);
+        box-shadow: 0 0 50px vz.color('white', 0.3);
         transform: translateY(-2px);
       }
       &:active {

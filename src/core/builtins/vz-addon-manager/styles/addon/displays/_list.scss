@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-addons-list {
   $base: &;
@@ -25,7 +25,7 @@
     &:not([vz-previews]) {
       .vz-addon-card {
         &-icon {
-          @include size(170px);
+          @include vz.size(170px);
           margin-right: 10px;
         }
       }

@@ -1,0 +1,11 @@
+@use '@vizality' as vz;
+
+$icons: (
+  'Activity', 'AddCircle', 'AddPhoto', 'AddReaction', 'Alert', 'AlienHead', 'AnalyticsBubble', 'ApplicationCommand', 'ArrowBack', 'ArrowCorner', 'ArrowDropDown', 'ArrowDropUp', 'ArrowLeft', 'ArrowUp', 'At', 'BallotCheckbox', 'Bell', 'BellOff', 'Bin', 'BlockQuote', 'Bold', 'BookClose', 'BookCloseAlt', 'BookLibrary', 'BookOpen', 'Bowling', 'Bug', 'Bulb', 'Calendar', 'Call', 'CallJoin', 'CallLeave', 'CallVideoCamera', 'CallVideoCameraDisabled', 'CallVideoCameraLimited', 'Carousel', 'Certificate', 'ChangeDown', 'ChangeUp', 'ChannelCategory', 'ChannelText', 'ChannelTextLimited', 'ChannelTextNsfw', 'ChannelThread', 'Plugin', 'Theme',
+);
+
+:root {
+  @each $icon in $icons {
+    --vz-icon-#{vz.str-case($icon, 'kebab')}: url('vz-asset://svg/#{$icon}.svg');
+  }
+}

@@ -1,4 +1,4 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .vz-toast {
   box-shadow: var(--elevation-high);
@@ -50,7 +50,7 @@
     display: flex;
     align-items: center;
     &-text {
-      @include max-lines(2);
+      @include vz.max-lines(2);
     }
   }
   &-close-wrapper {
@@ -67,7 +67,7 @@
     padding-right: 26px;
   }
   &-header-title {
-    @include max-lines(2);
+    @include vz.max-lines(2);
   }
   &-header-message {
     font-size: 14px;
@@ -109,7 +109,6 @@
     display: flex;
     justify-content: flex-end;
   }
-  // @todo: Don't use obfuscated class.
   .progress-2XXRYo {
     position: absolute;
     bottom: 0;
@@ -117,7 +116,6 @@
     border-radius: 0;
     height: 2px;
   }
-  // @todo: Don't use obfuscated class.
   .progressBar-3u8FBM {
     border-radius: 0;
   }
