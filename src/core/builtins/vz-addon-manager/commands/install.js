@@ -31,7 +31,7 @@ export default {
         if (!new RegExp(/^(((https?:\/\/)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})\/))|((ssh:\/\/)?git@)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})(:)))([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})(\/)([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})((\.git)?)$/).test(args[0])) {
           return {
             send: false,
-            result: 'You must provide a valid GitHub repository URL or an addon ID from https://github.com/vizality-community!'
+            result: 'You must provide a valid GitHub repository URL or an addon ID from <https://github.com/vizality-community>!'
           };
         }
       }
