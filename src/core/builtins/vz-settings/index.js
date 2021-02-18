@@ -20,7 +20,7 @@ export default class Settings extends Builtin {
       path: 'settings',
       heading: 'Settings',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
-      icon: 'Wrench',
+      icon: 'Gear',
       render: props => <Page {...props} />
     });
 

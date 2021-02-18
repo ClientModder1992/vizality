@@ -29,7 +29,7 @@ export default memo(() =>
   <AdvancedScrollerThin className='vz-dashboard-sidebar'>
     <Header>Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />
-    <Item icon='Wrench' label='Settings' path='/settings' />
+    <Item icon='Gear' label='Settings' path='/settings' />
     {/* Installed, Discover, Ideas & Inspiration */}
     <Item icon='Plugin' label='Plugins' path='/plugins' />
     {/* Installed, Discover, Ideas & Inspiration */}
