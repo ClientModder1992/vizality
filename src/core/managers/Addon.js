@@ -338,63 +338,66 @@ export default class AddonManager {
     }
   }
 
-  async install (url) {
+  async install (addons) {
     try {
       /**
        * This is temporary until we get the API working to request this info from an endpoint.
        */
       const community = [ 'spotify-in-discord', 'copy-raw-message', 'better-code-blocks', 'status-everywhere', 'open-links-in-discord', 'example-plugin-settings', 'channel-members-activity-icons', 'bring-back-gamer-text', 'heyzere' ];
-
-      let addonId;
-      for (const addon of community) {
-        if (url === addon) {
-          addonId = addon;
-          break;
+      addons = [ addons ].flat();
+      for (let addon of addons) {
+        let addonId;
+        for (const _addon of community) {
+          if (addon === _addon) {
+            addonId = _addon;
+            break;
+          }
         }
-      }
 
-      if (!addonId) {
-        if (!new RegExp(/^(((https?:\/\/)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})\/))|((ssh:\/\/)?git@)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})(:)))([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})(\/)([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})((\.git)?)$/).test(url)) {
-          throw new Error('You must provide a valid GitHub repository URL or an addon ID from https://github.com/vizality-community!');
+        if (!addonId) {
+          if (!new RegExp(/^(((https?:\/\/)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})\/))|((ssh:\/\/)?git@)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})(:)))([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})(\/)([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})((\.git)?)$/).test(addon)) {
+            console.log(addon);
+            throw new Error('You must provide a valid GitHub repository URL or an addon ID from https://github.com/vizality-community!');
+          }
         }
+
+        // The URL must end in git to get processed by isomorphic-git below
+        if (!addon.endsWith('.git')) {
+          addon = `${addon}.git`;
+        }
+
+        addonId = addonId || addon.split('.git')[0].split('/')[addon.split('.git')[0].split('/').length - 1];
+
+        if (this.isInstalled(addonId)) {
+          throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is already installed!`);
+        }
+
+        if (existsSync(join(this.dir, addonId)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
+          throw new Error(`${toSingular(toTitleCase(this.type))} directory "${addonId}" already exists!`);
+        }
+
+        try {
+          await clone({
+            fs,
+            http,
+            singleBranch: true,
+            depth: 1,
+            dir: join(this.dir, addonId),
+            url: addon
+          });
+        } catch (err) {
+          /*
+           * isomorphic-git creates the directory before it checks anything, whether there is
+           * a response or not, so let's remove it if there's an error here.
+           */
+          await removeDirRecursive(resolve(this.dir, addonId));
+          return this._error(err);
+        }
+
+        this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
+        await this.mount(addonId);
+        await this.get(addonId)._load(false);
       }
-
-      // The URL must end in git to get processed by isomorphic-git below
-      if (!url.endsWith('.git')) {
-        url = `${url}.git`;
-      }
-
-      addonId = addonId || url.split('.git')[0].split('/')[url.split('.git')[0].split('/').length - 1];
-
-      if (this.isInstalled(addonId)) {
-        throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is already installed!`);
-      }
-
-      if (existsSync(join(this.dir, addonId)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
-        throw new Error(`${toSingular(toTitleCase(this.type))} directory "${addonId}" already exists!`);
-      }
-
-      try {
-        await clone({
-          fs,
-          http,
-          singleBranch: true,
-          depth: 1,
-          dir: join(this.dir, addonId),
-          url
-        });
-      } catch (err) {
-        /*
-         * isomorphic-git creates the directory before it checks anything, whether there is
-         * a response or not, so let's remove it if there's an error here.
-         */
-        await removeDirRecursive(resolve(this.dir, addonId));
-        return this._error(err);
-      }
-
-      this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
-      await this.mount(addonId);
-      await this.get(addonId)._load(false);
     } catch (err) {
       return this._error(err);
     }
