@@ -3,7 +3,7 @@ const { relative, join, dirname, resolve } = require('path');
 const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 
-const VIZALITY_REGEX = new RegExp(`'@vizality'`);
+const VIZALITY_REGEX = new RegExp('@vizality([^\'"]{1,})?', 'ig');
 const LIB_DIR = join(__dirname, '..', 'core', 'lib', 'sass');
 
 if (!ipcMain) {
@@ -43,13 +43,13 @@ function compileSass (_, file) {
     readFile(file, 'utf8').then(rawScss => {
       const relativePath = relative(file, LIB_DIR);
       const absolutePath = resolve(join(file, relativePath));
-      const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1')}`);
+      const fixedScss = rawScss.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
       sass.render(
         {
           data: fixedScss,
           importer: (url, prev) => {
             if (VIZALITY_REGEX.test(url)) {
-              url = url.replace(VIZALITY_REGEX, `${join(absolutePath, '$1')}`);
+              url = url.replace(VIZALITY_REGEX, `${join(absolutePath, '$1').replace(/\\/g, '/')}/`);
             }
             url = url.replace('file:///', '');
             if (existsSync(url)) {
