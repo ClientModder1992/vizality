@@ -7,11 +7,11 @@ import { TabBar, DeferredRender, Spinner } from '.';
 
 export default memo(props => {
   const {
-    previewTabChildren,
-    codeTabChildren,
-    tabChildren,
+    preview,
+    code,
+    tabBarChildren,
     aside,
-    selectedTab = 'PREVIEW',
+    selectedTab = 'preview',
     type = TabBar.Types.TOP_PILL
   } = props;
 
@@ -19,24 +19,28 @@ export default memo(props => {
   const { item } = getModule('topPill');
 
   useEffect(() => {
-    if (!selectedTab || selectedTab === 'PREVIEW') setTab('PREVIEW');
-    else if (selectedTab === 'CODE') setTab('CODE');
+    if (!selectedTab || selectedTab === 'preview') setTab('preview');
+    else if (selectedTab === 'code') setTab('code');
   }, [ selectedTab ]);
 
+  const handleTabSelect = (tab) => {
+    setTab(tab);
+  };
+
   return (
-    <div className={joinClassNames('vz-component-preview', `vz-is-active-${tab.toLowerCase()}`)}>
+    <div className='vz-component-preview' vz-tab={tab.toLowerCase()}>
       <div className='vz-component-preview-tabs-wrapper'>
         <div className='vz-component-preview-tabs-inner'>
           <TabBar
             selectedItem={tab}
-            onItemSelect={tab => setTab(tab)}
+            onItemSelect={handleTabSelect}
             type={type}
             className='vz-component-preview-tabs'
           >
             <TabBar.Item
-              className={joinClassNames('vz-component-preview-tabs-item', item, { 'vz-is-active': tab === 'PREVIEW' })}
+              className={joinClassNames('vz-component-preview-tab-item', item)}
               selectedItem={tab}
-              id='PREVIEW'
+              id='preview'
             >
               {/* <Tooltip text='Preview Component'>
                 <Icon name='Science' width='20' height='20' />
@@ -44,9 +48,9 @@ export default memo(props => {
               Preview
             </TabBar.Item>
             <TabBar.Item
-              className={joinClassNames('vz-component-preview-tabs-item', item, { 'vz-is-active': tab === 'CODE' })}
+              className={joinClassNames('vz-component-preview-tab-item', item)}
               selectedItem={tab}
-              id='CODE'
+              id='code'
             >
               {/* <Tooltip text='Code'>
                 <Icon name='InlineCode' width='20' height='20' />
@@ -54,31 +58,34 @@ export default memo(props => {
               Code
             </TabBar.Item>
           </TabBar>
-          {tabChildren && <div className='vz-component-preview-tab-children'>
-            {tabChildren}
+          {tabBarChildren && <div className='vz-component-preview-tabs-children'>
+            {tabBarChildren}
           </div>}
         </div>
       </div>
       <div className='vz-component-preview-inner'>
-        {aside && <div className='vz-component-preview-aside'>
-          {aside}
-        </div>}
-        {tab === 'PREVIEW' && <>
-          {previewTabChildren && <div className='vz-component-preview-content'>
-            <DeferredRender fallback={
-              <div className='vz-component-preview-content-loading'>
-                <Spinner />
-              </div>
-            }>
-              {previewTabChildren}
-            </DeferredRender>
+        <DeferredRender
+          idleTimeout={10}
+          fallback={
+            <div className='vz-component-preview-content-loading'>
+              <Spinner />
+            </div>
+          }
+        >
+          {aside && <div className='vz-component-preview-aside'>
+            {aside}
           </div>}
-        </>}
-        {tab === 'CODE' && <>
-          {codeTabChildren && <div className='vz-component-preview-content'>
-            {codeTabChildren}
-          </div>}
-        </>}
+          {tab === 'preview' && <>
+            {preview && <div className='vz-component-preview-content' vz-tab='preview'>
+              {preview}
+            </div>}
+          </>}
+          {tab === 'code' && <>
+            {code && <div className='vz-component-preview-content' vz-tab='code'>
+              {code}
+            </div>}
+          </>}
+        </DeferredRender>
       </div>
     </div>
   );

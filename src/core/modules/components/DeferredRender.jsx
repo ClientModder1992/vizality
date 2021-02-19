@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 
 import { Spinner } from '.';
 
-export default memo(({ children, idleTimeout = 0, fallback = <Spinner /> }) => {
+export default memo(({ children, idleTimeout = 10, fallback = <Spinner /> }) => {
   const [ render, setRender ] = useState(false);
 
   useEffect(() => {
