@@ -27,8 +27,18 @@ export default class Dashboard extends Builtin {
     });
 
     vizality.api.keybinds.registerKeybind({
-      keybindId: 'goToDashboard',
-      executor: () => vizality.api.routes.navigateTo('home'),
+      keybindId: 'toggleDashboard',
+      executor: () => {
+        try {
+          if (window.location.pathname.startsWith('/vizality')) {
+            vizality.api.routes.restorePrevious();
+          } else {
+            vizality.api.routes.navigateTo('home');
+          }
+        } catch (err) {
+          this.error(err);
+        }
+      },
       shortcut: 'alt+v'
     });
   }
@@ -36,7 +46,7 @@ export default class Dashboard extends Builtin {
   stop () {
     vizality.api.routes.unregisterRoute('');
     vizality.api.keybinds.unregisterKeybind('leaveDashboard');
-    vizality.api.keybinds.unregisterKeybind('goToDashboard');
+    vizality.api.keybinds.unregisterKeybind('toggleDashboard');
     unpatch('vz-dashboard-private-channels-list-item');
   }
 
