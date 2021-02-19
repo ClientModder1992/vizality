@@ -8,6 +8,7 @@ import { open as openModal } from '@vizality/modal';
 export default {
   command: 'list',
   description: 'Displays a list of currently installed addons.',
+  icon: 'vz-asset://svg/MoreInfo.svg',
   options: [
     { name: 'all', required: true },
     { name: 'enabled', required: true },

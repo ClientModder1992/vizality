@@ -3,6 +3,7 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'reload',
   description: 'Reloads a currently enabled addon, or reload all addons.',
+  icon: 'vz-asset://svg/Retry.svg',
   options: [
     { name: 'addonId', required: true },
     { name: 'all', required: true }

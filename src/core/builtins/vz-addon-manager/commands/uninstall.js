@@ -3,6 +3,7 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'uninstall',
   description: 'Uninstalls an addon.',
+  icon: 'vz-asset://svg/Trash.svg',
   options: [
     { name: 'addonId', required: true }
   ],

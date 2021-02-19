@@ -3,6 +3,7 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'disable',
   description: 'Disables a currently enabled addon, or disable all addons.',
+  icon: 'vz-asset://svg/RadioEmpty.svg',
   options: [
     { name: 'addonId', required: true },
     { name: 'all', required: true }

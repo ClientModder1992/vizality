@@ -8,6 +8,7 @@ import { Directories } from '@vizality/constants';
 export default {
   command: 'install',
   description: 'Installs an addon.',
+  icon: 'vz-asset://svg/CloudDownload.svg',
   options: [
     { name: 'url', required: true },
     { name: 'addonId', required: true }

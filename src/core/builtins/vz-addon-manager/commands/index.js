@@ -9,15 +9,15 @@ import install from './install';
 import uninstall from './uninstall';
 
 export const commands = {
-  settings,
-  manage,
   enable,
   disable,
-  terminate,
   reload,
-  list,
   install,
-  uninstall
+  uninstall,
+  settings,
+  manage,
+  list,
+  terminate
 };
 
 export function registerCommands (type) {

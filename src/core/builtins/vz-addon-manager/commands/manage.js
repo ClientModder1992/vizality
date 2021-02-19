@@ -8,6 +8,7 @@ import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/Lis
 export default {
   command: 'manage',
   description: 'Allows you to manage your addons directly in chat.',
+  icon: 'vz-asset://svg/Wrench.svg',
   executor (_, type) {
     const result = {
       type: 'rich',

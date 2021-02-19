@@ -3,6 +3,7 @@ import { toPlural, toTitleCase } from '@vizality/util/string';
 export default {
   command: 'enable',
   description: 'Enables a currently disabled addon, or enable all addons.',
+  icon: 'vz-asset://svg/RadioSelected.svg',
   options: [
     { name: 'addonId', required: true },
     { name: 'all', required: true }
