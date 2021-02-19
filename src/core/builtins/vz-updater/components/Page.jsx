@@ -113,6 +113,8 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
 
   const _confirm = (title, content, confirm, callback, red = true) => {
     const { colorStandard } = getModule('colorStandard');
+    const { spacing } = getModule('spacing', 'message');
+    const { size16 } = getModule('size16');
 
     openModal(() => <Confirm
       red={red}
@@ -122,7 +124,9 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
       onConfirm={callback}
       onCancel={closeModal}
     >
-      <div className={colorStandard}>{content}</div>
+      <div className={joinClassNames(colorStandard, spacing, size16)}>
+        {content}
+      </div>
     </Confirm>);
   };
 
@@ -408,31 +412,31 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         <FormTitle className='vz-updater-options-title'>
           {Messages.OPTIONS}
         </FormTitle>
-        {!disabled && <>
-          <SwitchItem
-            value={getSetting('automatic', false)}
-            onChange={() => toggleSetting('automatic')}
-            note={Messages.VIZALITY_UPDATES_OPTS_AUTO_DESC}
-          >
-            {Messages.VIZALITY_UPDATES_OPTS_AUTO}
-          </SwitchItem>
-          <TextInput
-            note={Messages.VIZALITY_UPDATES_OPTS_INTERVAL_DESC}
-            onChange={val => updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
-            defaultValue={getSetting('interval', 15)}
-            required={true}
-          >
-            {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}
-          </TextInput>
-          <Category
-            name={Messages.VIZALITY_UPDATES_OPTS_DEBUG}
-            description={Messages.VIZALITY_UPDATES_OPTS_DEBUG_DESC}
-            opened={debugInfoOpened}
-            onChange={() => setDebugInfoOpened(!debugInfoOpened)}
-          >
-            {renderDebugInfo()}
-          </Category>
-        </>}
+        <SwitchItem
+          value={getSetting('automatic', false)}
+          disabled={disabled}
+          onChange={() => toggleSetting('automatic')}
+          note={Messages.VIZALITY_UPDATES_OPTS_AUTO_DESC}
+        >
+          {Messages.VIZALITY_UPDATES_OPTS_AUTO}
+        </SwitchItem>
+        <TextInput
+          note={Messages.VIZALITY_UPDATES_OPTS_INTERVAL_DESC}
+          disabled={disabled}
+          onChange={val => updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
+          defaultValue={getSetting('interval', 15)}
+          required={true}
+        >
+          {Messages.VIZALITY_UPDATES_OPTS_INTERVAL}
+        </TextInput>
+        <Category
+          name={Messages.VIZALITY_UPDATES_OPTS_DEBUG}
+          description={Messages.VIZALITY_UPDATES_OPTS_DEBUG_DESC}
+          opened={debugInfoOpened}
+          onChange={() => setDebugInfoOpened(!debugInfoOpened)}
+        >
+          {renderDebugInfo()}
+        </Category>
       </div>
     </>
   );
