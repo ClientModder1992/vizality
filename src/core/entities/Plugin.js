@@ -155,7 +155,6 @@ export default class Plugin extends Updatable {
    */
   async _watchFiles () {
     const _module = 'Watcher';
-
     const ignored = [];
     if (this.manifest?.hotReload?.ignore) {
       if (isArray(this.manifest.hotReload?.ignore)) {
@@ -176,7 +175,7 @@ export default class Plugin extends Updatable {
     }
 
     this._watcher = watch(this.path, {
-      ignored: [ /node_modules/, /.git/, /manifest.json/, '*.scss', '*.css' ].concat(ignored),
+      ignored: [ /node_modules/, /.git/, /manifest.json/, /.scss/, /.css/ ].concat(ignored),
       ignoreInitial: true
     });
 
