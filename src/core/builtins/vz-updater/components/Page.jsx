@@ -155,7 +155,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   const handleDebugInfoCopy = (plugins) => {
-    const extract = document.querySelector('.vizality-debug-info > code')
+    const extract = document.querySelector('.vz-updater-debug-info > code')
       .innerText.replace(/([A-Z/ ]+) (?=\s(?!C:\\).*?:)/g, '\n[$1]').replace(/(.*?):\s(.*.+)/g, '$1="$2"').replace(/[ -](\w*(?=.*=))/g, '$1');
 
     setCopyText(Messages.COPIED);
@@ -205,7 +205,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
 
     return <FormNotice
       type={FormNotice.Types.PRIMARY}
-      body={<div className={ joinClassNames('vizality-debug-info', { copied: copyText === Messages.COPIED })}>
+      body={<div className={ joinClassNames('vz-updater-debug-info', { copied: copyText === Messages.COPIED })}>
         <code>
           <b>System / Discord</b>
           <div className='row'>
