@@ -35,12 +35,12 @@ export default class RPC extends API {
    * @param {function(string): boolean} grant Grant method. Receives the origin as first argument
    * @emits RpcAPI#scopeAdd
    */
-  registerScope (scope, grant) {
-    if (this.scopes[scope]) {
-      throw new Error(`RPC scope ${scope} is already registered!`);
+  registerScope (scopeId, grant) {
+    if (this.scopes[scopeId]) {
+      throw new Error(`RPC scope "${scopeId}" is already registered!`);
     }
-    this.scopes[scope] = grant;
-    this.emit('scopeAdd', scope);
+    this.scopes[scopeId] = grant;
+    this.emit('scopeAdd', scopeId);
   }
 
   /**
@@ -49,13 +49,13 @@ export default class RPC extends API {
    * @param {DiscordRpcEvent} properties RPC event properties
    * @emits RpcAPI#eventAdd
    */
-  registerEvent (name, properties) {
-    if (this.events[name]) {
-      throw new Error(`RPC event ${name} is already registered!`);
+  registerEvent (event) {
+    if (this.events[event.name]) {
+      throw new Error(`RPC event ${event.name} is already registered!`);
     }
-    if (!properties.handler) properties.handler = () => {}
-    this.events[name] = properties;
-    this.emit('eventAdd', name);
+    if (!event.handler) event.handler = () => {}
+    this.events[event.name] = event;
+    this.emit('eventAdd', event.name);
   }
 
   /**
@@ -64,17 +64,17 @@ export default class RPC extends API {
    * @param {DiscordRpcEvent} properties RPC command properties
    * @emits RpcAPI#eventAdd
    */
-  registerCommand (name, properties) {
-    if (this.commands[name]) {
-      throw new Error(`RPC command ${name} is already registered!`);
+  registerCommand (command) {
+    if (this.commands[command.name]) {
+      throw new Error(`RPC command ${command.name} is already registered!`);
     }
-    this.commands[name] = properties;
-    this.emit('commandAdd', name);
+    this.commands[command.name] = command;
+    this.emit('commandAdd', command.name);
   }
 
   /**
    * Unregisters a scope.
-   * @param {string} scope Scope
+   * @param {string} scope Scope ID
    * @emits RpcAPI#scopeRemove
    */
   unregisterScope (scope) {
@@ -86,25 +86,25 @@ export default class RPC extends API {
 
   /**
    * Unregisters an event.
-   * @param {string} name Event name
+   * @param {string} eventId Event ID
    * @emits RpcAPI#eventRemove
    */
-  unregisterEvent (name) {
-    if (this.events[name]) {
-      delete this.events[name];
-      this.emit('eventRemove', name);
+  unregisterEvent (eventId) {
+    if (this.events[eventId]) {
+      delete this.events[eventId];
+      this.emit('eventRemove', eventId);
     }
   }
 
   /**
    * Unregisters a command.
-   * @param {string} name Command name
+   * @param {string} commandId Command ID
    * @emits RpcAPI#commandRemove
    */
-  unregisterCommand (name) {
-    if (this.commands[name]) {
-      delete this.commands[name];
-      this.emit('commandRemove', name);
+  unregisterCommand (commandId) {
+    if (this.commands[commandId]) {
+      delete this.commands[commandId];
+      this.emit('commandRemove', commandId);
     }
   }
 }
