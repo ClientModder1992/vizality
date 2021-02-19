@@ -17,14 +17,19 @@ const Module = require('module');
  */
 
 let reactDeveloperTools = false;
+let smoothScrolling = true;
 let settings = {};
 
 try {
   settings = require(join(__dirname, '..', '..', 'settings', 'vz-settings.json'));
 
-  ({ reactDeveloperTools } = settings);
+  ({ reactDeveloperTools, smoothScrolling } = settings);
 } catch (err) {
   // @todo Handle this.
+}
+
+if (smoothScrolling === false) {
+  electron.app.commandLine.appendSwitch('disable-smooth-scrolling');
 }
 
 require('../ipc/main');

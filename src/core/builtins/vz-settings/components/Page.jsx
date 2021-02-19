@@ -52,6 +52,16 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         />
         {Messages.VIZALITY_SETTINGS_NO_CLYDE}
       </SwitchItem>
+      <SwitchItem
+        note={Messages.VIZALITY_SETTINGS_SMOOTH_SCROLLING_DESC.format()}
+        value={getSetting('smoothScrolling', true)}
+        onChange={() => {
+          toggleSetting('smoothScrolling', true);
+          vizality.api.actions.invokeAction('confirmRestart');
+        }}
+      >
+        {Messages.VIZALITY_SETTINGS_SMOOTH_SCROLLING}
+      </SwitchItem>
       <Category
         name={Messages.ADVANCED_SETTINGS}
         description={Messages.VIZALITY_SETTINGS_ADVANCED_DESC}
@@ -66,7 +76,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
             vizality.api.actions.invokeAction('confirmRestart');
           }}
         >
-          Enable React Developer Tools
+          {Messages.VIZALITY_SETTINGS_REACT_DEVELOPER_TOOLS}
         </SwitchItem>
         <SwitchItem
           note='Enables live reload for folder/file changes for plugins.'
