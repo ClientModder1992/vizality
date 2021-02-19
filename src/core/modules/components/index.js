@@ -87,6 +87,11 @@ getModule(m => m.DropdownSizes, true, true).then(Button => {
   this.Button.Sizes = Button.Sizes;
 });
 
+getModule(m => m.default?.displayName === 'Tooltip', true, true).then(Tooltip => {
+  this.Tooltip.Positions = Tooltip.TooltipPositions;
+  this.Tooltip.Colors = Tooltip.TooltipColors;
+});
+
 getModuleByDisplayName('HeaderBar', true, true).then(HeaderBar => {
   this.HeaderBar.Divider = HeaderBar.Divider;
   this.HeaderBar.Title = HeaderBar.Title;
