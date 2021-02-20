@@ -44,6 +44,7 @@ export default class RPC extends API {
       if (this.scopes[scopeId]) {
         throw new Error(`RPC scope ID "${scopeId}" is already registered!`);
       }
+      this.scopes[scopeId] = {};
       this.scopes[scopeId].caller = getCaller();
       this.scopes[scopeId].grant = grant;
       this.emit('scopeAdd', scopeId);
@@ -70,7 +71,7 @@ export default class RPC extends API {
       if (!event.handler) event.handler = () => {};
       event.caller = getCaller();
       this.events[event.id] = event;
-      this.emit('eventAdd', event);
+      this.emit('eventAdd', event.id);
     } catch (err) {
       return this.error(err);
     }
@@ -97,7 +98,7 @@ export default class RPC extends API {
       }
       command.caller = getCaller();
       this.commands[command.id] = command;
-      this.emit('commandAdd', command);
+      this.emit('commandAdd', command.id);
     } catch (err) {
       return this.error(err);
     }
