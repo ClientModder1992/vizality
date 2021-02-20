@@ -61,8 +61,8 @@ const _logHandler = (properties) => {
     subsubmodule = subsubmodule?.toLowerCase();
 
     moduleColor = moduleColor || this.modules[module]?.module || getRandomColor();
-    submoduleColor = submoduleColor || shadeColor(moduleColor, -0.5) || getRandomColor();
-    subsubmoduleColor = subsubmoduleColor || shadeColor(submoduleColor, -0.5) || getRandomColor();
+    submoduleColor = submoduleColor || this.modules[module]?.submodule || getRandomColor();
+    subsubmoduleColor = subsubmoduleColor || this.modules[module]?.subsubmodule || blendColors(moduleColor, submoduleColor, 0.75);
 
     const baseBadgeStyles = `
       display: inline-block;
