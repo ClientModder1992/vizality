@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { toSingular } from '@vizality/util/string';
 import { Events } from '@vizality/constants';
 import { Flux } from '@vizality/webpack';
 import { API } from '@vizality/entities';
@@ -108,6 +109,7 @@ export default class Settings extends API {
       const Render = addon.sections.settings.render;
 
       vizality.api.routes.registerRoute({
+        id: `${toSingular(type)}:${addonId}`,
         path: `/${type}/${addonId}`,
         render: props =>
           <Layout>
@@ -206,7 +208,8 @@ export default class Settings extends API {
       const Render = builtin.sections.settings.render;
 
       vizality.api.routes.registerRoute({
-        path: `/${path}`,
+        id: props.id,
+        path,
         render: props =>
           <Layout>
             <Content

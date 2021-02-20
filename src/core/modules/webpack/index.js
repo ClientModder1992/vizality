@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { webFrame } from 'electron';
-
 import { log, warn, error } from '../util/Logger';
 import moduleFilters from './modules.json';
 import { sleep } from '../util/Time';

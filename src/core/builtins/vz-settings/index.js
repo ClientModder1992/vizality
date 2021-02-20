@@ -16,8 +16,9 @@ export default class Settings extends Builtin {
     this.injectStyles('styles/main.scss');
 
     vizality.api.settings._registerBuiltinPage({
+      id: 'settings',
       addonId: this.addonId,
-      path: 'settings',
+      path: '/settings',
       heading: 'Settings',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'Gear',
@@ -36,7 +37,7 @@ export default class Settings extends Builtin {
   }
 
   stop () {
-    vizality.api.routes.unregisterRoute('/settings');
+    vizality.api.routes.unregisterRoute('settings');
     vizality.api.actions.unregisterAction('confirmRestart');
     unpatch('vz-settings-items');
     unpatch('vz-settings-context-menu');

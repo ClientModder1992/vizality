@@ -44,8 +44,9 @@ export default class Updater extends Builtin {
     });
 
     vizality.api.settings._registerBuiltinPage({
+      id: 'updater',
       addonId: this.addonId,
-      path: 'updater',
+      path: '/updater',
       heading: 'Updater',
       subheading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare tellus nec dapibus finibus. Nulla massa velit, mattis non eros a, interdum tristique massa. Curabitur mauris sem, porttitor quis ligula vitae, suscipit hendrerit quam. Nunc sit amet enim id elit vehicula tempus sed sed tellus. Aliquam felis turpis, malesuada ut tortor id, iaculis facilisis felis.',
       icon: 'CloudDownload',
@@ -69,7 +70,7 @@ export default class Updater extends Builtin {
   }
 
   stop () {
-    vizality.api.routes.unregisterRoute('/updater');
+    vizality.api.routes.unregisterRoute('updater');
     vizality.api.actions.unregisterAction('openLatestChangelog');
     clearInterval(this._interval);
   }
