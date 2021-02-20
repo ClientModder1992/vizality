@@ -21,7 +21,7 @@ export default () => {
     res.props.children.props['vz-bot-vizality'] = Boolean(message?.author?.phone === toHash('VIZALITY') && message?.author?.avatar !== 'clyde') && '';
     res.props.children.props['vz-bot-plugin'] = Boolean(message?.author?.phone === toHash('PLUGIN') && message?.author?.avatar !== 'clyde') && '';
     res.props.children.props['vz-user-id'] = new RegExp(Regexes.USER_ID).test(message?.author?.id) && message?.author?.id;
-    res.props.children.props['vz-local'] = Boolean(message?.author?.isLocalBot()) && '';
+    res.props.children.props['vz-local'] = Boolean(message?.author?.isLocalBot ? message?.author?.isLocalBot() : null) && '';
     res.props.children.props['vz-mentioned'] = Boolean(message?.mentioned) && '';
     res.props.children.props['vz-self'] = Boolean(message?.author?.email) && '';
     res.props.children.props['vz-webhook'] = Boolean(message?.webhookId) && '';
@@ -47,22 +47,22 @@ export default () => {
      * @see {@link https://discord.com/developers/docs/resources/channel#message-object-message-types}
      */
     res.props.children.props['vz-type'] =
-      (Boolean(message?.type && message?.type === 1) && 'recipient-add') ||
-      (Boolean(message?.type && message?.type === 2) && 'recipient-remove') ||
-      (Boolean(message?.type && message?.type === 3) && 'call') ||
-      (Boolean(message?.type && message?.type === 4) && 'channel-name-change') ||
-      (Boolean(message?.type && message?.type === 5) && 'channel-icon-change') ||
-      (Boolean(message?.type && message?.type === 6) && 'pin') ||
-      (Boolean(message?.type && message?.type === 7) && 'member-join') ||
-      (Boolean(message?.type && message?.type === 8) && 'server-boost') ||
-      (Boolean(message?.type && message?.type === 9) && 'server-boost-tier-1') ||
-      (Boolean(message?.type && message?.type === 10) && 'server-boost-tier-2') ||
-      (Boolean(message?.type && message?.type === 11) && 'server-boost-tier-3') ||
-      (Boolean(message?.type && message?.type === 12) && 'follow') ||
-      (Boolean(message?.type && message?.type === 14) && 'discovery-disqualified') ||
-      (Boolean(message?.type && message?.type === 15) && 'discovery-requalified') ||
-      (Boolean(message?.type && message?.type === 19) && 'reply') ||
-      (Boolean(message?.type && message?.type === 20) && 'application-command');
+      (Boolean(message?.type === 1) && 'recipient-add') ||
+      (Boolean(message?.type === 2) && 'recipient-remove') ||
+      (Boolean(message?.type === 3) && 'call') ||
+      (Boolean(message?.type === 4) && 'channel-name-change') ||
+      (Boolean(message?.type === 5) && 'channel-icon-change') ||
+      (Boolean(message?.type === 6) && 'pin') ||
+      (Boolean(message?.type === 7) && 'member-join') ||
+      (Boolean(message?.type === 8) && 'server-boost') ||
+      (Boolean(message?.type === 9) && 'server-boost-tier-1') ||
+      (Boolean(message?.type === 10) && 'server-boost-tier-2') ||
+      (Boolean(message?.type === 11) && 'server-boost-tier-3') ||
+      (Boolean(message?.type === 12) && 'follow') ||
+      (Boolean(message?.type === 14) && 'discovery-disqualified') ||
+      (Boolean(message?.type === 15) && 'discovery-requalified') ||
+      (Boolean(message?.type === 19) && 'reply') ||
+      (Boolean(message?.type === 20) && 'application-command');
 
     return res;
   });
