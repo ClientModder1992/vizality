@@ -1,7 +1,7 @@
 import { getModule, getModuleByDisplayName, modal } from '@vizality/webpack';
 
 import AsyncComponent from './AsyncComponent';
-import { Icons, Blacklist } from './Icon';
+import { Icons } from './Icon';
 
 // --- fromProps
 export const Button = AsyncComponent.fromProps(m => m.DropdownSizes);
@@ -61,8 +61,10 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as Markdown } from './Markdown';
 export { default as Titlebar } from './Titlebar';
 export { default as Divider } from './Divider';
+export { default as Sticker } from './Sticker';
 export { default as Switch } from './Switch';
 export { default as Anchor } from './Anchor';
+export { default as Emote } from './Emote';
 export { default as Icon } from './Icon';
 
 export * as settings from './settings';
@@ -164,12 +166,5 @@ this.Confirm.defaultProps = {
   onClose: modal.pop
 };
 
-getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'), true, true).then(DIcons => {
-  const DiscordIcons = DIcons.keys()
-    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !Blacklist.includes(k))
-    .map(m => m.substring(2));
-
-  this.Icon.Icons = Icons;
-  this.Icon.Blacklist = Blacklist.map(b => b.replace(/.\//g, ''));
-  this.Icon.Names = [].concat(DiscordIcons, Object.keys(Icons));
-});
+this.Icon.Icons = Icons;
+this.Icon.Names = Object.keys(Icons);

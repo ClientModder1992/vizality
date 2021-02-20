@@ -5,7 +5,6 @@ import React, { memo } from 'react';
 import { join, parse } from 'path';
 
 import { excludeProperties } from '@vizality/util/object';
-import { toPascalCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
@@ -15,73 +14,113 @@ import { Clickable, Tooltip as TooltipContainer } from '.';
 const _module = 'Component';
 const _submodule = 'Icon';
 
-export const Blacklist = [
-  './addDefaultIconProps', './ApplicationPlaceholder', './DiscordNitro',
-  './DiscordWordmark', './InboxEmptyStateStars', './Gradient', './Nitro', './NitroClassic',
-  './NitroStacked', './NitroClassicHorizontal', './PremiumGuildSubscriptionLogoCentered',
-  './PremiumGuildSubscriptionLogoLeftAligned', './ActivityFilled', './Arrow', './IconType',
-  './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple',
-  './PremiumGuildTier3Simple', './PremiumGuildTierSimple'
-];
 /** @private */
 const _log = (...message) => log({ module: _module, submodule: _submodule, message });
 const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
 const _error = (...message) => error({ module: _module, submodule: _submodule, message });
 
-export const Icons = {
+export const Icons = {};
 
-};
-
-// Process SVGs
 (async () => {
-  // const before = performance.now();
-  const icons = readdirSync(join(__dirname, '..', '..', 'assets', 'svg'))
-    .map(item => parse(item).name);
-
-  for (const name of icons) {
-    const icon = readFileSync(join(__dirname, '..', '..', 'assets', 'svg', `${name}.svg`), { encoding: 'utf8' });
-    Icons[toPascalCase(name)] = memo(props => parseHTML(icon, {
-      replace: domNode => {
-        if (domNode.attribs && domNode.name === 'svg') {
-          const attrs = attributesToProps(domNode.attribs);
-          return (
-            <svg {...attrs} {...props}>
-              {domToReact(domNode.children)}
-            </svg>
-          );
+  /*
+   * We're going to process our assets folder SVGs now and turn them into React components.
+   */
+  const dirs = [ 'svg', 'logo' ];
+  for (const dirName of dirs) {
+    const icons = readdirSync(join(__dirname, '..', '..', 'assets', dirName)).map(item => parse(item).name);
+    for (const name of icons) {
+      const icon = readFileSync(join(__dirname, '..', '..', 'assets', dirName, `${name}.svg`), { encoding: 'utf8' });
+      Icons[name] = memo(props => parseHTML(icon, {
+        replace: domNode => {
+          if (domNode.attribs && domNode.name === 'svg') {
+            const attrs = attributesToProps(domNode.attribs);
+            return (
+              <svg {...attrs} {...props}>
+                {domToReact(domNode.children)}
+              </svg>
+            );
+          }
         }
-      }
-    }));
+      }));
+    }
   }
-  // const after = performance.now();
-  // const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
-  // console.log(time);
-})();
 
-// Process logos
-(async () => {
-  // const before = performance.now();
-  const icons = readdirSync(join(__dirname, '..', '..', 'assets', 'logo'))
-    .map(item => parse(item).name);
+  /*
+   * @note The following is a sort of automated warning system to let us know when Discord
+   * has added an icon to their batch, basically, so we can be made aware of and add it.
+   */
 
-  for (const name of icons) {
-    const icon = readFileSync(join(__dirname, '..', '..', 'assets', 'logo', `${name}.svg`), { encoding: 'utf8' });
-    Icons[toPascalCase(name)] = memo(props => parseHTML(icon, {
-      replace: domNode => {
-        if (domNode.attribs && domNode.name === 'svg') {
-          const attrs = attributesToProps(domNode.attribs);
-          return (
-            <svg {...attrs} {...props}>
-              {domToReact(domNode.children)}
-            </svg>
-          );
-        }
-      }
-    }));
-  }
-  // const after = performance.now();
-  // const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
-  // console.log(time);
+  /*
+   * These are Discord's icons that will crash the appl if attempted to render as a normal icon.
+   */
+  const blacklist = [
+    './addDefaultIconProps',
+    './ApplicationPlaceholder',
+    './DiscordNitro',
+    './DiscordWordmark',
+    './InboxEmptyStateStars',
+    './Gradient',
+    './Nitro',
+    './NitroClassic',
+    './NitroStacked',
+    './NitroClassicHorizontal',
+    './PremiumGuildSubscriptionLogoCentered',
+    './PremiumGuildSubscriptionLogoLeftAligned',
+    './ActivityFilled',
+    './Arrow',
+    './IconType',
+    './PremiumGuildTier',
+    './PremiumGuildTier1Simple',
+    './PremiumGuildTier2Simple',
+    './PremiumGuildTier3Simple',
+    './PremiumGuildTierSimple'
+  ];
+
+  /*
+   * These are Discord's inherent icons I have purposely altered or removed for whatever reason.
+   */
+  const knownAlterations = [
+    './ChannelTextNSFW',
+    './CopyID',
+    './EarlyAccess',
+    './EmojiActivityCategory',
+    './ExpandIcon',
+    './Grid',
+    './GridSmall',
+    './InvertedGIFLabel',
+    './LeftCaret',
+    './MegaphoneNSFW',
+    './MultipleChoice',
+    './NitroWheel2',
+    './PlatformSpotify',
+    './PlatformSteam',
+    './PlatformTwitch',
+    './PlatformXbox',
+    './PlatformBlizzard',
+    './Play2',
+    './RightCaret',
+    './Synced',
+    './TemplateIcon',
+    './TitleBarClose',
+    './TitleBarCloseMac',
+    './TitleBarMaximize',
+    './TitleBarMaximizeMac',
+    './TitleBarMinimize',
+    './TitleBarMinimizeMac',
+    './TrendingArrow',
+    './Unsynced',
+    './UpdateAvailable',
+    './Upload2'
+  ];
+
+  const registry = await getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'), true);
+  const Names = Object.keys(Icons);
+  const DiscordIcons = registry.keys()
+    .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k) && !knownAlterations.includes(k))
+    .map(m => m.substring(2));
+  const missing = DiscordIcons.filter(icon => !Names.includes(icon));
+
+  if (missing.length) _warn(`${missing.length} icons found to be missing:`, missing);
 })();
 
 export default memo(props => {
@@ -102,10 +141,6 @@ export default memo(props => {
     rawSVG = false
   } = props;
 
-  function _error (...data) {
-    return error({ module: _module, submodule: _submodule }, ...data);
-  }
-
   try {
     if (size) {
       width = size;
@@ -115,17 +150,15 @@ export default memo(props => {
     const exposeProps = excludeProperties(props, 'name', 'icon', 'size', 'width', 'height', 'className', 'iconClassName', 'color', 'tooltip', 'tooltipColor', 'tooltipPosition', 'onClick', 'onContextMenu', 'rawSVG');
 
     if (!name) {
-      return _error('You must specify a "name" property for an Icon component.');
+      throw new Error('You must specify a valid name property!');
     }
-
-    const registry = getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
 
     const isClickable = Boolean(onClick || onContextMenu);
 
-    const SVG = icon ? icon : Icons[name] ? Icons[name] : registry(`./${name}`).default;
+    const SVG = icon ? icon : Icons[name] ? Icons[name] : null;
 
     if (!SVG && !icon) {
-      return _error(`Invalid "${name}" name property specified. A full list of acceptable icon names:`, this.Names);
+      throw new Error(`"${name}" is not a valid name property.`);
     }
 
     const render = () => {
