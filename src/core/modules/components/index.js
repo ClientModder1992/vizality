@@ -61,10 +61,10 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as Markdown } from './Markdown';
 export { default as Titlebar } from './Titlebar';
 export { default as Divider } from './Divider';
-export { default as Sticker } from './Sticker';
+// export { default as Sticker } from './Sticker';
 export { default as Switch } from './Switch';
 export { default as Anchor } from './Anchor';
-export { default as Emote } from './Emote';
+// export { default as Emote } from './Emote';
 export { default as Icon } from './Icon';
 
 export * as settings from './settings';
