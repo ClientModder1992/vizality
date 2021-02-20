@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { getModule, getModules, getModuleByDisplayName } from '@vizality/webpack';
 import { findInReactTree, findInTree, getOwnerInstance } from '@vizality/util/react';
+import { getModule, getModules, getModuleByDisplayName } from '@vizality/webpack';
 import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
 import { useForceUpdate } from '@vizality/hooks';
@@ -13,13 +13,13 @@ export default class Router extends Builtin {
     await this.injectViews();
     await this.injectSidebar();
     await this.forceRouterUpdate();
-    vizality.api.routes.on('routeAdded', this.forceRouterUpdate);
-    vizality.api.routes.on('routeRemoved', this.forceRouterUpdate);
+    vizality.api.routes.on('routeAdd', this.forceRouterUpdate);
+    vizality.api.routes.on('routeRemove', this.forceRouterUpdate);
   }
 
   stop () {
-    vizality.api.routes.off('routeAdded', this.forceRouterUpdate);
-    vizality.api.routes.off('routeRemoved', this.forceRouterUpdate);
+    vizality.api.routes.off('routeAdd', this.forceRouterUpdate);
+    vizality.api.routes.off('routeRemove', this.forceRouterUpdate);
     unpatch('vz-router-routes');
     unpatch('vz-router-views');
     unpatch('vz-router-sidebar');
@@ -32,7 +32,7 @@ export default class Router extends Builtin {
     patch('vz-router-routes', RouteRenderer.props.children, 'type', (_, res) => {
       const { children } = findInReactTree(res, m => Array.isArray(m.children) && m.children.length > 5);
       children.push(
-        ...vizality.api.routes.routes.map(route => ({
+        ...Object.values(vizality.api.routes.routes).map(route => ({
           ...children[0],
           props: {
             render: () => {
@@ -51,10 +51,10 @@ export default class Router extends Builtin {
     const FluxifiedViews = getModuleByDisplayName('FluxContainer(ViewsWithMainInterface)');
     const Views = FluxifiedViews.prototype.render.call({ memoizedGetStateFromStores: () => ({}) }).type;
     patch('vz-router-views', Views.prototype, 'render', (_, res) => {
-      const routes = findInTree(res, n => Array.isArray(n) && n[0] && n[0].key && n[0].props.path && n[0].props.render);
+      const routes = findInTree(res, n => Array.isArray(n) && n[0]?.key && n[0].props?.path && n[0].props.render);
       if (!Array.isArray(routes)) return res;
       routes[routes.length - 1].props.path = [
-        ...new Set(routes[routes.length - 1].props.path.concat(vizality.api.routes.routes.map(route => `/vizality${route.path}`)))
+        ...new Set(routes[routes.length - 1].props.path.concat(Object.values(vizality.api.routes.routes).map(route => `/vizality${route.path}`)))
       ];
       return res;
     });
@@ -75,10 +75,9 @@ export default class Router extends Builtin {
       const className = content?.props?.children[0]?.props?.className;
       if (className && className.startsWith('sidebar-') && window.location.pathname.startsWith('/vizality')) {
         const rawPath = window.location.pathname.substring('vizality'.length + 1);
-        const route = vizality.api.routes.routes.find(rte => rawPath.startsWith(rte.path));
+        const route = Object.values(vizality.api.routes.routes).find(rte => rawPath.startsWith(rte.path));
         if (route && route.sidebar) {
           const Sidebar = route.sidebar;
-          // Sidebar = Sidebar.__esModule ? Sidebar.default : Sidebar;
           content.props.children[0].props.children[0] = <Sidebar />;
         } else {
           content.props.children[0] = null;
