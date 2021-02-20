@@ -14,19 +14,22 @@ export default class RPC extends Builtin {
     this._boundRemoveCommand = this._removeCommand.bind(this);
 
     vizality.api.rpc.registerScope('VIZALITY_PRIVATE', w => w === HTTP.WEBSITE);
+
     vizality.api.rpc.on('eventAdd', this._boundAddEvent);
     vizality.api.rpc.on('commandAdd', this._boundAddCommand);
     vizality.api.rpc.on('eventRemove', this._boundRemoveEvent);
     vizality.api.rpc.on('commandRemove', this._boundRemoveCommand);
 
-    vizality.api.rpc.registerCommand('IS_VIZALITY', {
+    vizality.api.rpc.registerCommand({
+      id: 'IS_VIZALITY',
       scope: 'VIZALITY_PRIVATE',
       handler: () => {
         return 'true';
       }
     });
 
-    vizality.api.rpc.registerCommand('VIZALITY_GET_INFO', {
+    vizality.api.rpc.registerCommand({
+      id: 'VIZALITY_GET_INFO',
       scope: 'VIZALITY_PRIVATE',
       handler: () => {
         return {
@@ -49,7 +52,8 @@ export default class RPC extends Builtin {
       }
     });
 
-    vizality.api.rpc.registerCommand('VIZALITY_NAVIGATE', {
+    vizality.api.rpc.registerCommand({
+      id: 'VIZALITY_NAVIGATE',
       scope: 'VIZALITY_PRIVATE',
       handler: evt => {
         return vizality.api.routes.navigateTo(evt.args);
@@ -61,10 +65,10 @@ export default class RPC extends Builtin {
     unpatch('vz-rpc-webSocket');
     unpatch('vz-rpc-webSocket-promise');
 
-    vizality.api.rpc.unregisterScope('VIZALITY_PRIVATE');
     vizality.api.rpc.unregisterCommand('IS_VIZALITY');
     vizality.api.rpc.unregisterCommand('VIZALITY_GET_INFO');
     vizality.api.rpc.unregisterCommand('VIZALITY_NAVIGATE');
+    vizality.api.rpc.unregisterScope('VIZALITY_PRIVATE');
 
     vizality.api.rpc.off('eventAdd', this._boundAddEvent);
     vizality.api.rpc.off('commandAdd', this._boundAddCommand);
@@ -83,12 +87,11 @@ export default class RPC extends Builtin {
     }, true);
 
     patch('vz-rpc-webSocket-promise', websocketHandler, 'validateSocketClient', (args, res) => {
-      // console.log(args);
       if (args[3] === 'vizality') {
         res.catch(() => void 0);
         args[0].authorization.scopes = [
           'VIZALITY',
-          ...Object.keys(vizality.api.rpc.scopes).filter(s => vizality.api.rpc.scopes[s](args[1]))
+          ...Object.keys(vizality.api.rpc.scopes).filter(s => vizality.api.rpc.scopes[s].grant(args[1]))
         ];
         return Promise.resolve(null);
       }
