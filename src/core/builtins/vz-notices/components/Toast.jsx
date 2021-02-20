@@ -36,7 +36,7 @@ export default class Toast extends PureComponent {
           'vz-toast', {
             'vz-isClosing': this.props.closing,
             [`vz-is${this.props.position}`]: this.props.position,
-            'vz-isBottomRight': !this.props.position
+            'vz-isBottomRight': !this.props.position || this.props.position == "BottomRight"
           })}
         style={this.props.style}
       >
