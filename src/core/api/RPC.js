@@ -1,3 +1,4 @@
+import { getCaller } from '@vizality/util/file';
 import { API } from '@vizality/entities';
 
 /**
@@ -30,81 +31,135 @@ export default class RPC extends API {
   }
 
   /**
-   * Registers a RPC scope.
-   * @param {string} scope RPC scope
+   * Registers a scope.
+   * @param {string} scopeId Scope ID
    * @param {function(string): boolean} grant Grant method. Receives the origin as first argument
-   * @emits RpcAPI#scopeAdd
+   * @emits RPC#scopeAdd
    */
   registerScope (scopeId, grant) {
-    if (this.scopes[scopeId]) {
-      throw new Error(`RPC scope "${scopeId}" is already registered!`);
+    try {
+      if (!scopeId) {
+        throw new Error('RPC scope must contain a valid ID!');
+      }
+      if (this.scopes[scopeId]) {
+        throw new Error(`RPC scope ID "${scopeId}" is already registered!`);
+      }
+      this.scopes[scopeId].caller = getCaller();
+      this.scopes[scopeId].grant = grant;
+      this.emit('scopeAdd', scopeId);
+    } catch (err) {
+      return this.error(err);
     }
-    this.scopes[scopeId] = grant;
-    this.emit('scopeAdd', scopeId);
   }
 
   /**
-   * Registers an RPC event.
-   * @param {string} name Event name
-   * @param {DiscordRpcEvent} properties RPC event properties
-   * @emits RpcAPI#eventAdd
+   * Registers an event.
+   * @param {DiscordRpcEvent} event Event properties
+   * @emits RPC#eventAdd
    */
   registerEvent (event) {
-    if (this.events[event.name]) {
-      throw new Error(`RPC event ${event.name} is already registered!`);
+    try {
+      if (!event?.id) {
+        throw new Error('RPC command must contain a valid ID!');
+      }
+      // @todo Ask AAGaming about other properties
+      if (this.events[event.id]) {
+        throw new Error(`RPC event ID "${event.id}" is already registered!`);
+      }
+      // eslint-disable-next-line no-empty-function
+      if (!event.handler) event.handler = () => {};
+      event.caller = getCaller();
+      this.events[event.id] = event;
+      this.emit('eventAdd', event);
+    } catch (err) {
+      return this.error(err);
     }
-    if (!event.handler) event.handler = () => {}
-    this.events[event.name] = event;
-    this.emit('eventAdd', event.name);
   }
 
   /**
-   * Registers an RPC command.
-   * @param {string} name Command name
-   * @param {DiscordRpcEvent} properties RPC command properties
-   * @emits RpcAPI#eventAdd
+   * Registers a command.
+   * @param {DiscordRpcEvent} command Command properties
+   * @emits RPC#eventAdd
    */
   registerCommand (command) {
-    if (this.commands[command.name]) {
-      throw new Error(`RPC command ${command.name} is already registered!`);
+    try {
+      if (!command?.id) {
+        throw new Error('RPC command must contain a valid ID!');
+      }
+      if (!command.scope) {
+        throw new Error(`RPC command ID "${command.id} cannot be registered without a valid scope!`);
+      }
+      if (!command.handler || typeof command.handler !== 'function') {
+        throw new Error(`RPC command ID "${command.id} cannot be registered without a valid handler!`);
+      }
+      if (this.commands[command.id]) {
+        throw new Error(`RPC command ID "${command.id}" is already registered!`);
+      }
+      command.caller = getCaller();
+      this.commands[command.id] = command;
+      this.emit('commandAdd', command);
+    } catch (err) {
+      return this.error(err);
     }
-    this.commands[command.name] = command;
-    this.emit('commandAdd', command.name);
   }
 
   /**
    * Unregisters a scope.
-   * @param {string} scope Scope ID
-   * @emits RpcAPI#scopeRemove
+   * @param {string} scopeId Scope ID
+   * @emits RPC#scopeRemove
    */
-  unregisterScope (scope) {
-    if (this.scopes[scope]) {
-      delete this.scopes[scope];
-      this.emit('scopeRemove', scope);
+  unregisterScope (scopeId) {
+    try {
+      if (!scopeId) {
+        throw new Error(`Invalid RPC scope ID provided!`);
+      }
+      if (!this.scopes[scopeId]) {
+        throw new Error(`RPC scope ID "${scopeId}" is not registered, so it cannot be unregistered!`);
+      }
+      delete this.scopes[scopeId];
+      this.emit('scopeRemove', scopeId);
+    } catch (err) {
+      return this.error(err);
     }
   }
 
   /**
    * Unregisters an event.
    * @param {string} eventId Event ID
-   * @emits RpcAPI#eventRemove
+   * @emits RPC#eventRemove
    */
   unregisterEvent (eventId) {
-    if (this.events[eventId]) {
+    try {
+      if (!eventId) {
+        throw new Error(`Invalid RPC event ID provided!`);
+      }
+      if (!this.events[eventId]) {
+        throw new Error(`RPC event ID "${eventId}" is not registered, so it cannot be unregistered!`);
+      }
       delete this.events[eventId];
       this.emit('eventRemove', eventId);
+    } catch (err) {
+      return this.error(err);
     }
   }
 
   /**
    * Unregisters a command.
    * @param {string} commandId Command ID
-   * @emits RpcAPI#commandRemove
+   * @emits RPC#commandRemove
    */
   unregisterCommand (commandId) {
-    if (this.commands[commandId]) {
+    try {
+      if (!commandId) {
+        throw new Error(`Invalid RPC command ID provided!`);
+      }
+      if (!this.commands[commandId]) {
+        throw new Error(`RPC command ID "${commandId}" is not registered, so it cannot be unregistered!`);
+      }
       delete this.commands[commandId];
       this.emit('commandRemove', commandId);
+    } catch (err) {
+      return this.error(err);
     }
   }
 }

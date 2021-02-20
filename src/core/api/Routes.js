@@ -54,7 +54,7 @@ export default class Routes extends API {
   registerRoute (route) {
     try {
       if (!route?.id) {
-        throw new Error(`Route must contain a valid ID!`);
+        throw new Error('Route must contain a valid ID!');
       }
       if (route.id !== 'home') {
         if (!route.path) {
