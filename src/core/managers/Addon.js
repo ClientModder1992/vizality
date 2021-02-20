@@ -453,7 +453,7 @@ export default class AddonManager {
   }
 
   /** @private */
-  _log (...data) { log({ module: this._module, submodule: this._submodule }, ...data); }
-  _warn (...data) { warn({ module: this._module, submodule: this._submodule }, ...data); }
-  _error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
+  _log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
+  _warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
+  _error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
 }

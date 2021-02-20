@@ -1,15 +1,7 @@
-/* eslint-disable consistent-this */
+/* eslint-disable no-unused-vars */
 import { randomBytes } from 'crypto';
 
-import { error } from '@vizality/util/logger';
-
-const _module = 'Module';
-const _submodule = 'Patcher';
-
-/** @private */
-const _error = (...data) => {
-  error({ module: _module, submodule: _submodule }, ...data);
-};
+import { log, warn, error } from '@vizality/util/logger';
 
 /**
  * @module patcher
@@ -18,6 +10,14 @@ const _error = (...data) => {
  */
 
 export let patches = [];
+/** @private */
+const _module = 'Module';
+const _submodule = 'Patcher';
+const _log = (...message) => log({ module: _module, submodule: _submodule, message });
+const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
+const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+
+let patches = [];
 
 export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
   try {

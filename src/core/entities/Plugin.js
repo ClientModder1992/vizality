@@ -96,9 +96,9 @@ export default class Plugin extends Updatable {
     });
   }
 
-  log (...data) { log({ module: this._module, submodule: this._submodule }, ...data); }
-  warn (...data) { warn({ module: this._module, submodule: this._submodule }, ...data); }
-  error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
+  log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
+  warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
+  error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
 
   /**
    * Update the addon.
@@ -181,31 +181,47 @@ export default class Plugin extends Updatable {
 
     this._watcher
       .on('add', path =>
-        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
-          `File "${path.replace(this.path + sep, '')}" has been added.`
-        )
-      )
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: `File "${path.replace(this.path + sep, '')}" has been added.`
+        }))
       .on('change', path =>
-        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
-          `File "${path.replace(this.path + sep, '')}" has been changed.`
-        )
-      )
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: `File "${path.replace(this.path + sep, '')}" has been changed.`
+        }))
       .on('unlink', path =>
-        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
-          `File "${path.replace(this.path + sep, '')}" has been removed.`
-        )
-      )
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: `File "${path.replace(this.path + sep, '')}" has been removed.`
+        }))
       .on('addDir', path =>
-        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
-          `Directory "${path.replace(this.path + sep, '')}" has been added.`
-        )
-      )
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: `Directory "${path.replace(this.path + sep, '')}" has been added.`
+        }))
       .on('unlinkDir', path =>
-        log({ module: _module, submodule: this._module, subsubmodule: this._submodule },
-          `Directory "${path.replace(this.path + sep, '')}" has been removed.`
-        )
-      )
-      .on('error', error => log({ module: _module, submodule: this._module, subsubmodule: this._submodule }, error))
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: `Directory "${path.replace(this.path + sep, '')}" has been removed.`
+        }))
+      .on('error', error =>
+        log({
+          module: _module,
+          submodule: this._module,
+          subsubmodule: this._submodule,
+          message: error
+        }))
       .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
   }
 

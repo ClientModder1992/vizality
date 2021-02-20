@@ -3,18 +3,17 @@ import { log, warn, error } from '../util/Logger';
 import moduleFilters from './modules.json';
 import { sleep } from '../util/Time';
 
-const _module = 'Module';
-const _submodule = 'Webpack';
-
-/** @private */
-const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
-const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
-const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
-
 /**
  * @module webpack
  * @namespace webpack
  */
+
+/** @private */
+const _module = 'Module';
+const _submodule = 'Webpack';
+const _log = (...message) => log({ module: _module, submodule: _submodule, message });
+const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
+const _error = (...message) => error({ module: _module, submodule: _submodule, message });
 
 /**
  * Grabs a module from the Webpack store

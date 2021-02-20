@@ -171,18 +171,18 @@ export default class Vizality extends Updatable {
       setLogFn(() => void 0);
     } else {
       // Patch Discord's logs to follow Vizality's log style
-      setLogFn((submodule, type, ...data) => {
+      setLogFn((submodule, type, ...message) => {
         switch (type) {
           case 'info':
           case 'log':
-            return log({ module, submodule }, ...data);
+            return log({ module, submodule, message });
           case 'error':
           case 'trace':
-            return error({ module, submodule }, ...data);
+            return error({ module, submodule, message });
           case 'warn':
-            return warn({ module, submodule }, ...data);
+            return warn({ module, submodule, message });
           default:
-            return log({ module, submodule }, ...data);
+            return log({ module, submodule, message });
         }
       });
     }
@@ -271,7 +271,7 @@ export default class Vizality extends Updatable {
   }
 
   /** @private */
-  _log (...data) { log({ module: this.constructor.name, submodule: 'Core' }, ...data); }
-  _warn (...data) { warn({ module: this.constructor.name, submodule: 'Core' }, ...data); }
-  _error (...data) { error({ module: this.constructor.name, submodule: 'Core' }, ...data); }
+  _log (...message) { log({ module: this.constructor.name, submodule: 'Core', message }); }
+  _warn (...message) { warn({ module: this.constructor.name, submodule: 'Core', message }); }
+  _error (...message) { error({ module: this.constructor.name, submodule: 'Core', message }); }
 }

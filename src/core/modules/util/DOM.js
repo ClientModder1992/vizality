@@ -12,13 +12,12 @@ import { sleep } from './Time';
  * @memberof util
  */
 
+/** @private */
 const _module = 'Util';
 const _submodule = 'DOM';
-
-/** @private */
-const _log = (...data) => log({ module: _module, submodule: _submodule }, ...data);
-const _warn = (...data) => warn({ module: _module, submodule: _submodule }, ...data);
-const _error = (...data) => error({ module: _module, submodule: _submodule }, ...data);
+const _log = (...message) => log({ module: _module, submodule: _submodule, message });
+const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
+const _error = (...message) => error({ module: _module, submodule: _submodule, message });
 
 export const createElement = (type, props) => {
   const element = document.createElement(type);

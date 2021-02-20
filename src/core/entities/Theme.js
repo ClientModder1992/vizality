@@ -13,13 +13,13 @@ export default class Theme extends Updatable {
     this.manifest = manifest;
     this.applied = false;
 
-    this._module = this.constructor.name;
+    this._module = 'Theme';
     this._submodule = this.manifest.name;
   }
 
-  log (...data) { log({ module: this._module, submodule: this._submodule }, ...data); }
-  warn (...data) { warn({ module: this._module, submodule: this._submodule }, ...data); }
-  error (...data) { error({ module: this._module, submodule: this._submodule }, ...data); }
+  log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
+  warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
+  error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
 
   _load () {
     if (!this.applied) {

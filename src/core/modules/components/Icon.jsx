@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import parseHTML, { attributesToProps, domToReact } from 'html-react-parser';
 import { readdirSync, readFileSync } from 'fs';
 import React, { memo } from 'react';
@@ -5,8 +6,8 @@ import { join, parse } from 'path';
 
 import { excludeProperties } from '@vizality/util/object';
 import { toPascalCase } from '@vizality/util/string';
+import { log, warn, error } from '@vizality/util/logger';
 import { joinClassNames } from '@vizality/util/dom';
-import { error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
 
 import { Clickable, Tooltip as TooltipContainer } from '.';
@@ -22,6 +23,10 @@ export const Blacklist = [
   './PremiumGuildTier', './PremiumGuildTier1Simple', './PremiumGuildTier2Simple',
   './PremiumGuildTier3Simple', './PremiumGuildTierSimple'
 ];
+/** @private */
+const _log = (...message) => log({ module: _module, submodule: _submodule, message });
+const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
+const _error = (...message) => error({ module: _module, submodule: _submodule, message });
 
 export const Icons = {
 

@@ -42,7 +42,9 @@ export default () => {
     ) {
       const header = findInReactTree(res, r => Array.isArray(r.props?.children) && r.props?.children.find(c => c.props?.message));
       header?.props?.children.push(
-        <FakeBotTag className={joinClassNames({ 'vz-bot-plugin-tag': text === 'PLUGIN', 'vz-bot-vizality-tag': text === 'VIZALITY' })}>{text}</FakeBotTag>
+        <FakeBotTag className={joinClassNames({ 'vz-bot-plugin-tag': text === 'PLUGIN', 'vz-bot-vizality-tag': text === 'VIZALITY' })}>
+          {text}
+        </FakeBotTag>
       );
     }
 

@@ -12,7 +12,6 @@ const Copy = AsyncComponent.fromDisplayName('CopyInput');
 
 export default memo(props => {
   const CopyInput = getModuleByDisplayName('CopyInput');
-
   const [ copyText, setCopyText ] = useState(Messages.COPY);
   const [ mode, setMode ] = useState(CopyInput.Modes.DEFAULT);
 

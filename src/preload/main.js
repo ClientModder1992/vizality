@@ -60,7 +60,6 @@ require('../ipc/renderer');
       ) {
         return oldRequireExt(module, filename);
       }
-
       const compiler = new (require(`@vizality/compilers/${ext.substring(1).toUpperCase()}`))(filename);
       const compiled = compiler.compile();
       module._compile(compiled, filename);
