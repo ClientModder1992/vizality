@@ -1,6 +1,6 @@
+import { readdirSync } from 'fs';
 import { join } from 'path';
 
-// Vizality
 export const HTTP = Object.freeze({
   CDN: 'https://cdn.vizality.com',
   WEBSITE: 'https://vizality.com',
@@ -10,7 +10,6 @@ export const HTTP = Object.freeze({
   get ASSETS () { return `${this.CDN}/assets`; }
 });
 
-// GitHub
 export const Repositories = Object.freeze({
   ORG: 'vizality',
   get VIZALITY () { return `${this.ORG}/vizality`; },
@@ -18,7 +17,6 @@ export const Repositories = Object.freeze({
   get DOCS () { return `${this.ORG}/docs`; }
 });
 
-// Directories
 export const Directories = Object.freeze({
   ROOT: join(__dirname, '..', '..', '..', '..'),
   get SRC () { return join(this.ROOT, 'src'); },
@@ -41,13 +39,19 @@ export const Directories = Object.freeze({
   get MODULES () { return join(__dirname, '..'); }
 });
 
-// Guild
+export const Vizality = Object.freeze({
+  get BUILTINS () {
+    const builtins = [];
+    readdirSync(Directories.BUILTINS).forEach(file => builtins.push(file));
+    return builtins.map(builtin => `vz-${builtin}`);
+  }
+});
+
 export const Guild = Object.freeze({
   INVITE: 'Fvmsfv2',
   ID: '689933814864150552'
 });
 
-// Channels
 export const Channels = Object.freeze({
   CSS_SNIPPETS: '705262981214371902',
   JS_SNIPPETS: '705262981214371902',
@@ -75,12 +79,11 @@ export const Regexes = Object.freeze({
   CHANNEL_MENTION: '^<#!?(\\d+)>$'
 });
 
-// Events
 export const Events = Object.freeze({
   VIZALITY_POPUP_WINDOW_OPEN: 'popupWindowOpen',
   VIZALITY_POPUP_WINDOW_CLOSE: 'popupWindowClose',
   // ---
-  VIZALITY_INITIALIZE: 'initialized',
+  VIZALITY_INITIALIZE: 'initialize',
   VIZALITY_SETTINGS_READY: 'settingsReady',
   VIZALITY_SETTING_UPDATE: 'settingUpdate',
   VIZALITY_SETTING_TOGGLE: 'settingToggle',
@@ -91,15 +94,13 @@ export const Events = Object.freeze({
   VIZALITY_ADDON_SETTING_TOGGLE: 'addonSettingToggle'
 });
 
-// Avatars
 export const Avatars = Object.freeze({
-  // Theme icons
   get DEFAULT_THEME_1 () { return 'vz-asset://image/default-theme-1.png'; },
   get DEFAULT_THEME_2 () { return 'vz-asset://image/default-theme-2.png'; },
   get DEFAULT_THEME_3 () { return 'vz-asset://image/default-theme-3.png'; },
   get DEFAULT_THEME_4 () { return 'vz-asset://image/default-theme-4.png'; },
   get DEFAULT_THEME_5 () { return 'vz-asset://image/default-theme-5.png'; },
-  // Plugin icons
+  // ---
   get DEFAULT_PLUGIN_1 () { return 'vz-asset://image/default-plugin-1.png'; },
   get DEFAULT_PLUGIN_2 () { return 'vz-asset://image/default-plugin-2.png'; },
   get DEFAULT_PLUGIN_3 () { return 'vz-asset://image/default-plugin-3.png'; },
@@ -107,17 +108,12 @@ export const Avatars = Object.freeze({
   get DEFAULT_PLUGIN_5 () { return 'vz-asset://image/default-plugin-5.png'; }
 });
 
-// Errors
 export const ErrorTypes = Object.freeze({
-  // Misc
-  NOT_A_DIRECTORY: 'NOT_A_DIRECTORY',
-  // Addons
-  MANIFEST_LOAD_FAILED: 'MANIFEST_LOAD_FAILED',
-  INVALID_MANIFEST: 'INVALID_MANIFEST'
+
 });
 
-// Vizality Developers
 export const Developers = Object.freeze([
   '97549189629636608', // dperolio
-  '301494563514613762' // Sebastian
+  '301494563514613762', // Sebastian
+  '415849376598982656' // Strencher
 ]);
