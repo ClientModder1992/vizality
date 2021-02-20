@@ -27,7 +27,8 @@ export const isArray = input => {
 };
 
 /**
- * Asserts that the input is an array. If it isn't, throw an error, otherwise do nothing.
+ * Asserts that the input is an array.
+ * If it isn't an array, it throws an error, otherwise it does nothing.
  * @param {*} input Argument input
  * @throws {TypeError} Throw an error if the input is not an array
  */

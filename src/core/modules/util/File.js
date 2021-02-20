@@ -31,9 +31,9 @@ const _error = (...message) => error({ module: _module, submodule: _submodule, m
 
 export const getCaller = () => {
   const stackTrace = (new Error()).stack;
-  const plugin = stackTrace.match(new RegExp(`${window._.escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
+  const plugin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
   if (plugin) return plugin[1];
-  const builtin = stackTrace.match(new RegExp(`${window._.escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
+  const builtin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
   if (builtin) return `vz-${builtin[1]}`;
   return 'vizality';
 };

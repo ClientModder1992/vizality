@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars *//* eslint-disable prefer-const */
+import tinycolor from 'tinycolor2';
+
 import { log, warn, error } from './Logger';
 
 /**
@@ -297,7 +299,7 @@ export const _hsl2rgb = color => {
 };
 
 export const _int2hex = color => {
-  return `#${((color) >>> 0).toString(16)}`;
+  return `#${((color) >>> 0).toString(16).padStart(6, '0')}`;
 };
 
 export const _int2hsl = color => {
@@ -503,6 +505,23 @@ export const getRandomColor = (type = 'hex') => {
 
 export const saturateColor = (color, amount) => {
 
+};
+
+export const rotateHue = (color, amount) => {
+  return tinycolor(color).spin(amount).toString();
+};
+
+export const getComplement = color => {
+  // Make sure the color is an identifiable type
+  const type = this.getColorType(color);
+  if (!type) return _error(`Could not determine a color type for "${color}".`);
+
+  const complement = tinycolor(color).complement().toHexString();
+
+  if (type === 'hex') return complement;
+  if (type === 'int') return this._hex2int(complement);
+  if (type === 'rgb') return this._hex2rgb(complement);
+  if (type === 'hsl') return this._hex2hsl(complement);
 };
 
 export const getColorType = color => {

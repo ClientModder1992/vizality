@@ -115,14 +115,32 @@ export const _find = (obj, targetValue, exact = false, type) => {
   if (results.length > 0) return console.log(results);
 };
 
+/**
+ * Checks if the input is an object.
+ * @param {*} input Argument input
+ * @returns {boolean} Whether or not the input is an object
+ */
 export const isObject = input => {
   return _isObject(input);
 };
 
+/**
+ * Asserts that the input is an object.
+ * If it isn't an object, it throws an error, otherwise it does nothing.
+ * @param {*} input Argument input
+ * @throws {TypeError} Throw an error if the input is not an object
+ */
 export const assertObject = input => {
-  return void 0 || input;
+  if (!this.isObject(input)) {
+    throw new TypeError(`Expected an object but received ${typeof input}.`);
+  }
 };
 
+/**
+ * Checks if the input is an empty object.
+ * @param {*} input Argument input
+ * @returns {boolean} Whether or not the input is an empty object
+ */
 export const isEmpty = input => {
   return _isEmpty(input);
 };
