@@ -32,8 +32,11 @@ const _error = (...data) => error({ module: _module, submodule: _submodule }, ..
 
 export const getCaller = () => {
   const stackTrace = (new Error()).stack;
-  const [ , caller ] = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`)) || [ null, 'vizality' ];
-  return caller;
+  const plugin = stackTrace.match(new RegExp(`${window._.escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
+  if (plugin) return plugin[1];
+  const builtin = stackTrace.match(new RegExp(`${window._.escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
+  if (builtin) return `vz-${builtin[1]}`;
+  return 'vizality';
 };
 
 export const getMimeType = async input => {

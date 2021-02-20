@@ -4,6 +4,7 @@ import { typing, getModule, getModuleByDisplayName } from '@vizality/webpack';
 import { getOwnerInstance, findInReactTree } from '@vizality/util/react';
 import { AdvancedScrollerThin, LazyImage } from '@vizality/components';
 import { joinClassNames } from '@vizality/util/dom';
+import { Vizality } from '@vizality/constants';
 import { error } from '@vizality/util/logger';
 import { patch } from '@vizality/patcher';
 import { Messages } from '@vizality/i18n';
@@ -85,11 +86,11 @@ export default function injectAutocomplete () {
       vizalitySectionInner.push(renderHeader('', null, 'Vizality', `vz-asset://image/logo.png`, `vz-cmd-vizality`));
       results.forEach(result => {
         const { command } = findInReactTree(result, r => r.command);
-        if (!callers.includes(command.caller) && command.caller !== 'vizality') {
+        if (!callers.includes(command.caller) && command.caller !== 'vizality' && !Vizality.BUILTINS.includes(command.caller)) {
           callers.push(command.caller);
         }
 
-        if (command.caller === 'vizality') {
+        if (command.caller === 'vizality' || Vizality.BUILTINS.includes(command.caller)) {
           vizalitySectionInner.push(result);
         }
       });
