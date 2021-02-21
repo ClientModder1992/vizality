@@ -21,7 +21,7 @@ let smoothScrolling = true;
 let settings = {};
 
 try {
-  settings = require(join(__dirname, '..', '..', 'settings', 'vz-settings.json'));
+  settings = require(join(__dirname, '..', '..', 'settings', 'settings.json'));
 
   ({ reactDeveloperTools, smoothScrolling } = settings);
 } catch (err) {

@@ -24,11 +24,10 @@ export default class Notices extends Builtin {
 
     if (existsSync(injectedFile)) {
       this._welcomeNewUser();
+      if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable') {
+        this._unsupportedBuild();
+      }
       unlink(injectedFile);
-    }
-
-    if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable') {
-      this._unsupportedBuild();
     }
   }
 

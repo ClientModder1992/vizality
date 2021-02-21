@@ -8,9 +8,9 @@ import { API } from '@vizality/entities';
 import actions from './store/Actions';
 import store from './store/Store';
 
-import Sidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
-import Content from '@vizality/builtins/vz-dashboard/components/parts/Content';
-import Layout from '@vizality/builtins/vz-dashboard/components/parts/Layout';
+import Sidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
+import Content from '@vizality/builtins/dashboard/components/parts/Content';
+import Layout from '@vizality/builtins/dashboard/components/parts/Layout';
 
 /**
  * @typedef SettingsCategory
@@ -236,7 +236,7 @@ export default class Settings extends API {
         return store.getSetting(category, setting, defaultValue);
       },
       updateSetting: (setting, value) => {
-        if (category === 'vz-settings') {
+        if (category === 'settings') {
           this.emit(Events.VIZALITY_SETTING_UPDATE, setting, value);
         } else {
           this.emit(Events.VIZALITY_ADDON_SETTING_UPDATE, category, setting, value);
@@ -244,7 +244,7 @@ export default class Settings extends API {
         return actions.updateSetting(category, setting, value);
       },
       toggleSetting: (setting, defaultValue) => {
-        if (category === 'vz-settings') {
+        if (category === 'settings') {
           this.emit(Events.VIZALITY_SETTING_TOGGLE, setting, defaultValue);
         } else {
           this.emit(Events.VIZALITY_ADDON_SETTING_TOGGLE, category, setting, defaultValue);

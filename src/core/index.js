@@ -71,7 +71,7 @@ export default class Vizality extends Updatable {
 
     // Start
     await this.start();
-    this.git = await this.manager.builtins.get('vz-updater').getGitInfo();
+    this.git = await this.manager.builtins.get('updater').getGitInfo();
 
     // Token manipulation stuff
     if (this.settings.get('hideToken', true)) {
@@ -102,7 +102,7 @@ export default class Vizality extends Updatable {
     await this.manager.apis.initialize();
 
     // Initialize Vizality core settings
-    this.settings = this.api.settings.buildCategoryObject('vz-settings');
+    this.settings = this.api.settings.buildCategoryObject('settings');
     this.emit(Events.VIZALITY_SETTINGS_READY);
 
     // Check if the current user is a verified Vizality Developer
@@ -210,7 +210,7 @@ export default class Vizality extends Updatable {
           return this._error(`An error occurred while updating Vizality's dependencies!`, err);
         }
 
-        const updater = this.manager.builtins.get('vz-updater');
+        const updater = this.manager.builtins.get('updater');
         // @i18n
         if (!document.querySelector(`#vz-updater-update-complete, [vz-route='updater']`)) {
           this.api.notices.sendToast('vz-updater-update-complete', {

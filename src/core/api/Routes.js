@@ -3,8 +3,8 @@ import { Regexes } from '@vizality/constants';
 import { getModule } from '@vizality/webpack';
 import { API } from '@vizality/entities';
 
-import DashboardSidebar from '@vizality/builtins/vz-dashboard/components/parts/sidebar/Sidebar';
-import DashboardRoutes from '@vizality/builtins/vz-dashboard/routes/Routes';
+import DashboardSidebar from '@vizality/builtins/dashboard/components/parts/sidebar/Sidebar';
+import DashboardRoutes from '@vizality/builtins/dashboard/routes/Routes';
 
 /**
  * @typedef VizalityRoute

@@ -3,7 +3,7 @@ import React from 'react';
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { FormTitle } from '@vizality/components';
 
-import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/List';
+import AddonList from '@vizality/builtins/addon-manager/components/addons/List';
 
 export default {
   command: 'manage',

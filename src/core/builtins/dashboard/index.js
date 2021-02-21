@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { forceUpdateElement } from '@vizality/util/react';
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 import { Builtin } from '@vizality/entities';
@@ -58,15 +59,13 @@ export default class Dashboard extends Builtin {
   _injectPrivateTab () {
     const ConnectedPrivateChannelsList = getModule(m => m.default?.displayName === 'ConnectedPrivateChannelsList');
     const { LinkButton } = getModule('LinkButton');
-
+    const { channel } = getModule('channel', 'closeIcon');
     patch('vz-dashboard-private-channels-list-item', ConnectedPrivateChannelsList, 'default', (_, res) => {
       const selected = window.location.pathname.startsWith('/vizality');
       const index = res.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
-
       if (selected) {
         res.props?.children?.forEach(c => c?.props?.selected ? c.props.selected = false : null);
       }
-
       res.props.children = [
         ...res.props.children.slice(0, index), () =>
           <LinkButton
@@ -77,9 +76,9 @@ export default class Dashboard extends Builtin {
           />,
         ...res.props.children.slice(index)
       ];
-
       return res;
     });
+    setImmediate(() => forceUpdateElement(`.${channel}`));
   }
 
   // async injectGuildHomeButton () {

@@ -3,17 +3,17 @@ import React, { memo } from 'react';
 
 import ImageCarouselModal from '../pages/screenshots/ImageCarouselModal';
 import Markdown from '../pages/docs/components/Markdown';
-import Icons from '../pages/docs/components/Icons';
 import Screenshots from '../pages/screenshots/Screenshots';
 import Changelog from '../pages/changelog/Changelog';
-import ErrorTest from '../pages/ErrorTest';
+import Icons from '../pages/docs/components/Icons';
 import Content from '../components/parts/Content';
-import Home from '../pages/home/Home';
 import Layout from '../components/parts/Layout';
+import ErrorTest from '../pages/ErrorTest';
+import Home from '../pages/home/Home';
 import Test2 from '../pages/Test2';
 import Test from '../pages/Test';
 
-import AddonList from '@vizality/builtins/vz-addon-manager/components/addons/List';
+import AddonList from '@vizality/builtins/addon-manager/components/addons/List';
 
 export default memo(() => {
   return (
