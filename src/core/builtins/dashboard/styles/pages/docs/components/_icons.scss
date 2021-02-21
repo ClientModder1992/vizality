@@ -5,7 +5,7 @@
   &-icon-wrapper {
     display: flex;
     &:hover {
-      #{$base}-icon {
+      #{$base}-icon:not([vz-active]) {
         background-color: var(--background-modifier-selected);
         color: var(--interactive-hover);
       }

@@ -79,12 +79,13 @@
       top: -1px;
       border-radius: 8px;
       background: var(--background-secondary);
-      transition: width .3s ease, background-color .3s ease, border-radius .3s ease, margin .3s ease;
       z-index: 1;
       box-shadow: var(--elevation-low);
       &[vz-stuck] {
         background: var(--background-primary);
         border-radius: 0;
+        width: calc(100% + 80px);
+        margin-left: -40px;
       }
     }
   }
