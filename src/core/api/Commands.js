@@ -1,4 +1,4 @@
-import { isObject, isEmpty } from '@vizality/util/object';
+import { isObject, isEmptyObject } from '@vizality/util/object';
 import { getCaller } from '@vizality/util/file';
 import { API } from '@vizality/entities';
 
@@ -61,7 +61,7 @@ export default class Commands extends API {
     const caller = getCaller();
 
     try {
-      if (!isObject(command) || isEmpty(command)) {
+      if (!isObject(command) || isEmptyObject(command)) {
         throw new Error('Command must be a non-empty object!');
       }
 

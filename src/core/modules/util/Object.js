@@ -141,7 +141,7 @@ export const assertObject = input => {
  * @param {*} input Argument input
  * @returns {boolean} Whether or not the input is an empty object
  */
-export const isEmpty = input => {
+export const isEmptyObject = input => {
   return _isEmpty(input);
 };
 

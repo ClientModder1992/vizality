@@ -67,7 +67,7 @@ export const toSentence = (array, lastItemConnector = 'and') => {
  * @param {*} input Argument input
  * @returns {boolean} Whether or not the input is an empty array
  */
-export const isEmpty = input => {
+export const isEmptyArray = input => {
   return _isEmpty(input);
 };
 
