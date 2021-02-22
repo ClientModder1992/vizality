@@ -23,18 +23,21 @@ export default function injectAutocomplete () {
   const ApplicationCommandDiscoverySectionList = getModuleByDisplayName('ApplicationCommandDiscoverySectionList');
   const { rail, wrapper, outerWrapper, list, categorySection, categorySectionLast } = getModule('rail');
   const ApplicationCommandItem = getModule(m => m.default?.displayName === 'ApplicationCommandItem');
+  const { autocomplete: autocomplete2 } = getModule('autocomplete', 'stickerAutoComplete');
   const { AUTOCOMPLETE_OPTIONS: AutocompleteTypes } = getModule('AUTOCOMPLETE_OPTIONS');
   const ChannelEditorContainer = getModuleByDisplayName('ChannelEditorContainer');
+  const selectedChannelStore = getModule('getChannelId', 'getVoiceChannelId');
   const SlateChannelTextArea = getModuleByDisplayName('SlateChannelTextArea');
   const { autocomplete, autocompleteInner } = getModule('autocompleteInner');
-  const { autocomplete: autocomplete2 } = getModule('autocomplete', 'stickerAutoComplete');
   const PlainTextArea = getModuleByDisplayName('PlainTextArea');
   const Autocomplete = getModuleByDisplayName('Autocomplete');
   const { textArea } = getModule('channelTextArea', 'inner');
   const { image, title } = getModule('image', 'infoWrapper');
   const { builtInSeparator } = getModule('builtInSeparator');
-  const { listItems, scroller } = getModule('listItems');
   const { autocompleteRow } = getModule('autocompleteRow');
+  const useCommandSection = getModule('useCommandSection');
+  const { listItems, scroller } = getModule('listItems');
+  const channelStore = getModule('getChannel');
   const _this = this;
 
   const renderHeader = (value, formatHeader, addonName, icon, id) => {
@@ -408,8 +411,10 @@ export default function injectAutocomplete () {
     return res;
   });
 
-  const pie = getModule('useCommandSection');
-  patch('ez-pie', pie, 'useCommandSection', (args, res) => {
-    return res;
-  });
+  patch('vz-commands-useCommandSection', useCommandSection, 'useCommandSection', (args, res) => {
+    if (!args[0]) {
+      args.unshift({ channel: channelStore.getChannel(selectedChannelStore.getChannelId()) });
+    }
+    return args;
+  }, true);
 }

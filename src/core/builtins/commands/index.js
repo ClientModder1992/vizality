@@ -54,5 +54,6 @@ export default class Commands extends Builtin {
     unpatch('vz-commands-autocomplete');
     unpatch('vz-commands-commandItem');
     unpatch('vz-commands-railIcon');
+    unpatch('vz-commands-useCommandSection');
   }
 }
