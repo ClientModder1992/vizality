@@ -21,7 +21,7 @@ export default class Updater extends Builtin {
   constructor () {
     super();
     this.changelog = {
-      image: 'vz-builtin://vz-updater/assets/updates-2021-01-11.png',
+      image: 'vz-builtin://updater/assets/updates-2021-01-11.png',
       id: 'updates-2021-01-11'
     };
     this.checking = false;
@@ -182,7 +182,7 @@ export default class Updater extends Builtin {
     if (failed.length > 0) {
       this.settings.set('failed', true);
       this.settings.set('updates', failed);
-      if (!document.querySelector(`#vizality-updater, [vz-builtin='vz-updater']`)) {
+      if (!document.querySelector(`#vizality-updater, [vz-builtin='updater']`)) {
         vizality.api.notices.sendToast('vz-updater-update-failed', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
           type: 'error',

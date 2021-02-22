@@ -33,7 +33,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   });
 
   // eslint-disable-next-line consistent-this
-  const _this = vizality.manager.builtins.get('vz-updater');
+  const _this = vizality.manager.builtins.get('updater');
 
   const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable';
   // @todo: Make this be in its own store

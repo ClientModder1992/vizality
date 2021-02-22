@@ -30,16 +30,12 @@ export default memo(() =>
     <Header>Dashboard</Header>
     <Item icon='Home' label='Home' path='/home' />
     <Item icon='Gear' label='Settings' path='/settings' />
-    {/* Installed, Discover, Ideas & Inspiration */}
     <Item icon='Plugin' label='Plugins' path='/plugins' />
-    {/* Installed, Discover, Ideas & Inspiration */}
     <Item icon='Theme' label='Themes' path='/themes' />
-    {/* CSS, JS, Custom CSS, Custom JS */}
-    {vizality.manager.builtins.isEnabled('vz-snippet-manager') && <Item icon='Scissors' label='Snippets' path='/snippets' />}
-    {vizality.manager.builtins.isEnabled('vz-quick-code') && <Item icon='Compose' label='Quick Code' path='/quick-code' />}
+    {vizality.manager.builtins.isEnabled('quick-code') && <Item icon='Compose' label='Quick Code' path='/quick-code' />}
     <Item icon='Settings' label='Theme Editor' path='/form' disabled auxillaryIconTooltipText='Under Construction' />
     <Separator />
-    {/* Addon Guidelines, Publish an Addon, Get Verified */}
+    {/* Addon Guidelines, Publish an Addon, Get Verified, Documentation */}
     <Item icon='UnknownUser' label='Developers' path='/developers' />
     <Item icon='Science' label='Documentation' path='/docs' expandable>
       <SubItem label='Getting Started' path='/docs/getting-started' />

@@ -155,12 +155,7 @@ export default memo(() => {
             </ContextMenu.Group>
           </>}
         </ContextMenu.Item>
-        {vizality.manager.builtins.isEnabled('vz-snippet-manager') && <ContextMenu.Item
-          id='snippets'
-          label='Snippets'
-          action={() => vizality.api.routes.navigateTo('snippets')}
-        />}
-        {vizality.manager.builtins.isEnabled('vz-quick-code') && <ContextMenu.Item
+        {vizality.manager.builtins.isEnabled('quick-code') && <ContextMenu.Item
           id='quick-code'
           label='Quick Code'
           action={() => vizality.api.routes.navigateTo('quick-code')}
