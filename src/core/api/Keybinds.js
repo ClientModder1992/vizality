@@ -45,7 +45,7 @@ export default class Keybinds extends API {
       keybind.eventId = Math.floor(100000 + Math.random() * 900000);
       keybind.options = keybind.options || options;
 
-      this._registerKeybind(keybind);
+      (async () => this._registerKeybind(keybind))();
     } catch (err) {
       return this.error(err);
     }
@@ -61,7 +61,7 @@ export default class Keybinds extends API {
         throw new Error(`Keybind "${keybindId}" is not registered!`);
       }
 
-      this._unregisterKeybind(this.keybinds[keybindId]);
+      (async () => this._unregisterKeybind(this.keybinds[keybindId]))();
     } catch (err) {
       return this.error(err);
     }
@@ -80,19 +80,19 @@ export default class Keybinds extends API {
 
       const keybind = this.keybinds[keybindId];
 
-      this._unregisterKeybind(this.keybinds[keybindId]);
+      (async () => this._unregisterKeybind(this.keybinds[keybindId]))();
       keybind.shortcut = newShortcut;
-      this._registerKeybind(keybind);
+      (async () => this._registerKeybind(keybind))();
     } catch (err) {
       return this.error(err);
     }
   }
 
   /** @private */
-  _registerKeybind (keybind) {
+  async _registerKeybind (keybind) {
     try {
+      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
-
       discordUtils.inputEventRegister(keybind.eventId, this._shortcutToKeyCode(keybind.shortcut), keybind.executor, keybind.options);
       this.keybinds[keybind.keybindId] = keybind;
       this.keybinds[keybind.keybindId].keyCode = this._shortcutToKeyCode(keybind.shortcut);
@@ -102,10 +102,10 @@ export default class Keybinds extends API {
   }
 
   /** @private */
-  _unregisterKeybind (keybind) {
+  async _unregisterKeybind (keybind) {
     try {
+      await DiscordNative.nativeModules.ensureModule('discord_utils');
       const discordUtils = DiscordNative.nativeModules.requireModule('discord_utils');
-
       discordUtils.inputEventUnregister(keybind.eventId);
       delete this.keybinds[keybind.keybindId];
     } catch (err) {
