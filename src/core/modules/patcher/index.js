@@ -1,55 +1,62 @@
 /* eslint-disable no-unused-vars */
+/**
+ * Patcher that can patch other functions and components allowing you to run code before
+ * or after the original function. Can also alter arguments and return values.
+ * @module patcher
+ */
+
 import { randomBytes } from 'crypto';
 
 import { log, warn, error } from '@vizality/util/logger';
 import { getCaller } from '@vizality/util/file';
 
-/**
- * @module patcher
- * @namespace patcher
- */
-
 /** @private */
-const _labels = [ 'Patcher' ];
+const _labels = [ 'Module', 'Patcher' ];
 const _log = (labels, ...message) => log({ labels: labels || _labels, message });
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
-export let patches = [];
+/**
+ * All currently applied patches.
+ */
+let patches = [];
 
+/**
+ * 
+ * @param {*} moduleId 
+ * @param {*} originalArgs 
+ * @param {*} originalReturn 
+ * @param {*} _this 
+ * @returns 
+ */
 export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
   try {
     let finalReturn = originalReturn;
-    const _patches = patches.filter(i => i.module === moduleId && !i.pre);
-    _patches.forEach(i => {
-      try {
-        finalReturn = i.method.call(_this, originalArgs, finalReturn);
-      } catch (err) {
-        throw new Error(`Failed to run patch "${i.id}"!`, err);
-      }
-    });
+    const _patches = patches.filter(p => p.module === moduleId && !p.pre);
+    _patches.forEach(p => finalReturn = p.method.call(_this, originalArgs, finalReturn));
     return finalReturn;
   } catch (err) {
     return _error(_labels.concat('_runPatches'), err);
   }
 };
 
+/**
+ * 
+ * @param {*} patches 
+ * @param {*} originalArgs 
+ * @param {*} _this 
+ * @returns 
+ */
 export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
   try {
     const patch = patches.pop();
-    let args = patch.method.call(_this, originalArgs);
+    const args = patch.method.call(_this, originalArgs);
     if (args === false) {
       return false;
     }
-
     if (!Array.isArray(args)) {
-      _error(
-        _labels.concat('_runPrePatchesRecursive'),
-        `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`
-      );
-      args = originalArgs;
+      throw new Error(`Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
     }
-
     if (patches.length > 0) {
       return _runPrePatchesRecursive(patches, args, _this);
     }
@@ -59,9 +66,16 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
   }
 };
 
+/**
+ * 
+ * @param {*} moduleId 
+ * @param {*} originalArgs 
+ * @param {*} _this 
+ * @returns 
+ */
 export const _runPrePatches = (moduleId, originalArgs, _this) => {
   try {
-    const _patches = patches.filter(i => i.module === moduleId && i.pre);
+    const _patches = patches.filter(p => p.module === moduleId && p.pre);
     if (_patches.length === 0) {
       return originalArgs;
     }
@@ -81,7 +95,6 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
  */
 export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
   try {
-    const caller = getCaller();
     if (patches.find(patch => patch.id === patchId)) {
       throw new Error(`Patch ID "${patchId}" is already used!`);
     }
@@ -89,11 +102,12 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       throw new Error(`Patch ID "${patchId}" tried to patch a module, but it was undefined!`);
     }
     if (!moduleToPatch[func]) {
-      throw new Error(`Patch ID "${patchId}" tried to patch a method, but it was undefined!`);
+      throw new Error(`Patch ID "${patchId}" tried to patch a function, but it was undefined!`);
     }
     if (typeof moduleToPatch[func] !== 'function') {
-      throw new Error(`Patch ID "${patchId}" tried to patch a method, but found ${typeof _oldMethod} instead of a function!`);
+      throw new Error(`Patch ID "${patchId}" tried to patch a function, but found ${typeof _oldMethod} instead of a function!`);
     }
+    const caller = getCaller();
     if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
       // First patch
       const id = randomBytes(16).toString('hex');
@@ -129,14 +143,51 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
 };
 
 /**
- * Checks if a function is patched.
- * @param {string} patchId The patch to check
+ * Checks if a patch is applied.
+ * @param {string} patchId Patch ID
  */
 export const isPatched = patchId => {
   try {
-    return patches.some(i => i.id === patchId);
+    return patches.some(patch => patch.id === patchId);
   } catch (err) {
     return _error(_labels.concat('isPatched'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} filter 
+ * @returns 
+ */
+export const getPatch = filter => {
+  try {
+
+  } catch (err) {
+    return _error(_labels.concat('getPatch'), err);
+  }
+};
+
+/**
+ * Gets all active patches by an addon.
+ * @param {string} filter Filter to 
+ */
+export const getPatches = filter => {
+  try {
+
+  } catch (err) {
+    return _error(_labels.concat('getPatches'), err);
+  }
+};
+
+/**
+ * 
+ * @returns 
+ */
+export const getAllPatches = () => {
+  try {
+
+  } catch (err) {
+    return _error(_labels.concat('getAllPatches'), err);
   }
 };
 
@@ -146,7 +197,7 @@ export const isPatched = patchId => {
  */
 export const getPatchesByAddon = addonId => {
   try {
-    return patches.filter(i => i.caller !== addonId);
+    return patches.filter(patch => patch.caller !== addonId);
   } catch (err) {
     return _error(_labels.concat('getPatchesByAddon'), err);
   }
@@ -158,14 +209,14 @@ export const getPatchesByAddon = addonId => {
  */
 export const unpatch = patchId => {
   try {
-    patches = patches.filter(i => i.id !== patchId);
+    patches = patches.filter(patch => patch.id !== patchId);
   } catch (err) {
     return _error(_labels.concat('unpatch'), err);
   }
 };
 
 /**
- * Removes all patches.
+ * Removes all applied patches.
  */
 export const unpatchAll = () => {
   try {
@@ -176,12 +227,12 @@ export const unpatchAll = () => {
 };
 
 /**
- * Removes all patches by an addon.
- * @param {string} addonId Patch ID
+ * Removes all patches created by a given addon.
+ * @param {string} addonId Addon ID
  */
 export const unpatchAllByAddon = addonId => {
   try {
-    patches = patches.filter(i => i.caller !== addonId);
+    patches = patches.filter(patch => patch.caller !== addonId);
   } catch (err) {
     return _error(_labels.concat('unpatchAllByAddon'), err);
   }

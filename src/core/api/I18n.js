@@ -71,12 +71,11 @@ export default class I18n extends API {
   injectStrings (locale, strings) {
     /**
      * @note Because you can't easily export modules with hyphens in them, this
-     * account for plugins using require and plugins using ESM syntax, and the
-     * possibility they may export without the hyphen.
+     * accounts for plugins using require syntax and plugins using ESM syntax, and the
+     * possibility that they may export without the hyphen.
      */
     const ogLocale = locale;
     locale = (/-/).test(locale) ? ogLocale : locale.replace(/([A-Z])/, '-$1').trim();
-
     if (!this.messages[locale]) {
       this.messages[locale] = strings;
     } else {
