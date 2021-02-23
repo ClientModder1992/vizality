@@ -25,11 +25,16 @@ export default class Keybinds extends API {
     this._submodule = 'Keybinds';
   }
 
+  stop () {
+    delete vizality.api.keybinds;
+    this.removeAllListeners();
+  }
+
   /**
    * Registers a keybind.
    * @param {VizalityKeybind} keybind Keybind
    */
-  registerKeybind (keybind) {
+  async registerKeybind (keybind) {
     try {
       if (this.keybinds[keybind.keybindId]) {
         throw new Error(`Keybind "${keybind.keybindId}" is already registered!`);
@@ -45,7 +50,7 @@ export default class Keybinds extends API {
       keybind.eventId = Math.floor(100000 + Math.random() * 900000);
       keybind.options = keybind.options || options;
 
-      (async () => this._registerKeybind(keybind))();
+      await this._registerKeybind(keybind);
     } catch (err) {
       return this.error(err);
     }
@@ -55,13 +60,12 @@ export default class Keybinds extends API {
    * Unregisters a keybind.
    * @param {string} keybindId ID of the keybind to unregister
    */
-  unregisterKeybind (keybindId) {
+  async unregisterKeybind (keybindId) {
     try {
       if (!this.keybinds[keybindId]) {
         throw new Error(`Keybind "${keybindId}" is not registered!`);
       }
-
-      (async () => this._unregisterKeybind(this.keybinds[keybindId]))();
+      await this._unregisterKeybind(this.keybinds[keybindId]);
     } catch (err) {
       return this.error(err);
     }
@@ -72,17 +76,15 @@ export default class Keybinds extends API {
    * @param {string} keybindId ID of the keybind to unregister
    * @param {string} newShortcut New shortcut to bind
    */
-  changeKeybindShortcut (keybindId, newShortcut) {
+  async changeKeybindShortcut (keybindId, newShortcut) {
     try {
       if (!this.keybinds[keybindId]) {
         throw new Error(`Keybind "${keybindId}" is not registered!`);
       }
-
       const keybind = this.keybinds[keybindId];
-
-      (async () => this._unregisterKeybind(this.keybinds[keybindId]))();
+      await this._unregisterKeybind(this.keybinds[keybindId]);
       keybind.shortcut = newShortcut;
-      (async () => this._registerKeybind(keybind))();
+      await this._registerKeybind(keybind);
     } catch (err) {
       return this.error(err);
     }
@@ -141,15 +143,9 @@ export default class Keybinds extends API {
         key = this._getVirtualKeyCode(key);
         keysHolder.push([ 0, key ]);
       }
-
       return keysHolder;
     } catch (err) {
       return this.error(err);
     }
-  }
-
-  stop () {
-    delete vizality.api.keybinds;
-    this.removeAllListeners();
   }
 }
