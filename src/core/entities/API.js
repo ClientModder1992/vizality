@@ -13,13 +13,13 @@ export default class API extends Events {
   warn (...message) { warn({ labels: this._labels, message }); }
   error (...message) { error({ labels: this._labels, message }); }
 
-  async _load (suppress = false) {
+  async _load (showLogs = true) {
     try {
       if (typeof this.start === 'function') {
         await this.start();
       }
 
-      if (!suppress) {
+      if (showLogs) {
         this.log('API loaded.');
       }
     } catch (err) {
@@ -29,13 +29,13 @@ export default class API extends Events {
     this._ready = true;
   }
 
-  async _unload (suppress = false) {
+  async _unload (showLogs = true) {
     try {
       if (typeof this.stop === 'function') {
         await this.stop();
       }
 
-      if (!suppress) {
+      if (showLogs) {
         this.log(this._module, this._submodule, null, 'API unloaded.');
       }
     } catch (err) {

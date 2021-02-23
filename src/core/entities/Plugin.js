@@ -41,28 +41,31 @@ export default class Plugin extends Updatable {
    * @param {boolean} suppress Whether or not to suppress errors in console
    */
   injectStyles (path, suppress = false) {
-    let resolvedPath = path;
-    if (!existsSync(resolvedPath)) {
-      // Assume it's a relative path and try resolving it
-      resolvedPath = join(this.path, path);
-
+    let compiler, style, compiled, id;
+    try {
+      let resolvedPath = path;
       if (!existsSync(resolvedPath)) {
-        throw new Error(`Cannot find "${path}"! Make sure the file exists and try again.`);
+        // Assume it's a relative path and try resolving it
+        resolvedPath = join(this.path, path);
+        if (!existsSync(resolvedPath)) {
+          throw new Error(`Cannot find "${path}"! Make sure the file exists and try again.`);
+        }
       }
+
+      id = Math.random().toString(36).slice(2);
+      compiler = resolveCompiler(resolvedPath);
+      style = createElement('style', {
+        id: `${this._type}-${this.addonId}-${id}`,
+        'vz-style': '',
+        [`vz-${this._type}`]: ''
+      });
+
+      document.head.appendChild(style);
+    } catch (err) {
+      return this.error(err);
     }
 
-    const id = Math.random().toString(36).slice(2);
-    const compiler = resolveCompiler(resolvedPath);
-    const style = createElement('style', {
-      id: `${this._type}-${this.addonId}-${id}`,
-      'vz-style': '',
-      [`vz-${this._type}`]: ''
-    });
-
-    document.head.appendChild(style);
-
     const compile = async () => {
-      let compiled;
       try {
         compiled = await compiler.compile();
       } catch (err) {
@@ -74,14 +77,18 @@ export default class Plugin extends Updatable {
       }
     };
 
-    this.styles[id] = {
-      compiler,
-      compile
-    };
+    try {
+      this.styles[id] = {
+        compiler,
+        compile
+      };
 
-    compiler.enableWatcher();
-    compiler.on('src-update', compile);
-    return compile();
+      compiler.enableWatcher();
+      compiler.on('src-update', compile);
+      return compile();
+    } catch (err) {
+      return this.error(err);
+    }
   }
 
   registerSettings (render) {
@@ -211,7 +218,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _load (suppress = false) {
+  async _load (showLogs = true) {
     try {
       if (typeof this.start === 'function') {
         const before = performance.now();
@@ -238,7 +245,7 @@ export default class Plugin extends Updatable {
           }
         }
 
-        if (!suppress) {
+        if (showLogs) {
           this.log(`${toTitleCase(this._type)} loaded. Initialization took ${time} ms.`);
         }
       } else {
@@ -260,7 +267,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _unload (suppress = false) {
+  async _unload (showLogs = true) {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
@@ -282,7 +289,7 @@ export default class Plugin extends Updatable {
         unpatchAllByAddon(this.addonId);
       }
 
-      if (!suppress) {
+      if (showLogs) {
         this.log(`${toTitleCase(this._type)} unloaded.`);
       }
     } catch (err) {
