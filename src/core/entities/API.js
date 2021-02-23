@@ -5,14 +5,13 @@ import Events from 'events';
 export default class API extends Events {
   constructor () {
     super();
-    this._module = 'API';
-    this._submodule = this.constructor.name;
+    this._labels = [ 'API', this.constructor.name ];
     this._ready = false;
   }
 
-  log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  log (...message) { log({ labels: this._labels, message }); }
+  warn (...message) { warn({ labels: this._labels, message }); }
+  error (...message) { error({ labels: this._labels, message }); }
 
   async _load (suppress = false) {
     try {

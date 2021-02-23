@@ -11,9 +11,9 @@ import { sleep } from '../util/Time';
 /** @private */
 const _module = 'Module';
 const _submodule = 'Webpack';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _log = (...message) => log({ labels: [ _module, _submodule ], message });
+const _warn = (...message) => warn({ labels: [ _module, _submodule ], message });
+const _error = (...message) => error({ labels: [ _module, _submodule ], message });
 
 /**
  * Grabs a module from the Webpack store

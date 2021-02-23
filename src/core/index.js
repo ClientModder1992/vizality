@@ -162,7 +162,6 @@ export default class Vizality extends Updatable {
 
   async _patchDiscordLogs () {
     const { setLogFn } = getModule('setLogFn');
-    const module = 'Discord';
     if (!this.settings.get('showDiscordConsoleLogs', false)) {
       /*
        * Removes Discord's logs entirely... except the logs that don't use the function
@@ -175,14 +174,14 @@ export default class Vizality extends Updatable {
         switch (type) {
           case 'info':
           case 'log':
-            return log({ module, submodule, message });
+            return log({ labels: [ 'NativeDiscord', submodule ], message });
           case 'error':
           case 'trace':
-            return error({ module, submodule, message });
+            return error({ labels: [ 'NativeDiscord', submodule ], message });
           case 'warn':
-            return warn({ module, submodule, message });
+            return warn({ labels: [ 'NativeDiscord', submodule ], message });
           default:
-            return log({ module, submodule, message });
+            return log({ labels: [ 'NativeDiscord', submodule ], message });
         }
       });
     }
@@ -271,7 +270,7 @@ export default class Vizality extends Updatable {
   }
 
   /** @private */
-  _log (...message) { log({ module: this.constructor.name, submodule: 'Core', message }); }
-  _warn (...message) { warn({ module: this.constructor.name, submodule: 'Core', message }); }
-  _error (...message) { error({ module: this.constructor.name, submodule: 'Core', message }); }
+  _log (...message) { log({ labels: [ 'Vizality', 'Core' ], message }); }
+  _warn (...message) { warn({ labels: [ 'Vizality', 'Core' ], message }); }
+  _error (...message) { error({ labels: [ 'Vizality', 'Core' ], message }); }
 }

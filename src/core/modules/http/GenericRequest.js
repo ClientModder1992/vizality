@@ -30,8 +30,7 @@ class HTTPError extends Error {
 
 export default class GenericRequest {
   constructor (method, uri, headers) {
-    this._module = 'HTTP';
-    this._submodule = this.constructor.name;
+    this._labels = [ 'HTTP', this.constructor.name ];
 
     this.opts = {
       method,
@@ -190,7 +189,7 @@ export default class GenericRequest {
   }
 
   /** @private */
-  _log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  _warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  _error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  _log (...message) { log({ labels: this._labels, message }); }
+  _warn (...message) { warn({ labels: this._labels, message }); }
+  _error (...message) { error({ labels: this._labels, message }); }
 }

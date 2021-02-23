@@ -15,9 +15,10 @@ const _module = 'Component';
 const _submodule = 'Icon';
 
 /** @private */
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Component', 'Icon' ];
+const _log = (...message) => log({ labels: _labels, message });
+const _warn = (...message) => warn({ labels: _labels, message });
+const _error = (...message) => error({ labels: _labels, message });
 
 export const Icons = {};
 

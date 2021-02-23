@@ -13,11 +13,10 @@ import { log, warn, error } from './Logger';
  */
 
 /** @private */
-const _module = 'Util';
-const _submodule = 'String';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Util', 'String' ];
+const _log = (labels, ...message) => log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 export const isSingular = string => {
   return pluralize.isSingular(string);

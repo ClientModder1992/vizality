@@ -19,8 +19,7 @@ export default class AddonManager {
 
     this._watcherEnabled = null;
     this._watcher = {};
-    this._module = 'Manager';
-    this._submodule = toSingular(this.type);
+    this._labels = [ 'Manager', toSingular(this.type) ];
   }
 
   get count () {
@@ -453,7 +452,7 @@ export default class AddonManager {
   }
 
   /** @private */
-  _log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  _warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  _error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  _log (...message) { log({ labels: this._labels, message }); }
+  _warn (...message) { warn({ labels: this._labels, message }); }
+  _error (...message) { error({ labels: this._labels, message }); }
 }

@@ -3,9 +3,10 @@ import { join, sep } from 'path';
 import { watch } from 'chokidar';
 import { existsSync } from 'fs';
 
-import { toPlural, toSingular } from '@vizality/util/string';
+import { toPlural, toTitleCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
+import { unpatchAllByAddon } from '@vizality/patcher';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 import { isArray } from '@vizality/util/array';
@@ -28,8 +29,8 @@ export default class Plugin extends Updatable {
     this._ready = false;
     this._watcherEnabled = null;
     this._watcher = {};
-    this._module = 'Plugin';
-    this._submodule = this.manifest?.name || this.constructor?.name;
+    this._type = 'plugin';
+    this._labels = [ 'plugin', this.manifest?.name || this.constructor?.name ];
   }
 
   /**
@@ -38,7 +39,6 @@ export default class Plugin extends Updatable {
    * plugin disable/unload.
    * @param {string} path Stylesheet path. Either absolute or relative to the plugin root
    * @param {boolean} suppress Whether or not to suppress errors in console
-   * @returns {undefined}
    */
   injectStyles (path, suppress = false) {
     let resolvedPath = path;
@@ -53,11 +53,10 @@ export default class Plugin extends Updatable {
 
     const id = Math.random().toString(36).slice(2);
     const compiler = resolveCompiler(resolvedPath);
-    const mdl = toSingular(this._module).toLowerCase();
     const style = createElement('style', {
-      id: `${mdl}-${this.addonId}-${id}`,
+      id: `${this._type}-${this.addonId}-${id}`,
       'vz-style': '',
-      [`vz-${mdl}`]: ''
+      [`vz-${this._type}`]: ''
     });
 
     document.head.appendChild(style);
@@ -87,15 +86,15 @@ export default class Plugin extends Updatable {
 
   registerSettings (render) {
     vizality.api.settings.registerSettings({
-      type: toPlural(this._module).toLowerCase(),
+      type: toPlural(this._type),
       addonId: this.addonId,
       render
     });
   }
 
-  log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  log (...message) { log({ labels: this._labels, message }); }
+  warn (...message) { warn({ labels: this._labels, message }); }
+  error (...message) { error({ labels: this._labels, message }); }
 
   /**
    * Update the addon.
@@ -104,8 +103,8 @@ export default class Plugin extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success && this._ready) {
-      this.log(`${toSingular(this._module)} has been successfully updated.`);
-      await vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId, false);
+      this.log(`${toTitleCase(this._type)} has been successfully updated.`);
+      await vizality.manager[toPlural(this._type)].remount(this.addonId, false);
     }
     return success;
   }
@@ -151,10 +150,10 @@ export default class Plugin extends Updatable {
    * @private
    */
   async _watchFiles () {
-    const _module = 'Watcher';
     const ignored = [];
     if (this.manifest?.hotReload?.ignore) {
       if (isArray(this.manifest.hotReload.ignore)) {
+        for (const ign of this.manifest.hotReload.ignore) {
           if (ign.startsWith('*')) {
             ignored.push(ign);
           } else {
@@ -178,47 +177,35 @@ export default class Plugin extends Updatable {
     this._watcher
       .on('add', path =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: `File "${path.replace(this.path + sep, '')}" has been added.`
         }))
       .on('change', path =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: `File "${path.replace(this.path + sep, '')}" has been changed.`
         }))
       .on('unlink', path =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: `File "${path.replace(this.path + sep, '')}" has been removed.`
         }))
       .on('addDir', path =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: `Directory "${path.replace(this.path + sep, '')}" has been added.`
         }))
       .on('unlinkDir', path =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: `Directory "${path.replace(this.path + sep, '')}" has been removed.`
         }))
       .on('error', error =>
         log({
-          module: _module,
-          submodule: this._module,
-          subsubmodule: this._submodule,
+          labels: [ 'Watcher', ...this._labels ],
           message: error
         }))
-      .on('all', debounce(async () => vizality.manager[toPlural(this._module).toLowerCase()].remount(this.addonId), 300));
+      .on('all', debounce(async () => vizality.manager[toPlural(this._type).toLowerCase()].remount(this.addonId), 300));
   }
 
   /**
@@ -232,7 +219,7 @@ export default class Plugin extends Updatable {
         const after = performance.now();
         const time = parseFloat((after - before).toFixed()).toString().replace(/^0+/, '') || 0;
 
-        if (!this.sections.settings && this._module !== 'Builtin') {
+        if (!this.sections.settings && this._type !== 'builtin') {
           let Render;
           if (this.manifest?.sections?.settings) {
             Render = await import(join(this.path, this.manifest.sections.settings));
@@ -244,18 +231,18 @@ export default class Plugin extends Updatable {
 
           if (Render) {
             vizality.api.settings.registerSettings({
-              type: toPlural(this._module).toLowerCase(),
+              type: toPlural(this._type),
               addonId: this.addonId,
               render: Render
             });
           }
         }
 
-          this.log(`${this._module} loaded. Initialization took ${time} ms.`);
         if (!suppress) {
+          this.log(`${toTitleCase(this._type)} loaded. Initialization took ${time} ms.`);
         }
       } else {
-        this.warn(`${this._module} has no "start" method!`);
+        this.warn(`${toTitleCase(this._type)} has no "start" method!`);
       }
     } catch (err) {
       this.error('An error occurred during initialization!', err);
@@ -278,7 +265,7 @@ export default class Plugin extends Updatable {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`${toSingular(this._module).toLowerCase()}-${this.addonId}-${id}`).remove();
+        document.getElementById(`${this._type}-${this.addonId}-${id}`).remove();
       }
 
       this.styles = {};
@@ -286,13 +273,17 @@ export default class Plugin extends Updatable {
         await this.stop();
       }
 
-      // Unregister settings
-      if (this.sections.settings && this._module !== 'Builtin') {
-        vizality.api.settings.unregisterSettings(this.addonId);
+      if (this._type !== 'builtin') {
+        // Unregister settings
+        if (this.sections.settings) {
+          vizality.api.settings.unregisterSettings(this.addonId);
+        }
+
+        unpatchAllByAddon(this.addonId);
       }
 
-        this.log(`${this._module} unloaded.`);
       if (!suppress) {
+        this.log(`${toTitleCase(this._type)} unloaded.`);
       }
     } catch (err) {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, err);

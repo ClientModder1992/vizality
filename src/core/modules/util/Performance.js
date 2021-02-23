@@ -11,11 +11,10 @@ import { log, warn, error } from './Logger';
  */
 
 /** @private */
-const _module = 'Util';
-const _submodule = 'Performance';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Util', 'Performance' ];
+const _log = (labels, ...message) => log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 /**
  * Runs a function or set over function a specified number of times and then reports

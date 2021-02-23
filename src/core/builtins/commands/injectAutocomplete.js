@@ -1,22 +1,21 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 import { typing, getModule, getModuleByDisplayName } from '@vizality/webpack';
 import { getOwnerInstance, findInReactTree } from '@vizality/util/react';
 import { AdvancedScrollerThin, LazyImage } from '@vizality/components';
+import { log, warn, error } from '@vizality/util/logger';
 import { joinClassNames } from '@vizality/util/dom';
 import { Vizality } from '@vizality/constants';
-import { error } from '@vizality/util/logger';
 import { patch } from '@vizality/patcher';
 import { Messages } from '@vizality/i18n';
 
 import CategoryTitle from './components/CategoryTitle';
 
-const _module = 'Builtin';
-const _submodule = 'Commands';
-const _subsubmodule = 'injectAutocomplete';
-
 /** @private */
-const _error = (...data) => error({ module: _module, submodule: _submodule, subsubmodule: _subsubmodule }, ...data);
+const _log = (...message) => log({ labels: [ 'Builtin', 'Commands', 'injectAutocomplete' ], message });
+const _warn = (...message) => warn({ labels: [ 'Builtin', 'Commands', 'injectAutocomplete' ], message });
+const _error = (...message) => error({ labels: [ 'Builtin', 'Commands', 'injectAutocomplete' ], message });
 
 export default function injectAutocomplete () {
   const ApplicationCommandDiscoveryApplicationIcon = getModule(m => m.default?.displayName === 'ApplicationCommandDiscoveryApplicationIcon');

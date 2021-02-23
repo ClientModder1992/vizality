@@ -12,11 +12,10 @@ import { toPlural } from './String';
  */
 
 /** @private */
-const _module = 'Util';
-const _submodule = 'Object';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Util', 'Object' ];
+const _log = (labels, ...message) => log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 // @todo Clean this up.
 export const _traverse = function*(obj, targetValue, exactMatch = false, type, currentPath = '') {

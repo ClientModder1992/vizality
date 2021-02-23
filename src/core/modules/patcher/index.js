@@ -10,11 +10,10 @@ import { getCaller } from '@vizality/util/file';
  */
 
 /** @private */
-const _module = 'Module';
-const _submodule = 'Patcher';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Patcher' ];
+const _log = (labels, ...message) => log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 let patches = [];
 
@@ -26,12 +25,12 @@ export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
       try {
         finalReturn = i.method.call(_this, originalArgs, finalReturn);
       } catch (err) {
-        return _error(`Failed to run patch "${i.id}"!`, err);
+        throw new Error(`Failed to run patch "${i.id}"!`, err);
       }
     });
     return finalReturn;
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('_runPatches'), err);
   }
 };
 
@@ -44,7 +43,10 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
     }
 
     if (!Array.isArray(args)) {
-      _error(`Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
+      _error(
+        _labels.concat('_runPrePatchesRecursive'),
+        `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`
+      );
       args = originalArgs;
     }
 
@@ -53,7 +55,7 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
     }
     return args;
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('_runPrePatchesRecursive'), err);
   }
 };
 
@@ -65,7 +67,7 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
     }
     return _runPrePatchesRecursive(_patches, originalArgs, _this);
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('_runPrePatches'), err);
   }
 };
 
@@ -106,7 +108,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
             return _runPatches(id, finalArgs, returned, this);
           }
         } catch (err) {
-          return _error(err);
+          return _error(_labels.concat('patch'), err);
         }
       };
       // Reassign displayName, defaultProps, etc., so it doesn't mess with other plugins
@@ -123,7 +125,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       pre
     });
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('patch'), err);
   }
 };
 
@@ -135,18 +137,7 @@ export const isPatched = patchId => {
   try {
     return patches.some(i => i.id === patchId);
   } catch (err) {
-    return _error(err);
-  }
-};
-
-/**
- * Gets all active patches.
- */
-export const getPatches = () => {
-  try {
-    return patches;
-  } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('isPatched'), err);
   }
 };
 
@@ -158,7 +149,7 @@ export const getPatchesByAddon = addonId => {
   try {
     return patches.filter(i => i.caller !== addonId);
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('getPatchesByAddon'), err);
   }
 };
 
@@ -170,7 +161,7 @@ export const unpatch = patchId => {
   try {
     patches = patches.filter(i => i.id !== patchId);
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('unpatch'), err);
   }
 };
 
@@ -181,7 +172,7 @@ export const unpatchAll = () => {
   try {
     patches = [];
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('unpatchAll'), err);
   }
 };
 
@@ -193,6 +184,6 @@ export const unpatchAllByAddon = addonId => {
   try {
     patches = patches.filter(i => i.caller !== addonId);
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('unpatchAllByAddon'), err);
   }
 };

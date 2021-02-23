@@ -12,14 +12,13 @@ export default class Theme extends Updatable {
     this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
-
-    this._module = 'Theme';
-    this._submodule = this.manifest.name;
+    this._type = 'theme';
+    this._labels = [ this._type, this.manifest?.name ];
   }
 
-  log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  log (...message) { log({ labels: this._labels, message }); }
+  warn (...message) { warn({ labels: this._labels, message }); }
+  error (...message) { error({ labels: this._labels, message }); }
 
   _load () {
     if (!this.applied) {

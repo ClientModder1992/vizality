@@ -10,11 +10,10 @@ import { assertArray } from './Array';
  */
 
 /** @private */
-const _module = 'Util';
-const _submodule = 'Number';
-const _log = (...message) => log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Util', 'Number' ];
+const _log = (labels, ...message) => log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 export const isNumber = input => {
   return void 0 || input;

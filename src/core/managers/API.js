@@ -8,8 +8,7 @@ export default class APIManager {
   constructor () {
     this.dir = Directories.API;
     this.apis = [];
-    this._module = 'Manager';
-    this._submodule = 'API';
+    this._labels = [ 'Manager', 'API' ];
   }
 
   async mount (api) {
@@ -62,7 +61,7 @@ export default class APIManager {
   }
 
   /** @private */
-  _log (...message) { log({ module: this._module, submodule: this._submodule, message }); }
-  _warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
-  _error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
+  _log (...message) { log({ labels: this._labels, message }); }
+  _warn (...message) { warn({ labels: this._labels, message }); }
+  _error (...message) { error({ labels: this._labels, message }); }
 }
