@@ -119,7 +119,7 @@ const _logHandler = options => {
         if ((index === 0 || index === 1) && modules[labels[0].toLowerCase()]) {
           color = modules[labels[0].toLowerCase()][index];
         } else if (index === 2 && modules[labels[0].toLowerCase()]) {
-          color = blendColors(modules[labels[0].toLowerCase()][0], processedLabels[index - 1]?.color, 0.5);
+          color = shadeColor(blendColors(modules[labels[0].toLowerCase()][0], processedLabels[index - 1]?.color, 0.5), -0.5);
         } else if (index > 2 && modules[labels[0].toLowerCase()]) {
           color = shadeColor(processedLabels[index - 1]?.color, 0.2);
         } else {
