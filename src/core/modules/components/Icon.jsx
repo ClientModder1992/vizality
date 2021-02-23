@@ -1,4 +1,3 @@
-/* eslint-disable multiline-comment-style */
 /* eslint-disable no-unused-vars */
 import parseHTML, { attributesToProps, domToReact } from 'html-react-parser';
 import { readdirSync, readFileSync } from 'fs';
@@ -51,13 +50,13 @@ export const Icons = {};
       if (vizality.settings.get('verifiedVizalityDeveloper')) {
         console.log('yes');
         /*
-        * @note The following is a sort of automated warning system to let us know when Discord
-        * has added an icon to their batch, basically, so we can be made aware of and add it.
-        */
+         * @note The following is a sort of automated warning system to let us know when Discord
+         * has added an icon to their batch, basically, so we can be made aware of and add it.
+         */
 
         /*
-        * These are Discord's icons that will crash the appl if attempted to render as a normal icon.
-        */
+         * These are Discord's icons that will crash the appl if attempted to render as a normal icon.
+         */
         const blacklist = [
           './addDefaultIconProps',
           './ApplicationPlaceholder',
@@ -82,8 +81,8 @@ export const Icons = {};
         ];
 
         /*
-        * These are Discord's inherent icons I have purposely altered or removed for whatever reason.
-        */
+         * These are Discord's inherent icons I have purposely altered or removed for whatever reason.
+         */
         const knownAlterations = [
           './ChannelTextNSFW',
           './CopyID',

@@ -133,10 +133,13 @@ export default class Keybinds extends API {
     return keyToCode(key);
   }
 
-  /** @private */
+  /**
+   * 
+   * @see {@link https://github.com/ianstormtaylor/is-hotkey}
+   * @private
+   */
   _shortcutToKeyCode (shortcut) {
     try {
-      /** @see {@link https://github.com/ianstormtaylor/is-hotkey} **/
       const keysHolder = [];
       const keys = shortcut.split('+');
       for (let key of keys) {
