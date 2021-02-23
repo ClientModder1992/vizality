@@ -3,6 +3,8 @@ import { webFrame } from 'electron';
 
 import { log, warn, error } from './Logger';
 
+const RealHTMLElement = webFrame.top.context.HTMLElement;
+
 /**
  * Contains methods relating to React and the virtual DOM.
  * @module util.react
@@ -18,7 +20,7 @@ const _error = (labels, ...message) => error({ labels: labels || _labels, messag
 
 /**
  * Finds a value, subobject, or array from a tree that matches a specific filter.
- * @copyright MIT License - (c) 2018 Zachary Rauen, modified by Kyza
+ * @copyright MIT License - (c) 2018 Zachary Rauen
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L140}
  * @param {object} tree Tree that should be walked
  * @param {Function} filter Filter to check against each object and subobject
@@ -34,19 +36,15 @@ export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) 
     if (!tree || typeof tree !== 'object') {
       return null;
     }
-
     if (typeof filter === 'string') {
       if (tree.hasOwnProperty(filter)) {
         return tree[filter];
       }
-
       return;
     } else if (filter(tree)) {
       return tree;
     }
-
     let returnValue = null;
-
     if (Array.isArray(tree)) {
       for (const value of tree) {
         returnValue = this.findInTree(value, filter, {
@@ -60,32 +58,27 @@ export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) 
       }
     } else {
       const walkables = !walkable ? Object.keys(tree) : walkable;
-
       for (const key of walkables) {
         if (!tree.hasOwnProperty(key) || ignore.includes(key)) {
           continue;
         }
-
         returnValue = this.findInTree(tree[key], filter, {
           walkable,
           ignore
         });
-
         if (returnValue) {
           return returnValue;
         }
       }
     }
-
     return returnValue;
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('findInTree'), err);
   }
 };
 
 /**
- * Finds a value, subobject, or array from a tree that matches a specific filter. Great
- * for patching render functions.
+ * Finds a value, subobject, or array from a tree that matches a specific filter. Great for patching render functions.
  * @copyright MIT License - (c) 2018 Zachary Rauen
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L128}
  * @param {object} tree React tree to look through. Can be a rendered object or an internal instance
@@ -93,43 +86,70 @@ export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) 
  * @returns {Node|undefined}
  */
 export const findInReactTree = (tree, searchFilter, whileLoop = false) => {
-  return this.findInTree(tree, searchFilter, {
-    walkable: [ 'props', 'children', 'child', 'sibling' ],
-    whileLoop
-  });
+  try {
+    return this.findInTree(tree, searchFilter, {
+      walkable: [ 'props', 'children', 'child', 'sibling' ],
+      whileLoop
+    });
+  } catch (err) {
+    return _error(_labels.concat('findInReactTree'), err);
+  }
 };
 
 let i = 0;
+/**
+ * 
+ * @param {*} node 
+ * @returns 
+ */
 export const getReactInstance = node => {
-  i++;
-  node?.setAttribute('vz-react-instance', i);
-  const elem = webFrame.top.context.document.querySelector(
-    `[vz-react-instance="${i}"]`
-  );
-  node?.removeAttribute('vz-react-instance');
-  return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
-};
-
-const RealHTMLElement = webFrame.top.context.HTMLElement;
-
-export const getOwnerInstance = node => {
-  for (let curr = this.getReactInstance(node); curr; curr = curr.return) {
-    const owner = curr.stateNode;
-    if (owner && !(owner instanceof RealHTMLElement)) {
-      return owner;
-    }
+  try {
+    i++;
+    node?.setAttribute('vz-react-instance', i);
+    const elem = webFrame.top.context.document.querySelector(`[vz-react-instance="${i}"]`);
+    node?.removeAttribute('vz-react-instance');
+    return elem[Object.keys(elem).find(key => key.startsWith('__reactInternalInstance') || key.startsWith('__reactFiber'))];
+  } catch (err) {
+    return _error(_labels.concat('getReactInstance'), err);
   }
-
-  return null;
 };
 
-export const forceUpdateElement = (query, all = false) => {
-  const elements = all
-    ? [ ...document.querySelectorAll(query) ]
-    : [ document.querySelector(query) ];
-  return elements.filter(Boolean).forEach((element) => {
-    if (this.getOwnerInstance(element)) {
-      this.getOwnerInstance(element).forceUpdate();
+/**
+ * 
+ * @param {*} node 
+ * @returns 
+ */
+export const getOwnerInstance = node => {
+  try {
+    for (let curr = this.getReactInstance(node); curr; curr = curr.return) {
+      const owner = curr.stateNode;
+      if (owner && !(owner instanceof RealHTMLElement)) {
+        return owner;
+      }
     }
-  });
+    return null;
+  } catch (err) {
+    return _error(_labels.concat('getOwnerInstance'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} query 
+ * @param {*} all 
+ * @returns 
+ */
+export const forceUpdateElement = (query, all = false) => {
+  try {
+    const elements = all
+      ? [ ...document.querySelectorAll(query) ]
+      : [ document.querySelector(query) ];
+    return elements.filter(Boolean).forEach((element) => {
+      if (this.getOwnerInstance(element)) {
+        this.getOwnerInstance(element).forceUpdate();
+      }
+    });
+  } catch (err) {
+    return _error(_labels.concat('forceUpdateElement'), err);
+  }
 };

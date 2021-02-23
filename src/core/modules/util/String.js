@@ -18,42 +18,97 @@ const _log = (labels, ...message) => log({ labels: labels || _labels, message })
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
-export const isSingular = string => {
-  return pluralize.isSingular(string);
-};
-
-export const isPlural = string => {
-  return pluralize.isPlural(string);
-};
-
-export const toSingular = string => {
-  return pluralize.singular(string);
-};
-
-export const toPlural = string => {
-  return pluralize(string);
-};
-
-export const chunk = (string, numberOfCharacters) => {
-  return _chunk.default(string, numberOfCharacters);
-};
-
-export const toHash = string => {
-  let h1 = 0xdeadbeef ^ 0;
-  let h2 = 0x41c6ce57 ^ 0;
-  for (let i = 0, ch; i < string.length; i++) {
-    ch = string.charCodeAt(i);
-    h1 = Math.imul(h1 ^ ch, 2654435761);
-    h2 = Math.imul(h2 ^ ch, 1597334677);
+/**
+ * 
+ * @param {*} text 
+ * @returns 
+ */
+export const isSingular = text => {
+  try {
+    return pluralize.isSingular(text);
+  } catch (err) {
+    return _error(_labels.concat('isSingular'), err);
   }
-  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
+/**
+ * 
+ * @param {*} text 
+ * @returns 
+ */
+export const isPlural = text => {
+  try {
+    return pluralize.isPlural(text);
+  } catch (err) {
+    return _error(_labels.concat('isPlural'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} text 
+ * @returns 
+ */
+export const toSingular = text => {
+  try {
+    return pluralize.singular(text);
+  } catch (err) {
+    return _error(_labels.concat('toSingular'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} text 
+ * @returns 
+ */
+export const toPlural = text => {
+  try {
+    return pluralize(text);
+  } catch (err) {
+    return _error(_labels.concat('toPlural'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} text 
+ * @param {*} numberOfCharacters 
+ * @returns 
+ */
+export const chunkText = (text, numberOfCharacters) => {
+  try {
+    return _chunk.default(text, numberOfCharacters);
+  } catch (err) {
+    return _error(_labels.concat('chunkText'), err);
+  }
+};
+
+/**
+ * 
+ * @param {*} text 
+ * @returns 
+ */
+export const toHash = text => {
+  try {
+    let h1 = 0xdeadbeef ^ 0;
+    let h2 = 0x41c6ce57 ^ 0;
+    for (let i = 0, ch; i < text.length; i++) {
+      ch = text.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString();
+  } catch (err) {
+    return _error(_labels.concat('toHash'), err);
+  }
 };
 
 /**
  * Removes diacritics from letters in a string.
- * @param {string} string String to check
+ * @param {string} text Text to check
  * @returns {string} Whether or not the string is a valid URL format
  * @example
  * // returns `false`
@@ -62,15 +117,19 @@ export const toHash = string => {
  * // returns `true`
  * isUrl('https://google.com')
  */
-export const stripDiacritics = string => {
-  const pattern = /[\u0300-\u036f]/g;
-  return string.normalize('NFD').replace(pattern, '').normalize('NFC');
+export const stripDiacritics = text => {
+  try {
+    const pattern = /[\u0300-\u036f]/g;
+    return text.normalize('NFD').replace(pattern, '').normalize('NFC');
+  } catch (err) {
+    return _error(_labels.concat('stripDiacritics'), err);
+  }
 };
 
 /**
  * Checks if a string is a valid URL format.
- * @param {string} string String to check
- * @returns {string} Whether or not the string is a valid URL format
+ * @param {string} text Text to check
+ * @returns {boolean} Whether or not the string is a valid URL format
  * @example
  * // returns `false`
  * isUrl('imaurl.com')
@@ -78,105 +137,141 @@ export const stripDiacritics = string => {
  * // returns `true`
  * isUrl('https://google.com')
  */
-export const isUrl = string => {
-  const pattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/gm;
-  return !!pattern.test(string);
+export const isUrl = text => {
+  try {
+    const pattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/gm;
+    return Boolean(pattern.test(text));
+  } catch (err) {
+    return _error(_labels.concat('isUrl'), err);
+  }
 };
 
 /**
- * Converts a string to camel case.
- * @param {*} string Value to convert
- * @returns {string} String in camel case
+ * Converts text to a camel case string.
+ * @param {*} text Text to convert
+ * @returns {string} Text in camel case
  * @example
  * // returns `iAmACamelCaseString`
  * toCamelCase('I am a CAMEL CASE string.')
  */
-export const toCamelCase = string => {
-  return camelCase(string);
+export const toCamelCase = text => {
+  try {
+    return camelCase(text);
+  } catch (err) {
+    return _error(_labels.concat('toCamelCase'), err);
+  }
 };
 
 /**
- * Converts a string to lowercase dot case.
- * @param {*} string String to convert
- * @returns {string} String in dot case
+ * Converts text to a lowercase dot case string.
+ * @param {*} text Text to convert
+ * @returns {string} Text in dot case
  * @example
  * // returns `i.am.a.dot.case.string`
  * toDotCase('I am a DOT CASE string.')
  */
-export const toDotCase = string => {
-  return lowerCase(string).replace(/ /g, '.');
+export const toDotCase = text => {
+  try {
+    return lowerCase(text).replace(/ /g, '.');
+  } catch (err) {
+    return _error(_labels.concat('toDotCase'), err);
+  }
 };
 
 /**
- * Converts a string to title case.
- * @param {*} string String to convert
- * @returns {string} String in title case
+ * Converts text to a title case string.
+ * @param {*} text Text to convert
+ * @returns {string} Text in title case
  * @example
  * // returns `I Am A Title Case String`
  * toTitleCase('I am a TITLE CASE string.')
  */
-export const toTitleCase = string => {
-  return startCase(camelCase(string));
+export const toTitleCase = text => {
+  try {
+    return startCase(camelCase(text));
+  } catch (err) {
+    return _error(_labels.concat('toTitleCase'), err);
+  }
 };
 
 /**
- * Converts a string to sentence case.
- * @param {*} string String to convert
- * @returns {string} String in sentence case
+ * Converts text to a sentence case string.
+ * @param {*} text Text to convert
+ * @returns {string} Text in sentence case
  * @example
  * // returns `I am a sentence case string`
  * toSentenceCase('i am a SENTENCE CASE string.')
  */
 export const toSentenceCase = string => {
-  return upperFirst(lowerCase(string));
+  try {
+    return upperFirst(lowerCase(string));
+  } catch (err) {
+    return _error(_labels.concat('toSentenceCase'), err);
+  }
 };
 
 /**
- * Converts a string to pascal case.
- * @param {*} string String to convert
- * @returns {string} String in pascal case
+ * Converts text to a pascal case string.
+ * @param {*} text Text to convert
+ * @returns {string} Text in pascal case
  * @example
  * // returns `IAmAPascalCaseString`
  * toPascalCase('I am a PASCAL CASE string.')
  */
-export const toPascalCase = string => {
-  return startCase(camelCase(string)).replace(/ /g, '');
+export const toPascalCase = text => {
+  try {
+    return startCase(camelCase(text)).replace(/ /g, '');
+  } catch (err) {
+    return _error(_labels.concat('toPascalCase'), err);
+  }
 };
 
 /**
- * Converts a string to lowercase path case.
- * @param {*} string String to convert
+ * Converts text to a lower path case string.
+ * @param {*} text Text to convert
  * @returns {string} String in path case
  * @example
  * // returns `i/am/a/path/case/string`
  * toPathCase('I am a PATH CASE string.')
  */
-export const toPathCase = string => {
-  return lowerCase(string).replace(/ /g, '/');
+export const toPathCase = text => {
+  try {
+    return lowerCase(text).replace(/ /g, '/');
+  } catch (err) {
+    return _error(_labels.concat('toPathCase'), err);
+  }
 };
 
 /**
- * Converts a string to lowercase snake case.
- * @param {*} string String to convert
+ * Converts text to a lower snake case string.
+ * @param {*} text Text to convert
  * @returns {string} String in snake case
  * @example
  * // returns `i_am_a_snake_case_string`
  * toSnakeCase('I am a SNAKE CASE string.')
  */
-export const toSnakeCase = string => {
-  return snakeCase(string);
+export const toSnakeCase = text => {
+  try {
+    return snakeCase(text);
+  } catch (err) {
+    return _error(_labels.concat('toSnakeCase'), err);
+  }
 };
 
 /**
- * Converts a string to kebab case.
- * @param {*} string String to convert
+ * Converts text to a kebab case string.
+ * @param {*} text Text to convert
  * @returns {string} String in kebab case
  * @example
  * // returns `i-am-a-kebab-case-string`
  * toKebabCase('i am a keBab CASE string.')
  */
-export const toKebabCase = string => {
-  return kebabCase(string);
+export const toKebabCase = text => {
+  try {
+    return kebabCase(text);
+  } catch (err) {
+    return _error(_labels.concat('toKebabCase'), err);
+  }
 };
 
 /**
@@ -185,7 +280,11 @@ export const toKebabCase = string => {
  * @returns {boolean} Whether or not the input is a string
  */
 export const isString = input => {
-  return _isString(input);
+  try {
+    return _isString(input);
+  } catch (err) {
+    return _error(_labels.concat('isString'), err);
+  }
 };
 
 /**
@@ -194,134 +293,141 @@ export const isString = input => {
  * @throws {TypeError} Throw an error if the input is not a string
  */
 export const assertString = input => {
-  if (!this.isString(input)) {
-    throw new TypeError(`Expected a string but received ${typeof input}.`);
+  try {
+    if (!this.isString(input)) {
+      throw new TypeError(`Expected a string but received ${typeof input}.`);
+    }
+  } catch (err) {
+    return _error(_labels.concat('assertString'), err);
   }
 };
 
+/**
+ * 
+ * @param {*} length 
+ * @returns 
+ */
 export const getRandomString = length => {
-  const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+  try {
+    const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
+  } catch (err) {
+    return _error(_labels.concat('getRandomString'), err);
   }
-  return result;
 };
 
 /**
  * OwO'ify text input.
- * Sourced from @see {@link https://gist.github.com/aqua-lzma/ced43969ef48056791179138589ebcac}
+ * @see {@link https://gist.github.com/aqua-lzma/ced43969ef48056791179138589ebcac}
  * @param {string} text Text to convert
  */
-export const owoify = text => {
-  const stutterChance = 0.1;
-  const prefixChance = 0.05;
-  const suffixChance = 0.15;
+export const owoifyText = text => {
+  try {
+    const stutterChance = 0.1;
+    const prefixChance = 0.05;
+    const suffixChance = 0.15;
+    const words = {
+      love: 'wuv',
+      mr: 'mistuh',
+      dog: 'doggo',
+      cat: 'kitteh',
+      hello: 'henwo',
+      hell: 'heck',
+      fuck: 'fwick',
+      fuk: 'fwick',
+      shit: 'shoot',
+      friend: 'fwend',
+      stop: 'stawp',
+      god: 'gosh',
+      dick: 'peepee',
+      penis: 'peepee'
+    };
+    const suffixes = [
+      '(ﾉ´ з `)ノ',
+      '( ´ ▽ ` ).｡ｏ♡',
+      '(´,,•ω•,,)♡',
+      '(*≧▽≦)',
+      'ɾ⚈▿⚈ɹ',
+      '( ﾟ∀ ﾟ)',
+      '( ・ ̫・)',
+      '( •́ .̫ •̀ )',
+      '(▰˘v˘▰)',
+      '(・ω・)',
+      '✾(〜 ☌ω☌)〜✾',
+      '(ᗒᗨᗕ)',
+      '(・`ω´・)',
+      ':3',
+      '>:3',
+      'hehe',
+      'xox',
+      '>3<',
+      'murr~',
+      'UwU',
+      '*gwomps*'
+    ];
+    const prefixes = [
+      'OwO',
+      'OwO whats this?',
+      '*unbuttons shirt*',
+      '*nuzzles*',
+      '*waises paw*',
+      '*notices bulge*',
+      '*blushes*',
+      '*giggles*',
+      'hehe'
+    ];
 
-  const words = {
-    love: 'wuv',
-    mr: 'mistuh',
-    dog: 'doggo',
-    cat: 'kitteh',
-    hello: 'henwo',
-    hell: 'heck',
-    fuck: 'fwick',
-    fuk: 'fwick',
-    shit: 'shoot',
-    friend: 'fwend',
-    stop: 'stawp',
-    god: 'gosh',
-    dick: 'peepee',
-    penis: 'peepee'
-  };
+    function replaceAll (text, map) {
+      const source = Object.keys(map).map(i => `\\b${i}`);
+      const re = new RegExp(`(?:${source.join(')|(?:')})`, 'gi');
+      return text.replace(re, match => {
+        let out = map[match.toLowerCase()];
+        // Not very tidy way to work out if the word is capitalised
+        if ((match.match(/[A-Z]/g) || []).length > match.length / 2) {
+          out = out.toUpperCase();
+        }
+        return out;
+      });
+    }
 
-  const suffixes = [
-    '(ﾉ´ з `)ノ',
-    '( ´ ▽ ` ).｡ｏ♡',
-    '(´,,•ω•,,)♡',
-    '(*≧▽≦)',
-    'ɾ⚈▿⚈ɹ',
-    '( ﾟ∀ ﾟ)',
-    '( ・ ̫・)',
-    '( •́ .̫ •̀ )',
-    '(▰˘v˘▰)',
-    '(・ω・)',
-    '✾(〜 ☌ω☌)〜✾',
-    '(ᗒᗨᗕ)',
-    '(・`ω´・)',
-    ':3',
-    '>:3',
-    'hehe',
-    'xox',
-    '>3<',
-    'murr~',
-    'UwU',
-    '*gwomps*'
-  ];
+    text = replaceAll(text, words);
 
-  const prefixes = [
-    'OwO',
-    'OwO whats this?',
-    '*unbuttons shirt*',
-    '*nuzzles*',
-    '*waises paw*',
-    '*notices bulge*',
-    '*blushes*',
-    '*giggles*',
-    'hehe'
-  ];
-
-  function replaceAll (text, map) {
-    const source = Object.keys(map).map(i => `\\b${i}`);
-    const re = new RegExp(`(?:${source.join(')|(?:')})`, 'gi');
-    return text.replace(re, match => {
-      let out = map[match.toLowerCase()];
-      // Not very tidy way to work out if the word is capitalised
-      if ((match.match(/[A-Z]/g) || []).length > match.length / 2) {
-        out = out.toUpperCase();
+    // OwO
+    text = text.replace(/[rl]/gi, match =>
+      match.charCodeAt(0) < 97 ? 'W' : 'w'
+    );
+    // Nya >;3
+    text = text.replace(/n[aeiou]/gi, match =>
+      `${match[0]}${match.charCodeAt(1) < 97 ? 'Y' : 'y'}${match[1]}`
+    );
+    // Words that end in y like yummy wummy
+    text = text.replace(/\b[A-V,X-Z,a-v,x-z]\w{3,}y\b/gi, match =>
+      `${match} ${match.charCodeAt(0) < 97 ? 'W' : 'w'}${match.slice(1)}`
+    );
+    // S-stutter
+    text = text.split(' ').map(word => {
+      if (word.length === 0 || word[0].match(/[a-zA-Z]/) === null) {
+        return word;
       }
-      return out;
-    });
-  }
-
-  text = replaceAll(text, words);
-
-  // OwO
-  text = text.replace(/[rl]/gi, match =>
-    match.charCodeAt(0) < 97 ? 'W' : 'w'
-  );
-
-  // Nya >;3
-  text = text.replace(/n[aeiou]/gi, match =>
-    `${match[0]}${match.charCodeAt(1) < 97 ? 'Y' : 'y'}${match[1]}`
-  );
-
-  // Words that end in y like cummy wummy
-  text = text.replace(/\b[A-V,X-Z,a-v,x-z]\w{3,}y\b/gi, match =>
-    `${match} ${match.charCodeAt(0) < 97 ? 'W' : 'w'}${match.slice(1)}`
-  );
-
-  // S-stutter
-  text = text.split(' ').map(word => {
-    if (word.length === 0 || word[0].match(/[a-zA-Z]/) === null) {
+      while (Math.random() < stutterChance) {
+        word = `${word[0]}-${word}`;
+      }
       return word;
+    }).join(' ');
+    // Prefixes
+    if (Math.random() < prefixChance) {
+      text = `${text} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
     }
-
-    while (Math.random() < stutterChance) {
-      word = `${word[0]}-${word}`;
+    // Suffixes
+    if (Math.random() < suffixChance) {
+      text = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${text}`;
     }
-
-    return word;
-  }).join(' ');
-  // Prefixes
-  if (Math.random() < prefixChance) {
-    text = `${text} ${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
+    return text;
+  } catch (err) {
+    return _error(_labels.concat('owoifyText'), err);
   }
-
-  // Suffixes
-  if (Math.random() < suffixChance) {
-    text = `${prefixes[Math.floor(Math.random() * prefixes.length)]} ${text}`;
-  }
-
-  return text;
 };

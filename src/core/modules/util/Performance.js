@@ -20,12 +20,12 @@ const _error = (labels, ...message) => error({ labels: labels || _labels, messag
  * Runs a function or set over function a specified number of times and then reports
  * the average and median run times of each function, and if multiple functions are specified
  * it shows a comparison table of each function's performance.
- * * Sourced from @see {@link https://github.com/Kyza/ittai/blob/75039f97dcfda4fc80690b00ff8a319fb0539fa0/core/utils/index.js#L176}
+ * @see {@link https://github.com/Kyza/ittai/blob/75039f97dcfda4fc80690b00ff8a319fb0539fa0/core/utils/index.js#L176}
  * @param {Function|Array<Function>} code Code to benchmark.
  * @param {number} [iterations=1000] Amount of times to run the benchmark
  * @param {boolean} [nonoseconds=false] Whether to show output in nanoseconds or milliseconds
  * @param {boolean} [showLog=true] Whether to show a console log of the benchmark
- * @returns {Promise} A promise that resolves when the benchmark is completed
+ * @returns {Promise} Promise that resolves when the benchmark is completed
  */
 export const benchmark = (code, iterations = 1000, nonoseconds = false, showLog = true) => {
   try {
@@ -62,8 +62,8 @@ export const benchmark = (code, iterations = 1000, nonoseconds = false, showLog 
         );
       }
 
-      Promise.all(promises).then((allReturns) => {
-        const finalTimes = allReturns.map((r) => r.time);
+      Promise.all(promises).then(allReturns => {
+        const finalTimes = allReturns.map(r => r.time);
         resolve({
           name,
           average: getAverage(finalTimes),
@@ -74,6 +74,6 @@ export const benchmark = (code, iterations = 1000, nonoseconds = false, showLog 
       });
     });
   } catch (err) {
-    return _error(err);
+    return _error(_labels.concat('benchmark'), err);
   }
 };

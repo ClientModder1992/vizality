@@ -15,52 +15,70 @@ const _log = (labels, ...message) => log({ labels: labels || _labels, message })
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
+/**
+ * 
+ * @param {*} ms 
+ * @returns 
+ */
 export const millisecondsToTime = ms => {
-  const time = getModule('momentProperties').duration(ms);
-  let output;
-  output = time.hours() ? time.hours() : null;
-
-  if (time.minutes()) {
-    output = output ? `${output}:${time.minutes()}` : time.minutes();
-    if (time.seconds()) {
-      output = output ? `${output}:${time.seconds()}` : time.seconds();
+  try {
+    const time = getModule('momentProperties').duration(ms);
+    let output;
+    output = time.hours() ? time.hours() : null;
+    if (time.minutes()) {
+      output = output ? `${output}:${time.minutes()}` : time.minutes();
+      if (time.seconds()) {
+        output = output ? `${output}:${time.seconds()}` : time.seconds();
+      } else {
+        output = output ? `${output}:00` : '00';
+      }
     } else {
       output = output ? `${output}:00` : '00';
     }
-  } else {
-    output = output ? `${output}:00` : '00';
+    return output;
+  } catch (err) {
+    return _error(_labels.concat('millisecondsToTime'), err);
   }
-
-  return output;
 };
 
-export const add = date => {
-  return void 0;
-};
-
-export const substract = date => {
-  return void 0;
-};
-
-export const calendar = date => {
-  return void 0;
-};
-
+/**
+ * 
+ * @param {*} input 
+ * @returns 
+ */
 export const isDate = input => {
-  return void 0;
+  try {
+
+  } catch (err) {
+    return _error(_labels.concat('isDate'), err);
+  }
 };
 
+/**
+ * 
+ * @param {*} input 
+ * @returns 
+ */
 export const assertDate = input => {
-  return void 0;
+  try {
+
+  } catch (err) {
+    return _error(_labels.concat('assertDate'), err);
+  }
 };
 
-export const formatDate = date => {
-  return void 0;
-};
-
+/**
+ * 
+ * @param {*} time 
+ * @returns 
+ */
 export const sleep = async time => {
-  return new Promise(resolve =>
-    setTimeout(resolve, time)
-  );
+  try {
+    return new Promise(resolve =>
+      setTimeout(resolve, time)
+    );
+  } catch (err) {
+    return _error(_labels.concat('sleep'), err);
+  }
 };
 

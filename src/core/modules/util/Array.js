@@ -22,7 +22,11 @@ const _error = (labels, ...message) => error({ labels: labels || _labels, messag
  * @returns {boolean} Whether or not the input is an array
  */
 export const isArray = input => {
-  return _isArray(input);
+  try {
+    return _isArray(input);
+  } catch (err) {
+    _error(_labels.concat('isArray'), err);
+  }
 };
 
 /**
@@ -32,8 +36,12 @@ export const isArray = input => {
  * @throws {TypeError} Throw an error if the input is not an array
  */
 export const assertArray = input => {
-  if (!this.isArray(input)) {
-    throw new TypeError(`Expected an array but received ${typeof input}.`);
+  try {
+    if (!this.isArray(input)) {
+      throw new TypeError(`Expected an array but received ${typeof input}.`);
+    }
+  } catch (err) {
+    _error(_labels.concat('assertArray'), err);
   }
 };
 
@@ -52,12 +60,11 @@ export const toSentence = (array, lastItemConnector = 'and') => {
       case 'or': type = 'disjunction'; break;
       default: throw new Error('Second argument must be a string value of "and" or "or".');
     }
-
     const locale = import('../i18n').chosenLocale;
     const formatter = new Intl.ListFormat(locale, { style: 'long', type });
     return formatter.format(array);
   } catch (err) {
-    return _error(err);
+    _error(_labels.concat('toSentence'), err);
   }
 };
 
@@ -67,19 +74,23 @@ export const toSentence = (array, lastItemConnector = 'and') => {
  * @returns {boolean} Whether or not the input is an empty array
  */
 export const isEmptyArray = input => {
-  return _isEmpty(input);
+  try {
+    return _isEmpty(input);
+  } catch (err) {
+    _error(_labels.concat('isEmptyArray'), err);
+  }
 };
 
 /**
  * Asserts that the input is an array. If it isn't, throw an error, otherwise do nothing.
  * @param {Array} array Array to process
- * @returns {*} Returns a random item from the array
+ * @returns {*} Random item from the array
  */
 export const getRandomItem = array => {
   try {
     return _sample(array);
   } catch (err) {
-    return _error(err);
+    _error(_labels.concat('getRandomItem'), err);
   }
 };
 

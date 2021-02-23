@@ -15,17 +15,27 @@ const _log = (labels, ...message) => log({ labels: labels || _labels, message })
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
+// @todo
 export const isNumber = input => {
-  return void 0 || input;
+  try {
+    return void 0 || input;
+  } catch (err) {
+    _error(_labels.concat('isNumber'), err);
+  }
 };
 
+// @todo
 export const assertNumber = input => {
-  return void 0 || input;
+  try {
+    return void 0 || input;
+  } catch (err) {
+    _error(_labels.concat('assertNumber'), err);
+  }
 };
 
 /**
  * Gets the average value from a set of numbers.
- * Sourced from @see {@link https://stackoverflow.com/a/45309555|StackOverflow}
+ * @see {@link https://stackoverflow.com/a/45309555|StackOverflow}
  * @param {Array<number>} numbers An array of numbers.
  * @returns {number} The average of the numbers in the array.
  */
@@ -34,13 +44,13 @@ export const getAverage = numbers => {
     assertArray(numbers);
     return numbers.reduce((all, one, _, src) => all += one / src.length, 0);
   } catch (err) {
-    return _error(err);
+    _error(_labels.concat('getAverage'), err);
   }
 };
 
 /**
  * Gets the median value from a set of numbers.
- * Sourced from @see {@link https://stackoverflow.com/a/45309555|StackOverflow}
+ * @see {@link https://stackoverflow.com/a/45309555|StackOverflow}
  * @param {Array<number>} numbers An array of numbers.
  * @returns {number} The median of the numbers in the array.
  */
@@ -52,6 +62,6 @@ export const getMedian = numbers => {
     if (numbers.length % 2) return numbers[half];
     return (numbers[half - 1] + numbers[half]) / 2.0;
   } catch (err) {
-    return _error(err);
+    _error(_labels.concat('getMedian'), err);
   }
 };

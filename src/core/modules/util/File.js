@@ -29,32 +29,39 @@ const _warn = (labels, ...message) => warn({ labels: labels || _labels, message 
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
 export const getCaller = () => {
-  const stackTrace = (new Error()).stack;
-  const plugin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
-  if (plugin) return plugin[1];
-  const builtin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
-  if (builtin) return `vz-${builtin[1]}`;
-  return 'vizality';
+  try {
+    const stackTrace = (new Error()).stack;
+    const plugin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
+    if (plugin) return plugin[1];
+    const builtin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
+    if (builtin) return `vz-${builtin[1]}`;
+    return 'vizality';
+  } catch (err) {
+    _error(_labels.concat('getCaller'), err);
+  }
 };
 
 export const getMimeType = async input => {
-  let type = null;
-  type = _getMimeType(input);
+  try {
+    let type = null;
+    type = _getMimeType(input);
 
-  if (!type) {
-    type = await fetch(input).then(res => res.blob().then(blob => blob.type));
-  }
-
-  if (!type) {
-    if (typeof input !== 'string') {
-      return type;
+    if (!type) {
+      type = await fetch(input).then(res => res.blob().then(blob => blob.type));
     }
 
-    const mimeType = input.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
-    if (mimeType && mimeType.length) [ , type ] = mimeType;
-  }
+    if (!type) {
+      if (typeof input !== 'string') {
+        return type;
+      }
+      const mimeType = input.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+      if (mimeType && mimeType.length) [ , type ] = mimeType;
+    }
 
-  return type;
+    return type;
+  } catch (err) {
+    _error(_labels.concat('getMimeType'), err);
+  }
 };
 
 export const removeDirRecursive = async directory => {
