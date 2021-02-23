@@ -15,7 +15,7 @@ const _log = (labels, ...message) => log({ labels: labels || _labels, message })
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
-let patches = [];
+export let patches = [];
 
 export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
   try {
@@ -72,8 +72,8 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
 };
 
 /**
- * Patches a function
- * @param {string} patchId ID of the patch, used for uninjecting
+ * Patches a function.
+ * @param {string} patchId Patch ID, used for manually unpatching
  * @param {object} moduleToPatch Module we should inject into
  * @param {string} func Name of the function we're aiming at
  * @param {Function} patch Function to patch
@@ -82,18 +82,18 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
 export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
   try {
     const caller = getCaller();
-    if (!moduleToPatch) {
-      throw new Error(`Patch ID "${patchId}" tried to patch an undefined module!`);
-    }
-
-    if (typeof moduleToPatch[func] !== 'function') {
-      throw new Error(`Patch ID "${patchId}" tried to patch a module that's not a function.`);
-    }
-
-    if (patches.find(i => i.id === patchId)) {
+    if (patches.find(patch => patch.id === patchId)) {
       throw new Error(`Patch ID "${patchId}" is already used!`);
     }
-
+    if (!moduleToPatch) {
+      throw new Error(`Patch ID "${patchId}" tried to patch a module, but it was undefined!`);
+    }
+    if (!moduleToPatch[func]) {
+      throw new Error(`Patch ID "${patchId}" tried to patch a method, but it was undefined!`);
+    }
+    if (typeof moduleToPatch[func] !== 'function') {
+      throw new Error(`Patch ID "${patchId}" tried to patch a method, but found ${typeof _oldMethod} instead of a function!`);
+    }
     if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
       // First patch
       const id = randomBytes(16).toString('hex');
@@ -116,7 +116,6 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       // Allow code search even after patching
       moduleToPatch[func].toString = (...args) => _oldMethod.toString(...args);
     }
-
     patches.push({
       caller,
       module: moduleToPatch.__vizalityPatchId[func],
