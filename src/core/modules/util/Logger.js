@@ -1,68 +1,84 @@
 /* eslint-disable no-unused-vars */
 import { getRandomColor, getContrastColor, blendColors, shadeColor } from './Color';
+import { isArray, isEmptyArray, assertArray } from './Array';
+import { isString, assertString } from './String';
 import { assertObject } from './Object';
-import { isArray } from './Array';
 
 /**
- * Contains methods that output stylized log messages to developer tools console.
+ * Contains methods that output stylized messages to developer tools console.
  * @module util.logger
  * @namespace util.logger
  * @memberof util
  */
 
 /** @private */
-const _module = 'Util';
-const _submodule = 'Logger';
-const _log = (...message) => this.log({ module: _module, submodule: _submodule, message });
-const _warn = (...message) => this.warn({ module: _module, submodule: _submodule, message });
-const _error = (...message) => this.error({ module: _module, submodule: _submodule, message });
+const _labels = [ 'Util', 'Logger' ];
+const _log = (labels, ...message) => this.log({ labels: labels || _labels, message });
+const _warn = (labels, ...message) => this.warn({ labels: labels || _labels, message });
+const _error = (labels, ...message) => this.error({ labels: labels || _labels, message });
 
+/**
+ * Processes which type of console method to use.
+ * @param {*} type Type of console method
+ * @returns {('log'|'warn'|'error')} Type of console method to use
+ * @private
+ */
 const _parseType = type => {
-  const types = [ 'log', 'warn', 'error' ];
-  return types.find(t => t === type) || 'log';
-};
-
-export const modules = {
-  api: { module: '#dc2167', submodule: '#242a85' },
-  core: { module: '#591870', submodule: '#ce03e5' },
-  http: { module: '#e63200', submodule: '#2e89c9' },
-  manager: { module: '#9ee945', submodule: '#782049' },
-  builtin: { module: '#267366', submodule: '#fff' },
-  plugin: { module: '#42ffa7', submodule: '#594bda' },
-  theme: { module: '#b68aff', submodule: '#f3523d' },
-  discord: { module: '#7289da', submodule: '#18191c' },
-  module: { module: '#ed7c6f', submodule: '#34426e' },
-  patch: { module: '#a70338', submodule: '#0195b5' },
-  watcher: { module: '#fcff8d', submodule: '#963b8a' },
-  component: { module: '#162a2e', submodule: '#e58ede' }
-  // #9a3c4e
+  return [ 'log', 'warn', 'error' ].find(t => t === type) || 'log';
 };
 
 /**
- * Logs strings using different console levels, includes a badge, module label,
- * submodule label, and message.
- * @param {string} module Name of the calling module
- * @param {string} submodule Name of the calling submodule
- * @param {string} submoduleLabelColor Name of the calling submodule
- * @param {*|Array<*>} message Messages to have logged
- * @param {string} type Type of log to use in console
+ * Sets the maximum amount of badges that can be used in a single console message.
  */
-const _logHandler = (properties) => {
-  try {
-    let { module, submodule, subsubmodule, moduleColor, submoduleColor, subsubmoduleColor, type, message } = properties;
+export const MAX_LABELS_COUNT = 10;
 
+/**
+ * Contains a list of modules and their color badge associations.
+ * @private
+ */
+const modules = {
+  api:            [ '#dc2167', '#242a85' ],
+  util:           [ '#4b2d73', '#c65d00' ],
+  core:           [ '#591870', '#ce03e5' ],
+  http:           [ '#e63200', '#2e89c9' ],
+  manager:        [ '#9ee945', '#782049' ],
+  builtin:        [ '#267366', '#ffffff' ],
+  plugin:         [ '#42ffa7', '#594bda' ],
+  theme:          [ '#b68aff', '#f3523d' ],
+  nativediscord:  [ '#7289da', '#18191c' ],
+  module:         [ '#ed7c6f', '#34426e' ],
+  patch:          [ '#a70338', '#0195b5' ],
+  watcher:        [ '#fcff8d', '#963b8a' ],
+  component:      [ '#162a2e', '#e58ede' ]
+};
+
+/**
+ * Outputs messages to console of varying types. Outputted messages contain a badge, label(s), and a message.
+ * @param {object} options Options for the console message
+ * @param {string} [options.type='log'] Type of console method to use
+ * @param {string} [options.badge='vz-asset://image/logo.png'] Badge image URL
+ * @param {Array<string|object>} [options.labels=[]] Label texts, or objects with text and color properties for each label. Limit of 10.
+ * @param {string} [options.labels.text] Text for the main module label
+ * @param {string} [options.labels.color] Text for the main module label
+ * @param {*|Array<*>} [options.message] Contents of the console message
+ * @private
+ */
+const _logHandler = options => {
+  try {
+    assertObject(options);
+    let { type, badge, labels, message } = options;
+
+    labels = labels || [];
     type = _parseType(type);
+    badge = badge || 'vz-asset://image/logo.png';
+
+    // Throw an error if any of the arg types aren't as expected
+    assertArray(labels);
+    assertString(type);
+    assertString(badge);
 
     // If message isn't an array, turn it into one so we can process them all the same
     if (!isArray(message)) message = [ message ];
-
-    module = module?.toLowerCase();
-    submodule = submodule?.toLowerCase();
-    subsubmodule = subsubmodule?.toLowerCase();
-
-    moduleColor = moduleColor || this.modules[module]?.module || getRandomColor();
-    submoduleColor = submoduleColor || this.modules[module]?.submodule || getRandomColor();
-    subsubmoduleColor = subsubmoduleColor || this.modules[module]?.subsubmodule || blendColors(moduleColor, submoduleColor, 0.75);
 
     const baseBadgeStyles = `
       display: inline-block;
@@ -78,7 +94,7 @@ const _logHandler = (properties) => {
 
     const badgeStyles = `
       display: inline-block;
-      background-image: url('vz-asset://image/logo.png');
+      background-image: url('${badge}');
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
@@ -87,99 +103,139 @@ const _logHandler = (properties) => {
       padding: 2px 14px 5px 0;
       margin: 0 4px 1px 0;`;
 
-    const moduleStyles =
-      `${baseBadgeStyles}
-      color: ${getContrastColor(moduleColor)};
-      background: ${moduleColor};`;
-
-    const submoduleStyles =
-      `${baseBadgeStyles};
-      color: ${getContrastColor(submoduleColor)};
-      background: ${submoduleColor};`;
-
-    const subsubmoduleStyles =
-      `${baseBadgeStyles};
-      color: ${getContrastColor(subsubmoduleColor)};
-      background: ${subsubmoduleColor};`;
-
-    if (subsubmodule) {
+    // If there aren't any labels, just send the badge and message
+    if (!labels || isEmptyArray(labels)) {
       return console[type](
-        `%c %c${module}%c${submodule}%c${subsubmodule}`,
+        `%c `,
         badgeStyles,
-        moduleStyles,
-        submoduleStyles,
-        subsubmoduleStyles,
         ...message
       );
     }
 
+    const processedLabels = [];
+    for (const [ index, label ] of labels.entries()) {
+      if (isString(label)) {
+        let color;
+        if ((index === 0 || index === 1) && modules[labels[0].toLowerCase()]) {
+          color = modules[labels[0].toLowerCase()][index];
+        } else if (index === 2 && modules[labels[0].toLowerCase()]) {
+          color = blendColors(modules[labels[0].toLowerCase()][0], processedLabels[index - 1]?.color, 0.5);
+        } else if (index > 2 && modules[labels[0].toLowerCase()]) {
+          color = shadeColor(processedLabels[index - 1]?.color, 0.2);
+        } else {
+          color = getRandomColor();
+        }
+        processedLabels.push({
+          text: label,
+          color
+        });
+      } else {
+        processedLabels.push({
+          text: label.text,
+          color: label.color || getRandomColor()
+        });
+      }
+    }
+
+    const texts = [];
+    const styles = [];
+    for (const label of processedLabels.slice(0, this.MAX_LABELS_COUNT)) {
+      if (!label?.text || !label?.color) {
+        throw new Error('Each label must contain a valid text and color property.');
+      }
+      texts.push(`%c${label.text}`);
+      styles.push(
+        `${baseBadgeStyles};
+        color: ${getContrastColor(label.color)};
+        background: ${label.color};`
+      );
+    }
+
     return console[type](
-      `%c %c${module}%c${submodule}`,
+      `%c ${texts.join('')}`,
       badgeStyles,
-      moduleStyles,
-      submoduleStyles,
+      ...styles,
       ...message
     );
   } catch (err) {
-    _error(err);
+    _error(_labels.concat('_logHandler'), err);
   }
 };
 
 /**
  * Logs an informational message to dev tools console.
- * @param {object} properties Properties for the log
- * @param {string} properties.module Text for the main module label
- * @param {string} properties.submodule Text for the submodule label
- * @param {string} properties.subsubmodule Text for the subsubmodule label
- * @param {string} [properties.submoduleLabelColor] The name of the calling submodule
- * @param {*|Array<*>} [properties.message] The messages to have logged
- * @returns {void}
+ * @param {object} options Options for the console message
+ * @param {string} [options.badge] Badge image URL
+ * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
+ * @param {string} [options.labels.text] Text for the main module label
+ * @param {string} [options.labels.color] Text for the main module label
+ * @param {*|Array<*>} [options.message] Contents of the console message
  */
-export const log = properties => {
-  assertObject(properties);
-  properties.type = 'log';
-  return _logHandler(properties);
+export const log = options => {
+  try {
+    assertObject(options);
+    options.type = 'log';
+    return _logHandler(options);
+  } catch (err) {
+    return _error(_labels.concat('log'), err);
+  }
 };
 
 /**
  * Logs a warning message to dev tools console.
- * @param {string} module The name of the calling module
- * @param {string} submodule The name of the calling submodule
- * @param {string} submoduleLabelColor The name of the calling submodule
- * @param {*|Array<*>} message The messages to have logged
- * @returns {void}
+ * @param {object} options Options for the console message
+ * @param {string} [options.badge] Badge image URL
+ * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
+ * @param {string} [options.labels.text] Text for the main module label
+ * @param {string} [options.labels.color] Text for the main module label
+ * @param {*|Array<*>} [options.message] Contents of the console message
  */
-export const warn = properties => {
-  assertObject(properties);
-  properties.type = 'warn';
-  return _logHandler(properties);
+export const warn = options => {
+  try {
+    assertObject(options);
+    options.type = 'warn';
+    return _logHandler(options);
+  } catch (err) {
+    return _error(_labels.concat('warn'), err);
+  }
 };
 
 /**
  * Logs an error message to dev tools console.
- * @param {string} module The name of the calling module
- * @param {string} submodule The name of the calling submodule
- * @param {string} submoduleLabelColor The name of the calling submodule
- * @param {*|Array<*>} message The messages to have logged
- * @returns {void}
+ * @param {object} options Options for the console message
+ * @param {string} [options.badge] Badge image URL
+ * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
+ * @param {string} [options.labels.text] Text for the main module label
+ * @param {string} [options.labels.color] Text for the main module label
+ * @param {*|Array<*>} [options.message] Contents of the console message
  */
-export const error = properties => {
-  assertObject(properties);
-  properties.type = 'error';
-  return _logHandler(properties);
+export const error = options => {
+  try {
+    assertObject(options);
+    options.type = 'error';
+    return _logHandler(options);
+  } catch (err) {
+    return _error(_labels.concat('error'), err);
+  }
 };
 
 /**
- * Logs a warning message to let the user know something is deprecated.
- * @param {string} module The name of the calling module
- * @param {string} submodule The name of the calling submodule
- * @param {string} submoduleLabelColor The name of the calling submodule
- * @param {*|Array<*>} message The messages to have logged
- * @returns {void}
+ * Logs a deprecation (warning) message to dev tools console.
+ * @param {object} options Options for the console message
+ * @param {string} [options.badge] Badge image URL
+ * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
+ * @param {string} [options.labels.text] Text for the main module label
+ * @param {string} [options.labels.color] Text for the main module label
+ * @param {*|Array<*>} [options.message] Contents of the console message
  */
-export const deprecate = properties => {
-  assertObject(properties);
-  properties.type = 'warn';
-  properties.message = `Deprecation Notice: ${properties.message}`;
-  return _logHandler(properties);
+export const deprecate = options => {
+  try {
+    assertObject(options);
+    const { message } = options;
+    options.type = 'warn';
+    options.message = `Deprecation Notice: ${message}`;
+    return _logHandler(options);
+  } catch (err) {
+    return _error(_labels.concat('deprecate'), err);
+  }
 };
