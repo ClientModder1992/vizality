@@ -196,13 +196,13 @@
  * 000000111011000111100001101001000101000000  00001  00000  000000000000
  * number of ms since Discord epoch            worker pid    increment
  * ```
- * Sourced from @see {@link https://discord.js.org|discord.js}
+ * @see {@link https://discord.js.org|discord.js}
  * @typedef {string} snowflake
  */
 
 /**
  * A deconstructed snowflake.
- * Sourced from @see {@link https://discord.js.org|discord.js}
+ * @see {@link https://discord.js.org|discord.js}
  * @typedef {Object} DeconstructedSnowflake
  * @property {number} timestamp Timestamp the snowflake was created
  * @property {Date} date Date the snowflake was created

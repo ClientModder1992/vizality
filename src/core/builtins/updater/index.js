@@ -185,7 +185,7 @@ export default class Updater extends Builtin {
       if (!document.querySelector(`#vizality-updater, [vz-builtin='updater']`)) {
         vizality.api.notices.sendToast('vz-updater-update-failed', {
           header: Messages.VIZALITY_UPDATES_TOAST_FAILED,
-          type: 'error',
+          icon: 'CloseCircle',
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_FORCE,
             color: 'red',

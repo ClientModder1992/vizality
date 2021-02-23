@@ -216,7 +216,7 @@ export default class Vizality extends Updatable {
           this.api.notices.sendToast('vz-updater-update-complete', {
             header: 'Update complete!',
             content: `Please click 'Reload' to complete the final stages of this Vizality update.`,
-            type: 'success',
+            icon: 'CloudDone',
             buttons: [
               {
                 text: 'Reload',

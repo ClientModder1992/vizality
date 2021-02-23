@@ -14,13 +14,13 @@ export default class API extends Events {
   warn (...message) { warn({ module: this._module, submodule: this._submodule, message }); }
   error (...message) { error({ module: this._module, submodule: this._submodule, message }); }
 
-  async _load (showLogs = true) {
+  async _load (suppress = false) {
     try {
       if (typeof this.start === 'function') {
         await this.start();
       }
 
-      if (showLogs) {
+      if (!suppress) {
         this.log('API loaded.');
       }
     } catch (err) {
@@ -30,13 +30,13 @@ export default class API extends Events {
     this._ready = true;
   }
 
-  async _unload (showLogs = true) {
+  async _unload (suppress = false) {
     try {
       if (typeof this.stop === 'function') {
         await this.stop();
       }
 
-      if (showLogs) {
+      if (!suppress) {
         this.log(this._module, this._submodule, null, 'API unloaded.');
       }
     } catch (err) {

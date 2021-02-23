@@ -64,17 +64,14 @@ export default class Plugin extends Updatable {
 
     const compile = async () => {
       let compiled;
-      if (suppress) {
-        try {
-          compiled = await compiler.compile();
-        } catch (err) {
-          // Fail silently
-        } finally {
-          style.innerHTML = compiled || '';
-        }
-      } else {
+      try {
         compiled = await compiler.compile();
-        style.innerHTML = compiled;
+      } catch (err) {
+        if (!suppress) {
+          this.error(err);
+        }
+      } finally {
+        style.innerHTML = compiled || '';
       }
     };
 
@@ -157,8 +154,7 @@ export default class Plugin extends Updatable {
     const _module = 'Watcher';
     const ignored = [];
     if (this.manifest?.hotReload?.ignore) {
-      if (isArray(this.manifest.hotReload?.ignore)) {
-        for (const ign of this.manifest.hotReload?.ignore) {
+      if (isArray(this.manifest.hotReload.ignore)) {
           if (ign.startsWith('*')) {
             ignored.push(ign);
           } else {
@@ -228,7 +224,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _load (showLogs = true) {
+  async _load (suppress = false) {
     try {
       if (typeof this.start === 'function') {
         const before = performance.now();
@@ -255,8 +251,8 @@ export default class Plugin extends Updatable {
           }
         }
 
-        if (showLogs) {
           this.log(`${this._module} loaded. Initialization took ${time} ms.`);
+        if (!suppress) {
         }
       } else {
         this.warn(`${this._module} has no "start" method!`);
@@ -277,7 +273,7 @@ export default class Plugin extends Updatable {
   /**
    * @private
    */
-  async _unload (showLogs = true) {
+  async _unload (suppress = false) {
     try {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
@@ -295,8 +291,8 @@ export default class Plugin extends Updatable {
         vizality.api.settings.unregisterSettings(this.addonId);
       }
 
-      if (showLogs) {
         this.log(`${this._module} unloaded.`);
+      if (!suppress) {
       }
     } catch (err) {
       this.error(`An error occurred during shutting down! It's heavily recommended reloading Discord to ensure there are no conflicts.`, err);

@@ -32,8 +32,8 @@ const snowflake = {
    * Generates a snowflake from a timestamp.
    * <info>This hardcodes the worker ID as 1 and the process ID as 0.</info>
    * Alternatively, you can also perform this action directly using internals (less performant):
-   * vizality.modules.webpack.getModule('DISCORD_EPOCH').default.fromTimestamp(new Date())
-   * Sourced from @see {@link https://discord.js.org|discord.js}
+   * $vz.webpack.getModule('DISCORD_EPOCH').default.fromTimestamp(new Date())
+   * @see {@link https://discord.js.org|discord.js}
    * @param {number|Date} [timestamp=Date.now()] Timestamp or date of the snowflake to generate
    * @returns {snowflake} Generated snowflake
    */
@@ -63,7 +63,7 @@ const snowflake = {
 
   /**
    * Deconstructs a snowflake.
-   * Sourced from @see {@link https://discord.js.org|discord.js}
+   * @see {@link https://discord.js.org|discord.js}
    * @param {snowflake} snow Snowflake to deconstruct
    * @returns {DeconstructedSnowflake} Deconstructed snowflake
    */

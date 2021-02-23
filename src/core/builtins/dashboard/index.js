@@ -10,7 +10,7 @@ import Sidebar from './components/parts/sidebar/Sidebar';
 import Routes from './routes/Routes';
 
 export default class Dashboard extends Builtin {
-  start () {
+  async start () {
     this.injectStyles('styles/main.scss');
     this._injectPrivateTab();
     // this.injectGuildHomeButton();
@@ -22,13 +22,13 @@ export default class Dashboard extends Builtin {
       sidebar: Sidebar
     });
 
-    vizality.api.keybinds.registerKeybind({
+    await vizality.api.keybinds.registerKeybind({
       keybindId: 'leaveDashboard',
       executor: () => vizality.api.routes.restorePreviousRoute(),
       shortcut: 'esc'
     });
 
-    vizality.api.keybinds.registerKeybind({
+    await vizality.api.keybinds.registerKeybind({
       keybindId: 'toggleDashboard',
       executor: () => {
         try {
@@ -45,10 +45,10 @@ export default class Dashboard extends Builtin {
     });
   }
 
-  stop () {
+  async stop () {
     vizality.api.routes.unregisterRoute('home');
-    vizality.api.keybinds.unregisterKeybind('leaveDashboard');
-    vizality.api.keybinds.unregisterKeybind('toggleDashboard');
+    await vizality.api.keybinds.unregisterKeybind('leaveDashboard');
+    await vizality.api.keybinds.unregisterKeybind('toggleDashboard');
     unpatch('vz-dashboard-private-channels-list-item');
   }
 
