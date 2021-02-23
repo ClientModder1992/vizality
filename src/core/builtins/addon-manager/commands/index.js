@@ -1,3 +1,5 @@
+import { toTitleCase } from '@vizality/util/string';
+
 import settings from './settings';
 import manage from './manage';
 import enable from './enable';
@@ -24,6 +26,8 @@ export function registerCommands (type) {
   vizality.api.commands.registerCommand({
     command: type,
     description: `Commands related to ${type}s.`,
+    // Not using Theme.svg icon here because it gets cut off
+    icon: type === 'plugin' ? 'vz-asset://svg/Plugin.svg' : 'vz-asset://svg/Palette.svg',
     options: [
       { name: 'settings', required: true },
       { name: 'manage', required: true },
