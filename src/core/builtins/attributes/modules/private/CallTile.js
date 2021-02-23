@@ -4,7 +4,9 @@ import { getModule } from '@vizality/webpack';
 export default () => {
   const CallTile = getModule(m => m.default?.displayName === 'CallTile');
 
-  patch('vz-attributes-private-call', CallTile, 'default', ([ props ], res) => {
+  if (!CallTile) return;
+
+  patch('vz-attributes-private-call', CallTile.default, 'type', ([ props ], res) => {
     const { participant } = props;
 
     res.props['vz-self-mute'] = Boolean(participant?.voiceState?.selfMute) && '';

@@ -84,6 +84,10 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
       throw new Error(`Patch ID "${patchId}" tried to patch an undefined module!`);
     }
 
+    if (typeof moduleToPatch[func] !== 'function') {
+      throw new Error(`Patch ID "${patchId}" tried to patch a module that's not a function.`);
+    }
+
     if (patches.find(i => i.id === patchId)) {
       throw new Error(`Patch ID "${patchId}" is already used!`);
     }
