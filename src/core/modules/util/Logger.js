@@ -46,10 +46,13 @@ const modules = {
   plugin:         [ '#42ffa7', '#594bda' ],
   theme:          [ '#b68aff', '#f3523d' ],
   nativediscord:  [ '#7289da', '#18191c' ],
-  module:         [ '#ed7c6f', '#34426e' ],
-  patch:          [ '#a70338', '#0195b5' ],
+  hooks:          [ '#ed7c6f', '#34426e' ],
+  i18n:           [ '#a70338', '#0195b5' ],
   watcher:        [ '#fcff8d', '#963b8a' ],
-  component:      [ '#162a2e', '#e58ede' ]
+  component:      [ '#162a2e', '#e58ede' ],
+  discord:        [ '#b68aff', '#f3523d' ],
+  constants:      [ '#b68aff', '#f3523d' ],
+  classes:        [ '#b68aff', '#f3523d' ]
 };
 
 /**

@@ -164,8 +164,8 @@ export default class Vizality extends Updatable {
     const { setLogFn } = getModule('setLogFn');
     if (!this.settings.get('showDiscordConsoleLogs', false)) {
       /*
-       * Removes Discord's logs entirely... except the logs that don't use the function
-       * i.e. normal console.logs.
+       * Removes Discord's logs entirely... except the logs that don't use the setLogFn 
+       *  function (i.e. normal console.logs)
        */
       setLogFn(() => void 0);
     } else {

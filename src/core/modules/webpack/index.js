@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
+/**
+ *
+ * @module Webpack
+ */
+
 import { log, warn, error } from '../util/Logger';
 import moduleFilters from './modules.json';
 import { sleep } from '../util/Time';
-
-/**
- * @module webpack
- * @namespace webpack
- */
 
 /** @private */
 const _module = 'Module';
@@ -23,18 +23,18 @@ const _error = (...message) => error({ labels: [ _module, _submodule ], message 
  * @returns {Promise<object>|object} The found module. A promise will always be returned, unless retry is false.
  * @private
  */
-export const _getModule = (filter, retry = false, forever = false) => {
+const _getModule = (filter, retry = false, forever = false) => {
   if (Array.isArray(filter)) {
     const keys = filter;
     filter = m => keys.every(key => m.hasOwnProperty(key) || (m.__proto__ && m.__proto__.hasOwnProperty(key)));
   }
 
-  if (!retry) return this._getModules(filter);
+  if (!retry) return _getModules(filter);
 
   return new Promise(async res => {
     let mdl;
     for (let i = 0; i < (forever ? 666 : 21); i++) {
-      mdl = this._getModules(filter);
+      mdl = _getModules(filter);
       if (mdl) return res(mdl);
       await sleep(100);
     }
@@ -42,7 +42,14 @@ export const _getModule = (filter, retry = false, forever = false) => {
   });
 };
 
-export const _getModules = (filter, all = false) => {
+/**
+ *
+ * @param {*} filter
+ * @param {*} all
+ * @returns
+ * @private
+ */
+const _getModules = (filter, all = false) => {
   const moduleInstances = Object.values(this.instance.cache).filter(m => m.exports);
 
   if (all) {
@@ -68,11 +75,7 @@ export const _getModules = (filter, all = false) => {
  */
 export const _initializeModules = async () => {
   // Wait until webpack is ready
-  while (!window.webpackJsonp || window.webpackJsonp.flat(10).length < 5000) {
-    await sleep(200);
-  }
-
-  // Extract values from webpack
+  while (!window.webpackJsonp || window.webpackJsonp.flat(10).length < 5000) await sleep(200);
   const instance = window.webpackJsonp.push([
     [],
     {
@@ -86,10 +89,9 @@ export const _initializeModules = async () => {
 
   delete instance.cache._vizality;
   this.instance = instance;
-
   // Load modules pre-fetched
   for (const mdl in moduleFilters) {
-    this[mdl] = await this._getModule(moduleFilters[mdl], true);
+    this[mdl] = await _getModule(moduleFilters[mdl], true);
   }
 };
 
@@ -176,7 +178,7 @@ export const getModule = (...filter) => {
     [ filter ] = filter;
   }
 
-  return this._getModule(filter, retry, forever);
+  return _getModule(filter, retry, forever);
 };
 
 /**
@@ -187,7 +189,7 @@ export const getModule = (...filter) => {
  * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
  */
 export const getModuleByDisplayName = (displayName, retry = false, forever = false) => {
-  return this._getModule(m => m?.displayName && m?.displayName?.toLowerCase() === displayName?.toLowerCase(), retry, forever);
+  return _getModule(m => m?.displayName && m?.displayName?.toLowerCase() === displayName?.toLowerCase(), retry, forever);
 };
 
 /**
@@ -198,7 +200,7 @@ export const getModuleByDisplayName = (displayName, retry = false, forever = fal
  * @returns {Promise<object>|object} The component. A promise will always be returned, unless retry is false.
  */
 export const getModuleById = (id, retry = false, forever = false) => {
-  return this._getModule(m => m._dispatchToken && m._dispatchToken === `ID_${id}`, retry, forever);
+  return _getModule(m => m?._dispatchToken === `ID_${id}`, retry, forever);
 };
 
 /*
@@ -214,7 +216,7 @@ export const getModuleById = (id, retry = false, forever = false) => {
  * @returns {WebpackModule|Promise<WebpackModule>} The found module. A promise will only be returned if `retry` is true.
  */
 export const getModuleByPrototypes = (filter, retry = false, forever = false) => {
-  return this._getModule(m => m.prototype && filter.every(prop => m.prototype[prop]), retry, forever);
+  return _getModule(m => m.prototype && filter.every(prop => m.prototype[prop]), retry, forever);
 };
 
 /**
@@ -227,7 +229,7 @@ export const getModules = (filter) => {
     const keys = filter;
     filter = m => keys.every(key => m.hasOwnProperty(key) || (m.__proto__ && m.__proto__.hasOwnProperty(key)));
   }
-  return this._getModules(filter, true);
+  return _getModules(filter, true);
 };
 
 export const getModulesByKeyword = (keyword, exact = false) => {
