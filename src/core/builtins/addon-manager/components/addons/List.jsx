@@ -2,16 +2,16 @@ import React, { memo, useState, useReducer, useEffect } from 'react';
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, extname } from 'path';
 
+import { Spinner, DeferredRender } from '@vizality/components';
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { joinClassNames } from '@vizality/util/dom';
-import { Spinner } from '@vizality/components';
 import { getModule } from '@vizality/webpack';
 import { Messages } from '@vizality/i18n';
 
 import StickyBar from './parts/StickyBar';
 import Addon from '../addon/Addon';
 
-export default memo(({ type, tab, search, displayType, limit, className }) => {
+export default ({ type, tab, search, displayType, limit, className }) => {
   const { getSetting, updateSetting } = vizality.api.settings._fluxProps('addon-manager');
 
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
@@ -207,8 +207,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
         className={joinClassNames('vz-addons-list', className, colorStandard)}
         vz-display={display}
         vz-previews={Boolean(showPreviewImages) && ''}
-        vz-plugins={Boolean(type === 'plugin') && ''}
-        vz-themes={Boolean(type === 'theme') && ''}
+        vz-type={type}
       >
         <StickyBar
           type={type}
@@ -226,11 +225,20 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
           showPreviewImages={showPreviewImages}
           handleShowPreviewImages={_handleShowPreviewImages}
         />
-        <div className='vz-addons-list-inner'>
-          {renderHeader()}
-          {renderBody()}
-        </div>
+        <DeferredRender
+          idleTimeout={1000}
+          fallback={
+            <div className='vz-addons-list-inner' vz-loading=''>
+              <Spinner className='vz-addons-list-spinner' />
+            </div>
+          }
+        >
+          <div className='vz-addons-list-inner'>
+            {renderHeader()}
+            {renderBody()}
+          </div>
+        </DeferredRender>
       </div>
     </>
   );
-});
+};
