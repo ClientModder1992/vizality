@@ -87,27 +87,27 @@
     border-radius: 8px;
     position: relative;
     overflow: hidden;
-    &::before {
-      @include vz.size(300%);
-      content: '';
-      display: block;
-      position: absolute;
-      top: -100%;
-      left: -100%;
-      transform: rotate(-4deg);
-      z-index: 0;
-      opacity: .5;
-    }
-    &[vz-type='plugin'] {
-      &::before {
-        @include vz.mask(vz.icon('plugin'), var(--deprecated-card-bg), 70px, repeat center);
-      }
-    }
-    &[vz-type='theme'] {
-      &::before {
-        @include vz.mask(vz.icon('theme'), var(--deprecated-card-bg), 70px, repeat center);
-      }
-    }
+    // &::before {
+    //   @include vz.size(300%);
+    //   content: '';
+    //   display: block;
+    //   position: absolute;
+    //   top: -100%;
+    //   left: -100%;
+    //   transform: rotate(-4deg);
+    //   z-index: 0;
+    //   opacity: .5;
+    // }
+    // &[vz-type='plugin'] {
+    //   &::before {
+    //     @include vz.mask(vz.icon('plugin'), var(--deprecated-card-bg), 70px, repeat center);
+    //   }
+    // }
+    // &[vz-type='theme'] {
+    //   &::before {
+    //     @include vz.mask(vz.icon('theme'), var(--deprecated-card-bg), 70px, repeat center);
+    //   }
+    // }
     & + & {
       margin-top: 16px;
     }

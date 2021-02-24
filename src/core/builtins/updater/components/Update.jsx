@@ -26,13 +26,13 @@ export default memo(props => {
               src={'vz-asset://image/logo.png'}
             />
             : <>
-              {/* <Icon
+              <Icon
                 className='vz-updater-update-icon-badge-wrapper'
                 iconClassName='vz-updater-update-icon-badge'
                 name={toTitleCase(type)}
                 tooltip={toTitleCase(type)}
                 size='12'
-              /> */}
+              />
               <LazyImage
                 className='vz-updater-update-icon-img-wrapper'
                 imageClassName='vz-updater-update-icon-img'

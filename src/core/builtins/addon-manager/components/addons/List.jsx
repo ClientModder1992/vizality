@@ -11,7 +11,7 @@ import { Messages } from '@vizality/i18n';
 import StickyBar from './parts/StickyBar';
 import Addon from '../addon/Addon';
 
-export default ({ type, tab, search, displayType, limit, className }) => {
+export default memo(({ type, tab, search, displayType, limit, className }) => {
   const { getSetting, updateSetting } = vizality.api.settings._fluxProps('addon-manager');
 
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
@@ -241,4 +241,4 @@ export default ({ type, tab, search, displayType, limit, className }) => {
       </div>
     </>
   );
-};
+});
