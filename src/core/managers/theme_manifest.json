@@ -1,0 +1,69 @@
+[
+  {
+    "prop": "name",
+    "types": [
+      "string"
+    ],
+    "type": "required"
+  },
+  {
+    "prop": "description",
+    "types": [
+      "string"
+    ],
+    "type": "required"
+  },
+  {
+    "prop": "version",
+    "types": [
+      "string"
+    ],
+    "type": "required"
+  },
+  {
+    "prop": "author",
+    "types": [
+      "string"
+    ],
+    "type": "required"
+  },
+  {
+    "prop": "theme",
+    "types": [
+      "string"
+    ],
+    "type": "required",
+    "validate": "_validateFileExtension"
+  },
+  {
+    "prop": "overlayTheme",
+    "types": [
+      "string"
+    ],
+    "type": "optional",
+    "validate": "_validateOverlayTheme"
+  },
+  {
+    "prop": "discord",
+    "types": [
+      "string"
+    ],
+    "type": "optional"
+  },
+  {
+    "prop": "plugins",
+    "types": [
+      "array"
+    ],
+    "type": "optional",
+    "validate": "_validatePlugins"
+  },
+  {
+    "prop": "settings",
+    "types": [
+      "array"
+    ],
+    "type": "optional",
+    "validate": "_validateSettings"
+  }
+]

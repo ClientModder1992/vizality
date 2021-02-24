@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { webFrame } from 'electron';
+import { toHex, toInt } from './Color';
 
 import { log, warn, error } from './Logger';
 
@@ -152,4 +153,72 @@ export const forceUpdateElement = (query, all = false) => {
   } catch (err) {
     return _error(_labels.concat('forceUpdateElement'), err);
   }
+};
+
+export const jsonToReact = (elements, listener) => {
+  if (!elements) throw new Error('Settings elements are missing.');
+  if (!Array.isArray(elements)) elements = [ elements ];
+  const { React, React: { useState } } = vizality.modules.webpack;
+  const { settings: { TextInput, ColorPickerInput, Category, SwitchItem, Checkbox, CopyInput, RadioGroup }, Divider, Markdown } = vizality.modules.components;
+
+  // eslint-disable-next-line array-callback-return
+  return elements.map(element => {
+    const [ value, setValue ] = useState(element.value || element.opened);
+
+    switch (element.type) {
+      case 'color': return <ColorPickerInput
+        title={element.title}
+        value={toInt(value) }
+        onChange={value => { console.log(value); setValue(value); listener(element.id, toHex(value)); }}
+        default={toInt(element.defaultValue)}
+      />;
+
+      case 'switch': return <SwitchItem
+        note={element.note}
+        value={value}
+        onChange={() => { setValue(!value); listener(element.id, !value); }}
+      >{element.name}</SwitchItem>;
+
+      case 'text': return <TextInput
+        note={element.note}
+        value={value}
+        onChange={value => { setValue(value); listener(element.id, value); }}
+      >{element.name}</TextInput>;
+
+      case 'category': return <Category
+        description={element.note}
+        name={element.name}
+        opened={value}
+        onChange={() => setValue(!value)}
+      >{this.jsonToReact(element.items, listener)}</Category>;
+
+      case 'checkbox': return <Checkbox
+        {...element}
+        value={value}
+        onChange={() => { setValue(!value); listener(element.id, !value)}}
+      />;
+
+      case 'copy': return <CopyInput
+        {...element}
+      >{element.name}</CopyInput>;
+
+      case 'radio': return <RadioGroup
+        {...element}
+        value={value}
+        onChange={({ value }) => {setValue(value); listener(element.id, value);}}
+      >{element.name}</RadioGroup>;
+
+      case 'slider': return <SliderInput
+        {...element}
+        value={value}
+        onChange={value => {setValue(value); listener(element.id, value);}}
+      >{element.name}</SliderInput>;
+      
+      case 'markdown': return <Markdown {...element} />;
+      
+      case 'divider': return <Divider />;
+
+      default: return null;
+    }
+  });
 };

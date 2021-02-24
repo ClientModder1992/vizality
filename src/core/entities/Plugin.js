@@ -5,6 +5,7 @@ import { existsSync } from 'fs';
 
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
+import { jsonToReact } from '@vizality/util/react';
 import { resolveCompiler } from '@vizality/compilers';
 import { unpatchAllByAddon } from '@vizality/patcher';
 import { createElement } from '@vizality/util/dom';
@@ -262,6 +263,32 @@ export default class Plugin extends Updatable {
     if (this._watcherEnabled) {
       await this._watchFiles();
     }
+
+    if (Array.isArray(this.manifest?.settings)) {
+      const settings = this._mapSettings(this.manifest.settings);
+      this.registerSettings(() => jsonToReact(settings, (id, value) => {
+        this.settings.set(id, value);
+      }));
+    }
+  }
+
+  _mapSettings (settings) {
+    return settings.map(setting => {
+      if (setting.type === 'category') {
+        return {
+          ...setting,
+          items: this._mapSettings(setting.items)
+        };
+      }
+      if (setting.type === 'divider') return setting;
+      if (setting.type === 'markdown') return setting;
+
+      return {
+        ...setting,
+        get value () { return this.settings.get(setting.id, setting.defaultValue); },
+        settings: this.settings
+      };
+    });
   }
 
   /**
