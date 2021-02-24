@@ -17,6 +17,7 @@ import Page from './components/Page';
 const Changelog = join(Directories.ROOT, 'CHANGELOG.md');
 const exec = promisify(cp.exec);
 const { readFile } = promises;
+
 export default class Updater extends Builtin {
   constructor () {
     super();
@@ -90,7 +91,7 @@ export default class Updater extends Builtin {
     const disabled = this.settings.get('addonsDisabled', []).map(e => e.id);
     const skipped = this.settings.get('addonsSkipped', []);
     const plugins = [ ...vizality.manager.plugins.values ];
-    const themes = [ ...vizality.manager.themes.values ].filter(t => t.isTheme);
+    const themes = [ ...vizality.manager.themes.values ];
 
     const addons = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());
     if (!disabled.includes(vizality.updateIdentifier)) {

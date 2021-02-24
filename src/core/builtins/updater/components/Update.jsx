@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router';
 
-import { Button, Tooltip, Anchor } from '@vizality/components';
-import { toPlural } from '@vizality/util/string';
+import { Button, Tooltip, Anchor, Icon, LazyImage } from '@vizality/components';
+import { toPlural, toTitleCase } from '@vizality/util/string';
 import { Messages } from '@vizality/i18n';
 
 export default memo(props => {
@@ -17,7 +17,7 @@ export default memo(props => {
   }
 
   return (
-    <div className='vz-updater-update'>
+    <div className='vz-updater-update' vz-type={type}>
       <div className='vz-updater-update-inner'>
         <div className='vz-updater-update-icon-wrapper'>
           {id === 'vizality'
@@ -25,10 +25,20 @@ export default memo(props => {
               className='vz-updater-update-icon'
               src={'vz-asset://image/logo.png'}
             />
-            : <img
-              className='vz-updater-update-icon'
-              src={manifest.icon}
-            />
+            : <>
+              {/* <Icon
+                className='vz-updater-update-icon-badge-wrapper'
+                iconClassName='vz-updater-update-icon-badge'
+                name={toTitleCase(type)}
+                tooltip={toTitleCase(type)}
+                size='12'
+              /> */}
+              <LazyImage
+                className='vz-updater-update-icon-img-wrapper'
+                imageClassName='vz-updater-update-icon-img'
+                src={manifest.icon}
+              />
+            </>
           }
         </div>
         {id === 'vizality'
