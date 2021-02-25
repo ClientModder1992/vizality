@@ -15,9 +15,10 @@ export default () => {
     return res;
   });
 
-  patch('vz-attributes-tab-bar-tabs', TabBar.Item?.prototype, 'render', function (_, res) {
+  patch('vz-attributes-tab-bar-tabs', TabBar.Item.prototype, 'render', function (_, res) {
     const { id, selectedItem } = this.props;
-    res.props['vz-active'] = Boolean(id?.toLowerCase() === selectedItem?.toLowerCase()) && '';
+    if (!id || !selectedItem) return res;
+    res.props['vz-active'] = Boolean(id === selectedItem) && '';
     res.props['vz-tab'] = toKebabCase(id);
     return res;
   });
