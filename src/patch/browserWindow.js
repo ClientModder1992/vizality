@@ -2,12 +2,19 @@ const { existsSync, mkdirSync } = require('fs');
 const { BrowserWindow } = require('electron');
 const { join } = require('path');
 
+const PluginsDir = join(__dirname, '..', '..', 'addons', 'plugins');
+const ThemesDir = join(__dirname, '..', '..', 'addons', 'themes');
 const SettingsDir = join(__dirname, '..', '..', 'settings');
 
 let experimentalWebPlatform = false;
 let transparentWindow = false;
 let settings = {};
 
+/*
+ * Let's create some directories if they haven't beenm created yet.
+ */
+if (!existsSync(PluginsDir)) mkdirSync(PluginsDir, { recursive: true });
+if (!existsSync(ThemesDir)) mkdirSync(ThemesDir, { recursive: true });
 if (!existsSync(SettingsDir)) mkdirSync(SettingsDir);
 
 /*
