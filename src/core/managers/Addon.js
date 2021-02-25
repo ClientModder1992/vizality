@@ -1,10 +1,10 @@
-import fs, { readdirSync, existsSync, lstatSync } from 'fs';
-import { resolve } from 'path';
-import { join } from 'path';
-import { clone } from 'isomorphic-git';
+import fs, { readdirSync, existsSync, lstatSync, renameSync, stat } from 'fs';
 import http from 'isomorphic-git/http/node';
+import { join, resolve, sep } from 'path';
+import { clone } from 'isomorphic-git';
+import { watch } from 'chokidar';
 
-import { toSingular, toTitleCase, toHash } from '@vizality/util/string';
+import { toSingular, toTitleCase, toHash, toKebabCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
 import { removeDirRecursive } from '@vizality/util/file';
 import { Avatars } from '@vizality/constants';
@@ -199,7 +199,11 @@ export default class AddonManager {
   async initialize () {
     let addonId;
     try {
-      const files = readdirSync(this.dir).sort(this._sort);
+      await this._enableWatcher();
+      if (this._watcherEnabled) {
+        await this._watchFiles();
+      }
+      const files = readdirSync(this.dir).sort(this._sortBuiltins);
       for (const filename of files) {
         addonId = filename;
 
@@ -366,9 +370,14 @@ export default class AddonManager {
         }
 
         addonId = addonId || addon.split('.git')[0].split('/')[addon.split('.git')[0].split('/').length - 1];
+        addonId = toKebabCase(addonId);
 
         if (this.isInstalled(addonId)) {
           throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is already installed!`);
+        }
+
+        if (existsSync(join(this.dir, `__installing__${addonId}`)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
+          throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" looks like it's already being installed!`);
         }
 
         if (existsSync(join(this.dir, addonId)) && lstatSync(join(this.dir, addonId)).isDirectory()) {
@@ -381,8 +390,11 @@ export default class AddonManager {
             http,
             singleBranch: true,
             depth: 1,
-            dir: join(this.dir, addonId),
-            url: addon
+            dir: join(this.dir, `__installing__${addonId}`),
+            url: addon,
+            onProgress: evt => {
+              // console.log(evt);
+            }
           });
         } catch (err) {
           /*
@@ -390,12 +402,10 @@ export default class AddonManager {
            * a response or not, so let's remove it if there's an error here.
            */
           await removeDirRecursive(resolve(this.dir, addonId));
-          return this._error(err);
+          throw new Error(`There was a problem while attempting to install "${addonId}"!`, err);
         }
 
-        this._log(`${toSingular(toTitleCase(this.type))} "${addonId}" has been installed!`);
-        await this.mount(addonId);
-        await this.get(addonId)._load(false);
+        renameSync(join(this.dir, `__installing__${addonId}`), join(this.dir, addonId));
       }
     } catch (err) {
       return this._error(err);
@@ -411,7 +421,6 @@ export default class AddonManager {
     try {
       await this.unmount(addonId);
       await removeDirRecursive(resolve(this.dir, addonId));
-      return this._log(`${toTitleCase(toSingular(this.type))} "${addonId}" has been uninstalled!`);
     } catch (err) {
       return this._error(err);
     }
@@ -423,7 +432,7 @@ export default class AddonManager {
    * @param {object} manifest Addon manifest
    * @private
    */
-  async _setIcon (addonId, manifest) {
+  async _setAddonIcon (addonId, manifest) {
     try {
       if (manifest.icon) {
         if (!manifest.icon.endsWith('.png') && !manifest.icon.endsWith('.jpg') && !manifest.icon.endsWith('.jpeg')) {
@@ -449,6 +458,82 @@ export default class AddonManager {
     } catch (err) {
       return this._error(err);
     }
+  }
+
+  /**
+   * Enables the addon directory watcher.
+   * @private
+   */
+  async _enableWatcher () {
+    this._watcherEnabled = true;
+  }
+
+  /**
+   * Disables the addon directory watcher.
+   * @private
+   */
+  async _disableWatcher () {
+    this._watcherEnabled = false;
+    if (this._watcher?.close) {
+      await this._watcher.close();
+      this._watcher = {};
+    }
+  }
+
+  /**
+   * Initiates the addon directory watcher.
+   * @private
+   */
+  async _watchFiles () {
+    this._watcher = watch(this.dir, {
+      ignored: [ /.exists/, /__installing__/ ],
+      ignoreInitial: true,
+      depth: 0
+    });
+
+    /**
+     * Makes sure that the directory added has been completely copied by the operating
+     * system before it attempts to do anything with the addon.
+     * @see {@link https://memorytin.com/2015/07/08/node-js-chokidar-wait-for-file-copy-to-complete-before-modifying/}
+     * @param {string} path Addon folder path
+     * @param {Object} prev Previous folder stats info @see {@link https://nodejs.org/api/fs.html#fs_class_fs_stats}
+     * @private
+     */
+    const checkAddDirComplete = (path, prev) => {
+      try {
+        stat(path, async (err, stat) => {
+          if (err) {
+            throw err;
+          }
+          if (stat.mtime.getTime() === prev.mtime.getTime()) {
+            const addonId = path.replace(this.dir + sep, '');
+            if (addonId !== toKebabCase(addonId)) {
+              renameSync(path, join(this.dir, toKebabCase(addonId)));
+            }
+            await this.mount(addonId);
+            await this.get(addonId)?._load();
+          } else {
+            setTimeout(checkAddDirComplete, 2000, path, stat);
+          }
+        });
+      } catch (err) {
+        this._error(err);
+      }
+    };
+
+    this._watcher
+      .on('addDir', (path, stat) => {
+        setTimeout(checkAddDirComplete, 2000, path, stat);
+      })
+      .on('unlinkDir', path => {
+        const addonId = path.replace(this.dir + sep, '');
+        Object.keys(require.cache).forEach(key => {
+          if (key.includes(addonId)) {
+            delete require.cache[key];
+          }
+        });
+        this.items.delete(addonId);
+      });
   }
 
   /** @private */
