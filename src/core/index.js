@@ -8,7 +8,6 @@ import { log, warn, error } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
 import { Updatable } from '@vizality/entities';
-import { sleep } from '@vizality/util/time';
 
 import BuiltinManager from './managers/Builtin';
 import PluginManager from './managers/Plugin';
@@ -30,22 +29,19 @@ export default class Vizality extends Updatable {
     this.native = window.VizalityNative;
     delete window.VizalityNative;
 
-    this.api = {};
-    this.modules = {};
-    this.manager = {};
     this.git = {
       upstream: '???',
       branch: '???',
       revision: '???'
     };
 
+    this.manager = {};
     this.manager.apis = new APIManager();
     this.manager.builtins = new BuiltinManager();
     this.manager.plugins = new PluginManager();
     this.manager.themes = new ThemeManager();
 
     this._initialized = false;
-    this._hookRPCServer();
     this._patchWebSocket();
 
     if (document.readyState === 'loading') {
@@ -85,7 +81,9 @@ export default class Vizality extends Updatable {
     this.emit(Events.VIZALITY_INITIALIZE);
   }
 
-  // Startup
+  /**
+   * Starts up the core functionality of Vizality, including APIs, builtins, plugins, and themes.
+   */
   async start () {
     // To help achieve that pure console look ( ͡° ͜ʖ ͡°)
     console.clear();
@@ -99,6 +97,7 @@ export default class Vizality extends Updatable {
     );
 
     // Initialize APIs
+    this.api = {};
     await this.manager.apis.initialize();
 
     // Initialize Vizality core settings
@@ -115,6 +114,7 @@ export default class Vizality extends Updatable {
     this._patchDiscordLogs();
 
     // Set up the modules for the global vizality object
+    this.modules = {};
     const modules = await import('@vizality/modules');
     for (const mdl of Object.keys(modules)) {
       Object.assign(this.modules, { [mdl]: modules[mdl] });
@@ -124,48 +124,33 @@ export default class Vizality extends Updatable {
     this._injectMainStyles();
 
     // Initialize builtins, plugins, and themes
-    await this.manager.builtins.initialize(); // Builtins
-    await this.manager.plugins.initialize(); // Plugins
-    await this.manager.themes.initialize(); // Themes
+    await this.manager.builtins.initialize();
+    await this.manager.plugins.initialize();
+    await this.manager.themes.initialize();
 
-    // Set up shorthand global object
-    window.$vz = Object.assign({}, vizality.manager, vizality.api, vizality.modules);
+    // Set up a shorthand global object
+    window.$vz = Object.assign({}, this.manager, this.api, this.modules);
 
     this._initialized = true;
   }
 
-  // Vizality shutdown
+  /**
+   * Shuts down Vizality's APIs, builtins, plugins, and themes.
+   */
   async terminate () {
+    await this.manager.themes.terminate();
+    await this.manager.plugins.terminate();
+    await this.manager.builtins.terminate();
+    await this.manager.apis.terminate();
     this._initialized = false;
-
-    await this.manager.themes.terminate(); // Themes
-    await this.manager.plugins.terminate(); // Plugins
-    await this.manager.builtins.terminate(); // Builtins
-    await this.manager.apis.terminate(); // APIs
-  }
-
-  async _hookRPCServer () {
-    const _this = this;
-
-    while (!window.DiscordNative) {
-      await sleep(1);
-    }
-
-    await DiscordNative.nativeModules.ensureModule('discord_rpc');
-    const discordRpc = DiscordNative.nativeModules.requireModule('discord_rpc');
-    const { createServer } = discordRpc.RPCWebSocket.http;
-    discordRpc.RPCWebSocket.http.createServer = function () {
-      _this.rpc = createServer();
-      return _this.rpc;
-    };
   }
 
   async _patchDiscordLogs () {
     const { setLogFn } = getModule('setLogFn');
     if (!this.settings.get('showDiscordConsoleLogs', false)) {
       /*
-       * Removes Discord's logs entirely... except the logs that don't use the setLogFn 
-       *  function (i.e. normal console.logs)
+       * Removes Discord's logs entirely... except for the logs that don't use the setLogFn
+       *  function (i.e. normal console methods)
        */
       setLogFn(() => void 0);
     } else {

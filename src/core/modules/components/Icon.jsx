@@ -45,15 +45,14 @@ export const Icons = {};
       }
     }
 
+    /*
+     * @note The following is a sort of automated warning system to let us know when Discord
+     * has added an icon to their batch, so we can be made aware of and add it. This will
+     * initiate after Vizality's settings are ready so that only Vizality developers get
+     * alerted about this.
+     */
     vizality.once(Events.VIZALITY_SETTINGS_READY, () => {
-      console.log('hello');
       if (vizality.settings.get('verifiedVizalityDeveloper')) {
-        console.log('yes');
-        /*
-         * @note The following is a sort of automated warning system to let us know when Discord
-         * has added an icon to their batch, basically, so we can be made aware of and add it.
-         */
-
         /*
          * These are Discord's icons that will crash the appl if attempted to render as a normal icon.
          */
@@ -118,14 +117,13 @@ export const Icons = {};
         ];
 
         const registry = getModule(m => m.id && typeof m.keys === 'function' && m.keys().includes('./Activity'));
-        const { marginTop20 } = getModule('marginTop20');
         const Names = Object.keys(Icons);
         const DiscordIcons = registry.keys()
           .filter(k => !k.endsWith('.tsx') && !k.endsWith('.css') && !blacklist.includes(k) && !knownAlterations.includes(k))
           .map(m => m.substring(2));
         const missing = DiscordIcons.filter(icon => !Names.includes(icon));
         if (missing.length) {
-          vizality.api.notices.sendToast('icon-test', {
+          vizality.api.notices.sendToast('vz-missing-icons', {
             header: `Found ${missing.length} Missing Icon ${missing.length === 1 ? 'Asset' : 'Assets '}`,
             icon: 'Uwu',
             content:
@@ -143,6 +141,7 @@ export const Icons = {};
                             className={joinClassNames('vz-icon', `vz-missing-icon-${icon.toLowerCase()}`)}
                             onClick={() => {
                               try {
+                                // Make it easy to copy the markup for the icon with just a click
                                 const copy = document.querySelector(`.vz-missing-icon-${icon.toLowerCase()}`).outerHTML;
                                 DiscordNative.clipboard.copy(copy);
                               } catch (err) {
@@ -203,7 +202,7 @@ export default memo(props => {
     const isClickable = Boolean(onClick || onContextMenu);
     const exposeProps = excludeProperties(props, 'name', 'icon', 'size', 'width', 'height', 'className', 'iconClassName', 'color', 'tooltip', 'tooltipColor', 'tooltipPosition', 'onClick', 'onContextMenu', 'rawSVG');
 
-    const render = () => {
+    const renderIcon = () => {
       // !rawSVG
       if (!rawSVG) {
         // !rawSVG and tooltip
@@ -286,16 +285,18 @@ export default memo(props => {
         );
       }
       // rawSVG
-      return <SVG
-        vz-icon={name}
-        className={joinClassNames(className, 'vz-icon')}
-        fill={color}
-        width={width}
-        height={height}
-        {...exposeProps}
-      />;
+      return (
+        <SVG
+          vz-icon={name}
+          className={joinClassNames(className, 'vz-icon')}
+          fill={color}
+          width={width}
+          height={height}
+          {...exposeProps}
+        />
+      );
     };
-    return render();
+    return renderIcon();
   } catch (err) {
     return _error(err);
   }

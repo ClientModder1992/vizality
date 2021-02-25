@@ -143,7 +143,7 @@ export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
 };
 
 /**
- * Checks if a patch is applied.
+ * Checks if a patch by a given ID is applied.
  * @param {string} patchId Patch ID
  */
 export const isPatched = patchId => {
@@ -173,19 +173,19 @@ export const getPatch = filter => {
  */
 export const getPatches = filter => {
   try {
-
+    
   } catch (err) {
     return _error(_labels.concat('getPatches'), err);
   }
 };
 
 /**
- * 
- * @returns 
+ * Gets all currently active patches.
+ * @returns {Array<?patches>} Array of patches
  */
 export const getAllPatches = () => {
   try {
-
+    return patches;
   } catch (err) {
     return _error(_labels.concat('getAllPatches'), err);
   }
@@ -197,7 +197,7 @@ export const getAllPatches = () => {
  */
 export const getPatchesByAddon = addonId => {
   try {
-    return patches.filter(patch => patch.caller !== addonId);
+    return patches.filter(patch => patch.caller === addonId);
   } catch (err) {
     return _error(_labels.concat('getPatchesByAddon'), err);
   }

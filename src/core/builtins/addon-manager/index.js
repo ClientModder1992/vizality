@@ -18,7 +18,7 @@ export default class AddonsManager extends Builtin {
      * it causes issues when trying to use the components inside the addon manager.
      */
     [ 'plugin', 'theme' ].forEach(type =>
-      vizality.manager[toPlural(type)].uninstall = (addonId, addonType = type) => this.uninstallAddon(addonId, addonType));
+      vizality.manager[toPlural(type)].uninstall = (addonId) => this.uninstallAddon(addonId, type));
 
     vizality.api.i18n.injectAllStrings(i18n);
 
@@ -33,7 +33,8 @@ export default class AddonsManager extends Builtin {
 
   uninstallAddon (addonId, type) {
     const addon = vizality.manager[toPlural(type)].get(addonId);
-
+    // @todo Make this an error modal or toast or something.
+    if (!addon) return;
     openModal(() => (
       <Confirm
         red

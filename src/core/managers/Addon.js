@@ -137,7 +137,7 @@ export default class AddonManager {
         }
       });
 
-      this._setIcon(addonId, manifest);
+      this._setAddonIcon(addonId, manifest);
 
       this.items.set(addonId, new AddonClass());
     } catch (err) {

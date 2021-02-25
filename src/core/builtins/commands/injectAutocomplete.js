@@ -218,9 +218,7 @@ export default function injectAutocomplete () {
       } else if (commands[index].instruction) {
         value = '';
       } else {
-        value = commands && commands[index] && currentText.split(' ').pop() !== commands[index].command
-          ? commands[index].command
-          : '';
+        value = commands[index].command;
       }
       const currentTextSplit = currentText.split(' ');
       return `${currentTextSplit.slice(0, currentTextSplit.length - 1).join(' ')} ${value}`;
@@ -245,7 +243,7 @@ export default function injectAutocomplete () {
             name: c.command,
             ...c
           }
-        }), (value) => `${vizality.api?.commands?.prefix}${value}`);
+        }), value => `${vizality.api?.commands?.prefix}${value}`);
       }
     },
     getPlainText: (index, _state, { commands }) => commands && commands[index] ? `${vizality.api?.commands?.prefix}${commands[index].command}` : '',
@@ -280,6 +278,9 @@ export default function injectAutocomplete () {
   patch('vz-commands-plainAutocomplete', PlainTextArea.prototype, 'getCurrentWord', function (_, res) {
     const { value } = this.props;
     if (new RegExp(`^\\${vizality.api?.commands?.prefix}\\S+ `).test(value)) {
+      if ((/^@|#|:/).test(res.word)) {
+        return res;
+      }
       return {
         word: value,
         isAtStart: true
@@ -292,6 +293,9 @@ export default function injectAutocomplete () {
     const { value } = this.editorRef;
     const { selection, document } = value;
     if (new RegExp(`^\\${vizality.api?.commands?.prefix}\\S+ `).test(document.text)) {
+      if ((/^@|#|:/).test(res.word)) {
+        return res;
+      }
       const node = document.getNode(selection.start.key);
       if (node) {
         return {

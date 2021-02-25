@@ -32,10 +32,10 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   return (
     <div>
       <TextInput
-        defaultValue={getSetting('prefix', '.')}
-        onChange={p => updateSetting('prefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
-        onBlur={({ target }) => target.value = getSetting('prefix', '.')}
-        error={getSetting('prefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Vizality autocompletions.' : ''}
+        defaultValue={getSetting('commandsPrefix', '.')}
+        onChange={p => updateSetting('commandsPrefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
+        onBlur={({ target }) => target.value = getSetting('commandsPrefix', '.')}
+        error={getSetting('commandsPrefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Vizality autocompletions.' : ''}
       >
         {Messages.VIZALITY_COMMAND_PREFIX}
       </TextInput>

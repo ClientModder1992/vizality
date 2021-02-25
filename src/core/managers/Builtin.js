@@ -8,9 +8,7 @@ export default class BuiltinManager extends AddonManager {
   constructor (type, dir) {
     type = 'builtins';
     dir = Directories.BUILTINS;
-
     super(type, dir);
-
     delete this._requiredManifestKeys;
   }
 
@@ -31,14 +29,14 @@ export default class BuiltinManager extends AddonManager {
     }
   }
 
-  _sort (addonA, addonB) {
+  _sortBuiltins (addonA, addonB) {
     const priority = [ 'privacy', 'router', 'commands', 'dashboard', 'addon-manager', 'attributes', 'notices', 'rpc', 'quick-code', 'enhancements', 'settings', 'updater' ].reverse();
     const priorityA = priority.indexOf(addonA);
     const priorityB = priority.indexOf(addonB);
     return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));
   }
 
-  _setIcon () {
+  _setAddonIcon () {
     return void 0;
   }
 }

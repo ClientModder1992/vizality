@@ -1,10 +1,11 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+
 import { Directories } from '@vizality/constants';
 
+import manifestEntries from './theme_manifest.json';
 import Theme from '../entities/Theme';
 import AddonManager from './Addon';
-import manifestEntries from './theme_manifest.json';
 
 const fileRegex = /\.((s?c)ss)$/;
 const typeOf = what => Array.isArray(what)
@@ -53,7 +54,7 @@ export default class ThemeManager extends AddonManager {
     }
 
     manifest.effectiveTheme = join(this.dir, addonId, manifest.effectiveTheme);
-    this._setIcon(addonId, manifest);
+    this._setAddonIcon(addonId, manifest);
     this.items.set(addonId, new Theme(addonId, manifest));
   }
 
