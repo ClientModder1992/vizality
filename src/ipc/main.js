@@ -10,32 +10,32 @@ if (!ipcMain) {
   throw new Error('You tried to require an unpermitted package.');
 }
 
-function openDevTools (e, opts, externalWindow) {
-  e.sender.openDevTools(opts);
+function openDevTools (evt, opts, externalWindow) {
+  evt.sender.openDevTools(opts);
   if (externalWindow) {
     let devToolsWindow = new BrowserWindow({
-      webContents: e.sender.devToolsWebContents
+      webContents: evt.sender.devToolsWebContents
     });
     devToolsWindow.on('ready-to-show', () => devToolsWindow.show());
     devToolsWindow.on('close', () => {
-      e.sender.closeDevTools();
+      evt.sender.closeDevTools();
       devToolsWindow = null;
     });
   }
 }
 
-function closeDevTools (e) {
-  e.sender.closeDevTools();
+function closeDevTools (evt) {
+  evt.sender.closeDevTools();
 }
 
-function clearCache (e) {
+function clearCache (evt) {
   return new Promise(resolve => {
-    e.sender.session.clearCache(() => resolve(null));
+    evt.sender.session.clearCache(() => resolve(null));
   });
 }
 
-function getHistory (e) {
-  return e.sender.history;
+function getHistory (evt) {
+  return evt.sender.history;
 }
 
 function compileSass (_, file) {
@@ -75,10 +75,10 @@ function compileSass (_, file) {
   });
 }
 
-ipcMain.on('VIZALITY_GET_PRELOAD', e => e.returnValue = e.sender._preload);
+ipcMain.on('VIZALITY_GET_PRELOAD', evt => evt.returnValue = evt.sender._preload);
 ipcMain.handle('VIZALITY_APP_HISTORY', getHistory);
 ipcMain.handle('VIZALITY_APP_OPEN_DEVTOOLS', openDevTools);
 ipcMain.handle('VIZALITY_APP_CLOSE_DEVTOOLS', closeDevTools);
 ipcMain.handle('VIZALITY_APP_CACHE_CLEAR', clearCache);
-ipcMain.handle('VIZALITY_WINDOW_IS_MAXIMIZED', e => BrowserWindow.fromWebContents(e.sender).isMaximized());
+ipcMain.handle('VIZALITY_WINDOW_IS_MAXIMIZED', evt => BrowserWindow.fromWebContents(evt.sender).isMaximized());
 ipcMain.handle('VIZALITY_COMPILE_SASS', compileSass);

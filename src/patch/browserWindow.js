@@ -1,15 +1,21 @@
+const { existsSync, mkdirSync } = require('fs');
 const { BrowserWindow } = require('electron');
 const { join } = require('path');
 
+const SettingsDir = join(__dirname, '..', '..', 'settings');
+
 let experimentalWebPlatform = false;
-let transparency = false;
+let transparentWindow = false;
 let settings = {};
 
-try {
-  settings = require(join(__dirname, '..', '..', 'settings', 'settings.json'));
+if (!existsSync(SettingsDir)) mkdirSync(SettingsDir);
 
-  transparency = settings.transparentWindow;
-  ({ experimentalWebPlatform } = settings);
+/*
+ * Retrieve some settings value so we can set them here.
+ */
+try {
+  settings = require(join(SettingsDir, 'settings.json'));
+  ({ experimentalWebPlatform, transparentWindow } = settings);
 } catch (err) {}
 
 module.exports = class PatchedBrowserWindow extends BrowserWindow {
@@ -29,13 +35,13 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       // Discord Client
       originalPreload = opts.webPreferences.preload;
       opts.webPreferences.preload = join(__dirname, '..', 'preload', 'main.js');
-
-      if (transparency) {
+      // Transparent window enabled
+      if (transparentWindow) {
         opts.transparent = true;
         opts.frame = process.platform === 'win32' ? false : opts.frame;
         delete opts.backgroundColor;
       }
-
+      // Experimental web platform enabled
       if (experimentalWebPlatform) {
         opts.webPreferences.experimentalFeatures = true;
       }
@@ -48,15 +54,21 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
       configurable: true
     });
 
+    // Add events to use with IPC for window maximize and window restore
     win.on('maximize', () => win.webContents.send('VIZALITY_WINDOW_MAXIMIZE'));
     win.on('unmaximize', () => win.webContents.send('VIZALITY_WINDOW_UNMAXIMIZE'));
 
     /*
-     * The following code was given by Lighty, thanks Lighty!
+     * The following code was given by Lighty, thanks Lighty! Ugly, but it works.
+     * We use this force set some default developer tool settings:
+     * ---
+     * Automatically pretty print sources - This is important, because without it, it is very
+     * slow to load JavaScript sources in dev tools.
+     * ---
+     * Turn off JS and CSS source maps - Unneeded.
      */
     win.webContents.on('devtools-opened', async () => {
       const dtwc = win.webContents.devToolsWebContents;
-      // Please tell me there is a better way of doing this?
       await dtwc.executeJavaScript(`(${(() => {
         if (localStorage.experiments) {
           localStorage.experiments = JSON.stringify(
@@ -68,15 +80,11 @@ module.exports = class PatchedBrowserWindow extends BrowserWindow {
         } else {
           localStorage.experiments = '{"sourcesPrettyPrint":true}';
         }
-
         const { settings } = window.Common;
-
         settings.moduleSetting('jsSourceMapsEnabled').set(false);
         settings.moduleSetting('cssSourceMapsEnabled').set(false);
       }).toString()})()`);
-      console.log('Auto sources pretty print enabled, js and css source maps disabled.');
     });
-
     win.webContents._preload = originalPreload;
     return win;
   }
