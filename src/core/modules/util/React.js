@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
+/**
+ * Contains methods relating to React and the virtual DOM.
+ * @module React
+ * @memberof Util
+ * @namespace Util.React
+ * @version 1.0.0
+ */
+
 import { webFrame } from 'electron';
 import { toHex, toInt } from './Color';
-
 import { log, warn, error } from './Logger';
 
 const RealHTMLElement = webFrame.top.context.HTMLElement;
-
-/**
- * Contains methods relating to React and the virtual DOM.
- * @module util.react
- * @namespace util.react
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'React' ];
@@ -23,9 +23,9 @@ const _error = (labels, ...message) => error({ labels: labels || _labels, messag
  * Finds a value, subobject, or array from a tree that matches a specific filter.
  * @copyright MIT License - (c) 2018 Zachary Rauen
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L140}
- * @param {object} tree Tree that should be walked
+ * @param {Object} tree Tree that should be walked
  * @param {Function} filter Filter to check against each object and subobject
- * @param {object} options Additional options to customize the search
+ * @param {Object} [options={}] Additional options to customize the search
  * @param {Array<string>|null} [options.walkable=[]] Array of strings to use as keys
  * that are allowed to be walked on. Null value indicates all keys are walkable
  * @param {Array<string>} [options.ignore=[]] Array of strings to use as keys to exclude
@@ -82,7 +82,7 @@ export const findInTree = (tree, filter, { walkable = null, ignore = [] } = {}) 
  * Finds a value, subobject, or array from a tree that matches a specific filter. Great for patching render functions.
  * @copyright MIT License - (c) 2018 Zachary Rauen
  * @see {@link https://github.com/rauenzi/BDPluginLibrary/blob/master/src/modules/utilities.js#L128}
- * @param {object} tree React tree to look through. Can be a rendered object or an internal instance
+ * @param {Object} tree React tree to look through. Can be a rendered object or an internal instance
  * @param {Function} searchFilter Filter function to check subobjects against
  * @returns {Node|undefined}
  */
@@ -155,69 +155,99 @@ export const forceUpdateElement = (query, all = false) => {
   }
 };
 
+/**
+ * 
+ * @param {*} elements 
+ * @param {*} listener 
+ * @returns 
+ */
 export const jsonToReact = (elements, listener) => {
   if (!elements) throw new Error('Settings elements are missing.');
   if (!Array.isArray(elements)) elements = [ elements ];
   const { React, React: { useState } } = vizality.modules.webpack;
   const { settings: { TextInput, ColorPickerInput, Category, SwitchItem, Checkbox, CopyInput, RadioGroup }, Divider, Markdown } = vizality.modules.components;
-
-  // eslint-disable-next-line array-callback-return
   return elements.map(element => {
     const [ value, setValue ] = useState(element.value || element.opened);
-
     switch (element.type) {
-      case 'color': return <ColorPickerInput
-        title={element.title}
-        value={toInt(value) }
-        onChange={value => { console.log(value); setValue(value); listener(element.id, toHex(value)); }}
-        default={toInt(element.defaultValue)}
-      />;
-
-      case 'switch': return <SwitchItem
-        note={element.note}
-        value={value}
-        onChange={() => { setValue(!value); listener(element.id, !value); }}
-      >{element.name}</SwitchItem>;
-
-      case 'text': return <TextInput
-        note={element.note}
-        value={value}
-        onChange={value => { setValue(value); listener(element.id, value); }}
-      >{element.name}</TextInput>;
-
+      case 'color': return (
+        <ColorPickerInput
+          title={element.title}
+          value={toInt(value) }
+          onChange={value => {
+            setValue(value);
+            listener(element.id, toHex(value));
+          }}
+          default={toInt(element.defaultValue)}
+        />
+      );
+      case 'switch': return (
+        <SwitchItem
+          note={element.note}
+          value={value}
+          onChange={() => {
+            setValue(!value);
+            listener(element.id, !value);
+          }}
+        >
+          {element.name}
+        </SwitchItem>
+      );
+      case 'text': return (
+        <TextInput
+          note={element.note}
+          value={value}
+          onChange={value => {
+            setValue(value);
+            listener(element.id, value);
+          }}
+        >
+          {element.name}
+        </TextInput>
+      );
       case 'category': return <Category
         description={element.note}
         name={element.name}
         opened={value}
         onChange={() => setValue(!value)}
       >{this.jsonToReact(element.items, listener)}</Category>;
-
-      case 'checkbox': return <Checkbox
-        {...element}
-        value={value}
-        onChange={() => { setValue(!value); listener(element.id, !value)}}
-      />;
-
-      case 'copy': return <CopyInput
-        {...element}
-      >{element.name}</CopyInput>;
-
-      case 'radio': return <RadioGroup
-        {...element}
-        value={value}
-        onChange={({ value }) => {setValue(value); listener(element.id, value);}}
-      >{element.name}</RadioGroup>;
-
-      case 'slider': return <SliderInput
-        {...element}
-        value={value}
-        onChange={value => {setValue(value); listener(element.id, value);}}
-      >{element.name}</SliderInput>;
-      
+      case 'checkbox': return (
+        <Checkbox
+          {...element}
+          value={value}
+          onChange={() => {
+            setValue(!value);
+            listener(element.id, !value);
+          }}
+        />
+      );
+      case 'copy': return (
+        <CopyInput {...element}>
+          {element.name}
+        </CopyInput>
+      );
+      case 'radio': return (
+        <RadioGroup
+          {...element}
+          value={value}
+          onChange={({ value }) => {
+            setValue(value);
+            listener(element.id, value);
+          }}
+        >
+          {element.name}
+        </RadioGroup>
+      );
+      case 'slider': return (
+        <SliderInput
+          {...element}
+          value={value}
+          onChange={value => {setValue(value); listener(element.id, value);}}
+        >
+          {element.name}
+        </SliderInput>
+      );
       case 'markdown': return <Markdown {...element} />;
-      
       case 'divider': return <Divider />;
-
       default: return null;
     }
   });

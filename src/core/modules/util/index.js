@@ -1,3 +1,10 @@
+/**
+ * Contains an assortment of useful utilities for addon developers.
+ * @module Util
+ * @namespace Util
+ * @version 1.0.0
+ */
+
 import * as performance from './Performance';
 import * as security from './Security';
 import * as logger from './Logger';

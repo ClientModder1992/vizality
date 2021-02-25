@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
+/**
+ * Contains methods that output stylized messages to developer tools console.
+ * @module Logger
+ * @memberof Util
+ * @namespace Util.Logger
+ * @version 1.0.0
+ */
+
 import { getRandomColor, getContrastColor, blendColors, shadeColor } from './Color';
 import { isArray, isEmptyArray, assertArray } from './Array';
 import { isString, assertString } from './String';
 import { assertObject } from './Object';
-
-/**
- * Contains methods that output stylized messages to developer tools console.
- * @module util.logger
- * @namespace util.logger
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'Logger' ];
@@ -57,12 +58,10 @@ const modules = {
 
 /**
  * Outputs messages to console of varying types. Outputted messages contain a badge, label(s), and a message.
- * @param {object} options Options for the console message
+ * @param {Object} options Options for the console message
  * @param {string} [options.type='log'] Type of console method to use
  * @param {string} [options.badge='vz-asset://image/logo.png'] Badge image URL
- * @param {Array<string|object>} [options.labels=[]] Label texts, or objects with text and color properties for each label. Limit of 10.
- * @param {string} [options.labels.text] Text for the main module label
- * @param {string} [options.labels.color] Text for the main module label
+ * @param {Array<string|Util.Logger.label>} [options.labels] Label texts or label objects. Limit of 10.
  * @param {*|Array<*>} [options.message] Contents of the console message
  * @private
  */
@@ -167,11 +166,9 @@ const _logHandler = options => {
 
 /**
  * Logs an informational message to dev tools console.
- * @param {object} options Options for the console message
+ * @param {Object} options Options for the console message
  * @param {string} [options.badge] Badge image URL
- * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
- * @param {string} [options.labels.text] Text for the main module label
- * @param {string} [options.labels.color] Text for the main module label
+ * @param {Array<string|Util.Logger.label>} [options.labels] Label texts or label objects
  * @param {*|Array<*>} [options.message] Contents of the console message
  */
 export const log = options => {
@@ -186,11 +183,9 @@ export const log = options => {
 
 /**
  * Logs a warning message to dev tools console.
- * @param {object} options Options for the console message
+ * @param {Object} options Options for the console message
  * @param {string} [options.badge] Badge image URL
- * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
- * @param {string} [options.labels.text] Text for the main module label
- * @param {string} [options.labels.color] Text for the main module label
+ * @param {Array<string|Util.Logger.label>} [options.labels] Label texts or label objects
  * @param {*|Array<*>} [options.message] Contents of the console message
  */
 export const warn = options => {
@@ -205,11 +200,9 @@ export const warn = options => {
 
 /**
  * Logs an error message to dev tools console.
- * @param {object} options Options for the console message
+ * @param {Object} options Options for the console message
  * @param {string} [options.badge] Badge image URL
- * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
- * @param {string} [options.labels.text] Text for the main module label
- * @param {string} [options.labels.color] Text for the main module label
+ * @param {Array<string|Util.Logger.label>} [options.labels] Label texts or label objects
  * @param {*|Array<*>} [options.message] Contents of the console message
  */
 export const error = options => {
@@ -224,11 +217,9 @@ export const error = options => {
 
 /**
  * Logs a deprecation (warning) message to dev tools console.
- * @param {object} options Options for the console message
+ * @param {Object} options Options for the console message
  * @param {string} [options.badge] Badge image URL
- * @param {Array<string|object>} [options.labels] Label texts, or objects with text and color properties for each label
- * @param {string} [options.labels.text] Text for the main module label
- * @param {string} [options.labels.color] Text for the main module label
+ * @param {Array<string|Util.Logger.label>} [options.labels] Label texts or label objects
  * @param {*|Array<*>} [options.message] Contents of the console message
  */
 export const deprecate = options => {

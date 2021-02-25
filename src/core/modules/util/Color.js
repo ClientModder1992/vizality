@@ -1,20 +1,20 @@
 /* eslint-disable no-unused-vars *//* eslint-disable prefer-const */
-import tinycolor from 'tinycolor2';
-
-import { log, warn, error } from './Logger';
-import { assertString } from './String';
-
 /**
  * Contains methods relating to colors.
- * @module util.color
- * @namespace util.color
- * @memberof util
+ * @module Color
+ * @memberof Util
+ * @namespace Util.Color
+ * @version 1.0.0
  */
 
 /**
  * @todo Add: isType, assertType, isHex, isHsl, isInt, isRgb, assertHex, assertHsl, assertInt, assertRgb
  * @todo Make these work with alphas (8-digit hex numbers, rgba, and hsla).
  */
+
+import tinycolor from 'tinycolor2';
+import { log, warn, error } from './Logger';
+import { assertString } from './String';
 
 /** @private */
 const _labels = [ 'Util', 'Color' ];

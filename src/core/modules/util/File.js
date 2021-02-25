@@ -1,4 +1,12 @@
 /* eslint-disable no-unused-vars */
+/**
+ * Contains methods relating to files.
+ * @module File
+ * @memberof Util
+ * @namespace Util.File
+ * @version 1.0.0
+ */
+
 import { promises, existsSync, lstatSync, readFileSync, readdirSync } from 'fs';
 import { lookup as _getMimeType } from 'mime-types';
 import { extname, join, parse } from 'path';
@@ -7,20 +15,12 @@ import { nativeImage } from 'electron';
 import { escapeRegExp } from 'lodash';
 import imageSize from 'image-size';
 import { promisify } from 'util';
-
 import { log, warn, error } from './Logger';
 import { Directories } from '../constants';
 import { isString } from './String';
 
 const { readdir, lstat, unlink, rmdir } = promises;
 const _getImageSize = promisify(imageSize);
-
-/**
- * Contains methods relating to files.
- * @module util.file
- * @namespace util.file
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'File' ];

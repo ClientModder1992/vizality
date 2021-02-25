@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { isObject as _isObject, isEmpty as _isEmpty } from 'lodash';
-
-import { log, warn, error } from './Logger';
-import { toPlural } from './String';
-
 /**
  * Contains methods relating to objects.
- * @module util.object
- * @namespace util.object
- * @memberof util
+ * @module Object
+ * @memberof Util
+ * @namespace Util.Object
+ * @version 1.0.0
  */
+
+import { isObject as _isObject, isEmpty as _isEmpty } from 'lodash';
+import { log, warn, error } from './Logger';
+import { toPlural } from './String';
 
 /** @private */
 const _labels = [ 'Util', 'Object' ];
@@ -140,12 +140,8 @@ export const isObject = input => {
  * @throws {TypeError} Throw an error if the input is not an object
  */
 export const assertObject = input => {
-  try {
-    if (!this.isObject(input)) {
-      throw new TypeError(`Expected an object but received ${typeof input}.`);
-    }
-  } catch (err) {
-    _error(_labels.concat('assertObject'), err);
+  if (!this.isObject(input)) {
+    throw new TypeError(`Expected an object but received ${typeof input}.`);
   }
 };
 

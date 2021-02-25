@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { log, warn, error } from './Logger';
-import { assertArray } from './Array';
-
 /**
  * Contains methods relating to numbers.
- * @module util.number
- * @namespace util.number
- * @memberof util
+ * @module Number
+ * @memberof Util
+ * @namespace Util.Number
+ * @version 1.0.0
  */
+
+import { isNumber as _isNumber } from 'lodash';
+import { log, warn, error } from './Logger';
+import { assertArray } from './Array';
 
 /** @private */
 const _labels = [ 'Util', 'Number' ];
@@ -15,21 +17,28 @@ const _log = (labels, ...message) => log({ labels: labels || _labels, message })
 const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
 const _error = (labels, ...message) => error({ labels: labels || _labels, message });
 
-// @todo
+/**
+ * Checks if the input is a number.
+ * @param {*} input Argument input
+ * @returns {boolean} Whether or not the input is a number
+ */
 export const isNumber = input => {
   try {
-    return void 0 || input;
+    return _isNumber(input);
   } catch (err) {
     _error(_labels.concat('isNumber'), err);
   }
 };
 
-// @todo
+/**
+ * Asserts that the input is a number.
+ * If it isn't a number, it throws an error, otherwise it does nothing.
+ * @param {*} input Argument input
+ * @throws {TypeError} Throw an error if the input is not a number
+ */
 export const assertNumber = input => {
-  try {
-    return void 0 || input;
-  } catch (err) {
-    _error(_labels.concat('assertNumber'), err);
+  if (!this.isNumber(input)) {
+    throw new TypeError(`Expected a number but received ${typeof input}.`);
   }
 };
 

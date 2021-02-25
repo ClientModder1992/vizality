@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { log, warn, error } from './Logger';
-import { getModule } from '../webpack';
-
 /**
  * Contains methods relating to time and dates.
- * @module util.time
- * @namespace util.time
- * @memberof util
+ * @module Time
+ * @memberof Util
+ * @namespace Util.Time
+ * @version 1.0.0
  */
+
+import { isDate as _isDate } from 'lodash';
+import { log, warn, error } from './Logger';
+import { getModule } from '../webpack';
 
 /** @private */
 const _labels = [ 'Util', 'Time' ];
@@ -42,28 +44,27 @@ export const millisecondsToTime = ms => {
 };
 
 /**
- * 
- * @param {*} input 
- * @returns 
+ * Checks if the input is a date.
+ * @param {*} input Argument input
+ * @returns {boolean} Whether or not the input is a date
  */
 export const isDate = input => {
   try {
-
+    return _isDate(input);
   } catch (err) {
     return _error(_labels.concat('isDate'), err);
   }
 };
 
 /**
- * 
- * @param {*} input 
- * @returns 
+ * Asserts that the input is a Date.
+ * If it isn't a date, it throws an error, otherwise it does nothing.
+ * @param {*} input Argument input
+ * @throws {TypeError} Throw an error if the input is not a Date
  */
 export const assertDate = input => {
-  try {
-
-  } catch (err) {
-    return _error(_labels.concat('assertDate'), err);
+  if (!this.isDate(input)) {
+    throw new TypeError(`Expected a Date but received ${typeof input}.`);
   }
 };
 

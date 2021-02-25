@@ -10,25 +10,26 @@
  * @module typedefs
  */
 
+//==============================================================================
+// Vizality
+//==============================================================================
 /**
  * @typedef VizalityAPI
- * @property {Commands} commands
- * @property {Settings} settings
- * @property {Notices} notices
- * @property {Keybinds} keybinds
- * @property {Routes} routes
- * @property {Connections} connections
- * @property {I18n} i18n
- * @property {RPC} rpc
+ * @property {CommandsAPI} commands
+ * @property {SettingsAPI} settings
+ * @property {NoticesAPI} notices
+ * @property {KeybindsAPI} keybinds
+ * @property {RoutesAPI} routes
+ * @property {ConnectionsAPI} connections
+ * @property {I18nAPI} i18n
+ * @property {RPCAPI} rpc
  */
-
 /**
  * @typedef Git
  * @property {string} upstream
  * @property {string} branch
  * @property {string} revision
  */
-
 /**
  * Main Vizality class
  * @typedef Vizality
@@ -43,27 +44,23 @@
 //==============================================================================
 // Discord Module
 //==============================================================================
-
 //--------------
 // Misc
 //--------------
-
 /**
  * An object with key value pairs where the key is usually a string (snowflake) and the
  * value is usually an object.
  * @typedef {Object<key, value>} Collection
  */
 
-
 //--------------
 // Emoji
 //--------------
-
 /**
+ * Emoji
  * @typedef {CustomEmoji|DefaultEmoji} Emoji
  * @see {@link discord.emoji}
  */
-
 /**
  * Emoji that have been uploaded to a guild.
  * @typedef {Object} CustomEmoji
@@ -78,7 +75,6 @@
  * @property {boolean} animated Whether the emoji is animated
  * @see {@link discord.emoji.guild}
  */
-
 /**
  * "Default" emoji that are inherent to Discord. There are 1741 at the time of writing this.
  * @typedef {Object} DefaultEmoji
@@ -86,11 +82,9 @@
  * @see {@link discord.emoji.default}
  */
 
-
 //--------------
 // User
 //--------------
-
 /**
  *
  * @typedef {Object} User
@@ -98,25 +92,21 @@
  * @see {@link discord.user}
  */
 
-
 //--------------
 // Message
 //--------------
-
 /**
  *
  * @typedef {Object} Message
  * @property {}
  * @see {@link discord.message}
  */
-
 /**
  *
  * @typedef {Object} Attachment
  * @property {}
  * @see {@link discord.message.attachment}
  */
-
 /**
  *
  * @typedef {Object} Embed
@@ -124,11 +114,9 @@
  * @see {@link discord.message.embed}
  */
 
-
 //--------------
 // Settings
 //--------------
-
 /**
  *
  * @typedef {Object} UserSetting
@@ -136,11 +124,9 @@
  * @see {@link discord.settings.user}
  */
 
-
 //--------------
 // Guild
 //--------------
-
 /**
  * Guilds in Discord represent an isolated collection of users and channels, and are often
  * referred to as "servers" in the Discord UI.
@@ -154,14 +140,12 @@
  *
  * @typedef {Object} Member
  */
-
 /**
  *
  * @typedef {Object} Role
  * @property {}
  * @see {@link discord.guild.role}
  */
-
 
 //--------------
 // Channel
@@ -172,11 +156,9 @@
  * @typedef {Object} Channel
  */
 
-
 //--------------
 // Activity
 //--------------
-
 /**
  *
  * @typedef {Object} Activity
@@ -186,7 +168,6 @@
 //--------------
 // Snowflake
 //--------------
-
 /**
  * A Twitter snowflake, except the epoch is 2015-01-01T00:00:00.000Z
  * ```
@@ -199,7 +180,6 @@
  * @see {@link https://discord.js.org|discord.js}
  * @typedef {string} snowflake
  */
-
 /**
  * A deconstructed snowflake.
  * @see {@link https://discord.js.org|discord.js}
@@ -212,12 +192,23 @@
  * @property {string} binary Binary representation of the snowflake
  */
 
-
 //==============================================================================
 // Webpack Module
 //==============================================================================
-
 /**
  * @typedef {Object} WebpackModule
  * @property {string} test
+ */
+
+//==============================================================================
+// Util Module
+//==============================================================================
+//--------------
+// Logger
+//--------------
+/**
+ * @typedef Util.Logger.label
+ * @type {Object}
+ * @property {string} text Text to show in the label
+ * @property {string} color Color string in any format (without alpha)
  */

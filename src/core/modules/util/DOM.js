@@ -1,16 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { nativeImage } from 'electron';
+/**
+ * Contains methods relating to the DOM.
+ * @module DOM
+ * @memberof Util
+ * @namespace Util.DOM
+ * @version 1.0.0
+ */
 
+import { nativeImage } from 'electron';
 import { log, warn, error } from './Logger';
 import { getModule } from '../webpack';
 import { sleep } from './Time';
-
-/**
- * Contains methods relating to the DOM.
- * @module util.dom
- * @namespace util.dom
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'DOM' ];

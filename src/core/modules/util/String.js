@@ -1,16 +1,16 @@
+/* eslint-disable no-unused-vars */
+/**
+ * Contains methods relating to strings.
+ * @module String
+ * @memberof Util
+ * @namespace Util.String
+ * @version 1.0.0
+ */
+
 import { camelCase, lowerCase, startCase, upperFirst, snakeCase, kebabCase, isString as _isString } from 'lodash';
 import * as _chunk from 'chunk-text';
 import pluralize from 'pluralize';
-
-/* eslint-disable no-unused-vars */
 import { log, warn, error } from './Logger';
-
-/**
- * Contains methods relating to strings.
- * @module util.string
- * @namespace util.string
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'String' ];
@@ -202,9 +202,9 @@ export const toTitleCase = text => {
  * // returns `I am a sentence case string`
  * toSentenceCase('i am a SENTENCE CASE string.')
  */
-export const toSentenceCase = string => {
+export const toSentenceCase = text => {
   try {
-    return upperFirst(lowerCase(string));
+    return upperFirst(lowerCase(text));
   } catch (err) {
     return _error(_labels.concat('toSentenceCase'), err);
   }
@@ -288,17 +288,14 @@ export const isString = input => {
 };
 
 /**
- * Asserts that the input is a string. If it isn't, throw an error, otherwise do nothing.
+ * Asserts that the input is a string.
+ * If it isn't a string, it throws an error, otherwise it does nothing.
  * @param {*} input Argument input
  * @throws {TypeError} Throw an error if the input is not a string
  */
 export const assertString = input => {
-  try {
-    if (!this.isString(input)) {
-      throw new TypeError(`Expected a string but received ${typeof input}.`);
-    }
-  } catch (err) {
-    return _error(_labels.concat('assertString'), err);
+  if (!this.isString(input)) {
+    throw new TypeError(`Expected a string but received ${typeof input}.`);
   }
 };
 

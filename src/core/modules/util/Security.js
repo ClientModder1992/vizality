@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { log, warn, error } from './Logger';
-
 /**
  * Contains methods relating to security.
- * @module util.security
- * @namespace util.security
- * @memberof util
+ * @module Security
+ * @memberof Util
+ * @namespace Util.Security
+ * @version 1.0.0
  */
+
+import { log, warn, error } from './Logger';
 
 /** @private */
 const _labels = [ 'Util', 'Security' ];

@@ -1,14 +1,14 @@
-/* eslint-disable no-unused-vars *//* eslint-disable no-undef *//* eslint-disable no-empty-function */
-import { performance, PerformanceObserver } from 'perf_hooks';
+/* eslint-disable no-unused-vars *//* eslint-disable no-empty-function */
+/**
+ * Contains methods relating to performance.
+ * @module Performance
+ * @memberof Util
+ * @namespace Util.Performance
+ * @version 1.0.0
+ */
 
 import { getMedian, getAverage } from './Number';
 import { log, warn, error } from './Logger';
-
-/**
- * @module util.performance
- * @namespace util.performance
- * @memberof util
- */
 
 /** @private */
 const _labels = [ 'Util', 'Performance' ];

@@ -1,20 +1,27 @@
 /* eslint-disable no-unused-vars */
+/**
+ * Contains methods relating to arrays.
+ * @module Array
+ * @memberof Util
+ * @namespace Util.Array
+ * @version 1.0.0
+ */
+
 import { isArray as _isArray, isEmpty as _isEmpty, sample as _sample } from 'lodash';
 
 import { log, warn, error } from './Logger';
+import { isString } from './String';
 
 /**
- * Contains methods relating to arrays.
- * @module util.array
- * @namespace util.array
- * @memberof util
+ * Sets up some shorthand methods for logging given messages using pre-defined labels.
+ * @param {Array<string|Util.Logger.label>} labels Labels to show for the log.
+ * @param {...*} message Message info to send
+ * @private
  */
-
-/** @private */
 const _labels = [ 'Util', 'Array' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * Checks if the input is an array.
@@ -36,12 +43,8 @@ export const isArray = input => {
  * @throws {TypeError} Throw an error if the input is not an array
  */
 export const assertArray = input => {
-  try {
-    if (!this.isArray(input)) {
-      throw new TypeError(`Expected an array but received ${typeof input}.`);
-    }
-  } catch (err) {
-    _error(_labels.concat('assertArray'), err);
+  if (!this.isArray(input)) {
+    throw new TypeError(`Expected an array but received ${typeof input}.`);
   }
 };
 
@@ -49,18 +52,21 @@ export const assertArray = input => {
  * Asserts that the input is an array. If it isn't, throw an error, otherwise do nothing.
  * @param {Array} array Array to process
  * @param {('and'|'or')} [lastItemConnector='and'] Word that is used to connect the last array item
- * @returns {string} Array returned as a string list, joined by commas and "and" or "or" for the final item
+ * @returns {Promise<string>} Array returned as a string list, joined by commas and "and" or "or" for the final item
  */
-export const toSentence = (array, lastItemConnector = 'and') => {
+export const toSentence = async (array, lastItemConnector = 'and') => {
   try {
+    // Assert argument types
     this.assertArray(array);
+    if (!isString(lastItemConnector) || (lastItemConnector.toLowerCase() !== 'and' && lastItemConnector.toLowerCase() !== 'or')) {
+      throw new Error('Second argument must be a string value of "and" or "or".');
+    }
     let type;
-    switch (lastItemConnector?.toLowerCase()) {
+    switch (lastItemConnector.toLowerCase()) {
       case 'and': type = 'conjunction'; break;
       case 'or': type = 'disjunction'; break;
-      default: throw new Error('Second argument must be a string value of "and" or "or".');
     }
-    const locale = import('../i18n').chosenLocale;
+    const locale = (await import('../i18n'))?.chosenLocale;
     const formatter = new Intl.ListFormat(locale, { style: 'long', type });
     return formatter.format(array);
   } catch (err) {
