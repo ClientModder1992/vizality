@@ -252,6 +252,7 @@
   "settings": {
     "jsdoc": {
       "preferredTypes": {
+        "object": "Object",
         "key": "key",
         "value": "value",
 
@@ -292,7 +293,6 @@
         "hack": "hack",
         "i18n": "i18n",
         "note": "note",
-        "powercord": "powercord",
         "todo": "todo",
         "warning": "warning"
       }
