@@ -11,55 +11,103 @@ import { Avatars } from '@vizality/constants';
 
 const requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
 
+/**
+ * 
+ */
 export default class AddonManager {
   constructor (type, dir) {
     this.dir = dir;
     this.type = type;
     this.items = new Map();
-
     this._watcherEnabled = null;
     this._watcher = {};
     this._labels = [ 'Manager', toSingular(this.type) ];
   }
 
+  /**
+   * 
+   */
   get count () {
     return this.items.size;
   }
 
+  /**
+   * 
+   */
   get values () {
     return this.items.values();
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   get keys () {
     return [ ...this.items.keys() ];
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   has (addonId) {
     return this.items.has(addonId);
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   get (addonId) {
     return this.items.get(addonId);
   }
 
+/**
+ * 
+ * @param {*} addonId 
+ * @returns 
+ */
   getAll () {
     return this.items;
   }
 
+/**
+ * 
+ * @param {*} addonId 
+ * @returns 
+ */
   isInstalled (addonId) {
     return this.has(addonId);
   }
 
+/**
+ * 
+ * @param {*} addonId 
+ * @returns 
+ */
   isEnabled (addonId) {
     return !vizality.settings.get(`disabled${toTitleCase(this.type)}`, [])
       .filter(addon => this.isInstalled(addon))
       .includes(addonId);
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   isDisabled (addonId) {
     return !this.isEnabled(addonId);
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   hasSettings (addonId) {
     try {
       const addon = this.get(addonId);
@@ -71,11 +119,19 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   getEnabledKeys () {
     const addons = this.keys;
     return addons.filter(addon => this.isEnabled(addon));
   }
 
+  /**
+   * 
+   * @returns 
+   */
   getEnabled () {
     const enabled = new Map();
     this.getEnabledKeys()
@@ -86,11 +142,19 @@ export default class AddonManager {
     return enabled;
   }
 
+  /**
+   * 
+   * @returns 
+   */
   getDisabledKeys () {
     const addons = this.keys;
     return addons.filter(addon => this.isDisabled(addon));
   }
 
+  /**
+   * 
+   * @returns 
+   */
   getDisabled () {
     const disabled = new Map();
     this.getDisabledKeys()
@@ -101,7 +165,11 @@ export default class AddonManager {
     return disabled;
   }
 
-  // Mount/load/enable/install
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   async mount (addonId) {
     let manifest;
     // Skip the .exists file
@@ -145,6 +213,12 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @param {*} showLogs 
+   * @returns 
+   */
   async unmount (addonId, showLogs = true) {
     try {
       const addon = this.get(addonId);
@@ -166,6 +240,12 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @param {*} showLogs 
+   * @returns 
+   */
   async remount (addonId, showLogs = true) {
     try {
       await this.unmount(addonId, showLogs);
@@ -184,6 +264,10 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async remountAll () {
     try {
       const addons = this.getEnabledKeys();
@@ -196,6 +280,10 @@ export default class AddonManager {
     return this._log(`All ${this.type} have been re-initialized!`);
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async initialize () {
     let addonId;
     try {
@@ -227,8 +315,13 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async terminate () {
     try {
+      this._disableWatcher();
       const addons = this.keys;
       for (const addon of addons) {
         if (this.isEnabled(addon)) {
@@ -248,6 +341,11 @@ export default class AddonManager {
     return this._log(`All ${this.type} have been unloaded!`);
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   async enable (addonId) {
     try {
       const addon = this.get(addonId);
@@ -270,6 +368,11 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @param {*} addonId 
+   * @returns 
+   */
   async disable (addonId) {
     try {
       const addon = this.get(addonId);
@@ -319,6 +422,10 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async enableAll () {
     try {
       const addons = this.getDisabledKeys();
@@ -330,6 +437,10 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async disableAll () {
     try {
       const addons = this.getEnabledKeys();
@@ -341,6 +452,11 @@ export default class AddonManager {
     }
   }
 
+  /**
+   * 
+   * @param {*} addons 
+   * @returns 
+   */
   async install (addons) {
     try {
       /**
@@ -359,7 +475,6 @@ export default class AddonManager {
 
         if (!addonId) {
           if (!new RegExp(/^(((https?:\/\/)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})\/))|((ssh:\/\/)?git@)(((([a-zA-Z0-9][a-zA-Z0-9\-_]{1,252})\.){1,8}[a-zA-Z]{2,63})(:)))([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})(\/)([a-zA-Z0-9][a-zA-Z0-9_-]{1,36})((\.git)?)$/).test(addon)) {
-            console.log(addon);
             throw new Error('You must provide a valid GitHub repository URL or an addon ID from https://github.com/vizality-community!');
           }
         }
@@ -429,7 +544,7 @@ export default class AddonManager {
   /**
    * Sets a plugin or theme's icon image URL.
    * @param {string} addonId Addon ID
-   * @param {object} manifest Addon manifest
+   * @param {Object} manifest Addon manifest
    * @private
    */
   async _setAddonIcon (addonId, manifest) {
