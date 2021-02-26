@@ -145,4 +145,4 @@ getModule(m => {
   return false;
 });
 
-export default { getComponentBySelector, find: findComponent, getComponent, setComponent, addComponentWithName, addComponentWithoutName, unknownComponents, knownComponents };
+export default { getComponentBySelector, findComponent, getComponent, setComponent, addComponentWithName, addComponentWithoutName, unknownComponents, knownComponents };
