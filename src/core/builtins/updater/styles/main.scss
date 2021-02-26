@@ -137,13 +137,12 @@
         border-radius: 50%;
         z-index: 1;
         padding: 3px;
-        margin-right: 5px;
         color: var(--header-primary);
         border: 3px solid var(--background-secondary);
         &-wrapper {
           position: absolute;
-          top: -4px;
-          left: -4px;
+          bottom: -5px;
+          right: -5px;
         }
         &[vz-icon='Plugin'] {
           background: vz.color('plugin');

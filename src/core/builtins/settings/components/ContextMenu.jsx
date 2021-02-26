@@ -158,6 +158,7 @@ export default memo(() => {
         {vizality.manager.builtins.isEnabled('quick-code') && <ContextMenu.Item
           id='quick-code'
           label='Quick Code'
+          disabled={true}
           action={() => vizality.api.routes.navigateTo('quick-code')}
         />}
         <ContextMenu.Item
@@ -169,6 +170,7 @@ export default memo(() => {
         <ContextMenu.Item
           id='developers'
           label='Developers'
+          disabled={true}
           action={() => vizality.api.routes.navigateTo('developers')}
         />
         <ContextMenu.Item
