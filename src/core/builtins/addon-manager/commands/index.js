@@ -4,7 +4,7 @@ import settings from './settings';
 import manage from './manage';
 import enable from './enable';
 import disable from './disable';
-import terminate from './terminate';
+import stop from './stop';
 import reload from './reload';
 import list from './list';
 import install from './install';
@@ -19,7 +19,7 @@ export const commands = {
   settings,
   manage,
   list,
-  terminate
+  stop
 };
 
 export function registerCommands (type) {
@@ -33,7 +33,7 @@ export function registerCommands (type) {
       { name: 'manage', required: true },
       { name: 'enable', required: true },
       { name: 'disable', required: true },
-      { name: 'terminate', required: true },
+      { name: 'stop', required: true },
       { name: 'reload', required: true },
       { name: 'list', required: true },
       { name: 'install', required: true },

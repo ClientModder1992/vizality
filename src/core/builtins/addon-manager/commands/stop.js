@@ -1,12 +1,12 @@
 import { toPlural } from '@vizality/util/string';
 
 export default {
-  command: 'terminate',
+  command: 'stop',
   description: 'Temporarily disables all addons. Reload Discord to restore.',
   icon: 'vz-asset://svg/NotAllowed.svg',
   async executor (_, type) {
     try {
-      await vizality.manager[toPlural(type)].terminate();
+      await vizality.manager[toPlural(type)].stop();
     } catch (err) {
       return {
         send: false,

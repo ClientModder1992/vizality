@@ -22,7 +22,7 @@ export default class Commands extends Builtin {
       description: 'Temporarily disables Vizality. Reload Discord to restore.',
       executor: async () => {
         try {
-          vizality.terminate();
+          vizality.stop();
         } catch (err) {
           this.error(err);
         }

@@ -319,7 +319,7 @@ export default class AddonManager {
    * 
    * @returns 
    */
-  async terminate () {
+  async stop () {
     try {
       this._disableWatcher();
       const addons = this.keys;

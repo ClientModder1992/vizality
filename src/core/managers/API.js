@@ -35,7 +35,7 @@ export default class APIManager {
     }
   }
 
-  async terminate () {
+  async stop () {
     try {
       for (const api of this.apis) {
         await vizality.api[api]._unload(false);
@@ -43,7 +43,6 @@ export default class APIManager {
     } catch (err) {
       return this._error(`There was a problem shutting down ${this.type}!`, err);
     }
-
     return this._log(`All APIs have been unloaded!`);
   }
 
