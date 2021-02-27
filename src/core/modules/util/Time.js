@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to time and dates.
+ * Contains functions relating to time and dates.
  * @module Time
  * @memberof Util
  * @namespace Util.Time
@@ -13,9 +13,9 @@ import { getModule } from '../webpack';
 
 /** @private */
 const _labels = [ 'Util', 'Time' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * 

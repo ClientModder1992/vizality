@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to the DOM.
+ * Contains functions relating to the DOM.
  * @module DOM
  * @memberof Util
  * @namespace Util.DOM
@@ -14,9 +14,9 @@ import { sleep } from './Time';
 
 /** @private */
 const _labels = [ 'Util', 'DOM' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 export const createElement = (type, props) => {
   try {

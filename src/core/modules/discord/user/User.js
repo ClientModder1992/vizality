@@ -2,7 +2,6 @@
 import { isUrl, assertString } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
 import { getModule } from '@vizality/webpack';
-import typedefs from '@vizality/typedefs';
 
 import Constants from '../module/constants';
 import snowflake from '../snowflake';
@@ -22,9 +21,9 @@ import snowflake from '../snowflake';
 
 /** @private */
 const _labels = [ 'Discord', 'User' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * Gets the user object.

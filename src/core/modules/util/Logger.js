@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods that output stylized messages to developer tools console.
+ * Contains functions that output stylized messages to developer tools console.
  * @module Logger
  * @memberof Util
  * @namespace Util.Logger
@@ -14,9 +14,9 @@ import { assertObject } from './Object';
 
 /** @private */
 const _labels = [ 'Util', 'Logger' ];
-const _log = (labels, ...message) => this.log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => this.warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => this.error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => this.log({ labels, message });
+const _warn = (labels, ...message) => this.warn({ labels, message });
+const _error = (labels, ...message) => this.error({ labels, message });
 
 /**
  * Processes which type of console method to use.

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to strings.
+ * Contains functions relating to strings.
  * @module String
  * @memberof Util
  * @namespace Util.String
@@ -14,9 +14,9 @@ import { log, warn, error } from './Logger';
 
 /** @private */
 const _labels = [ 'Util', 'String' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * 

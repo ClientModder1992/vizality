@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars *//* eslint-disable prefer-const */
 /**
- * Contains methods relating to colors.
+ * Contains functions relating to colors.
  * @module Color
  * @memberof Util
  * @namespace Util.Color

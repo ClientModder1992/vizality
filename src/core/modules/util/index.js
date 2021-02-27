@@ -1,5 +1,5 @@
 /**
- * Contains an assortment of useful utilities for addon developers.
+ * Contains an assortment of useful utility functions for addon developers.
  * @module Util
  * @namespace Util
  * @version 1.0.0

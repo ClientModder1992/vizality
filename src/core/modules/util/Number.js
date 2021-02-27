@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to numbers.
+ * Contains functions relating to numbers.
  * @module Number
  * @memberof Util
  * @namespace Util.Number
@@ -13,9 +13,9 @@ import { assertArray } from './Array';
 
 /** @private */
 const _labels = [ 'Util', 'Number' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * Checks if the input is a number.

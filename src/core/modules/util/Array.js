@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to arrays.
+ * Contains functions relating to arrays.
  * @module Array
  * @memberof Util
  * @namespace Util.Array

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to objects.
+ * Contains functions relating to objects.
  * @module Object
  * @memberof Util
  * @namespace Util.Object
@@ -8,14 +8,14 @@
  */
 
 import { isObject as _isObject, isEmpty as _isEmpty } from 'lodash';
+import { toPlural, assertString } from './String';
 import { log, warn, error } from './Logger';
-import { toPlural } from './String';
 
 /** @private */
 const _labels = [ 'Util', 'Object' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 // @todo Clean this up.
 export const _traverse = function*(obj, targetValue, exactMatch = false, type, currentPath = '') {
@@ -58,17 +58,14 @@ export const _traverse = function*(obj, targetValue, exactMatch = false, type, c
 // @todo Clean this up.
 export const _find = (obj, targetValue, exact = false, type) => {
   try {
-    if (typeof targetValue !== 'string' || targetValue.trim() === '') {
-      // @todo throw new TypeError(`"note" argument must be a string (received ${typeof note})`); format
-      return _error(`Expected a string argument but received ${typeof targetValue}'.`);
-    }
+    assertString(targetValue);
 
     let results;
 
     if (type === 'key' || type === 'value' || type === 'all') {
       results = [ ...this._traverse(obj, targetValue, exact, type) ];
     } else {
-      return _error(`Argument "type" must be a string value of "key", "value", or "both"`);
+      return _error(_labels.concat('_find'), `Argument "type" must be a string value of "key", "value", or "both"`);
     }
 
     const tempResults = [ ...results ];
@@ -80,7 +77,7 @@ export const _find = (obj, targetValue, exact = false, type) => {
      * @todo This needs reworking somehow. It is bugged for objects which contain
      * keys with period(s) in them.
      */
-    _log(`${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
+    _log(_labels.concat('_find'), `${results.length} ${resultsText} found for ${type === 'key' || type === 'value' ? toPlural(type) : 'entries'} ${choiceWord} '${targetValue}' ${results.length ? ':' : ''}`);
 
     if (exact) {
       results = results.map(result => result).join('\n');

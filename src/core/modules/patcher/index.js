@@ -2,7 +2,7 @@
 /**
  * Patcher that can patch other functions and components allowing you to run code before
  * or after the original function. Can also alter arguments and return values.
- * @module patcher
+ * @module Patches
  */
 
 import { randomBytes } from 'crypto';
@@ -12,9 +12,9 @@ import { getCaller } from '@vizality/util/file';
 
 /** @private */
 const _labels = [ 'Module', 'Patcher' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 /**
  * All currently applied patches.

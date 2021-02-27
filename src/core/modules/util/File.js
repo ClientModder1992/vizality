@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Contains methods relating to files.
+ * Contains functions relating to files.
  * @module File
  * @memberof Util
  * @namespace Util.File
@@ -24,9 +24,9 @@ const _getImageSize = promisify(imageSize);
 
 /** @private */
 const _labels = [ 'Util', 'File' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 export const getCaller = () => {
   try {
