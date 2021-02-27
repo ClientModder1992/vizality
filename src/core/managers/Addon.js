@@ -3,6 +3,7 @@ import http from 'isomorphic-git/http/node';
 import { join, resolve, sep } from 'path';
 import { clone } from 'isomorphic-git';
 import { watch } from 'chokidar';
+import Events from 'events';
 
 import { toSingular, toTitleCase, toHash, toKebabCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
@@ -14,8 +15,9 @@ const requiredManifestKeys = [ 'name', 'version', 'description', 'author' ];
 /**
  * 
  */
-export default class AddonManager {
+export default class AddonManager extends Events {
   constructor (type, dir) {
+    super();
     this.dir = dir;
     this.type = type;
     this.items = new Map();

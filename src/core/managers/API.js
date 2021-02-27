@@ -17,6 +17,8 @@ export default class APIManager {
       let apiModule;
       if (api === 'settings') {
         apiModule = await import(join(this.dir, api, 'Settings'));
+      } else if (api === 'index') {
+        return;
       } else {
         apiModule = await import(join(this.dir, api));
       }

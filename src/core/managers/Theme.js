@@ -50,7 +50,7 @@ export default class ThemeManager extends AddonManager {
     } else if (!window.__OVERLAY__ && !window.__SPLASH__ && manifest.theme) {
       manifest.effectiveTheme = manifest.theme;
     } else {
-      return this._warn(`Theme "${addonId}" is not meant to run on that environment - Skipping`);
+      return this._warn(`Theme "${addonId}" is not meant to run on that environment. Initialization aborted.`);
     }
 
     manifest.effectiveTheme = join(this.dir, addonId, manifest.effectiveTheme);

@@ -26,7 +26,7 @@ export default class Commands extends API {
   }
 
   get prefix () {
-    return vizality.settings.get('prefix', '.');
+    return vizality.settings.get('commandPrefix', '.');
   }
 
   get find () {
