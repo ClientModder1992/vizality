@@ -212,3 +212,7 @@
  * @property {string} text Text to show in the label
  * @property {string} color Color string in any format (without alpha)
  */
+
+//==============================================================================
+// APIs
+//==============================================================================

@@ -137,11 +137,11 @@ export default class Vizality extends Updatable {
   /**
    * Shuts down Vizality's APIs, builtins, plugins, and themes.
    */
-  async terminate () {
-    await this.manager.themes.terminate();
-    await this.manager.plugins.terminate();
-    await this.manager.builtins.terminate();
-    await this.manager.apis.terminate();
+  async stop () {
+    await this.manager.themes.stop();
+    await this.manager.plugins.stop();
+    await this.manager.builtins.stop();
+    await this.manager.apis.stop();
     this._initialized = false;
   }
 

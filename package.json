@@ -41,7 +41,7 @@
     "@vizality/src": "src",
     "@vizality/modules": "src/core/modules",
     "@vizality/builtins": "src/core/builtins",
-    "@vizality/typedefs": "src/core/typedefs",
+    "@vizality/typedefs": "src/core/Typedefs",
     "@vizality/compilers": "src/core/compilers",
     "@vizality/entities": "src/core/entities",
     "@vizality/constants": "src/core/modules/constants",
