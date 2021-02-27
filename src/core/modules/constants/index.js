@@ -13,8 +13,7 @@ export const HTTP = Object.freeze({
 export const Repositories = Object.freeze({
   ORG: 'vizality',
   get VIZALITY () { return `${this.ORG}/vizality`; },
-  get COMMUNITY () { return 'vizality-community'; },
-  get DOCS () { return `${this.ORG}/docs`; }
+  get COMMUNITY () { return `${this.ORG}/community`; }
 });
 
 export const Directories = Object.freeze({
@@ -43,7 +42,7 @@ export const Vizality = Object.freeze({
   get BUILTINS () {
     const builtins = [];
     readdirSync(Directories.BUILTINS).forEach(file => builtins.push(file));
-    return builtins.map(builtin => `vz-${builtin}`);
+    return builtins;
   }
 });
 
