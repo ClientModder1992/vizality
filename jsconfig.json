@@ -11,6 +11,7 @@
       "@vizality/builtins": [ "./core/builtins"],
       "@vizality/modules": [ "./core/modules"],
       "@vizality/typedefs": [ "./core/Typedefs" ],
+      "@vizality/api": [ "./core/api" ],
       "moment": [ "./core/modules/packages/Moment" ],
       "react": [ "./core/modules/packages/React" ],
       "lodash": [ "./core/modules/packages/Lodash" ],

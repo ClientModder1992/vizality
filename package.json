@@ -44,6 +44,7 @@
     "@vizality/typedefs": "src/core/Typedefs",
     "@vizality/compilers": "src/core/compilers",
     "@vizality/entities": "src/core/entities",
+    "@vizality/api": "src/core/api",
     "@vizality/constants": "src/core/modules/constants",
     "@vizality/components": "src/core/modules/components",
     "@vizality/discord": "src/core/modules/discord",
