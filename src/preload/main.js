@@ -71,7 +71,7 @@ require('../ipc/renderer');
 const { Events } = require('@vizality/constants');
 
 // Initialize Vizality
-const Vizality = require('../core').default;
+const Vizality = require('../core/Core').default;
 
 window.vizality = new Vizality();
 
