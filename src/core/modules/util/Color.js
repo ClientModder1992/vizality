@@ -13,14 +13,15 @@
  */
 
 import tinycolor from 'tinycolor2';
+
 import { log, warn, error } from './Logger';
 import { assertString } from './String';
 
 /** @private */
 const _labels = [ 'Util', 'Color' ];
-const _log = (labels, ...message) => log({ labels: labels || _labels, message });
-const _warn = (labels, ...message) => warn({ labels: labels || _labels, message });
-const _error = (labels, ...message) => error({ labels: labels || _labels, message });
+const _log = (labels, ...message) => log({ labels, message });
+const _warn = (labels, ...message) => warn({ labels, message });
+const _error = (labels, ...message) => error({ labels, message });
 
 export const _hex2hsl = color => {
   try {
@@ -646,8 +647,7 @@ export const toInt = color => {
     if (!type) {
       throw new Error(`Could not determine a color type for "${color}". Please make sure it is a valid color.`);
     }
-
-    if (type === 'int') return this._hex2int(color);
+    if (type === 'int') return color;
     if (type === 'hex') return this._hex2int(color);
     if (type === 'rgb') return this._rgb2int(color);
     if (type === 'hsl') return this._hsl2int(color);
