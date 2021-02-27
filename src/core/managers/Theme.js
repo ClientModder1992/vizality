@@ -23,8 +23,6 @@ export default class ThemeManager extends AddonManager {
   }
 
   async mount (addonId) {
-    // Skip the .exists file
-    if (addonId === '.exists') return;
     const manifestFile = join(this.dir, addonId, 'manifest.json');
 
     if (!existsSync(manifestFile)) {

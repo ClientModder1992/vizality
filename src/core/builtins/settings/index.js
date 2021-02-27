@@ -26,7 +26,7 @@ export default class Settings extends Builtin {
     });
 
     vizality.api.actions.registerAction({
-      actionId: 'confirmRestart',
+      action: 'confirmRestart',
       executor: () => this.confirmRestart()
     });
 

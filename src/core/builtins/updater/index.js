@@ -40,7 +40,7 @@ export default class Updater extends Builtin {
     this.settings.set('awaitingReload', false);
 
     vizality.api.actions.registerAction({
-      actionId: 'openLatestChangelog',
+      action: 'openLatestChangelog',
       executor: () => this.openLatestChangelog()
     });
 

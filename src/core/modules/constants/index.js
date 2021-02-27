@@ -90,7 +90,13 @@ export const Events = Object.freeze({
   VIZALITY_ADDON_SETTINGS_REGISTER: 'addonSettingsRegister',
   VIZALITY_ADDON_SETTINGS_UNREGISTER: 'addonSettingsUnregister',
   VIZALITY_ADDON_SETTING_UPDATE: 'addonSettingUpdate',
-  VIZALITY_ADDON_SETTING_TOGGLE: 'addonSettingToggle'
+  VIZALITY_ADDON_SETTING_TOGGLE: 'addonSettingToggle',
+
+  VIZALITY_ACTION_ADD: 'actionAdd',
+  VIZALITY_ACTION_REMOVE: 'actionRemove',
+  VIZALITY_ACTION_INVOKE: 'actionInvoke',
+  VIZALITY_ACTION_REMOVE_ALL: 'actionRemoveAll',
+  VIZALITY_ACTION_REMOVE_ALL_BY_CALLER: 'actionRemoveAllByCaller'
 });
 
 export const Avatars = Object.freeze({

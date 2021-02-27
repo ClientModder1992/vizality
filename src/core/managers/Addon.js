@@ -174,18 +174,16 @@ export default class AddonManager extends Events {
    */
   async mount (addonId) {
     let manifest;
-    // Skip the .exists file
-    if (addonId === '.exists') return;
     try {
       manifest = Object.assign({
         appMode: 'app'
       }, await import(resolve(this.dir, addonId, 'manifest.json')));
     } catch (err) {
-      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Skipping...`);
+      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Initialization aborted.`);
     }
 
     if (!requiredManifestKeys.every(key => manifest.hasOwnProperty(key))) {
-      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Skipping...`);
+      return this._error(`${toSingular(toTitleCase(this.type))} "${addonId}" doesn't have a valid manifest. Initialization aborted.`);
     }
 
     try {
