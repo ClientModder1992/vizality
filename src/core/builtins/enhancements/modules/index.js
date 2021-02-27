@@ -1,11 +1,5 @@
 // ---
-import ServerInviteIcons from './components/contextmenu/ServerInviteIcons';
-import BotTags from './chat/BotTags';
+export * as ServerInviteIcons from './components/contextmenu/ServerInviteIcons';
+export * as BotTags from './chat/BotTags';
 // ---
-import Dispatcher from './global/Dispatcher';
-
-export default {
-  ServerInviteIcons,
-  BotTags,
-  Dispatcher
-};
+export * as Dispatcher from './global/Dispatcher';

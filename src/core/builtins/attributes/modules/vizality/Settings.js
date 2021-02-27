@@ -10,6 +10,9 @@ export default () => {
     const attributes = {
       transparentWindow: get('transparentWindow', false),
       experimentalWebPlatform: get('experimentalWebPlatform', false),
+      smoothScrolling: get('smoothScrolling', true),
+      reactDeveloperTools: get('reactDeveloperTools', false),
+      hotReload: get('hotReload', false),
       replaceClyde: get('replaceClyde', true)
     };
 
@@ -49,7 +52,6 @@ export default () => {
     setAttribute(setting, value);
   };
 
-
   vizality.api.settings
     .on(Events.VIZALITY_SETTING_TOGGLE, handleToggle)
     .on(Events.VIZALITY_SETTING_UPDATE, handleUpdate);
@@ -58,7 +60,6 @@ export default () => {
     vizality.api.settings
       .removeListener(Events.VIZALITY_SETTING_TOGGLE, handleToggle)
       .removeListener(Events.VIZALITY_SETTING_UPDATE, handleUpdate);
-
     root.removeAttribute('vz-settings');
   };
 };

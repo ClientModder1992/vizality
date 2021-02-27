@@ -32,9 +32,13 @@ export const getCaller = () => {
   try {
     const stackTrace = (new Error()).stack;
     const plugin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.PLUGINS)}.([-\\w]+)`));
-    if (plugin) return plugin[1];
+    if (plugin) {
+      return plugin[1];
+    }
     const builtin = stackTrace.match(new RegExp(`${escapeRegExp(Directories.BUILTINS)}.([-\\w]+)`));
-    if (builtin) return `vz-${builtin[1]}`;
+    if (builtin) {
+      return builtin[1];
+    }
     return 'vizality';
   } catch (err) {
     _error(_labels.concat('getCaller'), err);

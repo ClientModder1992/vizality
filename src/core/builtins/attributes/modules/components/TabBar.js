@@ -12,15 +12,14 @@ export default () => {
   patch('vz-attributes-tab-bar', TabBar.prototype, 'render', function (_, res) {
     const { selectedItem } = this.props;
     res.props['vz-tab-selected'] = toKebabCase(selectedItem);
-    return res;
   });
 
-  patch('vz-attributes-tab-bar-tabs', TabBar.Item.prototype, 'render', function (_, res) {
+  patch('vz-attributes-tab-bar-tabs', TabBar.Item?.prototype, 'render', function (_, res) {
     const { id, selectedItem } = this.props;
-    if (!id || !selectedItem) return res;
-    res.props['vz-active'] = Boolean(id === selectedItem) && '';
+    if (!id || !selectedItem) return;
+    const active = Boolean(String(id)?.toLowerCase() === String(selectedItem)?.toLowerCase());
+    res.props['vz-active'] = active;
     res.props['vz-tab'] = toKebabCase(id);
-    return res;
   });
 
   return () => {
