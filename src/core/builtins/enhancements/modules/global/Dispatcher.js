@@ -5,7 +5,7 @@ import { FluxDispatcher } from '@vizality/webpack';
  */
 export default () => {
   FluxDispatcher.dispatch = function (args) {
-    if (!args?.type || args.type !== 'USER_NOTE_LOAD_START') {
+    if (!args?.type) {
       return this._dispatch(args);
     }
 
