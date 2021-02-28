@@ -33,8 +33,16 @@ export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
   try {
     let finalReturn = originalReturn;
     const _patches = patches.filter(p => p.module === moduleId && !p.pre);
-    _patches.forEach(p => finalReturn = p.method.call(_this, originalArgs, finalReturn));
-    return finalReturn;
+    _patches.forEach(p => {
+      try {
+        finalReturn = p.method.call(_this, originalArgs, finalReturn);
+      } catch (err) {
+        return p.method.call(_this, originalArgs, originalReturn);
+      }
+    });
+    // console.log('finalReturn', finalReturn);
+    // console.log('originalReturn', originalReturn);
+    return finalReturn || originalReturn;
   } catch (err) {
     return _error(_labels.concat('_runPatches'), err);
   }
@@ -50,12 +58,19 @@ export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
 export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
   try {
     const patch = patches.pop();
-    const args = patch.method.call(_this, originalArgs);
+    let args;
+    try {
+      args = patch.method.call(_this, originalArgs);
+    } catch (err) {
+      _error(_labels.concat('_runPrePatchesRecursive'), err);
+      return originalArgs;
+    }
     if (args === false) {
       return false;
     }
     if (!Array.isArray(args)) {
-      throw new Error(`Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
+      _warn(_labels.concat('_runPrePatchesRecursive'), `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
+      return originalArgs;
     }
     if (patches.length > 0) {
       return _runPrePatchesRecursive(patches, args, _this);
@@ -79,7 +94,7 @@ export const _runPrePatches = (moduleId, originalArgs, _this) => {
     if (_patches.length === 0) {
       return originalArgs;
     }
-    return _runPrePatchesRecursive(_patches, originalArgs, _this);
+    return _runPrePatchesRecursive(_patches, originalArgs, _this) || originalArgs;
   } catch (err) {
     return _error(_labels.concat('_runPrePatches'), err);
   }
