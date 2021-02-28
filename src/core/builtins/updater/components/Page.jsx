@@ -236,7 +236,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
 
           <b>Vizality</b>
           <div className='row'>
-            <div className='column'>Commands:&#10;{Object.keys(commands).length}</div>
+            <div className='column'>Commands:&#10;{vizality.api.commands?.getAllCommands()?.length}</div>
             <div className='column'>Settings:&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
             <div className='column'>Plugins:&#10;{vizality.manager.plugins.getEnabledKeys().length} / {vizality.manager.plugins.count}
             </div>
