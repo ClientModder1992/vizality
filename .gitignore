@@ -1,17 +1,11 @@
 /.cache
 /.logs
-node_modules
-
-addons/plugins/*
-!addons/plugins/.exists
-
-addons/themes/*
-!addons/themes/.exists
-
-settings/*.json
-
+/addons
+/settings
+/node_modules
+.notes
 *injected.txt
 *.nogit.*
 
 debug.log
-main.log
+/main.log
