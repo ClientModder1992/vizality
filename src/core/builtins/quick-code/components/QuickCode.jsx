@@ -18,7 +18,7 @@ export default AsyncComponent.from((async () => {
   return Flux.connectStores([ windowStore, vizality.api.settings.store ], () => ({
     guestWindow: windowStore.getWindow('DISCORD_VIZALITY_CUSTOM_CSS'),
     windowOnTop: windowStore.getIsAlwaysOnTop('DISCORD_VIZALITY_CUSTOM_CSS'),
-    ...vizality.api.settings._fluxProps('quick-code')
+    ...vizality.api.settings._fluxProps('vz-quick-code')
   }))(QuickCode);
 })());
 

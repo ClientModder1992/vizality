@@ -1,4 +1,4 @@
-@use '@vizality' as vz;
+@use '@vizality' as *;
 
 .colorpicker-header {
   border-radius: 3px;
@@ -32,9 +32,9 @@
   }
   .slider,
   .saturation-selection {
-    background: vz.color('white');
+    background: color('white');
     border-radius: 1000px;
     border: none;
-    box-shadow: var(--elevation-low);
+    box-shadow: var('elevation-low');
   }
 }

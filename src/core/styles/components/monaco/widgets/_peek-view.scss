@@ -1,8 +1,8 @@
-@use '@vizality' as vz;
+@use '@vizality' as *;
 
 .monaco-editor {
   [class*='arrow-decoration'] {
-    border-color: transparent transparent var(--background-tertiary) !important;
+    border-color: transparent transparent var('background-tertiary') !important;
     margin-left: 0 !important;
   }
   .zone-widget {
@@ -10,12 +10,12 @@
     box-sizing: border-box;
     .zone-widget-container {
       background: none !important; // #7289da
-      border: 1px solid var(--background-tertiary) !important;
+      border: 1px solid var('background-tertiary') !important;
       border-radius: 3px;
       display: flex;
       flex-flow: column;
       justify-content: center;
-      box-shadow: var(--elevation-low);
+      box-shadow: var('elevation-low');
       height: auto !important;
     }
   }
@@ -25,19 +25,19 @@
         background: rgb(240 71 71) !important;
         &,
         & * {
-          color: vz.color('white') !important;
+          color: color('white') !important;
         }
       }
     }
     .head {
       height: 40px !important;
       padding: 10px;
-      background: var(--background-tertiary) !important;
+      background: var('background-tertiary') !important;
       display: flex;
       align-items: center;
       flex: 1 0 auto;
       * {
-        color: var(--header-secondary);
+        color: var('header-secondary');
       }
       .peekview-title {
         margin-left: 0;
@@ -50,17 +50,17 @@
       &[style*='border-color: rgb(244, 135, 113);'] {
         background: rgb(240 71 71 / .2) !important;
         &::after {
-          @include vz.size(100%);
+          @include size(100%);
           content: '';
           position: absolute;
           top: 0;
           left: 0;
-          background: var(--background-secondary);
+          background: var('background-secondary');
           z-index: -1;
         }
       }
       border: none !important;
-      background: var(--background-secondary);
+      background: var('background-secondary');
       padding: 10px 0;
     }
   }
@@ -92,7 +92,7 @@
 
 .split-view-view .monaco-list .monaco-list-row {
   font-size: 14px;
-  font-family: 'Whitney';
+  font-family: Whitney;
   font-weight: 500;
   padding: 0 15px;
   position: relative;
@@ -104,12 +104,12 @@
 }
 
 .monaco-list .monaco-list-row.selected {
-  background: var(--background-secondary-alt) !important;
-  color: var(--header-primary);
+  background: var('background-secondary-alt') !important;
+  color: var('header-primary');
 }
 
 .monaco-list:not(.drop-target) .monaco-list-row:hover:not(.selected):not(.focused) {
-  background: var(--background-modifier-hover) !important;
+  background: var('background-modifier-hover') !important;
 }
 
 .monaco-editor .reference-zone-widget .ref-tree {

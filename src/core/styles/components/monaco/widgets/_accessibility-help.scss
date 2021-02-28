@@ -1,12 +1,12 @@
-@use '@vizality' as vz;
+@use '@vizality' as *;
 
 .monaco-editor .accessibilityHelpWidget {
   overflow: auto;
   padding: 20px;
-  background: var(--background-primary) !important;
-  box-shadow: var(--elevation-high) !important;
-  color: var(--text-normal);
-  font-family: 'Whitney';
+  background: var('background-primary') !important;
+  box-shadow: var('elevation-high') !important;
+  color: var('text-normal');
+  font-family: Whitney;
   font-size: 16px;
   border-radius: 5px;
   top: 20px !important;
@@ -15,7 +15,7 @@
   > div {
     &::before {
       content: 'Accessibility Help';
-      color: var(--header-primary);
+      color: var('header-primary');
       font-weight: 600;
       text-transform: uppercase;
       font-size: 16px;

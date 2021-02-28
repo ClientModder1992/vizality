@@ -1,4 +1,4 @@
-@use '@vizality' as vz;
+@use '@vizality' as *;
 
 :root {
   --vz-editor-wrapper-background: var(--deprecated-card-bg);
@@ -18,23 +18,29 @@
   --vz-editor-context-menu-separator-style: solid;
   --vz-editor-context-menu-separator-color: var(--background-modifier-accent);
 
-  --vz-editor-context-menu-item-focus-background: #{vz.color('blurple')};
-  --vz-editor-context-menu-item-focus-color: #{vz.color('white')};
+  --vz-editor-item-focus-background: #5c6fb1;
+  --vz-editor-item-focus-background-active: #4e5d94;
+  --vz-editor-context-menu-item-focus-color: #{color('white')};
 
   --vz-editor-line-numbers-color: var(--text-muted);
 }
 
-.vz-editor {
+.vz-editor-wrapper {
+  background: var('vz-editor-wrapper-background');
   padding: 20px 0;
-  background: var(--vz-editor-wrapper-background);
-  border-radius: var(--vz-editor-border-radius);
+}
+
+.vz-popup-content-wrapper .vz-editor-wrapper {
+  height: 100%;
+  width: 100%;
 }
 
 .monaco-editor {
-  // To fix editor resizing issues
   position: absolute;
+  border-radius: var('vz-editor-border-radius');
+
   .line-numbers {
-    color: var(--vz-editor-line-numbers-color) !important;
+    color: var('vz-editor-line-numbers-color') !important;
   }
   // Little color boxes
   [class*='ced-colorBox'] {
@@ -42,18 +48,18 @@
     &::before {
       border: none !important;
       border-radius: 2px;
-      box-shadow: var(--elevation-medium);
+      box-shadow: var('elevation-medium');
     }
   }
   // Line numbers gutter
   .margin {
-    background-color: var(--vz-editor-background) !important;
+    background-color: var('vz-editor-background') !important;
   }
   // Main body
   &,
   &-background,
   .inputarea.ime-input {
-    background-color: var(--vz-editor-background) !important;
+    background-color: var('vz-editor-background') !important;
   }
   .scroll-decoration {
     display: none;
@@ -73,7 +79,7 @@
 }
 
 .monaco-custom-checkbox.checked {
-  background: vz.color('blurple') !important;
-  color: vz.color('white') !important;
+  background: var('vz-editor-item-focus-background') !important;
+  color: color('white') !important;
   border-radius: 3px;
 }

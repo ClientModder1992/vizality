@@ -8,7 +8,6 @@ import { API } from '@vizality/entities';
 export default class Popups extends API {
   constructor () {
     super();
-    this.popups = {};
     this._module = 'API';
     this._submodule = 'Popups';
   }
@@ -43,11 +42,9 @@ export default class Popups extends API {
       options.top = options.top || y;
       options.left = options.left || x;
 
-      if (this.popups[popup.popupId]) {
+      if (window.popouts.has(popup.popupId)) {
         throw new Error(`Popup with ID "${popup.popupId}" already active!`);
       }
-
-      this.popups[popup.popupId] = popup;
 
       const PopupContent = memo(props => {
         const [ loading, setLoading ] = useState(true);
@@ -58,7 +55,7 @@ export default class Popups extends API {
           this.emit(Events.VIZALITY_POPUP_OPEN, windowKey);
           return () => {
             this.emit(Events.VIZALITY_POPUP_CLOSE, windowKey);
-            delete this.popups[windowKey];
+            window.popouts.delete(windowKey);
           };
         }, []);
 
@@ -106,7 +103,7 @@ export default class Popups extends API {
    */
   closePopup (popupId) {
     try {
-      if (!this.popups[popupId]) {
+      if (!window.popouts.has(popupId)) {
         throw new Error(`Popup with ID "${popupId}" not found!`);
       }
 

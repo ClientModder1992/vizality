@@ -1,15 +1,12 @@
-import { promises, watch, writeFileSync, readFileSync } from 'fs';
+import { watch, writeFileSync, readFileSync } from 'fs';
 import React, { memo, useEffect, useState, useRef } from 'react';
-import Editor from '@monaco-editor/react';
-import { join } from 'path';
+import { Editor } from '@vizality/components';
 
-import { joinClassNames, injectShadowStyles, getElementDimensions } from '@vizality/util/dom';
+import { joinClassNames } from '@vizality/util/dom';
 import { Spinner } from '@vizality/components';
 
-const { readFile } = promises;
-
 export default memo(props => {
-  const { main, getSetting, updateSetting } = props;
+  const { main, getSetting, updateSetting, popout } = props;
   const [ , setIsEditorReady ] = useState(false);
   const [ value, setValue ] = useState(getSetting('customCSS', ''));
 
@@ -35,19 +32,7 @@ export default memo(props => {
     });
   };
 
-  const handleEditorDidMount = (_valueGetter, _editor) => {
-    const editorDOM = document.querySelector('.monaco-editor');
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(async mutation => {
-        for (let i = 0; i < mutation.addedNodes.length; i++) {
-          const styles = await readFile(join(__dirname, 'contextMenu.css'), 'utf8');
-          injectShadowStyles(document.querySelector('.shadow-root-host'), '.context-view', styles);
-          observer.disconnect();
-        }
-      });
-    });
-
-    observer.observe(editorDOM, { childList: true, attributes: false, characterData: false, subtree: false });
+  const handleEditorDidMount = async (_valueGetter, _editor, editorDOM) => {
 
     setIsEditorReady(true);
     valueGetter.current = _valueGetter;
@@ -69,9 +54,7 @@ export default memo(props => {
   return (
     <>
       <Editor
-        height={getElementDimensions(document.querySelector('.vz-dashboard')).height - getElementDimensions(document.querySelector('.vz-dashboard-content-header-wrapper')).height}
-        width='100%'
-        wrapperClassName='vz-editor-wrapper'
+        wrapperClassName={joinClassNames('vz-editor-wrapper', 'vz-quick-code-css-wrapper')}
         className={joinClassNames('vz-editor', 'vz-quick-code-css')}
         language='scss'
         value={value}
@@ -79,11 +62,11 @@ export default memo(props => {
         vz-editor-theme={'vs-dark'}
         editorDidMount={handleEditorDidMount}
         loading={<Spinner />}
+        popout={popout}
         options={{
           minimap: {
             enabled: false
-          },
-          scrollBeyondLastLine: false
+          }
         }}
       />
     </>
