@@ -1,52 +1,66 @@
-import { isObject, isEmptyObject } from '@vizality/util/object';
+/**
+ * The commands API is meant for registering commands that can be used in the chat message
+ * bar, mimicing Discord's slash command user interface. For Vizality commands, you may set
+ * a custom command prefix, which can be found in Vizality's Dashboard Settings.
+ * @module Commands
+ * @memberof API
+ * @namespace API.Commands
+ * @version 1.0.0
+ */
+
+import { assertObject } from '@vizality/util/object';
+import { assertString } from '@vizality/util/string';
+import { assertArray } from '@vizality/util/array';
 import { getCaller } from '@vizality/util/file';
+import { Events } from '@vizality/constants';
 import { API } from '@vizality/entities';
+
+let commands = [];
 
 /**
  * @typedef VizalityCommand
  * @property {string} command Command name
- * @property {string[]} aliases Command aliases
- * @property {string} description Command description
- * @property {string} usage Command usage
  * @property {Function} executor Command executor
- * @property {Function|undefined} autocomplete Autocompletion method
- * @property {boolean|undefined} showTyping Whether typing status should be shown or not
+ * @property {Array<string>} [aliases] Command aliases
+ * @property {string} [icon] Command icon. This can be either an icon name or an image URL.
+ * @property {string} [description] Command description
+ * @property {Function} [autocomplete] Autocompletion method
+ * @property {string} [source] Source text to the right in the autocomplete
+ * @property {boolean} [showTyping=false] Whether typing status should be shown or not
+ * @property {string} caller Addon ID of command registrar. This property is set automatically.
  */
 
 /**
- * Vizality chat commands API.
- * @property {object.<string, VizalityCommand>} commands Registered commands
+ * @extends API
+ * @extends Events
  */
 export default class Commands extends API {
   constructor () {
     super();
-    this.commands = {};
-    this._module = 'API';
-    this._submodule = 'Commands';
+    this._labels = [ 'API', 'Commands' ];
   }
 
+  /**
+   * Shuts down the API, removing all listeners and stored objects.
+   */
+  stop () {
+    try {
+      delete vizality.api.commands;
+      this.removeAllListeners();
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets the custom command prefix.
+   */
   get prefix () {
-    return vizality.settings.get('commandPrefix', '.');
-  }
-
-  get find () {
-    const arr = Object.values(this.commands);
-    return arr.find.bind(arr);
-  }
-
-  get filter () {
-    const arr = Object.values(this.commands);
-    return arr.filter.bind(arr);
-  }
-
-  get map () {
-    const arr = Object.values(this.commands);
-    return arr.map.bind(arr);
-  }
-
-  get sort () {
-    const arr = Object.values(this.commands);
-    return arr.sort.bind(arr);
+    try {
+      return vizality.settings.get('commandPrefix', '.');
+    } catch (err) {
+      return this.error(err);
+    }
   }
 
   /**
@@ -54,25 +68,125 @@ export default class Commands extends API {
    * @param {VizalityCommand} command Command to register
    */
   registerCommand (command) {
-    /**
-     * @note Hacky way to get the caller of the command. Check if it's a plugin first. If
-     * it's not, check if it's a builtin. If it's not, consider it a core Vizality command.
-     */
-    const caller = getCaller();
-
     try {
-      if (!isObject(command) || isEmptyObject(command)) {
-        throw new Error('Command must be a non-empty object!');
-      }
-
-      if (this.commands[command.command]) {
+      assertObject(command);
+      assertString(command.command);
+      command.command = command.command.toLowerCase();
+      if (this.isCommand(command.command)) {
         throw new Error(`Command "${command.command}" is already registered!`);
       }
-
-      this.commands[command.command] = {
+      if (!command.executor) {
+        throw new Error('Command must contain an executor!');
+      }
+      if (typeof command.executor !== 'function') {
+        throw new TypeError('Command executor must be a function!');
+      }
+      if (command.aliases) {
+        assertArray(command.aliases);
+        command.aliases = command.aliases.map(alias => alias.toLowerCase());
+      }
+      const caller = getCaller();
+      commands.push({
         ...command,
         caller
-      };
+      });
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Executes a command programmatically.
+   * @param {string} commandName Command name
+   */
+  async invokeCommand (commandName) {
+    try {
+      if (!this.isCommand(commandName)) {
+        throw new Error(`Command "${commandName}" could not be found!`);
+      }
+      try {
+        await this.getCommandByName(commandName).executor();
+      } catch (err) {
+        return this.error(err);
+      }
+      this.emit(Events.VIZALITY_COMMAND_INVOKE, commandName);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Checks if a command is registered.
+   * @param {string} commandName Command name
+   * @returns {boolean} Whether a command with the given name is registered
+   */
+  isCommand (commandName) {
+    try {
+      return Boolean(this.getCommandByName(commandName));
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets the first command found matching a given filter.
+   * @param {Function} filter Function to use to filter commands by
+   * @returns {Object|null} Command matching the given filter
+   */
+  getCommand (filter) {
+    try {
+      return commands.find(filter);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets a command matching a given name.
+   * @param {string} commandName Command name
+   * @returns {Object|null} Command matching the given name
+   */
+  getCommandByName (commandName) {
+    try {
+      return commands.find(command => command.command === commandName);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets all commands found matching a given filter.
+   * @param {Function} filter Function to use to filter commands by
+   * @returns {Array<Object|null>} Commands matching the given filter
+   */
+  getCommands (filter) {
+    try {
+      return commands.filter(filter);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets all commands matching a given caller.
+   * @param {string} addonId Addon ID
+   * @returns {Array<Object|null>} Commands matching the given caller
+   */
+  getCommandsByCaller (addonId) {
+    try {
+      return commands.filter(command => command.caller === addonId);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Gets all commands.
+   * @returns {Array<Object|null>} All commands
+   */
+  getAllCommands () {
+    try {
+      return commands;
     } catch (err) {
       return this.error(err);
     }
@@ -80,22 +194,45 @@ export default class Commands extends API {
 
   /**
    * Unregisters a command.
-   * @param {string} command Command name to unregister
+   * @param {string} commandName Command name
+   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE
    */
-  unregisterCommand (command) {
+  unregisterCommand (commandName) {
     try {
-      if (!this.commands[command]) {
-        throw new Error(`Command "${command}" is not registered!`);
+      if (!this.isCommand(commandName)) {
+        throw new Error(`Command "${commandName}" is not registered, so it cannot be unregistered!`);
       }
-
-      delete this.commands[command];
+      commands = this.getCommands(command => command.command !== commandName);
+      this.emit(Events.VIZALITY_COMMAND_REMOVE, commandName);
     } catch (err) {
       return this.error(err);
     }
   }
 
-  stop () {
-    delete vizality.api.commands;
-    this.removeAllListeners();
+  /**
+   * Unregisters all commands matching a given caller.
+   * @param {string} addonId Addon ID
+   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER
+   */
+  unregisterCommandsByCaller (addonId) {
+    try {
+      commands = commands.filter(command => command.caller !== addonId);
+      this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER, addonId);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Unregisters all commands.
+   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE_ALL
+   */
+  unregisterAllCommands () {
+    try {
+      commands = [];
+      this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL);
+    } catch (err) {
+      return this.error(err);
+    }
   }
 }

@@ -74,63 +74,6 @@ export default class Actions extends API {
   }
 
   /**
-   * Checks if an action is registered.
-   * @param {string} actionName Action name
-   */
-  isAction (actionName) {
-    try {
-      return Boolean(this.getActionByName(actionName));
-    } catch (err) {
-      return this.error(err);
-    }
-  }
-
-  /**
-   * Unregisters an action.
-   * @param {string} actionName Action name
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE
-   */
-  unregisterAction (actionName) {
-    try {
-      if (this.isAction(actionName)) {
-        actions = this.getActions(action => action.action !== actionName);
-        this.emit(Events.VIZALITY_ACTION_REMOVE, actionName);
-      } else {
-        throw new Error(`Action "${actionName}" is not registered, so it cannot be unregistered!`);
-      }
-    } catch (err) {
-      return this.error(err);
-    }
-  }
-
-  /**
-   * Unregisters all actions.
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL
-   */
-  unregisterAllActions () {
-    try {
-      actions = [];
-      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL);
-    } catch (err) {
-      return this.error(err);
-    }
-  }
-
-  /**
-   * Unregisters all actions matching a given caller.
-   * @param {string} addonId Addon ID
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER
-   */
-  unregisterActionsByCaller (addonId) {
-    try {
-      actions = actions.filter(action => action.caller !== addonId);
-      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER, addonId);
-    } catch (err) {
-      return this.error(err);
-    }
-  }
-
-  /**
    * Invokes an action executor.
    * @param {string} actionName Action name
    * @emits Actions#Events.VIZALITY_ACTION_INVOKE
@@ -140,7 +83,11 @@ export default class Actions extends API {
       if (!this.isAction(actionName)) {
         throw new Error(`Action "${actionName}" could not be found!`);
       }
-      await this.getActionByName(actionName).executor();
+      try {
+        await this.getActionByName(actionName).executor();
+      } catch (err) {
+        return this.error(err);
+      }
       this.emit(Events.VIZALITY_ACTION_INVOKE, actionName);
     } catch (err) {
       return this.error(err);
@@ -148,13 +95,12 @@ export default class Actions extends API {
   }
 
   /**
-   * Gets all actions matching a given caller.
-   * @param {string} addonId Addon ID
-   * @returns {Array<Object|null>} Actions matching the given caller
+   * Checks if an action is registered.
+   * @param {string} actionName Action name
    */
-  getActionsByCaller (addonId) {
+  isAction (actionName) {
     try {
-      return actions.filter(action => action.caller === addonId);
+      return Boolean(this.getActionByName(actionName));
     } catch (err) {
       return this.error(err);
     }
@@ -200,12 +146,70 @@ export default class Actions extends API {
   }
 
   /**
+   * Gets all actions matching a given caller.
+   * @param {string} addonId Addon ID
+   * @returns {Array<Object|null>} Actions matching the given caller
+   */
+  getActionsByCaller (addonId) {
+    try {
+      return actions.filter(action => action.caller === addonId);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
    * Gets all actions.
    * @returns {Array<Object|null>} All actions
    */
   getAllActions () {
     try {
       return actions;
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Unregisters an action.
+   * @param {string} actionName Action name
+   * @emits Actions#Events.VIZALITY_ACTION_REMOVE
+   */
+  unregisterAction (actionName) {
+    try {
+      if (this.isAction(actionName)) {
+        actions = this.getActions(action => action.action !== actionName);
+        this.emit(Events.VIZALITY_ACTION_REMOVE, actionName);
+      } else {
+        throw new Error(`Action "${actionName}" is not registered, so it cannot be unregistered!`);
+      }
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Unregisters all actions matching a given caller.
+   * @param {string} addonId Addon ID
+   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER
+   */
+  unregisterActionsByCaller (addonId) {
+    try {
+      actions = actions.filter(action => action.caller !== addonId);
+      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER, addonId);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
+   * Unregisters all actions.
+   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL
+   */
+  unregisterAllActions () {
+    try {
+      actions = [];
+      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL);
     } catch (err) {
       return this.error(err);
     }
