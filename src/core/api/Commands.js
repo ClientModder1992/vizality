@@ -94,9 +94,7 @@ export default class Commands extends API {
         throw new TypeError('Command executor must be a function!');
       }
       if (command.icon) {
-        console.log(command.icon);
         if (Icon.Names.includes(command.icon)) {
-          console.log('yes');
           if (existsSync(join(Directories.ASSETS, 'svg', `${command.icon}.svg`))) {
             command.icon = `vz-asset://svg/${command.icon}.svg`;
           } else if (existsSync(join(Directories.ASSETS, 'logo', `${command.icon}.svg`))) {

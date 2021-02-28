@@ -6,6 +6,7 @@
 .notes
 *injected.txt
 *.nogit.*
+.eslintignore
 
 debug.log
 /main.log

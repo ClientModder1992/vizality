@@ -14,7 +14,6 @@
       "@vizality/api": [ "./core/api" ],
       "moment": [ "./core/modules/packages/Moment" ],
       "react": [ "./core/modules/packages/React" ],
-      "lodash": [ "./core/modules/packages/Lodash" ],
       "react-dom": [ "./core/modules/packages/ReactDOM" ],
       "react-spring": [ "./core/modules/packages/ReactSpring" ],
       "react-router": [ "./core/modules/packages/Router" ]
