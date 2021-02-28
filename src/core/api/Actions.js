@@ -109,7 +109,7 @@ export default class Actions extends API {
   /**
    * Gets the first action found matching a given filter.
    * @param {Function} filter Function to use to filter actions by
-   * @returns {Object|null} Action matching the given filter
+   * @returns {Object|null} Action matching a given filter
    */
   getAction (filter) {
     try {
@@ -122,7 +122,7 @@ export default class Actions extends API {
   /**
    * Gets an action matching a given name.
    * @param {string} actionName Action name
-   * @returns {Object|null} Action matching the given name
+   * @returns {Object|null} Action matching a given name
    */
   getActionByName (actionName) {
     try {
@@ -135,7 +135,7 @@ export default class Actions extends API {
   /**
    * Gets all actions found matching a given filter.
    * @param {Function} filter Function to use to filter actions by
-   * @returns {Array<Object|null>} Actions matching the given filter
+   * @returns {Array<Object|null>} Actions matching a given filter
    */
   getActions (filter) {
     try {
@@ -148,7 +148,7 @@ export default class Actions extends API {
   /**
    * Gets all actions matching a given caller.
    * @param {string} addonId Addon ID
-   * @returns {Array<Object|null>} Actions matching the given caller
+   * @returns {Array<Object|null>} Actions matching a given caller
    */
   getActionsByCaller (addonId) {
     try {

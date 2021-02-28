@@ -27,7 +27,7 @@ export function registerCommands (type) {
     command: type,
     description: `Commands related to ${type}s.`,
     // Not using Theme.svg icon here because it gets cut off
-    icon: type === 'plugin' ? 'vz-asset://svg/Plugin.svg' : 'vz-asset://svg/Palette.svg',
+    icon: type === 'plugin' ? 'Plugin' : 'Palette',
     options: [
       { name: 'settings', required: true },
       { name: 'manage', required: true },

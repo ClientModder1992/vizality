@@ -20,6 +20,7 @@ export const Directories = Object.freeze({
   ROOT: join(__dirname, '..', '..', '..', '..'),
   get SRC () { return join(this.ROOT, 'src'); },
   get VIZALITY () { return join(this.SRC, 'core'); },
+  get ASSETS () { return join(this.SRC, 'core', 'assets'); },
   // ---
   get SETTINGS () { return join(this.ROOT, 'settings'); },
   get CACHE () { return join(this.ROOT, '.cache'); },

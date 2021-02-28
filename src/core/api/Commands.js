@@ -8,11 +8,22 @@
  * @version 1.0.0
  */
 
+/*
+ * @todo Work out a better system for providing subcommands to make it much easier and less
+ * painful; preferably getting rid of the autocomplete property and adding a subcommands array
+ * property that would contain an array of VizalityCommand and would be processed like normal
+ * commands, but as subcommands.
+ */
+
+import { existsSync } from 'fs';
+import { join } from 'path';
+
+import { Events, Directories } from '@vizality/constants';
 import { assertObject } from '@vizality/util/object';
 import { assertString } from '@vizality/util/string';
 import { assertArray } from '@vizality/util/array';
 import { getCaller } from '@vizality/util/file';
-import { Events } from '@vizality/constants';
+import { Icon } from '@vizality/components';
 import { API } from '@vizality/entities';
 
 let commands = [];
@@ -25,6 +36,7 @@ let commands = [];
  * @property {string} [icon] Command icon. This can be either an icon name or an image URL.
  * @property {string} [description] Command description
  * @property {Function} [autocomplete] Autocompletion method
+ * @property {Array<VizalityCommand>|undefined} [subcommands] Command subcommands
  * @property {string} [source] Source text to the right in the autocomplete
  * @property {boolean} [showTyping=false] Whether typing status should be shown or not
  * @property {string} caller Addon ID of command registrar. This property is set automatically.
@@ -81,6 +93,17 @@ export default class Commands extends API {
       if (typeof command.executor !== 'function') {
         throw new TypeError('Command executor must be a function!');
       }
+      if (command.icon) {
+        console.log(command.icon);
+        if (Icon.Names.includes(command.icon)) {
+          console.log('yes');
+          if (existsSync(join(Directories.ASSETS, 'svg', `${command.icon}.svg`))) {
+            command.icon = `vz-asset://svg/${command.icon}.svg`;
+          } else if (existsSync(join(Directories.ASSETS, 'logo', `${command.icon}.svg`))) {
+            command.icon = `vz-asset://logo/${command.icon}.svg`;
+          }
+        }
+      }
       if (command.aliases) {
         assertArray(command.aliases);
         command.aliases = command.aliases.map(alias => alias.toLowerCase());
@@ -118,7 +141,7 @@ export default class Commands extends API {
   /**
    * Checks if a command is registered.
    * @param {string} commandName Command name
-   * @returns {boolean} Whether a command with the given name is registered
+   * @returns {boolean} Whether a command with a given name is registered
    */
   isCommand (commandName) {
     try {
@@ -129,9 +152,22 @@ export default class Commands extends API {
   }
 
   /**
+   * Checks if a command has subcommands.
+   * @param {string} commandName Command name
+   * @returns {boolean} Whether a command with a given name has subcommands
+   */
+  hasSubcommands (commandName) {
+    try {
+      return Boolean(this.getCommandByName(commandName).subcommand?.length);
+    } catch (err) {
+      return this.error(err);
+    }
+  }
+
+  /**
    * Gets the first command found matching a given filter.
    * @param {Function} filter Function to use to filter commands by
-   * @returns {Object|null} Command matching the given filter
+   * @returns {Object|null} Command matching a given filter
    */
   getCommand (filter) {
     try {
@@ -144,7 +180,7 @@ export default class Commands extends API {
   /**
    * Gets a command matching a given name.
    * @param {string} commandName Command name
-   * @returns {Object|null} Command matching the given name
+   * @returns {Object|null} Command matching a given name
    */
   getCommandByName (commandName) {
     try {
@@ -157,7 +193,7 @@ export default class Commands extends API {
   /**
    * Gets all commands found matching a given filter.
    * @param {Function} filter Function to use to filter commands by
-   * @returns {Array<Object|null>} Commands matching the given filter
+   * @returns {Array<Object|null>} Commands matching a given filter
    */
   getCommands (filter) {
     try {
@@ -170,7 +206,7 @@ export default class Commands extends API {
   /**
    * Gets all commands matching a given caller.
    * @param {string} addonId Addon ID
-   * @returns {Array<Object|null>} Commands matching the given caller
+   * @returns {Array<Object|null>} Commands matching a given caller
    */
   getCommandsByCaller (addonId) {
     try {

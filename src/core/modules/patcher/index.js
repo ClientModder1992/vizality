@@ -65,16 +65,9 @@ export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
       _error(_labels.concat('_runPrePatchesRecursive'), err);
       return originalArgs;
     }
-    if (args === false) {
-      return false;
-    }
-    if (!Array.isArray(args)) {
-      _warn(_labels.concat('_runPrePatchesRecursive'), `Pre-patch "${patch.id}" returned something invalid. Patch will be ignored.`);
-      return originalArgs;
-    }
-    if (patches.length > 0) {
-      return _runPrePatchesRecursive(patches, args, _this);
-    }
+    if (args === false) return false;
+    if (!Array.isArray(args)) return originalArgs;
+    if (patches.length > 0) return _runPrePatchesRecursive(patches, args, _this);
     return args;
   } catch (err) {
     return _error(_labels.concat('_runPrePatchesRecursive'), err);
