@@ -70,12 +70,12 @@
 }
 
 .monaco-menu .monaco-action-bar.vertical .action-menu-item[style*='background-color: rgb(9, 71, 113);'] {
-  background-color: var(--vz-editor-item-focus-background) !important;
+  background-color: var(--vz-editor-context-menu-item-focus-background) !important;
   color: var(--vz-editor-context-menu-item-focus-color) !important;
 }
 
 .monaco-menu .monaco-action-bar.vertical .action-menu-item[style*='background-color: rgb(9, 71, 113);']:active {
-  background-color: var(--vz-editor-item-focus-background-active) !important;
+  background-color: var(--vz-editor-context-menu-item-focus-background-active) !important;
 }
 
 .monaco-menu .monaco-action-bar.vertical .action-menu-item[style*='background-color: rgb(9, 71, 113);'] .keybinding {

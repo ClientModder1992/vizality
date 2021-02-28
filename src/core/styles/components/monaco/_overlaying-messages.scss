@@ -1,13 +1,13 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .monaco-editor .monaco-editor-overlaymessage.fadeIn {
   animation: editor-tooltip .1s ease forwards;
 }
 
 .monaco-editor .monaco-editor-overlaymessage .message {
-  background-color: var('vz-editor-item-focus-background') !important;
-  box-shadow: var('elevation-low');
-  color: color('white') !important;
+  background-color: var(--vz-editor-context-menu-item-focus-background) !important;
+  box-shadow: var(--elevation-low);
+  color: vz.color('white') !important;
   padding: 10px;
   border: none !important;
   font-family: Whitney !important;
@@ -17,5 +17,5 @@
 }
 
 .monaco-editor .monaco-editor-overlaymessage .anchor {
-  border-top-color: var('vz-editor-item-focus-background') !important; 
+  border-top-color: var(--vz-editor-item-focus-background) !important; 
 }

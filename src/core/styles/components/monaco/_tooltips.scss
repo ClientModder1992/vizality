@@ -1,21 +1,21 @@
-@use '@vizality' as *;
+@use '@vizality' as vz;
 
 .monaco-editor {
   .monaco-hover {
-    background-color: color('black') !important;
-    box-shadow: var('elevation-high');
-    color: var('interactive-hover') !important;
+    background-color: vz.color('black') !important;
+    box-shadow: var(--elevation-high);
+    color: var(--interactive-hover) !important;
     padding: 0 12px;
     border: none !important;
     font-family: 'Whitney' !important;
     border-radius: 4px;
     animation: editor-tooltip .1s ease forwards;
     a {
-      color: var('text-link') !important;
+      color: var(--text-link) !important;
       pointer-events: none;
       &::after {
         content: '- ' attr(data-href);
-        color: color('white', .6);
+        color: vz.color('white', .6);
         margin-left: 10px;
         display: inline-block;
       }
@@ -29,7 +29,7 @@
         display: none;
       }
       &:not(:first-child):not(:empty) {
-        border-top: 1px solid color('white', .1) !important;
+        border-top: 1px solid vz.color('white', .1) !important;
       }
     }
     * {
