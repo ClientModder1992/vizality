@@ -56,6 +56,7 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as StickyWrapper } from './StickyWrapper';
 export { default as ColorPicker } from './ColorPicker';
 export { default as PopupWindow } from './PopupWindow';
+export { default as Editor } from './Editor';
 export { default as ErrorState } from './ErrorState';
 export { default as CodeBlock } from './CodeBlock';
 export { default as Markdown } from './Markdown';

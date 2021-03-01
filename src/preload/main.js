@@ -4,7 +4,8 @@ require('module-alias/register');
 
 function exposeGlobal (name, toMainWorld = false) {
   Object.defineProperty(toMainWorld ? webFrame.top.context : window, name, {
-    get: () => (toMainWorld ? window : webFrame.top.context)[name]
+    get: () => (toMainWorld ? window : webFrame.top.context)[name],
+    set: (v) => (toMainWorld ? window : webFrame.top.context)[name] = v
   });
 }
 

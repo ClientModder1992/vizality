@@ -32,7 +32,7 @@ export default memo(() =>
     <Item icon='Gear' label='Settings' path='/settings' />
     <Item icon='Plugin' label='Plugins' path='/plugins' />
     <Item icon='Theme' label='Themes' path='/themes' />
-    {vizality.manager.builtins.isEnabled('quick-code') && <Item icon='Compose' disabled label='Quick Code' path='/quick-code' />}
+    {vizality.manager.builtins.isEnabled('quick-code') && <Item icon='Compose' label='Quick Code' path='/quick-code' />}
     <Item icon='Settings' label='Theme Editor' path='/theme-editor' disabled auxillaryIconTooltipText='Under Construction' />
     <Separator />
     {/* Addon Guidelines, Publish an Addon, Get Verified, Documentation */}
