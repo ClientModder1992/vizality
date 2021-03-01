@@ -209,7 +209,7 @@ export default class Plugin extends Updatable {
           message: `Directory "${path.replace(this.path + sep, '')}" has been removed.`
         }))
       .on('error', error =>
-        log({
+        error({
           labels: [ 'Watcher', ...this._labels ],
           message: error
         }))

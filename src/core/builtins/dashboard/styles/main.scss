@@ -84,6 +84,9 @@
     flex-flow: column;
     width: 100%;
   }
+  > .vz-error-boundary {
+    display: block;
+  }
 }
 
 .vz-dashboard-sidebar-header {
