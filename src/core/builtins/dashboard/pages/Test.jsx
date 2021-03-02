@@ -3,12 +3,29 @@ import React, { memo, useState, useEffect } from 'react';
 
 import { Icon, KeyboardShortcut, KeybindRecorder, Avatar, Text, HeaderBarContainer, CarouselWithPreview, ApplicationCommandDiscoverySectionList, ApplicationStoreListingCarousel, FormNotice } from '@vizality/components';
 import { getModuleByDisplayName } from '@vizality/webpack';
+import { warn } from '../../../modules/util/Logger';
 
 const TransitionGroup = getModuleByDisplayName('TransitionGroup');
 const SlideIn = getModuleByDisplayName('SlideIn');
 
 // eslint-disable-next-line no-empty-function
-const KeybindEntry = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)').prototype.render.call({ memoizedGetStateFromStores: () => {} }).type.prototype.renderKeybinds.call({ props: {} }, [ [] ])[0].props.children.type;
+
+const KeybindEntry = (() => {
+  let keybindentry;
+  try {
+    const UserSettingsKeybinds = getModuleByDisplayName('FluxContainer(UserSettingsKeybinds)')?.prototype?.render?.call({ memoizedGetStateFromStores: () => ({}) });
+    if (!UserSettingsKeybinds) throw 'Failed to get UserSettingsKeybinds component!';
+    const [ keybind ] = UserSettingsKeybinds.type?.prototype?.renderKeybinds?.call({ keybindActionTypes: {}, keybindDescriptions: {} }, [ {} ]);
+    if (!keybind) throw 'Failed to render fake Keybind!';
+    keybindentry = keybind.props?.children?.type;
+    if (!keybindentry) throw 'Failed to get KeybindEntry component!';
+  } catch (error) {
+    warn({ labels: [ 'Test' ], message: error });
+    keybindentry = () => null;
+  }
+
+  return keybindentry;
+})();
 
 export default memo(() => {
   return (
