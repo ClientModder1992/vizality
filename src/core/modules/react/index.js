@@ -3,6 +3,7 @@ import { patch } from '../patcher';
 import { getOwnerInstance } from '../util/React';
 import { waitForElement } from '../util/DOM';
 import { getModule } from '../webpack';
+import { warn } from '../util/Logger';
 
 export const knownComponents = new Map();
 export const unknownComponents = new Set();
@@ -25,31 +26,6 @@ export class ReactComponent {
     });
   }
 }
-
-export const getComponent = (displayName = '', selector, filter = m => m.displayName === displayName) => {
-  if (typeof displayName !== 'string') return false;
-  const wrapFilter = comp => {
-    try {
-      return filter(comp);
-    } catch { return false; }
-  };
-
-  return new Promise(resolve => {
-    if (knownComponents.has(displayName)) {
-      const comp = knownComponents.get(displayName);
-      if (!comp.selector && selector) comp.selector = selector;
-      return resolve(comp);
-    }
-    for (let component of unknownComponents) {
-      if (!wrapFilter(component)) continue;
-      unknownComponents.delete(component);
-      component = new ReactComponent(component, selector ?? null, filter, displayName);
-      resolve(component);
-      return knownComponents.set(displayName, component);
-    }
-    listeners.add({ filter: wrapFilter, displayName, callback: resolve, selector });
-  });
-};
 
 export const addComponentWithName = component => {
   if (!knownComponents.get(component.displayName)) {
@@ -95,12 +71,12 @@ export const findComponent = filter => {
   };
 
   for (const component of unknownComponents) if (wrapFilter(component)) return new ReactComponent(component, null, filter, null);
-  for (const component of knownComponents) if (wrapFilter(component)) return component;
+  for (const { component } of knownComponents) if (wrapFilter(component)) return component;
 };
 
 export const getComponentBySelector = selector => {
   return new Promise(async res => {
-    const timeout = setTimeout(() => this.warn(`Component with selector '${selector}' was not found after 20 seconds.`), 20000);
+    const timeout = setTimeout(() => warn({ labels: [ 'react-components' ], message: `Component with selector '${selector}' was not found after 20 seconds.` }), 20000);
     const resolve = component => {
       clearTimeout(timeout);
       return res(component);
@@ -118,6 +94,38 @@ export const getComponentBySelector = selector => {
   });
 };
 
+export const getComponent = (displayName = '', selector, filter = m => m.displayName === displayName) => {
+  if (typeof displayName !== 'string') return false;
+  const wrapFilter = comp => {
+    try {
+      return filter(comp);
+    } catch { return false; }
+  };
+
+  return new Promise(resolve => {
+    if (knownComponents.has(displayName)) {
+      const comp = knownComponents.get(displayName);
+      if (!comp.selector && selector) comp.selector = selector;
+      return resolve(comp);
+    }
+    for (let component of unknownComponents) {
+      if (!wrapFilter(component)) continue;
+      unknownComponents.delete(component);
+      component = new ReactComponent(component, selector ?? null, filter, displayName);
+      resolve(component);
+      return knownComponents.set(displayName, component);
+    }
+    const listener = { filter: wrapFilter, displayName, callback: resolve, selector };
+    listeners.add(listener);
+    if (selector) {
+      getComponentBySelector(selector).then(component => {
+        listeners.delete(listener);
+        if (component.displayName === displayName) resolve(component);
+        addComponentWithName(component);
+      });
+    }
+  });
+};
 
 /* Patches */
 patch('vz-react-components-createelement', React, 'createElement', ([ component ], res) => {
