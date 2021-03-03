@@ -17,9 +17,7 @@ export default main => {
        * Blocked messages have no props.
        */
       if (!props?.message) return;
-
       const { message, channel } = props;
-
       /*
        * Author-related attributes.
        */
@@ -41,7 +39,6 @@ export default main => {
         message.author?.id === guildModule.getGuild(channel?.guild_id) &&
         message.type === 0
       ) && '';
-
       /*
        * Message-related attributes.
        */
@@ -49,7 +46,6 @@ export default main => {
       res.props['vz-embed'] = Boolean(message.embeds?.length) && '';
       res.props['vz-blocked'] = Boolean(message.blocked) && '';
       res.props['vz-message-id'] = message.id;
-
       /**
        * Set an attribute for special types of messages.
        * @see {@link https://discord.com/developers/docs/resources/channel#message-object-message-types}
@@ -72,7 +68,7 @@ export default main => {
         (Boolean(message.type === 19) && 'reply') ||
         (Boolean(message.type === 20) && 'application-command');
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Message')), err);
+      return main.error(main._labels.concat(labels.concat('Message')), err);
     }
   });
   return () => unpatch('vz-attributes-messages');

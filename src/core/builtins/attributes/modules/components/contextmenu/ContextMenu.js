@@ -13,7 +13,7 @@ export default main => {
         ? root.setAttribute('vz-context-menu-active', '')
         : root.removeAttribute('vz-context-menu-active');
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('ContextMenu')), err);
+      return main.error(main._labels.concat(labels.concat('ContextMenu')), err);
     }
   });
   return () => unpatch('vz-attributes-context-menu');

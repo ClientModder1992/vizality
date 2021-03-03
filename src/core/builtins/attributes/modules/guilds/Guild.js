@@ -26,7 +26,7 @@ export default async main => {
       res.props['vz-screenshare'] = Boolean(screenshare) && '';
       res.props['vz-mentioned'] = Boolean(mentions > 0) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Guild')), err);
+      return main.error(main._labels.concat(labels.concat('Guild')), err);
     }
   });
   setImmediate(() => forceUpdateElement(`.${listItem}`, true));

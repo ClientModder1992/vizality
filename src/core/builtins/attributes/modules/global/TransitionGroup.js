@@ -20,7 +20,7 @@ export default main => {
       const section = findInReactTree(res, c => c.section)?.section;
       section && (res.props['vz-section'] = toKebabCase(section));
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('TransitionGroup')), err);
+      return main.error(main._labels.concat(labels.concat('TransitionGroup')), err);
     }
   });
   return () => unpatch('vz-attributes-transition-group');

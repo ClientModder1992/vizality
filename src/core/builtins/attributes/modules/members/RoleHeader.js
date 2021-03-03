@@ -18,7 +18,7 @@ export default main => {
       [ res.props['vz-role-name'] ] = res.props.children.props.children;
       [ , , res.props['vz-online-count'] ] = res.props.children.props.children;
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('RoleHeader')), err);
+      return main.error(main._labels.concat(labels.concat('RoleHeader')), err);
     }
   });
   setImmediate(() => forceUpdateElement(`.${membersGroup}`));

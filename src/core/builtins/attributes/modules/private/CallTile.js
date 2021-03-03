@@ -16,7 +16,7 @@ export default main => {
       res.props['vz-ringing'] = Boolean(participant.ringing) && '';
       res.props['vz-user-id'] = participant.id;
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('CallTile')), err);
+      return main.error(main._labels.concat(labels.concat('CallTile')), err);
     }
   });
   return () => unpatch('vz-attributes-private-call');

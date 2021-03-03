@@ -18,7 +18,7 @@ export default main => {
       res.props['vz-user-id'] = user?.id;
       res.props['vz-status'] = status;
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('PrivateChannel')), err);
+      return main.error(main._labels.concat(labels.concat('PrivateChannel')), err);
     }
   });
   return () => unpatch('vz-attributes-private-channels-list-channel');

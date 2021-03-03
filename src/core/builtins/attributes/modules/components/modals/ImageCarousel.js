@@ -18,7 +18,7 @@ export default main => {
         return r;
       };
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('ImageCarousel')), err);
+      return main.error(main._labels.concat(labels.concat('ImageCarousel')), err);
     }
   });
   return () => unpatch('vz-attributes-modal-image-carousel');

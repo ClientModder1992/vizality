@@ -32,6 +32,6 @@ export default main => {
     vizality.on(Events.USER_SETTINGS_UPDATE, handleSettingsChange);
     return () => vizality.removeListener(Events.USER_SETTINGS_UPDATE, handleSettingsChange);
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Settings')), err);
+    return main.error(main._labels.concat(labels.concat('Settings')), err);
   }
 };

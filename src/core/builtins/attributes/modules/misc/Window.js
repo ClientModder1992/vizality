@@ -24,6 +24,6 @@ export default main => {
       ipcRenderer.removeListener(IpcChannels.VIZALITY_WINDOW_UNMAXIMIZE, setRestored);
     };
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Window')), err);
+    return main.error(main._labels.concat(labels.concat('Window')), err);
   }
 };

@@ -16,7 +16,7 @@ export default main => {
         }
       };
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('User')), err);
+      return main.error(main._labels.concat(labels.concat('User')), err);
     }
   });
   return () => unpatch('vz-attributes-popout-user');

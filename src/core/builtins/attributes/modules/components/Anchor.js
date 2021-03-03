@@ -57,7 +57,7 @@ export default main => {
         };
       }
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Anchor')), err);
+      return main.error(main._labels.concat(labels.concat('Anchor')), err);
     }
   });
   return () => unpatch('vz-attributes-anchors');

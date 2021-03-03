@@ -16,7 +16,7 @@ export default main => {
       res.props['vz-bot'] = Boolean(user.bot) && '';
       res.props['vz-owner'] = Boolean(isOwner) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Member')), err);
+      return main.error(main._labels.concat(labels.concat('Member')), err);
     }
   });
   return () => unpatch('vz-attributes-members-member');

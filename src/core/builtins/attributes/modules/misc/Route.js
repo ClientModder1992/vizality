@@ -20,9 +20,8 @@ export default main => {
       const currentRoute = Discord.route.getCurrentRoute();
       root.setAttribute('vz-route', currentRoute);
     });
-
     return () => unlisten();
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Route')), err);
+    return main.error(main._labels.concat(labels.concat('Route')), err);
   }
 };

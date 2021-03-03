@@ -9,7 +9,7 @@ export default main => {
     try {
       res.props['vz-no-icon'] = Boolean(props?.game) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('GameIcon')), err);
+      return main.error(main._labels.concat(labels.concat('GameIcon')), err);
     }
   });
   return () => unpatch('vz-attributes-game-icon');

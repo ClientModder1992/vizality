@@ -17,7 +17,7 @@ export default main => {
       res.props['vz-screenshare'] = Boolean(screenshare) && '';
       res.props['vz-mentioned'] = Boolean(mentions > 0) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Folder')), err);
+      return main.error(main._labels.concat(labels.concat('Folder')), err);
     }
   });
   return () => unpatch('vz-attributes-guild-folders');

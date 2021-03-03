@@ -11,7 +11,7 @@ export default main => {
       const selectedItem = this?.props?.selectedItem;
       selectedItem && (res.props['vz-tab-selected'] = toKebabCase(selectedItem));
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('TabBar')), err);
+      return main.error(main._labels.concat(labels.concat('TabBar')), err);
     }
   });
 
@@ -22,7 +22,7 @@ export default main => {
       res.props['vz-active'] = active && '';
       res.props['vz-tab'] = toKebabCase(this.props.id);
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('TabBarItem')), err);
+      return main.error(main._labels.concat(labels.concat('TabBarItem')), err);
     }
   });
 

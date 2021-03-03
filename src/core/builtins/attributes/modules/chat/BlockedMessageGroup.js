@@ -15,7 +15,7 @@ export default main => {
       res.props['vz-expanded'] = Boolean(props.expanded) && '';
       res.props['vz-collapsed'] = Boolean(!props.expanded) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('BlockMessageGroup')), err);
+      return main.error(main._labels.concat(labels.concat('BlockMessageGroup')), err);
     }
   });
   return () => unpatch('vz-attributes-blocked-messages');

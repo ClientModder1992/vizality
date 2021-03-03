@@ -62,6 +62,6 @@ export default main => {
       root.removeAttribute('vz-settings');
     };
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Settings')), err);
+    return main.error(main._labels.concat(labels.concat('Settings')), err);
   }
 };

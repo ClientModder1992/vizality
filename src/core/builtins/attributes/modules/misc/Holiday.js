@@ -13,6 +13,6 @@ export default main => {
     if (date.getMonth() === 11 && date.getDate() === 25) root.setAttribute('vz-holiday', 'christmas');
     return () => root.removeAttribute('vz-holiday');
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Holiday')), err);
+    return main.error(main._labels.concat(labels.concat('Holiday')), err);
   }
 };

@@ -14,7 +14,7 @@ export default async main => {
       res.props.children.props['vz-hoisted'] = Boolean(props.role.hoist) && '';
       res.props.children.props['vz-mentionable'] = Boolean(props.role.mentionable) && '';
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Role')), err);
+      return main.error(main._labels.concat(labels.concat('Role')), err);
     }
   });
   return () => unpatch('vz-attributes-roles');

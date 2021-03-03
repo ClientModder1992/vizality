@@ -52,7 +52,7 @@ export default async main => {
         ? root.setAttribute('vz-guild-id', this.props.guildId)
         : root.removeAttribute('vz-guild-id');
     } catch (err) {
-      main.error(main._labels.concat(labels), err);
+      return main.error(main._labels.concat(labels), err);
     }
   });
 

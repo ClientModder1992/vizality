@@ -16,7 +16,7 @@ export default main => {
         [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
       }
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Avatar')), err);
+      return main.error(main._labels.concat(labels.concat('Avatar')), err);
     }
   });
 
@@ -25,7 +25,7 @@ export default main => {
     try {
       return <Avatar {...res.props} />;
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('Avatar')), err);
+      return main.error(main._labels.concat(labels.concat('Avatar')), err);
     }
   });
 
