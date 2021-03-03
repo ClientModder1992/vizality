@@ -15,9 +15,6 @@
  * commands, but as subcommands.
  */
 
-import { existsSync } from 'fs';
-import { join } from 'path';
-
 import { Events, Directories } from '@vizality/constants';
 import { assertObject } from '@vizality/util/object';
 import { assertString } from '@vizality/util/string';
@@ -25,7 +22,13 @@ import { assertArray } from '@vizality/util/array';
 import { getCaller } from '@vizality/util/file';
 import { Icon } from '@vizality/components';
 import { API } from '@vizality/entities';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
+/**
+ * All currently registered commands.
+ * Accessed with `getAllCommands` below.
+ */
 let commands = [];
 
 /**
@@ -47,16 +50,12 @@ let commands = [];
  * @extends Events
  */
 export default class Commands extends API {
-  constructor () {
-    super();
-    this._labels = [ 'API', 'Commands' ];
-  }
-
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */
   stop () {
     try {
+      this.unregisterAllCommands();
       delete vizality.api.commands;
       this.removeAllListeners();
     } catch (err) {

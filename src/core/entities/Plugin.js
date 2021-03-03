@@ -1,8 +1,3 @@
-import { debounce } from 'lodash';
-import { join, sep } from 'path';
-import { watch } from 'chokidar';
-import { existsSync } from 'fs';
-
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
 import { jsonToReact } from '@vizality/util/react';
@@ -11,6 +6,10 @@ import { unpatchAllByAddon } from '@vizality/patcher';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 import { isArray } from '@vizality/util/array';
+import { debounce } from 'lodash';
+import { join, sep } from 'path';
+import { watch } from 'chokidar';
+import { existsSync } from 'fs';
 
 import Updatable from './Updatable';
 

@@ -13,6 +13,10 @@ import { getCaller } from '@vizality/util/file';
 import { Events } from '@vizality/constants';
 import { API } from '@vizality/entities';
 
+/**
+ * All currently registered actions.
+ * Accessed with `getAllActions` below.
+ */
 let actions = [];
 
 /**
@@ -27,16 +31,12 @@ let actions = [];
  * @extends Events
  */
 export default class Actions extends API {
-  constructor () {
-    super();
-    this._labels = [ 'API', 'Actions' ];
-  }
-
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */
   stop () {
     try {
+      this.unregisterAllActions();
       delete vizality.api.actions;
       this.removeAllListeners();
     } catch (err) {
