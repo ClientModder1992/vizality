@@ -1,37 +1,34 @@
-// const { joinClassNames, dom: { waitForElement }, react: { getOwnerInstance } } = require('@vizality/util');
-// const { patch, unpatch } = require('@vizality/patcher');
-// const { getModule } = require('@vizality/webpack');
+import { warn } from '@vizality/util/logger';
+
+import { patch, unpatch } from '@vizality/patcher';
+import { getModule } from'@vizality/webpack';
 
 export default () => {
-  return void 0;
-  // const { roleCircle } = getModule('roleCircle', 'roleName', 'root');
-  // const instance = getOwnerInstance(await waitForElement(`.${roleCircle.split(' ')[0]}`));
+  const { MemberRole } = getModule('MemberRole') || {};
+  if (MemberRole) {
+    patch('vz-attributes-roles', MemberRole, 'render', ([ props ], res) => {
+      const role = props?.role;
+      if (!role) {
+        warn({ labels: [ 'attributes-roles' ], message: [ 'Failed to inject roles attributes!',  '"role" prop was not found!'] });
+        return res;
+      }
 
-  // patch('vz-attributes-roles', instance.__proto__, 'render', function (args, res) {
-  //   if (!this?.props?.role) return res;
-  //   console.log(this);
-  //   console.log(args);
-  //   console.log(res);
+      try {
+        const roleItem = res?.props?.children?.props;
+        if (!roleItem) throw 'roleItem was not found!';
+        
+        roleItem['vz-role-id'] = role.id;
+        roleItem['vz-role-name'] = role.name;
+        roleItem['vz-role-color-string'] = role.colorString;
+        roleItem['vz-hoisted'] = Boolean(role.hoist) && '';
+        roleItem['vz-mentionable'] = Boolean(role.mentionable) && '';
+        
+      } catch (error) {
+        error({ labels: [ 'attributes-roles' ], message: [ 'Failed to inject roles attributes!', error ] });
+      }
 
-  //   const { role } = this.props;
+    });
+  } else warn({ labels: [ 'attributes-roles' ], message: '"MemberRole" module was not found!' });
 
-  //   res.props['vz-role-id'] = role.id;
-  //   res.props['vz-role-name'] = role.name;
-  //   res.props['vz-role-color-string'] = role.colorString;
-
-  //   res.props.className = joinClassNames(
-  //     res.props.className, {
-  //       'vz-isHoisted': role.hoist,
-  //       'vz-isMentionable': role.mentionable
-  //     });
-
-  //   /*
-  //    * @todo Add this as a core settings option.
-  //    * res.props.style.color = role.colorString;
-  //    */
-
-  //   return res;
-  // });
-
-  // return () => unpatch('vz-attributes-roles');
+  return () => unpatch('vz-attributes-roles');
 };
