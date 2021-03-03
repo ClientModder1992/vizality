@@ -1,14 +1,15 @@
 import { FluxDispatcher } from '@vizality/webpack';
 
-/**
- * This Dispatcher fix was created by Strencher. Thanks~
- */
-export default () => {
-  FluxDispatcher.dispatch = function (args) {
-    if (!args?.type) {
-      return this._dispatch(args);
-    }
+export const labels = [ 'Global' ];
 
-    this.wait(() => this._dispatch(args));
-  };
+export default main => {
+  const ogDispatch = FluxDispatcher.dispatch;
+  try {
+    FluxDispatcher.dispatch = function (args) {
+      this.wait(() => this._dispatch(args));
+    };
+  } catch (err) {
+    main.error(main._labels.concat(labels.concat('Dispatcher')), err);
+  }
+  return () => FluxDispatcher.dispatch = ogDispatch;
 };
