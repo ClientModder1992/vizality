@@ -4,30 +4,43 @@ import i18n from '@vizality/i18n';
 
 import * as strings from '../languages';
 
+let locale;
+// getLocale
+// setLocale
+// getLanguage
+// getLanguages
+// getMessage
+// getMessages
+// getMessagesByString
+// getMessagesByAddon
+// getAllMessages
+// registerMessage
+// registerMessages
+// unregisterMessage
+// unregisterMessages
+// getMessagesByLocale
 export default class I18n extends API {
   constructor () {
     super();
     this.messages = {};
-    this.locale = null;
     this._vizality = strings;
     this.injectAllStrings(this._vizality);
     this._module = 'API';
     this._submodule = 'I18n';
   }
 
-  async start () {
-    await getModule('locale', 'theme', true).then(module => {
-      this.locale = module.locale;
-
-      module.addChangeListener(() => {
-        if (module.locale !== this.locale) {
-          this.locale = module.locale;
-          i18n.loadPromise.then(() => this._addVizalityStrings());
-        }
-      });
-
+  _handleLocaleChange (diff) {
+    if (diff.locale) {
+      [ locale ] = diff;
       this._addVizalityStrings();
-    });
+    }
+  }
+
+  async start () {
+    locale = getModule('locale', 'theme')?.locale;
+    console.log(locale);
+    vizality.on('VIZALITY_DISCORD_SETTING_UPDATE', this._handleLocaleChange);
+    this._addVizalityStrings();
   }
 
   stop () {
@@ -45,6 +58,14 @@ export default class I18n extends API {
 
     delete vizality.api.i18n;
     this.removeAllListeners();
+  }
+
+  getLocale () {
+    try {
+      return locale;
+    } catch (err) {
+      this.error(err);
+    }
   }
 
   _addVizalityStrings () {

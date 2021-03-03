@@ -42,6 +42,11 @@ export default class Settings extends API {
     this._submodule = 'Settings';
   }
 
+  stop () {
+    delete vizality.api.settings;
+    this.removeAllListeners();
+  }
+
   /**
    * Builds a settings category that can be used by a plugin.
    * @param {string} category Settings category name
@@ -252,10 +257,5 @@ export default class Settings extends API {
         return actions.toggleSetting(category, setting, defaultValue);
       }
     };
-  }
-
-  stop () {
-    delete vizality.api.settings;
-    this.removeAllListeners();
   }
 }

@@ -1,27 +1,40 @@
+/**
+ * The notices API is meant for sending any type of popup notice, ranging from modals
+ * (also known as dialogs) to toasts (also known as notifications) and announcements (also
+ * known as notices).
+ * @module Notices
+ * @memberof API
+ * @namespace API.Notices
+ * @version 1.0.0
+ */
+
+import React from 'react';
+import { toast } from 'react-toastify';
+
 import { API } from '@vizality/entities';
 
 /*
- * @todo:
- * this.error is not a function yet.
- * Add showAlert, showPrompt, showConfirmation.
- * Add closeAlert, closePrompt, closeConfirmation.
+ * @todo
+ * Add showAlert, showPrompt, showConfirm, showModal (type property: alert, prompt, confirm)
+ * Add closeAlert, closePrompt, closeConfirm, closeModal, closeAllAlerts, closeAllPrompts,
+ * closeAllConfirms, closeAllModals, closeAllAnnouncements, closeAllToasts, closeAllNotices
  */
 
 /**
  * @typedef VizalityToast
  * @property {string} header
  * @property {string} content
- * @property {ToastButton[]|void} buttons
- * @property {number|void} timeout
- * @property {string|void} className
- * @property {boolean|void} hideProgressBar
+ * @property {Array<ToastButton>} [buttons]
+ * @property {number} [timeout]
+ * @property {string} [className]
+ * @property {boolean} [hideProgressBar]
  */
 
 /**
  * @typedef ToastButton
- * @property {string|void} size
- * @property {string|void} look
- * @property {string|void} color
+ * @property {string|void} [size]
+ * @property {string|void} [look]
+ * @property {string|void} [color]
  * @property {Function} onClick
  * @property {string} text
  */
@@ -31,7 +44,7 @@ import { API } from '@vizality/entities';
  * @property {string} message
  * @property {string|void} color
  * @property {Function|void} onClose
- * @property {object|void} button
+ * @property {Object} [button]
  * @property {Function} button.onClick
  * @property {string} button.text
  */
@@ -40,13 +53,40 @@ import { API } from '@vizality/entities';
  * @property {object.<string, VizalityToast>} toasts
  * @property {object.<string, VizalityAnnouncement>} announcements
  */
+
+const notices = {
+  announcements: [],
+  confirms: [],
+  prompts: [],
+  alerts: [],
+  modals: [],
+  toasts: []
+};
+
+/**
+ * @extends API
+ * @extends Events
+ */
 export default class Notices extends API {
   constructor () {
     super();
-    this.announcements = {};
-    this.toasts = {};
-    this._module = 'API';
-    this._submodule = 'Notices';
+    this.notices = {
+      announcements: [],
+      confirms: [],
+      prompts: [],
+      alerts: [],
+      modals: [],
+      toasts: []
+    };
+    this._labels = [ 'API', 'Notices' ];
+  }
+
+  /**
+   * Shuts down the API, removing all listeners and stored objects.
+   */
+  stop () {
+    delete vizality.api.notices;
+    this.removeAllListeners();
   }
 
   /**
@@ -89,7 +129,12 @@ export default class Notices extends API {
    * @fires NoticesAPI#toastAdded
    * @returns {VizalityToast} Toast
    */
-  sendToast (id, props) {
+  sendToast () {
+    // Do nothing if toast notifications are disabled
+    if (!vizality.settings.get('toastNotifications', true)) return;
+    const addon = vizality.manager.plugins.get('example-plugin-settings');
+    const Settings = addon.sections.settings.render;
+    return toast(<Settings />);
     if (this.toasts[id]) {
       return this.error(`ID ${id} is already used by another plugin!`);
     }
@@ -116,10 +161,5 @@ export default class Notices extends API {
 
     this.emit('toastClosing', id);
     setTimeout(() => delete this.toasts[id], 500);
-  }
-
-  stop () {
-    delete vizality.api.notices;
-    this.removeAllListeners();
   }
 }
