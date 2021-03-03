@@ -4,22 +4,29 @@ import { forceUpdateElement } from '@vizality/util/react';
 import { patch, unpatch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 
-export default () => {
+export const labels = [ 'Components' ];
+
+export default main => {
   const AvatarModule = getModule('AnimatedAvatar');
-  const Avatar = AvatarModule.default;
-
+  const Avatar = AvatarModule?.default;
   patch('vz-attributes-avatars', AvatarModule, 'default', (args, res) => {
-    const avatar = args[0].src || void 0;
-    if (avatar && avatar.includes('/avatars')) {
-      [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
+    try {
+      const avatar = args[0].src || void 0;
+      if (avatar?.includes('/avatars')) {
+        [ , res.props['vz-user-id'] ] = avatar.match(/\/avatars\/(\d+)/);
+      }
+    } catch (err) {
+      main.error(main._labels.concat(labels.concat('Avatar')), err);
     }
-
-    return res;
   });
 
   // Re-render using patched component
-  patch('vz-attributes-animated-avatars', AvatarModule.AnimatedAvatar, 'type', (_, res) => {
-    return <Avatar {...res.props} />;
+  patch('vz-attributes-animated-avatars', AvatarModule?.AnimatedAvatar, 'type', (_, res) => {
+    try {
+      return <Avatar {...res.props} />;
+    } catch (err) {
+      main.error(main._labels.concat(labels.concat('Avatar')), err);
+    }
   });
 
   const classes = {

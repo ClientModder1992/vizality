@@ -1,34 +1,21 @@
-import { warn } from '@vizality/util/logger';
-
 import { patch, unpatch } from '@vizality/patcher';
-import { getModule } from'@vizality/webpack';
+import { getModule } from '@vizality/webpack';
 
-export default () => {
-  const { MemberRole } = getModule('MemberRole') || {};
-  if (MemberRole) {
-    patch('vz-attributes-roles', MemberRole, 'render', ([ props ], res) => {
-      const role = props?.role;
-      if (!role) {
-        warn({ labels: [ 'attributes-roles' ], message: [ 'Failed to inject roles attributes!',  '"role" prop was not found!'] });
-        return res;
-      }
+export const labels = [ 'Components' ];
 
-      try {
-        const roleItem = res?.props?.children?.props;
-        if (!roleItem) throw 'roleItem was not found!';
-        
-        roleItem['vz-role-id'] = role.id;
-        roleItem['vz-role-name'] = role.name;
-        roleItem['vz-role-color-string'] = role.colorString;
-        roleItem['vz-hoisted'] = Boolean(role.hoist) && '';
-        roleItem['vz-mentionable'] = Boolean(role.mentionable) && '';
-        
-      } catch (error) {
-        error({ labels: [ 'attributes-roles' ], message: [ 'Failed to inject roles attributes!', error ] });
-      }
-
-    });
-  } else warn({ labels: [ 'attributes-roles' ], message: '"MemberRole" module was not found!' });
-
+export default async main => {
+  const { MemberRole } = getModule('MemberRole');
+  patch('vz-attributes-roles', MemberRole, 'render', ([ props ], res) => {
+    try {
+      if (!props?.role) return;
+      res.props.children.props['vz-role-id'] = props.role.id;
+      res.props.children.props['vz-role-name'] = props.role.name;
+      res.props.children.props['vz-role-color-string'] = props.role.colorString;
+      res.props.children.props['vz-hoisted'] = Boolean(props.role.hoist) && '';
+      res.props.children.props['vz-mentionable'] = Boolean(props.role.mentionable) && '';
+    } catch (err) {
+      main.error(main._labels.concat(labels.concat('Role')), err);
+    }
+  });
   return () => unpatch('vz-attributes-roles');
 };

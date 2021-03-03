@@ -10,14 +10,13 @@ export default () => {
      * ListSectionItem is used for more than just channel member role headers, so let's make sure
      * we're targetting just the channel member role headers here.
      */
-    if (!res.props?.children?.props?.children || !res.props?.className?.includes(membersGroup)) return res;
+    if (!res.props?.children?.props?.children || !res.props?.className?.includes(membersGroup)) return;
 
     const currentGuildId = getModule('getLastSelectedGuildId').getGuildId();
     const currentGuild = getModule('getGuild', 'getGuilds').getGuild(currentGuildId);
     const guildRoles = Object.entries(currentGuild?.roles);
     const role = guildRoles?.find(role => role[1]?.name === res.props['vz-role-name']);
     res.props.style = { ...res.props.style, color: role?.colorString };
-    return res;
   });
 
   setImmediate(() => forceUpdateElement(`.${membersGroup}`));
