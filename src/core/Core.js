@@ -2,8 +2,8 @@ import { promisify } from 'util';
 import cp from 'child_process';
 import { join } from 'path';
 
-import { Directories, Developers, Events } from '@vizality/constants';
-import { _initializeModules, getModule } from '@vizality/webpack';
+import { Directories, Developers, Events, ActionTypes } from '@vizality/constants';
+import { _initializeModules, getModule, FluxDispatcher } from '@vizality/webpack';
 import { log, warn, error } from '@vizality/util/logger';
 import { resolveCompiler } from '@vizality/compilers';
 import { createElement } from '@vizality/util/dom';
@@ -64,6 +64,31 @@ export default class Vizality extends Updatable {
         // @todo Remember to add these to settings (darkSiderbar, etc.): awaitedStores
         return Flux.connectStores(awaitedStores, props => fn(awaitedStores, props))(Component);
       })());
+
+    // const DiscordSettingsModule = getModule('locale', 'theme');
+    // const excludedSettings = [ 'commandsCollapsedSections', 'customStatus', 'emojiPickerCollapsedSections', 'friendSourceFlags', 'guildFolders', 'guildPositions', 'restrictedGuilds', 'stickerPickerCollapsedSections', 'sync' ];
+    // let _settingsBefore = cloneDeep(excludeProperties(DiscordSettingsModule.getAllSettings(), ...excludedSettings));
+    // console.log(_settingsBefore);
+    // DiscordSettingsModule.addChangeListener(() => {
+    //   let _settingsAfter = {};
+    //   _settingsAfter = excludeProperties(DiscordSettingsModule.getAllSettings(), ...excludedSettings);
+    //   console.log('sadasdadsa', _settingsAfter);
+    //   const _diff = diff(_settingsBefore, _settingsAfter);
+    //   if (!_diff || isEmptyObject(_diff) || isEmptyArray(_diff)) return;
+    //   this.emit('VIZALITY_DISCORD_SETTING_UPDATE', _diff);
+    //   _settingsBefore = _settingsAfter;
+    // });
+
+    /**
+     * Subscribe to Discord user settings changes so that we can add event(s) and
+     * corresponding top-level attributes in the attributes builtin module via the
+     * emitted event(s).
+     */
+    /*
+     * @todo Consider moving this to the Discord.Settings module or some builtin/module for
+     * setting up events from dispatches.
+     */
+    FluxDispatcher.subscribe(ActionTypes.USER_SETTINGS_UPDATE, ({ settings }) => this.emit(Events.USER_SETTINGS_UPDATE, settings));
 
     // Start
     await this.start();

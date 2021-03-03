@@ -36,8 +36,8 @@
 }
 
 .monaco-editor {
-  position: absolute;
   border-radius: var(--vz-editor-border-radius);
+  height: 100%;
 
   .line-numbers {
     color: var(--vz-editor-line-numbers-color) !important;

@@ -32,16 +32,12 @@ export default memo(props => {
     });
   };
 
-  const handleEditorDidMount = async (_valueGetter, _editor, editorDOM) => {
-
+  const handleEditorDidMount = async (_valueGetter, _editor) => {
     setIsEditorReady(true);
     valueGetter.current = _valueGetter;
     editor = _editor;
-
     model = editor.getModel();
-
     model.updateOptions({ insertSpaces: true, tabSize: 2 });
-
     editor.onDidChangeModelContent(ev => {
       _handleMonacoUpdate(ev, valueGetter.current());
     });
@@ -49,26 +45,25 @@ export default memo(props => {
 
   useEffect(() => {
     _watchFiles();
-  });
+  }, []);
 
   return (
-    <>
-      <Editor
-        wrapperClassName={joinClassNames('vz-editor-wrapper', 'vz-quick-code-css-wrapper')}
-        className={joinClassNames('vz-editor', 'vz-quick-code-css')}
-        language='scss'
-        value={value}
-        theme={'vs-dark'}
-        vz-editor-theme={'vs-dark'}
-        editorDidMount={handleEditorDidMount}
-        loading={<Spinner />}
-        popout={popout}
-        options={{
-          minimap: {
-            enabled: false
-          }
-        }}
-      />
-    </>
+    <Editor
+      wrapperClassName={joinClassNames('vz-editor-wrapper', 'vz-quick-code-css-wrapper')}
+      className={joinClassNames('vz-editor', 'vz-quick-code-css')}
+      language='scss'
+      value={value}
+      theme={'vs-dark'}
+      vz-editor-theme={'vs-dark'}
+      editorDidMount={handleEditorDidMount}
+      loading={<Spinner />}
+      popout={popout}
+      options={{
+        minimap: {
+          enabled: false
+        },
+        automaticLayout: true
+      }}
+    />
   );
 });
