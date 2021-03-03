@@ -16,7 +16,7 @@ export default memo(({ type, tab, search, displayType, limit, className }) => {
 
   const [ currentTab, setCurrentTab ] = useState(tab || 'installed');
   const [ query, setQuery ] = useState(search || '');
-  const [ display, setDisplay ] = useState(displayType || getSetting('listDisplay', 'list'));
+  const [ display, setDisplay ] = useState(displayType || getSetting('listDisplay', 'card'));
   const [ showPreviewImages, setShowPreviewImages ] = useState(getSetting('showPreviewImages', false));
   const [ resultsCount, setResultsCount ] = useState(null);
   const [ , forceUpdate ] = useReducer(x => x + 1, 0);
