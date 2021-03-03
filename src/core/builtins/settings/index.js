@@ -105,7 +105,7 @@ export default class Settings extends Builtin {
   }
 
   patchSettingsContextMenu () {
-    const SettingsContextMenu = getModule(m => m.default && m.default.displayName === 'UserSettingsCogContextMenu');
+    const SettingsContextMenu = getModule(m => m.default?.displayName === 'UserSettingsCogContextMenu');
     patch('vz-settings-context-menu', SettingsContextMenu, 'default', (_, res) => {
       const items = res.props.children.find(child => Array.isArray(child));
       items.push(ContextMenu.type().props.children[1]);
@@ -119,7 +119,7 @@ export default class Settings extends Builtin {
       if ((res.props?.id?.indexOf('user-settings-cog-vizality--plugins--') &&
           res.props?.id?.indexOf('user-settings-cog-vizality--themes--')) ||
           res.props['vz-addon-icon']
-      ) return res;
+      ) return;
 
       const addonIconUrl = props['vz-addon-icon'];
 
@@ -129,8 +129,6 @@ export default class Settings extends Builtin {
       if (addonIconUrl) {
         res.props.style = { ...res.props.style, '--vz-addon-icon': `url(${addonIconUrl})` };
       }
-
-      return res;
     });
   }
 }

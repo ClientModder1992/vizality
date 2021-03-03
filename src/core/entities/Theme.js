@@ -18,7 +18,7 @@ export default class Theme extends Updatable {
     this.sections = {};
 
     this._type = 'theme';
-    this._labels = [ this._type, this.manifest?.name ];
+    this._labels = [ 'Theme', this.manifest?.name ];
   }
 
   registerSettings (render) {

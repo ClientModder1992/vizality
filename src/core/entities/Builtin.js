@@ -17,7 +17,7 @@ export default class Builtin extends Plugin {
     this.dir = Directories.BUILTINS;
     this.path = join(this.dir, this.addonId);
     this._type = 'builtin';
-    this._labels = [ 'builtin', this.constructor?.name ];
+    this._labels = [ 'Builtin', this.constructor?.name ];
   }
 
   _update () {

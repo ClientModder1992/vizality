@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect, Children } from 'react';
-
 import { existsSync, promises } from 'fs';
 import Markdown from 'react-markdown';
 
@@ -9,11 +8,7 @@ import { open as openModal } from '@vizality/modal';
 import { joinClassNames } from '@vizality/util/dom';
 import { getModule } from '@vizality/webpack';
 
-import { AsyncComponent, CodeBlock, Icon, DeferredRender, Spinner } from '.';
-
-const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
-const ImageModal = AsyncComponent.fromDisplayName('ImageModal');
-const Anchor = AsyncComponent.fromDisplayName('Anchor');
+import { CodeBlock, Icon, DeferredRender, Spinner, LazyImageZoomable, ImageModal, Anchor } from '.';
 
 const { readFile } = promises;
 

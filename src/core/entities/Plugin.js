@@ -31,7 +31,7 @@ export default class Plugin extends Updatable {
     this._watcherEnabled = null;
     this._watcher = {};
     this._type = 'plugin';
-    this._labels = [ 'plugin', this.manifest?.name || this.constructor?.name ];
+    this._labels = [ 'Plugin', this.manifest?.name || this.constructor?.name ];
   }
 
   /**
