@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import { promises, existsSync } from 'fs';
 import { join } from 'path';
 import React from 'react';
@@ -10,18 +11,15 @@ import { Directories } from '@vizality/constants';
 import { Builtin } from '@vizality/entities';
 
 import AnnouncementContainer from './components/AnnouncementContainer';
-import ToastContainer from './components/ToastContainer';
 
 const { unlink } = promises;
 
 export default class Notices extends Builtin {
   async start () {
     this.injectStyles('styles/main.scss');
+    const injectedFile = join(Directories.SRC, '__injected.txt');
     await this._patchAnnouncements();
     await this._patchToasts();
-
-    const injectedFile = join(Directories.SRC, '__injected.txt');
-
     if (existsSync(injectedFile)) {
       this._welcomeNewUser();
       if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable') {
@@ -43,7 +41,6 @@ export default class Notices extends Builtin {
       res.props.children[1].props.children.unshift(
         <AnnouncementContainer />
       );
-      return res;
     });
   }
 
@@ -53,12 +50,16 @@ export default class Notices extends Builtin {
     patch('vz-notices-toast', Shakeable.prototype, 'render', (_, res) => {
       if (!res.props.children.find(child => child.type && child.type.name === 'ToastContainer')) {
         res.props.children.push(
-          <ToastContainer />
+          <ToastContainer
+            className='vz-toast-container'
+            closeOnClick={false}
+            pauseOnFocusLoss={false}
+            autoClose={false}
+            draggable={false}
+          />
         );
       }
-      return res;
     });
-
     forceUpdateElement(`.${app}`);
   }
 

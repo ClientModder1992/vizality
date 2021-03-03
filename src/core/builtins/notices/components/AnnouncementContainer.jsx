@@ -19,9 +19,9 @@ export default class AnnouncementContainer extends PureComponent {
   }
 
   render () {
-    const announcementId = Object.keys(vizality.api.notices.announcements).pop();
+    const announcementId = Object.keys(vizality.api.notices.notices.announcements).pop();
     return announcementId
-      ? <Announcement id={announcementId} {...vizality.api.notices.announcements[announcementId]}/>
+      ? <Announcement id={announcementId} {...vizality.api.notices.notices.announcements[announcementId]}/>
       : null;
   }
 }
