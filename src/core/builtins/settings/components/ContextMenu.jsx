@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 
-import { ContextMenu, SearchBar } from '@vizality/components';
+import { ContextMenu, SearchBar, LazyImage } from '@vizality/components';
 import { toPlural } from '@vizality/util/string';
 import { useForceUpdate } from '@vizality/hooks';
 import { Messages } from '@vizality/i18n';
@@ -9,6 +9,16 @@ export default memo(() => {
   const [ pluginQuery, setPluginQuery ] = useState('');
   const [ themeQuery, setThemeQuery ] = useState('');
   const forceUpdate = useForceUpdate();
+
+  const handlePluginQuery = query => {
+    setPluginQuery(query || '');
+    forceUpdate();
+  };
+
+  const handleThemeQuery = query => {
+    setThemeQuery(query || '');
+    forceUpdate();
+  };
 
   const plugins =
     vizality.manager.plugins.keys
@@ -77,14 +87,14 @@ export default memo(() => {
           forceUpdate();
         }}
       >
-        <img src={item.manifest.icon} />
+        <LazyImage src={item.manifest.icon} />
       </ContextMenu.CheckboxItem>
     );
   };
 
   const renderItems = type => {
     const items = getItems(type);
-    return items.map(item => renderContextItem(item, type));
+    return getItems('plugin').map(item => renderContextItem(item, type));
   };
 
   return (
@@ -111,23 +121,23 @@ export default memo(() => {
           action={() => vizality.api.routes.navigateTo('plugins')}
         >
           {plugins.length && <>
-            {/* <ContextMenu.ControlItem
+            <ContextMenu.ControlItem
               id='search-plugins'
-              control={(_props, ref) => <SearchBar
-                ref={ref}
-                autofocus={true}
-                placeholder={Messages.SEARCH}
-                query={pluginQuery}
-                onChange={e => {
-                  setPluginQuery(e);
-                  forceUpdate();
-                }}
-                onClear={() => setPluginQuery('')}
-              />}
-            /> */}
-            <ContextMenu.Group>
-              {renderItems('plugins')}
-            </ContextMenu.Group>
+              control={(_props, ref) => {
+                return (
+                  <SearchBar
+                    ref={ref}
+                    autofocus={true}
+                    placeholder={Messages.SEARCH}
+                    query={pluginQuery}
+                    onChange={handlePluginQuery}
+                    onClear={() => handlePluginQuery()}
+                  />
+                );
+              }}
+            />
+            <ContextMenu.Separator />
+            {getItems('plugins').map(item => renderContextItem(item, 'plugins'))}
           </>}
         </ContextMenu.Item>
         <ContextMenu.Item
@@ -136,30 +146,30 @@ export default memo(() => {
           action={() => vizality.api.routes.navigateTo('themes')}
         >
           {themes.length && <>
-            {/* <ContextMenu.ControlItem
+            <ContextMenu.ControlItem
               id='search-themes'
-              control={(_props, ref) => <SearchBar
-                ref={ref}
-                autofocus={true}
-                placeholder={Messages.SEARCH}
-                query={themeQuery}
-                onChange={e => {
-                  setThemeQuery(e);
-                  forceUpdate();
-                }}
-                onClear={() => setThemeQuery('')}
-              />}
-            /> */}
-            <ContextMenu.Group>
-              {renderItems('themes')}
-            </ContextMenu.Group>
+              control={(_props, ref) => (
+                <SearchBar
+                  ref={ref}
+                  autofocus={true}
+                  placeholder={Messages.SEARCH}
+                  query={themeQuery}
+                  onChange={handleThemeQuery}
+                  onClear={() => handleThemeQuery()}
+                />
+              )}
+            />
+            <ContextMenu.Separator />
+            {getItems('themes').map(item => renderContextItem(item, 'themes'))}
           </>}
         </ContextMenu.Item>
-        {vizality.manager.builtins.isEnabled('quick-code') && <ContextMenu.Item
-          id='quick-code'
-          label='Quick Code'
-          action={() => vizality.api.routes.navigateTo('quick-code')}
-        />}
+        {vizality.manager.builtins.isEnabled('quick-code') && (
+          <ContextMenu.Item
+            id='quick-code'
+            label='Quick Code'
+            action={() => vizality.api.routes.navigateTo('quick-code')}
+          />
+        )}
         <ContextMenu.Item
           id='theme-editor'
           label='Theme Editor'
