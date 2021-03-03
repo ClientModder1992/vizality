@@ -100,9 +100,35 @@ export default class Plugin extends Updatable {
     });
   }
 
-  log (...message) { log({ labels: this._labels, message }); }
-  warn (...message) { warn({ labels: this._labels, message }); }
-  error (...message) { error({ labels: this._labels, message }); }
+  log (...message) {
+    // In case the addon wants to provide their own labels
+    if (isArray(message[0])) {
+      const _message = message.slice(1);
+      log({ labels: message[0], message: _message });
+    } else {
+      log({ labels: this._labels, message });
+    }
+  }
+
+  warn (...message) {
+    // In case the addon wants to provide their own labels
+    if (isArray(message[0])) {
+      const _message = message.slice(1);
+      warn({ labels: message[0], message: _message });
+    } else {
+      warn({ labels: this._labels, message });
+    }
+  }
+
+  error (...message) {
+    // In case the addon wants to provide their own labels
+    if (isArray(message[0])) {
+      const _message = message.slice(1);
+      error({ labels: message[0], message: _message });
+    } else {
+      error({ labels: this._labels, message });
+    }
+  }
 
   /**
    * Update the addon.
