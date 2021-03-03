@@ -16,7 +16,7 @@ export * as GameIcon from './components/GameIcon';
 export * as TabBar from './components/TabBar';
 export * as Anchor from './components/Anchor';
 export * as Avatar from './components/Avatar';
-// export Role from './components/Role';
+export * as Role from './components/Role';
 export * as ImageCarouselModal from './components/modals/ImageCarousel';
 export * as UserModal from './components/modals/User';
 // export UserPopout from './components/popouts/User';
