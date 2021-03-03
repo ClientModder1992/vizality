@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { Button, Tooltip, Anchor, Icon, LazyImage } from '@vizality/components';
 import { toPlural, toTitleCase } from '@vizality/util/string';
+import { Repositories } from '@vizality/constants';
 import { Messages } from '@vizality/i18n';
 
 export default memo(props => {
@@ -10,7 +11,9 @@ export default memo(props => {
 
   const type = id.split(/_(.+)/)[0].slice(0, -1);
 
-  // If no manifest, i.e. getting a disabled update addon manifest and addonId are not sent as props
+  /*
+   * If no manifest, i.e. getting a disabled update addon manifest and addonId are not sent as props.
+   */
   if (!manifest && id !== 'vizality') {
     [ , addonId ] = id.split(/_(.+)/);
     ({ manifest } = vizality.manager[toPlural(type)].get(addonId));
@@ -21,10 +24,13 @@ export default memo(props => {
       <div className='vz-updater-update-inner'>
         <div className='vz-updater-update-icon-wrapper'>
           {id === 'vizality'
-            ? <img
-              className='vz-updater-update-icon'
-              src={'vz-asset://image/logo.png'}
-            />
+            ? (
+              <LazyImage
+                className='vz-updater-update-icon-img-wrapper'
+                imageClassName='vz-updater-update-icon-img'
+                src='vz-asset://image/logo.png'
+              />
+            )
             : <>
               <Icon
                 className='vz-updater-update-icon-badge-wrapper'
@@ -43,9 +49,9 @@ export default memo(props => {
         </div>
         {id === 'vizality'
           ? <div className='vz-updater-update-metadata'>
-            <div className='vz-updater-update-name'>
+            <Anchor href={`https://github.com/${Repositories.VIZALITY}`} className='vz-updater-update-name'>
               Vizality
-            </div>
+            </Anchor>
             <Anchor
               type='user'
               userId='97549189629636608'
