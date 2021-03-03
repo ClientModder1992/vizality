@@ -9,7 +9,7 @@ export default main => {
       this.wait(() => this._dispatch(args));
     };
   } catch (err) {
-    main.error(main._labels.concat(labels.concat('Dispatcher')), err);
+    return main.error(main._labels.concat(labels.concat('Dispatcher')), err);
   }
   return () => FluxDispatcher.dispatch = ogDispatch;
 };

@@ -13,7 +13,7 @@ export default class Enhancements extends Builtin {
           this.callbacks.push(callback);
         }
       } catch (err) {
-        this.error(modules[mod].labels.concat(mod), err);
+        return this.error(modules[mod].labels.concat(mod), err);
       }
     }
   }
@@ -24,7 +24,7 @@ export default class Enhancements extends Builtin {
         try {
           return callback();
         } catch (err) {
-          this.error(err);
+          return this.error(err);
         }
       })();
     }

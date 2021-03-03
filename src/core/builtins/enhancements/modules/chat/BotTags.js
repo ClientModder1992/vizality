@@ -53,7 +53,7 @@ export default main => {
         );
       }
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('BotTags')), err);
+      return main.error(main._labels.concat(labels.concat('BotTags')), err);
     }
   });
   return () => unpatch('vz-enhancements-bot-tags');

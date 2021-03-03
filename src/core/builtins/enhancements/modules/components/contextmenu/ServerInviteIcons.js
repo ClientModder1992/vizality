@@ -21,7 +21,7 @@ export default main => {
         res.props.style = { ...res.props.style, '--vz-guild-icon': `url(${guildIconUrl})` };
       }
     } catch (err) {
-      main.error(main._labels.concat(labels.concat('ServerInviteIcons')), err);
+      return main.error(main._labels.concat(labels.concat('ServerInviteIcons')), err);
     }
   });
   return () => unpatch('vz-enhancements-context-menu-server-invite-icons');
