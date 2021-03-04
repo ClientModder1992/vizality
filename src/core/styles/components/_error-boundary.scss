@@ -1,6 +1,10 @@
 .vz-error-boundary {
   $base: &;
   font-size: 16px;
+  &-header {
+    font-size: 20px;
+    font-weight: 600;
+  }
   &-text {
     margin: 30px 0 15px;
   }
