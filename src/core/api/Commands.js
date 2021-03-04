@@ -15,6 +15,33 @@
  * commands, but as subcommands.
  */
 
+/**
+ * Vizality command object.
+ * @typedef VizalityCommand
+ * @property {string} command Command name
+ * @property {Function} executor Command executor
+ * @property {Array<string>} [aliases] Command aliases
+ * @property {string} [icon] Command icon. This can be either an icon name or an image URL.
+ * @property {string} [description] Command description
+ * @property {Function} [autocomplete] Autocompletion method
+ * @property {Array<VizalityCommand>|undefined} [subcommands] Command subcommands
+ * @property {string} [source] Source text to the right in the autocomplete
+ * @property {boolean} [showTyping=false] Whether typing status should be shown or not
+ * @property {string} caller Addon ID of command registrar. This property is set automatically.
+ */
+
+/**
+ * Vizality subcommand object.
+ * @typedef VizalitySubcommand
+ * @property {string} command Command name
+ * @property {Function} executor Command executor
+ * @property {Array<string>} [aliases] Command aliases
+ * @property {string} [icon] Command icon. This can be either an icon name or an image URL.
+ * @property {string} [description] Command description
+ * @property {Array<VizalityCommand>|undefined} [subcommands] Command subcommands
+ * @property {string} [source] Source text to the right in the autocomplete
+ */
+
 import { Events, Directories } from '@vizality/constants';
 import { assertObject } from '@vizality/util/object';
 import { assertString } from '@vizality/util/string';
@@ -32,20 +59,6 @@ import { join } from 'path';
 let commands = [];
 
 /**
- * @typedef VizalityCommand
- * @property {string} command Command name
- * @property {Function} executor Command executor
- * @property {Array<string>} [aliases] Command aliases
- * @property {string} [icon] Command icon. This can be either an icon name or an image URL.
- * @property {string} [description] Command description
- * @property {Function} [autocomplete] Autocompletion method
- * @property {Array<VizalityCommand>|undefined} [subcommands] Command subcommands
- * @property {string} [source] Source text to the right in the autocomplete
- * @property {boolean} [showTyping=false] Whether typing status should be shown or not
- * @property {string} caller Addon ID of command registrar. This property is set automatically.
- */
-
-/**
  * @extends API
  * @extends Events
  */
@@ -59,7 +72,7 @@ export default class Commands extends API {
       delete vizality.api.commands;
       this.removeAllListeners();
     } catch (err) {
-      return this.error(err);
+      return this.error('There was an error unloading the Commands API!', err);
     }
   }
 
@@ -70,7 +83,7 @@ export default class Commands extends API {
     try {
       return vizality.settings.get('commandPrefix', '.');
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('prefix'), err);
     }
   }
 
@@ -111,7 +124,7 @@ export default class Commands extends API {
         caller
       });
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('registerCommand'), err);
     }
   }
 
@@ -121,17 +134,18 @@ export default class Commands extends API {
    */
   async invokeCommand (commandName) {
     try {
+      assertString(commandName);
       if (!this.isCommand(commandName)) {
         throw new Error(`Command "${commandName}" could not be found!`);
       }
       try {
         await this.getCommandByName(commandName).executor();
       } catch (err) {
-        return this.error(err);
+        return this.error(this._labels.concat('invokeCommand'), `There was a problem invoking command "${commandName}" executor!`, err);
       }
       this.emit(Events.VIZALITY_COMMAND_INVOKE, commandName);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('invokeCommand'), err);
     }
   }
 
@@ -142,9 +156,10 @@ export default class Commands extends API {
    */
   isCommand (commandName) {
     try {
+      assertString(commandName);
       return Boolean(this.getCommandByName(commandName));
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('isCommand'), err);
     }
   }
 
@@ -155,9 +170,10 @@ export default class Commands extends API {
    */
   hasSubcommands (commandName) {
     try {
+      assertString(commandName);
       return Boolean(this.getCommandByName(commandName).subcommand?.length);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('hasSubcommands'), err);
     }
   }
 
@@ -168,9 +184,10 @@ export default class Commands extends API {
    */
   getCommand (filter) {
     try {
+      if (!filter?.length) return null;
       return commands.find(filter);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('getCommand'), err);
     }
   }
 
@@ -181,9 +198,10 @@ export default class Commands extends API {
    */
   getCommandByName (commandName) {
     try {
+      assertString(commandName);
       return commands.find(command => command.command === commandName);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('getCommandByName'), err);
     }
   }
 
@@ -194,9 +212,10 @@ export default class Commands extends API {
    */
   getCommands (filter) {
     try {
+      if (!filter?.length) return null;
       return commands.filter(filter);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('getCommands'), err);
     }
   }
 
@@ -207,9 +226,10 @@ export default class Commands extends API {
    */
   getCommandsByCaller (addonId) {
     try {
+      assertString(addonId);
       return commands.filter(command => command.caller === addonId);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('getCommandsByCaller'), err);
     }
   }
 
@@ -221,7 +241,7 @@ export default class Commands extends API {
     try {
       return commands;
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('getAllCommands'), err);
     }
   }
 
@@ -232,13 +252,14 @@ export default class Commands extends API {
    */
   unregisterCommand (commandName) {
     try {
+      assertString(commandName);
       if (!this.isCommand(commandName)) {
         throw new Error(`Command "${commandName}" is not registered, so it cannot be unregistered!`);
       }
       commands = this.getCommands(command => command.command !== commandName);
       this.emit(Events.VIZALITY_COMMAND_REMOVE, commandName);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('unregisterCommand'), err);
     }
   }
 
@@ -249,10 +270,11 @@ export default class Commands extends API {
    */
   unregisterCommandsByCaller (addonId) {
     try {
+      assertString(addonId);
       commands = commands.filter(command => command.caller !== addonId);
       this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER, addonId);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('unregisterCommandsByCaller'), err);
     }
   }
 
@@ -265,7 +287,7 @@ export default class Commands extends API {
       commands = [];
       this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL);
     } catch (err) {
-      return this.error(err);
+      return this.error(this._labels.concat('unregisterAllCommands'), err);
     }
   }
 }
