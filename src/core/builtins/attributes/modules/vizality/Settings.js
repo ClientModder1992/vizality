@@ -5,7 +5,7 @@ export const labels = [ 'Vizality' ];
 export default main => {
   try {
     const root = document.documentElement;
-    const setAttribute = ((setting, value) => {
+    const setAttribute = (setting, value) => {
       const { get } = vizality.settings;
       /*
        * These are the settings we want to track and add as attributes.
@@ -35,7 +35,10 @@ export default main => {
       } else {
         root.setAttribute('vz-settings', activeSettings.join(', '));
       }
-    })();
+    };
+
+    // Set the attributes initially
+    setAttribute();
 
     const handleToggle = setting => {
       /*
