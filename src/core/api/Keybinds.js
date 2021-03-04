@@ -1,41 +1,105 @@
-import { getModule } from '@vizality/webpack';
-import { API } from '@vizality/entities';
+/**
+ * The keybinds  API is meant for registering keyboard shortcuts to perform actions.
+ * Includes options to activate keybinds both globally (while the app is not focused) and
+ * locally (while the app is focused).
+ * @module Keybinds
+ * @memberof API
+ * @namespace API.Keybinds
+ * @version 1.0.0
+ */
 
-// If no ID is provided, automatically sets the ID in the form of "ADDON_NAME_ACTION_1"
-// const actionId = action.id || `${toSnakeCase(caller).toUpperCase()}_ACTION_${this.getActionsByCaller(caller)?.length + 1 || '1'}`;
+/*
+ * @todo If no ID is provided, automatically sets the ID in the form of "ADDON_NAME_ACTION_1"
+ * const actionId = action.id || `${toSnakeCase(caller).toUpperCase()}_ACTION_${this.getActionsByCaller(caller)?.length + 1 || '1'}`;
+ * aliases property
+ */
 
 /**
  * @typedef VizalityKeybind
- * @property {string} keybindId Keybind ID
+ * @property {string} [id] Keybind ID
  * @property {string} shortcut Keyboard shortcut
  * @property {Function} executor Executor action
- * @property {object} [options] Keybind options
- * @property {boolean} [options.blurred=false]
- * @property {boolean} [options.focused=true]
- * @property {boolean} [options.keydown=false]
- * @property {boolean} [options.keyup=true]
+ * @property {Object} [options] Keybind options
+ * @property {boolean} [options.blurred=false] Whether the keybind should activate while Discord is unfocused
+ * @property {boolean} [options.focused=true] Whether the keybind should activate while Discord is focused
+ * @property {boolean} [options.keydown=false] Whether the keybind should activate on keydown
+ * @property {boolean} [options.keyup=true] Whether the keybind should activate on keyup
+ * @property {Array<Array>} keyCode Keybind event ID. This property is set automatically.
+ * @property {string} eventId Keybind event ID. This property is set automatically.
+ * @property {string} caller Addon ID of keybind registrar. This property is set automatically.
  */
+
+
+import { getModule } from '@vizality/webpack';
+import { API } from '@vizality/entities';
 
 /**
- * Vizality Keybinds API
- * @property {object<VizalityKeybind>} keybinds Keybinds
+ * All currently registered keybinds.
+ * Accessed with `getAllKeybinds` below.
+ */
+let keybinds = [];
+
+/**
+ * @extends API
+ * @extends Events
  */
 export default class Keybinds extends API {
-  constructor () {
-    super();
-    this.keybinds = {};
-    this._module = 'API';
-    this._submodule = 'Keybinds';
-  }
-
+  /**
+   * Shuts down the API, removing all listeners and stored objects.
+   */
   stop () {
-    delete vizality.api.keybinds;
-    this.removeAllListeners();
+    try {
+      this.unregisterAllKeybinds();
+      delete vizality.api.keybinds;
+      this.removeAllListeners();
+    } catch (err) {
+      return this.error('There was an error unloading the Keybinds API!', err);
+    }
   }
 
   /**
    * Registers a keybind.
-   * @param {VizalityKeybind} keybind Keybind
+   * @param {VizalityKeybind} keybind Keybind to register
+   */
+  registerKeybind (keybind) {
+    try {
+      assertObject(keybind);
+      if (this.isCommand(command.command)) {
+        throw new Error(`Command "${command.command}" is already registered!`);
+      }
+      if (!command.executor) {
+        throw new Error('Command must contain an executor!');
+      }
+      if (typeof command.executor !== 'function') {
+        throw new TypeError('Command executor must be a function!');
+      }
+      if (command.icon) {
+        if (Icon.Names.includes(command.icon)) {
+          if (existsSync(join(Directories.ASSETS, 'svg', `${command.icon}.svg`))) {
+            command.icon = `vz-asset://svg/${command.icon}.svg`;
+          } else if (existsSync(join(Directories.ASSETS, 'logo', `${command.icon}.svg`))) {
+            command.icon = `vz-asset://logo/${command.icon}.svg`;
+          }
+        }
+      }
+      if (command.aliases) {
+        assertArray(command.aliases);
+        command.aliases = command.aliases.map(alias => alias.toLowerCase());
+      }
+      const caller = getCaller();
+      commands.push({
+        ...command,
+        caller
+      });
+    } catch (err) {
+      return this.error(this._labels.concat('registerCommand'), err);
+    }
+  }
+
+  /**
+   * Registers a keybind.
+   * @param {VizalityKeybind} keybind Keybind to register
+   * @emits Keybinds#Events.VIZALITY_KEYBIND_ADD
    */
   registerKeybind (keybind) {
     try {

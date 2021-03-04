@@ -130,6 +130,7 @@ export default class Notices extends API {
    * @returns {VizalityToast} Toast
    */
   sendToast () {
+    return void 0;
     // Do nothing if toast notifications are disabled
     if (!vizality.settings.get('toastNotifications', true)) return;
     const addon = vizality.manager.plugins.get('example-plugin-settings');
