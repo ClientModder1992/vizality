@@ -39,10 +39,7 @@ export default class Updater extends Builtin {
     this.settings.set('updating', false);
     this.settings.set('awaitingReload', false);
 
-    vizality.api.actions.registerAction({
-      action: 'openLatestChangelog',
-      executor: () => this.openLatestChangelog()
-    });
+    vizality.api.actions.registerAction('OPEN_LATEST_CHANGELOG', () => this.openLatestChangelog());
 
     vizality.api.settings._registerBuiltinPage({
       id: 'updater',
@@ -72,7 +69,7 @@ export default class Updater extends Builtin {
 
   stop () {
     vizality.api.routes.unregisterRoute('updater');
-    vizality.api.actions.unregisterAction('openLatestChangelog');
+    vizality.api.actions.unregisterAction('OPEN_LATEST_CHANGELOG');
     clearInterval(this._interval);
   }
 

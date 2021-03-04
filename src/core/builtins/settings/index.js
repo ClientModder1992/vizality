@@ -25,10 +25,7 @@ export default class Settings extends Builtin {
       render: props => <Page {...props} />
     });
 
-    vizality.api.actions.registerAction({
-      action: 'confirmRestart',
-      executor: () => this.confirmRestart()
-    });
+    vizality.api.actions.registerAction('CONFIRM_RESTART', () => this.confirmRestart());
 
     this.patchSettingsComponent();
     this.patchExperiments();
@@ -38,7 +35,7 @@ export default class Settings extends Builtin {
 
   stop () {
     vizality.api.routes.unregisterRoute('settings');
-    vizality.api.actions.unregisterAction('confirmRestart');
+    vizality.api.actions.unregisterAction('CONFIRM_RESTART');
     unpatch('vz-settings-items');
     unpatch('vz-settings-context-menu');
     unpatch('vz-settings-context-menu-addon-items');

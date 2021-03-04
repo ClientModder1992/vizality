@@ -51,7 +51,7 @@ export default memo(() =>
     <Separator />
     <Item icon='CloudDownload' label='Updater' path='/updater' />
     <Item icon='ClockReverse' label='Changelog' path='/changelog'
-      launch={() => vizality.api.actions.invokeAction('openLatestChangelog')}
+      launch={() => vizality.api.actions.invokeAction('OPEN_LATEST_CHANGELOG')}
       auxillaryIconTooltipText='Open Latest Update'
     />
   </AdvancedScrollerThin>

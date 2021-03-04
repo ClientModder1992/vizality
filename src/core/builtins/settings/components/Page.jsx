@@ -57,7 +57,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
         value={getSetting('smoothScrolling', true)}
         onChange={() => {
           toggleSetting('smoothScrolling', true);
-          vizality.api.actions.invokeAction('confirmRestart');
+          vizality.api.actions.invokeAction('CONFIRM_RESTART');
         }}
       >
         {Messages.VIZALITY_SETTINGS_SMOOTH_SCROLLING}
@@ -73,7 +73,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('reactDeveloperTools', false)}
           onChange={() => {
             toggleSetting('reactDeveloperTools', false);
-            vizality.api.actions.invokeAction('confirmRestart');
+            vizality.api.actions.invokeAction('CONFIRM_RESTART');
           }}
         >
           {Messages.VIZALITY_SETTINGS_REACT_DEVELOPER_TOOLS}
@@ -124,7 +124,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('transparentWindow', false)}
           onChange={() => {
             toggleSetting('transparentWindow');
-            vizality.api.actions.invokeAction('confirmRestart');
+            vizality.api.actions.invokeAction('CONFIRM_RESTART');
           }}
         >
           {Messages.VIZALITY_SETTINGS_TRANSPARENT}
@@ -134,7 +134,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
           value={getSetting('experimentalWebPlatform', false)}
           onChange={() => {
             toggleSetting('experimentalWebPlatform');
-            vizality.api.actions.invokeAction('confirmRestart');
+            vizality.api.actions.invokeAction('CONFIRM_RESTART');
           }}
         >
           {Messages.VIZALITY_SETTINGS_EXP_WEB_PLATFORM}
