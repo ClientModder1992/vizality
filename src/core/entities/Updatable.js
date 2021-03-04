@@ -7,11 +7,17 @@ import { join } from 'path';
 const exec = promisify(cp.exec);
 
 /**
- * @property {string} addonId
- * @property {string} path
- * @property {string} updateIdentifier
+ * @todo Finish writing this.
+ * Updatable class used for handling Vizality updates and addon updates.
+ * @typedef VizalityUpdatable
+ * @extends Events
  */
 export default class Updatable extends Events {
+  /**
+   * @property {string} dir Directory path of item to update
+   * @property {string} addonId Addon ID
+   * @property {string} updateIdentifier Entity update identifier
+   */
   constructor (dir, addonId, updateIdentifier) {
     super();
     this.dir = dir;
@@ -81,8 +87,8 @@ export default class Updatable extends Events {
   }
 
   /**
-   * Fetches the git repository for this entity
-   * @returns {Promise<?string>}
+   * Fetches the git repository for this entity.
+   * @returns {Promise<string|null>}
    */
   async getGitRepo () {
     try {
@@ -95,8 +101,8 @@ export default class Updatable extends Events {
   }
 
   /**
-   * Fetches the current branch for this entity
-   * @returns {Promise<?string>}
+   * Fetches the current branch for this entity.
+   * @returns {Promise<string|null>}
    */
   getBranch () {
     return exec('git branch', this._cwd)

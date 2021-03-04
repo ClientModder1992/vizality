@@ -1,8 +1,8 @@
 import { toPlural, toTitleCase } from '@vizality/util/string';
 import { log, warn, error } from '@vizality/util/logger';
-import { jsonToReact } from '@vizality/util/react';
 import { resolveCompiler } from '@vizality/compilers';
 import { unpatchAllByAddon } from '@vizality/patcher';
+import { jsonToReact } from '@vizality/util/react';
 import { createElement } from '@vizality/util/dom';
 import { Directories } from '@vizality/constants';
 import { isArray } from '@vizality/util/array';
@@ -13,12 +13,18 @@ import { existsSync } from 'fs';
 
 import Updatable from './Updatable';
 
-/**
- * Main class for Vizality plugins
+/*
  * @property {boolean} _ready Whether the plugin is ready or not
  * @property {SettingsCategory} settings Plugin settings
  * @property {object<string, Compiler>} styles Styles the plugin loaded
- * @abstract
+ */
+
+/**
+ * @todo Finish writing this.
+ * Main class for Vizality plugins.
+ * @typedef VizalityPlugin
+ * @extends Updatable
+ * @extends Events
  */
 export default class Plugin extends Updatable {
   constructor () {
@@ -324,7 +330,9 @@ export default class Plugin extends Updatable {
       for (const id in this.styles) {
         this.styles[id].compiler.on('src-update', this.styles[id].compile);
         this.styles[id].compiler.disableWatcher();
-        document.getElementById(`${this._type}-${this.addonId}-${id}`).remove();
+        if (document.getElementById(`${this._type}-${this.addonId}-${id}`)) {
+          document.getElementById(`${this._type}-${this.addonId}-${id}`).remove();
+        }
       }
 
       this.styles = {};

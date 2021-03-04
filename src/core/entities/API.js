@@ -2,6 +2,11 @@ import { log, warn, error } from '@vizality/util/logger';
 import { isArray } from '@vizality/util/array';
 import Events from 'events';
 
+/**
+ * @todo Finish writing this.
+ * Main class for Vizality APIs.
+ * @extends Events
+ */
 export default class API extends Events {
   constructor () {
     super();
