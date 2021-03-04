@@ -43,14 +43,6 @@ export default async main => {
       const removeAttributes = Object.keys(attributes).filter(m => !attributes[m]);
       addAttributes.forEach(attr => root.setAttribute(attr, ''));
       removeAttributes.forEach(attr => root.removeAttribute(attr));
-
-      this.props?.channelId
-        ? root.setAttribute('vz-channel-id', this.props.channelId)
-        : root.removeAttribute('vz-channel-id');
-
-      this.props?.guildId
-        ? root.setAttribute('vz-guild-id', this.props.guildId)
-        : root.removeAttribute('vz-guild-id');
     } catch (err) {
       return main.error(main._labels.concat(labels), err);
     }
