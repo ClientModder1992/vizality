@@ -171,3 +171,5 @@ this.Confirm.defaultProps = {
 
 this.Icon.Icons = Icons;
 this.Icon.Names = Object.keys(Icons);
+
+export default this;

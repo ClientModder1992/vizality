@@ -1,51 +1,59 @@
 /* eslint-disable no-unused-vars */
 const { ipcRenderer } = require('electron');
 
-if (!ipcRenderer) {
-  throw new Error('Don\'t require stuff you shouldn\'t, silly.');
-}
-
 // Name doesn't really matter here, because we get rid of it on startup
 window.VizalityNative = {
   app: {
     /**
-     * Open DevTools for the current window
-     * @param {object} opts Options to pass to Electron
+     * Opens Chrome Developer Tools for the current window.
+     * @param {Object} options Options to pass to Electron
      * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not
      */
-    openDevTools (opts, externalWindow) {
-      return ipcRenderer.invoke('VIZALITY_APP_OPEN_DEVTOOLS', opts, externalWindow);
+    openDevTools (options, externalWindow) {
+      return ipcRenderer.invoke('VIZALITY_APP_OPEN_DEVTOOLS', options, externalWindow);
     },
 
     /**
-     * Closes DevTools for the current window
+     * Closes Chrome Developer Tools for the current window.
      */
     closeDevTools () {
       return ipcRenderer.invoke('VIZALITY_APP_CLOSE_DEVTOOLS');
     },
 
     /**
-     * Clears Chromium's cache
+     * Clears Chromium's cache.
      * @returns {Promise<void>}
      */
     clearCache () {
       return ipcRenderer.invoke('VIZALITY_APP_CACHE_CLEAR');
     },
 
-    openBrowserWindow (opts) {
+    openBrowserWindow (options) {
       throw new Error('Not implemented');
     },
 
+    /**
+     * Gets the path browsing history.
+     * @returns {Promise<Array<string|null>>}
+     */
     getHistory () {
       return ipcRenderer.invoke('VIZALITY_APP_HISTORY');
     }
   },
 
+  /**
+   * Compiles a Sass file.
+   * @param {string} file File path to compile
+   * @returns {Promise<void>}
+   */
   __compileSass (file) {
     return ipcRenderer.invoke('VIZALITY_COMPILE_SASS', file);
   }
 };
 
+/*
+ * Whitelist certain modules to be able to be required in Developer Tools console.
+ */
 if (!window.__SPLASH__) {
   window.require = module => {
     switch (module) {

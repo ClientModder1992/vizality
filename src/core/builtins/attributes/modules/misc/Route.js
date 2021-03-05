@@ -1,18 +1,18 @@
-import { getModule } from '@vizality/webpack';
+import Webpack from '@vizality/webpack';
 import Discord from '@vizality/discord';
 
 export const labels = [ 'Misc' ];
 
 export default main => {
   try {
-    const router = getModule('transitionTo');
+    const router = Webpack.getModule('transitionTo');
     const root = document.documentElement;
     /**
      * Watch for route changes and set the new route on change
      */
     const unlisten = router?.getHistory()?.listen(async () => {
-      const currentGuildId = getModule('getLastSelectedGuildId').getGuildId();
-      const currentChannelId = getModule('getLastSelectedChannelId').getChannelId();
+      const currentGuildId = Webpack.getModule('getLastSelectedGuildId')?.getGuildId();
+      const currentChannelId = Webpack.getModule('getLastSelectedChannelId')?.getChannelId();
       const currentRoute = Discord.route.getCurrentRoute();
       root.setAttribute('vz-route', currentRoute);
       currentGuildId

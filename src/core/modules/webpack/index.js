@@ -249,3 +249,5 @@ export const getModulesByKeyword = (keyword, exact = false) => {
     return false;
   });
 };
+
+export default this;

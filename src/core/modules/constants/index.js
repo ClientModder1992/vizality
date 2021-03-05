@@ -139,3 +139,5 @@ export const Developers = Object.freeze([
   '301494563514613762', // Sebastian
   '415849376598982656' // Strencher
 ]);
+
+export default this;
