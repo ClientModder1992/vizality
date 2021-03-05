@@ -13,7 +13,9 @@ export const HeaderBarContainer = AsyncComponent.fromDisplayName('HeaderBarConta
 export const LazyImageZoomable = AsyncComponent.fromDisplayName('LazyImageZoomable');
 export const KeyboardShortcut = AsyncComponent.fromDisplayName('KeyboardShortcut');
 export const KeybindRecorder = AsyncComponent.fromDisplayName('KeybindRecorder');
+export const UserPopout = AsyncComponent.fromDisplayName('ConnectedUserPopout');
 export const Autocomplete = AsyncComponent.fromDisplayName('Autocomplete');
+export const UserProfile = AsyncComponent.fromDisplayName('UserProfile');
 export const ShinyButton = AsyncComponent.fromDisplayName('ShinyButton');
 export const WebhookCard = AsyncComponent.fromDisplayName('WebhookCard');
 export const FormNotice = AsyncComponent.fromDisplayName('FormNotice');
@@ -169,3 +171,5 @@ this.Confirm.defaultProps = {
 
 this.Icon.Icons = Icons;
 this.Icon.Names = Object.keys(Icons);
+
+export default this;

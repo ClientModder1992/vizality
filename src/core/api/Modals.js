@@ -12,8 +12,8 @@
  * closeAllConfirms, closeAllModals
  */
 
-import { getCaller } from '@vizality/util/file';
-import { API } from '@vizality/entities';
+import Entities from '@vizality/entities';
+import Util from '@vizality/util';
 
 /**
  * All currently active modals.
@@ -25,7 +25,7 @@ let modals = [];
  * @extends API
  * @extends Events
  */
-export default class Modals extends API {
+export default class Modals extends Entities.API {
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */

@@ -22,63 +22,94 @@ export default class Dashboard extends Builtin {
       sidebar: Sidebar
     });
 
-    await vizality.api.keybinds.registerKeybind({
-      keybindId: 'leaveDashboard',
-      executor: () => vizality.api.routes.restorePreviousRoute(),
-      shortcut: 'esc'
+    vizality.api.actions.registerAction('VIZALITY_CLOSE_DASHBOARD', this._leaveDashboard);
+    vizality.api.actions.registerAction('VIZALITY_TOGGLE_DASHBOARD', this._toggleDashboard);
+
+    vizality.api.keybinds.registerKeybind({
+      id: 'VIZALITY_CLOSE_DASHBOARD',
+      shortcut: 'esc',
+      executor: this._leaveDashboard
     });
 
-    await vizality.api.keybinds.registerKeybind({
-      keybindId: 'toggleDashboard',
-      executor: () => {
-        try {
-          if (window.location.pathname.startsWith('/vizality')) {
-            vizality.api.routes.restorePreviousRoute();
-          } else {
-            vizality.api.routes.navigateTo('home');
-          }
-        } catch (err) {
-          this.error(err);
-        }
-      },
-      shortcut: 'alt+v'
+    vizality.api.keybinds.registerKeybind({
+      id: 'VIZALITY_TOGGLE_DASHBOARD',
+      shortcut: 'alt+v',
+      executor: this._toggleDashboard
     });
   }
 
   async stop () {
     vizality.api.routes.unregisterRoute('home');
-    await vizality.api.keybinds.unregisterKeybind('leaveDashboard');
-    await vizality.api.keybinds.unregisterKeybind('toggleDashboard');
+    vizality.api.actions.unregisterAction('VIZALITY_CLOSE_DASHBOARD');
+    vizality.api.actions.unregisterAction('VIZALITY_TOGGLE_DASHBOARD');
+    vizality.api.keybinds.unregisterKeybind('VIZALITY_CLOSE_DASHBOARD');
+    vizality.api.keybinds.unregisterKeybind('VIZALITY_TOGGLE_DASHBOARD');
     unpatch('vz-dashboard-private-channels-list-item');
   }
 
   /**
-   * Special thanks to Winston and AAGaming for coming up with
-   * the original version of this function.
+   * Goes to the previous non-Vizality dashboard route.
+   */
+  _leaveDashboard () {
+    try {
+      vizality.api.routes.restorePreviousRoute();
+    } catch (err) {
+      this.error(this._labels.concat('_leaveDashboard'), err);
+    }
+  }
+
+  /**
+   * Opens the dashboard if the current route is not a Vizality dashboard route,
+   * otherwise goes to the previous non-Vizality dashboard route.
+   */
+  _toggleDashboard () {
+    try {
+      const currentRoute = vizality.api.routes.getCurrentRoute();
+      if (currentRoute.pathname.startsWith('/vizality')) {
+        vizality.api.routes.restorePreviousRoute();
+      } else {
+        vizality.api.routes.navigateTo('home');
+      }
+    } catch (err) {
+      this.error(this._labels.concat('_toggleDashboard'), err);
+    }
+  }
+
+  /**
+   * Special thanks to Winston and AAGaming for coming up with the original version of this function.
    */
   _injectPrivateTab () {
-    const ConnectedPrivateChannelsList = getModule(m => m.default?.displayName === 'ConnectedPrivateChannelsList');
-    const { LinkButton } = getModule('LinkButton');
-    const { channel } = getModule('channel', 'closeIcon');
-    patch('vz-dashboard-private-channels-list-item', ConnectedPrivateChannelsList, 'default', (_, res) => {
-      const selected = window.location.pathname.startsWith('/vizality');
-      const index = res.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
-      if (selected) {
-        res.props?.children?.forEach(c => c?.props?.selected ? c.props.selected = false : null);
-      }
-      res.props.children = [
-        ...res.props.children.slice(0, index), () =>
-          <LinkButton
-            icon={() => <Icon name='Vizality' />}
-            route='/vizality'
-            text='Dashboard'
-            selected={selected}
-          />,
-        ...res.props.children.slice(index)
-      ];
-      return res;
-    });
-    setImmediate(() => forceUpdateElement(`.${channel}`));
+    try {
+      const ConnectedPrivateChannelsList = getModule(m => m.default?.displayName === 'ConnectedPrivateChannelsList');
+      const { LinkButton } = getModule('LinkButton');
+      const { channel } = getModule('channel', 'closeIcon');
+      patch('vz-dashboard-private-channels-list-item', ConnectedPrivateChannelsList, 'default', (_, res) => {
+        try {
+          const currentRoute = vizality.api.routes.getCurrentRoute();
+          const selected = currentRoute.pathname.startsWith('/vizality');
+          const index = res.props?.children.map(c => c?.type?.displayName?.includes('FriendsButtonInner')).indexOf(true) + 1;
+          if (selected) {
+            res.props?.children?.forEach(c => c?.props?.selected ? c.props.selected = false : null);
+          }
+          res.props.children = [
+            ...res.props.children.slice(0, index), () =>
+              <LinkButton
+                icon={() => <Icon name='Vizality' />}
+                route='/vizality'
+                text='Dashboard'
+                selected={selected}
+              />,
+            ...res.props.children.slice(index)
+          ];
+          return res;
+        } catch (err) {
+          this.error(this._labels.concat('_injectPrivateTab'), err);
+        }
+      });
+      setImmediate(() => forceUpdateElement(`.${channel}`, true));
+    } catch (err) {
+      this.error(this._labels.concat('_injectPrivateTab'), err);
+    }
   }
 
   // async injectGuildHomeButton () {

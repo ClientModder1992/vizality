@@ -245,3 +245,5 @@ export const unpatchAllByAddon = addonId => {
     return _error(_labels.concat('unpatchAllByAddon'), err);
   }
 };
+
+export default this;

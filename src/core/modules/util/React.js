@@ -7,6 +7,7 @@
  * @version 1.0.0
  */
 
+import ReactIs from 'react-is';
 import { webFrame } from 'electron';
 import { toHex, toInt } from './Color';
 import { log, warn, error } from './Logger';
@@ -152,6 +153,32 @@ export const forceUpdateElement = (query, all = false) => {
     });
   } catch (err) {
     return _error(_labels.concat('forceUpdateElement'), err);
+  }
+};
+
+/**
+ * Checks if something is a valid React component.
+ * @see {@link https://www.npmjs.com/package/react-is}
+ * @param {*} input Argument input
+ * @returns {boolean} Whether the input is a valid React component
+ */
+export const isComponent = input => {
+  try {
+    return Boolean(ReactIs.isValidElementType(input) && typeof input !== 'string');
+  } catch (err) {
+    return _error(_labels.concat('isComponent'), err);
+  }
+};
+
+/**
+ * Asserts that the input is a React component.
+ * If it isn't a React component, it throws an error, otherwise it does nothing.
+ * @param {*} input Argument input
+ * @throws {TypeError} Throw an error if the input is not a React component
+ */
+export const assertComponent = input => {
+  if (!this.isComponent(input)) {
+    throw new TypeError(`Expected a React component but received ${typeof input}.`);
   }
 };
 

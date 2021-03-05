@@ -7,7 +7,7 @@ import { getObjectURL } from '../util/File';
  * Hook that uses util.file.getObjectURL to get an async collection of blob object URLs.
  * @param {string} requestType Request type. One of get, post, put, or del.
  * @param {url} url URL to call
- * @param {string|object} [headers] Headers
+ * @param {string|Object} [headers] Headers
  */
 export function useFetch (requestType, url, headers) {
   const [ response, setResponse ] = useState(null);
@@ -173,3 +173,5 @@ export function useForceUpdateWithCallback (callback) {
     setValue(v => ~v);
   }).current;
 }
+
+export default this;

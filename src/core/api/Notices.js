@@ -8,20 +8,30 @@
  * @version 1.0.0
  */
 
-import React from 'react';
-import { toast } from 'react-toastify';
-
-import { API } from '@vizality/entities';
-
 /*
- * @todo
- * Add showAlert, showPrompt, showConfirm, showModal (type property: alert, prompt, confirm)
- * Add closeAlert, closePrompt, closeConfirm, closeModal, closeAllAlerts, closeAllPrompts,
- * closeAllConfirms, closeAllModals, closeAllAnnouncements, closeAllToasts, closeAllNotices
+ * @todo Add closeAllAnnouncements, closeAllToasts, closeAllNotices
+ */
+
+import Constants from '@vizality/constants';
+import Entities from '@vizality/entities';
+import { toast } from 'react-toastify';
+import Util from '@vizality/util';
+import React from 'react';
+
+/**
+ * @typedef VizalityAnnouncement
+ * @property {string} [id]
+ * @property {string} message
+ * @property {string} [color]
+ * @property {Function} [onClose]
+ * @property {Object} [button]
+ * @property {Function} button.onClick
+ * @property {string} button.text
  */
 
 /**
  * @typedef VizalityToast
+ * @property {string} [id]
  * @property {string} header
  * @property {string} content
  * @property {Array<ToastButton>} [buttons]
@@ -32,93 +42,163 @@ import { API } from '@vizality/entities';
 
 /**
  * @typedef ToastButton
- * @property {string|void} [size]
- * @property {string|void} [look]
- * @property {string|void} [color]
+ * @property {string} [size]
+ * @property {string} [look]
+ * @property {string} [color]
  * @property {Function} onClick
  * @property {string} text
  */
 
 /**
- * @typedef VizalityAnnouncement
- * @property {string} message
- * @property {string|void} color
- * @property {Function|void} onClose
- * @property {Object} [button]
- * @property {Function} button.onClick
- * @property {string} button.text
+ * All currently opened notices.
+ * Accessed with `getAllAnnouncements` and `getAllToasts` below.
  */
-
-/**
- * @property {object.<string, VizalityToast>} toasts
- * @property {object.<string, VizalityAnnouncement>} announcements
- */
-
-const notices = {
+let notices = {
   announcements: [],
-  confirms: [],
-  prompts: [],
-  alerts: [],
-  modals: [],
   toasts: []
 };
 
 /**
- * @extends API
+ * @extends Entities.API
  * @extends Events
  */
-export default class Notices extends API {
-  constructor () {
-    super();
-    this.notices = {
-      announcements: [],
-      confirms: [],
-      prompts: [],
-      alerts: [],
-      modals: [],
-      toasts: []
-    };
-    this._labels = [ 'API', 'Notices' ];
-  }
-
+export default class Notices extends Entities.API {
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */
   stop () {
-    delete vizality.api.notices;
-    this.removeAllListeners();
+    try {
+      this.closeAllAnnouncements();
+      this.closeAllToasts();
+      delete vizality.api.notices;
+      this.removeAllListeners();
+    } catch (err) {
+      return this.error('There was an error unloading the Notices API!', err);
+    }
   }
 
   /**
-   * Sends an announcement to the user (banner at the top of the client).
-   *
-   * @param {string} id - Announcement ID
-   * @param {VizalityAnnouncement} props - Announcement
-   * @fires NoticesAPI#announcementAdded
-   * @returns {VizalityAnnouncement} Announcement
+   * Sends an announcement (in the form of a banner at the top of the client).
+   * @param {VizalityAnnouncement} announcement Announcement to send
+   * @emits Notices#Constants.Events.VIZALITY_ANNOUNCEMENT_SEND
    */
-  sendAnnouncement (id, props) {
-    if (this.announcements[id]) {
-      return this.error(`Announcement ID "${id}" is already used by another plugin!`);
+  sendAnnouncement (announcement) {
+    try {
+      Util.object.assertObject(announcement);
+      Util.string.assertString(announcement.message);
+      announcement.caller = Util.file.getCaller();
+      announcement.id = announcement.id || `${Util.string.toSnakeCase(announcement.caller).toUpperCase()}_ANNOUNCEMENT_${this.getKeybindsByCaller(announcement.caller)?.length + 1 || '1'}`;
+      Util.string.assertString(announcement.id);
+      if (this.isAnnouncement(announcement.id)) {
+        throw new Error(`Announcement "${announcement.id}" is already active!`);
+      }
+      if (!announcement.executor) {
+        throw new Error('Command must contain an executor!');
+      }
+      if (announcement.onClose && typeof announcement.onClose !== 'function') {
+        throw new TypeError('Announcement onClose property value must be a function!');
+      }
+      if (announcement.color) {
+        Util.string.assertString(announcement.color);
+      }
+      if (announcement.button) {
+        Util.object.assertObject(announcement.button);
+        if (announcement.button.onClose && typeof announcement.onClose !== 'function') {
+          throw new TypeError('Announcement button onClose property value must be a function!');
+        }
+        if (announcement.button.text) {
+          Util.string.assertString(announcement.button.text);
+        }
+      }
+      notices.announcements.push(announcement);
+      this.emit(Constants.Events.VIZALITY_ANNOUNCEMENT_ADD, announcement.id);
+    } catch (err) {
+      return this.error(this._labels.concat('sendAnnouncement'), err);
     }
+  }
 
-    this.announcements[id] = props;
-    this.emit('announcementAdded', id);
+  /**
+   * Sends a toast notification.
+   * @param {VizalityToast} toast Toast to send
+   * @emits Notices#Constants.Events.VIZALITY_TOAST_SEND
+   */
+  sendToast (toast) {
+    try {
+      if (Util.react.isComponent(toast)) {
+        console.log('pie');
+      } else {
+        Util.object.assertObject(toast);
+      }
+      return;
+      Util.object.assertObject(toast);
+      Util.string.assertString(announcement.message);
+      announcement.caller = Util.file.getCaller();
+      announcement.id = announcement.id || `${Util.string.toSnakeCase(announcement.caller).toUpperCase()}_ANNOUNCEMENT_${this.getKeybindsByCaller(announcement.caller)?.length + 1 || '1'}`;
+      Util.string.assertString(announcement.id);
+      if (this.isAnnouncement(announcement.id)) {
+        throw new Error(`Announcement "${announcement.id}" is already active!`);
+      }
+      if (!announcement.executor) {
+        throw new Error('Command must contain an executor!');
+      }
+      if (announcement.onClose && typeof announcement.onClose !== 'function') {
+        throw new TypeError('Announcement onClose property value must be a function!');
+      }
+      if (announcement.color) {
+        Util.string.assertString(announcement.color);
+      }
+      if (announcement.button) {
+        Util.object.assertObject(announcement.button);
+        if (announcement.button.onClose && typeof announcement.onClose !== 'function') {
+          throw new TypeError('Announcement button onClose property value must be a function!');
+        }
+        if (announcement.button.text) {
+          Util.string.assertString(announcement.button.text);
+        }
+      }
+      notices.announcements.push(announcement);
+      this.emit(Constants.Events.VIZALITY_ANNOUNCEMENT_ADD, announcement.id);
+    } catch (err) {
+      return this.error(this._labels.concat('sendAnnouncement'), err);
+    }
   }
 
   /**
    * Closes an announcement.
-   *
-   * @param {string} id - Announcement ID
-   * @fires NoticesAPI#announcementClosed
+   * @param {string} announcementId Announcement ID
+   * @emits Notices#Constants.Events.VIZALITY_ANNOUNCEMENT_CLOSE
    */
-  closeAnnouncement (id) {
-    if (!this.announcements[id]) {
-      return;
+  closeAnnouncement (announcementId) {
+    try {
+      Util.string.assertString(announcementId);
+      notices.announcements = this.getAnnouncements(announcement => announcement.id !== announcementId);
+      this.emit(Constants.Events.VIZALITY_ANNOUNCEMENT_CLOSE, announcementId);
+    } catch (err) {
+      return this.error(this._labels.concat('closeAnnouncement'), err);
     }
+  }
 
-    delete this.announcements[id];
-    this.emit('announcementClosed', id);
+  /**
+   * Closes a toast.
+   * @param {string} toastId Toast ID
+   * @emits Notices#Constants.Events.VIZALITY_TOAST_CLOSE
+   */
+  closeToast (toastId) {
+    try {
+      Util.string.assertString(toastId);
+      const toast = this.getToast(toastId);
+      notices.toasts = this.getToasts(toast => toast.id !== toastId);
+      if (toast?.callback && typeof toast.callback === 'function') {
+        try {
+          toast.callback();
+        } catch (err) {
+          return this.error(this._labels.concat('closeToast'), `There was a problem invoking toast "${toastId}" callback!`, err);
+        }
+      }
+      this.emit(Constants.Events.VIZALITY_TOAST_CLOSE, toastId);
+    } catch (err) {
+      return this.error(this._labels.concat('closeToast'), err);
+    }
   }
 
   /**
@@ -129,20 +209,20 @@ export default class Notices extends API {
    * @fires NoticesAPI#toastAdded
    * @returns {VizalityToast} Toast
    */
-  sendToast () {
-    return void 0;
-    // Do nothing if toast notifications are disabled
-    if (!vizality.settings.get('toastNotifications', true)) return;
-    const addon = vizality.manager.plugins.get('example-plugin-settings');
-    const Settings = addon.sections.settings.render;
-    return toast(<Settings />);
-    if (this.toasts[id]) {
-      return this.error(`ID ${id} is already used by another plugin!`);
-    }
+  // sendToast () {
+  //   return void 0;
+  //   // Do nothing if toast notifications are disabled
+  //   if (!vizality.settings.get('toastNotifications', true)) return;
+  //   const addon = vizality.manager.plugins.get('example-plugin-settings');
+  //   const Settings = addon.sections.settings.render;
+  //   return toast(<Settings />);
+  //   if (this.toasts[id]) {
+  //     return this.error(`ID ${id} is already used by another plugin!`);
+  //   }
 
-    this.toasts[id] = props;
-    this.emit('toastAdded', id);
-  }
+  //   this.toasts[id] = props;
+  //   this.emit('toastAdded', id);
+  // }
 
   /**
    * Closes a toast.
