@@ -59,7 +59,7 @@ const attributes = {
 };
 
 export default main => {
-  const Message = getModule(m => m && m.default && m.default.toString().search('childrenRepliedMessage') > -1);
+  const Message = getModule(m => m?.default?.toString?.()?.search('childrenRepliedMessage') > -1);
   const memberModule = getModule('getMember');
   const guildModule = getModule('getGuild');
   patch('vz-attributes-messages', Message, 'default', (_, res) => {
