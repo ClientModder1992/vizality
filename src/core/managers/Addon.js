@@ -1,4 +1,4 @@
-import fs, { readdirSync, existsSync, lstatSync, renameSync, stat } from 'fs';
+import fs, { readdirSync, existsSync, lstatSync, renameSync, stat, readFileSync } from 'fs';
 import http from 'isomorphic-git/http/node';
 import { join, resolve, sep } from 'path';
 import { clone } from 'isomorphic-git';
@@ -286,16 +286,19 @@ export default class AddonManager extends Events {
    */
   async initialize () {
     let addonId;
+    const ignorePath = join(this.dir, '.vzignore');
+    const ignore = existsSync(ignorePath) ? readFileSync(ignorePath, 'utf-8').split('\n') : [];
     try {
       await this._enableWatcher();
       if (this._watcherEnabled) {
         await this._watchFiles();
       }
       const files = readdirSync(this.dir).sort(this._sortBuiltins);
+
       for (const filename of files) {
         addonId = filename;
 
-        if (lstatSync(join(this.dir, addonId)).isFile() && addonId !== '.exists') {
+        if ((lstatSync(join(this.dir, addonId)).isFile() && addonId !== '.exists') || ignore.indexOf(addonId) > -1) {
           continue;
         }
 
