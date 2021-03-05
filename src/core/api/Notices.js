@@ -8,17 +8,14 @@
  * @version 1.0.0
  */
 
+/*
+ * @todo Add closeAllAnnouncements, closeAllToasts, closeAllNotices
+ */
+
 import React from 'react';
 import { toast } from 'react-toastify';
 
 import { API } from '@vizality/entities';
-
-/*
- * @todo
- * Add showAlert, showPrompt, showConfirm, showModal (type property: alert, prompt, confirm)
- * Add closeAlert, closePrompt, closeConfirm, closeModal, closeAllAlerts, closeAllPrompts,
- * closeAllConfirms, closeAllModals, closeAllAnnouncements, closeAllToasts, closeAllNotices
- */
 
 /**
  * @typedef VizalityToast

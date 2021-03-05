@@ -15,10 +15,9 @@
  * @property {string} caller Addon ID of action registrar. This property is set automatically.
  */
 
-import { assertString } from '@vizality/util/string';
-import { getCaller } from '@vizality/util/file';
-import { Events } from '@vizality/constants';
-import { API } from '@vizality/entities';
+import Constants from '@vizality/constants';
+import Entities from '@vizality/entities';
+import Util from '@vizality/util';
 
 /**
  * All currently registered actions.
@@ -30,7 +29,7 @@ let actions = [];
  * @extends API
  * @extends Events
  */
-export default class Actions extends API {
+export default class Actions extends Entities.API {
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */
@@ -48,12 +47,11 @@ export default class Actions extends API {
    * Registers an action.
    * @param {string} actionId Action ID
    * @param {Function} executor Action executor
-   * @emits Actions#Events.VIZALITY_ACTION_ADD
+   * @emits Actions#Constants.Events.VIZALITY_ACTION_ADD
    */
   registerAction (actionId, executor) {
     try {
-      assertString(actionId);
-      const caller = getCaller();
+      Util.string.assertString(actionId);
       if (this.isAction(actionId)) {
         throw new Error(`Action "${actionId}" is already registered!`);
       }
@@ -63,12 +61,13 @@ export default class Actions extends API {
       if (typeof executor !== 'function') {
         throw new TypeError('Action executor must be a function!');
       }
+      const caller = Util.file.getCaller();
       actions.push({
         id: actionId,
         executor,
         caller
       });
-      this.emit(Events.VIZALITY_ACTION_ADD, actionId);
+      this.emit(Constants.Events.VIZALITY_ACTION_ADD, actionId);
     } catch (err) {
       return this.error(this._labels.concat('registerAction'), err);
     }
@@ -77,20 +76,18 @@ export default class Actions extends API {
   /**
    * Invokes an action executor.
    * @param {string} actionId Action ID
-   * @emits Actions#Events.VIZALITY_ACTION_INVOKE
    */
   async invokeAction (actionId) {
     try {
-      assertString(actionId);
+      Util.string.assertString(actionId);
       if (!this.isAction(actionId)) {
         throw new Error(`Action "${actionId}" could not be found!`);
       }
       try {
         await this.getActionById(actionId).executor();
       } catch (err) {
-        return this.error(err);
+        return this.error(this._labels.concat('invokeAction'), `There was a problem invoking action "${actionId}" executor!`, err);
       }
-      this.emit(Events.VIZALITY_ACTION_INVOKE, actionId);
     } catch (err) {
       return this.error(this._labels.concat('invokeAction'), err);
     }
@@ -102,7 +99,7 @@ export default class Actions extends API {
    */
   isAction (actionId) {
     try {
-      assertString(actionId);
+      Util.string.assertString(actionId);
       return Boolean(this.getActionById(actionId));
     } catch (err) {
       return this.error(this._labels.concat('isAction'), err);
@@ -130,7 +127,7 @@ export default class Actions extends API {
    */
   getActionById (actionId) {
     try {
-      assertString(actionId);
+      Util.string.assertString(actionId);
       return actions.find(action => action.id === actionId);
     } catch (err) {
       return this.error(this._labels.concat('getActionById'), err);
@@ -158,7 +155,7 @@ export default class Actions extends API {
    */
   getActionsByCaller (addonId) {
     try {
-      assertString(addonId);
+      Util.string.assertString(addonId);
       return actions.filter(action => action.caller === addonId);
     } catch (err) {
       return this.error(this._labels.concat('getActionsByCaller'), err);
@@ -180,14 +177,14 @@ export default class Actions extends API {
   /**
    * Unregisters an action.
    * @param {string} actionId Action ID
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE
+   * @emits Actions#Constants.Events.VIZALITY_ACTION_REMOVE
    */
   unregisterAction (actionId) {
     try {
-      assertString(actionId);
+      Util.string.assertString(actionId);
       if (this.isAction(actionId)) {
         actions = this.getActions(action => action.id !== actionId);
-        this.emit(Events.VIZALITY_ACTION_REMOVE, actionId);
+        this.emit(Constants.Events.VIZALITY_ACTION_REMOVE, actionId);
       } else {
         throw new Error(`Action "${actionId}" is not registered, so it cannot be unregistered!`);
       }
@@ -199,13 +196,13 @@ export default class Actions extends API {
   /**
    * Unregisters all actions matching a given caller.
    * @param {string} addonId Addon ID
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER
+   * @emits Actions#Constants.Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER
    */
   unregisterActionsByCaller (addonId) {
     try {
-      assertString(addonId);
+      Util.string.assertString(addonId);
       actions = actions.filter(action => action.caller !== addonId);
-      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER, addonId);
+      this.emit(Constants.Events.VIZALITY_ACTION_REMOVE_ALL_BY_CALLER, addonId);
     } catch (err) {
       return this.error(this._labels.concat('unregisterActionsByCaller'), err);
     }
@@ -213,12 +210,12 @@ export default class Actions extends API {
 
   /**
    * Unregisters all actions.
-   * @emits Actions#Events.VIZALITY_ACTION_REMOVE_ALL
+   * @emits Actions#Constants.Events.VIZALITY_ACTION_REMOVE_ALL
    */
   unregisterAllActions () {
     try {
       actions = [];
-      this.emit(Events.VIZALITY_ACTION_REMOVE_ALL);
+      this.emit(Constants.Events.VIZALITY_ACTION_REMOVE_ALL);
     } catch (err) {
       return this.error(this._labels.concat('unregisterAllActions'), err);
     }

@@ -42,15 +42,12 @@
  * @property {string} [source] Source text to the right in the autocomplete
  */
 
-import { Events, Directories } from '@vizality/constants';
-import { assertObject } from '@vizality/util/object';
-import { assertString } from '@vizality/util/string';
-import { assertArray } from '@vizality/util/array';
-import { getCaller } from '@vizality/util/file';
-import { Icon } from '@vizality/components';
-import { API } from '@vizality/entities';
-import { existsSync } from 'fs';
-import { join } from 'path';
+import Components from '@vizality/components';
+import Constants from '@vizality/constants';
+import Entities from '@vizality/entities';
+import Util from '@vizality/util';
+import path from 'path';
+import fs from 'fs';
 
 /**
  * All currently registered commands.
@@ -62,7 +59,7 @@ let commands = [];
  * @extends API
  * @extends Events
  */
-export default class Commands extends API {
+export default class Commands extends Entities.API {
   /**
    * Shuts down the API, removing all listeners and stored objects.
    */
@@ -93,8 +90,8 @@ export default class Commands extends API {
    */
   registerCommand (command) {
     try {
-      assertObject(command);
-      assertString(command.command);
+      Util.object.assertObject(command);
+      Util.string.assertString(command.command);
       command.command = command.command.toLowerCase();
       if (this.isCommand(command.command)) {
         throw new Error(`Command "${command.command}" is already registered!`);
@@ -106,23 +103,20 @@ export default class Commands extends API {
         throw new TypeError('Command executor must be a function!');
       }
       if (command.icon) {
-        if (Icon.Names.includes(command.icon)) {
-          if (existsSync(join(Directories.ASSETS, 'svg', `${command.icon}.svg`))) {
+        if (Components.Icon.Names.includes(command.icon)) {
+          if (fs.existsSync(path.join(Constants.Directories.ASSETS, 'svg', `${command.icon}.svg`))) {
             command.icon = `vz-asset://svg/${command.icon}.svg`;
-          } else if (existsSync(join(Directories.ASSETS, 'logo', `${command.icon}.svg`))) {
+          } else if (fs.existsSync(path.join(Constants.Directories.ASSETS, 'logo', `${command.icon}.svg`))) {
             command.icon = `vz-asset://logo/${command.icon}.svg`;
           }
         }
       }
       if (command.aliases) {
-        assertArray(command.aliases);
+        Util.array.assertArray(command.aliases);
         command.aliases = command.aliases.map(alias => alias.toLowerCase());
       }
-      const caller = getCaller();
-      commands.push({
-        ...command,
-        caller
-      });
+      command.caller = Util.file.getCaller();
+      commands.push(command);
     } catch (err) {
       return this.error(this._labels.concat('registerCommand'), err);
     }
@@ -134,7 +128,7 @@ export default class Commands extends API {
    */
   async invokeCommand (commandName) {
     try {
-      assertString(commandName);
+      Util.string.assertString(commandName);
       if (!this.isCommand(commandName)) {
         throw new Error(`Command "${commandName}" could not be found!`);
       }
@@ -143,7 +137,6 @@ export default class Commands extends API {
       } catch (err) {
         return this.error(this._labels.concat('invokeCommand'), `There was a problem invoking command "${commandName}" executor!`, err);
       }
-      this.emit(Events.VIZALITY_COMMAND_INVOKE, commandName);
     } catch (err) {
       return this.error(this._labels.concat('invokeCommand'), err);
     }
@@ -156,7 +149,7 @@ export default class Commands extends API {
    */
   isCommand (commandName) {
     try {
-      assertString(commandName);
+      Util.string.assertString(commandName);
       return Boolean(this.getCommandByName(commandName));
     } catch (err) {
       return this.error(this._labels.concat('isCommand'), err);
@@ -170,8 +163,8 @@ export default class Commands extends API {
    */
   hasSubcommands (commandName) {
     try {
-      assertString(commandName);
-      return Boolean(this.getCommandByName(commandName).subcommand?.length);
+      Util.string.assertString(commandName);
+      return Boolean(this.getCommandByName(commandName).subcommands?.length);
     } catch (err) {
       return this.error(this._labels.concat('hasSubcommands'), err);
     }
@@ -198,7 +191,7 @@ export default class Commands extends API {
    */
   getCommandByName (commandName) {
     try {
-      assertString(commandName);
+      Util.string.assertString(commandName);
       return commands.find(command => command.command === commandName);
     } catch (err) {
       return this.error(this._labels.concat('getCommandByName'), err);
@@ -226,7 +219,7 @@ export default class Commands extends API {
    */
   getCommandsByCaller (addonId) {
     try {
-      assertString(addonId);
+      Util.string.assertString(addonId);
       return commands.filter(command => command.caller === addonId);
     } catch (err) {
       return this.error(this._labels.concat('getCommandsByCaller'), err);
@@ -248,16 +241,16 @@ export default class Commands extends API {
   /**
    * Unregisters a command.
    * @param {string} commandName Command name
-   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE
+   * @emits Commands#Constants.Events.VIZALITY_COMMAND_REMOVE
    */
   unregisterCommand (commandName) {
     try {
-      assertString(commandName);
+      Util.string.assertString(commandName);
       if (!this.isCommand(commandName)) {
         throw new Error(`Command "${commandName}" is not registered, so it cannot be unregistered!`);
       }
       commands = this.getCommands(command => command.command !== commandName);
-      this.emit(Events.VIZALITY_COMMAND_REMOVE, commandName);
+      this.emit(Constants.Events.VIZALITY_COMMAND_REMOVE, commandName);
     } catch (err) {
       return this.error(this._labels.concat('unregisterCommand'), err);
     }
@@ -266,13 +259,13 @@ export default class Commands extends API {
   /**
    * Unregisters all commands matching a given caller.
    * @param {string} addonId Addon ID
-   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER
+   * @emits Commands#Constants.Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER
    */
   unregisterCommandsByCaller (addonId) {
     try {
-      assertString(addonId);
+      Util.string.assertString(addonId);
       commands = commands.filter(command => command.caller !== addonId);
-      this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER, addonId);
+      this.emit(Constants.Events.VIZALITY_COMMAND_REMOVE_ALL_BY_CALLER, addonId);
     } catch (err) {
       return this.error(this._labels.concat('unregisterCommandsByCaller'), err);
     }
@@ -280,12 +273,12 @@ export default class Commands extends API {
 
   /**
    * Unregisters all commands.
-   * @emits Commands#Events.VIZALITY_COMMAND_REMOVE_ALL
+   * @emits Commands#Constants.Events.VIZALITY_COMMAND_REMOVE_ALL
    */
   unregisterAllCommands () {
     try {
       commands = [];
-      this.emit(Events.VIZALITY_COMMAND_REMOVE_ALL);
+      this.emit(Constants.Events.VIZALITY_COMMAND_REMOVE_ALL);
     } catch (err) {
       return this.error(this._labels.concat('unregisterAllCommands'), err);
     }
