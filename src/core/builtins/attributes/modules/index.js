@@ -1,39 +1,39 @@
 // Chat
-export * as BlockedMessageGroup from './chat/BlockedMessageGroup';
-export * as Message from './chat/Message';
-export * as Chat from './chat/Chat';
+export { default as BlockedMessageGroup } from './chat/BlockedMessageGroup';
+export { default as Message } from './chat/Message';
+export { default as Chat } from './chat/Chat';
 
 // Members Sidebar
-export * as RoleHeader from './members/RoleHeader';
-export * as Member from './members/Member';
+export { default as RoleHeader } from './members/RoleHeader';
+export { default as Member } from './members/Member';
 
 // Guilds Sidebar
-export * as Folder from './guilds/Folder';
-export * as Guild from './guilds/Guild';
+export { default as Folder } from './guilds/Folder';
+export { default as Guild } from './guilds/Guild';
 
 // Components
-export * as GameIcon from './components/GameIcon';
-export * as TabBar from './components/TabBar';
-export * as Anchor from './components/Anchor';
-export * as Avatar from './components/Avatar';
-export * as Role from './components/Role';
-export * as ImageCarouselModal from './components/modals/ImageCarousel';
-export * as UserModal from './components/modals/User';
-export * as UserPopout from './components/popouts/User';
-export * as ContextMenu from './components/contextmenu/ContextMenu';
+export { default as ImageCarouselModal } from './components/modals/ImageCarousel';
+export { default as ContextMenu } from './components/contextmenu/ContextMenu';
+export { default as UserPopout } from './components/popouts/User';
+export { default as UserModal } from './components/modals/User';
+export { default as GameIcon } from './components/GameIcon';
+export { default as TabBar } from './components/TabBar';
+export { default as Anchor } from './components/Anchor';
+export { default as Avatar } from './components/Avatar';
+export { default as Role } from './components/Role';
 
 // Private
-export * as PrivateChannel from './private/PrivateChannel';
-export * as CallTile from './private/CallTile';
+export { default as PrivateChannel } from './private/PrivateChannel';
+export { default as CallTile } from './private/CallTile';
 
 // Global
-export * as TransitionGroup from './global/TransitionGroup';
+export { default as TransitionGroup } from './global/TransitionGroup';
 
 // Vizality
-export * as VizalitySettings from './vizality/Settings';
+export { default as VizalitySettings } from './vizality/Settings';
 
 // Misc
-export * as Settings from './misc/Settings';
-export * as Holiday from './misc/Holiday';
-export * as Window from './misc/Window';
-export * as Route from './misc/Route';
+export { default as Settings } from './misc/Settings';
+export { default as Holiday } from './misc/Holiday';
+export { default as Window } from './misc/Window';
+export { default as Route } from './misc/Route';
