@@ -1,10 +1,3 @@
-import { getModule } from '@vizality/webpack';
-import { API } from '@vizality/entities';
-import i18n from '@vizality/i18n';
-
-import * as strings from '../languages';
-
-let locale;
 // getLocale
 // setLocale
 // getLanguage
@@ -19,18 +12,39 @@ let locale;
 // unregisterMessage
 // unregisterMessages
 // getMessagesByLocale
-export default class I18n extends API {
-  constructor () {
-    super();
-    this.messages = {};
-    this._vizality = strings;
-    this.injectAllStrings(this._vizality);
-    this._module = 'API';
-    this._submodule = 'I18n';
-  }
 
+import { getModule, FluxDispatcher } from '@vizality/webpack';
+import { ActionTypes } from '@vizality/constants';
+import { API } from '@vizality/entities';
+import i18n from '@vizality/i18n';
+
+import * as strings from '../languages';
+
+/**
+ * The currently set language identifier.
+ */
+export let locale;
+
+/**
+ * All currently registered messages.
+ * Accessed with `getAllMessages` below.
+ */
+export const messages = {};
+
+/**
+ * All Vizality core messages.
+ * Accessed with `getAllMessages` below.
+ */
+export const __coreMessages = strings;
+
+/**
+ * @extends API
+ * @extends Events
+ */
+export default class I18n extends API {
   _handleLocaleChange (diff) {
     if (diff.locale) {
+      console.log('yes');
       [ locale ] = diff;
       this._addVizalityStrings();
     }
@@ -38,9 +52,8 @@ export default class I18n extends API {
 
   async start () {
     locale = getModule('locale', 'theme')?.locale;
-    console.log(locale);
-    vizality.on('VIZALITY_DISCORD_SETTING_UPDATE', this._handleLocaleChange);
-    this._addVizalityStrings();
+    FluxDispatcher.subscribe(ActionTypes.I18N_LOAD_SUCCESS, this._handleLocaleChange);
+    this.injectAllStrings(__coreMessages);
   }
 
   stop () {
@@ -69,8 +82,8 @@ export default class I18n extends API {
   }
 
   _addVizalityStrings () {
-    Object.assign(i18n._proxyContext.messages, this.messages[this.locale]);
-    Object.assign(i18n._proxyContext.defaultMessages, this.messages['en-US']);
+    Object.assign(i18n._proxyContext.messages, messages[locale]);
+    Object.assign(i18n._proxyContext.defaultMessages, messages['en-US']);
     /*
      * @todo This removes the 'Hold up!' string, which is also used in the
      * mention everyone popout. Look for a fix, possibly patching into a
@@ -92,16 +105,16 @@ export default class I18n extends API {
   injectStrings (locale, strings) {
     /**
      * @note Because you can't easily export modules with hyphens in them, this
-     * accounts for plugins using require syntax and plugins using ESM syntax, and the
-     * possibility that they may export without the hyphen.
+     * accounts for both cases of plugins using require syntax and plugins using ESM syntax,
+     * and the possibility that they may export without the hyphen.
      */
     const ogLocale = locale;
     locale = (/-/).test(locale) ? ogLocale : locale.replace(/([A-Z])/, '-$1').trim();
-    if (!this.messages[locale]) {
-      this.messages[locale] = strings;
+    if (!messages[locale]) {
+      messages[locale] = strings;
     } else {
-      this.messages[locale] = {
-        ...this.messages[locale],
+      messages[locale] = {
+        ...messages[locale],
         ...strings
       };
     }

@@ -56,7 +56,7 @@ import fs from 'fs';
 let commands = [];
 
 /**
- * @extends API
+ * @extends Entities.API
  * @extends Events
  */
 export default class Commands extends Entities.API {

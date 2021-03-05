@@ -26,7 +26,7 @@ import Util from '@vizality/util';
 let actions = [];
 
 /**
- * @extends API
+ * @extends Entities.API
  * @extends Events
  */
 export default class Actions extends Entities.API {
