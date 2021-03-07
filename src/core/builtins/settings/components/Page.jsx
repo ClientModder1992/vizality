@@ -30,7 +30,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   return (
-    <div>
+    <>
       <TextInput
         defaultValue={getSetting('commandPrefix', '.')}
         onChange={p => updateSetting('commandPrefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
@@ -42,7 +42,13 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
       <SwitchItem
         note={Messages.VIZALITY_SETTINGS_NO_CLYDE_DESC.format({ discordiaUrl: 'https://discordia.me/clyde', apiUrl:  `${window.location.origin}/vizality/docs` })}
         value={getSetting('replaceClyde', true)}
-        onChange={() => toggleSetting('replaceClyde', true)}
+        onChange={() => {
+          try {
+            toggleSetting('replaceClyde', true);
+          } catch (err) {
+            console.log(err);
+          }
+        }}
       >
         <Icon
           className='vz-settings-eradicate-clyde-icon-wrapper'
@@ -168,6 +174,6 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
       >
         {Messages.VIZALITY_SETTINGS_CACHE_DISCORD}
       </ButtonItem>
-    </div>
+    </>
   );
 });

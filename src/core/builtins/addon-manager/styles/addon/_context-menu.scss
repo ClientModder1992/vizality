@@ -22,4 +22,10 @@
       font-size: 14px;
     }
   }
+  &-label-inner {
+    display: flex;
+    .vz-icon-wrapper {
+      margin-right: 4px;
+    }
+  }
 }
