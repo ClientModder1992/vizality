@@ -33,6 +33,8 @@ export const FormText = AsyncComponent.fromDisplayName('FormText');
 export const FormItem = AsyncComponent.fromDisplayName('FormItem');
 export const Spinner = AsyncComponent.fromDisplayName('Spinner');
 export const TabBar = AsyncComponent.fromDisplayName('TabBar');
+export const Notice = AsyncComponent.fromDisplayName('Notice');
+export const Header = AsyncComponent.fromDisplayName('Header');
 export const Table = AsyncComponent.fromDisplayName('Table');
 export const Image = AsyncComponent.fromDisplayName('Image');
 export const Video = AsyncComponent.fromDisplayName('Video');
@@ -85,6 +87,22 @@ getModuleByDisplayName('Spinner', true, true).then(Spinner => {
   this.Spinner.Types = Spinner.Type;
 });
 
+getModule(m => m.default?.displayName === 'Notice', true, true).then(Notice => {
+  this.Notice.Colors = {
+    BLURPLE: Notice.NoticeColors.BRAND,
+    RED: Notice.NoticeColors.DANGER,
+    ORANGE: Notice.NoticeColors.DEFAULT,
+    BLUE: Notice.NoticeColors.INFO,
+    GREY: Notice.NoticeColors.NEUTRAL,
+    DARK_GREY: Notice.NoticeColors.DARK,
+    GREEN: Notice.NoticeColors.NOTIFICATION,
+    BLURPLE_GRADIENT_1: Notice.NoticeColors.PREMIUM_TIER_1,
+    BLURPLE_GRADIENT_2: Notice.NoticeColors.PREMIUM_TIER_2,
+    SPOTIFY: Notice.NoticeColors.SPOTIFY,
+    PURPLE: Notice.NoticeColors.STREAMER_MODE
+  };
+});
+
 getModule(m => m.DropdownSizes, true, true).then(Button => {
   this.Button.DropdownSizes = Button.DropdownSizes;
   this.Button.Colors = Button.Colors;
@@ -125,6 +143,11 @@ getModuleByDisplayName('TextInput', true, true).then(TextInput => {
 getModuleByDisplayName('Text', true, true).then(Text => {
   this.Text.Colors = Text.Colors;
   this.Text.Sizes = Text.Sizes;
+});
+
+getModuleByDisplayName('Header', true, true).then(Header => {
+  this.Header.Tags = Header.Tags;
+  this.Header.Sizes = Header.Sizes;
 });
 
 getModuleByDisplayName('Flex', true, true).then(Flex => {
