@@ -11,7 +11,7 @@ export default memo(props => {
 
   return (
     <ContextMenu.Menu navId='vz-addon-context-menu' onClose={closeContextMenu}>
-      <ContextMenu.Group
+      {/* <ContextMenu.Group
         label={<>
           <div className='vz-addon-context-menu-header-addon-icon'>
             <LazyImage
@@ -26,57 +26,57 @@ export default memo(props => {
         </>}
         aria-label='vz-addon-context-menu-header'
         className='vz-addon-context-menu-header'
-      >
-        {!onUninstall
-          ? null
-          : isEnabled
-            ? <ContextMenu.Item
-              id='disable'
-              label='Disable'
-              action={() => onToggle(false)}
-            />
-            : <ContextMenu.Item
-              id='enable'
-              label='Enable'
-              action={() => onToggle(true)}
-            />
-        }
-        <ContextMenu.Item
-          id='settings'
-          label='Settings'
-          action={() => void 0}
-        />
-        <ContextMenu.Item
-          id='details'
-          label='Details'
-          action={() => void 0}
-        />
-        {onUninstall
+      > */}
+      {!onUninstall
+        ? null
+        : isEnabled
           ? <ContextMenu.Item
-            id='uninstall'
-            label='Uninstall'
-            color='colorDanger'
-            action={() => void 0}
+            id='disable'
+            label='Disable'
+            action={() => onToggle(false)}
           />
           : <ContextMenu.Item
-            id='install'
-            label='Install'
-            color='colorSuccess'
-            action={() => void 0}
+            id='enable'
+            label='Enable'
+            action={() => onToggle(true)}
           />
-        }
-        <ContextMenu.Separator />
-        <ContextMenu.Item
-          id='copy-link'
-          label='Copy Link'
+      }
+      <ContextMenu.Item
+        id='settings'
+        label='Settings'
+        action={() => void 0}
+      />
+      <ContextMenu.Item
+        id='details'
+        label='Details'
+        action={() => void 0}
+      />
+      {onUninstall
+        ? <ContextMenu.Item
+          id='uninstall'
+          label='Uninstall'
+          color='colorDanger'
           action={() => void 0}
         />
-        <ContextMenu.Item
-          id='copy-id'
-          label='Copy ID'
+        : <ContextMenu.Item
+          id='install'
+          label='Install'
+          color='colorSuccess'
           action={() => void 0}
         />
-      </ContextMenu.Group>
+      }
+      <ContextMenu.Separator />
+      <ContextMenu.Item
+        id='copy-link'
+        label='Copy Link'
+        action={() => void 0}
+      />
+      <ContextMenu.Item
+        id='copy-id'
+        label='Copy ID'
+        action={() => void 0}
+      />
+      {/* </ContextMenu.Group> */}
     </ContextMenu.Menu>
   );
 });

@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-import { toPlural } from '@vizality/util/string';
 import { contextMenu } from '@vizality/webpack';
 
 import AddonContextMenu from './AddonContextMenu';

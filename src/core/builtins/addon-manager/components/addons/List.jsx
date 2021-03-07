@@ -43,9 +43,8 @@ export default React.memo(({ type, tab, search, displayType, limit, className })
 
     const previewImages = [];
     const validExtensions = [ '.png', '.gif', '.jpg', '.jpeg', '.webp' ];
-
     fs.readdirSync(path.join(addon.path, 'screenshots'))
-      .filter(file => validExtensions.indexOf(fs.extname(file).toLowerCase()) !== -1)
+      .filter(file => validExtensions.indexOf(path.extname(file).toLowerCase()) !== -1)
       .map(file => previewImages.push(`vz-${type}://${addonId}/screenshots/${file}`));
 
     return previewImages;
