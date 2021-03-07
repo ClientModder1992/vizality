@@ -255,11 +255,10 @@
         "object": "Object",
         "key": "key",
         "value": "value",
-
+        "ReactElement": "ReactElement",
         "Git": "Git",
         "VizalityModules": "VizalityModules",
         "WebpackModule": "WebpackModule",
-
         "snowflake": "snowflake",
         "Collection": "Collection",
         "Activity": "Activity",
