@@ -1,156 +1,109 @@
-import React, { PureComponent } from 'react';
+import { Button, Icon, Flex } from '@vizality/components';
+import Webpack from '@vizality/webpack';
+import Util from '@vizality/util';
+import React from 'react';
 
-import { AsyncComponent, Button, Tooltip, Icon, Markdown } from '@vizality/components';
-import { joinClassNames } from '@vizality/util/dom';
+const { horizontal } = Webpack.getModule('buttonsWrapper', 'horizontal');
+const { marginTop20 } = Webpack.getModule('marginTop20');
 
-const Progress = AsyncComponent.fromDisplayName('Progress');
+const Content = React.memo(({ markdown, content }) => {
+  return (
+    <div className='vz-toast-content'>
+      {markdown
+        ? <Markdown source={content} />
+        : content
+      }
+    </div>
+  );
+});
 
-export default class Toast extends PureComponent {
-  constructor (props) {
-    super(props);
-    this.state = {
-      timeout: null,
-      progress: 100
-    };
-  }
-
-  componentDidMount () {
-    if (this.props.timeout && !isNaN(this.props.timeout)) {
-      const timeout = setTimeout(() => vizality.api.notices.closeToast(this.props.id), this.props.timeout);
-      this.setState({ timeout });
-
-      let timeLeft = this.props.timeout;
-
-      setInterval(() => {
-        timeLeft -= 1000;
-        this.setState({ progress: (timeLeft / this.props.timeout) * 100 });
-      }, 1e3);
-    }
-  }
-
-  render () {
-    return (
-      <div id={this.props.id}
-        className={joinClassNames(
-          this.props.className,
-          'vz-toast', {
-            'vz-isClosing': this.props.closing,
-            [`vz-is${this.props.position}`]: this.props.position,
-            'vz-isBottomRight': !this.props.position || this.props.position == "BottomRight"
-          })}
-        style={this.props.style}
-      >
-        <div className='vz-toast-inner'>
-          <Icon
-            name='Close'
-            size='18px'
-            className='vz-toast-close-wrapper'
-            iconClassName='vz-toast-close'
-            onClick={() => {
-              clearTimeout(this.state.timeout);
-              vizality.api.notices.closeToast(this.props.id);
-            }}
-          />
-          {this.props.header && this.renderHeader()}
-          {this.renderFooter()}
-        </div>
-        {this.state.timeout && !this.props.hideProgressBar && this.renderProgress()}
-      </div>
-    );
-  }
-
-  renderHeader () {
-    return <div className='vz-toast-header'>
-      <Tooltip
-        className='vz-toast-header-extra'
-        text={this.props.tooltip || null}
-        position='left'
-      >
-        {this.props.image &&
-          <img
-            src={this.props.image}
-            className={joinClassNames('vz-toast-image', this.props.imageClassName)}
-          />
+const Header = React.memo(({ image, icon, markdown, header, content }) => {
+  return (
+    <div className='vz-toast-meta-wrapper'>
+      <div className='vz-toast-decorator'>
+        {image &&
+        <LazyImage src={image} className='vz-toast-image' />
         }
-        {this.props.icon &&
+        {icon &&
           <Icon
-            size={this.props.iconSize || '40px'}
+            size='40'
             className='vz-toast-icon-wrapper'
             iconClassName='vz-toast-icon'
-            name={this.props.icon}
+            name={icon}
           />
         }
-      </Tooltip>
-      <div className='vz-toast-header-content'>
-        <div className='vz-toast-header-title'>
-          {this.props.markdown
-            ? <Markdown source={this.props.header} />
-            : this.props.header
+      </div>
+      <div className='vz-toast-meta'>
+        <div className='vz-toast-header'>
+          {markdown
+            ? <Markdown source={header} />
+            : header
           }
         </div>
-        {this.props.content && this.renderContent()}
+        {content && <Content markdown={markdown} content={content} />}
       </div>
-    </div>;
-  }
+    </div>
+  );
+});
 
-  renderContent () {
-    return <div className='vz-toast-header-message'>
-      {this.props.markdown
-        ? <Markdown source={this.props.content} />
-        : this.props.content
-      }
-    </div>;
-  }
+const Footer = React.memo(({ buttons }) => {
+  return (
+    <Flex className={Util.dom.joinClassNames('vz-toast-footer', marginTop20)}>
+      <Flex className={Util.dom.joinClassNames('vz-toast-footer-buttons', horizontal)} justify={Flex.Justify.END}>
+        {buttons.map((button, i) => {
+          const btnProps = {};
+          [ 'size', 'look', 'color' ].forEach(prop => {
+            if (button[prop]) {
+              const value = button[prop].includes('-')
+                ? button[prop]
+                : Button[`${prop.charAt(0).toUpperCase() + prop.slice(1)}s`][button[prop].toUpperCase()];
+              if (value) {
+                btnProps[prop] = value;
+              }
+            }
+          });
 
-  renderFooter () {
-    return (
-      <>
-        {this.props.buttons &&
-          <div className='vz-toast-footer'>
-            {Array.isArray(this.props.buttons) && (
-              <div className='vz-toast-buttons'>
-                {this.props.buttons.map((button, i) => {
-                  const btnProps = {};
-                  [ 'size', 'look', 'color' ].forEach(prop => {
-                    if (button[prop]) {
-                      const value = button[prop].includes('-')
-                        ? button[prop]
-                        : Button[`${prop.charAt(0).toUpperCase() + prop.slice(1)}s`][button[prop].toUpperCase()];
-                      if (value) {
-                        btnProps[prop] = value;
-                      }
-                    }
-                  });
+          if (!btnProps.size) {
+            btnProps.size = Button.Sizes.SMALL;
+          }
 
-                  if (!btnProps.size) {
-                    btnProps.size = Button.Sizes.SMALL;
-                  }
+          return <Button
+            key={i}
+            {...btnProps}
+            onClick={() => {
+              if (button.onClick) {
+                button.onClick();
+              }
+            }}
+          >
+            {button.text}
+          </Button>;
+        })}
+      </Flex>
+    </Flex>
+  );
+});
 
-                  return <Button
-                    key={i}
-                    {...btnProps}
-                    onClick={() => {
-                      if (button.onClick) {
-                        button.onClick();
-                      }
-                    }}
-                  >
-                    {button.text}
-                  </Button>;
-                })}
-              </div>
-            )}
-          </div>
-        }
-      </>
-    );
-  }
+export default React.memo(props => {
+  const Toast =
+    typeof props.toast.custom === 'function'
+      ? props.toast.custom
+      : () => props.toast.custom;
 
-  renderProgress () {
-    return <Progress
-      percent={this.state.progress}
-      foregroundGradientColor={[ '#738ef5', '#738ef5' ]}
-      animate={true}
-    />;
-  }
-}
+  return (
+    props.toast.custom
+      ? <Toast {...props.toast.custom.props} />
+      : (
+        <div className='vz-toast-body-inner' vz-toast-id={props.toast.id}>
+          <Header
+            markdown={props.toast.markdown}
+            image={props.toast.image}
+            icon={props.toast.icon}
+            header={props.toast.header}
+            content={props.toast.content}
+          />
+          {props.toast.buttons?.length && <Footer buttons={props.toast.buttons} />}
+        </div>
+      )
+  );
+});

@@ -1,77 +1,95 @@
-import { ToastContainer } from 'react-toastify';
-import { promises, existsSync } from 'fs';
-import { join } from 'path';
-import React from 'react';
-
-import { forceUpdateElement, getOwnerInstance } from '@vizality/util/react';
-import { getModule, getModuleByDisplayName } from '@vizality/webpack';
-import { waitForElement } from '@vizality/util/dom';
 import { patch, unpatch } from '@vizality/patcher';
-import { Directories } from '@vizality/constants';
-import { Builtin } from '@vizality/entities';
+import Constants from '@vizality/constants';
+import Entities from '@vizality/entities';
+import Webpack from '@vizality/webpack';
+import Util from '@vizality/util';
+import React from 'react';
+import path from 'path';
+import fs from 'fs';
 
-import AnnouncementContainer from './components/AnnouncementContainer';
+import NoticeContainer from './components/NoticeContainer';
+import ToastContainer from './components/ToastContainer';
 
-const { unlink } = promises;
-
-export default class Notices extends Builtin {
+export default class Notifications extends Entities.Builtin {
   async start () {
     this.injectStyles('styles/main.scss');
-    const injectedFile = join(Directories.SRC, '__injected.txt');
-    await this._patchAnnouncements();
+    const injectedFile = path.join(Constants.Directories.SRC, '__injected.txt');
+    await this._patchNotices();
     await this._patchToasts();
-    if (existsSync(injectedFile)) {
+    if (fs.existsSync(injectedFile)) {
       this._welcomeNewUser();
-      if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'stable') {
+      if (window.GLOBAL_ENV?.RELEASE_CHANNEL !== 'stable') {
         this._unsupportedBuild();
       }
-      unlink(injectedFile);
+      fs.promises.unlink(injectedFile);
     }
   }
 
   stop () {
-    unpatch('vz-notices-announcements');
+    unpatch('vz-notices-notices');
     unpatch('vz-notices-toast');
   }
 
-  async _patchAnnouncements () {
-    const { base } = getModule('base', 'container');
-    const instance = getOwnerInstance(await waitForElement(`.${base.split(' ')[0]}`));
-    patch('vz-notices-announcements', instance.props.children, 'type', (_, res) => {
-      res.props.children[1].props.children.unshift(
-        <AnnouncementContainer />
-      );
-    });
-  }
-
-  async _patchToasts () {
-    const { app } = getModule('app', 'layers');
-    const Shakeable = getModuleByDisplayName('Shakeable');
-    patch('vz-notices-toast', Shakeable.prototype, 'render', (_, res) => {
-      if (!res.props.children.find(child => child.type && child.type.name === 'ToastContainer')) {
-        res.props.children.push(
-          <ToastContainer
-            className='vz-toast-container'
-            closeOnClick={false}
-            pauseOnFocusLoss={false}
-            autoClose={false}
-            draggable={false}
-          />
+  /**
+   * @todo Figure out how to forceUpdate the app initially to render startup notices.
+   */
+  async _patchNotices () {
+    const { base } = Webpack.getModule('base', 'container');
+    const instance = Util.react.getOwnerInstance(await Util.dom.waitForElement(`.${base.split(' ')[0]}`));
+    patch('vz-notices-notices', instance?.props?.children, 'type', (_, res) => {
+      try {
+        res.props?.children[1]?.props?.children?.unshift(
+          <NoticeContainer />
         );
+      } catch (err) {
+        return this.error(this._labels.concat('_patchNotices'), err);
       }
     });
-    forceUpdateElement(`.${app}`);
   }
 
+  /**
+   * 
+   */
+  async _patchToasts () {
+    const { app } = Webpack.getModule('app', 'layers');
+    const Shakeable = Webpack.getModuleByDisplayName('Shakeable');
+    patch('vz-notices-toast', Shakeable?.prototype, 'render', (_, res) => {
+      try {
+        if (!res.props?.children?.find(child => child.type?.name === 'ToastContainer')) {
+          res.props?.children?.push(
+            <ToastContainer settings={this.settings} />
+          );
+        }
+      } catch (err) {
+        return this.error(this._labels.concat('_patchToasts'), err);
+      }
+    });
+    Util.react.forceUpdateElement(`.${app}`);
+  }
+
+  /**
+   * 
+   */
   _welcomeNewUser () {
-    vizality.api.routes.navigateTo('home');
+    try {
+      vizality.api.routes.navigateTo('home');
+    } catch (err) {
+      this.error(this._labels.concat('_welcomeNewUser'), err);
+    }
   }
 
   // @i18n
+  /**
+   * 
+   */
   _unsupportedBuild () {
-    vizality.api.notices.sendAnnouncement('vz-unsupported-build', {
-      color: 'orange',
-      message: `Vizality does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Stable for best results.`
-    });
+    try {
+      vizality.api.notifications.sendNotice({
+        color: 'orange',
+        message: `Vizality does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Stable for best results.`
+      });
+    } catch (err) {
+      this.error(this._labels.concat('_unsupportedBuild'), err);
+    }
   }
 }
