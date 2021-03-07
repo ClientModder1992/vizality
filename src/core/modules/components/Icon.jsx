@@ -123,7 +123,7 @@ export const Icons = {};
           .map(m => m.substring(2));
         const missing = DiscordIcons.filter(icon => !Names.includes(icon));
         if (missing.length) {
-          vizality.api.notices.sendToast('vz-missing-icons', {
+          vizality.api.notifications.sendToast({
             header: `Found ${missing.length} Missing Icon ${missing.length === 1 ? 'Asset' : 'Assets '}`,
             icon: 'Uwu',
             content:

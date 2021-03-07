@@ -28,7 +28,7 @@ export default memo(props => {
               // @todo Use Discord module for this after it's set up.
               getModule('getUser').getUser(userId)
                 .then(() => getModule('open', 'fetchProfile').open(userId))
-                .catch(() => vizality.api.notices.sendToast(`open-user-profile-${(Math.random().toString(36) + Date.now()).substring(2, 6)}`, {
+                .catch(() => vizality.api.notifications.sendToast({
                   header: 'User Not Found',
                   type: 'User Not Found',
                   content: 'That user was unable to be located.',
