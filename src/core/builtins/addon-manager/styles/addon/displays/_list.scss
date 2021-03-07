@@ -11,28 +11,19 @@
       margin: 5px 10px;
       &-previews-wrapper {
         width: 100%;
-        max-width: 500px;
-        margin: 16px;
-      }
-      &-description {
-        flex: auto;
-        -webkit-line-clamp: 1;
-      }
-      &-content-wrapper {
-        padding: 7px;
+        max-width: 410px;
       }
     }
     &:not([vz-previews]) {
       .vz-addon-card {
         &-icon {
           @include vz.size(170px);
-          margin-right: 10px;
+          margin: 10px 0 10px 10px;
         }
       }
     }
     &[vz-previews] {
       .vz-addon-card {
-        border: 1px solid var(--background-secondary-alt);
         &-header-wrapper {
           flex-flow: row;
           flex: 1;
@@ -47,10 +38,13 @@
         .smallCarousel-2e0IQc,
         .smallCarouselItem-1rfKEJ {
           height: 100%;
+          border-radius: 8px 0 0 8px;
+        }
+        .smallCarousel-2e0IQc {
+          border-right: 1px solid var(--background-tertiary);
         }
         &-content-wrapper {
           flex-direction: column;
-          padding: 24px 16px 24px 0;
         }
       }
     }

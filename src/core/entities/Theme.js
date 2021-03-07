@@ -24,7 +24,6 @@ export default class Theme extends Updatable {
     this.manifest = manifest;
     this.applied = false;
     this.sections = {};
-
     this._type = 'theme';
     this._labels = [ 'Theme', this.manifest?.name ];
   }
@@ -139,8 +138,9 @@ export default class Theme extends Updatable {
         settings.push(...this._getSettings(setting.items));
         continue;
       }
-      if (setting.type === 'divider') continue;
-      if (setting.type === 'markdown') continue;
+      if (setting.type === 'divider' || setting.type === 'markdown') {
+        continue;
+      }
       settings.push({
         type: setting.type,
         id: toKebabCase(setting.id),

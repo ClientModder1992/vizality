@@ -1,0 +1,117 @@
+@mixin transform {
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes Toastify__slideInRight {
+    from {
+        transform: translate3d(110%, 0, 0);
+        visibility: visible;
+    }
+    to {
+        @include transform;
+    }
+}
+
+@keyframes Toastify__slideInLeft {
+    from {
+        transform: translate3d(-110%, 0, 0);
+        visibility: visible;
+    }
+    to {
+        @include transform;
+    }
+}
+
+@keyframes Toastify__slideInUp {
+    from {
+        transform: translate3d(0, 110%, 0);
+        visibility: visible;
+    }
+    to {
+        @include transform;
+    }
+}
+
+@keyframes Toastify__slideInDown {
+    from {
+        transform: translate3d(0, -110%, 0);
+        visibility: visible;
+    }
+    to {
+        @include transform;
+    }
+}
+
+@keyframes Toastify__slideOutRight {
+    from {
+        @include transform;
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(110%, 0, 0);
+    }
+}
+
+@keyframes Toastify__slideOutLeft {
+    from {
+        @include transform;
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(-110%, 0, 0);
+    }
+}
+
+@keyframes Toastify__slideOutDown {
+    from {
+        @include transform;
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(0, 500px, 0);
+    }
+}
+
+@keyframes Toastify__slideOutUp {
+    from {
+        @include transform;
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(0, -500px, 0);
+    }
+}
+
+.Toastify__slide-enter {
+    &--top-left,
+    &--bottom-left {
+        animation-name: Toastify__slideInLeft;
+    }
+    &--top-right,
+    &--bottom-right {
+        animation-name: Toastify__slideInRight;
+    }
+    &--top-center {
+        animation-name: Toastify__slideInDown;
+    }
+    &--bottom-center {
+        animation-name: Toastify__slideInUp;
+    }
+}
+
+.Toastify__slide-exit {
+    &--top-left,
+    &--bottom-left {
+        animation-name: Toastify__slideOutLeft;
+    }
+    &--top-right,
+    &--bottom-right {
+        animation-name: Toastify__slideOutRight;
+    }
+    &--top-center {
+        animation-name: Toastify__slideOutUp;
+    }
+    &--bottom-center {
+        animation-name: Toastify__slideOutDown;
+    }
+}

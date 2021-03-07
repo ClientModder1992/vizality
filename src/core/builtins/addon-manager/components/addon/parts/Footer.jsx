@@ -24,9 +24,9 @@ export default memo(props => {
                 }}
                 color={Button.Colors.RED}
                 look={Button.Looks.FILLED}
-                size={Button.Sizes.SMALL}
+                size={Button.Sizes.ICON}
               >
-                {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
+                <Icon name='Trash' tooltip='Uninstall' />
               </Button>
             </div>
           }

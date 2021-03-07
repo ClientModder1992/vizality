@@ -6,25 +6,20 @@ labels: 'bug, pending review'
 assignees: ''
 ---
 
-### **Description**
-
+**Description**
 A clear and concise description of what the bug is.
 
-### **Steps to reproduce**
-
+**Steps to reproduce**
 A description or list of steps taken to reproduce the behavior.
 
-### **Expected behavior**
-
+**Expected behavior**
 A clear and concise description of what you expected to happen.
 
-### **Desktop**
-
+**Desktop**
 - Operating system: [e.g., Windows 10]
 - Vizality revision: [You can find it in the Updater tab in your Discord settings]
 
-### **Additional context**
-
+**Additional context**
 Add any other context, screenshots, or info about the bug here.
 
 ----

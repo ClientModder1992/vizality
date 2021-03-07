@@ -9,6 +9,7 @@
  */
 
 /**
+ * Vizality keybind object.
  * @typedef VizalityKeybind
  * @property {string} [id] Keybind ID
  * @property {string} shortcut Keyboard shortcut

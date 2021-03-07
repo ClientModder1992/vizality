@@ -1,48 +1,80 @@
-import React, { memo, useState } from 'react';
-
 import { ContextMenu, Icon } from '@vizality/components';
-import { Messages } from '@vizality/i18n';
+import I18n from '@vizality/i18n';
+import React from 'react';
 
-export default memo(props => {
-  const { onClose, handleDisplayChange, showPreviewImages, handleShowPreviewImages, display } = props;
-  const [ previewImages, setShowPreviewImages ] = useState(showPreviewImages);
+export default React.memo(props => {
+  const { onClose, handleDisplayChange, showPreviewImages, handleShowPreviewImages, display: _display } = props;
+  const [ previewImages, setShowPreviewImages ] = React.useState(showPreviewImages);
+  const [ display, setDisplay ] = React.useState(_display);
 
   return (
     <ContextMenu.Menu navId='vz-addons-list-display-menu' onClose={onClose}>
-      <ContextMenu.Group>
-        <ContextMenu.Item
+      <ContextMenu.Group label='Layout'>
+        <ContextMenu.RadioItem
           id='compact'
-          label='Compact'
-          icon={() => <Icon name='LayoutCompact' size='18' />}
-          action={() => handleDisplayChange('compact')}
-          disabled={display === 'compact'}
+          group='layout'
+          label={() => (
+            <div className='vz-addon-context-menu-label-inner'>
+              <Icon name='LayoutCompact' size='18' />
+              Compact
+            </div>
+          )}
+          checked={display === 'compact'}
+          action={() => {
+            setDisplay('compact');
+            handleDisplayChange('compact');
+          }}
         />
-        <ContextMenu.Item
+        <ContextMenu.RadioItem
           id='cover'
-          label='Cover'
-          icon={() => <Icon name='LayoutCover' size='18' />}
-          action={() => handleDisplayChange('cover')}
-          disabled={display === 'cover'}
+          group='layout'
+          label={() => (
+            <div className='vz-addon-context-menu-label-inner'>
+              <Icon name='LayoutCover' size='18' />
+              Cover
+            </div>
+          )}
+          checked={display === 'cover'}
+          action={() => {
+            setDisplay('cover');
+            handleDisplayChange('cover');
+          }}
         />
-        <ContextMenu.Item
+        <ContextMenu.RadioItem
           id='card'
-          label='Card'
-          icon={() => <Icon name='LayoutCard' size='18' />}
-          action={() => handleDisplayChange('card')}
-          disabled={display === 'card'}
+          group='layout'
+          label={() => (
+            <div className='vz-addon-context-menu-label-inner'>
+              <Icon name='LayoutCard' size='18' />
+              Card
+            </div>
+          )}
+          checked={display === 'card'}
+          action={() => {
+            setDisplay('card');
+            handleDisplayChange('card');
+          }}
         />
-        <ContextMenu.Item
+        <ContextMenu.RadioItem
           id='list'
-          label='List'
-          icon={() => <Icon name='LayoutList' size='18' />}
-          action={() => handleDisplayChange('list')}
-          disabled={display === 'list'}
+          group='layout'
+          label={() => (
+            <div className='vz-addon-context-menu-label-inner'>
+              <Icon name='LayoutList' size='18' />
+              List
+            </div>
+          )}
+          checked={display === 'list'}
+          action={() => {
+            setDisplay('list');
+            handleDisplayChange('list');
+          }}
         />
       </ContextMenu.Group>
       <ContextMenu.Separator />
       <ContextMenu.CheckboxItem
-        id='show-previews'
-        label='Show Previews'
+        id='show-banners'
+        label='Show Banners'
         disabled={display === 'compact' || display === 'cover'}
         checked={previewImages}
         action={() => {

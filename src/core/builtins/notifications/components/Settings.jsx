@@ -30,7 +30,7 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
   };
 
   return (
-    <>
+    <div>
       <TextInput
         defaultValue={getSetting('commandPrefix', '.')}
         onChange={p => updateSetting('commandPrefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
@@ -174,6 +174,6 @@ export default memo(({ getSetting, toggleSetting, updateSetting }) => {
       >
         {Messages.VIZALITY_SETTINGS_CACHE_DISCORD}
       </ButtonItem>
-    </>
+    </div>
   );
 });

@@ -6,16 +6,16 @@ export default class Attributes extends Builtin {
   async start () {
     document.documentElement.setAttribute('vizality', '');
     this.callbacks = [];
-    for (const mod of Object.keys(modules)) {
+    Object.keys(modules).forEach(async mod => {
       try {
-        const callback = await modules[mod].default(this);
+        const callback = await modules[mod](this);
         if (typeof callback === 'function') {
           this.callbacks.push(callback);
         }
       } catch (err) {
         return this.error(modules[mod].labels.concat(mod), err);
       }
-    }
+    });
   }
 
   stop () {

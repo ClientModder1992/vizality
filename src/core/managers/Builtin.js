@@ -30,7 +30,7 @@ export default class BuiltinManager extends AddonManager {
   }
 
   _sortBuiltins (addonA, addonB) {
-    const priority = [ 'privacy', 'router', 'commands', 'dashboard', 'addon-manager', 'attributes', 'notices', 'rpc', 'quick-code', 'enhancements', 'settings', 'updater' ].reverse();
+    const priority = [ 'privacy', 'router', 'dashboard', 'rpc', 'settings', 'addon-manager', 'commands', 'notices', 'attributes', 'quick-code', 'enhancements', 'updater' ].reverse();
     const priorityA = priority.indexOf(addonA);
     const priorityB = priority.indexOf(addonB);
     return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));

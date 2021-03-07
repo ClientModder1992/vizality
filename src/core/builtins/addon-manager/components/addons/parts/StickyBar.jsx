@@ -79,8 +79,8 @@ export default memo(props => {
         <TabBar.Item selectedItem={tab} id='discover'>
           {Messages.DISCOVER}
         </TabBar.Item>
-        <TabBar.Item selectedItem={tab} id='suggestions'>
-          Suggestions
+        <TabBar.Item selectedItem={tab} id='browse'>
+          Browse
         </TabBar.Item>
       </TabBar>
       <div className='vz-addons-list-search-options'>
