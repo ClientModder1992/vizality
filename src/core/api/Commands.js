@@ -87,6 +87,7 @@ export default class Commands extends Entities.API {
   /**
    * Registers a command.
    * @param {VizalityCommand} command Command to register
+   * @emits Commands#Constants.Events.VIZALITY_COMMAND_ADD
    */
   registerCommand (command) {
     try {
@@ -117,6 +118,7 @@ export default class Commands extends Entities.API {
       }
       command.caller = Util.file.getCaller();
       commands.push(command);
+      this.emit(Constants.Events.VIZALITY_COMMAND_ADD, command.command);
     } catch (err) {
       return this.error(this._labels.concat('registerCommand'), err);
     }

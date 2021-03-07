@@ -288,9 +288,7 @@ export default class Plugin extends Updatable {
     }
 
     this._ready = true;
-
     await this._enableWatcher();
-
     if (this._watcherEnabled) {
       await this._watchFiles();
     }
@@ -311,9 +309,9 @@ export default class Plugin extends Updatable {
           items: this._mapSettings(setting.items)
         };
       }
-      if (setting.type === 'divider') return setting;
-      if (setting.type === 'markdown') return setting;
-
+      if (setting.type === 'divider' || setting.type === 'markdown') {
+        return setting;
+      }
       return {
         ...setting,
         get value () { return this.settings.get(setting.id, setting.defaultValue); },

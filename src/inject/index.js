@@ -18,7 +18,7 @@ try {
 (async () => {
   if (process.argv[2] === 'inject') {
     if (await main.inject(platformModule)) {
-      // To show the announcement message
+      // To have it show the dashboard on startup for new users
       await writeFile(
         resolve(__dirname, '..', '__injected.txt'),
         'Vizality successfully injected.'
