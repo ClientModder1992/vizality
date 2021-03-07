@@ -3,18 +3,17 @@
 // Card (default) view
 .vz-addon-card {
   $base: &;
-  padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-flow: column;
-  min-width: 320px;
+  min-width: 340px;
   margin: 10px;
-  cursor: pointer;
-  transition: box-shadow 0.125s ease, background-color 0.125s ease, transform 0.125s ease;
+  // cursor: pointer;
+  transition: box-shadow .2s ease-out, transform .2s ease-out, background .2s ease-out;
   flex: 1;
-  background: var(--background-secondary);
-  border: 1px solid var(--background-secondary-alt);
+  background: var(--background-secondary-alt);
   border-radius: 8px;
+  overflow: hidden;
   // Hack to fix trailing items in the flexbox not sizing correctly
   // with the rest of the items
   &.vz-addon-card-filler {
@@ -29,6 +28,7 @@
   &:hover {
     background-color: var(--background-tertiary);
     box-shadow: var(--elevation-high);
+    transform: translateY(-1px);
   }
   &-header-wrapper {
     display: flex;
@@ -57,7 +57,7 @@
   &-header {
     display: flex;
     width: 100%;
-    margin-bottom: 20px;
+    padding: 16px;
     box-sizing: border-box;
   }
   &-icon {
@@ -68,6 +68,7 @@
     position: relative;
     &-image-wrapper {
       @include vz.size(100%);
+      border-radius: 8px;
     }
     &-img {
       @include vz.size(100%);
@@ -138,6 +139,7 @@
     line-height: 1.4;
     flex: 1;
     box-sizing: border-box;
+    padding: 0 16px;
   }
   // &-tags {
   //   display: flex;
@@ -162,11 +164,12 @@
   //   }
   // }
   &-footer-wrapper {
-    margin-top: 20px;
+    margin: 16px 16px 0;
+    padding: 0 0 16px;
     border-top: 1px solid var(--background-modifier-accent);
   }
   &-footer {
-    margin-top: 20px;
+    margin-top: 16px;
     display: flex;
     justify-content: space-between;
     flex: 0;
@@ -203,6 +206,7 @@
     &-section-right {
       > div {
         margin-left: 12px;
+        cursor: pointer;
       }
     }
     &-section-left {
@@ -221,9 +225,6 @@
       &-header-wrapper {
         flex-flow: column;
         flex: auto;
-      }
-      &-content-wrapper {
-        padding: 20px;
       }
       &-preview {
         padding-top: 50%;

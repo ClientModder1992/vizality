@@ -114,10 +114,9 @@ export default class AddonManager extends Events {
     try {
       const addon = this.get(addonId);
       if (!addon) throw new Error(`${toSingular(toTitleCase(this.type))} "${addonId}" is not installed!`);
-
       return Boolean(addon.sections?.settings);
     } catch (err) {
-      this.error(`An error occurred while checking for settings for "${addonId}"!`, err);
+      return this.error(`An error occurred while checking for settings for "${addonId}"!`, err);
     }
   }
 

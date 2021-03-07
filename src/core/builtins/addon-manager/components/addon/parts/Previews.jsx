@@ -31,13 +31,7 @@ export default memo(props => {
             items={previews.slice(0, 4)}
           />
         </div>
-        : <div className='vz-addon-card-previews-empty'>
-          <div className='vz-addon-card-previews-empty-inner'>
-            <div className='vz-addon-card-previews-empty-text'>
-              No Preview Images Found
-            </div>
-          </div>
-        </div>
+        : <div className='vz-addon-card-previews-empty' />
       }
     </div>
   );

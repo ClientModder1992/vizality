@@ -14,7 +14,7 @@
         display: none;
       }
       &-header {
-        margin: 0;
+        padding: 0;
       }
       &-metadata {
         width: 100%;
@@ -72,6 +72,9 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         opacity: .8;
+      }
+      &-uninstall-button {
+        color: vz.color('danger');
       }
       &-actions {
         display: flex;

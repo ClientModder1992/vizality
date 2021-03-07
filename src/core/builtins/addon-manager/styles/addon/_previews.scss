@@ -3,7 +3,6 @@
 [vz-previews] {
   .vz-addon-card {
     &-previews-wrapper {
-      margin: 16px 16px 0;
       // max-width: 100%; */
       // backface-visibility: hidden; */
       // position: relative; */
@@ -22,11 +21,12 @@
     }
     &-previews-empty {
       background: var(--background-secondary-alt);
-      border: 1px solid var(--background-tertiary);
+      border: 1px solid var(--background-secondary-alt);
+      border-bottom: 1px solid var(--background-tertiary);
       padding-top: 42.55%;
       position: relative;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 8px 8px 0 0;
       &::after {
         content: '';
         position: absolute;
@@ -48,25 +48,6 @@
           }
         }
       }
-      &-inner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-      }
-      &-text {
-        font-weight: 600;
-        text-transform: uppercase;
-        border-radius: 1000px;
-        background: var(--background-modifier-active);
-        padding: 10px 20px;
-        font-size: 14px;
-      }
     }
     .outer-s4sY2_ {
       overflow: hidden;
@@ -74,10 +55,11 @@
     }
     .smallCarousel-2e0IQc {
       background: var(--background-secondary-alt);
-      border: 1px solid var(--background-tertiary);
+      border: 1px solid var(--background-secondary-alt);
+      border-bottom: 1px solid var(--background-tertiary);
       &,
       .smallCarouselItem-1rfKEJ {
-        border-radius: 8px;
+        border-radius: 8px 8px 0 0;
       }
     }
     .arrowHitboxPadding-2stwpJ {

@@ -11,8 +11,8 @@ const { openContextMenu } = contextMenu;
 export default memo(props => {
   const { type, addonId, hasPreviewImages, previewImages } = props;
 
-  const handleContextMenu = e => {
-    return openContextMenu(e, () =>
+  const handleContextMenu = evt => {
+    return openContextMenu(evt, () =>
       <AddonContextMenu {...props} />
     );
   };
@@ -21,12 +21,12 @@ export default memo(props => {
     <div
       className='vz-addon-card'
       vz-addon-id={addonId}
-      onContextMenu={e => handleContextMenu(e)}
-      onClick={e => {
-        if (e.target.classList.contains('smallCarouselImage-2Qvg9S')) return;
-        if (e.target.matches('input') || e.target.matches('button') || e.target.matches('svg') || e.target.matches('a')) return;
-        vizality.api.routes.navigateTo(`/vizality/${toPlural(type)}/${addonId}`);
-      }}
+      onContextMenu={handleContextMenu}
+      // onClick={e => {
+      //   if (e.target.classList.contains('smallCarouselImage-2Qvg9S')) return;
+      //   if (e.target.matches('input') || e.target.matches('button') || e.target.matches('svg') || e.target.matches('a')) return;
+      //   vizality.api.routes.navigateTo(`/vizality/${toPlural(type)}/${addonId}`);
+      // }}
     >
       <Inner {...props} hasPreviewImages={hasPreviewImages} previewImages={previewImages} />
     </div>
