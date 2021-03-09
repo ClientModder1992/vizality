@@ -136,6 +136,7 @@ export default class Updater extends Builtin {
           header: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.VIZALITY_UPDATES_TOAST_AVAILABLE_DESC,
           icon: 'CloudDownload',
+          autoClose: false,
           buttons: [ {
             text: Messages.VIZALITY_UPDATES_OPEN_UPDATER,
             color: 'grey',
