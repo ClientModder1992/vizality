@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-import { nativeImage } from 'electron';
+import { nativeImage, webFrame } from 'electron';
 import { log, warn, error } from './Logger';
 import { getModule } from '../webpack';
 import { sleep } from './Time';
@@ -179,3 +179,13 @@ export const captureElement = async selector => {
   }
 };
 
+let i = 0;
+export const getRealElement = element => {
+  if (!element?.setAttribute) return null;
+  i++;
+  element.setAttribute('vz-real-element', i);
+
+  const node = webFrame.top.context.document.querySelector(`[vz-real-element="${i}"]`);
+  element.removeAttribute('vz-real-element');
+  return node;
+};
