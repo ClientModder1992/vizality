@@ -286,7 +286,7 @@ export default class AddonManager extends Events {
   async initialize () {
     let addonId;
     const ignorePath = join(this.dir, '.vzignore');
-    const ignore = existsSync(ignorePath) ? readFileSync(ignorePath, 'utf-8').split('\n') : [];
+    const ignore = existsSync(ignorePath) ? readFileSync(ignorePath, 'utf-8').split('\n').map(e => e.trim()) : [];
     try {
       await this._enableWatcher();
       if (this._watcherEnabled) {
