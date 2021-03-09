@@ -344,7 +344,7 @@ export default class Plugin extends Updatable {
           vizality.api.settings.unregisterSettings(this.addonId);
         }
 
-        unpatchAllByAddon(this.addonId);
+        //unpatchAllByAddon(this.addonId);
       }
 
       if (showLogs) {
