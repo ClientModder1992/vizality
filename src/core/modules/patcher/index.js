@@ -1,249 +1,139 @@
-/* eslint-disable no-unused-vars */
-/**
- * Patcher that can patch other functions and components allowing you to run code before
- * or after the original function. Can also alter arguments and return values.
- * @module Patches
- */
-
-import { randomBytes } from 'crypto';
-
-import { log, warn, error } from '@vizality/util/logger';
+import { warn, error } from '@vizality/util/logger';
 import { getCaller } from '@vizality/util/file';
 
-/** @private */
-const _labels = [ 'Module', 'Patcher' ];
-const _log = (labels, ...message) => log({ labels, message });
-const _warn = (labels, ...message) => warn({ labels, message });
-const _error = (labels, ...message) => error({ labels, message });
+const _labels = [ 'patcher' ];
 
-/**
- * All currently applied patches.
- */
-let patches = [];
+export const patches = [];
+export const errorLimit = 5;
 
-/**
- * 
- * @param {*} moduleId 
- * @param {*} originalArgs 
- * @param {*} originalReturn 
- * @param {*} _this 
- * @returns 
- */
-export const _runPatches = (moduleId, originalArgs, originalReturn, _this) => {
-  try {
-    let finalReturn = originalReturn;
-    const _patches = patches.filter(p => p.module === moduleId && !p.pre);
-    _patches.forEach(p => {
-      try {
-        finalReturn = p.method.call(_this, originalArgs, finalReturn);
-      } catch (err) {
-        return p.method.call(_this, originalArgs, originalReturn);
-      }
-    });
-    // console.log('finalReturn', finalReturn);
-    // console.log('originalReturn', originalReturn);
-    return finalReturn || originalReturn;
-  } catch (err) {
-    return _error(_labels.concat('_runPatches'), err);
-  }
-};
-
-/**
- * 
- * @param {*} patches 
- * @param {*} originalArgs 
- * @param {*} _this 
- * @returns 
- */
-export const _runPrePatchesRecursive = (patches, originalArgs, _this) => {
-  try {
-    const patch = patches.pop();
-    let args;
+// eslint-disable-next-line consistent-this
+export function runPatches (patches, type, returnValue, _this, args) {
+  for (const patch of patches.filter(p => p.type === type)) {
     try {
-      args = patch.method.call(_this, originalArgs);
+      const tempReturn = patch.callback.bind(_this)(args, returnValue, _this);
+
+      if (typeof tempReturn !== 'undefined') returnValue = tempReturn;
     } catch (err) {
-      _error(_labels.concat('_runPrePatchesRecursive'), err);
-      return originalArgs;
+      error({ labels: _labels.concat('runPatch'), message: [ `Failed to run ${type} callback for ${patch.caller}:\n`, err ] });
+      patch.errorsOccurred++;
     }
-    if (args === false) return false;
-    if (!Array.isArray(args)) return originalArgs;
-    if (patches.length > 0) return _runPrePatchesRecursive(patches, args, _this);
-    return args;
-  } catch (err) {
-    return _error(_labels.concat('_runPrePatchesRecursive'), err);
   }
-};
 
-/**
- * 
- * @param {*} moduleId 
- * @param {*} originalArgs 
- * @param {*} _this 
- * @returns 
- */
-export const _runPrePatches = (moduleId, originalArgs, _this) => {
-  try {
-    const _patches = patches.filter(p => p.module === moduleId && p.pre);
-    if (_patches.length === 0) {
-      return originalArgs;
+  return returnValue;
+}
+
+export function makeOverride (patch) {
+  return function (...args) {
+    let returnValue;
+    if (!patch.childs.length) return patch.originalFunction.apply(this, args);
+
+    try {
+      let tempReturn = runPatches(patch.childs, 'before', returnValue, this, args);
+
+      if (Array.isArray(tempReturn)) args = tempReturn;
+
+      tempReturn = void 0;
+      returnValue = patch.originalFunction.apply(this, args);
+
+      tempReturn = runPatches(patch.childs, 'after', returnValue, this, args);
+
+      if (typeof tempReturn !== 'undefined') returnValue = tempReturn;
+    } catch (err) {
+      error({ labels: _labels, message: [ err ] });
     }
-    return _runPrePatchesRecursive(_patches, originalArgs, _this) || originalArgs;
-  } catch (err) {
-    return _error(_labels.concat('_runPrePatches'), err);
+
+    return returnValue;
+  };
+}
+
+export function createPatch (caller, moduleToPatch, functionName) {
+  const patchData = {
+    caller,
+    moduleToPatch,
+    functionName,
+    originalFunction: moduleToPatch[functionName],
+    unpatch: () => {
+      patchData.moduleToPatch[moduleToPatch.functionName] = patchData.originalFunction;
+      patchData.childs = [];
+      patches.splice(patchData.index, 1);
+    },
+    childs: [],
+    get count () { return this.childs.length; },
+    get index () { return patches.indexOf(this); }
+  };
+
+  moduleToPatch[functionName] = makeOverride(patchData);
+  Object.assign(moduleToPatch[functionName], patchData.originalFunction);
+  moduleToPatch[functionName].toString = () => patchData.originalFunction.toString();
+  moduleToPatch[functionName]['__vz-originalFunction'] = patchData.originalFunction;
+
+  patches.push(patchData);
+
+  return patchData;
+}
+
+export function patch (...args) {
+  if (typeof args[0] !== 'string') args.unshift(getCaller());
+  let [ id, moduleToPatch, func, patchFunction, type = 'after', { failSave = true } = {} ] = args;
+
+  if (typeof type === 'boolean') {
+    if (type) type = 'before';
+    else type = 'after';
   }
-};
-
-/**
- * Patches a function.
- * @param {string} patchId Patch ID, used for manually unpatching
- * @param {object} moduleToPatch Module we should inject into
- * @param {string} func Name of the function we're aiming at
- * @param {Function} patch Function to patch
- * @param {boolean} pre Whether the injection should run before original code or not
- */
-export const patch = (patchId, moduleToPatch, func, patch, pre = false) => {
   try {
-    if (patches.find(patch => patch.id === patchId)) {
-      throw new Error(`Patch ID "${patchId}" is already used!`);
-    }
     if (!moduleToPatch) {
-      throw new Error(`Patch ID "${patchId}" tried to patch a module, but it was undefined!`);
+      throw new Error(`Patch ID "${id}" tried to patch a module, but it was undefined!`);
     }
     if (!moduleToPatch[func]) {
-      throw new Error(`Patch ID "${patchId}" tried to patch a function, but it was undefined!`);
+      throw new Error(`Patch ID "${id}" tried to patch a function, but it was undefined!`);
     }
     if (typeof moduleToPatch[func] !== 'function') {
-      throw new Error(`Patch ID "${patchId}" tried to patch a function, but found ${typeof _oldMethod} instead of a function!`);
+      throw new Error(`Patch ID "${id}" tried to patch a function, but found ${typeof _oldMethod} instead of a function!`);
     }
-    const caller = getCaller();
-    if (!moduleToPatch.__vizalityPatchId || !moduleToPatch.__vizalityPatchId[func]) {
-      // First patch
-      const id = randomBytes(16).toString('hex');
-      moduleToPatch.__vizalityPatchId = Object.assign((moduleToPatch.__vizalityPatchId || {}), { [func]: id });
-      moduleToPatch[`__vizalityOriginal_${func}`] = moduleToPatch[func]; // To allow easier debugging
-      const _oldMethod = moduleToPatch[func];
-      moduleToPatch[func] = function (...args) {
-        try {
-          const finalArgs = _runPrePatches(id, args, this);
-          if (finalArgs !== false && Array.isArray(finalArgs)) {
-            const returned = _oldMethod ? _oldMethod.call(this, ...finalArgs) : void 0;
-            return _runPatches(id, finalArgs, returned, this);
-          }
-        } catch (err) {
-          return _error(_labels.concat('patch'), err);
+
+    const patchModule = patches.find(e => e.moduleToPatch === moduleToPatch && e.functionName === func) || createPatch(id, moduleToPatch, func);
+
+    const child = {
+      callback: patchFunction,
+      type,
+      moduleToPatch,
+      functionName: func,
+      unpatch: () => {
+        patchModule.childs.splice(patchModule.childs.indexOf(child), 1);
+      },
+      _errorsOccurred: 0,
+      get errorsOccurred () { return this._errorsOccurred; },
+      set errorsOccurred (count) {
+        if (count >= errorLimit && failSave) {
+          this.unpatch();
+          warn({ labels: _labels.concat('patch'), message: [ `Automatically unpatched ${type} patch for ${id} because the limit of ${errorLimit} exceptions was reached.` ] });
         }
-      };
-      // Reassign displayName, defaultProps, etc., so it doesn't mess with other plugins
-      Object.assign(moduleToPatch[func], _oldMethod);
-      // Allow code search even after patching
-      moduleToPatch[func].toString = (...args) => _oldMethod.toString(...args);
-    }
-    patches.push({
-      caller,
-      module: moduleToPatch.__vizalityPatchId[func],
-      id: patchId,
-      method: patch,
-      pre
-    });
+        this._errorsOccurred = count;
+      }
+    };
+
+    patchModule.childs.push(child);
+    return child.unpatch;
   } catch (err) {
-    return _error(_labels.concat('patch'), err);
+    error({ labels: _labels.concat('patch'), message: err });
   }
-};
+}
 
-/**
- * Checks if a patch by a given ID is applied.
- * @param {string} patchId Patch ID
- */
-export const isPatched = patchId => {
-  try {
-    return patches.some(patch => patch.id === patchId);
-  } catch (err) {
-    return _error(_labels.concat('isPatched'), err);
-  }
-};
 
-/**
- * 
- * @param {*} filter 
- * @returns 
- */
-export const getPatch = filter => {
-  try {
+export function getPatchesByCaller (caller = getCaller()) {
+  const found = [];
+  for (const patch of patches) for (const child of patch.childs) if (child.caller === caller) found.push(child);
+  return found;
+}
 
-  } catch (err) {
-    return _error(_labels.concat('getPatch'), err);
-  }
-};
+export function unpatchAll (caller) {
+  const patches = getPatchesByCaller(caller);
 
-/**
- * Gets all active patches by an addon.
- * @param {string} filter Filter to 
- */
-export const getPatches = filter => {
-  try {
-    
-  } catch (err) {
-    return _error(_labels.concat('getPatches'), err);
-  }
-};
+  for (const patch of patches) patch.unpatch();
+}
 
-/**
- * Gets all currently active patches.
- * @returns {Array<?patches>} Array of patches
- */
-export const getAllPatches = () => {
-  try {
-    return patches;
-  } catch (err) {
-    return _error(_labels.concat('getAllPatches'), err);
-  }
-};
+/** @deprecated */
+export const unpatch = unpatchAll;
 
-/**
- * Gets all active patches by an addon.
- * @param {string} addonId Addon ID
- */
-export const getPatchesByAddon = addonId => {
-  try {
-    return patches.filter(patch => patch.caller === addonId);
-  } catch (err) {
-    return _error(_labels.concat('getPatchesByAddon'), err);
-  }
-};
-
-/**
- * Removes a patch.
- * @param {string} patchId Patch ID
- */
-export const unpatch = patchId => {
-  try {
-    patches = patches.filter(patch => patch.id !== patchId);
-  } catch (err) {
-    return _error(_labels.concat('unpatch'), err);
-  }
-};
-
-/**
- * Removes all applied patches.
- */
-export const unpatchAll = () => {
-  try {
-    patches = [];
-  } catch (err) {
-    return _error(_labels.concat('unpatchAll'), err);
-  }
-};
-
-/**
- * Removes all patches created by a given addon.
- * @param {string} addonId Addon ID
- */
-export const unpatchAllByAddon = addonId => {
-  try {
-    patches = patches.filter(patch => patch.caller !== addonId);
-  } catch (err) {
-    return _error(_labels.concat('unpatchAllByAddon'), err);
-  }
-};
-
-export default this;
+const Patcher = { patch, patches, unpatchAll, getPatchesByCaller, unpatch };
+export default Patcher;
