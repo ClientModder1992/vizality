@@ -12,8 +12,8 @@
 }
 
 .Toastify {
-  $base: &;
   &__toast {
+    $base: &;
     &-container {
       &--top-left {
         top: 1em;

@@ -44,7 +44,6 @@ export const __coreMessages = strings;
 export default class I18n extends API {
   _handleLocaleChange (diff) {
     if (diff.locale) {
-      console.log('yes');
       [ locale ] = diff;
       this._addVizalityStrings();
     }
