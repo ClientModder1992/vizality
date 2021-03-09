@@ -96,6 +96,7 @@ export function patch (...args) {
     const child = {
       callback: patchFunction,
       type,
+      caller: id,
       moduleToPatch,
       functionName: func,
       unpatch: () => {
