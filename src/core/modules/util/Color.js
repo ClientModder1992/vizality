@@ -540,7 +540,7 @@ export const getContrastColor = color => {
 export const getRandomColor = (type = 'hex') => {
   try {
     assertString(type);
-    if (type?.toLowerCase() !== 'hex') {
+    if ([ 'int', 'hex', 'rgb', 'hsl' ].indexOf(type?.toLowerCase()) < 0) {
       throw new TypeError('Invalid color type provided. Valid types are "hex", "int", "rgb", and "hsl".');
     }
 
